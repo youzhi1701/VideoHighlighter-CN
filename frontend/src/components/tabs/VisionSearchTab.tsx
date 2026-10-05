@@ -101,15 +101,14 @@ export function VisionSearchTab({
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-xs text-muted-foreground">
-          Find moments by describing them — CLIP scores every sampled frame
-          against your text, and the vision model can confirm the best matches.
+          用文字描述想找的画面。CLIP 会对采样帧与描述进行匹配评分，视觉模型还可以进一步确认最符合的结果。
         </p>
 
         <div className="flex gap-2">
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "搜索" && !running && start()}
+            onKeyDown={(e) => e.key === "Enter" && !running && start()}
             placeholder="一个骑自行车的人"
             disabled={running}
           />
@@ -135,7 +134,7 @@ export function VisionSearchTab({
           )}
           <NumberField
             label="采样间隔"
-            hint="(s)"
+            hint="（秒）"
             value={interval}
             step={0.5}
             min={0.1}
@@ -145,7 +144,7 @@ export function VisionSearchTab({
           {mode === "clip" && (
             <NumberField
               label="分数阈值"
-              hint="(0-1)"
+              hint="（0-1）"
               value={threshold}
               step={0.05}
               onChange={setThreshold}
@@ -155,8 +154,7 @@ export function VisionSearchTab({
 
         {blocked && (
           <p className="text-xs text-destructive">
-            CLIP is unavailable: {clipErr}. Use the “Vision model only” engine, or
-            install the OpenVINO CLIP stack.
+            CLIP 当前不可用：{clipErr}。请选择“仅视觉模型”搜索引擎，或安装 OpenVINO CLIP 组件。
           </p>
         )}
 

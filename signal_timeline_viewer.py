@@ -1881,8 +1881,8 @@ class SignalTimelineWindow(QMainWindow):
             # Only advertise a number when it's news — "3/3" is just noise.
             fold.setText("▸" if shown == total else f"▸ {shown}/{total}")
             fold.setToolTip(
-                f"Show the object list ({shown} of {total} objects visible)"
-                if shown != total else "Show the object list"
+                f"显示物体列表（当前显示 {shown}/{total} 个）"
+                if shown != total else "显示物体列表"
             )
 
     def _toggle_visual_query_fold(self):
@@ -1894,7 +1894,7 @@ class SignalTimelineWindow(QMainWindow):
         self.signal_scene.set_visual_query_filter(query, visible)
         self._apply_visual_query_fold()   # the collapsed caret tracks the count
         self.statusBar().showMessage(
-            f"Showing '{query}'" if visible else f"Hiding '{query}' — ◀ ▶ now skip it",
+            f"正在显示“{query}”" if visible else f"已隐藏“{query}”——◀ ▶ 将跳过它",
             2000,
         )
 
@@ -1906,7 +1906,7 @@ class SignalTimelineWindow(QMainWindow):
         scene.build_timeline()
         self.refresh_visual_query_checkboxes()   # reflect the new state in the boxes
         self.statusBar().showMessage(
-            "Showing all objects" if visible else "Hid all objects — ◀ ▶ have nothing to step",
+            "正在显示全部物体" if visible else "已隐藏全部物体——◀ ▶ 当前没有可跳转项目",
             2000,
         )
 
@@ -1924,7 +1924,7 @@ class SignalTimelineWindow(QMainWindow):
             self.save_visual_findings_to_cache()      # else it returns on reopen
         self.refresh_visual_query_checkboxes()
         self.statusBar().showMessage(
-            f"Removed '{query}' ({removed} finding(s)) — re-search to bring it back",
+            f"已移除“{query}”（{removed} 个结果）——重新搜索即可恢复",
             3000,
         )
 
@@ -1959,7 +1959,7 @@ class SignalTimelineWindow(QMainWindow):
             if hasattr(self, 'label_panel'):
                 self.label_panel.refresh_labels()
             self.statusBar().showMessage(
-                f"🔍 Added {len(findings)} visual finding(s) to timeline", 3000
+                f"🔍 已向时间线添加 {len(findings)} 个视觉搜索结果", 3000
             )
 
     def _resolve_video_hash(self):
@@ -3220,11 +3220,11 @@ class SignalTimelineWindow(QMainWindow):
         self.cut_mode_btn.setIcon(ui_icons.scissors())
         self.cut_mode_btn.setCheckable(True)
         self.cut_mode_btn.setToolTip(
-            "Cut Mode ON:\n"
-            "  • Left-click on a clip to cut it at that point\n"
-            "  • Right-click for trim / cut menu\n"
-            "  • Press C while hovering to cut at cursor\n\n"
-            "Cut Mode OFF: normal drag/select behaviour"
+            "切割模式开启：\n"
+            "  • 左键点击片段即可在该位置切开\n"
+            "  • 右键打开修剪 / 切割菜单\n"
+            "  • 鼠标悬停时按 C 可在光标位置切开\n\n"
+            "切割模式关闭：恢复普通拖动和选择操作"
         )
         self.cut_mode_btn.toggled.connect(self.toggle_cut_mode)
         self.cut_mode_btn.setStyleSheet(f"""
@@ -3262,14 +3262,13 @@ class SignalTimelineWindow(QMainWindow):
         # Video output mode (CPU/GPU), shared with the main GUI via config.
         # Hardware HEVC is rejected by some VR players; CPU libx265 is VR-safe.
         self.render_mode_combo = QComboBox()
-        self.render_mode_combo.addItem("Video: CPU x265 (VR-safe, slow)", "cpu")
-        self.render_mode_combo.addItem("Video: GPU (fast, may break VR)", "gpu")
+        self.render_mode_combo.addItem("视频：CPU x265（VR 兼容，较慢）", "cpu")
+        self.render_mode_combo.addItem("视频：GPU（快速，部分 VR 播放器可能不兼容）", "gpu")
         self.render_mode_combo.setToolTip(
-            "How the highlight video is encoded:\n"
-            "CPU x265 — re-encode on the CPU with libx265 (HEVC), matching how VR\n"
-            "   sources are authored. VR-safe, but slow at 6K.\n"
-            "GPU — re-encode with the hardware encoder. Fast, but the HEVC output\n"
-            "   may not play in VR players like HereSphere."
+            "高光视频编码方式：\n"
+            "CPU x265 — 使用 CPU 和 libx265（HEVC）重新编码，VR 兼容性更好，但 6K 视频较慢。\n"
+            "GPU — 使用硬件编码器重新编码，速度更快，但生成的 HEVC 视频可能无法在"
+            " HereSphere 等部分 VR 播放器中播放。"
         )
         _tl_rm = self._load_render_mode_default()
         _tl_i = self.render_mode_combo.findData(_tl_rm)

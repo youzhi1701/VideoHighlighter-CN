@@ -422,7 +422,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               </Button>
               {music && (
                 <Button variant="ghost" size="sm" onClick={() => setMusic("")}>
-                  Clear
+                  清除
                 </Button>
               )}
             </div>
@@ -579,16 +579,14 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                 <Scissors className="size-3.5" /> 跳过摆放相机的画面
               </Label>
               <p className="max-w-prose text-xs text-muted-foreground">
-                Clips often open while the camera is still being raised, swung
-                round or pulled out of a pocket. With this on, each shot is taken
-                from the steadiest stretch it can reach instead of from the first
-                frame.
+                有些片段开头仍处于举起相机、转动相机或刚从口袋取出设备的过程。
+                开启后，会优先从每个片段中选择更稳定的一段，而不是直接从第一个画面开始。
                 {plan?.ok && settle && (plan.trimmed ?? 0) > 0 && (
                   <>
                     {" "}
                     <span className="text-foreground">
-                      {plan.trimmed} of {plan.shots} 个镜头 moved, the latest
-                      starting {plan.trimmed_max?.toFixed(1)}s in.
+                      已调整 {plan.trimmed}/{plan.shots} 个镜头，最晚的镜头从
+                      {plan.trimmed_max?.toFixed(1)} 秒后开始。
                     </span>
                   </>
                 )}
@@ -608,16 +606,13 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                 <MapPin className="size-3.5" /> 不要连续显示相同视角
               </Label>
               <p className="max-w-prose text-xs text-muted-foreground">
-                Stopping in one spot and filming twice is the commonest way a
-                montage repeats itself. Clips are grouped by where and when they
-                were shot, and the reel visits each spot once before it reuses
-                any.
+                在同一地点停留并连续拍摄多次，是成片内容重复最常见的原因。
+                系统会按拍摄地点和时间对片段分组，优先让每个地点出现一次，再考虑重复使用。
                 {plan?.ok && spread && (plan.clips_seen ?? 0) > 0 && (
                   <>
                     {" "}
                     <span className="text-foreground">
-                      {plan.places} of {plan.clips_seen} clips used, each from a
-                      different spot.
+                      已使用 {plan.clips_seen} 个片段中的 {plan.places} 个地点，优先来自不同位置。
                     </span>
                   </>
                 )}
@@ -648,14 +643,13 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               </Button>
               {track && (
                 <Button variant="ghost" size="sm" onClick={() => setTrack("")}>
-                  Clear
+                  清除
                 </Button>
               )}
             </div>
             <p className="text-xs text-muted-foreground">
-              Only needed when your clips have no GPS of their own — the reel
-              still spreads across the shoot without one, using the times.
-              A track also draws the graphics below.
+              仅当素材本身没有 GPS 信息时才需要。即使没有轨迹，成片也会根据拍摄时间尽量分散镜头。
+              提供轨迹后，还可以用于绘制下方的图形效果。
             </p>
           </div>
 
@@ -750,7 +744,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
             <div className="flex items-center gap-2 pt-1">
               {running ? (
                 <Button variant="destructive" size="sm" onClick={onCancel}>
-                  Cancel
+                  取消
                 </Button>
               ) : (
                 <Button

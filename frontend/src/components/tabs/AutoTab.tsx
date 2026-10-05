@@ -51,11 +51,11 @@ import {
 import { basename, pickAudioFile, pickDirectory, pickScriptFile, pickVideos } from "@/lib/files"
 
 const STAGE_LABELS: Record<AutoStageName, string> = {
-  ingest: "Copy from card",
-  music: "Analyse music",
-  highlight: "Find highlights",
-  combine: "Build the reel",
-  music_mix: "Lay the music",
+  ingest: "从存储卡复制",
+  music: "分析音乐",
+  highlight: "查找高光",
+  combine: "生成成片",
+  music_mix: "铺设音乐",
 }
 
 const STAGE_ORDER: AutoStageName[] = [
@@ -108,7 +108,7 @@ export interface AutoTabProps {
 }
 
 const RESOLUTIONS = [
-  { label: "Source", width: 0, height: 0 },
+  { label: "来源", width: 0, height: 0 },
   { label: "1080p", width: 1920, height: 1080 },
   { label: "1440p", width: 2560, height: 1440 },
   { label: "4K", width: 3840, height: 2160 },
@@ -123,7 +123,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
   const [destRoot, setDestRoot] = useState("")
   const [folderName, setFolderName] = useState("")
   const [outputName, setOutputName] = useState("film.mp4")
-  const [resume, setResume] = useState(true)
+  const [resume, set继续] = useState(true)
 
   const [scriptPath, setScriptPath] = useState("")
   const [scriptText, setScriptText] = useState("")
@@ -168,7 +168,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
     void scan()
   }, [scan])
 
-  // Show what a previous run in this folder already finished, so "Resume" is a
+  // Show what a previous run in this folder already finished, so "继续" is a
   // visible fact rather than a promise.
   useEffect(() => {
     if (!destRoot) {
@@ -260,7 +260,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <HardDrive className="size-4" /> Source
+              <HardDrive className="size-4" /> 来源
             </CardTitle>
             <Button
               variant="ghost"
@@ -276,8 +276,8 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
             {cards.length === 0 && (
               <p className="text-xs text-muted-foreground">
                 {scanning
-                  ? "Looking for camera cards…"
-                  : "No camera card found. Insert one and rescan, or pick files below."}
+                  ? "正在查找相机存储卡…"
+                  : "未找到相机存储卡。请插入后重新扫描，或在下方选择文件。"}
               </p>
             )}
 
@@ -348,12 +348,12 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-1.5">
-              <Label className="text-xs">Project folder</Label>
+              <Label className="text-xs">项目文件夹</Label>
               <div className="flex gap-2">
                 <Input
                   value={destRoot}
                   onChange={(e) => setDestRoot(e.target.value)}
-                  placeholder="Where the footage and the film go"
+                  placeholder="素材和成片的保存位置"
                 />
                 <Button
                   variant="outline"
@@ -370,17 +370,17 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
 
             {Boolean(selectedCard) && (
               <div className="space-y-1.5">
-                <Label className="text-xs">Subfolder for this card</Label>
+                <Label className="text-xs">此存储卡的子文件夹</Label>
                 <Input
                   value={folderName}
                   onChange={(e) => setFolderName(e.target.value)}
-                  placeholder="dated automatically"
+                  placeholder="自动按日期命名"
                 />
               </div>
             )}
 
             <div className="space-y-1.5">
-              <Label className="text-xs">Film file name</Label>
+              <Label className="text-xs">成片文件名</Label>
               <Input
                 value={outputName}
                 onChange={(e) => setOutputName(e.target.value)}
@@ -393,14 +393,14 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                 checked={resume}
                 onCheckedChange={(v) => setResume(Boolean(v))}
               />
-              <span className="text-xs">Resume — skip work already done here</span>
+              <span className="text-xs">继续 — skip work already done here</span>
             </label>
 
             {prior && (
               <p className="text-xs text-muted-foreground">
                 Earlier run found:{" "}
                 {prior.filter((s) => s.satisfied).map((s) => STAGE_LABELS[s.name]).join(", ") ||
-                  "nothing reusable"}
+                  "没有可复用内容"}
               </p>
             )}
           </CardContent>
@@ -434,7 +434,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                 <Textarea
                   value={scriptText}
                   onChange={(e) => setScriptText(e.target.value)}
-                  placeholder="Optional. Describe the beats of the film — press Template for a starting point."
+                  placeholder="可选。描述影片节奏与结构 — 可点击“模板”快速开始。"
                   className="h-44 font-mono text-xs"
                   spellCheck={false}
                 />
@@ -540,7 +540,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
           <div className="space-y-1.5">
-            <Label className="text-xs">How clips join</Label>
+            <Label className="text-xs">片段连接方式</Label>
             <div className="flex gap-2">
               <Select value={transition} onValueChange={setTransition}>
                 <SelectTrigger className="flex-1">
@@ -564,31 +564,31 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                     setTransitionDuration(Number(e.target.value) || 0)
                   }
                   className="w-20"
-                  title="Seconds"
+                  title="秒"
                 />
               )}
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label className="text-xs">Cut to the music</Label>
+            <Label className="text-xs">按音乐剪切</Label>
             <Select value={quantise || "off"} onValueChange={(v) => setQuantise(v === "off" ? "" : v)}>
               <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="off">Off — cut where the action is</SelectItem>
-                <SelectItem value="bar">Every cut on a bar</SelectItem>
-                <SelectItem value="beat">Every cut on a beat</SelectItem>
+                <SelectItem value="off">关闭 — 按动作位置剪切</SelectItem>
+                <SelectItem value="bar">每次剪切对齐小节</SelectItem>
+                <SelectItem value="beat">每次剪切对齐节拍</SelectItem>
               </SelectContent>
             </Select>
             {quantise && !musicPath && (
-              <p className="text-xs text-amber-500">Needs a music track.</p>
+              <p className="text-xs text-amber-500">需要音乐轨道。</p>
             )}
           </div>
 
           <div className="space-y-1.5">
-            <Label className="text-xs">Delivery size</Label>
+            <Label className="text-xs">输出尺寸</Label>
             <Select
               value={String(resolution)}
               onValueChange={(v) => setResolution(Number(v))}
@@ -612,7 +612,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
       {/* ── Pipeline ───────────────────────────────────────────────── */}
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-sm font-medium">Pipeline</CardTitle>
+          <CardTitle className="text-sm font-medium">处理流程</CardTitle>
           <div className="flex gap-2">
             {running ? (
               <Button variant="destructive" size="sm" onClick={onCancel}>

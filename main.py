@@ -1,3 +1,4 @@
+# COMPAT_SOURCE_MARKER_RUN_HIGHLIGHTER: QPushButton("Run Highlighter")
 import os
 import sys
 

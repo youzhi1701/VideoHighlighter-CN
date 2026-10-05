@@ -72,22 +72,22 @@ import {
   type PreviewFrame,
 } from "@/components/DetectionPreview"
 import { setPreview } from "@/lib/api"
-import { AutoTab } from "@/components/tabs/自动Tab"
-import { ReelTab } from "@/components/tabs/成片Tab"
-import { TimelineTab } from "@/components/tabs/时间线Tab"
-import { BasicTab } from "@/components/tabs/基础Tab"
-import { TranscriptTab } from "@/components/tabs/转录Tab"
-import { AdvancedTab } from "@/components/tabs/高级Tab"
-import { AvoidTab } from "@/components/tabs/排除Tab"
+import { AutoTab } from "@/components/tabs/AutoTab"
+import { ReelTab } from "@/components/tabs/ReelTab"
+import { TimelineTab } from "@/components/tabs/TimelineTab"
+import { BasicTab } from "@/components/tabs/BasicTab"
+import { TranscriptTab } from "@/components/tabs/TranscriptTab"
+import { AdvancedTab } from "@/components/tabs/AdvancedTab"
+import { AvoidTab } from "@/components/tabs/AvoidTab"
 import { LlmChatTab } from "@/components/tabs/LlmChatTab"
 import { VisionSearchTab } from "@/components/tabs/VisionSearchTab"
-import { AboutTab } from "@/components/tabs/关于Tab"
+import { AboutTab } from "@/components/tabs/AboutTab"
 import type { VisionResult } from "@/lib/api"
 import {
   DownloadTab,
   DEFAULT_DOWNLOAD,
   type DownloadSettings,
-} from "@/components/tabs/下载Tab"
+} from "@/components/tabs/DownloadTab"
 
 type LogLine = { text: string; kind: "info" | "err" | "ok" }
 
@@ -97,8 +97,8 @@ export default function App() {
   const [output, setOutput] = useState("highlight.mp4")
   const [cfg, setCfg] = useState<HighlighterConfig>(DEFAULT_CONFIG)
   const [dl, setDl] = useState<DownloadSettings>(DEFAULT_DOWNLOAD)
-  const [avoidIds, set排除Ids] = useState<string[]>([])
-  const [avoidRanges, set排除Ranges] = useState<[number, number][]>([])
+  const [avoidIds, setAvoidIds] = useState<string[]>([])
+  const [avoidRanges, setAvoidRanges] = useState<[number, number][]>([])
   const [objectLabels, setObjectLabels] = useState<string[]>([])
   const [actionLabels, setActionLabels] = useState<string[]>([])
   const [timeRange, setTimeRange] = useState<TimeRangeState>(DEFAULT_TIME_RANGE)
@@ -124,13 +124,13 @@ export default function App() {
   // Last finished run's output file, so the user can jump to the video they
   // just made instead of hunting for it.
   const [lastOutput, setLastOutput] = useState("")
-  // Shared by the 大模型对话 and 视觉搜索 tabs.
+  // Shared by the LLM Chat and Visual Search tabs.
   const [llmBackend, setLlmBackend] = useState("")
   const [llmModel, setLlmModel] = useState("")
   const [visionResults, setVisionResults] = useState<VisionResult[]>([])
   const [lastEdl, setLastEdl] = useState("")
   const [lastRoot, setLastRoot] = useState("")
-  const [autoStages, set自动Stages] = useState<
+  const [autoStages, setAutoStages] = useState<
     Partial<Record<AutoStageName, { status: AutoStageStatus; detail: string }>>
   >({})
   const wsRef = useRef<WebSocket | null>(null)
@@ -138,11 +138,11 @@ export default function App() {
   // Read inside WS callbacks, which close over the mount-time value otherwise.
   const dlRef = useRef(dl)
   dlRef.current = dl
-  // 成片 chaining: when a multi-video run finishes, its outputs are stashed here
+  // Reel chaining: when a multi-video run finishes, its outputs are stashed here
   // and the `done` handler kicks off a /combine. Cleared before that POST so a
   // combine run can never re-trigger itself. Read cfg/output through refs so the
   // WS callback (closed over mount-time values) sees the current settings.
-  const pending成片Ref = useRef<string[] | null>(null)
+  const pendingReelRef = useRef<string[] | null>(null)
   const cfgRef = useRef(cfg)
   cfgRef.current = cfg
   const outputRef = useRef(output)
@@ -335,18 +335,18 @@ export default function App() {
         // so only keep an output that's actually a file we can reveal.
         if (/\.[a-z0-9]{2,4}$/i.test(e.output)) setLastOutput(e.output)
         // Stash produced highlights so `done` can combine them into a reel.
-        if (e.outputs && e.outputs.length > 1) pending成片Ref.current = e.outputs
+        if (e.outputs && e.outputs.length > 1) pendingReelRef.current = e.outputs
         // The cut list is what makes the run editable rather than final.
         if (e.edl) setLastEdl(e.edl)
-        toast.success("完成")
+        toast.success("Done")
         break
       case "cancelled":
-        appendLog("⏹ 已取消", "err")
-        toast("已取消")
+        appendLog("⏹ Cancelled", "err")
+        toast("Cancelled")
         break
       case "error":
         appendLog(`✖ ${e.message}`, "err")
-        toast.error("错误 — 请查看日志")
+        toast.error("Error — see log")
         break
       case "done": {
         wsRef.current?.close()
@@ -356,10 +356,10 @@ export default function App() {
         // child process has already exited, so /combine won't hit "a run is
         // already in progress". Clear the stash first — the combine run emits its
         // own `done`, and a null stash there stops it re-combining itself.
-        const reel = pending成片Ref.current
-        pending成片Ref.current = null
+        const reel = pendingReelRef.current
+        pendingReelRef.current = null
         if (reel && cfgRef.current.combine_reel) {
-          void start成片Combine(reel)
+          void startReelCombine(reel)
         } else {
           setRunning(false)
           setTask("")
@@ -376,13 +376,13 @@ export default function App() {
   }
 
   /** Combine finished highlights into one reel, reusing the event socket. */
-  const start成片Combine = async (files: string[]) => {
+  const startReelCombine = async (files: string[]) => {
     const c = cfgRef.current
     const dir = pathDir(files[0])
     const stem = (outputRef.current || "highlight.mp4").replace(/\.[^.]+$/, "")
     const out = `${dir}${stem}_reel.mp4`
     appendLog(`🎬 Combining ${files.length} highlights into a reel…`, "ok")
-    setTask("正在合并短片")
+    setTask("Combining reel")
     wsRef.current = openEventSocket(handleEvent)
     await new Promise((r) => setTimeout(r, 150))
     const res = await combineVideos({
@@ -397,8 +397,8 @@ export default function App() {
         : {}),
     })
     if (!res.ok) {
-      appendLog(`✖ 短片合并失败: ${res.error ?? "unknown"}`, "err")
-      toast.error(res.error ?? "短片合并失败")
+      appendLog(`✖ Reel combine failed: ${res.error ?? "unknown"}`, "err")
+      toast.error(res.error ?? "Reel combine failed")
       setRunning(false)
       setTask("")
       wsRef.current?.close()
@@ -446,7 +446,7 @@ export default function App() {
         willCombine,
       }),
     )
-    if (!res.ok) failRun(res.error ?? "启动失败")
+    if (!res.ok) failRun(res.error ?? "Failed to start")
   }
 
   /** Run -> Pause -> Resume, matching the Qt toggle_run tri-state. */
@@ -455,18 +455,18 @@ export default function App() {
     if (paused) {
       await resumeRun()
       setPaused(false)
-      appendLog("▶ 已继续")
+      appendLog("▶ Resumed")
     } else {
       await pauseRun()
       setPaused(true)
-      appendLog("⏸ 流程已暂停")
+      appendLog("⏸ Pipeline paused")
     }
   }
 
   /** urls set = download exactly those (from the picker); otherwise scrape. */
-  const on下载 = async (urls?: string[]) => {
+  const onDownload = async (urls?: string[]) => {
     await beginRun()
-    const res = await start下载({
+    const res = await startDownload({
       url: dl.url,
       save_dir: dl.saveDir,
       download_full: dl.downloadFull,
@@ -475,29 +475,29 @@ export default function App() {
       concurrent: dl.concurrent,
       ...(urls?.length ? { video_urls: urls } : {}),
     })
-    if (!res.ok) failRun(res.error ?? "启动失败 download")
+    if (!res.ok) failRun(res.error ?? "Failed to start download")
   }
 
   const onCancel = async () => {
     await cancelRun()
-    appendLog("⏹ 已请求取消…", "err")
+    appendLog("⏹ Cancellation requested…", "err")
   }
 
   /** Card-to-film in one job. The engine config comes from the other tabs, so
    *  the scoring the user already set up is what the automatic run uses. */
-  const on自动Start = async (opts: Parameters<typeof start自动>[0]) => {
-    set自动Stages({})
+  const onAutoStart = async (opts: Parameters<typeof startAuto>[0]) => {
+    setAutoStages({})
     await beginRun()
     // No video paths yet — the pipeline discovers them by copying the card, and
     // it names the film itself, so only the scoring settings carry over.
     setLastRoot(opts.dest_root)
-    const res = await start自动({
+    const res = await startAuto({
       ...opts,
       config: toGuiConfig(cfgRef.current, opts.output_name ?? "film.mp4", [], {
         avoidIds,
       }),
     })
-    if (!res.ok) failRun(res.error ?? "启动失败 the pipeline")
+    if (!res.ok) failRun(res.error ?? "Failed to start the pipeline")
   }
 
   const addVideos = async () => {
@@ -509,8 +509,8 @@ export default function App() {
     const dir = await pickDirectory()
     if (!dir) return
     const res = await scanFolder(dir, true)
-    if (!res.ok) return toast.error(res.error ?? "无法扫描文件夹")
-    if (!res.files.length) return toast("该文件夹中未找到视频")
+    if (!res.ok) return toast.error(res.error ?? "Could not scan folder")
+    if (!res.files.length) return toast("No videos found in that folder")
     let added = 0
     setVideos((v) => {
       const merged = [...new Set([...v, ...res.files])]
@@ -520,20 +520,20 @@ export default function App() {
     toast.success(`+${added} video${added === 1 ? "" : "s"}`)
   }
 
-  const pick音乐 = async () => {
+  const pickMusic = async () => {
     const path = await pickAudioFile()
     if (path) set("music_path", path)
   }
 
   const launchEditor = async () => {
-    if (!videos.length) return toast.error("请先添加视频")
+    if (!videos.length) return toast.error("Add a video first")
     // The viewer is a separate Qt process and takes ~10s to appear, so say so —
     // otherwise the click looks like it did nothing.
-    toast("正在打开时间线查看器 — 可能需要几秒钟…")
-    appendLog(`📊 Opening 时间线 Viewer for ${basename(videos[0])}…`)
+    toast("Opening Timeline Viewer — it takes a few seconds to appear…")
+    appendLog(`📊 Opening Timeline Viewer for ${basename(videos[0])}…`)
     const res = await openEditor(videos[0])
     if (!res.ok) {
-      toast.error(res.error ?? "无法打开时间线查看器")
+      toast.error(res.error ?? "Could not open the Timeline Viewer")
       appendLog(`✖ ${res.error}`, "err")
     }
   }

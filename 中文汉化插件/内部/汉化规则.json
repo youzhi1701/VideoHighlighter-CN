@@ -9411,6 +9411,114 @@
       "before": "            <p className=\"text-xs text-muted-foreground\">",
       "after": "            </p>",
       "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-1",
+      "file": "modules/ui/training_preview.py",
+      "source": "    return \"Found per round: \" + \" · \".join(parts)",
+      "target": "    return \"每轮识别结果：\" + \" · \".join(parts)",
+      "before": "    parts = [\"…\" if h is None else f\"{h[1]}/{h[2]}\" for h in shown]",
+      "after": "",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-2",
+      "file": "modules/ui/training_preview.py",
+      "source": "        self.setWindowTitle(\"👁 Watch it learn\")",
+      "target": "        self.setWindowTitle(\"👁 查看训练过程\")",
+      "before": "        super().__init__(parent, Qt.Window)",
+      "after": "        self.setMinimumSize(620, 460)",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-3",
+      "file": "modules/ui/training_preview.py",
+      "source": "            \"Waiting for the first round to finish…\\n\\n\"",
+      "target": "            \"正在等待第一轮训练完成…\\n\\n\"",
+      "before": "        self.image_label = QLabel(",
+      "after": "            \"After every round the model looks at the same few frames it was not \"",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-4",
+      "file": "modules/ui/training_preview.py",
+      "source": "            \"After every round the model looks at the same few frames it was not \"",
+      "target": "            \"每轮结束后，模型都会查看同一组未参与训练的帧。\"",
+      "before": "            \"正在等待第一轮训练完成…\\n\\n\"",
+      "after": "            \"trained on. Grey boxes are yours; green is a guess that matches one, \"",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-5",
+      "file": "modules/ui/training_preview.py",
+      "source": "            \"trained on. Grey boxes are yours; green is a guess that matches one, \"",
+      "target": "            \"灰色框是你的标注；绿色表示预测与标注匹配，\"",
+      "before": "            \"每轮结束后，模型都会查看同一组未参与训练的帧。\"",
+      "after": "            \"orange a guess that matches nothing.\")",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-6",
+      "file": "modules/ui/training_preview.py",
+      "source": "            \"orange a guess that matches nothing.\")",
+      "target": "            \"橙色表示预测没有匹配到任何标注。\")",
+      "before": "            \"灰色框是你的标注；绿色表示预测与标注匹配，\"",
+      "after": "        self.image_label.setAlignment(Qt.AlignCenter)",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-7",
+      "file": "modules/ui/training_preview.py",
+      "source": "        self.live_btn = QPushButton(\"⏭ Latest\")",
+      "target": "        self.live_btn = QPushButton(\"⏭ 最新\")",
+      "before": "",
+      "after": "        self.live_btn.setToolTip(\"Jump to the newest round and keep following\")",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-8",
+      "file": "modules/ui/training_preview.py",
+      "source": "        self.live_btn.setToolTip(\"Jump to the newest round and keep following\")",
+      "target": "        self.live_btn.setToolTip(\"跳到最新一轮并持续跟随\")",
+      "before": "        self.live_btn = QPushButton(\"⏭ 最新\")",
+      "after": "        self.live_btn.clicked.connect(lambda: self._show(len(self._rounds) - 1, follow=True))",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-9",
+      "file": "modules/ui/training_preview.py",
+      "source": "                \"No picture for this round — the live view was not open while it ran. \"",
+      "target": "                \"本轮没有图片——训练进行时实时预览窗口未打开。\"",
+      "before": "            self.image_label.setText(",
+      "after": "                \"The numbers below are still real.\")",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-10",
+      "file": "modules/ui/training_preview.py",
+      "source": "                \"The numbers below are still real.\")",
+      "target": "                \"下面的数值仍然是真实结果。\")",
+      "before": "                \"本轮没有图片——训练进行时实时预览窗口未打开。\"",
+      "after": "        tag = \"  • LIVE\" if self._follow else f\"  • round {index + 1} of {len(self._rounds)} so far\"",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-11",
+      "file": "modules/ui/training_preview.py",
+      "source": "        tag = \"  • LIVE\" if self._follow else f\"  • round {index + 1} of {len(self._rounds)} so far\"",
+      "target": "        tag = \"  • 实时\" if self._follow else f\"  • round {index + 1} of {len(self._rounds)} so far\"",
+      "before": "                \"下面的数值仍然是真实结果。\")",
+      "after": "        self.caption.setText(caption + tag)",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_preview.py#audit-20261006-12",
+      "file": "modules/ui/training_preview.py",
+      "source": "        tag = \"  • 实时\" if self._follow else f\"  • round {index + 1} of {len(self._rounds)} so far\"",
+      "target": "        tag = \"  • 实时\" if self._follow else f\"  • 当前第 {index + 1} 轮 / 共 {len(self._rounds)} 轮\"",
+      "before": "                \"下面的数值仍然是真实结果。\")",
+      "after": "        self.caption.setText(caption + tag)",
+      "hunk": "full-ui-audit-2026-10-06"
     }
   ]
 }

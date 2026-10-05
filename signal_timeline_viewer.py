@@ -708,9 +708,9 @@ class SignalTimelineWindow(QMainWindow):
             "预渲染（切换视频）",
         ])
         self.overlay_mode_combo.setToolTip(
-            关闭 — 仅显示原始视频，不显示叠加层\n"
-            实时 — 从缓存显示检测框（需要检测框数据）\n"
-            预渲染 — 切换到已生成标注的视频"
+            "关闭 — 仅显示原始视频，不显示叠加层\n"
+            "实时 — 从缓存显示检测框（需要检测框数据）\n"
+            "预渲染 — 切换到已生成标注的视频"
         )
         self.overlay_mode_combo.setStyleSheet("""
             QComboBox {
@@ -970,7 +970,7 @@ class SignalTimelineWindow(QMainWindow):
         # the volume/mute the user set, not on whatever it was left at.
         self._apply_audio_state()
 
-        if "Live" in text:
+        if text.startswith("实时"):
             # ── Switch to Live real-time overlay ──
             if self.realtime_preview is None:
                 self.statusBar().showMessage(
@@ -999,7 +999,7 @@ class SignalTimelineWindow(QMainWindow):
             QTimer.singleShot(200, self.realtime_preview._view._fit_video)
 
             # only the "real-time" variant runs face recognition
-            is_realtime = ("real-time" in text)
+            is_realtime = ("即时识别" in text)
             self.realtime_preview.set_live_face_enabled(is_realtime)
 
             if is_realtime:
@@ -1017,7 +1017,7 @@ class SignalTimelineWindow(QMainWindow):
                 f"🎯 实时叠加模式——缓存中有 {count} 个检测结果", 3000
             )
             
-        elif "Precomp" in text:
+        elif text.startswith("预渲染"):
             # leaving Live → stop real-time face recognition
             if self.realtime_preview is not None:
                 self.realtime_preview.set_live_face_enabled(False)
@@ -1174,8 +1174,8 @@ class SignalTimelineWindow(QMainWindow):
             return
         checkbox.setChecked(True)          # fires _toggle_vr_mode, as a click would
         self.statusBar().showMessage(
-            "🥽 Side-by-side VR — showing the left eye. "
-            "Untick “VR Half-Frame” for the whole frame.", 10000)
+            "🥽 并排 VR——当前显示左眼画面。"
+            "取消勾选“VR 半画面”即可查看完整画面。", 10000)
 
     @Slot(int)
     def _toggle_vr_mode(self, state):

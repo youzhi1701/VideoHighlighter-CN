@@ -147,22 +147,22 @@ def release_problem(manifest: dict, *, current_version: str, edition: str,
 
     wanted = str(manifest.get("edition") or "").strip().lower()
     if wanted != str(edition or "").strip().lower():
-        return (f"This update is for the {manifest.get('edition') or 'unknown'} "
-                f"edition, not this one.")
+        return (f"此更新适用于 {manifest.get('edition') or '未知'} 版本，"
+                f"与当前版本不匹配。")
 
     target = str(manifest.get("platform") or "windows").strip().lower()
     if target != platform:
-        return f"This update is for {target}, not {platform}."
+        return f"此更新适用于 {target}，当前平台为 {platform}。 "
 
     version = str(manifest.get("version") or "")
     if not is_newer(version, current_version):
-        return (f"This update ({version or 'no version'}) is not newer than "
-                f"the version you have ({current_version}).")
+        return (f"此更新版本（{version or '未标明版本'}）并不比当前版本 "
+                f"（{current_version}）更新。")
 
     floor = str(manifest.get("min_version") or "").strip()
     if floor and is_newer(floor, current_version):
-        return (f"Version {version} cannot be installed over {current_version} "
-                f"in place. Download it and install it instead.")
+        return (f"版本 {version} 无法直接覆盖安装到 {current_version}。"
+                f"请下载完整安装包后重新安装。")
     return None
 
 
@@ -240,13 +240,13 @@ class UpdatePlan:
 
     def summary(self) -> str:
         if self.is_empty:
-            return "Already up to date."
+            return "当前已是最新版本。"
         mb = self.download_bytes / (1024 * 1024)
-        bits = [f"{len(self.download)} file(s) to download ({mb:.1f} MB)"]
+        bits = [f"需下载 {len(self.download)} 个文件（{mb:.1f} MB）"]
         if self.delete:
-            bits.append(f"{len(self.delete)} to remove")
-        bits.append(f"{self.unchanged} unchanged")
-        return ", ".join(bits)
+            bits.append(f"需删除 {len(self.delete)} 个文件")
+        bits.append(f"{self.unchanged} 个文件无需更改")
+        return "，".join(bits)
 
 
 def plan_update(new_manifest: dict, root: str,

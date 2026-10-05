@@ -2832,7 +2832,7 @@ class SignalTimelineWindow(QMainWindow):
 
         # Actions: optional keep-list (blank = all actions).
         self.analyze_actions_field = QLineEdit(act_default)
-        self.analyze_actions_field.setPlaceholderText("全部动作（或输入：high kick, archery…）")
+        self.analyze_actions_field.setPlaceholderText("全部动作（或输入：高踢、射箭…）")
         self.analyze_actions_field.setToolTip(
             "可选。留空表示检测全部动作；也可以输入动作名称，只保留指定动作。"
             "默认使用主窗口中的动作关键词。")
@@ -2841,7 +2841,7 @@ class SignalTimelineWindow(QMainWindow):
             extra=self.analyze_actions_field))
 
         self.analyze_objects_field = QLineEdit(obj_default)
-        self.analyze_objects_field.setPlaceholderText("person, car, dog…")
+        self.analyze_objects_field.setPlaceholderText("人物、汽车、狗…")
         self.analyze_objects_field.setToolTip(
             "输入要检测的物体类别，用逗号分隔。默认使用主窗口中的列表；"
             "每次运行前都可以修改。模型和置信度请在主窗口中设置。")

@@ -72,7 +72,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
     <Card>
       <CardHeader className="py-3">
         <CardTitle className="text-sm font-medium">
-          Live Detection Preview
+          实时检测预览
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -86,7 +86,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
               {cached ? (
                 <>
                   <p className="text-foreground">
-                    This video was already analysed, so detection was skipped.
+                    该视频已经分析过，因此跳过了检测。
                   </p>
                   <p className="mt-1">
                     There are no frames to show. Tick “Force reprocess (ignore

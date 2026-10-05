@@ -34,7 +34,7 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
     setLoading(true)
     void browseListing(url).then((r) => {
       setLoading(false)
-      if (!r.ok) return setStatus(`Failed to load listing: ${r.error}`)
+      if (!r.ok) return setStatus(`加载列表失败：${r.error}`)
       setEntries(r.entries)
       setStatus(r.entries.length ? "" : "该页面未找到视频。")
     })

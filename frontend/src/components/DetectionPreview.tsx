@@ -105,7 +105,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
         {view && (
           <p className="text-xs text-muted-foreground">
             t={fmt(view.sec)} • {view.boxes.length} object(s)
-            {frozen && index !== -1 && ` • frame ${index + 1}/${frames.length}`}
+            {frozen && index !== -1 && ` • 帧 ${index + 1}/${frames.length}`}
           </p>
         )}
 

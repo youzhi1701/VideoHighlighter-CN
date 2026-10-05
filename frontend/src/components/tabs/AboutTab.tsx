@@ -32,7 +32,7 @@ export function AboutTab() {
             Video Highlighter {info?.edition && `(${info.edition})`}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {info ? `Version ${info.version} — free & open source (AGPLv3)` : "…"}
+            {info ? `Version ${info.version} — 免费开源（AGPLv3）` : "…"}
           </p>
         </div>
       </div>
@@ -51,10 +51,10 @@ export function AboutTab() {
           </p>
           <p>
             {info ? (
-              <Link href={info.website}>Learn more / Get Pro</Link>
+              <Link href={info.website}>了解更多 / 获取 Pro</Link>
             ) : (
               <Link href="https://aseiel.github.io/VideoHighlighter-site/">
-                Learn more / Get Pro
+                了解更多 / 获取 Pro
               </Link>
             )}
           </p>
@@ -63,7 +63,7 @@ export function AboutTab() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Contact &amp; Support</CardTitle>
+          <CardTitle className="text-sm font-medium">联系与支持</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           {info && (
@@ -77,7 +77,7 @@ export function AboutTab() {
                 </Link>
               </p>
               <p>
-                Discord: <Link href={info.discord}>Join the server</Link>
+                Discord: <Link href={info.discord}>加入社区</Link>
               </p>
               <p>
                 Website: <Link href={info.website}>{info.website}</Link>
@@ -97,10 +97,10 @@ export function AboutTab() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Legal</CardTitle>
+          <CardTitle className="text-sm font-medium">法律信息</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
-          <p>© 2026 Przemysław Kreft and contributors</p>
+          <p>© 2026 Przemysław Kreft 及贡献者</p>
           <p>
             Licensed under the{" "}
             <Link href="https://www.gnu.org/licenses/agpl-3.0.html">AGPLv3</Link>.

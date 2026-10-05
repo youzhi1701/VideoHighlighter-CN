@@ -21,7 +21,7 @@ const BLANK: CompRule = {
   region: "",
   min_count: 1,
   max_count: 999,
-  relation: "inside",
+  relation: "内部",
   outline: false,
   window_secs: 0.75,
   persist_secs: 0.5,
@@ -43,21 +43,21 @@ export function CompositionRules() {
     const res = await saveCompositionRules(rules)
     setLoading(false)
     if (res.ok) toast.success(`Saved ${res.events} event(s) to composition_rules.yaml`)
-    else toast.error(res.error ?? "Could not save rules")
+    else toast.error(res.error ?? "无法保存规则")
   }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium">Composition Rules</CardTitle>
+        <CardTitle className="text-sm font-medium">构图规则</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-xs text-muted-foreground">
           Compose higher-level actions from spatial relationships between detected
-          objects — e.g. if object A appears inside region B enough times, fire
-          action X. Rows sharing an Event Name must all be satisfied together (AND).
-          Relation: inside (its centre is in the region), overlaps (most of it
-          is), touches (they meet). Outline decides on the real shapes inside the
+          objects — e.g. if object A appears 内部 region B enough times, fire
+          action X. Rows sharing an 事件名称 must all be satisfied together (AND).
+          关系: 内部 (its centre is in the region), 重叠 (most of it
+          is), 接触 (they meet). 轮廓 decides on the real shapes 内部 the
           boxes; a source like person.hand uses the body part. Window smooths over
           flicker; Persist keeps an object alive through occlusion. Saved to
           composition_rules.yaml.
@@ -67,16 +67,16 @@ export function CompositionRules() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-28">Event Name</TableHead>
-                <TableHead className="min-w-28">Display Label</TableHead>
-                <TableHead className="min-w-24">Source</TableHead>
-                <TableHead className="min-w-24">Region</TableHead>
-                <TableHead className="w-20">Min</TableHead>
-                <TableHead className="w-20">Max</TableHead>
-                <TableHead className="w-28">Relation</TableHead>
-                <TableHead className="w-16">Outline</TableHead>
-                <TableHead className="w-24">Window (s)</TableHead>
-                <TableHead className="w-24">Persist (s)</TableHead>
+                <TableHead className="min-w-28">事件名称</TableHead>
+                <TableHead className="min-w-28">显示名称</TableHead>
+                <TableHead className="min-w-24">来源</TableHead>
+                <TableHead className="min-w-24">区域</TableHead>
+                <TableHead className="w-20">最小</TableHead>
+                <TableHead className="w-20">最大</TableHead>
+                <TableHead className="w-28">关系</TableHead>
+                <TableHead className="w-16">轮廓</TableHead>
+                <TableHead className="w-24">时间窗口（秒）</TableHead>
+                <TableHead className="w-24">持续（秒）</TableHead>
                 <TableHead className="w-10" />
               </TableRow>
             </TableHeader>
@@ -122,16 +122,16 @@ export function CompositionRules() {
                     ))}
                     <TableCell className="p-1">
                       <select
-                        value={r.relation ?? "inside"}
+                        value={r.relation ?? "内部"}
                         onChange={(e) =>
                           upd(i, { relation: e.target.value as CompRule["relation"] })
                         }
                         className="h-7 w-full rounded-md border bg-transparent px-1 text-sm"
-                        title="inside: its centre is in the region · overlaps: most of it is · touches: they meet"
+                        title="内部: its centre is in the region · 重叠: most of it is · 接触: they meet"
                       >
-                        <option value="inside">inside</option>
-                        <option value="overlaps">overlaps</option>
-                        <option value="touches">touches</option>
+                        <option value="内部">内部</option>
+                        <option value="重叠">重叠</option>
+                        <option value="接触">接触</option>
                       </select>
                     </TableCell>
                     <TableCell className="p-1 text-center">
@@ -139,7 +139,7 @@ export function CompositionRules() {
                         type="checkbox"
                         checked={Boolean(r.outline)}
                         onChange={(e) => upd(i, { outline: e.target.checked })}
-                        title="Decide on the real shapes, traced inside the boxes"
+                        title="Decide on the real shapes, traced 内部 the boxes"
                       />
                     </TableCell>
                     <TableCell className="p-1">
@@ -148,7 +148,7 @@ export function CompositionRules() {
                         onClick={() =>
                           setRules((rs) => rs.filter((_, j) => j !== i))
                         }
-                        title="Remove rule"
+                        title="删除规则"
                       >
                         <X className="size-4" />
                       </button>

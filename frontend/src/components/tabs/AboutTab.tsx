@@ -32,7 +32,7 @@ export function AboutTab() {
             Video Highlighter {info?.edition && `(${info.edition})`}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {info ? `Version ${info.version} — 免费开源（AGPLv3）` : "…"}
+            {info ? `版本 ${info.version} — 免费开源（AGPLv3）` : "…"}
           </p>
         </div>
       </div>

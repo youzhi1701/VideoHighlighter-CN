@@ -268,12 +268,12 @@ def _decode_with_ffmpeg(path: str, log_fn=print) -> tuple:
             capture_output=True, text=True, encoding="utf-8", errors="replace")
         if proc.returncode != 0:
             tail = (proc.stderr or "").strip().splitlines()[-6:]
-            raise RuntimeError("ffmpeg could not decode the music file:\n"
+            raise RuntimeError("ffmpeg 无法解码音乐文件：\n"
                                + "\n".join(tail))
         decoded = _read_pcm_wav(tmp)
         if decoded is None:
-            raise RuntimeError(f"ffmpeg produced an unreadable wav for {path!r}")
-        log_fn(f"🎵 Decoded with ffmpeg at {TARGET_SR} Hz mono")
+            raise RuntimeError(f"ffmpeg 生成的 WAV 文件无法读取：{path!r}")
+        log_fn(f"🎵 已使用 ffmpeg 解码为 {TARGET_SR} Hz 单声道")
         return decoded
     finally:
         try:
@@ -905,12 +905,12 @@ def analyze_music(path: str, *, backend: str = "auto", meter: int = 4,
     decodes but has no rhythm to find is not an error; see ``MusicAnalysis``.
     """
     if backend not in ("auto", "numpy", "librosa"):
-        raise ValueError(f"unknown backend: {backend!r} (expected auto|numpy|librosa)")
+        raise ValueError(f"未知音乐分析后端：{backend!r}（应为 auto、numpy 或 librosa）")
     if not path or not os.path.exists(str(path)):
-        raise ValueError(f"music file not found: {path!r}")
+        raise ValueError(f"未找到音乐文件：{path!r}")
     meter = int(meter)
     if meter < 1:
-        raise ValueError(f"meter must be at least 1, got {meter!r}")
+        raise ValueError(f"每小节拍数至少为 1，当前为 {meter!r}")
 
     chosen = backend
     if chosen == "auto":
@@ -921,7 +921,7 @@ def analyze_music(path: str, *, backend: str = "auto", meter: int = 4,
         try:
             staged = _stage_librosa(str(path), log_fn)
         except Exception as exc:  # ImportError, or anything librosa raises
-            log_fn(f"⚠️ librosa backend unavailable ({exc}); using numpy")
+            log_fn(f"⚠️ librosa 后端不可用（{exc}），改用 numpy")
             chosen = "numpy"
     if staged is None:
         chosen = "numpy"
@@ -955,12 +955,12 @@ def analyze_music(path: str, *, backend: str = "auto", meter: int = 4,
         backend=chosen,
     )
     if analysis.has_beats:
-        log_fn(f"🎵 {os.path.basename(str(path))}: {analysis.bpm:.1f} BPM, "
-               f"{len(analysis.beats)} beats, {len(analysis.downbeats)} downbeats, "
-               f"{len(analysis.sections)} sections ({chosen})")
+        log_fn(f"🎵 {os.path.basename(str(path))}：{analysis.bpm:.1f} BPM，"
+               f"{len(analysis.beats)} 个节拍，{len(analysis.downbeats)} 个重拍，"
+               f"{len(analysis.sections)} 个段落（{chosen}）")
     else:
-        log_fn(f"⚠️ {os.path.basename(str(path))}: no beat detected "
-               f"({duration:.2f}s decoded); cuts will not be snapped")
+        log_fn(f"⚠️ {os.path.basename(str(path))}：未检测到节拍"
+               f"（已解码 {duration:.2f} 秒）；剪切点不会对齐节拍")
     return analysis
 
 

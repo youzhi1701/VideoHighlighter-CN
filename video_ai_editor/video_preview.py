@@ -158,7 +158,7 @@ class AnalysisOverlayWidget(QWidget):
                     objects.append(obj_name)
         
         if objects:
-            text = "Objects: " + ", ".join(objects[:6])
+            text = "物体： " + ", ".join(objects[:6])
             painter.fillRect(8, h - 38, len(text) * 9 + 16, 30, QColor(0, 0, 0, 150))
             painter.setFont(QFont("Arial", 10, QFont.Bold))
             painter.setPen(QColor(0, 255, 0, 220))
@@ -168,7 +168,7 @@ class AnalysisOverlayWidget(QWidget):
         if not actions and not objects:
             painter.setFont(QFont("Arial", 9))
             painter.setPen(QColor(255, 255, 100, 150))
-            painter.drawText(10, h - 10, f"No detections at {self.current_time:.1f}s")
+            painter.drawText(10, h - 10, f"该时间点没有检测结果：{self.current_time:.1f}s")
         
         # ── Timestamp (top-right) ──
         mins, secs = divmod(int(self.current_time), 60)
@@ -202,7 +202,7 @@ class VideoPreviewWindow(QMainWindow):
         self.current_source = 'original'
         self._vr_mode = False
 
-        self.setWindowTitle(f"Video Preview - {os.path.basename(video_path)}")
+        self.setWindowTitle(f"视频预览 - {os.path.basename(video_path)}")
         self.setGeometry(200, 200, 800, 600)
 
         self.init_ui()
@@ -275,17 +275,17 @@ class VideoPreviewWindow(QMainWindow):
         feature_layout = QHBoxLayout()
         
         # AI overlay toggle
-        self.overlay_checkbox = QCheckBox("Show AI Labels Overlay")
+        self.overlay_checkbox = QCheckBox("显示 AI 标签叠加")
         self.overlay_checkbox.setEnabled(True)  # Always enabled — reads from cache
         self.overlay_checkbox.stateChanged.connect(self.toggle_overlay)
 
         # VR half-frame toggle
-        self.vr_checkbox = QCheckBox("VR Half-Frame")
-        self.vr_checkbox.setToolTip("Show only the left half of the frame (side-by-side 3D/VR videos)")
+        self.vr_checkbox = QCheckBox("VR 半画面")
+        self.vr_checkbox.setToolTip("仅显示画面左半部分（适用于左右并排 3D/VR 视频）")
         self.vr_checkbox.stateChanged.connect(self._toggle_vr_mode)
 
         # Sync with timeline checkbox
-        self.sync_checkbox = QCheckBox("Sync with Timeline")
+        self.sync_checkbox = QCheckBox("与时间线同步")
         self.sync_checkbox.setChecked(True)
 
         feature_layout.addWidget(self.overlay_checkbox)
@@ -295,7 +295,7 @@ class VideoPreviewWindow(QMainWindow):
         
         # Bottom row: Volume and other controls
         volume_layout = QHBoxLayout()
-        volume_layout.addWidget(QLabel("Volume:"))
+        volume_layout.addWidget(QLabel("音量："))
         
         self.volume_slider = QSlider(Qt.Horizontal)
         self.volume_slider.setRange(0, 100)
@@ -309,7 +309,7 @@ class VideoPreviewWindow(QMainWindow):
         
         volume_layout.addWidget(self.volume_slider)
         volume_layout.addStretch()
-        volume_layout.addWidget(QLabel("Speed:"))
+        volume_layout.addWidget(QLabel("速度："))
         volume_layout.addWidget(self.speed_combo)
         
         # Assemble all controls
@@ -341,14 +341,14 @@ class VideoPreviewWindow(QMainWindow):
         """Load a video file"""
         if os.path.exists(path):
             self.player.setSource(QUrl.fromLocalFile(path))
-            self.status_bar.showMessage(f"Loaded: {os.path.basename(path)}", 3000)
+            self.status_bar.showMessage(f"已加载：{os.path.basename(path)}", 3000)
         else:
-            self.status_bar.showMessage(f"File not found: {path}", 5000)
+            self.status_bar.showMessage(f"文件不存在：{path}", 5000)
 
     def show_frame_analysis_status(self, timestamp: float, contains_target: bool):
         """Show a temporary overlay indicating frame analysis result"""
         # Update status bar
-        status = f"Frame at {int(timestamp)//60}:{int(timestamp)%60:02d} - {'✅ TARGET FOUND' if contains_target else '❌ No target'}"
+        status = f"时间点 {int(timestamp)//60}:{int(timestamp)%60:02d} - {'✅ TARGET FOUND' if contains_target else '❌ No target'}"
         self.status_bar.showMessage(status, 1000)  # Show for 1 second
         
         # Optional: Change border color briefly to indicate analysis

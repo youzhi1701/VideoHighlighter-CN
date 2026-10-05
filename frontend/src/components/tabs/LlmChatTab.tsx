@@ -72,7 +72,7 @@ export function LlmChatTab({
       ...m,
       {
         role: "assistant",
-        text: res.ok ? (res.answer ?? "") : `Error: ${res.error}`,
+        text: res.ok ? (res.answer ?? "") : `错误：${res.error}`,
       },
     ])
   }

@@ -24,7 +24,7 @@ export function TranscriptTab({ cfg, set }: Props) {
     <div className="grid min-w-0 gap-5 md:grid-cols-2 [&>*]:min-w-0">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Transcript</CardTitle>
+          <CardTitle className="text-sm font-medium">转录</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <label className="flex items-center gap-2 text-sm">
@@ -35,14 +35,14 @@ export function TranscriptTab({ cfg, set }: Props) {
             Enable transcript processing (Whisper)
           </label>
           <SelectField
-            label="Source language"
+            label="源语言"
             value={cfg.transcript_source_lang}
             options={TRANSCRIPT_LANGS}
             onChange={(v) => set("transcript_source_lang", v)}
             disabled={!on}
           />
           <SelectField
-            label="Whisper model"
+            label="Whisper 模型"
             value={cfg.transcript_model}
             options={WHISPER_MODELS}
             onChange={(v) => set("transcript_model", v)}
@@ -65,13 +65,13 @@ export function TranscriptTab({ cfg, set }: Props) {
               These scores only count while transcript is enabled.
             </p>
             <NumberField
-              label="Keyword points"
+              label="关键词加分"
               value={cfg.keyword_points}
               onChange={(v) => set("keyword_points", v)}
             />
             <NumberField
-              label="Transcript points"
-              hint="(all words)"
+              label="转录文本加分"
+              hint="（所有词）"
               value={cfg.transcript_points}
               onChange={(v) => set("transcript_points", v)}
             />
@@ -81,7 +81,7 @@ export function TranscriptTab({ cfg, set }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Subtitles</CardTitle>
+          <CardTitle className="text-sm font-medium">字幕</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <label className="flex items-center gap-2 text-sm">
@@ -98,14 +98,14 @@ export function TranscriptTab({ cfg, set }: Props) {
             </p>
           )}
           <SelectField
-            label="Source language"
+            label="源语言"
             value={cfg.source_lang}
             options={SUBTITLE_LANGS}
             onChange={(v) => set("source_lang", v)}
             disabled={!on || !cfg.create_subtitles}
           />
           <SelectField
-            label="Target language"
+            label="目标语言"
             value={cfg.target_lang}
             options={SUBTITLE_LANGS}
             onChange={(v) => set("target_lang", v)}

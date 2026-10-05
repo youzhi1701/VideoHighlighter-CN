@@ -839,7 +839,7 @@ class Action训练Worker(QObject):
         except Exception as exc:                    # noqa: BLE001
             import traceback
             traceback.print_exc()
-            self.error.emit(f"Could not run the action trainer: {exc}")
+            self.error.emit(f"无法运行动作训练器：{exc}")
 
     def _command(self, python: str) -> list:
         """The trainer to run, and its flags.
@@ -1245,7 +1245,7 @@ class 训练Panel(QWidget):
         try:
             from modules.teach.teach_panel import TeachPanel
             self.teach = TeachPanel()
-            tabs.addTab(self.teach, "From videos")
+            tabs.addTab(self.teach, "从视频学习")
         except Exception as exc:                # pragma: no cover - never cost the rest
             self.teach = None
             print(f"[training] teach panel unavailable: {exc}")

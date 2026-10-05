@@ -228,7 +228,7 @@ class AnnotatedVideoManager(QObject):
         row2 = QHBoxLayout()
         self._gen_actions_btn = QPushButton("🎬 生成动作标注")
         self._gen_actions_btn.setToolTip(
-            "Run action detection with bounding boxes (uses your existing pipeline)")
+            "运行带边界框的动作检测（使用当前已有的检测流程）")
         self._gen_actions_btn.clicked.connect(self._on_generate_actions)
         self._gen_actions_btn.setStyleSheet("""
             QPushButton {
@@ -242,7 +242,7 @@ class AnnotatedVideoManager(QObject):
 
         self._gen_objects_btn = QPushButton("📦 生成物体标注")
         self._gen_objects_btn.setToolTip(
-            "Run object detection with bounding boxes (uses your existing pipeline)")
+            "运行带边界框的物体检测（使用当前已有的检测流程）")
         self._gen_objects_btn.clicked.connect(self._on_generate_objects)
         self._gen_objects_btn.setStyleSheet("""
             QPushButton {
@@ -461,19 +461,21 @@ class AnnotatedVideoManager(QObject):
         if success:
             self.refresh()  # Re-scan → new video appears in dropdown
             size_mb = os.path.getsize(result) / (1024 * 1024) if os.path.isfile(result) else 0
-            self._set_status(f"✅ {which.title()} video ready ({size_mb:.1f} MB)")
+            which_zh = {"actions": "动作", "objects": "物体"}.get(which, which)
+            self._set_status(f"✅ {which_zh}标注视频已生成（{size_mb:.1f} MB）")
             print(f"✅ {which.title()} bbox video ready: {result}")
 
             # Show a message box
             if self._widget:
                 QMessageBox.information(
                     self._widget, "生成完成",
-                    f"{which.title()} annotated video is ready!\n"
-                    f"Select it from the dropdown to view.\n\n"
-                    f"File: {os.path.basename(result)} ({size_mb:.1f} MB)"
+                    f"{which_zh}标注视频已生成！\n"
+                    f"请从下拉列表中选择该视频进行查看。\n\n"
+                    f"文件：{os.path.basename(result)}（{size_mb:.1f} MB）"
                 )
         else:
-            self._set_status(f"❌ {which.title()} generation failed: {result[:60]}")
+            which_zh = {"actions": "动作", "objects": "物体"}.get(which, which)
+            self._set_status(f"❌ {which_zh}标注生成失败：{result[:60]}")
             print(f"❌ {which.title()} generation failed: {result}")
 
     # ---- helpers ----------------------------------------------------------

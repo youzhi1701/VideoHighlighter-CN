@@ -42,7 +42,7 @@ def describe(result: dict) -> str:
     if not isinstance(result, dict):
         return str(result)
     if result.get("error"):
-        return f"已停止：{result['error']}"
+        return f"Stopped: {result['error']}"
     lines = []
     if "checks" in result:
         for c in result["checks"]:
@@ -54,13 +54,13 @@ def describe(result: dict) -> str:
         lines.append("Ready." if result.get("ready") else "尚未就绪：请先处理缺失项目。")
         return "\n".join(lines)
     for step in result.get("ran") or []:
-        lines.append("已完成： " + " ".join(step.get("args") or []))
+        lines.append("done: " + " ".join(step.get("args") or []))
     if "classes" in result and isinstance(result["classes"], dict):
         for name, c in result["classes"].items():
             lines.append(f"{name}: {c['accepted']} of {c['target']} accepted")
     nxt = result.get("next") or result.get("stopped_at") or {}
     if nxt.get("why"):
-        lines.append("下一步： " + nxt["why"])
+        lines.append("Next: " + nxt["why"])
     if result.get("message"):
         lines.append(result["message"])
     return "\n".join(lines) or "Done."
@@ -93,11 +93,11 @@ class TeachPanel(QWidget):
         self.task.setToolTip("actions: something that happens over time (a movement)\n"
                              "objects: a thing visible in one frame")
         self.project = QLineEdit("my-first")
-        self.project.setToolTip("输入名称或选择文件夹。项目保存在用户数据目录。")
+        self.project.setToolTip("A name, or a folder. Projects live in your user data.")
         self.examples = QLineEdit()
-        self.examples.setPlaceholderText("包含各类别片段子文件夹的目录")
+        self.examples.setPlaceholderText("folder with one subfolder of clips per thing")
         self.videos = QLineEdit()
-        self.videos.setPlaceholderText("视频文件夹（或输入单个视频路径）")
+        self.videos.setPlaceholderText("a folder of videos (or type the path of one video)")
         self.focus = QCheckBox("动作样本自动裁剪到人物区域")
 
         form = QFormLayout()
@@ -120,7 +120,7 @@ class TeachPanel(QWidget):
         self.train_btn.setToolTip("继续，包括训练（可能需要较长时间）")
         self.train_btn.clicked.connect(lambda: self._run(["auto", "--train"]))
         self.share_btn = QPushButton("分享…")
-        self.share_btn.setToolTip("将训练好的检测器分享到模型中心 "
+        self.share_btn.setToolTip("Share the trained detector on the model hub "
                                   "（只分享模型，不会上传你的素材）")
         self.share_btn.clicked.connect(self.share)
         buttons = QHBoxLayout()
@@ -306,7 +306,7 @@ class TeachPanel(QWidget):
         from modules.teach.background import waiting
         self._waiting = waiting(self._roots())
         n = sum(self._waiting.values())
-        self.review_btn.setText(f"检查模型判断… ({n})" if n else "检查模型判断…")
+        self.review_btn.setText(f"Check guesses… ({n})" if n else "检查模型判断…")
 
     def _run(self, args: list):
         if self.background.running:
@@ -314,7 +314,7 @@ class TeachPanel(QWidget):
                                      "current step first. Try again in a moment.")
             return
         self._set_busy(True)
-        self.output.setPlainText("处理中…（" + " ".join(args) + ")")
+        self.output.setPlainText("Working… (" + " ".join(args) + ")")
         argv = ["--project", self.project_arg(), *args]
         self._thread = QThread(self)
         self._job = _Job(lambda: self._run_cli(argv))

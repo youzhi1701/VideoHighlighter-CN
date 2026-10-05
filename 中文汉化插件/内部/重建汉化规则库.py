@@ -19,13 +19,15 @@ import subprocess
 from collections import Counter, defaultdict
 from pathlib import Path
 
-PLUGIN_DIR = Path(__file__).resolve().parent
+INTERNAL_DIR = Path(__file__).resolve().parent
+PLUGIN_DIR = INTERNAL_DIR.parent
 ROOT = PLUGIN_DIR.parent
-CATALOG = PLUGIN_DIR / "数据" / "汉化规则.json"
-MEMORY = PLUGIN_DIR / "数据" / "翻译记忆库.json"
+CATALOG = INTERNAL_DIR / "汉化规则.json"
+MEMORY = INTERNAL_DIR / "翻译记忆库.json"
 
 INCLUDE_SUFFIXES = {".py", ".ts", ".tsx", ".js", ".jsx", ".iss"}
 EXCLUDE_PREFIXES = (
+    "中文汉化插件/",
     "localization/",
     ".github/",
     "tests/",

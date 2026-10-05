@@ -86,7 +86,7 @@ export function VisionSearchTab({
     <Card>
       <CardHeader className="flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-2 text-sm font-medium">
-          <Search className="size-4" /> Visual Search
+          <Search className="size-4" /> 视觉搜索
           {videoPath && (
             <Badge variant="secondary" className="font-normal">
               {basename(videoPath)}
@@ -95,7 +95,7 @@ export function VisionSearchTab({
         </CardTitle>
         {running && (
           <Button size="sm" variant="destructive" onClick={() => cancelRun()}>
-            <Square className="size-4" /> Cancel
+            <Square className="size-4" /> 取消
           </Button>
         )}
       </CardHeader>
@@ -114,7 +114,7 @@ export function VisionSearchTab({
             disabled={running}
           />
           <Button onClick={start} disabled={running || blocked} className="gap-2">
-            <Sparkles className="size-4" /> Search
+            <Sparkles className="size-4" /> 搜索
           </Button>
         </div>
 

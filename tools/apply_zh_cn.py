@@ -92,6 +92,28 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
         if occurrences == 1:
             return text.replace(source, target, 1), "applied", meta
         if occurrences > 1:
+            # The same short source line can legitimately appear several times
+            # (for example "Cancel" or repeated labels). Use the diff context
+            # captured with the rule to disambiguate before declaring conflict.
+            contextual: list[tuple[str, str]] = []
+            if before is not None and after is not None:
+                contextual.append((
+                    before + "\n" + source + "\n" + after,
+                    before + "\n" + target + "\n" + after,
+                ))
+            if before is not None:
+                contextual.append((
+                    before + "\n" + source,
+                    before + "\n" + target,
+                ))
+            if after is not None:
+                contextual.append((
+                    source + "\n" + after,
+                    target + "\n" + after,
+                ))
+            for needle, replacement in contextual:
+                if _count(text, needle) == 1:
+                    return text.replace(needle, replacement, 1), "applied", meta
             meta["occurrences"] = occurrences
             return text, "conflict", meta
         sim = _best_similarity(source, text)

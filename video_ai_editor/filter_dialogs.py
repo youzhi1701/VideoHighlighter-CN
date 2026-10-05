@@ -433,8 +433,8 @@ class ConfidenceFilterDialog(QDialog):
                 visible_objects += 1
 
         self.stats_label.setText(
-            f"动作: {visible_actions}/{total_actions} visible (≥{action_min:.0%})\n"
-            f"物体: {visible_objects}/{total_objects} visible (≥{object_min:.0%})"
+            f"Actions: {visible_actions}/{total_actions} visible (≥{action_min:.0%})\n"
+            f"Objects: {visible_objects}/{total_objects} visible (≥{object_min:.0%})"
         )
 
     def apply_filters(self):

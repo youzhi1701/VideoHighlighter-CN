@@ -129,7 +129,7 @@ class LabelSelectorDialog(QDialog):
         search_layout.addWidget(self.search_input)
         layout.addLayout(search_layout)
 
-        self.info_label = QLabel(f"{len(self.all_labels)} labels available")
+        self.info_label = QLabel(f"{len(self.all_labels)} 个标签可用")
         self.info_label.setStyleSheet("color: #666; font-size: 9pt;")
         layout.addWidget(self.info_label)
 
@@ -148,7 +148,7 @@ class LabelSelectorDialog(QDialog):
         quick_layout.addStretch()
         layout.addLayout(quick_layout)
 
-        self.selection_label = QLabel("0 selected")
+        self.selection_label = QLabel("0 个已选择")
         self.selection_label.setStyleSheet("font-weight: bold; color: #2f81f7;")
         layout.addWidget(self.selection_label)
         self.label_list.itemSelectionChanged.connect(self._update_selection_count)
@@ -177,7 +177,7 @@ class LabelSelectorDialog(QDialog):
         text = text.strip().lower()
         filtered = [l for l in self.all_labels if text in l.lower()] if text else self.all_labels
         self._populate_list(filtered)
-        self.info_label.setText(f"{len(filtered)} of {len(self.all_labels)} labels shown")
+        self.info_label.setText(f"已显示 {len(filtered)} / {len(self.all_labels)} 个标签")
         self._preselect_current()
 
     def _select_all_visible(self):
@@ -190,7 +190,7 @@ class LabelSelectorDialog(QDialog):
         self._update_selection_count()
 
     def _update_selection_count(self):
-        self.selection_label.setText(f"{len(self.label_list.selectedItems())} selected")
+        self.selection_label.setText(f"已选择 {len(self.label_list.selectedItems())} 个")
 
     def get_selected_labels(self):
         return [item.text() for item in self.label_list.selectedItems()]
@@ -1161,7 +1161,7 @@ class VideoHighlighterGUI(QWidget):
         self.preset_combo.setMinimumWidth(160)
         self.preset_combo.setToolTip("设置预设保存在 config.yaml 同目录。")
         self.preset_save_btn = QPushButton("保存")
-        self.preset_save_btn.setToolTip("Save the current controls under the name on the left.")
+        self.preset_save_btn.setToolTip("使用左侧名称保存当前设置。")
         self.preset_save_btn.clicked.connect(self.save_named_preset)
         self.preset_load_btn = QPushButton("加载")
         self.preset_load_btn.setToolTip(
@@ -1169,7 +1169,7 @@ class VideoHighlighterGUI(QWidget):
         )
         self.preset_load_btn.clicked.connect(self.load_named_preset)
         self.preset_delete_btn = QPushButton("删除")
-        self.preset_delete_btn.setToolTip("Delete the selected preset file. config.yaml is left as it is.")
+        self.preset_delete_btn.setToolTip("删除所选预设文件，不会修改 config.yaml。")
         self.preset_delete_btn.clicked.connect(self.delete_named_preset)
         preset_layout.addWidget(self.preset_name_input)
         preset_layout.addWidget(self.preset_combo, stretch=1)
@@ -1473,7 +1473,7 @@ class VideoHighlighterGUI(QWidget):
         self.concurrent_spinbox = QSpinBox()
         self.concurrent_spinbox.setRange(1, 10)
         self.concurrent_spinbox.setValue(self.config_data.get("download", {}).get("concurrent_downloads", 1))
-        self.concurrent_spinbox.setToolTip("Number of videos to download simultaneously (higher = faster but more resource intensive)")
+        self.concurrent_spinbox.setToolTip("同时下载的视频数量（越高越快，但占用更多资源）")
         concurrent_layout.addWidget(self.concurrent_spinbox)
         concurrent_layout.addStretch()
         download_form.addLayout(concurrent_layout)
@@ -1488,12 +1488,12 @@ class VideoHighlighterGUI(QWidget):
         self.browse_select_btn.setIcon(_ui_icons.picker())
         # No inline style: this is a plain secondary button, so it inherits the
         # theme's default QPushButton and stays in step if the palette changes.
-        self.browse_select_btn.setToolTip("Open a grid of the site's videos (thumbnails) and pick which ones to download")
+        self.browse_select_btn.setToolTip("以缩略图网格显示页面视频，并选择要下载的内容")
         self.browse_select_btn.clicked.connect(self.browse_and_select_videos)
 
         self.download_btn = QPushButton("全部下载")
         self.download_btn.setIcon(_ui_icons.download())
-        self.download_btn.setToolTip("Download every video found on the page, without picking")
+        self.download_btn.setToolTip("无需选择，下载页面中找到的全部视频")
         # Accent fill marks the primary action. The disabled rule matters: this
         # button is switched off for the whole download, and without it the fill
         # stays bright blue and keeps inviting clicks that do nothing.
@@ -1624,16 +1624,16 @@ class VideoHighlighterGUI(QWidget):
         self._update_face_labels_button()
 
         self.spin_beginning_seconds = QSpinBox(); self.spin_beginning_seconds.setRange(0,3600); self.spin_beginning_seconds.setSuffix(" s"); self.spin_beginning_seconds.setValue(scoring_cfg.get("beginning_seconds", 60))
-        self.spin_beginning_seconds.setToolTip("How many seconds from the start of the video count as the intro window")
+        self.spin_beginning_seconds.setToolTip("从视频开头计算多少秒作为片头时间窗")
 
         self.spin_beginning_points = QSpinBox(); self.spin_beginning_points.setRange(0,100); self.spin_beginning_points.setSuffix(" pts"); self.spin_beginning_points.setValue(scoring_cfg.get("beginning_points", 0))
-        self.spin_beginning_points.setToolTip("Points added to every second in the intro window — raise to make the intro more likely to be picked as a highlight, 0 to score it like anything else")
+        self.spin_beginning_points.setToolTip("片头时间窗内每秒增加的分数；提高可让片头更容易被选为高光，设为 0 则与普通片段同等评分")
 
         self.spin_ending_seconds = QSpinBox(); self.spin_ending_seconds.setRange(0,3600); self.spin_ending_seconds.setSuffix(" s"); self.spin_ending_seconds.setValue(scoring_cfg.get("ending_seconds", 120))
-        self.spin_ending_seconds.setToolTip("How many seconds before the end of the video count as the outro window")
+        self.spin_ending_seconds.setToolTip("视频结束前多少秒作为片尾时间窗")
 
         self.spin_ending_points = QSpinBox(); self.spin_ending_points.setRange(0,100); self.spin_ending_points.setSuffix(" pts"); self.spin_ending_points.setValue(scoring_cfg.get("ending_points", 0))
-        self.spin_ending_points.setToolTip("Points added to every second in the outro window — raise to make the outro more likely to be picked as a highlight, 0 to score it like anything else")
+        self.spin_ending_points.setToolTip("片尾时间窗内每秒增加的分数；提高可让片尾更容易被选为高光，设为 0 则与普通片段同等评分")
 
         intro_row = QHBoxLayout()
         intro_row.addWidget(self.spin_beginning_seconds)
@@ -1884,7 +1884,7 @@ class VideoHighlighterGUI(QWidget):
         obj_layout.addWidget(QLabel("物体检测："))
         obj_layout.addWidget(self.objects_input)
         self.load_objects_btn = QPushButton("加载标签")
-        self.load_objects_btn.setToolTip("Load labels from yolo_objects_labels.json")
+        self.load_objects_btn.setToolTip("从 yolo_objects_labels.json 加载标签")
         self.load_objects_btn.clicked.connect(self.open_object_label_selector)
         obj_layout.addWidget(self.load_objects_btn)
         basic_layout.addLayout(obj_layout, 1, 0, 1, 2)
@@ -1896,7 +1896,7 @@ class VideoHighlighterGUI(QWidget):
         action_kw_layout.addWidget(QLabel("动作关键词："))
         action_kw_layout.addWidget(self.actions_input)
         self.load_actions_btn = QPushButton("加载标签")
-        self.load_actions_btn.setToolTip("Load labels from kinetics_400_labels.json (or custom Intel model)")
+        self.load_actions_btn.setToolTip("从 kinetics_400_labels.json（或自定义 Intel 模型）加载标签")
         self.load_actions_btn.clicked.connect(self.open_action_label_selector)
         action_kw_layout.addWidget(self.load_actions_btn)
         basic_layout.addLayout(action_kw_layout, 2, 0, 1, 2)
@@ -1909,7 +1909,7 @@ class VideoHighlighterGUI(QWidget):
         kw_layout = QHBoxLayout()
         self.search_keywords_input = QLineEdit(",".join(self.config_data.get("transcript", {}).get("search_keywords", [])))
         self.search_keywords_input.setPlaceholderText("goal, score, win")
-        self.search_keywords_input.setToolTip("Score moments where these spoken words appear (needs transcript enabled)")
+        self.search_keywords_input.setToolTip("为出现这些语音关键词的时刻加分（需要启用转录）")
         self.search_keywords_input.setEnabled(_kw_enabled)
         self.search_keywords_label = QLabel("转录关键词：")
         self.search_keywords_label.setEnabled(_kw_enabled)
@@ -1920,7 +1920,7 @@ class VideoHighlighterGUI(QWidget):
         # Conditional action scoring checkbox
         self.actions_require_objects_chk = QCheckBox("仅在检测到物体时给动作加分")
         self.actions_require_objects_chk.setChecked(self.config_data.get("actions", {}).get("require_objects", False))
-        self.actions_require_objects_chk.setToolTip("Actions will only add points if objects are also detected in that timeframe")
+        self.actions_require_objects_chk.setToolTip("只有同一时间段也检测到物体时，动作才会获得加分")
         basic_layout.addWidget(self.actions_require_objects_chk, 4, 0, 1, 2)
 
         # (The old "Skip highlights" checkbox is gone. Producing a transcript or
@@ -1932,7 +1932,7 @@ class VideoHighlighterGUI(QWidget):
         # Config key stays under "download" (auto_combine) so saved configs load.
         self.auto_combine_chk = QCheckBox("将所有已处理视频的高光合并为一个视频")
         self.auto_combine_chk.setChecked(self.config_data.get("download", {}).get("auto_combine", True))
-        self.auto_combine_chk.setToolTip("When enabled, the highlights from every processed video are merged into a single master video")
+        self.auto_combine_chk.setToolTip("启用后，会将所有已处理视频的高光片段合并为一个总视频")
         basic_layout.addWidget(self.auto_combine_chk, 5, 0, 1, 2)
 
         # Equal-width columns; trailing stretch row keeps groups packed at the top.
@@ -2065,7 +2065,7 @@ class VideoHighlighterGUI(QWidget):
             "Mixed — the standard detector + your custom model together")
 
         import_obj_btn = QPushButton("导入模型…")
-        import_obj_btn.setToolTip("Copy a trained model (.onnx / OpenVINO .xml) into models/custom/")
+        import_obj_btn.setToolTip("将训练好的模型（.onnx / OpenVINO .xml）复制到 models/custom/")
         obj_model_row = QHBoxLayout()
         obj_model_row.setContentsMargins(0, 0, 0, 0)
         obj_model_row.addWidget(self.object_model_combo, 1)
@@ -2182,7 +2182,7 @@ class VideoHighlighterGUI(QWidget):
         self.obj_confidence_spin.setRange(5, 95)
         self.obj_confidence_spin.setSuffix("%")
         self.obj_confidence_spin.setValue(int(self.config_data.get("objects", {}).get("confidence", 30)))
-        self.obj_confidence_spin.setToolTip("Minimum confidence threshold for object detection (lower = more detections, more false positives)")
+        self.obj_confidence_spin.setToolTip("物体检测最低置信度阈值（越低检测越多，但误报也越多）")
 
         object_layout.addRow("Frame skip:", self.obj_frame_skip_spin)
         object_layout.addRow("Detector type:", self.yolo_type_combo)
@@ -2200,7 +2200,7 @@ class VideoHighlighterGUI(QWidget):
         self.sample_rate_spin = QSpinBox()
         self.sample_rate_spin.setRange(1, 30)
         self.sample_rate_spin.setValue(advanced_cfg.get("sample_rate", 5))
-        self.sample_rate_spin.setToolTip("Sample every Nth frame for action recognition clips")
+        self.sample_rate_spin.setToolTip("动作识别片段每隔 N 帧采样一次")
 
         self.action_backend_combo = QComboBox()
         # "Auto" has picked DirectML since R3D learned to run through ONNX
@@ -2466,7 +2466,7 @@ class VideoHighlighterGUI(QWidget):
             "Add a condition on a per-second measurement, e.g. "
             "vocal_density_pct or waveform_peak_density. Needs no detections.")
         comp_save_btn = QPushButton("保存规则")
-        comp_save_btn.setToolTip("Save composition rules to composition_rules.yaml")
+        comp_save_btn.setToolTip("将构图规则保存到 composition_rules.yaml")
         comp_btn_row.addWidget(comp_add_btn)
         comp_btn_row.addWidget(comp_add_signal_btn)
         comp_btn_row.addStretch()
@@ -2608,7 +2608,7 @@ class VideoHighlighterGUI(QWidget):
             # cannot be left saying a rule is both on and off.
             on_chk = QCheckBox()
             on_chk.setChecked(bool(enabled))
-            on_chk.setToolTip("Run this rule. Unticked keeps it in the file "
+            on_chk.setToolTip("运行此规则。取消勾选后仍会保留在文件中"
                               "but stops it matching.")
             def _sync(state, box=on_chk):
                 row = next((i for i in range(self.comp_table.rowCount())
@@ -2658,7 +2658,7 @@ class VideoHighlighterGUI(QWidget):
             min_spin.setDecimals(2)
             min_spin.setRange(self.COMP_MIN_UNSET, self.COMP_MAX_UNSET)
             min_spin.setValue(self.COMP_MIN_UNSET if min_c is None else float(min_c))
-            min_spin.setToolTip("At the minimum this means 'no lower bound' "
+            min_spin.setToolTip("位于最小值时表示“不设下限”"
                                 "and is not written to the file.")
             self.comp_table.setCellWidget(r, 6, min_spin)
 
@@ -2666,20 +2666,20 @@ class VideoHighlighterGUI(QWidget):
             max_spin.setDecimals(2)
             max_spin.setRange(self.COMP_MIN_UNSET, self.COMP_MAX_UNSET)
             max_spin.setValue(self.COMP_MAX_UNSET if max_c is None else float(max_c))
-            max_spin.setToolTip("At the maximum this means 'no upper bound' "
+            max_spin.setToolTip("位于最大值时表示“不设上限”"
                                 "and is not written to the file.")
             self.comp_table.setCellWidget(r, 7, max_spin)
 
             sus_spin = QSpinBox()
             sus_spin.setRange(0, 600)
             sus_spin.setValue(int(sustain or 0))
-            sus_spin.setToolTip("0 = not required")
+            sus_spin.setToolTip("0 = 非必需")
             self.comp_table.setCellWidget(r, 8, sus_spin)
 
             win_secs_spin = QSpinBox()
             win_secs_spin.setRange(0, 600)
             win_secs_spin.setValue(int(within or 0))
-            win_secs_spin.setToolTip("0 = must coincide exactly")
+            win_secs_spin.setToolTip("0 = 必须完全同时发生")
             self.comp_table.setCellWidget(r, 9, win_secs_spin)
 
             win_spin = QDoubleSpinBox()
@@ -2710,13 +2710,13 @@ class VideoHighlighterGUI(QWidget):
 
             outline_chk = QCheckBox()
             outline_chk.setChecked(bool(outline))
-            outline_chk.setToolTip("Decide on the real shapes, traced inside the "
+            outline_chk.setToolTip("根据框内描绘出的真实轮廓判断形状"
                                    "boxes, instead of the boxes")
             self.comp_table.setCellWidget(r, COMP_OUTLINE_COL, outline_chk)
 
             del_btn = QPushButton()
             del_btn.setIcon(_ui_icons.cross())
-            del_btn.setToolTip("Remove this condition")
+            del_btn.setToolTip("删除此条件")
             del_btn.setFixedWidth(28)
             del_btn.setFlat(True)
             del_btn.setStyleSheet("border: none;")
@@ -2874,18 +2874,18 @@ class VideoHighlighterGUI(QWidget):
         bbox_box = QGroupBox("检测框可视化")
         bbox_layout = QVBoxLayout()
 
-        info_label = QLabel("ℹ️ Enable bounding boxes, creates new file with extension _annotated.mp4 for debugging")
+        info_label = QLabel("ℹ️ 启用检测框后会生成带 _annotated.mp4 后缀的新文件，用于调试")
         info_label.setStyleSheet("color: #666; font-size: 9pt; font-style: italic;")
         bbox_layout.addWidget(info_label)
 
         self.bbox_objects_chk = QCheckBox("绘制物体检测框")
         self.bbox_objects_chk.setChecked(visualization_cfg.get("draw_object_boxes", False))
-        self.bbox_objects_chk.setToolTip("Visualize detected objects with labeled bounding boxes")
+        self.bbox_objects_chk.setToolTip("用带标签的检测框显示已检测物体")
         bbox_layout.addWidget(self.bbox_objects_chk)
 
         self.bbox_actions_chk = QCheckBox("显示动作识别标签")
         self.bbox_actions_chk.setChecked(visualization_cfg.get("draw_action_labels", False))
-        self.bbox_actions_chk.setToolTip("Display detected action names on frames")
+        self.bbox_actions_chk.setToolTip("在画面上显示检测到的动作名称")
         bbox_layout.addWidget(self.bbox_actions_chk)
 
         bbox_box.setLayout(bbox_layout)
@@ -3164,7 +3164,7 @@ class VideoHighlighterGUI(QWidget):
         self.avoid_refresh_btn.clicked.connect(self.refresh_avoid_list)
         avoid_row.addWidget(self.avoid_refresh_btn)
         self.avoid_scan_btn = QPushButton("🔍 扫描视频人脸")
-        self.avoid_scan_btn.setToolTip("Run face recognition over the first video in the list "
+        self.avoid_scan_btn.setToolTip("对列表中的第一个视频运行人脸识别"
                                        "to collect everyone who appears, then tick who to avoid.")
         self.avoid_scan_btn.clicked.connect(self._on_scan_faces)
         avoid_row.addWidget(self.avoid_scan_btn)
@@ -3174,7 +3174,7 @@ class VideoHighlighterGUI(QWidget):
         avoid_row.addStretch()
         avoid_group_layout.addLayout(avoid_row)
         self.avoid_clear_btn = QPushButton("🗑 清空人脸")
-        self.avoid_clear_btn.setToolTip("Remove scanned faces from the bank (keeps named/avoided people).")
+        self.avoid_clear_btn.setToolTip("从人脸库移除扫描得到的人脸（保留已命名/已排除人物）。")
         self.avoid_clear_btn.clicked.connect(self._on_clear_faces)
         avoid_row.addWidget(self.avoid_clear_btn)
 
@@ -3205,11 +3205,11 @@ class VideoHighlighterGUI(QWidget):
 
         # --- Run / Cancel Controls ---
         ctrl_layout = QHBoxLayout()
-        self.keep_temp_chk = QPushButton("Keep temp clips: ON" if highlights_cfg.get("keep_temp", False) else "Keep temp clips: OFF")
+        self.keep_temp_chk = QPushButton("保留临时片段：开" if highlights_cfg.get("keep_temp", False) else "保留临时片段：关")
         self.keep_temp_chk.setCheckable(True)
         self.keep_temp_chk.setChecked(highlights_cfg.get("keep_temp", False))
         self.keep_temp_chk.clicked.connect(lambda: self.keep_temp_chk.setText(
-            "Keep temp clips: ON" if self.keep_temp_chk.isChecked() else "Keep temp clips: OFF"))
+            "保留临时片段：开" if self.keep_temp_chk.isChecked() else "保留临时片段：关"))
 
         _export_on = bool(highlights_cfg.get("export_separate_clips", False))
         self.export_clips_chk = QPushButton(
@@ -3249,7 +3249,7 @@ class VideoHighlighterGUI(QWidget):
         self.ai_summary_opts_btn = QPushButton()
         self.ai_summary_opts_btn.setIcon(_ui_icons.gear())
         self.ai_summary_opts_btn.setFixedWidth(28)
-        self.ai_summary_opts_btn.setToolTip("Summary options — ask a question, "
+        self.ai_summary_opts_btn.setToolTip("摘要选项 — 提问、"
                                             "discuss in chat, choose the model")
         self.ai_summary_opts_btn.clicked.connect(self.show_ai_summary_menu)
 
@@ -3505,7 +3505,7 @@ class VideoHighlighterGUI(QWidget):
 
         self.update_close_btn = QPushButton("✕")
         self.update_close_btn.setFixedWidth(28)
-        self.update_close_btn.setToolTip("Hide until the next check")
+        self.update_close_btn.setToolTip("隐藏到下次检查")
         self.update_close_btn.clicked.connect(
             lambda: self.update_banner.setVisible(False))
         row.addWidget(self.update_close_btn)
@@ -3540,7 +3540,7 @@ class VideoHighlighterGUI(QWidget):
         row.addWidget(try_btn)
 
         never_btn = QPushButton("不再推荐 Pro")
-        never_btn.setToolTip("Switch these suggestions off. The About tab "
+        never_btn.setToolTip("关闭此类推荐。“关于”页"
                              "turns them back on.")
         never_btn.clicked.connect(self._silence_pro_offer)
         row.addWidget(never_btn)
@@ -3642,7 +3642,7 @@ class VideoHighlighterGUI(QWidget):
         self.update_close_btn.setVisible(False)
         self.update_progress.setVisible(True)
         self.update_progress.setRange(0, 0)     # indeterminate until sizes known
-        self.update_label.setText("<b>Preparing update…</b>")
+        self.update_label.setText("<b>正在准备更新…</b>")
 
         self.update_installer = UpdateInstallWorker(
             info.manifest_url, update_apply.install_root(), parent=self)
@@ -3750,7 +3750,7 @@ class VideoHighlighterGUI(QWidget):
         title.setStyleSheet("font-size: 16pt; font-weight: bold;")
         layout.addWidget(title)
 
-        subtitle = QLabel(f"Version {__version__} — free & open source (AGPLv3)")
+        subtitle = QLabel(f"版本 {__version__} — 免费开源（AGPLv3）")
         subtitle.setStyleSheet("color: #888;")
         subtitle.setTextInteractionFlags(Qt.TextSelectableByMouse)
         layout.addWidget(subtitle)
@@ -3813,7 +3813,7 @@ class VideoHighlighterGUI(QWidget):
         # --- Contact & support ---
         support_group = QGroupBox("联系与支持")
         support_layout = QVBoxLayout(support_group)
-        intro = QLabel("Need help, found a bug, or have a feature request? Reach us here:")
+        intro = QLabel("需要帮助、发现问题或有功能建议？可通过以下方式联系我们：")
         intro.setWordWrap(True)
         support_layout.addWidget(intro)
 
@@ -3924,7 +3924,7 @@ class VideoHighlighterGUI(QWidget):
 
             rm = QPushButton("✕")
             rm.setFixedWidth(28)
-            rm.setToolTip("Remove this person from the face bank")
+            rm.setToolTip("从人脸库移除此人物")
             rm.clicked.connect(lambda _=False, iid=ident["id"]: self._on_remove_identity(iid))
             rl.addWidget(rm)
 
@@ -3960,7 +3960,7 @@ class VideoHighlighterGUI(QWidget):
             self.append_log(f"⚠️ Video not found: {video}")
             return
         self.avoid_scan_btn.setEnabled(False)
-        self.avoid_scan_btn.setText("🔍 Scanning…")
+        self.avoid_scan_btn.setText("🔍 扫描中…")
         self._scan_worker = FaceScanWorker(video, "./cache/face_db.json")
         self._scan_worker.log.connect(self.append_log)
         self._scan_worker.done.connect(self._on_scan_done)
@@ -3983,7 +3983,7 @@ class VideoHighlighterGUI(QWidget):
                 return
             box = QMessageBox(self)
             box.setWindowTitle("清空人脸")
-            box.setText(f"Clear the face bank ({len(bank)} identities)?")
+            box.setText(f"清空人脸库中的 {len(bank)} 个身份？")
             box.setInformativeText("Choose what to remove.")
             btn_all   = box.addButton("Clear everything", QMessageBox.ButtonRole.DestructiveRole)
             btn_keep  = box.addButton("Keep named / avoided", QMessageBox.ButtonRole.AcceptRole)
@@ -4713,7 +4713,7 @@ class VideoHighlighterGUI(QWidget):
         if has("highlights", "keep_temp"):
             self.keep_temp_chk.setChecked(bool(get("highlights", "keep_temp")))
             self.keep_temp_chk.setText(
-                "Keep temp clips: ON" if self.keep_temp_chk.isChecked() else "Keep temp clips: OFF")
+                "保留临时片段：开" if self.keep_temp_chk.isChecked() else "保留临时片段：关")
         if has("highlights", "export_separate_clips"):
             self.export_clips_chk.setChecked(bool(get("highlights", "export_separate_clips")))
             self.export_clips_chk.setText(
@@ -5534,7 +5534,7 @@ class VideoHighlighterGUI(QWidget):
                 
         except Exception as e:
             self.current_video_duration = 0
-            self.video_duration_label.setText(f"Error reading video: {e}")
+            self.video_duration_label.setText(f"读取视频时出错：{e}")
             self.video_duration_label.setStyleSheet("color: #f44336; font-style: italic;")
             return False
 
@@ -6036,7 +6036,7 @@ class VideoHighlighterGUI(QWidget):
                 "Safe to run repeatedly: previous results for these rules",
                 "are replaced, not stacked.",
             ])))
-        note = QLabel("edit them in Advanced → Composition Rules")
+        note = QLabel("可在“高级 → 构图规则”中编辑")
         note.setStyleSheet("color: #888; font-size: 9pt;")
         h.addWidget(note)
         h.addStretch(1)
@@ -6110,7 +6110,7 @@ class VideoHighlighterGUI(QWidget):
         self.process_progress_bar.setValue(0)
         self.download_progress_bar.setVisible(False)
         self.hide_batch_progress()
-        self.task_label.setText(f"🚀 {kind.title()} (on demand)…")
+        self.task_label.setText(f"🚀 {kind.title()}（按需运行）…")
         self._set_analyze_buttons_enabled(False)
         self.run_btn.setEnabled(False)   # no full run while an on-demand run goes
         self.cancel_btn.setEnabled(True)

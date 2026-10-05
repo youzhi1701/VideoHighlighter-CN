@@ -122,7 +122,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
       (r) => r.width === (doc.width ?? 0) && r.height === (doc.height ?? 0),
     )
     setResolution(match >= 0 ? match : 0)
-    setStatus(`已加载 ${doc.cuts?.length ?? 0} 个片段`)
+    setStatus(`Loaded ${doc.cuts?.length ?? 0} cuts`)
   }, [])
 
   // Offer the last run's cut list without stamping over an open edit.

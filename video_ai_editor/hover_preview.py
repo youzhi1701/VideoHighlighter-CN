@@ -70,9 +70,9 @@ class HoverPreview(QWidget):
         """Drop in a frame that arrived after the popup was already showing.
 
         The popup opens before its thumbnail exists — a cache miss paints
-        "loading…" — and nothing else would ever replace that, because
+        "加载中…" — and nothing else would ever replace that, because
         `show_at` runs only on mouse *movement*. A cursor held still therefore
-        sat on "loading…" indefinitely, long after the frame was decoded, and
+        sat on "加载中…" indefinitely, long after the frame was decoded, and
         the apparent cure of moving away and hovering again worked only because
         the second visit hit the cache.
 
@@ -150,7 +150,7 @@ class HoverPreview(QWidget):
         else:
             p.fillRect(thumb_rect, QColor(30, 30, 30))
             p.setPen(QPen(QColor(145, 145, 145)))
-            p.drawText(thumb_rect, Qt.AlignCenter, "loading…")
+            p.drawText(thumb_rect, Qt.AlignCenter, "加载中…")
 
         # Caption
         if self._caption:

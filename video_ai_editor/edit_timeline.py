@@ -91,7 +91,7 @@ class EditClipItem(QGraphicsRectItem):
         
         # Build label text with or without clip number
         if idx >= 0:
-            label_text = f"Clip {idx + 1}\n{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
+            label_text = f"片段 {idx + 1}\n{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
         else:
             label_text = f"{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
         
@@ -378,9 +378,9 @@ class EditClipItem(QGraphicsRectItem):
         clip_num = idx + 1 if idx >= 0 else "?"
         
         self.setToolTip(
-            f"Clip {clip_num}\n"
-            f"{self.start_time:.1f}s - {self.end_time:.1f}s\n"
-            f"Duration: {duration:.1f}s\n"
+            f"片段 {clip_num}\n"
+            f"{self.start_time:.1f} 秒 - {self.end_time:.1f} 秒\n"
+            f"时长：{duration:.1f} 秒\n"
             f"拖动可重新排序 · 双击播放 · 右键打开菜单"
         )
 
@@ -446,7 +446,7 @@ class EditClipItem(QGraphicsRectItem):
         """)
 
         header = menu.addAction(
-            f"Clip {current_index}   {_fmt_time(self.start_time)} → {_fmt_time(self.end_time)}  ({_fmt_duration(duration)})"
+            f"片段 {current_index}   {_fmt_time(self.start_time)} → {_fmt_time(self.end_time)}  ({_fmt_duration(duration)})"
         )
         header.setEnabled(False)
         menu.addSeparator()
@@ -762,10 +762,10 @@ class EditTimelineScene(QGraphicsScene):
 
         list_widget = QListWidget()
         for i, entry in enumerate(history):
-            created = entry.get('created_at', 'Unknown')
+            created = entry.get('created_at', '未知')
             segments = entry.get('segments_count', 0)
             duration = entry.get('total_duration', 0)
-            item_text = f"Version {i+1}: {segments} clips, {duration:.1f}s ({created})"
+            item_text = f"版本 {i+1}：{segments} 个片段，{duration:.1f} 秒（{created}）"
             list_widget.addItem(item_text)
 
         layout.addWidget(QLabel("选择缓存的高光版本："))
@@ -789,7 +789,7 @@ class EditTimelineScene(QGraphicsScene):
                 self.clips = segments
                 self.build_timeline()
                 QMessageBox.information(None, "已加载",
-                                       f"Loaded {len(segments)} clips from cache.")
+                                       f"已从缓存加载 {len(segments)} 个片段。")
 
         dialog.accept()
 

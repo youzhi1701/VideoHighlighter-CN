@@ -1739,8 +1739,8 @@ class SignalTimelineWindow(QMainWindow):
         self._apply_object_fold()     # the collapsed caret tracks the count
         pretty = name.replace('_', ' ')
         self.statusBar().showMessage(
-            f"Showing '{pretty}'" if visible
-            else f"Hiding '{pretty}' — ◀ ▶ now skip it",
+            f"正在显示“{pretty}”" if visible
+            else f"已隐藏“{pretty}”——◀ ▶ 将跳过它",
             2000,
         )
 
@@ -1763,11 +1763,11 @@ class SignalTimelineWindow(QMainWindow):
         label = QLabel("显示：")
         label.setStyleSheet("color:#888;font-size:8pt;")
         hl.addWidget(label)
-        all_btn = self._mini_button("all", "显示全部事件")
+        all_btn = self._mini_button("全部", "显示全部事件")
         all_btn.setFixedSize(24, 16)
         all_btn.clicked.connect(lambda: self._set_all_event_rows(True))
         hl.addWidget(all_btn)
-        none_btn = self._mini_button("none", "隐藏全部事件")
+        none_btn = self._mini_button("无", "隐藏全部事件")
         none_btn.setFixedSize(30, 16)
         none_btn.clicked.connect(lambda: self._set_all_event_rows(False))
         hl.addWidget(none_btn)
@@ -1806,8 +1806,8 @@ class SignalTimelineWindow(QMainWindow):
         self._apply_event_fold()      # the collapsed caret tracks the count
         pretty = event.replace('_', ' ')
         self.statusBar().showMessage(
-            f"Showing '{pretty}'" if visible
-            else f"Hiding '{pretty}' — ◀ ▶ now skip it",
+            f"正在显示“{pretty}”" if visible
+            else f"已隐藏“{pretty}”——◀ ▶ 将跳过它",
             2000,
         )
 
@@ -1816,8 +1816,8 @@ class SignalTimelineWindow(QMainWindow):
         self.signal_scene.set_all_events_visible(visible)
         self.refresh_event_checkboxes()
         self.statusBar().showMessage(
-            "Showing all events" if visible
-            else "Hid all events — ◀ ▶ have nothing to step",
+            "正在显示全部事件" if visible
+            else "已隐藏全部事件——◀ ▶ 当前没有可跳转项目",
             2000,
         )
 
@@ -1845,11 +1845,11 @@ class SignalTimelineWindow(QMainWindow):
         label = QLabel("显示：")
         label.setStyleSheet("color:#888;font-size:8pt;")
         hl.addWidget(label)
-        all_btn = self._mini_button("all", "Show every object")
+        all_btn = self._mini_button("全部", "显示全部物体")
         all_btn.setFixedSize(24, 16)
         all_btn.clicked.connect(lambda: self._set_all_visual_queries(True))
         hl.addWidget(all_btn)
-        none_btn = self._mini_button("none", "Hide every object")
+        none_btn = self._mini_button("无", "隐藏全部物体")
         none_btn.setFixedSize(30, 16)
         none_btn.clicked.connect(lambda: self._set_all_visual_queries(False))
         hl.addWidget(none_btn)
@@ -3030,7 +3030,7 @@ class SignalTimelineWindow(QMainWindow):
                 if row:
                     row["status"].setText("失败 — 请查看日志")
                 self.statusBar().showMessage(
-                    f"{kind.title()} analysis failed: {str(result)[:80]}", 6000)
+                    f"{kind} 分析失败：{str(result)[:80]}", 6000)
                 print(f"❌ {kind} analysis failed: {result}")
             return
 
@@ -3044,8 +3044,8 @@ class SignalTimelineWindow(QMainWindow):
                 self._enable_layer_and_reload(layer)
             if row:
                 row["status"].setText(
-                    f"✓ {len(result.get('scenes', []))} scenes, "
-                    f"{len(result.get('motion_peaks', []))} peaks")
+                    f"✓ {len(result.get('scenes', []))} 个场景，"
+                    f"{len(result.get('motion_peaks', []))} 个峰值")
         elif kind == "audio":
             self.cache_data["audio_peaks"] = result.get("audio_peaks", [])
             self.cache_data["audio"] = result.get("audio", {})

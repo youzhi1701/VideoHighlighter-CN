@@ -510,7 +510,7 @@ def cmx_text(sequence: Sequence) -> tuple[str, int]:
     touch the disk.
     """
     if not sequence.clips:
-        raise ExportError("没有可导出的内容 — 剪辑时间线中没有片段")
+        raise ExportError("nothing to export — the edit timeline has no clips")
 
     timebase = sequence.timebase()
     kept: list[tuple[float, float, int, int, int]] = []
@@ -711,7 +711,7 @@ def fcpxml_text(sequence: Sequence) -> tuple[str, int]:
     touch the disk. A span is a marker on each clip it overlaps.
     """
     if not sequence.clips:
-        raise ExportError("没有可导出的内容 — 剪辑时间线中没有片段")
+        raise ExportError("nothing to export — the edit timeline has no clips")
 
     timebase = sequence.timebase()
     kept: list[tuple[float, float, int, int]] = []
@@ -811,7 +811,7 @@ def fcpxml_text(sequence: Sequence) -> tuple[str, int]:
 
 
 _CSV_COLUMNS = (
-    "Clip", "开始（秒）", "结束（秒）", "时长（秒）", "入点帧", "出点帧",
+    "Clip", "Start (s)", "End (s)", "Duration (s)", "Frame in", "Frame out",
 )
 
 
@@ -843,7 +843,7 @@ def csv_text(sequence: Sequence) -> tuple[str, int]:
     no marker row. Raises :class:`ExportError` when there is nothing to write.
     """
     if not sequence.clips:
-        raise ExportError("没有可导出的内容 — 剪辑时间线中没有片段")
+        raise ExportError("nothing to export — the edit timeline has no clips")
 
     timebase = sequence.timebase()
     kept: list[tuple[int, int]] = []
@@ -1018,19 +1018,19 @@ def export_summary(clip_count: int, duration: float, timebase: Timebase,
     """The info line under the format combo."""
     mark = "marker" if markers == 1 else "markers"
     text = (
-        f"正在导出 {clip_count} 个片段，总时长：{duration:.1f}s. "
+        f"Exporting {clip_count} clips, total duration: {duration:.1f}s. "
         f"{timebase.describe()}. {markers} {mark}."
     )
     if timebase.coarsened:
         text += (
-            f" FCPXML 会保留每一帧。 "
+            f" FCPXML keeps every frame. "
             f"The EDL is counted at {timebase.edl_fps} fps."
         )
     return text
 
 
 def record_start_for_format(format_name: str, chosen: str) -> str:
-    """此格式的序列起始时间。CSV 不包含序列时钟。"""
+    """Sequence start for this format. CSV has no sequence clock."""
     if str(format_name).startswith("CSV"):
         return RECORD_START_ZERO
     if chosen not in RECORD_STARTS:
@@ -1045,8 +1045,8 @@ def skipped_note(count: int) -> str:
     if count <= 0:
         return ""
     if count == 1:
-        return "\n有 1 个片段短于一帧，已跳过。"
-    return f"\n{count} 个片段短于一帧，已跳过。"
+        return "\n1 clip was shorter than one frame and was skipped."
+    return f"\n{count} clips were shorter than one frame and were skipped."
 
 
 def default_export_path(video_path: str, pattern: str) -> tuple[str, str]:
@@ -1054,9 +1054,9 @@ def default_export_path(video_path: str, pattern: str) -> tuple[str, str]:
     directory = os.path.dirname(os.path.abspath(str(video_path)))
     stem = _stem(video_path)
     filters = {
-        "*.edl": ("edl", "EDL 文件 (*.edl)"),
-        "*.fcpxml": ("fcpxml", "FCPXML 文件 (*.fcpxml)"),
-        "*.csv": ("csv", "CSV 文件 (*.csv)"),
+        "*.edl": ("edl", "EDL files (*.edl)"),
+        "*.fcpxml": ("fcpxml", "FCPXML files (*.fcpxml)"),
+        "*.csv": ("csv", "CSV files (*.csv)"),
     }
     chosen = filters.get(pattern)
     if chosen is None:
@@ -1081,7 +1081,7 @@ def prepare_export(video_path, clips, cache, duration):
 
 
 class TimelineExporter:
-    """将剪辑时间线导出为多种格式"""
+    """Export edit timeline to various formats"""
 
     @staticmethod
     def to_edl(clips, video_path, output_path=None, fps=30, *,

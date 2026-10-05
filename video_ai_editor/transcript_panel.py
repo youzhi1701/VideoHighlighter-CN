@@ -270,7 +270,7 @@ class TranscriptPanel(QWidget):
 
         # ── No transcript message ──
         if not self.segments:
-            empty = QLabel("No transcript available.\nRun the pipeline with transcript enabled.")
+            empty = QLabel("暂无转录文本。\n请启用转录后重新运行处理流程。")
             empty.setAlignment(Qt.AlignCenter)
             empty.setStyleSheet("color: #525252; font-style: italic; padding: 20px;")
             self.content_layout.insertWidget(0, empty)

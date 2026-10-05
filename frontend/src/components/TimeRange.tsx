@@ -65,7 +65,7 @@ export function TimeRange({ state, onChange, duration }: Props) {
     <Card>
       <CardHeader className="py-3">
         <CardTitle className="text-sm font-medium">
-          Processing Time Range
+          处理时间范围
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -74,7 +74,7 @@ export function TimeRange({ state, onChange, duration }: Props) {
             checked={state.enabled}
             onCheckedChange={(v) => set({ enabled: Boolean(v) })}
           />
-          Process only specific time range
+          仅处理指定时间范围
         </label>
 
         <p className="text-xs italic text-muted-foreground">

@@ -81,7 +81,7 @@ export function AvoidTab({
   const writeRanges = async (next: [number, number][], okMsg: string) => {
     if (!videoPath) return
     const res = await saveAvoidRanges(videoPath, next)
-    if (!res.ok) return toast.error(res.error ?? "Could not save ranges")
+    if (!res.ok) return toast.error(res.error ?? "无法保存排除区间")
     onAvoidRangesChange()
     toast.success(okMsg)
   }
@@ -89,9 +89,9 @@ export function AvoidTab({
   const addRange = async () => {
     const a = parseTime(rangeStart)
     const b = parseTime(rangeEnd)
-    if (a === null || b === null) return toast.error("Use mm:ss or seconds")
-    if (b <= a) return toast.error("End must be after start")
-    await writeRanges([...avoidRanges, [a, b]], "Added avoided range")
+    if (a === null || b === null) return toast.error("请输入 mm:ss 或秒数")
+    if (b <= a) return toast.error("结束时间必须晚于开始时间")
+    await writeRanges([...avoidRanges, [a, b]], "已添加排除区间")
     setRangeStart("")
     setRangeEnd("")
   }
@@ -101,7 +101,7 @@ export function AvoidTab({
     const res = await getFaces()
     setLoading(false)
     if (!res.ok) {
-      setError(res.error ?? "Face bank unavailable")
+      setError(res.error ?? "人脸库不可用")
       setFaces([])
       return
     }
@@ -127,39 +127,39 @@ export function AvoidTab({
     syncAvoidIds(optimistic)
     const res = await setFaceAvoid(f.id, next)
     if (!res.ok) {
-      toast.error(res.error ?? "Could not update face bank")
+      toast.error(res.error ?? "无法更新人脸库")
       void refresh()
     }
   }
 
   const rename = async (f: FaceIdentity) => {
-    const name = window.prompt("Name this person:", f.name)
+    const name = window.prompt("为此人物命名：", f.name)
     if (name === null) return
     const res = await nameFace(f.id, name)
-    if (!res.ok) return toast.error(res.error ?? "Could not set name")
-    if (res.merged_into) toast.success("Merged into the existing person")
+    if (!res.ok) return toast.error(res.error ?? "无法设置名称")
+    if (res.merged_into) toast.success("已合并到现有人物")
     void refresh()
   }
 
   const remove = async (f: FaceIdentity) => {
     const res = await removeFace(f.id)
-    if (!res.ok) return toast.error("Could not remove")
+    if (!res.ok) return toast.error("无法移除")
     void refresh()
   }
 
   const doClear = async (keepNamed: boolean) => {
     setClearOpen(false)
     const res = await clearFaces(keepNamed)
-    if (!res.ok) return toast.error(res.error ?? "Could not clear")
-    toast.success(`Cleared — ${res.remaining} kept`)
+    if (!res.ok) return toast.error(res.error ?? "无法清空")
+    toast.success(`已清空 — ${res.remaining} 个已保留`)
     void refresh()
   }
 
   const scan = async () => {
-    if (!videoPath) return toast.error("Add a video first")
+    if (!videoPath) return toast.error("请先添加视频")
     const res = await scanFaces(videoPath)
-    if (!res.ok) toast.error(res.error ?? "Could not start scan")
-    else toast("Scanning for faces — see the log below")
+    if (!res.ok) toast.error(res.error ?? "无法启动扫描")
+    else toast("正在扫描人脸 — 请查看下方日志")
   }
 
   const avoidCount = faces.filter((f) => f.avoid).length
@@ -204,7 +204,7 @@ export function AvoidTab({
         </p>
 
         <SelectField
-          label="When found"
+          label="识别到时"
           value={cfg.avoid_method}
           options={AVOID_METHODS}
           onChange={(v) => set("avoid_method", v)}
@@ -226,9 +226,9 @@ export function AvoidTab({
                 disabled={!videoPath}
                 onClick={async () => {
                   // Separate Qt process; it takes a few seconds to show up.
-                  toast("Opening Timeline Viewer — it takes a few seconds…")
+                  toast("正在打开时间线查看器 — 可能需要几秒钟…")
                   const res = await openEditor(videoPath)
-                  if (!res.ok) toast.error(res.error ?? "Could not open editor")
+                  if (!res.ok) toast.error(res.error ?? "无法打开编辑器")
                 }}
               >
                 <ExternalLink className="size-4" /> Open Timeline Viewer
@@ -255,7 +255,7 @@ export function AvoidTab({
                   <button
                     className="min-w-0 flex-1 truncate text-left hover:underline"
                     onClick={() => rename(f)}
-                    title="Click to name"
+                    title="点击命名"
                   >
                     <span className="font-medium">{f.label}</span>
                   </button>
@@ -265,7 +265,7 @@ export function AvoidTab({
                   <button
                     className="shrink-0 text-muted-foreground hover:text-destructive"
                     onClick={() => remove(f)}
-                    title="Remove"
+                    title="移除"
                   >
                     <X className="size-4" />
                   </button>
@@ -296,7 +296,7 @@ export function AvoidTab({
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => writeRanges([], "Cleared avoided ranges")}
+                onClick={() => writeRanges([], "已清空排除区间")}
               >
                 Clear all
               </Button>
@@ -320,10 +320,10 @@ export function AvoidTab({
                     onClick={() =>
                       writeRanges(
                         avoidRanges.filter((_, j) => j !== i),
-                        "Removed avoided range",
+                        "移除d avoided range",
                       )
                     }
-                    title="Remove this range"
+                    title="移除 this range"
                   >
                     <X className="size-3" />
                   </button>
@@ -336,9 +336,9 @@ export function AvoidTab({
             <Input
               value={rangeStart}
               onChange={(e) => setRangeStart(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && addRange()}
+              onKeyDown={(e) => e.key === "添加" && addRange()}
               placeholder="1:30"
-              aria-label="Range start"
+              aria-label="区间开始"
               disabled={!videoPath}
               className="h-8 w-24 text-xs tabular-nums"
             />
@@ -346,9 +346,9 @@ export function AvoidTab({
             <Input
               value={rangeEnd}
               onChange={(e) => setRangeEnd(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && addRange()}
+              onKeyDown={(e) => e.key === "添加" && addRange()}
               placeholder="2:00"
-              aria-label="Range end"
+              aria-label="区间结束"
               disabled={!videoPath}
               className="h-8 w-24 text-xs tabular-nums"
             />
@@ -357,7 +357,7 @@ export function AvoidTab({
               variant="secondary"
               onClick={addRange}
               disabled={!videoPath || !rangeStart || !rangeEnd}
-              title={videoPath ? "Avoid this span" : "Add a video first"}
+              title={videoPath ? "排除此时间段" : "请先添加视频"}
             >
               Add
             </Button>
@@ -369,7 +369,7 @@ export function AvoidTab({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Clear the face bank ({faces.length} identities)?</DialogTitle>
-            <DialogDescription>Choose what to remove.</DialogDescription>
+            <DialogDescription>选择要排除的内容。</DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2">
             <Button variant="ghost" onClick={() => setClearOpen(false)}>

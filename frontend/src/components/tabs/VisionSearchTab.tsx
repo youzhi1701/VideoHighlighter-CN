@@ -198,7 +198,7 @@ export function VisionSearchTab({
         </div>
         {results.length > 0 && (
           <p className="text-xs text-muted-foreground">
-            {results.length} match(es) — timestamps are seconds into the video.
+            {results.length} 个匹配结果——时间戳表示视频中的秒数。
           </p>
         )}
       </CardContent>

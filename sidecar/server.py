@@ -145,7 +145,7 @@ class RunManager:
         """Spawn the job in a child process and pump its events to subscribers."""
         with self._lock:
             if self.is_running:
-                raise RuntimeError("A run is already in progress")
+                raise RuntimeError("已有任务正在运行")
             self.run_id = uuid.uuid4().hex
             job = {**job, "run_id": self.run_id}
             self.loop = loop
@@ -301,10 +301,10 @@ async def stats() -> dict:
 @app.post("/run")
 async def start_run(req: RunRequest) -> dict:
     if not req.video_paths:
-        return {"ok": False, "error": "No videos provided"}
+        return {"ok": False, "error": "未提供视频文件"}
     missing = [p for p in req.video_paths if not os.path.exists(p)]
     if missing:
-        return {"ok": False, "error": f"Video file(s) not found: {missing}"}
+        return {"ok": False, "error": f"未找到视频文件：{missing}"}
     try:
         loop = asyncio.get_running_loop()
         run_id = manager.start_job(
@@ -467,8 +467,8 @@ async def save_composition_rules(req: CompRulesRequest) -> dict:
             if relation not in RELATIONS:
                 # Refused before anything is written: the engine would
                 # reject the whole file on load.
-                return {"ok": False, "error": f"rule {name!r}: unknown relation "
-                        f"{relation!r} (one of {', '.join(RELATIONS)})"}
+                return {"ok": False, "error": f"规则 {name!r}：未知关系 "
+                        f"{relation!r}（内部值应为 {', '.join(RELATIONS)} 之一）"}
             if relation != "inside":
                 rule["relation"] = relation
             if row.get("outline"):
@@ -510,7 +510,7 @@ async def video_info(path: str) -> dict:
     try/except yields the {ok:false,error} shape the other endpoints use."""
     try:
         if not os.path.exists(path):
-            return {"ok": False, "error": "file not found"}
+            return {"ok": False, "error": "未找到文件"}
         from modules.media.video_probe import probe_video
 
         info = await asyncio.to_thread(probe_video, path)
@@ -575,7 +575,7 @@ async def scan_folder(path: str, recursive: int = 0) -> dict:
     the other endpoints' error shape rather than raising."""
     try:
         if not path or not os.path.isdir(path):
-            return {"ok": False, "error": f"not a folder: {path!r}"}
+            return {"ok": False, "error": f"不是有效文件夹：{path!r}"}
         files = await asyncio.to_thread(_scan_video_files, path, bool(recursive))
         return {"ok": True, "files": files, "count": len(files)}
     except Exception as exc:  # noqa: BLE001
@@ -597,10 +597,10 @@ async def start_combine(req: CombineRequest) -> dict:
     occupies the single run slot."""
     files = [f for f in (req.files or []) if f]
     if len(files) < 2:
-        return {"ok": False, "error": "Need at least 2 files to combine"}
+        return {"ok": False, "error": "至少需要 2 个文件才能合并"}
     missing = [f for f in files if not os.path.exists(f)]
     if missing:
-        return {"ok": False, "error": f"File(s) not found: {missing}"}
+        return {"ok": False, "error": f"未找到文件：{missing}"}
     if not (req.output or "").strip():
         return {"ok": False, "error": "未提供输出路径"}
 
@@ -707,7 +707,7 @@ async def music_analysis(path: str) -> dict:
         from modules.audio.music_analysis import analyze_music
 
         if not path or not os.path.exists(path):
-            return {"ok": False, "error": f"not found: {path!r}"}
+            return {"ok": False, "error": f"未找到：{path!r}"}
         analysis = await asyncio.to_thread(analyze_music, path)
         return {
             "ok": True,
@@ -1271,7 +1271,7 @@ async def browse_listing(req: BrowseRequest) -> dict:
     """Scrape a listing page into pickable entries — the data behind the Qt
     'Browse & Select…' thumbnail grid."""
     if not req.url.strip().startswith(("http://", "https://")):
-        return {"ok": False, "error": "URL must start with http:// or https://",
+        return {"ok": False, "error": "URL 必须以 http:// 或 https:// 开头",
                 "entries": []}
     try:
         from downloader import extract_video_entries
@@ -1341,7 +1341,7 @@ async def reveal_log() -> dict:
     reveals it instead of pretending to port the window."""
     path = _debug_log_path()
     if not path or not os.path.exists(path):
-        return {"ok": False, "error": "No debug log yet — run something first."}
+        return {"ok": False, "error": "目前还没有调试日志——请先运行一次任务。"}
     return _reveal(path)
 
 
@@ -1358,16 +1358,16 @@ async def reveal_output(req: RevealOutputRequest) -> dict:
     video you just made is only reachable by hunting for it by hand."""
     path = (req.path or "").strip()
     if not path:
-        return {"ok": False, "error": "No output path given."}
+        return {"ok": False, "error": "未提供输出路径。"}
     if not os.path.exists(path):
-        return {"ok": False, "error": f"Output no longer exists: {path}"}
+        return {"ok": False, "error": f"输出文件已不存在：{path}"}
     return _reveal(path)
 
 
 @app.post("/download")
 async def start_download(req: DownloadRequest) -> dict:
     if not req.url.strip():
-        return {"ok": False, "error": "No URL provided"}
+        return {"ok": False, "error": "未提供 URL"}
     try:
         loop = asyncio.get_running_loop()
         run_id = manager.start_job(
@@ -1484,7 +1484,7 @@ async def get_labels(kind: str) -> dict:
         return await get_object_labels()
     if kind == "actions":
         return await get_action_labels()
-    return {"ok": False, "error": f"unknown label kind: {kind}", "labels": []}
+    return {"ok": False, "error": f"未知标签类型：{kind}", "labels": []}
 
 
 # ── Face bank (Avoid tab) ─────────────────────────────────────────────────
@@ -1558,7 +1558,7 @@ async def name_face(req: NameRequest) -> dict:
         bank = _face_bank()
         target = req.name.strip()
         if not target:
-            return {"ok": False, "error": "empty name"}
+            return {"ok": False, "error": "名称不能为空"}
         for ident in bank.all_identities():
             if ident.get("id") != req.id and (ident.get("name") or "") == target:
                 bank.merge_identities(ident["id"], req.id)
@@ -1624,7 +1624,7 @@ async def scan_faces(req: ScanRequest) -> dict:
     FaceScanWorker. tag_entries caches per-frame tagging so the pipeline's avoid
     step reuses this work instead of re-running recognition."""
     if not os.path.exists(req.video_path):
-        return {"ok": False, "error": "video not found"}
+        return {"ok": False, "error": "未找到视频"}
     try:
         loop = asyncio.get_running_loop()
         run_id = manager.start_job(
@@ -1651,7 +1651,7 @@ async def set_face_avoid(req: AvoidRequest) -> dict:
         bank = _face_bank()
         ident = bank._id_index.get(req.id)
         if ident is None:
-            return {"ok": False, "error": "identity not found"}
+            return {"ok": False, "error": "未找到该人物"}
         ident["avoid"] = bool(req.avoid)
         bank.save()
         return {"ok": True}
@@ -1712,9 +1712,9 @@ async def vision_search(req: VisionSearchRequest) -> dict:
     """Find moments matching a text query. Runs in the worker process and
     streams progress/results over the run socket."""
     if not os.path.exists(req.video_path):
-        return {"ok": False, "error": "video not found"}
+        return {"ok": False, "error": "未找到视频"}
     if not req.query.strip():
-        return {"ok": False, "error": "empty query"}
+        return {"ok": False, "error": "搜索内容不能为空"}
     try:
         loop = asyncio.get_running_loop()
         run_id = manager.start_job(
@@ -1788,9 +1788,9 @@ async def open_editor(req: EditorRequest) -> dict:
     import sys as _sys
 
     if not req.video_path:
-        return {"ok": False, "error": "No video selected. Add a video first."}
+        return {"ok": False, "error": "尚未选择视频，请先添加一个视频。"}
     if not os.path.exists(req.video_path):
-        return {"ok": False, "error": f"Video not found: {req.video_path}"}
+        return {"ok": False, "error": f"未找到视频：{req.video_path}"}
 
     try:
         if getattr(_sys, "frozen", False):
@@ -1799,12 +1799,12 @@ async def open_editor(req: EditorRequest) -> dict:
             exe = os.path.join(os.path.dirname(_sys.executable),
                                "VideoHighlighter.exe")
             if not os.path.exists(exe):
-                return {"ok": False, "error": "Qt app executable not found"}
+                return {"ok": False, "error": "未找到 Qt 应用程序可执行文件"}
             cmd = [exe, "--timeline", req.video_path]
         else:
             viewer = os.path.join(_ROOT, "signal_timeline_viewer.py")
             if not os.path.exists(viewer):
-                return {"ok": False, "error": "signal_timeline_viewer.py not found"}
+                return {"ok": False, "error": "未找到 signal_timeline_viewer.py"}
             cmd = [_sys.executable, viewer, req.video_path]
 
         # Detach: the viewer must outlive this request, and on Windows a child

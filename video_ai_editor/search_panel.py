@@ -149,7 +149,7 @@ class _FaceCard(QFrame):
         thumb_lbl.setPixmap(pix)
         layout.addWidget(thumb_lbl, alignment=Qt.AlignHCenter)
 
-        self._name_lbl = QLabel(name or "Unknown")
+        self._name_lbl = QLabel(name or "未知")
         self._name_lbl.setAlignment(Qt.AlignCenter)
         self._name_lbl.setFixedWidth(THUMB_SIZE + 8)
         layout.addWidget(self._name_lbl, alignment=Qt.AlignHCenter)
@@ -187,7 +187,7 @@ class _FaceCard(QFrame):
 
     def contextMenuEvent(self, event):
         menu = QMenu(self)
-        action = menu.addAction("Stop avoiding in highlights" if self.avoided
+        action = menu.addAction("不再从高光中排除此人物" if self.avoided
                                 else "Avoid this person in highlights")
         if menu.exec(event.globalPos()) is action:
             self.avoid_toggled.emit(self.identity_id, not self.avoided)
@@ -207,7 +207,7 @@ class _SegmentRow(QWidget):
         lbl.setStyleSheet("color: #b4b4b4; font-size: 11px;")
         row.addWidget(lbl, 1)
 
-        jump_btn = QPushButton("▶ Jump")
+        jump_btn = QPushButton("▶ 跳转")
         jump_btn.setFixedWidth(62)
         jump_btn.setStyleSheet(
             "QPushButton{background:#323232;color:#cccccc;border:none;border-radius:3px;padding:3px;font-size:10px;}"
@@ -216,7 +216,7 @@ class _SegmentRow(QWidget):
         jump_btn.clicked.connect(lambda _=False, s=start: on_jump(s))
         row.addWidget(jump_btn)
 
-        add_btn = QPushButton("+ Edit")
+        add_btn = QPushButton("+ 加入剪辑")
         add_btn.setFixedWidth(52)
         add_btn.setStyleSheet(
             "QPushButton{background:#1a4a2a;color:#88ffaa;border:none;border-radius:3px;padding:3px;font-size:10px;}"
@@ -326,11 +326,11 @@ class SearchPanel(QWidget):
         root.setContentsMargins(6, 6, 6, 6)
         root.setSpacing(6)
 
-        hdr = QLabel("🔍 Search by Person")
+        hdr = QLabel("🔍 按人物搜索")
         hdr.setStyleSheet("color: #909090; font-size: 12px; font-weight: bold;")
         root.addWidget(hdr)
 
-        hint = QLabel("Click a face to find all segments where they appear.")
+        hint = QLabel("点击人脸，查找此人物出现的所有片段。")
         hint.setWordWrap(True)
         hint.setStyleSheet("color: #686868; font-size: 10px;")
         root.addWidget(hint)
@@ -342,7 +342,7 @@ class SearchPanel(QWidget):
         expr_row = QHBoxLayout()
         expr_row.setSpacing(4)
 
-        self._expr_scan_btn = QPushButton("Scan expressions")
+        self._expr_scan_btn = QPushButton("扫描表情")
         self._expr_scan_btn.setToolTip(
             "Detect faces across the video and classify their expression.\n"
             "Runs once and is cached, so asking a second question is instant.")
@@ -399,11 +399,11 @@ class SearchPanel(QWidget):
         res_layout.setSpacing(4)
 
         top_row = QHBoxLayout()
-        self._results_header = QLabel("Select a person above")
+        self._results_header = QLabel("请在上方选择人物")
         self._results_header.setStyleSheet("color: #888888; font-size: 11px; font-weight: bold;")
         top_row.addWidget(self._results_header, 1)
 
-        self._add_all_btn = QPushButton("+ Add All to Edit Timeline")
+        self._add_all_btn = QPushButton("+ 全部加入剪辑时间线")
         self._add_all_btn.setEnabled(False)
         self._add_all_btn.setStyleSheet(
             "QPushButton{background:#1a3a2a;color:#66ee88;border:none;border-radius:4px;padding:4px 8px;font-size:10px;}"
@@ -424,7 +424,7 @@ class SearchPanel(QWidget):
         self._seg_list_layout.setSpacing(2)
         self._seg_list_layout.addStretch()
 
-        self._no_results_lbl = QLabel("No segments to show.")
+        self._no_results_lbl = QLabel("暂无可显示片段。")
         self._no_results_lbl.setAlignment(Qt.AlignCenter)
         self._no_results_lbl.setStyleSheet("color: #505050; font-size: 11px;")
         self._seg_list_layout.insertWidget(0, self._no_results_lbl)
@@ -505,7 +505,7 @@ class SearchPanel(QWidget):
                 raise IOError("face bank could not be written")
         except Exception as exc:                      # noqa: BLE001
             print(f"⚠️ Could not change avoid for {identity_id}: {exc}")
-            self._expr_status.setText(f"Could not save the avoid setting: {exc}")
+            self._expr_status.setText(f"无法保存排除设置：{exc}")
             return
 
         card = self._cards.get(identity_id)
@@ -548,30 +548,30 @@ class SearchPanel(QWidget):
     def _scan_expressions(self):
         if self._expr_worker is not None:
             self._expr_worker.cancel()
-            self._expr_status.setText("Cancelling…")
+            self._expr_status.setText("正在取消…")
             return
         if not self._video_path:
-            self._expr_status.setText("No video to scan.")
+            self._expr_status.setText("没有可扫描的视频。")
             return
 
-        self._expr_scan_btn.setText("Cancel")
-        self._expr_status.setText("Scanning…")
+        self._expr_scan_btn.setText("取消")
+        self._expr_status.setText("扫描中…")
         worker = _ExpressionScanWorker(self._video_path)
         worker.done.connect(self._on_expression_scan_done)
         worker.failed.connect(self._on_expression_scan_failed)
         worker.progress.connect(
             lambda at, total: self._expr_status.setText(
-                f"Scanning… {at / total * 100:.0f}%" if total else "Scanning…"))
+                f"扫描中… {at / total * 100:.0f}%" if total else "扫描中…"))
         worker.finished.connect(self._on_expression_worker_finished)
         self._expr_worker = worker
         worker.start()
 
     def _on_expression_worker_finished(self):
         self._expr_worker = None
-        self._expr_scan_btn.setText("Scan expressions")
+        self._expr_scan_btn.setText("扫描表情")
 
     def _on_expression_scan_failed(self, message: str):
-        self._expr_status.setText(f"Scan failed: {message}")
+        self._expr_status.setText(f"扫描失败：{message}")
 
     def _on_expression_scan_done(self, seconds: dict):
         if not seconds:
@@ -607,7 +607,7 @@ class SearchPanel(QWidget):
         segments = segments_for(self._expr_seconds, label,
                                 duration=self._video_duration)
         self._current_segments = segments
-        self._results_header.setText(f"{len(segments)} clip(s) of '{label}'")
+        self._results_header.setText(f"{len(segments)} 个片段，人物/类别：'{label}'")
         self._add_all_btn.setEnabled(bool(segments))
         self._refresh_results(segments)
 

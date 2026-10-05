@@ -33,8 +33,8 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
             <NumberField label="物体" value={cfg.object_points} onChange={(v) => set("object_points", v)} />
             <NumberField label="动作" value={cfg.action_points} onChange={(v) => set("action_points", v)} />
             <p className="pt-1 text-xs text-muted-foreground">
-              Keyword and transcript points live in the Transcript tab — they
-              only count while transcript is enabled.
+              关键词和转录文本加分位于“转录”页，
+              只有启用转录后才会生效。
             </p>
           </CardContent>
         </Card>
@@ -66,7 +66,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid min-w-0 grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3">
-            <Label className="text-sm text-muted-foreground">物体s</Label>
+            <Label className="text-sm text-muted-foreground">物体</Label>
             <Input
               list="object-labels"
               value={cfg.highlight_objects}
@@ -81,7 +81,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
             </datalist>
           </div>
           <div className="grid min-w-0 grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3">
-            <Label className="text-sm text-muted-foreground">动作s</Label>
+            <Label className="text-sm text-muted-foreground">动作</Label>
             <Input
               list="action-labels"
               value={cfg.interesting_actions}

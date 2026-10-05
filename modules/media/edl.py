@@ -82,17 +82,17 @@ def parse_time(value) -> float:
     one written by a person (clock time) both load.
     """
     if isinstance(value, bool):
-        raise EdlError(f"expected a timestamp, got {value!r}")
+        raise EdlError(f"需要时间戳，实际得到 {value!r}")
     if isinstance(value, (int, float)):
         seconds = float(value)
         if seconds < 0 or seconds != seconds or seconds in (float("inf"), float("-inf")):
-            raise EdlError(f"timestamp must be a finite, non-negative number, got {value!r}")
+            raise EdlError(f"时间戳必须是有限的非负数，实际得到 {value!r}")
         return seconds
     match = _TIME.match(str(value).strip())
     if not match:
         raise EdlError(
-            f"cannot read timestamp {value!r} — write it as seconds (8.5), "
-            f"M:SS (1:23.5) or H:MM:SS (1:02:03)")
+            f"无法读取时间戳 {value!r}——请使用秒数（8.5）、"
+            f"M:SS（1:23.5）或 H:MM:SS（1:02:03）格式")
     first, second, last = match.groups()
     parts = [p for p in (first, second) if p is not None]
     total = float(last)
@@ -207,7 +207,7 @@ class Edl:
 
 def _require_mapping(data, what):
     if not isinstance(data, dict):
-        raise EdlError(f"{what} must be a mapping, got {type(data).__name__}")
+        raise EdlError(f"{what} 必须是映射对象，实际得到 {type(data).__name__}")
 
 
 def _reject_unknown(mapping, allowed, what):
@@ -218,8 +218,8 @@ def _reject_unknown(mapping, allowed, what):
     for key in mapping:
         if key not in allowed:
             near = difflib.get_close_matches(str(key), sorted(allowed), n=1)
-            hint = f" — did you mean {near[0]!r}?" if near else ""
-            raise EdlError(f"unknown {what} key {key!r}{hint}")
+            hint = f"——你是不是想写 {near[0]!r}？" if near else ""
+            raise EdlError(f"{what} 中存在未知字段 {key!r}{hint}")
 
 
 def parse_edl(data) -> Edl:
@@ -229,25 +229,24 @@ def parse_edl(data) -> Edl:
         try:
             data = yaml.safe_load(data)
         except Exception as exc:
-            raise EdlError(f"cut list is not valid YAML: {exc}") from exc
+            raise EdlError(f"剪辑列表不是有效的 YAML：{exc}") from exc
     if data is None:
-        raise EdlError("cut list is empty — start from edl_from_clips()")
-    _require_mapping(data, "a cut list")
-    _reject_unknown(data, _TOP_KEYS, "top level")
+        raise EdlError("剪辑列表为空——请先创建剪辑内容")
+    _require_mapping(data, "剪辑列表")
+    _reject_unknown(data, _TOP_KEYS, "顶层")
 
     version = data.get("version", EDL_VERSION)
     if int(version) != EDL_VERSION:
-        raise EdlError(f"cut list version {version!r} is not supported "
-                       f"(this build understands {EDL_VERSION})")
+        raise EdlError(f"不支持剪辑列表版本 {version!r} "
+                       f"（当前版本支持 {EDL_VERSION}）")
 
     raw_cuts = data.get("cuts")
     if raw_cuts is None:
-        raise EdlError("a cut list needs a 'cuts:' list — without cuts there is "
-                       "nothing to render")
+        raise EdlError("剪辑列表必须包含 'cuts:' 列表——没有镜头就无法渲染")
     if not isinstance(raw_cuts, list):
-        raise EdlError(f"'cuts' must be a list, got {type(raw_cuts).__name__}")
+        raise EdlError(f"'cuts' 必须是列表，实际得到 {type(raw_cuts).__name__}")
     if not raw_cuts:
-        raise EdlError("a cut list needs at least one cut")
+        raise EdlError("剪辑列表至少需要一个镜头")
 
     from modules.media.motion import normalise_motion
     from modules.media.transitions import normalise_feather, normalise_kind
@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:
     cuts: list[Cut] = []
     for i, entry in enumerate(raw_cuts, start=1):
         if not isinstance(entry, dict):
-            raise EdlError(f"cut {i} must be a mapping with at least a source "
-                           f"and an out time, got {entry!r}")
-        _reject_unknown(entry, _CUT_KEYS, f"cut {i}")
+            raise EdlError(f"镜头 {i} 必须是映射对象，并至少包含 source "
+                           f"和 out 时间，实际得到 {entry!r}")
+        _reject_unknown(entry, _CUT_KEYS, f"镜头 {i}")
 
         source = entry.get("source")
         if not source or not str(source).strip():
-            raise EdlError(f"cut {i} has no source file")
+            raise EdlError(f"镜头 {i} 没有源文件")
 
         try:
             start = parse_time(entry.get("in", 0))
             end = parse_time(entry["out"]) if "out" in entry else 0.0
         except EdlError as exc:
-            raise EdlError(f"cut {i} ({source}): {exc}") from None
+            raise EdlError(f"镜头 {i}（{source}）：{exc}") from None
         if "out" not in entry:
-            raise EdlError(f"cut {i} ({source}) has no 'out' time")
+            raise EdlError(f"镜头 {i}（{source}）没有 'out' 时间")
         if end <= start:
             raise EdlError(
-                f"cut {i} ({source}) runs {format_time(start)}..{format_time(end)} "
-                f"— 'out' must come after 'in'")
+                f"镜头 {i}（{source}）范围为 {format_time(start)}..{format_time(end)}，"
+                f"'out' 必须晚于 'in'")
 
         kind = entry.get("transition", "cut")
         try:
             kind = normalise_kind(kind)
         except ValueError as exc:
-            raise EdlError(f"cut {i} ({source}): {exc}") from None
+            raise EdlError(f"镜头 {i}（{source}）：{exc}") from None
 
         try:
             hold = float(entry.get("transition_duration", 0.5))
         except (TypeError, ValueError):
-            raise EdlError(f"cut {i} ({source}): transition_duration must be a "
-                           f"number of seconds, got "
+            raise EdlError(f"镜头 {i}（{source}）：transition_duration 必须是秒数，实际得到 "
                            f"{entry.get('transition_duration')!r}") from None
         if hold < 0 or hold != hold:
-            raise EdlError(f"cut {i} ({source}): transition_duration must be a "
-                           f"finite, non-negative number of seconds")
+            raise EdlError(f"镜头 {i}（{source}）：transition_duration 必须是有限的非负秒数")
 
         try:
             soft = normalise_feather(entry.get("feather", 0.0))
         except ValueError as exc:
-            raise EdlError(f"cut {i} ({source}): {exc}") from None
+            raise EdlError(f"镜头 {i}（{source}）：{exc}") from None
 
         try:
             move = normalise_motion(entry.get("motion", "none"))
         except ValueError as exc:
-            raise EdlError(f"cut {i} ({source}): {exc}") from None
+            raise EdlError(f"镜头 {i}（{source}）：{exc}") from None
 
         cuts.append(Cut(source=str(source), start=start, end=end,
                         transition=kind, transition_duration=hold,
@@ -312,16 +309,16 @@ def parse_edl(data) -> Edl:
         try:
             return int(data.get(key, 0) or 0)
         except (TypeError, ValueError):
-            raise EdlError(f"{key} must be a whole number, got {data.get(key)!r}") from None
+            raise EdlError(f"{key} 必须是整数，实际得到 {data.get(key)!r}") from None
 
     try:
         volume = float(data.get("music_volume", 0.8))
     except (TypeError, ValueError):
-        raise EdlError(f"music_volume must be a number between 0 and 1, got "
+        raise EdlError(f"music_volume 必须是 0 到 1 之间的数字，实际得到 "
                        f"{data.get('music_volume')!r}") from None
 
     return Edl(
-        title=str(data.get("title", "Untitled") or "Untitled"),
+        title=str(data.get("title", "未命名") or "未命名"),
         cuts=cuts,
         music=str(data.get("music", "") or ""),
         music_mode=str(data.get("music_mode", "replace") or "replace"),
@@ -342,10 +339,10 @@ def load_edl(path: str) -> Edl:
         with open(path, "r", encoding="utf-8") as handle:
             text = handle.read()
     except UnicodeDecodeError as exc:
-        raise EdlError(f"cannot read cut list {os.path.basename(path)}: "
-                       f"it is not UTF-8 text ({exc.reason})") from None
+        raise EdlError(f"无法读取剪辑列表 {os.path.basename(path)}："
+                       f"文件不是 UTF-8 文本（{exc.reason}）") from None
     except OSError as exc:
-        raise EdlError(f"cannot read cut list {path}: {exc}") from None
+        raise EdlError(f"无法读取剪辑列表 {path}：{exc}") from None
     try:
         return parse_edl(text)
     except EdlError as exc:
@@ -492,12 +489,12 @@ def quantise_to_music(edl: Edl, analysis, *, unit: str = "bar",
     interval = float(getattr(analysis, "beat_interval", 0.0) or 0.0)
     meter = int(getattr(analysis, "meter", 4) or 4)
     if interval <= 0:
-        log_fn("⚠️ No tempo available — cuts left where they were")
+        log_fn("⚠️ 没有可用的节拍信息——保留原始剪切位置")
         return Edl(**{**edl.__dict__, "cuts": list(edl.cuts)})
 
     step = interval * meter if unit == "bar" else interval
     if unit not in ("bar", "beat"):
-        raise EdlError(f"unknown quantise unit {unit!r} (expected 'bar' or 'beat')")
+        raise EdlError(f"未知节拍对齐单位 {unit!r}（应为 'bar' 或 'beat'）")
 
     durations: dict[str, float] = {}
 
@@ -556,11 +553,11 @@ def quantise_to_music(edl: Edl, analysis, *, unit: str = "bar",
                         if kind != "cut" else cut.transition_duration,
                         easing=cut.easing, label=cut.label, text=cut.text))
     if unblended:
-        log_fn(f"✂️ {unblended} clip(s) had no room for the blend on top of a "
-               f"bar and cut hard instead, to keep the grid")
+        log_fn(f"✂️ 有 {unblended} 个片段没有足够空间叠加转场，"
+               f"为保持节拍网格已改为直接切换")
 
-    log_fn(f"🎼 Quantised {trimmed}/{len(cuts)} cut(s) to the "
-           f"{step:.2f}s {unit} ({60.0 / interval:.1f} BPM)")
+    log_fn(f"🎼 已将 {trimmed}/{len(cuts)} 个剪切对齐到 "
+           f"{step:.2f} 秒 {'小节' if unit == 'bar' else '节拍'}（{60.0 / interval:.1f} BPM）")
     return Edl(**{**edl.__dict__, "cuts": cuts})
 
 
@@ -574,12 +571,11 @@ def validate_edl(edl: Edl) -> list[str]:
     warnings: list[str] = []
     for i, cut in enumerate(edl.cuts, start=1):
         if not os.path.exists(cut.source):
-            warnings.append(f"cut {i}: {os.path.basename(cut.source)} is not on disk")
+            warnings.append(f"镜头 {i}：磁盘上找不到 {os.path.basename(cut.source)}")
             continue
         if cut.duration < 0.5:
             warnings.append(
-                f"cut {i}: {format_time(cut.duration)} is shorter than half a "
-                f"second and will barely register")
+                f"镜头 {i}：时长 {format_time(cut.duration)} 不足半秒，画面几乎无法辨认")
         try:
             from modules.media.video_probe import probe_video
             available = float(probe_video(cut.source)["duration"])
@@ -587,10 +583,10 @@ def validate_edl(edl: Edl) -> list[str]:
             continue
         if available and cut.end > available + 0.05:
             warnings.append(
-                f"cut {i}: out at {format_time(cut.end)} is past the end of "
-                f"{os.path.basename(cut.source)} ({format_time(available)})")
+                f"镜头 {i}：out 时间 {format_time(cut.end)} 超过了 "
+                f"{os.path.basename(cut.source)} 的结尾（{format_time(available)}）")
     if edl.music and not os.path.exists(edl.music):
-        warnings.append(f"music file is not on disk: {edl.music}")
+        warnings.append(f"磁盘上找不到音乐文件：{edl.music}")
     return warnings
 
 
@@ -617,7 +613,7 @@ def _draw_overlays(edl: Edl, built: str, overlays, track: str, temp_dir: str,
                             height=int(info.get("height") or 0))
         elements = make_elements(overlays, scene, gps)
         if not elements:
-            log_fn("⚠️ None of the graphics could be drawn from this footage")
+            log_fn("⚠️ 当前素材无法绘制所选图形")
             return built
 
         drawn = os.path.join(temp_dir, "overlaid.mp4")
@@ -627,8 +623,8 @@ def _draw_overlays(edl: Edl, built: str, overlays, track: str, temp_dir: str,
         if os.path.exists(drawn) and os.path.getsize(drawn) > 0:
             shutil.move(drawn, built)
     except Exception as exc:  # noqa: BLE001
-        log_fn(f"⚠️ Could not draw the graphics ({exc}); "
-               f"the reel is finished without them")
+        log_fn(f"⚠️ 无法绘制图形（{exc}）；"
+               f"成片将不包含这些图形")
     return built
 
 
@@ -649,11 +645,11 @@ def render_edl(edl: Edl, output: str, *, mode: str = "gpu",
     be, which is only settled once the transitions have taken their share.
     """
     if not edl.cuts:
-        raise EdlError("nothing to render — the cut list is empty")
+        raise EdlError("没有可渲染内容——剪辑列表为空")
     missing = [c.source for c in edl.cuts if not os.path.exists(c.source)]
     if missing:
-        raise EdlError("cannot render, these sources are missing: "
-                       + ", ".join(os.path.basename(m) for m in dict.fromkeys(missing)))
+        raise EdlError("无法渲染，以下源文件缺失："
+                       + "，".join(os.path.basename(m) for m in dict.fromkeys(missing)))
 
     from modules.media.transitions import ReelCancelled, Transition, build_reel
     from modules.media.video_cutter import cut_video
@@ -664,14 +660,14 @@ def render_edl(edl: Edl, output: str, *, mode: str = "gpu",
         total = len(edl.cuts)
         for i, cut in enumerate(edl.cuts):
             if cancel_check is not None and cancel_check():
-                raise ReelCancelled("cancelled")
+                raise ReelCancelled("已取消")
             if progress_fn:
                 try:
-                    progress_fn(i, total + 1, "Cutting", f"cut {i + 1}/{total}")
+                    progress_fn(i, total + 1, "正在剪切", f"镜头 {i + 1}/{total}")
                 except Exception:
                     pass
             piece = os.path.join(temp_dir, f"cut{i:03d}.mp4")
-            log_fn(f"✂️ Cut {i + 1}/{total}: {os.path.basename(cut.source)} "
+            log_fn(f"✂️ 剪切 {i + 1}/{total}：{os.path.basename(cut.source)} "
                    f"{format_time(cut.start)}–{format_time(cut.end)}")
             cut_video(cut.source, cut.start, cut.end, piece, mode=mode)
             pieces.append(piece)

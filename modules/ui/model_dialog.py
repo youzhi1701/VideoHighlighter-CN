@@ -216,7 +216,7 @@ class ModelDialog(QDialog):
         self.status.setText(
             f"{len(found)} model(s) on the Ollama server{where}." if found else
             f"No Ollama server answered{where} — type a name, or start it and "
-            "press 刷新.")
+            "press Refresh.")
 
     def _refresh_tags(self):
         self._fill_tags(refresh=True)
@@ -318,7 +318,7 @@ class ModelDialog(QDialog):
         try:
             self._remember_fn(path)
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Could not remember the GGUF 路径： {exc}")
+            print(f"⚠️ Could not remember the GGUF path: {exc}")
         self._fill_recent()
 
     def _remove_selected(self):

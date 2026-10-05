@@ -87,7 +87,7 @@ export function LlmChatTab({
             <Bot className="size-4" /> LLM 聊天
             {videoPath && (
               <Badge variant="secondary" className="font-normal">
-                context: {basename(videoPath)}
+                上下文：{basename(videoPath)}
               </Badge>
             )}
           </CardTitle>
@@ -99,8 +99,7 @@ export function LlmChatTab({
           <p className="text-xs text-destructive">{error}</p>
         ) : backends.length === 0 ? (
           <p className="text-xs text-muted-foreground">
-            No local LLM backend found. Install Ollama (or llama-cpp-python) and
-            hit Refresh.
+            未找到本地大模型运行后端。请安装 Ollama（或 llama-cpp-python），然后点击“刷新”。
           </p>
         ) : (
           <div className="grid gap-2">
@@ -164,7 +163,7 @@ export function LlmChatTab({
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "发送" && !busy && send()}
+            onKeyDown={(e) => e.key === "Enter" && !busy && send()}
             placeholder={
               ready ? "询问这个视频…" : "请先选择运行后端和模型"
             }

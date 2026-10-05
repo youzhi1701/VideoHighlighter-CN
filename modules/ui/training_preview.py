@@ -30,7 +30,7 @@ def history_line(history) -> str:
         return ""
     shown = history if len(history) <= 12 else [history[0], None] + list(history[-10:])
     parts = ["…" if h is None else f"{h[1]}/{h[2]}" for h in shown]
-    return "Found per round: " + " · ".join(parts)
+    return "每轮识别结果：" + " · ".join(parts)
 
 
 class TrainingPreviewWindow(QWidget):
@@ -38,7 +38,7 @@ class TrainingPreviewWindow(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent, Qt.Window)
-        self.setWindowTitle("👁 Watch it learn")
+        self.setWindowTitle("👁 查看训练过程")
         self.setMinimumSize(620, 460)
         self.resize(980, 640)
         self._rounds: list = []          # [(QPixmap | None, caption, snapshot)]
@@ -48,10 +48,10 @@ class TrainingPreviewWindow(QWidget):
         layout.setContentsMargins(6, 6, 6, 6)
 
         self.image_label = QLabel(
-            "Waiting for the first round to finish…\n\n"
-            "After every round the model looks at the same few frames it was not "
-            "trained on. Grey boxes are yours; green is a guess that matches one, "
-            "orange a guess that matches nothing.")
+            "正在等待第一轮训练完成…\n\n"
+            "每轮结束后，模型都会查看同一组未参与训练的帧。"
+            "灰色框是你的标注；绿色表示预测与标注匹配，"
+            "橙色表示预测没有匹配到任何标注。")
         self.image_label.setAlignment(Qt.AlignCenter)
         self.image_label.setWordWrap(True)
         self.image_label.setStyleSheet(
@@ -85,8 +85,8 @@ class TrainingPreviewWindow(QWidget):
         self.next_btn.clicked.connect(lambda: self._show(self._index() + 1, follow=False))
         controls.addWidget(self.next_btn)
 
-        self.live_btn = QPushButton("⏭ Latest")
-        self.live_btn.setToolTip("Jump to the newest round and keep following")
+        self.live_btn = QPushButton("⏭ 最新")
+        self.live_btn.setToolTip("跳到最新一轮并持续跟随")
         self.live_btn.clicked.connect(lambda: self._show(len(self._rounds) - 1, follow=True))
         controls.addWidget(self.live_btn)
         layout.addLayout(controls)
@@ -132,9 +132,9 @@ class TrainingPreviewWindow(QWidget):
             # Never leave another round's picture up under this round's caption.
             self.image_label.clear()
             self.image_label.setText(
-                "No picture for this round — the live view was not open while it ran. "
-                "The numbers below are still real.")
-        tag = "  • LIVE" if self._follow else f"  • round {index + 1} of {len(self._rounds)} so far"
+                "本轮没有图片——训练进行时实时预览窗口未打开。"
+                "下面的数值仍然是真实结果。")
+        tag = "  • 实时" if self._follow else f"  • 当前第 {index + 1} 轮 / 共 {len(self._rounds)} 轮"
         self.caption.setText(caption + tag)
         self.trend.setText(history_line(snap.history))
         self._update_controls()

@@ -90,8 +90,8 @@ class TeachPanel(QWidget):
 
         self.task = QComboBox()
         self.task.addItems(["actions", "objects"])
-        self.task.setToolTip("actions: something that happens over time (a movement)\n"
-                             "objects: a thing visible in one frame")
+        self.task.setToolTip("动作：随时间发生的行为或运动\n"
+                             "物体：单帧中可见的对象")
         self.project = QLineEdit("my-first")
         self.project.setToolTip("输入名称或选择文件夹。项目保存在用户数据目录。")
         self.examples = QLineEdit()

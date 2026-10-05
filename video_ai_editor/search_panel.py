@@ -188,7 +188,7 @@ class _FaceCard(QFrame):
     def contextMenuEvent(self, event):
         menu = QMenu(self)
         action = menu.addAction("不再从高光中排除此人物" if self.avoided
-                                else "Avoid this person in highlights")
+                                else "从高光中排除此人物")
         if menu.exec(event.globalPos()) is action:
             self.avoid_toggled.emit(self.identity_id, not self.avoided)
 
@@ -203,7 +203,7 @@ class _SegmentRow(QWidget):
         row.setContentsMargins(2, 1, 2, 1)
         row.setSpacing(4)
 
-        lbl = QLabel(f"#{idx+1}  {_fmt(start)} → {_fmt(end)}  ({end-start:.1f}s)")
+        lbl = QLabel(f"#{idx+1}  {_fmt(start)} → {_fmt(end)}  ({end-start:.1f} 秒)")
         lbl.setStyleSheet("color: #b4b4b4; font-size: 11px;")
         row.addWidget(lbl, 1)
 
@@ -344,13 +344,13 @@ class SearchPanel(QWidget):
 
         self._expr_scan_btn = QPushButton("扫描表情")
         self._expr_scan_btn.setToolTip(
-            "Detect faces across the video and classify their expression.\n"
-            "Runs once and is cached, so asking a second question is instant.")
+            "扫描整个视频中的人脸并识别表情。\n"
+            "扫描结果会缓存，后续查询可立即完成。")
         self._expr_scan_btn.clicked.connect(self._scan_expressions)
         expr_row.addWidget(self._expr_scan_btn)
 
         self._expr_combo = QComboBox()
-        self._expr_combo.addItem("— expression —", "")
+        self._expr_combo.addItem("— 选择表情 —", "")
         for _label in EMOTION_LABELS:
             self._expr_combo.addItem(_label, _label)
         self._expr_combo.setEnabled(False)
@@ -515,7 +515,7 @@ class SearchPanel(QWidget):
             self._identities[identity_id]["avoided"] = avoided
         name = (self._identities.get(identity_id) or {}).get("name", "this person")
         self._expr_status.setText(
-            f"{name} will be {'skipped' if avoided else 'included'} on the next run.")
+            f"下次运行时将{'跳过' if avoided else '包含'} {name}。")
 
     def _on_face_selected(self, identity_id: str):
         info = self._identities.get(identity_id, {})
@@ -578,8 +578,8 @@ class SearchPanel(QWidget):
             # The classifier is optional; saying so beats an empty result that
             # looks like the video simply had no faces in it.
             self._expr_status.setText(
-                "No expressions found. If the expression model is not "
-                "installed, that is why — the log says which.")
+                "未找到表情结果。如果未安装表情模型，"
+                "这通常就是原因；日志中会显示具体信息。")
             return
         self._apply_expression_scan(seconds)
 
@@ -593,9 +593,9 @@ class SearchPanel(QWidget):
                             for label, count in sorted(counts.items(),
                                                        key=lambda kv: -kv[1])
                             if count)
-        prefix = "Cached scan" if cached else "Scanned"
+        prefix = "缓存扫描结果" if cached else "扫描完成"
         self._expr_status.setText(
-            f"{prefix}: {len(seconds)} second(s) with a readable face"
+            f"{prefix}：{len(seconds)} 秒画面中检测到可识别人脸"
             + (f" — {summary}" if summary else ""))
 
     def _on_expression_picked(self, _index: int):

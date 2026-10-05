@@ -41,8 +41,35 @@ def _write_text(path: Path, text: str, had_final_newline: bool) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
+def _block_spans(text: str, needle: str) -> list[tuple[int, int]]:
+    """Return occurrences that match complete diff lines/blocks, not substrings."""
+    if not needle:
+        return []
+    spans: list[tuple[int, int]] = []
+    start = 0
+    while True:
+        i = text.find(needle, start)
+        if i < 0:
+            break
+        j = i + len(needle)
+        left_ok = i == 0 or text[i - 1] == "\n"
+        right_ok = j == len(text) or text[j] == "\n"
+        if left_ok and right_ok:
+            spans.append((i, j))
+        start = i + 1
+    return spans
+
+
 def _count(text: str, needle: str) -> int:
-    return 0 if not needle else text.count(needle)
+    return len(_block_spans(text, needle))
+
+
+def _replace_once(text: str, needle: str, replacement: str) -> str:
+    spans = _block_spans(text, needle)
+    if not spans:
+        return text
+    i, j = spans[0]
+    return text[:i] + replacement + text[j:]
 
 
 def _best_similarity(source: str, text: str) -> dict[str, Any] | None:
@@ -90,7 +117,7 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
     if source:
         occurrences = _count(text, source)
         if occurrences == 1:
-            return text.replace(source, target, 1), "applied", meta
+            return _replace_once(text, source, target), "applied", meta
         if occurrences > 1:
             # The same short source line can legitimately appear several times
             # (for example "Cancel" or repeated labels). Use the diff context
@@ -113,7 +140,12 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
                 ))
             for needle, replacement in contextual:
                 if _count(text, needle) == 1:
-                    return text.replace(needle, replacement, 1), "applied", meta
+                    return _replace_once(text, needle, replacement), "applied", meta
+            if rule.get("safe_duplicate"):
+                # Same file + same source + same target appears more than once.
+                # Replacing the first remaining exact block is deterministic;
+                # later rules consume the remaining occurrences in source order.
+                return _replace_once(text, source, target), "applied", meta
             meta["occurrences"] = occurrences
             return text, "conflict", meta
         sim = _best_similarity(source, text)
@@ -133,7 +165,7 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
         occurrences = _count(text, anchor)
         if occurrences == 1:
             repl = before + "\n" + target + "\n" + after
-            return text.replace(anchor, repl, 1), "applied", meta
+            return _replace_once(text, anchor, repl), "applied", meta
         if occurrences > 1:
             meta["occurrences"] = occurrences
             return text, "conflict", meta
@@ -141,7 +173,7 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
     if before is not None:
         occurrences = _count(text, before)
         if occurrences == 1:
-            return text.replace(before, before + "\n" + target, 1), "applied", meta
+            return _replace_once(text, before, before + "\n" + target), "applied", meta
         if occurrences > 1:
             meta["occurrences"] = occurrences
             return text, "conflict", meta
@@ -149,7 +181,7 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
     if after is not None:
         occurrences = _count(text, after)
         if occurrences == 1:
-            return text.replace(after, target + "\n" + after, 1), "applied", meta
+            return _replace_once(text, after, target + "\n" + after), "applied", meta
         if occurrences > 1:
             meta["occurrences"] = occurrences
             return text, "conflict", meta

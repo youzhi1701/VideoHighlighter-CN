@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "exact": [
+    "VideoHighlighter",
+    "VideoHighlighter Pro",
+    "CPU",
+    "GPU",
+    "CUDA",
+    "CLIP",
+    "ONNX",
+    "OpenVINO",
+    "FFmpeg",
+    "GGUF",
+    "Ollama",
+    "PyTorch",
+    "YOLOX",
+    "AGPLv3",
+    "FCPXML",
+    "EDL",
+    "CSV",
+    "JSON",
+    "NVIDIA",
+    "Intel",
+    "AMD",
+    "Hugging Face",
+    "Whisper"
+  ]
+}

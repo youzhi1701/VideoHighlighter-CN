@@ -223,7 +223,7 @@ def render(frames: Sequence, per_frame: Sequence, caption: str = "",
                         (p1[0] + 2, max(12, p1[1] - 3)), cv2.FONT_HERSHEY_SIMPLEX,
                         0.38, colour, 1, cv2.LINE_AA)
         if not frame.truth and not dets:
-            cv2.putText(tile, "no target - correct", (6, ch - 8),
+            cv2.putText(tile, "0", (6, ch - 8),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.38, HIT_COLOUR, 1, cv2.LINE_AA)
 
         r, c = divmod(idx, cols)

@@ -587,7 +587,7 @@ export default function App() {
               <Plus className="size-4" /> Add
             </Button>
             <Button size="sm" variant="secondary" onClick={addFolder} disabled={running}>
-              <FolderOpen className="size-4" /> Add Folder
+              <FolderOpen className="size-4" /> 添加文件夹
             </Button>
             <Button
               size="sm"
@@ -602,7 +602,7 @@ export default function App() {
         <CardContent>
           {videos.length === 0 ? (
             <p className="rounded-md border border-dashed py-6 text-center text-sm text-muted-foreground">
-              No videos added yet
+              暂未添加视频
             </p>
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -638,7 +638,7 @@ export default function App() {
                   disabled={running}
                   onCheckedChange={(v) => set("combine_reel", Boolean(v))}
                 />
-                Combine into one reel
+                合并为一个短片
               </label>
             )}
             <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
@@ -717,14 +717,14 @@ export default function App() {
               }
             }}
           />
-          Live detection preview
+          实时检测预览
         </label>
         <label className="flex items-center gap-2 text-sm">
           <Checkbox
             checked={cfg.force_reprocess}
             onCheckedChange={(v) => set("force_reprocess", Boolean(v))}
           />
-          Force reprocess (ignore cache)
+          强制重新处理（忽略缓存）
         </label>
       </div>
 
@@ -887,7 +887,7 @@ export default function App() {
           >
             {!running ? (
               <>
-                <Sparkles className="size-3.5" /> Run Highlighter
+                <Sparkles className="size-3.5" /> 开始生成高光
               </>
             ) : paused ? (
               <>
@@ -928,7 +928,7 @@ export default function App() {
                 checked={cfg.keep_temp}
                 onCheckedChange={(v) => set("keep_temp", Boolean(v))}
               />
-              Keep temp
+              保留临时文件
             </label>
             <Button
               size="sm"
@@ -955,7 +955,7 @@ export default function App() {
                 title={`在文件管理器中显示 ${lastOutput}`}
                 className="gap-1.5"
               >
-                <FolderOpen className="size-3.5" /> Show output
+                <FolderOpen className="size-3.5" /> 显示输出文件
               </Button>
             )}
             <Button
@@ -968,7 +968,7 @@ export default function App() {
               title="在文件管理器中显示 debug.log"
               className="gap-1.5"
             >
-              <FileText className="size-3.5" /> Log file
+              <FileText className="size-3.5" /> 日志文件
             </Button>
             <Button
               size="sm"

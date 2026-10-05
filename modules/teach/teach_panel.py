@@ -93,11 +93,11 @@ class TeachPanel(QWidget):
         self.task.setToolTip("actions: something that happens over time (a movement)\n"
                              "objects: a thing visible in one frame")
         self.project = QLineEdit("my-first")
-        self.project.setToolTip("A name, or a folder. Projects live in your user data.")
+        self.project.setToolTip("输入名称或选择文件夹。项目保存在用户数据目录。")
         self.examples = QLineEdit()
-        self.examples.setPlaceholderText("folder with one subfolder of clips per thing")
+        self.examples.setPlaceholderText("包含各类别片段子文件夹的目录")
         self.videos = QLineEdit()
-        self.videos.setPlaceholderText("a folder of videos (or type the path of one video)")
+        self.videos.setPlaceholderText("视频文件夹（或输入单个视频路径）")
         self.focus = QCheckBox("动作样本自动裁剪到人物区域")
 
         form = QFormLayout()
@@ -109,18 +109,18 @@ class TeachPanel(QWidget):
 
         self.doctor_btn = QPushButton("检查当前电脑")
         self.doctor_btn.clicked.connect(lambda: self._run(["doctor"]))
-        self.start_btn = QPushButton("Start")
+        self.start_btn = QPushButton("开始")
         self.start_btn.clicked.connect(self.start)
         self.review_btn = QPushButton("检查模型判断…")
         self.review_btn.clicked.connect(self.review)
-        self.continue_btn = QPushButton("Continue")
+        self.continue_btn = QPushButton("继续")
         self.continue_btn.setToolTip("运行所有无需人工确认的步骤")
         self.continue_btn.clicked.connect(lambda: self._run(["auto"]))
-        self.train_btn = QPushButton("Train")
+        self.train_btn = QPushButton("训练")
         self.train_btn.setToolTip("继续，包括训练（可能需要较长时间）")
         self.train_btn.clicked.connect(lambda: self._run(["auto", "--train"]))
         self.share_btn = QPushButton("分享…")
-        self.share_btn.setToolTip("Share the trained detector on the model hub "
+        self.share_btn.setToolTip("将训练好的检测器分享到模型中心"
                                   "（只分享模型，不会上传你的素材）")
         self.share_btn.clicked.connect(self.share)
         buttons = QHBoxLayout()
@@ -306,7 +306,7 @@ class TeachPanel(QWidget):
         from modules.teach.background import waiting
         self._waiting = waiting(self._roots())
         n = sum(self._waiting.values())
-        self.review_btn.setText(f"Check guesses… ({n})" if n else "检查模型判断…")
+        self.review_btn.setText(f"检查模型判断…（{n}）" if n else "检查模型判断…")
 
     def _run(self, args: list):
         if self.background.running:

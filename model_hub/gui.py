@@ -34,10 +34,10 @@ from .manifest import (
 from .package import build_package
 
 LICENSE_NAMES = {
-    "apache-2.0": "Apache 2.0 (recommended)",
+    "apache-2.0": "Apache 2.0（推荐）",
     "mit": "MIT",
     "cc-by-4.0": "CC BY 4.0",
-    "cc0-1.0": "CC0 (no conditions)",
+    "cc0-1.0": "CC0（无附加条件）",
 }
 
 
@@ -95,22 +95,22 @@ class DetailsPage(QWizardPage):
     def __init__(self, model_path: str = "", draft: Manifest | None = None):
         super().__init__()
         self._draft = draft
-        self.setTitle("Describe your model")
+        self.setTitle("描述你的模型")
         self.setSubTitle("Say what it finds and where it belongs. People browse the "
                          "community models by category.")
 
         self.model_path = QLineEdit(model_path)
-        browse = QPushButton("Choose…")
+        browse = QPushButton("选择…")
         browse.clicked.connect(self._browse)
         self._model_row = self._hbox(self.model_path, browse)
 
-        self.display_name = QLineEdit(placeholderText="What it finds, e.g. Helicopter detector")
+        self.display_name = QLineEdit(placeholderText="模型识别内容，例如：直升机检测器")
         self.name = QLineEdit(placeholderText="helicopter-detector")
         self._name_edited = False
         self.name.textEdited.connect(lambda _t: setattr(self, "_name_edited", True))
         self.display_name.textChanged.connect(self._sync_name)
         self.description = QPlainTextEdit()
-        self.description.setPlaceholderText("What it finds, and on what kind of footage it works well.")
+        self.description.setPlaceholderText("说明它识别什么，以及适合哪类视频素材。")
         self.description.setFixedHeight(70)
 
         self.category = QLineEdit(placeholderText="animals/horses")
@@ -120,9 +120,9 @@ class DetailsPage(QWizardPage):
         self.category_hint.setStyleSheet("color:#999;")
         self.category.textChanged.connect(self._category_changed)
 
-        self.author = QLineEdit(placeholderText="Your name or handle, shown on the model page")
-        self.game = QLineEdit(placeholderText="Optional, descriptive only (no logos)")
-        self.content_type = QLineEdit(placeholderText="Optional: gameplay, sports, music video…")
+        self.author = QLineEdit(placeholderText="你的名称或昵称，将显示在模型页面")
+        self.game = QLineEdit(placeholderText="可选，仅用于描述（不要使用 Logo）")
+        self.content_type = QLineEdit(placeholderText="可选：游戏、体育、音乐视频等")
         self.license = QComboBox()
         for lic in LICENSES:
             self.license.addItem(LICENSE_NAMES.get(lic, lic), lic)
@@ -156,27 +156,27 @@ class DetailsPage(QWizardPage):
         outer.addLayout(form)
         outer.addStretch(1)          # extra height below the form, not between rows
         self._form = form
-        form.addRow("Model name", self.display_name)
+        form.addRow("模型名称", self.display_name)
         form.addRow("Description", self.description)
         form.addRow("Category", self.category)
         form.addRow("", self.category_hint)
         form.addRow("Author", self.author)
         form.addRow("Licence", self.license)
         form.addRow("Game", self.game)
-        form.addRow("Content type", self.content_type)
+        form.addRow("内容类型", self.content_type)
 
         self.measured = QLabel("")
         self.measured.setWordWrap(True)
-        self.show_technical = QCheckBox("Show technical details")
+        self.show_technical = QCheckBox("显示技术详情")
         form.addRow("", self.measured)
         form.addRow("", self.show_technical)
         self._technical_rows = []
-        for label, widget in (("ONNX model", self._model_row), ("Short name", self.name),
-                              ("Task", self.task), ("Output format", self.output_format),
-                              ("Labels (comma separated)", self.labels), ("Input size", size_box),
-                              ("Layout / color / scaling",
+        for label, widget in (("ONNX 模型", self._model_row), ("简称", self.name),
+                              ("Task", self.task), ("输出格式", self.output_format),
+                              ("标签（逗号分隔）", self.labels), ("输入尺寸", size_box),
+                              ("布局 / 颜色 / 缩放",
                                self._hbox(self.layout_, self.color, self.normalize)),
-                              ("Default confidence", self.threshold)):
+                              ("默认置信度", self.threshold)):
             form.addRow(label, widget)
             self._technical_rows.append(widget)
         self.show_technical.toggled.connect(self._set_technical_visible)
@@ -256,7 +256,7 @@ class DetailsPage(QWizardPage):
         self.category.setCompleter(completer)
 
     def _browse(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Choose ONNX model", "", "ONNX model (*.onnx)")
+        path, _ = QFileDialog.getOpenFileName(self, "Choose ONNX 模型", "", "ONNX 模型 (*.onnx)")
         if path:
             self.model_path.setText(path)
             if not self.display_name.text():
@@ -302,8 +302,8 @@ class DetailsPage(QWizardPage):
 class ChecklistPage(QWizardPage):
     def __init__(self):
         super().__init__()
-        self.setTitle("Before you share")
-        self.setSubTitle("Shared models are public. Confirm each item; sharing stays disabled until you do.")
+        self.setTitle("分享前确认")
+        self.setSubTitle("分享的模型将公开。请逐项确认，完成前无法分享。")
         lay = QVBoxLayout(self)
         self.boxes: dict[str, QCheckBox] = {}
         for key, text in COMPLIANCE_ITEMS.items():
@@ -332,8 +332,8 @@ class CheckPage(QWizardPage):
     def __init__(self, wizard: "PublishWizard"):
         super().__init__()
         self._wiz = wizard
-        self.setTitle("Check the model")
-        self.setSubTitle("VideoHighlighter builds the package and runs one test inference on your CPU.")
+        self.setTitle("检查模型")
+        self.setSubTitle("VideoHighlighter 会构建模型包，并在 CPU 上执行一次测试推理。")
         self.output = QPlainTextEdit(readOnly=True)
         lay = QVBoxLayout(self)
         lay.addWidget(self.output)
@@ -342,7 +342,7 @@ class CheckPage(QWizardPage):
 
     def initializePage(self):
         self._ok = False
-        self.output.setPlainText("Checking…")
+        self.output.setPlainText("检查中…")
         manifest = self._wiz.details.manifest()
         manifest.compliance = self._wiz.checklist.compliance()
         self._tmp = tempfile.TemporaryDirectory(prefix="vh-package-")
@@ -354,8 +354,8 @@ class CheckPage(QWizardPage):
             self.completeChanged.emit()
             return
         self._ok = report.ok
-        verdict = ("Ready to share." if report.ok
-                   else "Fix the problems above, then go back and try again.")
+        verdict = ("可以分享。" if report.ok
+                   else "请先修复上方问题，然后返回重试。")
         self.output.setPlainText(report.text() + "\n\n" + verdict)
         self.completeChanged.emit()
 
@@ -367,15 +367,15 @@ class PublishPage(QWizardPage):
     def __init__(self, wizard: "PublishWizard"):
         super().__init__()
         self._wiz = wizard
-        self.setTitle("Share on Hugging Face")
+        self.setTitle("分享到 Hugging Face")
         self.setSubTitle("The model is stored in your own free Hugging Face account and "
                          "listed in VideoHighlighter's community models.")
         self.token = QLineEdit(echoMode=QLineEdit.Password)
         self.token.setPlaceholderText("hf_… (token with write permission)")
         saved = hub.get_token()
         if saved:
-            self.token.setPlaceholderText("Saved token will be used")
-        self.remember = QCheckBox("Remember token in the system credential store")
+            self.token.setPlaceholderText("将使用已保存的令牌")
+        self.remember = QCheckBox("在系统凭据存储中记住令牌")
         self.remember.setChecked(True)
         get_token = QLabel('No account yet? <a href="https://huggingface.co/join">Create one</a>, '
                            'then <a href="https://huggingface.co/settings/tokens">create a token</a> '
@@ -389,10 +389,10 @@ class PublishPage(QWizardPage):
         self.url: str | None = None
 
         form = QFormLayout()
-        form.addRow("Access token", self.token)
+        form.addRow("访问令牌", self.token)
         form.addRow("", get_token)
         form.addRow("", self.remember)
-        form.addRow("Repository name", self.repo)
+        form.addRow("仓库名称", self.repo)
         lay = QVBoxLayout(self)
         lay.addLayout(form)
         lay.addWidget(self.publish_btn, alignment=Qt.AlignLeft)
@@ -406,11 +406,11 @@ class PublishPage(QWizardPage):
     def _publish(self):
         token = self.token.text().strip() or hub.get_token()
         if not token:
-            QMessageBox.warning(self, "Token needed", "Paste a Hugging Face access token with write permission.")
+            QMessageBox.warning(self, "需要令牌", "请粘贴具有写入权限的 Hugging Face 访问令牌。")
             return
         if self.token.text().strip() and self.remember.isChecked():
             if not hub.save_token(token):
-                self.log.appendPlainText("⚠ Couldn't save the token; it will be used only this time.")
+                self.log.appendPlainText("⚠ 无法保存令牌，本次会话仍会使用。")
         self.publish_btn.setEnabled(False)
         run_in_thread(self, hub.publish, self._wiz.checkpage.package_dir,
                       repo_name=self.repo.text().strip() or None, token=token,
@@ -420,7 +420,7 @@ class PublishPage(QWizardPage):
     def _done(self, url: str):
         self.url = url
         self.log.appendPlainText(f"\nShared: {url}")
-        self.log.appendPlainText("It appears in the community models within a few minutes. Thank you!")
+        self.log.appendPlainText("几分钟后会出现在社区模型中，感谢分享！")
         self.completeChanged.emit()
 
     def _error(self, message: str):
@@ -434,7 +434,7 @@ class PublishPage(QWizardPage):
 class PublishWizard(QWizard):
     def __init__(self, parent=None, model_path: str = "", draft: Manifest | None = None):
         super().__init__(parent)
-        self.setWindowTitle("Share a model")
+        self.setWindowTitle("分享模型")
         self.setWizardStyle(QWizard.ModernStyle)
         self.resize(720, 640)
         self.details = DetailsPage(model_path=model_path, draft=draft)
@@ -443,7 +443,7 @@ class PublishWizard(QWizard):
         self.publishpage = PublishPage(self)
         for page in (self.details, self.checklist, self.checkpage, self.publishpage):
             self.addPage(page)
-        self.setButtonText(QWizard.FinishButton, "Open model page")
+        self.setButtonText(QWizard.FinishButton, "打开模型页面")
         self.finished.connect(self._open_page)
 
     def _open_page(self, result: int):
@@ -453,23 +453,23 @@ class PublishWizard(QWizard):
 
 # ------------------------------------------------------------------ browser
 class ModelBrowserDialog(QDialog):
-    """Search, install and remove community models."""
+    """搜索、安装和移除社区模型。"""
 
     COLUMNS = ["Model", "Category", "Task", "Status", "Downloads", "Updated"]
     installed = Signal(object)          # InstalledModel, so the host can refresh its model list
 
     def __init__(self, parent=None, models_dir: str | Path | None = None):
         super().__init__(parent)
-        self.setWindowTitle("Community models")
+        self.setWindowTitle("社区模型")
         self.resize(900, 540)
         self.models_dir = models_dir
         self.entries: list[hub.CatalogEntry] = []
         self._all: list[hub.CatalogEntry] = []
 
-        self.query = QLineEdit(placeholderText="Search models, e.g. helicopter")
+        self.query = QLineEdit(placeholderText="搜索模型，例如 helicopter")
         self.query.returnPressed.connect(self.refresh)
         self.category = QComboBox()
-        self.category.addItem("All categories", "")
+        self.category.addItem("全部分类", "")
         self.category.currentIndexChanged.connect(self._filter)
         search = QPushButton("Search")
         search.clicked.connect(self.refresh)
@@ -487,15 +487,15 @@ class ModelBrowserDialog(QDialog):
         self.table.itemSelectionChanged.connect(self._selection_changed)
         self.table.doubleClicked.connect(self._open_page)
 
-        self.status = QLabel("Community models are made by other users. Only models "
+        self.status = QLabel("社区模型 are made by other users. Only models "
                              "marked Verified were reviewed by the VideoHighlighter team.")
         self.status.setWordWrap(True)
 
         self.install_btn = QPushButton("Install")
         self.install_btn.clicked.connect(self._install)
-        self.page_btn = QPushButton("Open model page")
+        self.page_btn = QPushButton("打开模型页面")
         self.page_btn.clicked.connect(self._open_page)
-        self.report_btn = QPushButton("Report a problem")
+        self.report_btn = QPushButton("报告问题")
         self.report_btn.clicked.connect(self._report)
         buttons = QDialogButtonBox(QDialogButtonBox.Close)
         buttons.rejected.connect(self.reject)
@@ -518,19 +518,19 @@ class ModelBrowserDialog(QDialog):
         return {m.repo_id for m in hub.list_installed(self.models_dir)}
 
     def refresh(self):
-        self.status.setText("Loading community models…")
+        self.status.setText("正在加载社区模型…")
         run_in_thread(self, _search_with_progress, self.query.text().strip(),
                       on_done=self._loaded, on_error=self._load_failed)
 
     def _load_failed(self, message: str):
-        self.status.setText(f"Couldn't load the community models. Check your internet connection. ({message})")
+        self.status.setText(f"无法加载社区模型，请检查网络连接。（{message})")
 
     def _loaded(self, entries: list[hub.CatalogEntry]):
         self._all = entries
         current = self.category.currentData() or ""
         self.category.blockSignals(True)
         self.category.clear()
-        self.category.addItem("All categories", "")
+        self.category.addItem("全部分类", "")
         for cat in hub.categories_in(entries):
             depth = cat.count("/")
             self.category.addItem("    " * depth + cat.split("/")[-1], cat)
@@ -556,7 +556,7 @@ class ModelBrowserDialog(QDialog):
             if e.repo_id in installed:
                 parts.append("installed")
             if not e.usable:
-                parts.append("needs a newer app")
+                parts.append("需要更新版本的软件")
             status = ", ".join(parts) or "Community"
             values = [e.repo_id, e.category or "—", TASKS.get(e.task, ("—",))[0], status,
                       str(e.downloads), e.last_modified[:10]]
@@ -566,12 +566,12 @@ class ModelBrowserDialog(QDialog):
                     item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 self.table.setItem(row, col, item)
         if entries:
-            self.status.setText(f"{len(entries)} model(s).")
+            self.status.setText(f"{len(entries)} 个模型。")
         elif not self._all:
             self.status.setText("No community models yet. Train one in the Train tab "
                                 "and be the first to share it.")
         else:
-            self.status.setText("No models match. Try another search or category.")
+            self.status.setText("没有匹配的模型，请尝试其他关键词或分类。")
         self._selection_changed()
 
     def _current(self) -> hub.CatalogEntry | None:
@@ -591,7 +591,7 @@ class ModelBrowserDialog(QDialog):
             return
         if not e.verified:
             answer = QMessageBox.question(
-                self, "Install community model",
+                self, "安装社区模型",
                 f"{e.repo_id} was made by another user and hasn't been reviewed.\n\n"
                 "VideoHighlighter checks the file before use and runs it only through "
                 "ONNX Runtime or OpenVINO. Install it?")
@@ -605,17 +605,17 @@ class ModelBrowserDialog(QDialog):
     def _installed(self, result):
         model, report = result
         if model is None:
-            QMessageBox.warning(self, "Model not installed",
+            QMessageBox.warning(self, "模型未安装",
                                 "The model failed the safety and compatibility checks:\n\n" + report.text())
-            self.status.setText("Install cancelled: the model failed the checks.")
+            self.status.setText("已取消安装：模型未通过检查。")
         else:
-            self.status.setText(f"Installed {model.manifest.display_name}. "
-                                "Pick it under Advanced → object model.")
+            self.status.setText(f"已安装 {model.manifest.display_name}. "
+                                "可在“高级 → 物体模型”中选择。")
             self.installed.emit(model)
         self._filter()
 
     def _install_failed(self, message: str):
-        self.status.setText(f"Install failed: {message}")
+        self.status.setText(f"安装失败：{message}")
         self._selection_changed()
 
     def _open_page(self, *_):

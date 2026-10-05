@@ -43,11 +43,11 @@ export function AboutTab() {
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <p>
-            You&apos;re running the free, open-source edition — face identity,
-            expressions, the report and the assistant are all here.{" "}
-            <strong>Pro</strong> teaches the app a vocabulary of its own:
-            categories from your own example frames, search by example,
-            open-vocabulary detection, a live overlay, and a commercial licence.
+            你正在使用免费开源版本——人物身份识别、
+            表情识别、报告和助手功能都已包含。{" "}
+            <strong>Pro</strong> 还能让程序学习你自己的识别词汇：
+            可从你的示例画面学习类别、按示例搜索、
+            开放词汇检测、实时叠加显示，以及商业许可证。
           </p>
           <p>
             {info ? (
@@ -69,7 +69,7 @@ export function AboutTab() {
           {info && (
             <>
               <p>
-                Email:{" "}
+                邮箱：{" "}
                 <Link
                   href={`mailto:${info.support_email}?subject=VideoHighlighter%20support`}
                 >
@@ -77,17 +77,17 @@ export function AboutTab() {
                 </Link>
               </p>
               <p>
-                Discord: <Link href={info.discord}>加入社区</Link>
+                Discord：<Link href={info.discord}>加入社区</Link>
               </p>
               <p>
-                Website: <Link href={info.website}>{info.website}</Link>
+                网站：<Link href={info.website}>{info.website}</Link>
               </p>
               <p>
-                Source code: <Link href={info.repo}>{info.repo}</Link>
+                源代码：<Link href={info.repo}>{info.repo}</Link>
               </p>
               {info.log_path && (
                 <p className="pt-1 text-xs text-muted-foreground">
-                  Reporting a bug? Attach the debug log: {info.log_path}
+                  报告问题时，请附上调试日志：{info.log_path}
                 </p>
               )}
             </>
@@ -102,12 +102,12 @@ export function AboutTab() {
         <CardContent className="space-y-2 text-sm text-muted-foreground">
           <p>© 2026 Przemysław Kreft 及贡献者</p>
           <p>
-            Licensed under the{" "}
+            采用以下许可证：{" "}
             <Link href="https://www.gnu.org/licenses/agpl-3.0.html">AGPLv3</Link>.
           </p>
           <p className="text-xs">
-            Third-party components include PySide6 (Qt) and FFmpeg, under their
-            respective licences.
+            第三方组件包括 PySide6（Qt）和 FFmpeg，分别遵循其
+            各自的许可证。
           </p>
         </CardContent>
       </Card>

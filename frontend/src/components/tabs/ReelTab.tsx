@@ -128,21 +128,21 @@ const EASING_HINTS: Record<string, string> = {
 const TEXT_FIELDS = [
   {
     section: "Hook",
-    label: "Opening line",
+    label: "开场文案",
     hint: "The first two seconds. Most people watch muted, so this is what they read.",
-    placeholder: "I nearly quit at mile 38",
+    placeholder: "例如：我差点在第 38 英里放弃",
   },
   {
     section: "Context",
-    label: "Context",
+    label: "背景信息",
     hint: "Where, what, what is at stake. Keep it to a few words.",
-    placeholder: "50 miles. Heavy rain. No backup plan.",
+    placeholder: "例如：50 英里，暴雨，没有备用计划。",
   },
   {
     section: "Payoff",
-    label: "Ending",
+    label: "结尾文案",
     hint: "The result, the lesson, or a question worth answering.",
-    placeholder: "The answer was slowing down",
+    placeholder: "例如：答案其实是慢下来",
   },
 ]
 
@@ -213,7 +213,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
       dest_root: root,
       duration,
       pace,
-      title: "Reel",
+      title: "短片",
       music,
       transition,
       transition_duration: transitionSeconds,
@@ -511,7 +511,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {(options?.motions ?? [{ key: "none", label: "Still" }]).map((m) => (
+                {(options?.motions ?? [{ key: "none", label: "静止" }]).map((m) => (
                   <SelectItem key={m.key} value={m.key}>
                     {m.label}
                   </SelectItem>

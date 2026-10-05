@@ -172,7 +172,7 @@ class VideoPickerDialog(QDialog):
         )
         self.download_btn.setEnabled(False)
         self.download_btn.clicked.connect(self._accept_selection)
-        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn = QPushButton("取消")
         self.cancel_btn.clicked.connect(self.reject)
         btns.addWidget(self.cancel_btn)
         btns.addWidget(self.download_btn)
@@ -199,7 +199,7 @@ class VideoPickerDialog(QDialog):
         if not self._entries:
             self.status_label.setText("该页面未找到视频。")
             return
-        self.status_label.setText(f"{len(self._entries)} video(s) — pick which to download.")
+        self.status_label.setText(f"共 {len(self._entries)} 个视频 — 请选择要下载的内容。")
         for idx, entry in enumerate(self._entries):
             card = _Card(entry)
             card.checkbox.stateChanged.connect(self._update_download_btn)
@@ -210,7 +210,7 @@ class VideoPickerDialog(QDialog):
 
     @Slot(str)
     def _on_scrape_error(self, msg: str):
-        self.status_label.setText(f"Failed to load listing: {msg}")
+        self.status_label.setText(f"加载列表失败：{msg}")
 
     # -------------------------------------------------------------- thumbnails
     def _start_thumbs(self):

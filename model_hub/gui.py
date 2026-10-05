@@ -96,8 +96,7 @@ class DetailsPage(QWizardPage):
         super().__init__()
         self._draft = draft
         self.setTitle("描述你的模型")
-        self.setSubTitle("Say what it finds and where it belongs. People browse the "
-                         "community models by category.")
+        self.setSubTitle("说明模型能识别什么，以及它属于哪个分类。用户会按分类浏览社区模型。")
 
         self.model_path = QLineEdit(model_path)
         browse = QPushButton("选择…")
@@ -145,7 +144,7 @@ class DetailsPage(QWizardPage):
         self.normalize.addItems(sorted(NORMALIZATIONS))
         self.threshold = QDoubleSpinBox(minimum=0.01, maximum=0.99, singleStep=0.05, value=0.3)
         size = QHBoxLayout()
-        for w, label in ((self.width_, "W"), (self.height_, "H"), (self.frames, "Frames")):
+        for w, label in ((self.width_, "宽"), (self.height_, "高"), (self.frames, "帧数")):
             size.addWidget(QLabel(label))
             size.addWidget(w)
         size_box = QWidget()
@@ -222,8 +221,8 @@ class DetailsPage(QWizardPage):
             self.author.setText(d.author)
         found = d.found_sentence()
         self.measured.setText(
-            f"Finds: {', '.join(d.labels)}."
-            + (f" {found} — this goes on the model page." if found else ""))
+            f"识别内容：{', '.join(d.labels)}。"
+            + (f" {found}——该结果会显示在模型页面。" if found else ""))
 
     def _set_technical_visible(self, visible: bool) -> None:
         for w in self._technical_rows:
@@ -246,8 +245,8 @@ class DetailsPage(QWizardPage):
         elif CATEGORY_RE.match(text):
             self.category_hint.setText(f"分类位置：{' › '.join(text.split('/'))}")
         else:
-            self.category_hint.setText("请使用小写字母、数字和连字符"
-                                       "up to three levels separated by /")
+            self.category_hint.setText("请使用小写字母、数字和连字符，"
+                                       "最多三级，并使用 / 分隔")
 
     def _set_categories(self, categories: list[str]) -> None:
         completer = QCompleter(categories, self)
@@ -328,9 +327,9 @@ class ChecklistPage(QWizardPage):
             lay.addWidget(box)
             self.boxes[key] = box
         note = QLabel(
-            "Only the model is shared — never your videos, frames or audio. Some "
-            "publishers forbid AI training on their games in their terms of service. "
-            "If you are not sure, don't share. This is general guidance, not legal advice.")
+            "只会分享模型，绝不会上传你的视频、视频帧或音频。部分发行商会在服务条款中"
+            "禁止使用其游戏内容进行 AI 训练；如果不确定，请不要分享。"
+            "此处仅为一般性说明，不构成法律建议。")
         note.setWordWrap(True)
         lay.addSpacing(8)
         lay.addWidget(note)
@@ -383,8 +382,8 @@ class PublishPage(QWizardPage):
         super().__init__()
         self._wiz = wizard
         self.setTitle("分享到 Hugging Face")
-        self.setSubTitle("The model is stored in your own free Hugging Face account and "
-                         "listed in VideoHighlighter's community models.")
+        self.setSubTitle("模型将保存到你自己的免费 Hugging Face 账号中，"
+                         "并列入 VideoHighlighter 社区模型列表。")
         self.token = QLineEdit(echoMode=QLineEdit.Password)
         self.token.setPlaceholderText("hf_…（具有写入权限的令牌）")
         saved = hub.get_token()
@@ -393,8 +392,8 @@ class PublishPage(QWizardPage):
         self.remember = QCheckBox("在系统凭据存储中记住令牌")
         self.remember.setChecked(True)
         get_token = QLabel('还没有账号？<a href="https://huggingface.co/join">创建账号</a>，'
-                           'then <a href="https://huggingface.co/settings/tokens">create a token</a> '
-                           'with write permission.')
+                           '然后<a href="https://huggingface.co/settings/tokens">创建令牌</a>，'
+                           '并授予写入权限。')
         get_token.setOpenExternalLinks(True)
         get_token.setWordWrap(True)
         self.repo = QLineEdit()
@@ -583,8 +582,7 @@ class ModelBrowserDialog(QDialog):
         if entries:
             self.status.setText(f"共 {len(entries)} 个模型。")
         elif not self._all:
-            self.status.setText("暂无社区模型。可在“训练”页训练一个并率先分享。"
-                                "并成为第一个分享模型的人。")
+            self.status.setText("暂无社区模型。可在“训练”页训练一个并成为第一个分享模型的人。")
         else:
             self.status.setText("没有匹配的模型，请尝试其他关键词或分类。")
         self._selection_changed()

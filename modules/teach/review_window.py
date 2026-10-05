@@ -101,15 +101,15 @@ class Tile(QLabel):
         self.setAlignment(Qt.AlignCenter)
         if NEGATIVE in self.choices:
             self.setToolTip("单击：接受 / 拒绝 / 都不是 / 未决定。右键："
-                            "it is another class.  Double-click: play.")
+                            "右键可指定为其他类别；双击播放。")
         else:
             self.setToolTip("单击：接受 / 拒绝 / 未决定。双击：播放。")
         self.refresh()
 
     def refresh(self):
         colour = COLOURS[self.state]
-        answer = {ACCEPT: self.label, REJECT: "reject", NEGATIVE: "都不是",
-                  UNDECIDED: "undecided"}[self.state]
+        answer = {ACCEPT: self.label, REJECT: "拒绝", NEGATIVE: "都不是",
+                  UNDECIDED: "未决定"}[self.state]
         self.setStyleSheet(f"QLabel {{ border: 5px solid {colour}; background: #111; }}"
                            f"QLabel:focus {{ border: 5px solid #ffffff; }}")
         self.setPixmap(self.picture)
@@ -237,8 +237,8 @@ class ReviewWindow(QWidget):
         project = Project.load(self.root)
         self.record = self.fetch(project)
         if not self.record:
-            self.header.setText("<b>没有需要继续检查的内容。</b> 关闭此窗口并运行 "
-                                "<code>status</code> for the next step.")
+            self.header.setText("<b>没有需要继续检查的内容。</b> 关闭此窗口后运行 "
+                                "<code>status</code> 查看下一步。")
             self.save_next.setEnabled(False)
             self.update_progress(project)
             return
@@ -271,10 +271,10 @@ class ReviewWindow(QWidget):
                                  frame_reader=self.frame_reader, keep_tiles=True)
 
     def intro(self) -> str:
-        return (f"<b>Batch {self.record['sheet']}</b> — each tile already shows its "
-                "guess. Click the wrong ones: click cycles accept / reject / none of "
-                "these / undecided; right-click to say which class it really is; "
-                "double-click to play. Then press Enter.")
+        return (f"<b>批次 {self.record['sheet']}</b> —— 每个方块已经显示模型的判断。 "
+                "点击错误项可在“接受 / 拒绝 / 都不是 / 未决定”之间切换；"
+                "右键可指定真实类别；"
+                "双击播放。确认后按 Enter。")
 
     def columns(self, project: Project) -> int:
         return 2 if project.task == "actions" else 4
@@ -292,7 +292,7 @@ class ReviewWindow(QWidget):
     def update_progress(self, project: Project):
         counts = project.counts()
         self.progress.setText("   ".join(
-            f"<b>{name}</b>: {c['accepted']} of {c['target']}" for name, c in counts.items()))
+            f"<b>{name}</b>：{c['accepted']} / {c['target']} 已接受" for name, c in counts.items()))
 
     def accept_all(self):
         for tile in self.tiles:
@@ -365,9 +365,9 @@ class BoxReviewWindow(ReviewWindow):
         return record
 
     def intro(self) -> str:
-        return (f"<b>Boxes {self.record['sheet']}</b> — is the yellow box around the "
-                "named thing, and tight? Click the wrong ones to reject them (click "
-                "cycles accept / reject / undecided). Then press Enter.")
+        return (f"<b>检测框批次 {self.record['sheet']}</b> —— 黄色框是否准确框住目标，"
+                "并且足够贴合？点击错误项即可拒绝（点击可在 "
+                "接受 / 拒绝 / 未决定之间切换）。确认后按 Enter。")
 
     def columns(self, project: Project) -> int:
         return 4
@@ -388,7 +388,7 @@ class BoxReviewWindow(ReviewWindow):
         from modules.teach import boxes
         labels = boxes.store(project)
         self.progress.setText(f"已接受 <b>{len(labels.accepted())}</b> 个检测框，"
-                              f"<b>{len(labels.pending())}</b> waiting")
+                              f"<b>{len(labels.pending())}</b> 个待确认")
 
 
 def open_window(root: str, size: int = 24, class_name: Optional[str] = None,

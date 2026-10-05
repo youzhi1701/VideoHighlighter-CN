@@ -51,11 +51,11 @@ import {
 import { basename, pickAudioFile, pickDirectory, pickScriptFile, pickVideos } from "@/lib/files"
 
 const STAGE_LABELS: Record<AutoStageName, string> = {
-  ingest: "Copy from card",
-  music: "Analyse music",
-  highlight: "Find highlights",
-  combine: "Build the reel",
-  music_mix: "Lay the music",
+  ingest: "从存储卡复制",
+  music: "分析音乐",
+  highlight: "查找高光",
+  combine: "生成成片",
+  music_mix: "混合音乐",
 }
 
 const STAGE_ORDER: AutoStageName[] = [
@@ -343,7 +343,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <FolderOpen className="size-4" /> Destination
+              <FolderOpen className="size-4" /> 输出位置
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -410,7 +410,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <FileText className="size-4" /> Script
+              <FileText className="size-4" /> 脚本
             </CardTitle>
             <div className="flex gap-1">
               <Button variant="ghost" size="sm" onClick={() => void loadExample()}>

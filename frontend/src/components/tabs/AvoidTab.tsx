@@ -259,7 +259,7 @@ export function AvoidTab({
                     <span className="font-medium">{f.label}</span>
                   </button>
                   <span className="shrink-0 text-xs text-muted-foreground">
-                    seen {f.count}×
+                    出现 {f.count} 次
                   </span>
                   <button
                     className="shrink-0 text-muted-foreground hover:text-destructive"

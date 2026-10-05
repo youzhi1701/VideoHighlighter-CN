@@ -1167,7 +1167,7 @@ def detect_link_pattern(soup, base_url: str, log_fn: Callable = print) -> Option
             log_fn(f"🔎 Auto-detected link pattern (generic): {pat} ({n} link(s))")
             return pat
 
-    log_fn("⚠️ Could not auto-detect a link pattern; falling back to /video/")
+    log_fn("⚠️ 无法自动识别链接规则，将回退使用 /video/")
     return None
 
 
@@ -1188,7 +1188,7 @@ def extract_video_entries(url: str, pattern: Optional[str] = None, log_fn: Calla
     use_browser: "auto" (static, then Selenium if static found nothing),
                  "never" (static only), or "always" (Selenium only).
     """
-    log_fn(f"🌐 Listing: {url}")
+    log_fn(f"🌐 正在读取列表页：{url}")
     entries: List[Dict] = []
 
     def _parse(html: str) -> List[Dict]:
@@ -1200,14 +1200,14 @@ def extract_video_entries(url: str, pattern: Optional[str] = None, log_fn: Calla
         html = _fetch_listing_html(url, log_fn, browser=False)
         if html:
             entries = _parse(html)
-            log_fn(f"📄 Static HTML: {len(entries)} video(s)")
+            log_fn(f"📄 静态 HTML：找到 {len(entries)} 个视频")
 
     if (not entries or use_browser == "always") and use_browser != "never":
-        log_fn("🧭 Rendering with headless browser (scrolling for lazy content)...")
+        log_fn("🧭 正在使用无头浏览器渲染页面（滚动加载延迟内容）…")
         html = _fetch_listing_html(url, log_fn, browser=True)
         if html:
             entries = _parse(html)
-            log_fn(f"🌐 Rendered: {len(entries)} video(s)")
+            log_fn(f"🌐 浏览器渲染完成：找到 {len(entries)} 个视频")
 
     return entries
 
@@ -1238,7 +1238,7 @@ def extract_video_links(url: str, pattern: Optional[str] = None, log_fn: Callabl
     pattern: substring that video links contain; None/"auto" auto-detects it.
     NOTE: Duration extraction on listing pages is often meaningless; we no longer do it here.
     """
-    log_fn(f"🌐 Fetching page: {url}")
+    log_fn(f"🌐 正在获取页面：{url}")
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -1251,7 +1251,7 @@ def extract_video_links(url: str, pattern: Optional[str] = None, log_fn: Callabl
         response = requests.get(url, headers=headers, timeout=30)
         response.raise_for_status()
     except requests.RequestException as e:
-        raise DownloadError(f"Failed to fetch page: {e}")
+        raise DownloadError(f"获取页面失败：{e}")
     soup = BeautifulSoup(response.text, "html.parser")
     pattern = _resolve_pattern(pattern, soup, url, log_fn)
     video_links: List[str] = []
@@ -1282,10 +1282,10 @@ def extract_video_links(url: str, pattern: Optional[str] = None, log_fn: Callabl
                 if any(domain in src for domain in ["youtube.com", "youtu.be", "vimeo.com", "dailymotion.com"]):
                     if src not in video_links:
                         video_links.append(src)
-    log_fn(f"🎬 Found {len(video_links)} video links")
+    log_fn(f"🎬 找到 {len(video_links)} 个视频链接")
     if not video_links:
-        log_fn("⚠️ No video links found. Page structure may have changed.")
-        log_fn("💡 Try a different pattern or check the page manually")
+        log_fn("⚠️ 未找到视频链接，页面结构可能已经变化。")
+        log_fn("💡 请尝试其他链接规则，或手动检查页面。")
     return video_links
 
 # -----------------------------
@@ -2005,7 +2005,7 @@ def _run_ytdlp_with_progress(cmd, timeout, log_fn: Callable = print, cancel_flag
                     if now - last_emit >= 1.0:
                         last_emit = now
                         tail = f"  •  {size}" if size and size not in ("NA", "") else ""
-                        log_fn(f"⬇️ {pct}  •  {speed}  •  ETA {eta}{tail}")
+                        log_fn(f"⬇️ {pct}  •  {speed}  •  剩余 {eta}{tail}")
                 continue  # don't keep template lines in captured output
             lines.append(line)
     finally:
@@ -2044,7 +2044,7 @@ def download_video(
             metadata["duration_real"] = real
             if is_suspicious_duration(metadata.get("duration")):
                 metadata["duration"] = real
-                log_fn(f"✅ Duration corrected via ffprobe: {real:.1f}s")
+                log_fn(f"✅ 已通过 ffprobe 修正时长：{real:.1f} 秒")
     
     metadata: Dict[str, Any] = {
         "url": url,
@@ -2061,7 +2061,7 @@ def download_video(
         
         # 1. FIRST: Check if video already exists (BEFORE any extraction logic)
         if skip_existing:
-            log_fn("🔍 Checking if video already exists...")
+            log_fn("🔍 正在检查视频是否已经存在…")
            
             # Strategy 1: Try to get title from yt-dlp (fast)
             title_cmd = [
@@ -2085,9 +2085,9 @@ def download_video(
                         candidate = os.path.join(save_dir, f"{video_index:03d} - {title}{ext}")
                         if os.path.exists(candidate):
                             size_mb = os.path.getsize(candidate) / (1024 * 1024)
-                            log_fn(f"⏭️ Video already exists: {os.path.basename(candidate)}")
-                            log_fn(f"   File size: {size_mb:.2f} MB")
-                            log_fn("   Skipping download...")
+                            log_fn(f"⏭️ 视频已存在：{os.path.basename(candidate)}")
+                            log_fn(f"   文件大小：{size_mb:.2f} MB")
+                            log_fn("   跳过下载…")
                             metadata.update({
                                 "skipped": True,
                                 "filepath": candidate,
@@ -2097,18 +2097,18 @@ def download_video(
                             # Correct duration for existing file
                             apply_ffprobe_duration(candidate)
                             if process_callback:
-                                log_fn("🔄 Running processing callback for existing file...")
+                                log_fn("🔄 正在处理已有文件…")
                                 try:
                                     process_result = process_callback(candidate, metadata)
                                     if process_result:
                                         metadata["processed"] = True
                                         metadata["process_result"] = process_result
                                 except Exception as e:
-                                    log_fn(f"⚠️ Processing failed for existing file: {e}")
+                                    log_fn(f"⚠️ 已有文件处理失败：{e}")
                                     metadata["processed"] = False
                             return True, candidate, metadata
             except Exception as e:
-                log_fn(f"⚠️ Quick title check failed: {e}")
+                log_fn(f"⚠️ 快速标题检查失败：{e}")
                 # Continue with other checks
            
             # Strategy 2: Check for URL-based filename
@@ -2130,9 +2130,9 @@ def download_video(
                         candidate_path = os.path.join(save_dir, candidate_name)
                         if os.path.exists(candidate_path):
                             size_mb = os.path.getsize(candidate_path) / (1024 * 1024)
-                            log_fn(f"⏭️ Video already exists (URL-based): {os.path.basename(candidate_path)}")
-                            log_fn(f"   File size: {size_mb:.2f} MB")
-                            log_fn("   Skipping download...")
+                            log_fn(f"⏭️ 视频已存在（按 URL 文件名识别）：{os.path.basename(candidate_path)}")
+                            log_fn(f"   文件大小：{size_mb:.2f} MB")
+                            log_fn("   跳过下载…")
                             metadata.update({
                                 "skipped": True,
                                 "filepath": candidate_path,
@@ -2147,7 +2147,7 @@ def download_video(
                                         metadata["processed"] = True
                                         metadata["process_result"] = process_result
                                 except Exception as e:
-                                    log_fn(f"⚠️ Processing failed for existing file: {e}")
+                                    log_fn(f"⚠️ 已有文件处理失败：{e}")
                                     metadata["processed"] = False
                             return True, candidate_path, metadata
         
@@ -2166,23 +2166,23 @@ def download_video(
         if needs_duration:
             start_pct, end_pct = time_range
             if not (0 <= start_pct <= 100 and 0 <= end_pct <= 100):
-                log_fn(f"❌ Invalid percentage range: {start_pct}%-{end_pct}%")
+                log_fn(f"❌ 无效的百分比范围：{start_pct}%-{end_pct}%")
                 return False, None, metadata
             if end_pct <= start_pct:
-                log_fn("❌ Invalid percentage range: end must be > start")
+                log_fn("❌ 无效的百分比范围：结束值必须大于开始值")
                 return False, None, metadata
-            log_fn("📊 Getting video duration to calculate time range...")
-            log_fn(f"   Target: {start_pct:.1f}% to {end_pct:.1f}%")
+            log_fn("📊 正在获取视频时长以计算下载范围…")
+            log_fn(f"   目标范围：{start_pct:.1f}% 至 {end_pct:.1f}%")
             
             # Get duration
             duration = get_video_duration_advanced(url, log_fn)
                        
             if is_suspicious_duration(duration):
-                log_fn("🌐 Trying browser automation...")
+                log_fn("🌐 正在尝试浏览器自动化…")
                 duration = get_duration_with_browser_automation(url, log_fn)
             
             if is_suspicious_duration(duration):
-                log_fn("📡 Trying Playwright automation...")
+                log_fn("📡 正在尝试 Playwright 自动化…")
                 duration = get_duration_with_playwright_automation(url, log_fn)
                 if duration and duration > 0:
                     with _duration_method_cache_lock:
@@ -2190,25 +2190,25 @@ def download_video(
                             "type": "playwright",
                             "name": "Playwright browser duration",
                         }
-                    log_fn(f"  ✓ Playwright gave us duration: {duration:.1f}s")
+                    log_fn(f"  ✓ Playwright 获取到时长：{duration:.1f} 秒")
             
             metadata["duration"] = duration
             
             if is_suspicious_duration(duration):
-                log_fn("❌ Could not determine reliable duration for % slicing")
-                log_fn("💡 Falling back to full video download")
+                log_fn("❌ 无法获得可靠时长，不能按百分比截取")
+                log_fn("💡 将回退为下载完整视频")
                 download_full = True
                 use_percentages = False
             else:
                 start_seconds = max(0.0, min((start_pct / 100.0) * duration, max(duration - 1.0, 0.0)))
                 end_seconds = max(start_seconds + 1.0, min((end_pct / 100.0) * duration, duration))
                 if end_seconds <= start_seconds:
-                    log_fn(f"⚠️ Calculated invalid range: {start_seconds:.1f}s to {end_seconds:.1f}s")
-                    log_fn("💡 Falling back to full video download")
+                    log_fn(f"⚠️ 计算出的时间范围无效：{start_seconds:.1f} 秒至 {end_seconds:.1f} 秒")
+                    log_fn("💡 将回退为下载完整视频")
                     download_full = True
                 else:
-                    log_fn(f"⏱️ Calculated time range: {start_seconds:.1f}s to {end_seconds:.1f}s")
-                    log_fn(f"   ({int(start_pct)}% to {int(end_pct)}% = {end_seconds - start_seconds:.1f}s)")
+                    log_fn(f"⏱️ 计算出的时间范围：{start_seconds:.1f} 秒至 {end_seconds:.1f} 秒")
+                    log_fn(f"   （{int(start_pct)}% 至 {int(end_pct)}% = {end_seconds - start_seconds:.1f} 秒）")
                     time_range = (start_seconds, end_seconds)
                     use_percentages = False
               
@@ -2237,20 +2237,20 @@ def download_video(
         if time_range and not download_full and not use_percentages:
             start_time, end_time = time_range
             if end_time <= start_time:
-                log_fn(f"❌ Invalid time range: {start_time:.1f}s to {end_time:.1f}s")
+                log_fn(f"❌ 无效时间范围：{start_time:.1f} 秒至 {end_time:.1f} 秒")
                 return False, None, metadata
             section = f"*{start_time:.1f}-{end_time:.1f}"
             cmd.extend(["--download-sections", section])
-            log_fn(f"⏱️ Downloading section: {start_time:.1f}s to {end_time:.1f}s")
-            log_fn(f"   Duration: {end_time - start_time:.1f}s")
+            log_fn(f"⏱️ 正在下载片段：{start_time:.1f} 秒至 {end_time:.1f} 秒")
+            log_fn(f"   时长：{end_time - start_time:.1f} 秒")
         elif download_full:
-            log_fn("📥 Downloading full video")
+            log_fn("📥 正在下载完整视频")
         else:
-            log_fn("📥 Downloading video (no time range specified)")
+            log_fn("📥 正在下载视频（未指定时间范围）")
         
         cmd.append(url)
-        log_fn(f"⬇️ Downloading: {url}")
-        log_fn(f"📁 Saving to: {save_dir}")
+        log_fn(f"⬇️ 正在下载：{url}")
+        log_fn(f"📁 保存到：{save_dir}")
         
         # 6. Execute download (streaming so we can show live speed / ETA)
         t0 = time.time()
@@ -2259,7 +2259,7 @@ def download_video(
 
         # User cancelled mid-download: don't fall through to fallback stages.
         if getattr(result, "cancelled", False) or _flag_is_cancelled(cancel_flag):
-            log_fn("⏹️ Download cancelled by user")
+            log_fn("⏹️ 用户已取消下载")
             metadata["cancelled"] = True
             return False, None, metadata
 
@@ -2267,7 +2267,7 @@ def download_video(
         
         # Check if yt-dlp reported "already exists"
         if skip_existing and ("already been downloaded" in out_text or "already exists" in out_text):
-            log_fn("⏭️ Video already exists (reported by yt-dlp)")
+            log_fn("⏭️ yt-dlp 报告视频已经存在")
             metadata["skipped"] = True
             # Find the newest video file
             files = get_downloaded_videos(save_dir)
@@ -2283,32 +2283,32 @@ def download_video(
                         metadata["processed"] = True
                         metadata["process_result"] = process_result
                     except Exception as e:
-                        log_fn(f"⚠️ Processing failed: {e}")
+                        log_fn(f"⚠️ 处理失败：{e}")
                         metadata["processed"] = False
                 return True, existing, metadata
         
         # Handle errors with two-tier fallback
         if result.returncode != 0:
-            log_fn(f"❌ Download failed with exit code: {result.returncode}")
+            log_fn(f"❌ 下载失败，退出代码：{result.returncode}")
             err = (result.stderr or "").lower()
             if "http error 403" in err:
-                log_fn("🔒 HTTP 403: Access forbidden")
+                log_fn("🔒 HTTP 403：访问被拒绝")
             elif "http error 404" in err:
-                log_fn("🔍 HTTP 404: Video not found")
+                log_fn("🔍 HTTP 404：未找到视频")
             elif "unable to extract" in err:
-                log_fn("🔧 Extraction failed. Try: pip install --upgrade yt-dlp")
+                log_fn("🔧 视频解析失败。可尝试更新 yt-dlp：pip install --upgrade yt-dlp")
             if result.stderr:
                 for line in result.stderr.strip().split("\n")[:3]:
                     if line.strip():
                         log_fn(f"   {line.strip()}")
 
             if _flag_is_cancelled(cancel_flag):
-                log_fn("⏹️ Download cancelled by user")
+                log_fn("⏹️ 用户已取消下载")
                 metadata["cancelled"] = True
                 return False, None, metadata
 
             # Fallback 1: simpler yt-dlp format
-            log_fn("🔄 Fallback 1: simpler yt-dlp format...")
+            log_fn("🔄 回退方案 1：尝试更简单的 yt-dlp 格式…")
             fallback_cmd = [
                 "yt-dlp",
                 "-o", output_template,
@@ -2322,18 +2322,18 @@ def download_video(
             fr = subprocess.run(fallback_cmd, capture_output=True, text=True, timeout=300, check=False)
 
             if fr.returncode == 0:
-                log_fn("✅ Fallback 1 succeeded!")
+                log_fn("✅ 回退方案 1 成功！")
                 result = fr
             elif _flag_is_cancelled(cancel_flag):
-                log_fn("⏹️ Download cancelled by user")
+                log_fn("⏹️ 用户已取消下载")
                 metadata["cancelled"] = True
                 return False, None, metadata
             else:
                 # Fallback 2: browser extracts URL, yt-dlp/ffmpeg downloads it
-                log_fn("🔄 Fallback 2: browser-based URL extraction...")
+                log_fn("🔄 回退方案 2：使用浏览器提取视频地址…")
                 extracted = extract_video_source_via_browser(url, log_fn)
                 if not extracted:
-                    log_fn("❌ Browser extraction found no video source")
+                    log_fn("❌ 浏览器提取未找到视频源")
                     return False, None, metadata
 
                 extracted_url, extracted_headers = extracted
@@ -2357,14 +2357,14 @@ def download_video(
                     success_fb = bool(filename_fb and os.path.exists(filename_fb))
 
                 if not success_fb or not filename_fb or not os.path.exists(filename_fb):
-                    log_fn("❌ Browser-extracted source failed to download "
-                           "(source is IP/session-locked to the browser).")
-                    log_fn("🔗 Direct source URL (copy to download manually):")
+                    log_fn("❌ 浏览器提取的视频源下载失败"
+                           "（该地址可能绑定浏览器 IP 或会话）。")
+                    log_fn("🔗 视频源直链（可复制后手动下载）：")
                     log_fn(f"   {extracted_url}")
                     if extracted_headers.get("referer"):
-                        log_fn(f"   Referer: {extracted_headers['referer']}")
+                        log_fn(f"   Referer：{extracted_headers['referer']}")
                     if extracted_headers.get("user-agent"):
-                        log_fn(f"   User-Agent: {extracted_headers['user-agent']}")
+                        log_fn(f"   User-Agent：{extracted_headers['user-agent']}")
                     metadata["error"] = "extracted_source_blocked"
                     return False, None, metadata
 
@@ -2379,16 +2379,16 @@ def download_video(
                 fb_secs = metadata.get("duration_real") or 0
                 if 0 < fb_secs < _AD_MAX_SECONDS:
                     metadata["advert_suspected"] = True
-                    log_fn(f"⚠️ Result is only {fb_secs:.0f}s — this is almost "
-                           f"certainly a pre-roll advert, not the video.")
-                    log_fn(f"🔗 Source used: {extracted_url}")
-                    log_fn("   The player likely never loaded the real stream. "
-                           "Try again, or open the page and start playback first.")
-                log_fn(f"✅ Fallback 2 succeeded: {os.path.basename(filename_fb)}")
-                log_fn(f"📊 File size: {size_mb:.2f} MB")
+                    log_fn(f"⚠️ 下载结果只有 {fb_secs:.0f} 秒——这很可能是"
+                           f"片头广告，而不是真正的视频。")
+                    log_fn(f"🔗 使用的视频源：{extracted_url}")
+                    log_fn("   播放器可能尚未加载真正的视频流。"
+                           "请重试，或先打开页面并开始播放视频。")
+                log_fn(f"✅ 回退方案 2 成功：{os.path.basename(filename_fb)}")
+                log_fn(f"📊 文件大小：{size_mb:.2f} MB")
 
                 if process_callback:
-                    log_fn("🔄 Processing video immediately...")
+                    log_fn("🔄 正在立即处理视频…")
                     try:
                         process_result = process_callback(filename_fb, metadata)
                         if process_result:
@@ -2397,7 +2397,7 @@ def download_video(
                         else:
                             metadata["processed"] = False
                     except Exception as e:
-                        log_fn(f"❌ Processing failed: {e}")
+                        log_fn(f"❌ 处理失败：{e}")
                         metadata["processed"] = False
                         metadata["process_error"] = str(e)
 
@@ -2412,12 +2412,12 @@ def download_video(
                     filename = m.group(1).strip()
                     break
         if not filename:
-            log_fn("⚠️ Could not parse filename; finding newest file...")
+            log_fn("⚠️ 无法解析文件名，正在查找最新文件…")
             files = get_downloaded_videos(save_dir)
             if files:
                 files.sort(key=lambda p: os.path.getmtime(p), reverse=True)
                 filename = files[0]
-                log_fn(f"📄 Found newest file: {os.path.basename(filename)}")
+                log_fn(f"📄 找到最新文件：{os.path.basename(filename)}")
         
         if filename and os.path.exists(filename):
             size_mb = os.path.getsize(filename) / (1024 * 1024)
@@ -2431,13 +2431,13 @@ def download_video(
             real = metadata.get("duration_real") or 0
             if 0 < real < _AD_MAX_SECONDS:
                 metadata["advert_suspected"] = True
-                log_fn(f"⚠️ Got only {real:.0f}s — that is advert length, not a "
-                       f"video. Re-resolving via browser...")
+                log_fn(f"⚠️ 当前文件只有 {real:.0f} 秒——更像广告而非完整视频，"
+                       f"正在通过浏览器重新解析…")
                 try:
                     extracted_alt = extract_video_source_via_browser(url, log_fn)
                 except Exception as e:
                     extracted_alt = None
-                    log_fn(f"⚠️ Browser re-resolve failed: {e}")
+                    log_fn(f"⚠️ 浏览器重新解析失败：{e}")
                 if extracted_alt:
                     alt_url, alt_headers = extracted_alt
                     alt_template = re.sub(r"\.%\(ext\)s$", " [full].%(ext)s",
@@ -2453,12 +2453,12 @@ def download_video(
                     if ok_alt and alt_file and os.path.exists(alt_file):
                         alt_secs = get_duration_from_ffprobe(alt_file, log_fn) or 0
                         if alt_secs > real:
-                            log_fn(f"✅ Replaced the advert with the real video "
-                                   f"({alt_secs:.0f}s)")
+                            log_fn(f"✅ 已用真实视频替换广告"
+                                   f"（{alt_secs:.0f} 秒）")
                             try:
                                 os.remove(filename)
                             except OSError as e:
-                                log_fn(f"⚠️ Could not remove advert file: {e}")
+                                log_fn(f"⚠️ 无法删除广告文件：{e}")
                             filename = alt_file
                             size_mb = os.path.getsize(filename) / (1024 * 1024)
                             metadata["file_size"] = size_mb
@@ -2467,44 +2467,43 @@ def download_video(
                             metadata["fallback_used"] = "advert_retry"
                             metadata["extracted_url"] = alt_url
                         else:
-                            log_fn("⚠️ Re-resolved source was no longer than the "
-                                   "original — keeping what we had")
+                            log_fn("⚠️ 重新解析的视频源并不比原文件更长——保留原文件")
                             try:
                                 os.remove(alt_file)
                             except OSError:
                                 pass
 
-            log_fn(f"✅ Downloaded: {os.path.basename(filename)}")
-            log_fn(f"📊 File size: {size_mb:.2f} MB")
-            log_fn(f"⏱️ Download time: {metadata['download_time']:.1f} seconds")
+            log_fn(f"✅ 下载完成：{os.path.basename(filename)}")
+            log_fn(f"📊 文件大小：{size_mb:.2f} MB")
+            log_fn(f"⏱️ 下载用时：{metadata['download_time']:.1f} 秒")
             if size_mb < 0.1:
-                log_fn("⚠️ Warning: File is very small, might be corrupted")
+                log_fn("⚠️ 警告：文件非常小，可能已经损坏")
             if process_callback:
-                log_fn("🔄 Processing video immediately...")
+                log_fn("🔄 正在立即处理视频…")
                 try:
                     process_result = process_callback(filename, metadata)
                     if process_result:
-                        log_fn("✅ Video processed successfully")
+                        log_fn("✅ 视频处理成功")
                         metadata["processed"] = True
                         metadata["process_result"] = process_result
                     else:
-                        log_fn("⚠️ Processing returned no result")
+                        log_fn("⚠️ 处理没有返回结果")
                         metadata["processed"] = False
                 except Exception as e:
-                    log_fn(f"❌ Processing failed: {e}")
+                    log_fn(f"❌ 处理失败：{e}")
                     metadata["processed"] = False
                     metadata["process_error"] = str(e)
             return True, filename, metadata
         
-        log_fn("❌ Download completed but file not found")
+        log_fn("❌ 下载流程已结束，但没有找到输出文件")
         return False, None, metadata
         
     except subprocess.TimeoutExpired:
-        log_fn("⏰ Download timed out")
+        log_fn("⏰ 下载超时")
         metadata["error"] = "timeout"
         return False, None, metadata
     except Exception as e:
-        log_fn(f"❌ Unexpected error: {e}")
+        log_fn(f"❌ 发生意外错误：{e}")
         metadata["error"] = str(e)
         return False, None, metadata
 
@@ -2533,12 +2532,12 @@ def download_videos_with_immediate_processing(
     downloaded and no listing scrape happens.
     """
     os.makedirs(save_dir, exist_ok=True)
-    log_fn(f"📁 Save directory: {save_dir}")
+    log_fn(f"📁 保存目录：{save_dir}")
 
     # Check if this is a direct video URL (contains /preview/ or common video patterns).
     # Skipped when an explicit URL list was provided.
     if not video_urls and ("/preview/" in search_url or any(x in search_url for x in ['.mp4', '.m3u8', '/video/'])):
-        log_fn("🔍 Detected single video URL - using direct download...")
+        log_fn("🔍 检测到单个视频 URL——使用直接下载模式…")
         success, filepath, metadata = download_video(
             search_url,
             save_dir,
@@ -2559,7 +2558,7 @@ def download_videos_with_immediate_processing(
     # Use the explicit selection if provided; otherwise scrape the listing.
     if video_urls:
         video_links = list(video_urls)
-        log_fn(f"📋 Using {len(video_links)} pre-selected video(s)")
+        log_fn(f"📋 使用已选择的 {len(video_links)} 个视频")
     else:
         try:
             video_links = extract_video_links(search_url, pattern, log_fn)
@@ -2572,14 +2571,14 @@ def download_videos_with_immediate_processing(
     
     for idx, link in enumerate(video_links, start=1):
         if _flag_is_cancelled(cancel_flag):
-            log_fn("⏹️ Download cancelled by user")
+            log_fn("⏹️ 用户已取消下载")
             break
 
         if progress_fn:
-            progress_fn(idx - 1, total, "Downloading Videos", f"Video {idx}/{total}")
+            progress_fn(idx - 1, total, "正在下载视频", f"视频 {idx}/{total}")
         
         log_fn(f"\n{'='*60}")
-        log_fn(f"[{idx}/{total}] Processing: {link}")
+        log_fn(f"[{idx}/{total}] 正在处理：{link}")
         
         success, filepath, metadata = download_video(
             link,
@@ -2596,7 +2595,7 @@ def download_videos_with_immediate_processing(
         )
 
         if metadata.get("cancelled"):
-            log_fn("⏹️ Download cancelled by user")
+            log_fn("⏹️ 用户已取消下载")
             metadata["success"] = success
             metadata["filepath"] = filepath
             results.append(metadata)

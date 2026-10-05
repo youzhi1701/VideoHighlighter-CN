@@ -267,7 +267,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
               <FolderOpen className="size-3.5" /> 浏览
             </Button>
             <Button size="sm" onClick={() => void load(path)} disabled={!path}>
-              Open
+              打开
             </Button>
           </div>
           {error && <p className="text-xs text-destructive">{error}</p>}
@@ -321,7 +321,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
               </Button>
               {running ? (
                 <Button variant="destructive" size="sm" onClick={onCancel}>
-                  Cancel
+                  取消
                 </Button>
               ) : (
                 <Button size="sm" onClick={() => void render()}>
@@ -391,7 +391,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                     if (p) setMusic(p)
                   }}
                 >
-                  Pick
+                  选择
                 </Button>
               </div>
             </div>
@@ -401,7 +401,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                 <Badge>{analysis.bpm?.toFixed(1)} BPM</Badge>
                 <Badge variant="secondary">{analysis.meter ?? 4}/4</Badge>
                 <Badge variant="outline">
-                  bar {(((60 / (analysis.bpm || 1)) * (analysis.meter ?? 4)) || 0).toFixed(2)}s
+                  小节 {(((60 / (analysis.bpm || 1)) * (analysis.meter ?? 4)) || 0).toFixed(2)} 秒
                 </Badge>
               </div>
             )}
@@ -443,8 +443,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                Camera footage is often 5.3K, which makes a two-minute reel well
-                over a gigabyte.
+                相机素材经常达到 5.3K 分辨率，两分钟左右的成片就可能超过 1GB。
               </p>
             </div>
 

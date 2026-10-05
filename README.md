@@ -23,6 +23,29 @@
 
 ---
 
+## Windows 电脑端一键下载并运行
+
+打开 **PowerShell**，复制下面这一整行并回车：
+
+```powershell
+$u='https://raw.githubusercontent.com/youzhi1701/VideoHighlighter-CN/main/Windows%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E5%B9%B6%E8%BF%90%E8%A1%8C.ps1'; $p="$env:TEMP\VideoHighlighter-CN.ps1"; Invoke-WebRequest $u -OutFile $p -UseBasicParsing; powershell -ExecutionPolicy Bypass -File $p
+```
+
+它会自动完成：
+
+- 下载最新版中文版源码
+- 解压到 `%LOCALAPPDATA%\VideoHighlighter-CN`
+- 检查并安装 Python 3.12（缺失时使用 winget）
+- 创建独立虚拟环境
+- 安装运行依赖
+- 启动 VideoHighlighter-CN
+
+> 首次安装包含 AI / 视频处理依赖，下载和安装时间会比较长；后续直接从本地环境启动即可。
+
+[查看 Windows 一键运行脚本](./Windows一键下载并运行.ps1)
+
+---
+
 ## 这是哪个版本？
 
 这是 **VideoHighlighter 的简体中文维护版**。

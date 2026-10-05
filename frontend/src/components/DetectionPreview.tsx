@@ -89,8 +89,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
                     该视频已经分析过，因此跳过了检测。
                   </p>
                   <p className="mt-1">
-                    There are no frames to show. Tick “Force reprocess (ignore
-                    cache)” and run again to watch detection happen.
+                    当前没有可显示的检测帧。勾选“强制重新处理（忽略缓存）”后再次运行，即可查看检测过程。
                   </p>
                 </>
               ) : running ? (

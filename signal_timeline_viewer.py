@@ -1553,7 +1553,7 @@ class SignalTimelineWindow(QMainWindow):
 
             checkbox = QCheckBox(f"{query} ({count})")
             checkbox.setChecked(scene.visible_visual_queries.get(query, True))
-            checkbox.setToolTip(f"Show '{query}' bars, and let ◀ ▶ stop on them")
+            checkbox.setToolTip(f"显示“{query}”条，并允许 ◀ ▶ 在这些位置停靠")
             # setChecked above runs before this connect, so it can't fire the toggle.
             checkbox.stateChanged.connect(
                 lambda state, q=query: self._toggle_visual_query(q, state)
@@ -1677,7 +1677,7 @@ class SignalTimelineWindow(QMainWindow):
         for name in classes:
             checkbox = QCheckBox(f"{name.replace('_', ' ')} ({counts.get(name, 0)}s)")
             checkbox.setChecked(scene.visible_objects.get(name, True))
-            checkbox.setToolTip(f"Show the '{name}' row, and let ◀ ▶ stop on it")
+            checkbox.setToolTip(f"显示“{name}”轨道，并允许 ◀ ▶ 在其位置停靠")
             # setChecked runs before this connect, so it can't fire the toggle.
             checkbox.stateChanged.connect(
                 lambda state, o=name: self._toggle_object(o, state)
@@ -1727,7 +1727,7 @@ class SignalTimelineWindow(QMainWindow):
             fold.setToolTip("隐藏物体列表")
         else:
             fold.setText("▸" if shown == total else f"▸ {shown}/{total}")
-            fold.setToolTip(f"Show the object list ({shown}/{total} visible)")
+            fold.setToolTip(f"显示物体列表（{shown}/{total} 可见）")
 
     def _toggle_object_fold(self):
         self._object_rows_expanded = not getattr(self, '_object_rows_expanded', True)
@@ -1794,7 +1794,7 @@ class SignalTimelineWindow(QMainWindow):
             fold.setToolTip("隐藏事件列表")
         else:
             fold.setText("▸" if shown == total else f"▸ {shown}/{total}")
-            fold.setToolTip(f"Show the event list ({shown}/{total} visible)")
+            fold.setToolTip(f"显示事件列表（{shown}/{total} 可见）")
 
     def _toggle_event_fold(self):
         self._event_rows_expanded = not getattr(self, '_event_rows_expanded', True)
@@ -2731,7 +2731,7 @@ class SignalTimelineWindow(QMainWindow):
         filter_layout.addWidget(self.filter_summary)
 
         # Confidence filter display
-        self.confidence_label = QLabel(f"Actions: {self.signal_scene.min_action_confidence:.0%} | Objects: {self.signal_scene.min_object_confidence:.0%}")
+        self.confidence_label = QLabel(f"动作：{self.signal_scene.min_action_confidence:.0%} | 物体：{self.signal_scene.min_object_confidence:.0%}")
         self.confidence_label.setStyleSheet(f"color: {THEME.text_dim}; font-size: 11px;")
         filter_layout.addWidget(self.confidence_label)
         
@@ -2898,7 +2898,7 @@ class SignalTimelineWindow(QMainWindow):
             "transcript", "Transcript", "Transcribe speech with Whisper",
             extra=tr_extra))
 
-        hint = QLabel("Runs one pass on this video and folds it into the cache. "
+        hint = QLabel("对该视频运行一次分析并写入缓存。"
                       "Advanced settings live in the main window.")
         hint.setStyleSheet(f"color: {THEME.text_mute}; font-size: 10px;")
         hint.setWordWrap(True)
@@ -3058,27 +3058,27 @@ class SignalTimelineWindow(QMainWindow):
                 self.signal_scene.set_waveform_data(wf)
             self._enable_layer_and_reload("audio_peaks")
             if row:
-                row["status"].setText(f"✓ {len(result.get('audio_peaks', []))} peaks")
+                row["status"].setText(f"✓ {len(result.get('audio_peaks', []))} 个峰值")
         elif kind == "actions":
             self.cache_data["actions"] = result
             self.cache_data["actions_all"] = result
             self._merge_into_cache_file({"actions": result, "actions_all": result})
             self._enable_layer_and_reload("actions")
             if row:
-                row["status"].setText(f"✓ {len(result)} detections")
+                row["status"].setText(f"✓ {len(result)} 个检测结果")
         elif kind == "objects":
             self.cache_data["objects"] = result
             self._merge_into_cache_file({"objects": result})
             self._enable_layer_and_reload("objects")
             if row:
-                row["status"].setText(f"✓ {len(result)} seconds")
+                row["status"].setText(f"✓ {len(result)} 秒")
         else:  # transcript
             self.cache_data["transcript"] = result
             self._merge_into_cache_file({"transcript": result})
             self._enable_layer_and_reload("transcript")
             self._refresh_transcript_panel(result.get("segments", []))
             if row:
-                row["status"].setText(f"✓ {len(result.get('segments', []))} segments")
+                row["status"].setText(f"✓ {len(result.get('segments', []))} 个片段")
             # If keywords were already typed, mark them on the fresh transcript.
             if self.analyze_transcript_kw.text().strip():
                 self._apply_transcript_keywords()
@@ -3108,7 +3108,7 @@ class SignalTimelineWindow(QMainWindow):
         if row:
             if kws:
                 hits = sc._nav_timestamps_transcript()
-                row["status"].setText(f"⌕ {len(hits)} match(es)")
+                row["status"].setText(f"⌕ {len(hits)} 个匹配")
             elif not row["status"].text().startswith("✓"):
                 row["status"].setText("")
 
@@ -3239,7 +3239,7 @@ class SignalTimelineWindow(QMainWindow):
         """)
 
         # -- Output --
-        self.save_cache_btn = QPushButton("Save")
+        self.save_cache_btn = QPushButton("保存")
         self.save_cache_btn.setIcon(ui_icons.save())
         self.save_cache_btn.clicked.connect(self.on_save_cache_clicked)
         self.save_cache_btn.setToolTip("将当前剪辑时间线保存到缓存以便以后使用")
@@ -3769,7 +3769,7 @@ class SignalTimelineWindow(QMainWindow):
                 parts.append(f"{shown}/{len(events)} events")
 
             self.filter_summary.setText("当前显示：" + ", ".join(parts))
-            self.confidence_label.setText(f"Actions: {self.signal_scene.min_action_confidence:.0%} | Objects: {self.signal_scene.min_object_confidence:.0%}")
+            self.confidence_label.setText(f"动作：{self.signal_scene.min_action_confidence:.0%} | 物体：{self.signal_scene.min_object_confidence:.0%}")
 
             # Show which specific filters are active
             filter_details = []
@@ -3910,7 +3910,7 @@ class SignalTimelineWindow(QMainWindow):
         self.avoided_identity_ids.add(identity_id)
         name = (self._face_bank.name_for(identity_id)
                 if getattr(self, "_face_bank", None) else identity_id[:8])
-        self.statusBar().showMessage(f"🚫 Avoiding {name} — {len(self.avoided_identity_ids)} total", 3000)
+        self.statusBar().showMessage(f"🚫 正在排除 {name} — 共 {len(self.avoided_identity_ids)} 个", 3000)
 
     @Slot(int, int)
     def on_clip_reordered(self, from_idx, to_idx):
@@ -3924,7 +3924,7 @@ class SignalTimelineWindow(QMainWindow):
         follow = bool(state)
         if hasattr(self, 'signal_view'):
             self.signal_view.follow_playhead = follow
-        self.statusBar().showMessage(f"Follow playhead: {'ON' if follow else 'OFF'}", 2000)
+        self.statusBar().showMessage(f"跟随播放头：{'开' if follow else '关'}", 2000)
        
     @Slot()
     def on_save_cache_clicked(self):
@@ -3941,7 +3941,7 @@ class SignalTimelineWindow(QMainWindow):
                 else:
                     self.statusBar().showMessage("⚠️ 当前场景不支持保存缓存", 3000)
             except Exception as e:
-                self.statusBar().showMessage(f"⚠️ Error saving to cache: {str(e)[:50]}...", 3000)
+                self.statusBar().showMessage(f"⚠️ 保存到缓存时出错：{str(e)[:50]}…", 3000)
         else:
             self.statusBar().showMessage("⚠️ 没有可用的剪辑时间线", 3000)
 
@@ -4084,7 +4084,7 @@ class SignalTimelineWindow(QMainWindow):
     def _pause_edit_playback(self):
         """Pause edit playback while preserving playlist state."""
         self._edit_paused = True
-        self.play_edit_btn.setText("▶ Play Edit")
+        self.play_edit_btn.setText("▶ 播放剪辑")
         self._active_player.pause()
         
         if hasattr(self, '_edit_clip_timer') and self._edit_clip_timer.isActive():
@@ -4112,7 +4112,7 @@ class SignalTimelineWindow(QMainWindow):
         self._single_clip_playing = False
         self._edit_playlist_index = 0
         self._active_player.pause()
-        self.play_edit_btn.setText("▶ Play Edit")
+        self.play_edit_btn.setText("▶ 播放剪辑")
         if hasattr(self, 'play_btn'):
             self.play_btn.setText("▶ 播放")
 
@@ -4147,7 +4147,7 @@ class SignalTimelineWindow(QMainWindow):
             if hasattr(self, 'edit_scene'):
                 self.edit_scene.add_clip(start_time, end_time)
                 self.update_edit_duration()
-                self.statusBar().showMessage(f"Added audio clip: {start_time:.1f}s to {end_time:.1f}s", 2000)
+                self.statusBar().showMessage(f"已添加音频片段：{start_time:.1f} 秒至 {end_time:.1f} 秒", 2000)
         
         # Option B: Remove auto-add entirely, just seek
         # Just seek to the clicked time without adding clip
@@ -4162,14 +4162,14 @@ class SignalTimelineWindow(QMainWindow):
         self.edit_scene.add_clip_from_selection(start, end)
         self.update_edit_duration()
 
-        self.statusBar().showMessage(f"Added clip: {start:.1f}s to {end:.1f}s", 2000)
+        self.statusBar().showMessage(f"已添加片段：{start:.1f} 秒至 {end:.1f} 秒", 2000)
 
     @Slot(float, float)
     def on_add_clip_to_edit(self, start, end):
         """Add one precise clip from a bar's right-click menu (append to end)."""
         self.edit_scene.add_clip(float(start), float(end))
         self.update_edit_duration()
-        self.statusBar().showMessage(f"Added clip: {start:.1f}s to {end:.1f}s", 2000)
+        self.statusBar().showMessage(f"已添加片段：{start:.1f} 秒至 {end:.1f} 秒", 2000)
 
     @Slot(list)
     def on_add_clips_to_edit(self, clips):
@@ -4180,7 +4180,7 @@ class SignalTimelineWindow(QMainWindow):
             added += 1
         self.update_edit_duration()
         plural = " 秒" if added != 1 else ""
-        self.statusBar().showMessage(f"Added {added} clip{plural} to edit timeline", 2500)
+        self.statusBar().showMessage(f"已向剪辑时间线添加 {added} 个片段", 2500)
 
     @Slot(float)
     def on_edit_time_clicked(self, time):
@@ -4288,7 +4288,7 @@ class SignalTimelineWindow(QMainWindow):
         self.signal_scene.set_current_time(start_time)
         minutes = int(start_time // 60)
         seconds = int(start_time % 60)
-        self.time_label.setText(f"Clip: {minutes:02d}:{seconds:02d}")
+        self.time_label.setText(f"片段：{minutes:02d}:{seconds:02d}")
         
         self._single_clip_playing = True
         self.play_video_clip(start_time, end_time)
@@ -4299,7 +4299,7 @@ class SignalTimelineWindow(QMainWindow):
     def _on_single_clip_finished(self):
         """Clean up after a single-clip (double-click) playback ends."""
         self._single_clip_playing = False
-        self.play_edit_btn.setText("▶ Play Edit")
+        self.play_edit_btn.setText("▶ 播放剪辑")
 
     @Slot(float, float)
     def on_clip_added(self, start_time: float, end_time: float):
@@ -4406,9 +4406,9 @@ class SignalTimelineWindow(QMainWindow):
         # Show status message
         count = len(self.pending_clip_removals)
         if count == 1:
-            self.statusBar().showMessage(f"Removed clip {self.pending_clip_removals[0] + 1}", 2000)
+            self.statusBar().showMessage(f"已移除片段 {self.pending_clip_removals[0] + 1}", 2000)
         else:
-            self.statusBar().showMessage(f"Removed {count} clips", 2000)
+            self.statusBar().showMessage(f"已移除 {count} 个片段", 2000)
         
         # Clear pending removals
         self.pending_clip_removals.clear()
@@ -4419,7 +4419,7 @@ class SignalTimelineWindow(QMainWindow):
         if hasattr(self, 'current_time') and self.current_time >= 0:
             self.edit_scene.add_clip_from_selection(self.current_time)
             self.update_edit_duration()
-            self.statusBar().showMessage(f"Added clip at {self.current_time:.1f}s", 2000)
+            self.statusBar().showMessage(f"已在 {self.current_time:.1f} 秒处添加片段", 2000)
         else:
             self.statusBar().showMessage("⚠️ 请先选择时间", 2000)
     
@@ -4568,7 +4568,7 @@ class SignalTimelineWindow(QMainWindow):
     def update_edit_duration(self):
         """Update edit duration display"""
         total_duration = self.edit_scene.get_total_duration()
-        self.edit_duration_label.setText(f"Edit duration: {total_duration:.1f}s")
+        self.edit_duration_label.setText(f"剪辑时长：{total_duration:.1f} 秒")
         self._update_status()
     
     def find_signal_region_around(self, time):
@@ -4739,7 +4739,7 @@ class SignalTimelineWindow(QMainWindow):
         self._edit_start_pos = start_pos    # consumed by the first _play_next_edit_clip
         self.play_edit_btn.setText("⏸ 暂停")
         remaining = len(clips) - start_index
-        self.statusBar().showMessage(f"▶ Playing edit timeline: {remaining} clip(s)", 3000)
+        self.statusBar().showMessage(f"▶ 正在播放剪辑时间线：剩余 {remaining} 个片段", 3000)
         self._play_next_edit_clip()
 
     def toggle_edit_playback(self):
@@ -4751,7 +4751,7 @@ class SignalTimelineWindow(QMainWindow):
             self._active_player.pause()
             if hasattr(self, 'clip_timer') and self.clip_timer.isActive():
                 self.clip_timer.stop()
-            self.play_edit_btn.setText("▶ Play Edit")
+            self.play_edit_btn.setText("▶ 播放剪辑")
             return
 
         if not getattr(self, '_edit_playback_active', False):
@@ -4795,7 +4795,7 @@ class SignalTimelineWindow(QMainWindow):
         else:
             # Pause
             self._edit_paused = True
-            self.play_edit_btn.setText("▶ Play Edit")
+            self.play_edit_btn.setText("▶ 播放剪辑")
             self._active_player.pause()
             
             # Stop timers but remember remaining time
@@ -4820,7 +4820,7 @@ class SignalTimelineWindow(QMainWindow):
             self._edit_playlist_index = 0
             self._edit_paused = False
             self._edit_resume_pos = None   # finished → next Play Edit starts over
-            self.play_edit_btn.setText("▶ Play Edit")
+            self.play_edit_btn.setText("▶ 播放剪辑")
             if hasattr(self, '_edit_progress_timer'):
                 self._edit_progress_timer.stop()
             return
@@ -4947,7 +4947,7 @@ class SignalTimelineWindow(QMainWindow):
         self._edit_playlist_index = 0
         self._edit_paused = False
         self._edit_resume_pos = None   # Stop resets edit playback to the start
-        self.play_edit_btn.setText("▶ Play Edit")
+        self.play_edit_btn.setText("▶ 播放剪辑")
         self._active_player.pause()
 
         # Reset to beginning
@@ -5150,8 +5150,8 @@ class SignalTimelineWindow(QMainWindow):
     @Slot(int)
     def on_render_progress(self, pct):
         """Live render progress (0–100) from the ffmpeg worker thread."""
-        self.render_highlight_btn.setText(f"⏳ Rendering… {pct}%")
-        self.statusBar().showMessage(f"🎬 Rendering highlight video… {pct}%")
+        self.render_highlight_btn.setText(f"⏳ 正在渲染… {pct}%")
+        self.statusBar().showMessage(f"🎬 正在渲染高光视频… {pct}%")
 
     @Slot(bool, str)
     def on_render_finished(self, success, message):

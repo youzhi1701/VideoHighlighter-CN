@@ -117,7 +117,7 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
           </div>
           <div className="flex gap-2">
             <Button variant="ghost" onClick={() => onOpenChange(false)}>
-              Cancel
+              取消
             </Button>
             <Button
               disabled={!picked.size || loading}
@@ -127,7 +127,7 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
               }}
               className="bg-[color:var(--success)] text-white hover:opacity-90"
             >
-              Download selected ({picked.size})
+              下载已选视频（{picked.size}）
             </Button>
           </div>
         </DialogFooter>

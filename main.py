@@ -3537,7 +3537,7 @@ class VideoHighlighterGUI(QWidget):
 
         never_btn = QPushButton("不再推荐 Pro")
         never_btn.setToolTip("关闭此类推荐。“关于”页"
-                             "turns them back on.")
+                             "可重新开启这些推荐。")
         never_btn.clicked.connect(self._silence_pro_offer)
         row.addWidget(never_btn)
 
@@ -3668,7 +3668,7 @@ class VideoHighlighterGUI(QWidget):
             self.update_progress.setValue(done)
             mb_done, mb_total = done / (1024 ** 2), total / (1024 ** 2)
             self.update_label.setText(
-                f"<b>Downloading {mb_done:.1f} / {mb_total:.1f} MB</b><br>{detail}")
+                f"<b>正在下载 {mb_done:.1f} / {mb_total:.1f} MB</b><br>{detail}")
         else:
             self.update_progress.setRange(0, 0)
             self.update_label.setText(f"<b>{detail or phase}</b>")
@@ -3686,17 +3686,17 @@ class VideoHighlighterGUI(QWidget):
             # download page still works, so it is always one click away.
             self.update_get_btn.setVisible(True)
             self.update_label.setText(f"<b>{result.message}</b>")
-            self.append_log(f"⚠️ Update: {result.message}")
+            self.append_log(f"⚠️ 更新：{result.message}")
             return
 
         self.update_label.setText(f"<b>{result.message}</b>")
-        self.append_log(f"✅ Update: {result.message}")
+        self.append_log(f"✅ 更新：{result.message}")
         if not result.restart_required:
             return
 
         answer = QMessageBox.question(
-            self, "Restart now?",
-            f"{result.message}\n\nRestart Video Highlighter now?",
+            self, "立即重启？",
+            f"{result.message}\n\n是否立即重启 Video Highlighter？",
             QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
         if answer == QMessageBox.Yes:
             self._restart_for_update()
@@ -4265,7 +4265,7 @@ class VideoHighlighterGUI(QWidget):
                 except Exception as e:
                     self.append_log(f"❌ Processing error: {e}")
                     import traceback
-                    self.append_log(f"Traceback:\n{traceback.format_exc()}")
+                    self.append_log(f"错误堆栈：\n{traceback.format_exc()}")
                     self.append_log(f"{'='*60}\n")
                     return {'success': False, 'error': str(e)}
 
@@ -4397,9 +4397,9 @@ class VideoHighlighterGUI(QWidget):
         """Handle when a video is processed immediately after download"""
         filename = os.path.basename(filepath)
         if result.get('success'):
-            self.append_log(f"✅ {filename} downloaded and processed successfully")
+            self.append_log(f"✅ {filename} 下载并处理成功")
         else:
-            self.append_log(f"⚠️ {filename} downloaded but processing failed")
+            self.append_log(f"⚠️ {filename} 已下载，但处理失败")
 
 
     def on_process_mode_changed(self):
@@ -4439,7 +4439,7 @@ class VideoHighlighterGUI(QWidget):
         seconds = duration % 60
         
         self.download_duration_label.setText(
-            f"Duration: {duration}s ({minutes}:{seconds:02d})"
+            f"时长：{duration} 秒（{minutes}:{seconds:02d}）"
         )
 
     def download_done(self, downloaded_files):
@@ -4447,15 +4447,15 @@ class VideoHighlighterGUI(QWidget):
         self.status_timer.stop()
         
         if hasattr(self, 'download_worker') and self.download_worker and self.download_worker.is_cancelled():
-            self.append_log("\n⏹️ === DOWNLOAD CANCELLED ===")
+            self.append_log("\n⏹️ === 下载已取消 ===")
             self.task_label.setText("⏹️ 已取消")
             self.task_label.setStyleSheet("color: #ff9800; font-weight: bold;")
             self.download_cleanup()
             return
         
         if downloaded_files:
-            self.append_log(f"\n✅ === DOWNLOAD COMPLETED ===")
-            self.append_log(f"📊 Successfully downloaded {len(downloaded_files)} videos")
+            self.append_log(f"\n✅ === 下载完成 ===")
+            self.append_log(f"📊 已成功下载 {len(downloaded_files)} 个视频")
             
             # Check if immediate processing was enabled
             if self.process_mode_combo.currentData() == "immediate":
@@ -4463,7 +4463,7 @@ class VideoHighlighterGUI(QWidget):
                 if hasattr(self.download_worker, '_download_results'):
                     processed_count = sum(1 for r in self.download_worker._download_results 
                                         if r.get('processed', False))
-                    self.append_log(f"🎬 Successfully processed {processed_count}/{len(downloaded_files)} videos")
+                    self.append_log(f"🎬 已成功处理 {processed_count}/{len(downloaded_files)} 个视频")
                     
                     # List all results
                     for result in self.download_worker._download_results:
@@ -4474,7 +4474,7 @@ class VideoHighlighterGUI(QWidget):
                 
                 # Combine highlights if enabled and we have multiple
                 if self.auto_combine_chk.isChecked() and len(downloaded_files) > 1:
-                    self.append_log("\n🎬 Combining all highlights...")
+                    self.append_log("\n🎬 正在合并全部高光…")
                     highlight_files = []
                     
                     if hasattr(self.download_worker, '_download_results'):
@@ -4489,12 +4489,12 @@ class VideoHighlighterGUI(QWidget):
                         combined_file = self.combine_highlights(highlight_files, combined_output)
                         
                         if combined_file:
-                            self.append_log(f"🎉 Combined highlight: {combined_file}")
+                            self.append_log(f"🎉 高光合并完成：{combined_file}")
             
             self.task_label.setText("✅ 已完成！")
             self.task_label.setStyleSheet("color: #4CAF50; font-weight: bold;")
         else:
-            self.append_log("\n⚠️ === DOWNLOAD COMPLETED WITH NO FILES ===")
+            self.append_log("\n⚠️ === 下载完成，但没有获得文件 ===")
             self.task_label.setText("❌ 下载失败")
             self.task_label.setStyleSheet("color: #f44336; font-weight: bold;")
 
@@ -4507,7 +4507,7 @@ class VideoHighlighterGUI(QWidget):
                 if f not in existing and os.path.exists(f):
                     self.file_list.addItem(f)
             if self.file_list.count() > 0:
-                self.append_log("\n▶️ Starting batch processing of downloaded 个视频…")
+                self.append_log("\n▶️ 正在批量处理已下载的视频…")
                 self.auto_start_pipeline()
                 return
 
@@ -4528,7 +4528,7 @@ class VideoHighlighterGUI(QWidget):
     def download_cancelled(self):
         """Handle download cancellation"""
         self.status_timer.stop()
-        self.append_log("\n⏹️ === DOWNLOAD CANCELLED BY USER ===")
+        self.append_log("\n⏹️ === 用户已取消下载 ===")
         self.task_label.setText("⏹️ 下载已取消")
         self.task_label.setStyleSheet("color: #ff9800; font-weight: bold;")
         self.download_cleanup()
@@ -4564,7 +4564,7 @@ class VideoHighlighterGUI(QWidget):
     def browse_files(self):
         """Add one or more video files"""
         file_paths, _ = QFileDialog.getOpenFileNames(
-            self, "Select Video(s)", "", "Videos (*.mp4 *.mov *.avi *.mkv)"
+            self, "选择视频", "", "视频 (*.mp4 *.mov *.avi *.mkv)"
         )
         existing = self.get_file_list()
         for path in file_paths:
@@ -4614,18 +4614,18 @@ class VideoHighlighterGUI(QWidget):
         straight through when there is only one, otherwise the combined output
         path. All engine logging is routed through append_log."""
         if not highlight_files:
-            self.append_log("⚠️ No highlight files to combine")
+            self.append_log("⚠️ 没有可合并的高光文件")
             return None
 
         # Filter out None values and non-existent files
         valid_files = [f for f in highlight_files if f and os.path.exists(f)]
 
         if not valid_files:
-            self.append_log("⚠️ No valid highlight files found")
+            self.append_log("⚠️ 未找到有效的高光文件")
             return None
 
         if len(valid_files) == 1:
-            self.append_log("ℹ️ Only one highlight file, no combining needed")
+            self.append_log("ℹ️ 只有一个高光文件，无需合并")
             return valid_files[0]
 
         try:
@@ -4635,7 +4635,7 @@ class VideoHighlighterGUI(QWidget):
                 valid_files, output_path, log_fn=self.append_log,
             )
         except Exception as e:
-            self.append_log(f"❌ Failed to combine highlights: {e}")
+            self.append_log(f"❌ 合并高光失败：{e}")
             import traceback
             self.append_log(f"Traceback:\n{traceback.format_exc()}")
             return None

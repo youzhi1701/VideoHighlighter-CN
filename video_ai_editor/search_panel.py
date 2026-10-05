@@ -607,7 +607,7 @@ class SearchPanel(QWidget):
         segments = segments_for(self._expr_seconds, label,
                                 duration=self._video_duration)
         self._current_segments = segments
-        self._results_header.setText(f"{len(segments)} clip(s) of '{label}'")
+        self._results_header.setText(f"“{label}”共有 {len(segments)} 个片段")
         self._add_all_btn.setEnabled(bool(segments))
         self._refresh_results(segments)
 

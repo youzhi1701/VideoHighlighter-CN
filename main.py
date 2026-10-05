@@ -1763,21 +1763,20 @@ class VideoHighlighterGUI(QWidget):
 
         self.spin_max_duration = QSpinBox(); self.spin_max_duration.setRange(1,3600); self.spin_max_duration.setValue(highlights_cfg.get("max_duration", 420))
         self.spin_max_duration.setToolTip(
-            "Stop the highlight at this many seconds. It may be shorter when "
-            "nothing else scored. Ignored when exact duration is above 0.")
+            "高光最长不超过此秒数；若有效内容不足，结果可能更短。"
+            "当“精确时长”大于 0 时忽略此项。")
         self.spin_exact_duration = QSpinBox(); self.spin_exact_duration.setRange(0,3600); self.spin_exact_duration.setValue(highlights_cfg.get("exact_duration", 0))
         self.spin_exact_duration.setToolTip(
-            "Above 0, the highlight is this many seconds — low-scoring seconds "
-            "are used to fill it. 0 leaves max duration in charge, and the cut "
-            "can be shorter.")
+            "大于 0 时，高光固定为此秒数，并用较低分片段补足。"
+            "设为 0 时由“最大高光时长”控制，结果可以更短。")
         self.spin_clip_time = QSpinBox(); self.spin_clip_time.setRange(0,300); self.spin_clip_time.setValue(highlights_cfg.get("clip_time", 10))
         self.spin_clip_time.setToolTip(
-            "Length of each fixed window, in seconds, around a scored second. "
-            "0 uses auto-segmentation (min/max clip and merge gap below).")
+            "每个固定窗口围绕得分秒数展开，单位为秒。"
+            "设为 0 时使用自动分段（由下方最短/最长片段和合并间隔控制）。")
 
-        duration_form.addRow("Max highlight duration (s):", self.spin_max_duration)
-        duration_form.addRow("Exact duration (s, 0 = off):", self.spin_exact_duration)
-        duration_form.addRow("Clip time (s, 0 = auto):", self.spin_clip_time)
+        duration_form.addRow("最大高光时长（秒）：", self.spin_max_duration)
+        duration_form.addRow("精确时长（秒，0 = 关闭）：", self.spin_exact_duration)
+        duration_form.addRow("片段时长（秒，0 = 自动）：", self.spin_clip_time)
 
         # ── Best moments <-> Full story ──
         # How far the cut is allowed to follow the score. Left, it takes the
@@ -1790,10 +1789,9 @@ class VideoHighlighterGUI(QWidget):
         self.slider_coverage.setTickPosition(QSlider.TicksBelow)
         self.slider_coverage.setTickInterval(25)
         self.slider_coverage.setToolTip(
-            "0 takes the highest-scoring windows wherever they are. "
-            "100 gives each part of the video one share of the cut. "
-            "In between, those two are mixed. Only used when clip time is above 0; "
-            "time left over is still filled from the best moments.")
+            "0 表示只选择最高分片段，不考虑它们位于视频何处；"
+            "100 表示让视频各部分都获得一定占比；中间值会混合两种策略。"
+            "仅在“片段时长”大于 0 时生效，剩余时长仍会由最佳片段补足。")
 
         coverage_row = QVBoxLayout()
         coverage_row.addWidget(self.slider_coverage)
@@ -1804,17 +1802,17 @@ class VideoHighlighterGUI(QWidget):
 
         def on_coverage_changed(value):
             if value <= 5:
-                hint = "Best moments — highest-scoring parts only, wherever they fall."
+                hint = "最佳时刻——只选择最高分部分，不限制它们在视频中的位置。"
             elif value >= 95:
-                hint = "Full story — every part of the video is represented."
+                hint = "完整叙事——视频各部分都会有所体现。"
             else:
-                hint = f"{value}% toward full story — best moments, spread across the video."
+                hint = f"完整叙事倾向 {value}%——在保留最佳时刻的同时，让片段分布更均衡。"
             self.coverage_hint_label.setText(hint)
 
         self.slider_coverage.valueChanged.connect(on_coverage_changed)
         on_coverage_changed(self.slider_coverage.value())
 
-        duration_form.addRow("Best moments ↔ Full story:", coverage_row)
+        duration_form.addRow("最佳时刻 ↔ 完整叙事：", coverage_row)
 
         duration_layout.addLayout(duration_form)
 
@@ -1832,26 +1830,26 @@ class VideoHighlighterGUI(QWidget):
         self.spin_auto_min_clip.setRange(1, 30)
         self.spin_auto_min_clip.setValue(highlights_cfg.get("auto_min_clip", 2))
         self.spin_auto_min_clip.setToolTip(
-            "Shortest auto clip, in seconds. Shorter regions are padded. "
-            "Used only when clip time is 0.")
+            "自动片段的最短时长（秒）。更短的区域会被扩展。"
+            "仅在“片段时长”为 0 时生效。")
 
         self.spin_auto_max_clip = QSpinBox()
         self.spin_auto_max_clip.setRange(3, 120)
         self.spin_auto_max_clip.setValue(highlights_cfg.get("auto_max_clip", 30))
         self.spin_auto_max_clip.setToolTip(
-            "Longest auto clip, in seconds. Longer regions are split into "
-            "back-to-back windows of this length. Used only when clip time is 0.")
+            "自动片段的最长时长（秒）。更长区域会按该时长拆成连续片段。"
+            "仅在“片段时长”为 0 时生效。")
 
         self.spin_auto_merge_gap = QSpinBox()
         self.spin_auto_merge_gap.setRange(0, 10)
         self.spin_auto_merge_gap.setValue(highlights_cfg.get("auto_merge_gap", 2))
         self.spin_auto_merge_gap.setToolTip(
-            "Interest regions closer than this many seconds become one region "
-            "before min/max length is applied. Used only when clip time is 0.")
+            "间隔小于此秒数的兴趣区域会先合并，再应用最短/最长片段限制。"
+            "仅在“片段时长”为 0 时生效。")
 
-        auto_seg_layout.addRow("Min clip length (s):", self.spin_auto_min_clip)
-        auto_seg_layout.addRow("Max clip length (s):", self.spin_auto_max_clip)
-        auto_seg_layout.addRow("Merge gap (s):", self.spin_auto_merge_gap)
+        auto_seg_layout.addRow("最短片段（秒）：", self.spin_auto_min_clip)
+        auto_seg_layout.addRow("最长片段（秒）：", self.spin_auto_max_clip)
+        auto_seg_layout.addRow("合并间隔（秒）：", self.spin_auto_merge_gap)
 
         self.auto_seg_group.setLayout(auto_seg_layout)
         duration_layout.addWidget(self.auto_seg_group)
@@ -1865,12 +1863,11 @@ class VideoHighlighterGUI(QWidget):
             self.auto_seg_group.setVisible(is_auto)
             if is_auto:
                 self.auto_seg_info_label.setText(
-                    "🔧 Auto mode: the app will determine clip boundaries from signal structure "
-                    "(action durations, scene cuts, keyword timing, object clusters, audio/motion peaks)."
+                    "🔧 自动模式：程序会根据动作持续时间、场景切换、关键词时间、物体聚集、音频/运动峰值等信号结构自动确定片段边界。"
                 )
             else:
                 self.auto_seg_info_label.setText(
-                    f"✂️ 固定模式：每个高光片段长度为 {value}s long."
+                    f"✂️ 固定模式：每个高光片段长度为 {value} 秒。"
                 )
 
         self.spin_clip_time.valueChanged.connect(on_clip_time_changed)
@@ -1955,20 +1952,20 @@ class VideoHighlighterGUI(QWidget):
         self.transcript_checkbox = QCheckBox("启用转录处理")
         self.transcript_checkbox.setChecked(transcript_cfg.get("enabled", False))
         self.transcript_checkbox.toggled.connect(self.on_transcript_toggle)
-        transcript_form.addRow("Use transcript:", self.transcript_checkbox)
+        transcript_form.addRow("启用转录：", self.transcript_checkbox)
 
         # Source language for transcription
         self.transcript_source_lang = QComboBox()
         self.transcript_source_lang.addItems(["auto","en","pl","es","fr","de","it","pt","ru","ja","ko","zh"])
         self.transcript_source_lang.setCurrentText(transcript_cfg.get("source_lang", "en"))
         self.transcript_source_lang.setEnabled(transcript_cfg.get("enabled", False))
-        transcript_form.addRow("Source language:", self.transcript_source_lang)
+        transcript_form.addRow("源语言：", self.transcript_source_lang)
 
         self.transcript_model_combo = QComboBox()
         self.transcript_model_combo.addItems(["tiny","base","small","medium","large"])
         self.transcript_model_combo.setCurrentText(transcript_cfg.get("model", "base"))
         self.transcript_model_combo.setEnabled(transcript_cfg.get("enabled", False))
-        transcript_form.addRow("Whisper model:", self.transcript_model_combo)
+        transcript_form.addRow("Whisper 模型：", self.transcript_model_combo)
 
         # (Search keywords moved to the Basic Settings tab — a common highlight
         # signal, editable without opening this tab.)
@@ -1982,7 +1979,7 @@ class VideoHighlighterGUI(QWidget):
         self.subtitles_checkbox.toggled.connect(self.on_subtitles_toggle)
         # Disable subtitle checkbox if transcript is not enabled
         self.subtitles_checkbox.setEnabled(transcript_cfg.get("enabled", False))
-        subtitle_form.addRow("Create subtitles:", self.subtitles_checkbox)
+        subtitle_form.addRow("生成字幕：", self.subtitles_checkbox)
 
         # No "source language" here. What is spoken is a property of the video,
         # it is already declared in Transcript Settings above (which is what
@@ -1994,11 +1991,11 @@ class VideoHighlighterGUI(QWidget):
         self.subtitle_target_lang.addItems(["en","pl","es","fr","de","it","pt","ru","ja","ko","zh"])
         self.subtitle_target_lang.setCurrentText(subtitles_cfg.get("target_lang", "pl"))
         self.subtitle_target_lang.setEnabled(subtitles_cfg.get("enabled", False) and transcript_cfg.get("enabled", False))
-        subtitle_form.addRow("Target language:", self.subtitle_target_lang)
+        subtitle_form.addRow("目标语言：", self.subtitle_target_lang)
         _sub_run = self._make_analyze_button(
-            "subtitles", "Make subtitles",
-            "Transcribe every video in the list and write a .srt next to each "
-            "(translated when the target language differs). No highlights are cut.")
+            "subtitles", "生成字幕",
+            "转录列表中的每个视频，并在视频旁生成 .srt 字幕文件；"
+            "当目标语言不同时会自动翻译。此操作不会剪切高光片段。")
         subtitle_form.addRow("", _sub_run)
         subtitle_group.setLayout(subtitle_form)
         transcript_layout.addWidget(subtitle_group)
@@ -3124,7 +3121,7 @@ class VideoHighlighterGUI(QWidget):
             train_tab.setLayout(train_layout)
             tabs.addTab(self._scrollable(train_tab), "训练")
         except Exception as e:
-            self.append_log(f"⚠️ Training panel unavailable: {e}")
+            self.append_log(f"⚠️ 训练面板不可用：{e}")
 
         # --- Tab 5: Avoid ---
         avoid_tab = QWidget()
@@ -3136,14 +3133,14 @@ class VideoHighlighterGUI(QWidget):
         self.avoid_face_recognition_chk = QCheckBox("启用人脸识别")
         self.avoid_face_recognition_chk.setChecked(self.config_data.get("avoid", {}).get("face_recognition_enabled", False))
         self.avoid_face_recognition_chk.setToolTip(
-            "When enabled, the pipeline runs face recognition to locate avoided people and skip or crop them out.\n"
-            "Disable to skip the face-recognition step entirely (faster, no avoid enforcement)."
+            "启用后，处理流程会运行人脸识别，定位需要排除的人物，并跳过或裁掉其出现的画面。\n"
+            "关闭后将完全跳过人脸识别步骤（速度更快，但不会执行人物排除）。"
         )
         avoid_group_layout.addWidget(self.avoid_face_recognition_chk)
 
         avoid_info = QLabel(
-            "People you name in the Timeline Viewer (right-click a face → Name) "
-            "show up here. Tick someone to exclude them from generated highlights."
+            "你在时间线查看器中命名的人物（右键点击人脸 → 命名）"
+            "会显示在这里。勾选人物后，其出现片段将从生成的高光中排除。"
         )
         avoid_info.setWordWrap(True)
         avoid_info.setStyleSheet("color: #666; font-size: 9pt;")
@@ -3151,8 +3148,8 @@ class VideoHighlighterGUI(QWidget):
         avoid_method_row = QHBoxLayout()
         avoid_method_row.addWidget(QLabel("识别到时："))
         self.avoid_method_combo = QComboBox()
-        self.avoid_method_combo.addItem("Skip those moments", "skip")
-        self.avoid_method_combo.addItem("Crop them out (experimental)", "crop")
+        self.avoid_method_combo.addItem("跳过这些时刻", "skip")
+        self.avoid_method_combo.addItem("裁掉这些内容（实验性）", "crop")
         self.avoid_method_combo.currentIndexChanged.connect(
             lambda: setattr(self, "_avoid_method", self.avoid_method_combo.currentData()))
         avoid_method_row.addWidget(self.avoid_method_combo)
@@ -3164,8 +3161,7 @@ class VideoHighlighterGUI(QWidget):
         self.avoid_refresh_btn.clicked.connect(self.refresh_avoid_list)
         avoid_row.addWidget(self.avoid_refresh_btn)
         self.avoid_scan_btn = QPushButton("🔍 扫描视频人脸")
-        self.avoid_scan_btn.setToolTip("对列表中的第一个视频运行人脸识别"
-                                       "to collect everyone who appears, then tick who to avoid.")
+        self.avoid_scan_btn.setToolTip("对列表中的第一个视频运行人脸识别，收集出现的所有人物，然后勾选需要排除的人。")
         self.avoid_scan_btn.clicked.connect(self._on_scan_faces)
         avoid_row.addWidget(self.avoid_scan_btn)
         self.avoid_count_label = QLabel("")
@@ -3174,7 +3170,7 @@ class VideoHighlighterGUI(QWidget):
         avoid_row.addStretch()
         avoid_group_layout.addLayout(avoid_row)
         self.avoid_clear_btn = QPushButton("🗑 清空人脸")
-        self.avoid_clear_btn.setToolTip("从人脸库移除扫描得到的人脸（保留已命名/已排除人物).")
+        self.avoid_clear_btn.setToolTip("从人脸库移除扫描得到的人脸（保留已命名/已排除人物）。")
         self.avoid_clear_btn.clicked.connect(self._on_clear_faces)
         avoid_row.addWidget(self.avoid_clear_btn)
 
@@ -3927,7 +3923,7 @@ class VideoHighlighterGUI(QWidget):
                 named += 1
             name_label = QLabel(
                 f"<b>{display}</b><br>"
-                f"<span style='color:#888;font-size:8pt;'>seen {ident.get('count', 0)}×</span>"
+                f"<span style='color:#888;font-size:8pt;'>出现 {ident.get('count', 0)} 次</span>"
             )
             rl.addWidget(name_label, 1)
 
@@ -3945,7 +3941,7 @@ class VideoHighlighterGUI(QWidget):
             self.avoid_list_layout.insertWidget(self.avoid_list_layout.count() - 1, r)
 
         self.avoid_count_label.setText(
-            f"{len(identities)} people · {named} named · {len(bank.avoided_ids())} avoided"
+            f"{len(identities)} 人 · {named} 个已命名 · {len(bank.avoided_ids())} 个已排除"
         )
 
     def _on_avoid_toggled(self, identity_id, checked):
@@ -3956,22 +3952,22 @@ class VideoHighlighterGUI(QWidget):
         bank.set_avoid(identity_id, checked)
         bank.save()
         name = bank.name_for(identity_id)
-        self.append_log(f"{'🚫 Avoiding' if checked else '✅ Allowing'} {name} "
+        self.append_log(f"{'🚫 正在排除' if checked else '✅ 已允许'} {name} "
                         f"({len(bank.avoided_ids())} avoided)")
         self.avoid_count_label.setText(
-            f"{len(bank.all_identities())} people · "
-            f"{sum(1 for i in bank.all_identities() if i['name'])} named · "
-            f"{len(bank.avoided_ids())} avoided"
+            f"{len(bank.all_identities())} 人 · "
+            f"{sum(1 for i in bank.all_identities() if i['name'])} 个已命名 · "
+            f"{len(bank.avoided_ids())} 个已排除"
         )
 
     def _on_scan_faces(self):
         videos = self.get_file_list()
         if not videos:
-            self.append_log("⚠️ Add a video first, then scan it for faces.")
+            self.append_log("⚠️ 请先添加视频，再扫描其中的人脸。")
             return
         video = videos[0]
         if not os.path.exists(video):
-            self.append_log(f"⚠️ Video not found: {video}")
+            self.append_log(f"⚠️ 找不到视频：{video}")
             return
         self.avoid_scan_btn.setEnabled(False)
         self.avoid_scan_btn.setText("🔍 扫描中…")
@@ -3986,19 +3982,19 @@ class VideoHighlighterGUI(QWidget):
                 return
             if bank.remove(identity_id):
                 bank.save()
-                self.append_log("🗑 Removed 1 person from the face bank")
+                self.append_log("🗑 已从人脸库移除 1 人")
             self.refresh_avoid_list()
 
     def _on_clear_faces(self):
             from PySide6.QtWidgets import QMessageBox
             bank = self._get_face_bank()
             if not bank or len(bank) == 0:
-                self.append_log("ℹ️ Face bank is already empty.")
+                self.append_log("ℹ️ 人脸库已经为空。")
                 return
             box = QMessageBox(self)
             box.setWindowTitle("清空人脸")
             box.setText(f"清空人脸库中的 {len(bank)} 个身份？")
-            box.setInformativeText("Choose what to remove.")
+            box.setInformativeText("请选择要清除的内容。")
             btn_all   = box.addButton("全部清除", QMessageBox.ButtonRole.DestructiveRole)
             btn_keep  = box.addButton("保留已命名 / 已排除", QMessageBox.ButtonRole.AcceptRole)
             btn_cancel = box.addButton("取消", QMessageBox.ButtonRole.RejectRole)
@@ -4008,21 +4004,21 @@ class VideoHighlighterGUI(QWidget):
                 return
             kept = bank.clear(keep_named=(clicked is btn_keep))
             bank.save()
-            self.append_log(f"🗑 Face bank cleared — {kept} identities kept")
+            self.append_log(f"🗑 人脸库已清理——保留 {kept} 个身份")
             self.refresh_avoid_list()
 
     def _on_scan_done(self, n):
         self.avoid_scan_btn.setEnabled(True)
         self.avoid_scan_btn.setText("🔍 扫描视频人脸")
         if n >= 0:
-            self.append_log(f"✅ Face scan complete — {n} identities in the bank")
+            self.append_log(f"✅ 人脸扫描完成——人脸库中共有 {n} 个身份")
         self.refresh_avoid_list()
 
     # --- Downloader methods ---
     def browse_save_directory(self):
         """Browse for save directory"""
         directory = QFileDialog.getExistingDirectory(
-            self, "Select Save Directory", self.download_save_dir_input.text()
+            self, "选择保存目录", self.download_save_dir_input.text()
         )
         if directory:
             self.download_save_dir_input.setText(directory)
@@ -4031,20 +4027,20 @@ class VideoHighlighterGUI(QWidget):
         """Open the thumbnail picker for the listing URL, then download the chosen videos."""
         url = self.download_url_input.text().strip()
         if not url.startswith(("http://", "https://")):
-            self.append_log("⚠️ Enter a listing URL (http:// or https://) first")
+            self.append_log("⚠️ 请先输入列表页面网址（http:// 或 https://）")
             return
         try:
             from video_picker_dialog import VideoPickerDialog
         except Exception as e:
-            self.append_log(f"❌ Video picker unavailable: {e}")
+            self.append_log(f"❌ 视频选择器不可用：{e}")
             return
         dlg = VideoPickerDialog(url, pattern="auto", use_browser="auto", parent=self)
         if dlg.exec():
             urls = [e["url"] for e in dlg.selected_entries()]
             if not urls:
-                self.append_log("No videos selected.")
+                self.append_log("未选择任何视频。")
                 return
-            self.append_log(f"🗂 Selected {len(urls)} video(s) from picker")
+            self.append_log(f"🗂 已从选择器中选择 {len(urls)} 个视频")
             self.start_download(video_urls=urls)
 
     def start_download(self, video_urls=None):
@@ -5938,7 +5934,7 @@ class VideoHighlighterGUI(QWidget):
         """Cancel the running pipeline or download"""
         # Check if download is running
         if hasattr(self, 'download_worker') and self.download_worker and self.download_worker.isRunning():
-            self.append_log("\n⏹️ === CANCELLATION REQUESTED ===")
+            self.append_log("\n⏹️ === 已请求取消 ===")
             self.append_log("⏹️ Stopping download...")
             self.task_label.setText("⏹️ 正在取消下载…")
             self.cancel_btn.setEnabled(False)
@@ -5962,14 +5958,14 @@ class VideoHighlighterGUI(QWidget):
         # Check if an on-demand signal run is going
         if self._signal_worker and self._signal_worker.isRunning():
             self.append_log("\n⏹️ === CANCELLATION REQUESTED ===")
-            self.append_log("⏹️ Stopping on-demand run...")
+            self.append_log("⏹️ 正在停止按需任务…")
             self.task_label.setText("⏹️ 正在取消按需任务…")
             self.cancel_btn.setText("正在取消…")
             self._signal_worker.cancel()
             return
 
         # Nothing is running
-        self.append_log("⚠️ Nothing to cancel - no active process")
+        self.append_log("⚠️ 当前没有正在运行的任务可取消")
 
     def _make_analyze_button(self, kind, label, tooltip):
         """A small 'run this one signal on demand' button, registered so the
@@ -6024,7 +6020,7 @@ class VideoHighlighterGUI(QWidget):
         """
         chosen = self.selected_face_labels()
         self.btn_face_labels.setText(
-            ", ".join(chosen) if chosen else "pick expressions…")
+            ", ".join(chosen) if chosen else "选择表情…")
 
     def _rules_run_row(self):
         """The composition Run button plus a word on what it will actually do.
@@ -6038,17 +6034,17 @@ class VideoHighlighterGUI(QWidget):
         h.setContentsMargins(0, 0, 0, 0)
         h.setSpacing(6)
         h.addWidget(self._make_analyze_button(
-            "composition", "Apply rules", chr(10).join([
-                "Run the saved composition rules over every video in the",
-                "list and cache the events.",
+            "composition", "应用规则", chr(10).join([
+                "对列表中的每个视频运行已保存的构图规则，",
+                "并缓存生成的事件。",
                 "",
-                "Fetches what the ticked rules read and the cache lacks:",
-                "signal rules measure the file directly, and a spatial rule",
-                "starts a detection pass for the classes it names. Both are",
-                "cached, so re-running after a threshold edit is seconds.",
+                "自动补充已勾选规则所需、但缓存中尚不存在的数据：",
+                "信号规则直接分析文件；空间规则则会",
+                "针对规则中指定的类别启动一次检测。两者都会",
+                "写入缓存，因此修改阈值后再次运行通常只需几秒。",
                 "",
-                "Safe to run repeatedly: previous results for these rules",
-                "are replaced, not stacked.",
+                "可以安全重复运行：这些规则之前的结果会被",
+                "替换，而不是重复叠加。",
             ])))
         note = QLabel("可在“高级 → 构图规则”中编辑")
         note.setStyleSheet("color: #888; font-size: 9pt;")
@@ -6079,19 +6075,19 @@ class VideoHighlighterGUI(QWidget):
         that video's cache. No highlights are cut — this is the main-window twin
         of the timeline viewer's Analyze panel."""
         if self.worker and self.worker.isRunning():
-            self.append_log("⚠️ A pipeline run is active — let it finish first.")
+            self.append_log("⚠️ 完整处理流程正在运行，请先等待其结束。")
             return
         if self._signal_worker and self._signal_worker.isRunning():
-            self.append_log("⚠️ An on-demand run is already going.")
+            self.append_log("⚠️ 已有按需任务正在运行。")
             return
 
         video_paths = self.get_file_list()
         if not video_paths:
-            self.append_log("⚠️ No videos in the list.")
+            self.append_log("⚠️ 视频列表为空。")
             return
         missing = [p for p in video_paths if not os.path.exists(p)]
         if missing:
-            self.append_log("⚠️ Video file(s) not found:")
+            self.append_log("⚠️ 找不到以下视频文件：")
             for f in missing:
                 self.append_log(f"  - {f}")
             return
@@ -6101,7 +6097,7 @@ class VideoHighlighterGUI(QWidget):
         if kind == "objects":
             objs = [s.strip() for s in self.objects_input.text().split(",") if s.strip()]
             if not objs:
-                self.append_log("⚠️ Type at least one object class first (e.g. person, car).")
+                self.append_log("⚠️ 请先输入至少一个物体类别（例如 person、car）。")
                 return
             params["objects"] = objs
         elif kind == "actions":
@@ -6158,11 +6154,11 @@ class VideoHighlighterGUI(QWidget):
             try:
                 if getattr(tw, 'video_path', None) in getattr(self, '_signal_run_paths', []):
                     tw.refresh_from_disk()
-                    self.append_log("🔄 Refreshed the open timeline viewer.")
+                    self.append_log("🔄 已刷新当前打开的时间线查看器。")
             except RuntimeError:
                 self.timeline_window = None   # underlying window was destroyed
             except Exception as e:
-                self.append_log(f"⚠️ Could not refresh timeline viewer: {e}")
+                self.append_log(f"⚠️ 无法刷新时间线查看器：{e}")
 
     def _on_model_installed(self, exported):
         """Say, in the user-facing log, that a model of their own is now installed.
@@ -6175,8 +6171,8 @@ class VideoHighlighterGUI(QWidget):
         try:
             names = ", ".join(getattr(exported, "class_names", []) or [])
             self.append_log(
-                f"✅ Your own detector is installed ({names}). "
-                f"Pick it under Advanced → object model.")
+                f"✅ 你的自定义检测器已安装（{names}）。"
+                f"可在“高级 → 物体模型”中选择它。")
         except Exception as e:                     # pragma: no cover - defensive
             print(f"⚠️ Could not report the installed model: {e}")
 
@@ -6198,7 +6194,7 @@ class VideoHighlighterGUI(QWidget):
             self.run_btn.setStyleSheet("QPushButton { background-color: #2f81f7; color: white; font-weight: bold; padding: 8px; }")
             self.task_label.setText("⏸ 已暂停")
             self.task_label.setStyleSheet("color: #ff8c00; font-weight: bold;")
-            self.append_log("⏸ Pipeline paused")
+            self.append_log("⏸ 处理流程已暂停")
             self._sync_simple_start()
             return
 
@@ -6219,7 +6215,7 @@ class VideoHighlighterGUI(QWidget):
         if worker is not getattr(self, 'download_worker', None):
             return
         if worker and worker.isRunning():
-            self.append_log("⚠️ Forcing download termination...")
+            self.append_log("⚠️ 正在强制终止下载任务…")
             worker.terminate()
             worker.wait(3000)
         self.download_cleanup()

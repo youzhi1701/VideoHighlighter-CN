@@ -16,12 +16,12 @@ import {
 import { toast } from "sonner"
 
 const MODES = [
-  { value: "clip", label: "CLIP only (fast, GPU ranker)" },
-  { value: "clip_llm", label: "CLIP + vision model (confirm top matches)" },
-  { value: "llm", label: "Vision model only (slow, most capable)" },
+  { value: "clip", label: "仅 CLIP（快速，GPU 排序）" },
+  { value: "clip_llm", label: "CLIP + 视觉模型（复核最佳匹配）" },
+  { value: "llm", label: "仅视觉模型（较慢，能力最强）" },
 ]
 const DEVICES = [
-  { value: "GPU", label: "GPU (Intel/OpenVINO)" },
+  { value: "GPU", label: "GPU（Intel/OpenVINO）" },
   { value: "CPU", label: "CPU" },
 ]
 
@@ -65,8 +65,8 @@ export function VisionSearchTab({
   const blocked = needsClip && clipOk === false
 
   const start = async () => {
-    if (!videoPath) return toast.error("Add a video first")
-    if (!query.trim()) return toast.error("Enter something to search for")
+    if (!videoPath) return toast.error("请先添加视频")
+    if (!query.trim()) return toast.error("请输入要搜索的内容")
     onStart()
     const res = await visionSearch({
       video_path: videoPath,
@@ -79,7 +79,7 @@ export function VisionSearchTab({
       backend,
       model,
     })
-    if (!res.ok) toast.error(res.error ?? "Could not start search")
+    if (!res.ok) toast.error(res.error ?? "无法启动搜索")
   }
 
   return (
@@ -109,8 +109,8 @@ export function VisionSearchTab({
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !running && start()}
-            placeholder="a person riding a bike"
+            onKeyDown={(e) => e.key === "搜索" && !running && start()}
+            placeholder="一个骑自行车的人"
             disabled={running}
           />
           <Button onClick={start} disabled={running || blocked} className="gap-2">
@@ -120,31 +120,31 @@ export function VisionSearchTab({
 
         <div className="grid gap-2.5 md:grid-cols-2">
           <SelectField
-            label="Engine"
+            label="搜索引擎"
             value={mode}
             options={MODES}
             onChange={(v) => setMode(v as typeof mode)}
           />
           {needsClip && (
             <SelectField
-              label="CLIP device"
+              label="CLIP 设备"
               value={device}
               options={DEVICES}
               onChange={setDevice}
             />
           )}
           <NumberField
-            label="Sample every"
+            label="采样间隔"
             hint="(s)"
             value={interval}
             step={0.5}
             min={0.1}
             onChange={setIntervalS}
           />
-          <NumberField label="Max results" value={topK} min={1} onChange={setTopK} />
+          <NumberField label="最大结果数" value={topK} min={1} onChange={setTopK} />
           {mode === "clip" && (
             <NumberField
-              label="Score threshold"
+              label="分数阈值"
               hint="(0-1)"
               value={threshold}
               step={0.05}
@@ -163,7 +163,7 @@ export function VisionSearchTab({
         <div className="rounded-md border">
           {results.length === 0 ? (
             <p className="p-6 text-center text-sm text-muted-foreground">
-              {running ? "Searching…" : "No results yet."}
+              {running ? "正在搜索…" : "暂无搜索结果。"}
             </p>
           ) : (
             <ul className="divide-y">

@@ -2922,11 +2922,10 @@ class VideoHighlighterGUI(QWidget):
             str(visualization_cfg.get("report_serve_base", "") or ""))
         self.serve_base_input.setPlaceholderText("http://192.168.0.10:8000/")
         self.serve_base_input.setToolTip(
-            "Optional. If you serve the output folder over HTTP, put its base URL\n"
-            "here and every report gets a link back to its playable self.\n\n"
-            "Leave empty for the usual behaviour. This only adds a link — it does\n"
-            "not start a server; see tools/serve_report.py for one that supports\n"
-            "the range requests seeking needs.")
+            "可选。如果你通过 HTTP 提供输出文件夹，请在这里填写基础地址，\n"
+            "每份报告都会获得一个可直接播放的链接。\n\n"
+            "留空则保持默认行为。此处只添加链接，不会启动服务器；\n"
+            "如需支持拖动播放进度的服务器，可使用 tools/serve_report.py。")
         self.why_report_chk.toggled.connect(self.serve_base_input.setEnabled)
         self.serve_base_input.setEnabled(self.why_report_chk.isChecked())
         report_layout.addWidget(QLabel("服务地址（可选）："))
@@ -2942,12 +2941,10 @@ class VideoHighlighterGUI(QWidget):
             str(visualization_cfg.get("report_media_base", "") or ""))
         self.media_base_input.setPlaceholderText("smb://192.168.0.10/movies/")
         self.media_base_input.setToolTip(
-            "Optional. Where the video folder is reachable from other devices —\n"
-            "an SMB share, usually. Each clip then carries a link that opens the\n"
-            "source in a player app.\n\n"
-            "The position cannot survive the hand-off, so the clip opens at the\n"
-            "start and the link says which timestamp to seek to. Use the HTTP\n"
-            "field above instead when you want playback to land on the moment.")
+            "可选。填写其他设备可访问视频文件夹的位置，通常是 SMB 共享地址。\n"
+            "这样每个片段都会带有一个可在播放器中打开源视频的链接。\n\n"
+            "跨应用打开时无法保留播放位置，因此视频会从开头打开，链接会注明需要跳转的时间点。\n"
+            "如果希望点击后直接落在对应时刻，请优先使用上方 HTTP 地址。")
         self.why_report_chk.toggled.connect(self.media_base_input.setEnabled)
         self.media_base_input.setEnabled(self.why_report_chk.isChecked())
         report_layout.addWidget(QLabel("视频访问地址（可选）："))
@@ -2969,11 +2966,11 @@ class VideoHighlighterGUI(QWidget):
         self.render_mode_combo.addItem("CPU x265（VR 兼容，较慢）", "cpu")
         self.render_mode_combo.addItem("GPU（快速，部分 VR 播放器可能不兼容）", "gpu")
         self.render_mode_combo.setToolTip(
-            "How the highlight video is encoded:\n"
-            "CPU x265 — re-encode on the CPU with libx265 (HEVC), matching how VR\n"
-            "   sources are authored. VR-safe, but slow at 6K.\n"
-            "GPU — re-encode with the hardware encoder. Fast, but the HEVC output\n"
-            "   may not play in VR players like HereSphere."
+            "高光视频的编码方式：\n"
+            "CPU x265 — 使用 CPU 和 libx265（HEVC）重新编码，更符合 VR 源视频的常见编码方式；\n"
+            "兼容性更好，但处理 6K 视频时较慢。\n"
+            "GPU — 使用硬件编码器重新编码，速度更快，但生成的 HEVC 视频\n"
+            "可能无法在 HereSphere 等部分 VR 播放器中播放。"
         )
         _saved_render_mode = highlights_cfg.get("render_mode", "cpu")
         _rm_idx = self.render_mode_combo.findData(_saved_render_mode)
@@ -3194,10 +3191,10 @@ class VideoHighlighterGUI(QWidget):
         # seconds — the report itself must stay instant.
         self.ai_summary_btn = QPushButton("AI 摘要")
         self.ai_summary_btn.setToolTip(
-            "Add a short plain-language summary to the Highlight Report:\n"
-            "what shaped this cut, and the one change most likely to improve it.\n"
-            "Runs your local model, so it takes a moment. The report's findings\n"
-            "are always there without it.")
+            "在高光报告中加入一段简短易懂的 AI 摘要：\n"
+            "说明本次剪辑主要受哪些因素影响，以及最值得优先调整的一项设置。\n"
+            "该功能会运行本地模型，因此需要一些时间；即使不生成 AI 摘要，\n"
+            "报告中的基础分析结果仍会正常保留。")
         self.ai_summary_btn.clicked.connect(self.write_ai_summary)
 
         # The wheel keeps the choices that most users never touch out of sight.
@@ -3208,7 +3205,7 @@ class VideoHighlighterGUI(QWidget):
         self.ai_summary_opts_btn.setIcon(_ui_icons.gear())
         self.ai_summary_opts_btn.setFixedWidth(28)
         self.ai_summary_opts_btn.setToolTip("摘要选项 — 提问、"
-                                            "discuss in chat, choose the model")
+                                            "在聊天中讨论、选择模型")
         self.ai_summary_opts_btn.clicked.connect(self.show_ai_summary_menu)
 
         self.simple_start_btn = QPushButton("简洁视图")
@@ -3227,8 +3224,8 @@ class VideoHighlighterGUI(QWidget):
         # normal way of trying a setting.
         self.report_only_btn = QPushButton("仅生成报告")
         self.report_only_btn.setToolTip(
-            "Re-score with the current settings and write the Highlight Report,\n"
-            "without rendering a video. Fast on a video already analysed.")
+            "使用当前设置重新评分并生成高光报告，但不渲染视频。\n"
+            "对于已经分析过的视频，这个过程通常很快。")
         self.report_only_btn.clicked.connect(lambda: self.run_pipeline(report_only=True))
 
         self.run_btn = QPushButton("运行高光分析")
@@ -3246,9 +3243,9 @@ class VideoHighlighterGUI(QWidget):
         self.debug_console_chk = QCheckBox("调试日志")
         self.debug_console_chk.setChecked(debug_console.is_console_visible())
         self.debug_console_chk.setToolTip(
-            "Open a live window mirroring all app output\n"
-            "(recent output is replayed, so it works after an error too).\n"
-            f"Everything is always saved to:\n{debug_console.log_file_path()}"
+            "打开实时调试窗口，显示程序的全部输出。\n"
+            "近期输出也会重新显示，因此发生错误后再打开也能查看。\n"
+            f"所有日志始终保存到：\n{debug_console.log_file_path()}"
         )
         self.debug_console_chk.toggled.connect(debug_console.set_console_visible)
         debug_console.register_checkbox(self.debug_console_chk)
@@ -3257,8 +3254,8 @@ class VideoHighlighterGUI(QWidget):
         self.analyzed_counter_label = QLabel()
         self.analyzed_counter_label.setStyleSheet("color: #2196F3; font-weight: bold;")
         self.analyzed_counter_label.setToolTip(
-            "Videos successfully analyzed by the pipeline.\n"
-            f"Lifetime total persists in:\n{analysis_stats.stats_path()}"
+            "处理流程已成功分析的视频数量。\n"
+            f"累计统计保存在：\n{analysis_stats.stats_path()}"
         )
         self.update_analyzed_counter()
         ctrl_layout.addWidget(self.analyzed_counter_label)
@@ -3759,13 +3756,11 @@ class VideoHighlighterGUI(QWidget):
         pro_group = QGroupBox("VideoHighlighter Pro")
         pro_layout = QVBoxLayout(pro_group)
         pro_line = QLabel(
-            "You're running the free, open-source edition — face identity, "
-            "expressions, the report and the assistant are all here. "
-            "<b>Pro</b> teaches the app a vocabulary of its own: categories "
-            "from your own example frames, search by example, open-vocabulary "
-            "detection, a live overlay, and a commercial licence. "
-            f"Try it free for {_pro_offer.TRIAL_DAYS} days.<br>"
-            f'👉 <a href="{_pro_offer.PRO_URL}">Learn more / Start the trial</a>'
+            "你当前使用的是免费开源版本——人脸身份、表情识别、分析报告和 AI 助手均可使用。"
+            "<b>Pro</b> 版进一步支持：用你自己的示例帧训练专属类别、按示例搜索、"
+            "开放词汇检测、实时叠加显示以及商业许可。"
+            f"可免费试用 {_pro_offer.TRIAL_DAYS} 天。<br>"
+            f'👉 <a href="{_pro_offer.PRO_URL}">了解更多 / 开始试用</a>'
         )
         pro_line.setOpenExternalLinks(True)
         pro_line.setTextInteractionFlags(Qt.TextBrowserInteraction)
@@ -3773,11 +3768,11 @@ class VideoHighlighterGUI(QWidget):
         pro_layout.addWidget(pro_line)
 
         self.pro_offer_chk = QCheckBox(
-            "Mention Pro when I reach something only it can do")
+            "当遇到仅 Pro 版支持的功能时提示我")
         self.pro_offer_chk.setChecked(_pro_offer.is_enabled())
         self.pro_offer_chk.setToolTip(
-            "A one-line banner after, for example, a rule that can't be built "
-            "from this video's classes. Never at startup, never in a report.")
+            "例如，当当前视频已有类别无法构建某条规则时，会显示一行 Pro 提示。"
+            "启动软件时不会弹出，也不会写入报告。")
         self.pro_offer_chk.toggled.connect(_pro_offer.set_enabled)
         pro_layout.addWidget(self.pro_offer_chk)
         layout.addWidget(pro_group)
@@ -3801,8 +3796,8 @@ class VideoHighlighterGUI(QWidget):
         support_layout.addWidget(links)
 
         tip = QLabel(
-            "💡 When reporting a bug, please include your OS and the debug log "
-            "(toggle “Debug log” next to Run) — it speeds up diagnosis."
+            "💡 提交问题时，请同时提供操作系统信息和调试日志"
+            "（可在“运行高光分析”旁开启“调试日志”），这样能更快定位问题。"
         )
         tip.setStyleSheet("color: #888; font-size: 9pt;")
         tip.setWordWrap(True)
@@ -6763,11 +6758,10 @@ class VideoHighlighterGUI(QWidget):
                     for gap in gaps for where in (gap.get("chapters") or [])),
                    key=len, default="")
         claim, ok = QInputDialog.getMultiLineText(
-            self, "Check something that was said",
-            "Which claim should the next run try to check?\n"
-            "A line from the transcript works best — the rule is built to "
-            "confirm or contradict it.\n"
-            f"Classes available in this video: {', '.join(classes)}",
+            self, "核对视频中说过的内容",
+            "下一次运行需要核对哪一句话？\n"
+            "直接使用转录文本中的一句话效果最好，规则会尝试确认或反驳它。\n"
+            f"当前视频可用类别：{', '.join(classes)}",
             seed)
         if not ok or not claim.strip():
             return
@@ -6776,14 +6770,13 @@ class VideoHighlighterGUI(QWidget):
         backend = (entry or {}).get("backend", "ollama")
         name = (entry or {}).get("model", "llama3")
         rules_path = composition_rules_path()
-        self.append_log(f"🧩 Asking {backend}/{name} for a rule that would "
-                        "check that…")
+        self.append_log(f"🧩 正在让 {backend}/{name} 生成用于核对该内容的规则…")
         QApplication.setOverrideCursor(Qt.WaitCursor)
         QApplication.processEvents()
         try:
             llm = advisor.load_llm(backend, name)
             if llm is None:
-                self.append_log(f"⚠️ Could not reach {backend}/{name}.")
+                self.append_log(f"⚠️ 无法连接 {backend}/{name}。")
                 return
             proposal = rule_proposal.propose(
                 claim.strip(), classes, llm=llm,
@@ -6791,7 +6784,7 @@ class VideoHighlighterGUI(QWidget):
                 gaps=gaps, claim_at=self._claim_second(report, claim),
                 model_name=label_for(entry))
         except Exception as exc:
-            self.append_log(f"⚠️ Rule proposal failed: {exc}")
+            self.append_log(f"⚠️ 规则生成失败：{exc}")
             return
         finally:
             QApplication.restoreOverrideCursor()
@@ -6806,23 +6799,23 @@ class VideoHighlighterGUI(QWidget):
             return
 
         answer = QMessageBox.question(
-            self, "Add this rule?",
+            self, "添加这条规则？",
             f"<b>{proposal.label}</b><br><br>"
             f"{proposal.why}<br><br>"
             f"<pre>{proposal.as_yaml()}</pre>"
-            f"Add it to your composition rules?<br>"
-            f"<small>{rules_path}<br>The current file is backed up first. "
-            f"Object detection must re-run before this can fire.</small>",
+            f"要将它添加到构图规则中吗？<br>"
+            f"<small>{rules_path}<br>当前规则文件会先自动备份。"
+            f"添加后必须重新运行物体检测，这条规则才能生效。</small>",
             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if answer != QMessageBox.Yes:
-            self.append_log("ℹ️ Rule not added.")
+            self.append_log("ℹ️ 未添加规则。")
             return
 
         try:
             rule_proposal.apply(rules_path, proposal,
                                 video_path=(report.get("video") or {}).get("path"))
         except Exception as exc:
-            self.append_log(f"⚠️ Could not write the rule: {exc}")
+            self.append_log(f"⚠️ 无法写入规则：{exc}")
             return
         self.append_log(
             f"✅ Added '{proposal.name}' to {os.path.basename(rules_path)}. "
@@ -6890,7 +6883,7 @@ class VideoHighlighterGUI(QWidget):
 
         menu.addSeparator()
         act_model = menu.addAction(
-            f"Models: {label_for(active_model)}…" if models else "Add a model…")
+            f"模型：{label_for(active_model)}…" if models else "添加模型…")
 
         chosen = menu.exec(self.ai_summary_opts_btn.mapToGlobal(
             self.ai_summary_opts_btn.rect().bottomLeft()))
@@ -6931,8 +6924,8 @@ class VideoHighlighterGUI(QWidget):
 
         labels = list(CONCERNS.values())
         picked, ok = QInputDialog.getItem(
-            self, "What is wrong with this highlight?",
-            "Pick the closest one — the report is re-read with that in mind:",
+            self, "这个高光片段哪里不满意？",
+            "请选择最接近的问题，报告会按照这个方向重新分析：",
             labels, 0, False)
         if not ok:
             return
@@ -6977,11 +6970,10 @@ class VideoHighlighterGUI(QWidget):
         from PySide6.QtWidgets import QInputDialog
 
         question, ok = QInputDialog.getText(
-            self, "Ask about this cut",
-            "What would you like to know about this video?\n"
-            "The model answers from what the run measured — the marks, their "
-            "order, and how often the video repeats them.",
-            text="What does the pattern across these clips look like to you?")
+            self, "询问这个剪辑",
+            "你想了解这个视频的什么内容？\n"
+            "模型会根据本次运行测量到的标记、顺序以及重复频率来回答。",
+            text="这些片段整体呈现出什么规律？")
         if ok and question.strip():
             self.write_ai_summary(question.strip(), reading=True)
 

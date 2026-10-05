@@ -303,7 +303,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                     {card.file_count} file{card.file_count === 1 ? "" : "s"} ·{" "}
                     {gb(card.total_bytes)}
                     {card.chaptered_takes > 0 &&
-                      ` · ${card.chaptered_takes} chaptered`}
+                      ` · ${card.chaptered_takes} 个已分章节`}
                   </p>
                   {card.firmware && (
                     <p className="text-xs text-muted-foreground/70">

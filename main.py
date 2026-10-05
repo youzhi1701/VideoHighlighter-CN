@@ -12,7 +12,7 @@ debug_console.install()
 
 # A frozen build starts every multiprocessing child — the object-detection
 # workers, their Manager, the thumbnail decoder — by re-running this exe, and
-# the child becomes a child only when it reaches freeze_support(). Left at the
+# the child becomes a child only when it reaches freeze_support(）。 Left at the
 # bottom of the file, each one first loaded everything below: cv2, Qt,
 # OpenVINO, transformers, the assistant. Object detection starts six of them;
 # on a Mac that filled the memory until the machine had to be restarted.
@@ -43,7 +43,7 @@ ui_scale.apply()
 # any window can exist. The bootloader's splash covers that stretch with the
 # logo; these stage() calls are what make a slow launch readable afterwards in
 # debug.log, and they would drive the splash text too if the build ever moves
-# to a .spec (see modules/system/startup_splash.py on why the CLI flag cannot).
+# to a .spec (see modules/system/startup_splash.py on why the CLI flag cannot）。
 # This module deliberately pulls in no Qt, so it cannot disturb the import
 # order below, which matters on Windows.
 from modules.system import startup_splash
@@ -105,7 +105,7 @@ CONFIG_FILE = config_path("config.yaml")
 YOLO_OBJECTS_LABELS_FILE = _resource_path("yolo_objects_labels.json")
 KINETICS_400_LABELS_FILE = _resource_path("kinetics_400_labels.json")
 # Trained action models live in models/actions/ (the flat root locations stay
-# as a fallback) — see app_paths.action_model_file().
+# as a fallback) — see app_paths.action_model_file(）。
 INTEL_CUSTOM_LABELS_FILE = _action_model_file("intel_finetuned_classifier_3d_mapping.json")
 R3D_CUSTOM_LABELS_FILE = _action_model_file("r3d_finetuned_mapping.json")
 
@@ -113,7 +113,7 @@ class LabelSelectorDialog(QDialog):
     """Dialog with search/filter and multi-select for labels."""
 
     def __init__(self, title, labels, current_selection=None, parent=None):
-        super().__init__(parent)
+        super(）。__init__(parent)
         self.setWindowTitle(title)
         self.setMinimumSize(480, 520)
         self.all_labels = sorted(labels)
@@ -174,7 +174,7 @@ class LabelSelectorDialog(QDialog):
         self._update_selection_count()
 
     def _filter_labels(self, text):
-        text = text.strip().lower()
+        text = text.strip(）。lower()
         filtered = [l for l in self.all_labels if text in l.lower()] if text else self.all_labels
         self._populate_list(filtered)
         self.info_label.setText(f"已显示 {len(filtered)} / {len(self.all_labels)} 个标签")
@@ -182,7 +182,7 @@ class LabelSelectorDialog(QDialog):
 
     def _select_all_visible(self):
         for i in range(self.label_list.count()):
-            self.label_list.item(i).setSelected(True)
+            self.label_list.item(i）。setSelected(True)
         self._update_selection_count()
 
     def _deselect_all(self):
@@ -197,7 +197,7 @@ class LabelSelectorDialog(QDialog):
 
 class NoAnalysisWarningDialog(QDialog):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(）。__init__(parent)
         self.setWindowTitle("没有分析数据")
         self.setFixedWidth(420)
         
@@ -224,7 +224,7 @@ class NoAnalysisWarningDialog(QDialog):
         layout.addWidget(self.dont_show_chk)
         
         buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        buttons.button(QDialogButtonBox.Ok).setText("仍然打开")
+        buttons.button(QDialogButtonBox.Ok）。setText("仍然打开")
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
@@ -236,7 +236,7 @@ class MultiCompleter(QCompleter):
     Matches labels where any word starts with the typed text."""
 
     def __init__(self, labels=None, parent=None):
-        super().__init__(parent)
+        super(）。__init__(parent)
         self._all_labels = labels or []
         self._source_model = QStringListModel(self._all_labels)
         self.setModel(self._source_model)
@@ -249,7 +249,7 @@ class MultiCompleter(QCompleter):
         self._source_model.setStringList(labels)
 
     def pathFromIndex(self, index):
-        completion = super().pathFromIndex(index)
+        completion = super(）。pathFromIndex(index)
         widget = self.widget()
         if not widget:
             return completion
@@ -270,12 +270,12 @@ class MultiCompleter(QCompleter):
         cursor = widget.cursorPosition()
         before = path[:cursor]
         last_comma = before.rfind(",")
-        current_token = before[last_comma + 1:].strip().lower()
+        current_token = before[last_comma + 1:].strip(）。lower()
 
         # Filter: any word in label starts with typed text
         if current_token:
             filtered = [l for l in self._all_labels
-                        if any(w.startswith(current_token) for w in l.lower().split())]
+                        if any(w.startswith(current_token) for w in l.lower(）。split())]
         else:
             filtered = self._all_labels
         self._source_model.setStringList(filtered)
@@ -283,7 +283,7 @@ class MultiCompleter(QCompleter):
 
 class DownloadWorker(QThread):
     """
-    Worker thread for downloading videos (with optional immediate processing after each file).
+    Worker thread for downloading videos (with optional immediate processing after each file）。
     
     Emits signals for:
     - progress updates
@@ -302,7 +302,7 @@ class DownloadWorker(QThread):
     def __init__(self, url, save_dir, pattern, time_range=None, download_full=True,
                  use_percentages=False, immediate_processing=False, max_concurrent=1,
                  process_callback=None, video_urls=None):
-        super().__init__()
+        super(）。__init__()
         self.url = url
         self.save_dir = save_dir
         self.pattern = pattern
@@ -320,7 +320,7 @@ class DownloadWorker(QThread):
     def run(self):
         try:
             self._is_running = True
-            self.log.emit(f"🚀 Starting download from: {self.url}")
+            self.log.emit(f"🚀 开始下载：{self.url}")
 
             def log_fn(message):
                 self.log.emit(message)
@@ -335,14 +335,14 @@ class DownloadWorker(QThread):
             def wrapped_process_callback(filepath, metadata):
                 if self._cancelled:
                     return {'cancelled': True}
-                self.log.emit(f"🔧 Processing: {os.path.basename(filepath)}")
+                self.log.emit(f"🔧 正在处理：{os.path.basename(filepath)}")
                 try:
                     result = self.process_callback(filepath, metadata)
-                    self.log.emit(f"✅ Processed: {os.path.basename(filepath)}")
+                    self.log.emit(f"✅ 已处理：{os.path.basename(filepath)}")
                     self.video_processed.emit(filepath, result)
                     return result
                 except Exception as e:
-                    self.log.emit(f"❌ Processing failed: {e}")
+                    self.log.emit(f"❌ 处理失败：{e}")
                     return {'error': str(e)}
 
             callback = (wrapped_process_callback
@@ -372,14 +372,14 @@ class DownloadWorker(QThread):
                     self._download_results.append(result)
 
             if self._cancelled:
-                self.log.emit("⏹️ Download was cancelled")
+                self.log.emit("⏹️ 下载已取消")
                 self.cancelled.emit()
                 self.finished.emit([])
             else:
                 self.finished.emit(downloaded_files)
 
         except Exception as e:
-            self.log.emit(f"❌ Download thread error: {e}")
+            self.log.emit(f"❌ 下载线程错误：{e}")
             import traceback
             self.log.emit(traceback.format_exc())
             self.finished.emit([])
@@ -396,7 +396,7 @@ class DownloadWorker(QThread):
         Download button stuck disabled. force_download_cleanup is the safety net
         for a worker genuinely stuck in a non-cancellable subprocess.)"""
         if self._is_running:
-            self.log.emit("⏹️ Cancellation requested - stopping download...")
+            self.log.emit("⏹️ 已请求取消，正在停止下载…")
             self._cancelled = True
 
     def is_cancelled(self):
@@ -411,7 +411,7 @@ class DetectionPreviewWindow(QWidget):
     """Standalone window showing live detection frames during processing.
 
     Supports pause (freezes the pipeline) and rewind (scrub back through a ring
-    buffer of recently shown frames).
+    buffer of recently shown frames）。
     """
 
     closed = Signal()
@@ -419,7 +419,7 @@ class DetectionPreviewWindow(QWidget):
     BUFFER_SIZE = 250  # rewind history (~30s at 8 fps); ~125MB of pixmaps
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(）。__init__(parent)
         from collections import deque
         self.setWindowTitle("🔍 实时检测预览")
         self.setMinimumSize(560, 400)
@@ -556,7 +556,7 @@ class DetectionPreviewWindow(QWidget):
 
     def closeEvent(self, event):
         self.closed.emit()
-        super().closeEvent(event)
+        super(）。closeEvent(event)
 
 
 class Worker(QThread):
@@ -568,7 +568,7 @@ class Worker(QThread):
     timeline_requested = Signal(str, object)  # video_path, analysis_data
 
     def __init__(self, video_path, gui_config=None):
-        super().__init__()
+        super(）。__init__()
         self.video_path = video_path
         self.gui_config = gui_config
         self._cancel_flag = threading.Event()
@@ -598,9 +598,9 @@ class Worker(QThread):
 
             # Check if single or multiple files
             if isinstance(self.video_path, list):
-                self.log.emit(f"🚀 Starting batch processing of {len(self.video_path)} videos...")
+                self.log.emit(f"🚀 开始批量处理 {len(self.video_path)} 个视频…")
             else:
-                self.log.emit("🚀 Starting video highlighter pipeline...")
+                self.log.emit("🚀 正在启动视频高光处理流程…")
 
             # Gate the preview emit on the live flag, checked per call so the
             # checkbox works mid-run. (The detector only builds/resizes a frame
@@ -622,26 +622,26 @@ class Worker(QThread):
             )
 
             if self._cancel_flag.is_set():
-                self.log.emit("⏹️ Pipeline was cancelled")
+                self.log.emit("⏹️ 处理流程已取消")
                 self.cancelled.emit()
                 self.finished.emit("")
             else:
                 self.finished.emit(output or "")
 
         except Exception as e:
-            self.log.emit(f"❌ Worker error: {e}")
+            self.log.emit(f"❌ 工作线程错误：{e}")
             import traceback
-            self.log.emit(f"Full traceback: {traceback.format_exc()}")
+            self.log.emit(f"完整错误堆栈：{traceback.format_exc()}")
             self.finished.emit("")
         finally:
             self._is_running = False
 
     def cancel(self):
         if self._is_running:
-            self.log.emit("⏹️ Cancellation requested - stopping pipeline...")
+            self.log.emit("⏹️ 已请求取消，正在停止处理流程…")
             self._cancel_flag.set()
             if not self.wait(5000):
-                self.log.emit("⚠️ Force terminating thread...")
+                self.log.emit("⚠️ 正在强制终止线程…")
                 self.terminate()
                 self.wait()
 
@@ -650,8 +650,8 @@ class Worker(QThread):
 
 
 class SignalRunWorker(QThread):
-    """Run ONE analysis signal on demand over a list of videos, folding each
-    result into that video's cache (leaving the other signals intact).
+    """Run ONE analysis signal按需分析，共 a list of videos, folding each
+    result into that video's cache (leaving the other signals intact）。
 
     This is the main-window twin of the timeline viewer's "Analyze" panel: same
     engine (`modules.report.analysis_ondemand`), same fold-into-cache behaviour, just
@@ -666,7 +666,7 @@ class SignalRunWorker(QThread):
     preview = Signal(object, object, int)   # frame_bgr (ndarray), boxes, sec
 
     def __init__(self, kind, video_paths, params=None):
-        super().__init__()
+        super(）。__init__()
         self.kind = kind
         self.video_paths = list(video_paths)
         self.params = params or {}
@@ -680,7 +680,7 @@ class SignalRunWorker(QThread):
         n = len(self.video_paths)
         done = 0
         try:
-            self.log.emit(f"🚀 {self.kind.title()} on demand over {n} video(s)...")
+            self.log.emit(f"🚀 {self.kind.title()}按需分析，共 {n} 个视频…")
             for i, vp in enumerate(self.video_paths):
                 if self._cancel_flag.is_set():
                     break
@@ -705,14 +705,14 @@ class SignalRunWorker(QThread):
                     done += 1
 
             if self._cancel_flag.is_set():
-                self.log.emit("⏹️ On-demand run cancelled")
+                self.log.emit("⏹️ 按需分析已取消")
                 self.cancelled.emit()
                 self.finished.emit("")
             else:
                 self.finished.emit(f"{self.kind.title()}: {done}/{n} done")
         except Exception as e:
             import traceback
-            self.log.emit(f"❌ {self.kind} run error: {e}")
+            self.log.emit(f"❌ {self.kind} 运行错误：{e}")
             self.log.emit(traceback.format_exc())
             self.finished.emit("")
         finally:
@@ -762,7 +762,7 @@ class SignalRunWorker(QThread):
 
     def cancel(self):
         if self._is_running:
-            self.log.emit("⏹️ Cancellation requested — finishing current video...")
+            self.log.emit("⏹️ 已请求取消——正在完成当前视频…")
             self._cancel_flag.set()
 
     def is_cancelled(self):
@@ -771,12 +771,12 @@ class SignalRunWorker(QThread):
 
 class FaceScanWorker(QThread):
     """Offline identity pass over a video to populate the face bank with everyone
-    who appears, so they show up in the Avoid list (the 'dry run')."""
+    who appears, so they show up in the Avoid list (the 'dry run'）。"""
     log = Signal(str)
     done = Signal(int)   # identity count after scan, or -1 on error
 
     def __init__(self, video_path, db_path):
-        super().__init__()
+        super(）。__init__()
         self.video_path = video_path
         self.db_path = db_path
 
@@ -787,7 +787,7 @@ class FaceScanWorker(QThread):
 
                 bank = FaceIdentityBank(db_path=self.db_path)
                 model = build_tracking_model("n", log_fn=self.log.emit)
-                self.log.emit(f"🔍 Scanning {os.path.basename(self.video_path)} for faces…")
+                self.log.emit(f"🔍 正在扫描 {os.path.basename(self.video_path)} 中的人脸…")
                 # tag_entries caches the per-frame tagging so the pipeline's avoid step
                 # reuses this same pass instead of re-running face recognition.
                 tag_entries(
@@ -801,7 +801,7 @@ class FaceScanWorker(QThread):
                 )
                 self.done.emit(len(bank))
             except Exception as e:
-                self.log.emit(f"❌ Face scan failed: {e}")
+                self.log.emit(f"❌ 人脸扫描失败：{e}")
                 self.done.emit(-1)
 
 class UpdateCheckWorker(QThread):
@@ -817,7 +817,7 @@ class UpdateCheckWorker(QThread):
     nothing = Signal(str)    # only for an explicit "check now": why it found nothing
 
     def __init__(self, force=False, parent=None):
-        super().__init__(parent)
+        super(）。__init__(parent)
         self.force = force
 
     def run(self):
@@ -826,16 +826,16 @@ class UpdateCheckWorker(QThread):
             info = update_check.check_for_update(force=self.force)
         except Exception as e:
             # An update check must never be the reason anything goes wrong.
-            print(f"update_check: check failed ({type(e).__name__}: {e})")
+            print(f"update_check: check failed ({type(e）。__name__}: {e})")
             if self.force:
-                self.nothing.emit("Could not check right now.")
+                self.nothing.emit("当前无法检查更新。")
             return
         if info:
             self.found.emit(info)
         elif self.force:
             # The automatic check says nothing when there is nothing; a user who
             # pressed a button is owed an answer either way.
-            self.nothing.emit(f"You're on the latest version ({__version__}).")
+            self.nothing.emit(f"当前已是最新版本（{__version__}）。")
 
 
 class UpdateInstallWorker(QThread):
@@ -849,7 +849,7 @@ class UpdateInstallWorker(QThread):
     finished_with = Signal(object)          # update_install.InstallResult
 
     def __init__(self, manifest_url, root, parent=None):
-        super().__init__(parent)
+        super(）。__init__(parent)
         self.manifest_url = manifest_url
         self.root = root
         self._cancel = False
@@ -866,7 +866,7 @@ class UpdateInstallWorker(QThread):
                 should_cancel=lambda: self._cancel,
             )
         except Exception as e:
-            print(f"update_install: unexpected failure ({type(e).__name__}: {e})")
+            print(f"update_install: unexpected failure ({type(e）。__name__}: {e})")
             result = update_install.InstallResult(
                 ok=False, message=f"The update failed: {e}")
         self.finished_with.emit(result)
@@ -878,7 +878,7 @@ class RangeSlider(QWidget):
     endChanged = Signal(int)
 
     def __init__(self, minimum=0, maximum=100, parent=None):
-        super().__init__(parent)
+        super(）。__init__(parent)
         self._min = minimum
         self._max = maximum
         self._start = minimum
@@ -914,7 +914,7 @@ class RangeSlider(QWidget):
         setStart()/setEnd() clamp against the *current* opposite handle, so
         calling them in sequence fails when the whole window moves past the old
         range (e.g. switching from 'first 5min' to 'last 5min' clamps the new
-        start to the old end). Setting both together avoids that cross-clamp.
+        start to the old end）。 Setting both together avoids that cross-clamp.
         """
         start = max(self._min, min(int(start), self._max))
         end = max(self._min, min(int(end), self._max))
@@ -988,7 +988,7 @@ class RangeSlider(QWidget):
     def mousePressEvent(self, event):
         if event.button() != Qt.LeftButton:
             return
-        x = event.position().toPoint().x()
+        x = event.position(）。toPoint(）。x()
         x0 = self._val_to_x(self._start)
         x1 = self._val_to_x(self._end)
 
@@ -1006,7 +1006,7 @@ class RangeSlider(QWidget):
     def mouseMoveEvent(self, event):
         if self._dragging is None:
             return
-        val = self._x_to_val(event.position().toPoint().x())
+        val = self._x_to_val(event.position(）。toPoint(）。x())
         if self._dragging == 'start':
             self.setStart(val)
         else:
@@ -1024,9 +1024,9 @@ class VideoHighlighterGUI(QWidget):
     preview_frame = Signal(object, object, int)   # frame_bgr, boxes, sec
 
     def __init__(self):
-        super().__init__()
+        super(）。__init__()
         self.setWindowTitle(f"Video Highlighter v{__version__} {__edition__}")
-        screen = QApplication.primaryScreen().availableGeometry()
+        screen = QApplication.primaryScreen(）。availableGeometry()
         w = min(1000, screen.width() - 20)
         # Open as tall as the screen comfortably allows. The fixed sections
         # above the tabs (input list, output name, time range) cost ~410px
@@ -1055,7 +1055,7 @@ class VideoHighlighterGUI(QWidget):
         # and nothing else — make the same choice the GUI shows.
         compute_backend.apply(self.config_data)
 
-        # Window root: update banner + a stack of (Simple start | full UI).
+        # Window root: update banner + a stack of (Simple start | full UI）。
         # Simple start is the first-run alternative for issue #20; every
         # existing widget still lives on full_page — nothing is removed.
         root = QVBoxLayout()
@@ -1081,7 +1081,7 @@ class VideoHighlighterGUI(QWidget):
         layout = QVBoxLayout(self.full_page)
         # A little breathing room, but tight enough that the ~8 stacked sections
         # don't add up to a screenful of gaps (that empty space pushed the tabs
-        # and Run row down). Trimmed from the original 20/16/14.
+        # and Run row down）。 Trimmed from the original 20/16/14.
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(6)
 
@@ -1116,7 +1116,7 @@ class VideoHighlighterGUI(QWidget):
         self.file_list.setMaximumHeight(46)
         file_layout.addWidget(self.file_list)
 
-        saved_paths = self.config_data.get("video", {}).get("paths", [])
+        saved_paths = self.config_data.get("video", {}）。get("paths", [])
         if saved_paths:
             for path in saved_paths:
                 if os.path.exists(path):
@@ -1130,15 +1130,15 @@ class VideoHighlighterGUI(QWidget):
         layout.addWidget(file_group)
 
         # --- Output filename ---
-        # Blank keeps <video>_highlight.mp4 (what a run writes today). Any other
+        # Blank keeps <video>_highlight.mp4 (what a run writes today）。 Any other
         # text is the mp4's base name and is passed through as output_base.
         out_layout = QHBoxLayout()
-        self.output_input = QLineEdit(self.config_data.get("highlights", {}).get("output", "highlight.mp4"))
+        self.output_input = QLineEdit(self.config_data.get("highlights", {}）。get("output", "highlight.mp4"))
         self.output_input.setPlaceholderText("留空 = <视频名>_highlight.mp4")
         self.output_input.setToolTip(
             "Base name of the highlight mp4, written next to the source.\n"
             "Leave empty for <video>_highlight.mp4.\n"
-            "One video: the name is used as the filename (.mp4 added if needed).\n"
+            "One video: the name is used as the filename (.mp4 added if needed）。\n"
             "Several videos, or download-and-process: <video>_<name>.mp4 so they\n"
             "do not overwrite each other."
         )
@@ -1146,7 +1146,7 @@ class VideoHighlighterGUI(QWidget):
         out_layout.addWidget(self.output_input)
         layout.addLayout(out_layout)
 
-        # Named snapshots beside config.yaml (presets/<name>.yaml). The live
+        # Named snapshots beside config.yaml (presets/<name>.yaml）。 The live
         # file is still config.yaml; loading a preset copies it onto the
         # controls and save_config writes that back.
         preset_layout = QHBoxLayout()
@@ -1165,7 +1165,7 @@ class VideoHighlighterGUI(QWidget):
         self.preset_save_btn.clicked.connect(self.save_named_preset)
         self.preset_load_btn = QPushButton("加载")
         self.preset_load_btn.setToolTip(
-            "Apply the selected preset to these controls and to config.yaml."
+            "将所选预设应用到当前控件，并写入 config.yaml。"
         )
         self.preset_load_btn.clicked.connect(self.load_named_preset)
         self.preset_delete_btn = QPushButton("删除")
@@ -1290,7 +1290,7 @@ class VideoHighlighterGUI(QWidget):
 
         # Load duration from first saved video
         if self.file_list.count() > 0:
-            first_path = self.file_list.item(0).text()
+            first_path = self.file_list.item(0）。text()
             if os.path.exists(first_path):
                 self.update_video_duration(first_path)
 
@@ -1306,7 +1306,7 @@ class VideoHighlighterGUI(QWidget):
         layout.addWidget(self.live_preview_checkbox)
         self.preview_window = None  # DetectionPreviewWindow, created on demand
         # Read from detection threads, so it mirrors the checkbox rather than
-        # being queried across threads (same reason Worker keeps its own copy).
+        # being queried across threads (same reason Worker keeps its own copy）。
         self._preview_enabled = False
         self.preview_frame.connect(self.on_preview_frame)
 
@@ -1374,7 +1374,7 @@ class VideoHighlighterGUI(QWidget):
         url_layout = QHBoxLayout()
         url_layout.addWidget(QLabel("页面网址："))
         self.download_url_input = QLineEdit()
-        self.download_url_input.setText(self.config_data.get("download", {}).get("last_url", ""))
+        self.download_url_input.setText(self.config_data.get("download", {}）。get("last_url", ""))
         self.download_url_input.setPlaceholderText("https://example.com/videos")
         url_layout.addWidget(self.download_url_input)
         download_form.addLayout(url_layout)
@@ -1386,7 +1386,7 @@ class VideoHighlighterGUI(QWidget):
         save_dir_layout = QHBoxLayout()
         save_dir_layout.addWidget(QLabel("保存目录："))
         self.download_save_dir_input = QLineEdit()
-        self.download_save_dir_input.setText(self.config_data.get("download", {}).get("save_dir", "D:\\movies"))
+        self.download_save_dir_input.setText(self.config_data.get("download", {}）。get("save_dir", "D:\\movies"))
         save_dir_layout.addWidget(self.download_save_dir_input)
         self.browse_save_dir_btn = QPushButton("浏览…")
         self.browse_save_dir_btn.clicked.connect(self.browse_save_directory)
@@ -1446,7 +1446,7 @@ class VideoHighlighterGUI(QWidget):
 
         # Options
         self.auto_add_downloaded_chk = QCheckBox("下载后自动添加到视频列表")
-        self.auto_add_downloaded_chk.setChecked(self.config_data.get("download", {}).get("auto_add", True))
+        self.auto_add_downloaded_chk.setChecked(self.config_data.get("download", {}）。get("auto_add", True))
         download_form.addWidget(self.auto_add_downloaded_chk)
 
         # After-download processing: one mode picker instead of two overlapping
@@ -1467,12 +1467,12 @@ class VideoHighlighterGUI(QWidget):
         download_form.addLayout(process_row)
 
         # Concurrent downloads — only meaningful while processing overlaps
-        # downloads (the "immediate" mode).
+        # downloads (the "immediate" mode）。
         concurrent_layout = QHBoxLayout()
         concurrent_layout.addWidget(QLabel("并发下载数："))
         self.concurrent_spinbox = QSpinBox()
         self.concurrent_spinbox.setRange(1, 10)
-        self.concurrent_spinbox.setValue(self.config_data.get("download", {}).get("concurrent_downloads", 1))
+        self.concurrent_spinbox.setValue(self.config_data.get("download", {}）。get("concurrent_downloads", 1))
         self.concurrent_spinbox.setToolTip("同时下载的视频数量（越高越快，但占用更多资源）")
         concurrent_layout.addWidget(self.concurrent_spinbox)
         concurrent_layout.addStretch()
@@ -1539,13 +1539,13 @@ class VideoHighlighterGUI(QWidget):
 
         self.spin_scene_points = QSpinBox(); self.spin_scene_points.setRange(0,100); self.spin_scene_points.setValue(scoring_cfg.get("scene_points", 0))
         self.spin_scene_points.setToolTip(
-            "Points on the second a scene cut starts (a jump in frame difference). "
+            "Points on the second a scene cut starts (a jump in frame difference）。 "
             "One hit per cut, not for the rest of the scene.")
 
         self.spin_motion_event_points = QSpinBox(); self.spin_motion_event_points.setRange(0,100); self.spin_motion_event_points.setValue(scoring_cfg.get("motion_event_points", 0))
         self.spin_motion_event_points.setToolTip(
             "Points on seconds where a sampled frame has motion "
-            "(contour area above the detector minimum). Not a spike-then-quiet — "
+            "(contour area above the detector minimum）。 Not a spike-then-quiet — "
             "that is motion peak points.")
 
         self.spin_motion_peak = QSpinBox(); self.spin_motion_peak.setRange(0,100); self.spin_motion_peak.setValue(scoring_cfg.get("motion_peak_points", 3))
@@ -1574,7 +1574,7 @@ class VideoHighlighterGUI(QWidget):
             "Points on each second of a transcript span that contains a search keyword. "
             "Ignored unless transcript is enabled.")
         # Keyword scoring only works with a transcript — grey it out until then.
-        self.spin_keyword_points.setEnabled(self.config_data.get("transcript", {}).get("enabled", False))
+        self.spin_keyword_points.setEnabled(self.config_data.get("transcript", {}）。get("enabled", False))
 
         self.spin_transcript_points = QSpinBox(); self.spin_transcript_points.setRange(0,100); self.spin_transcript_points.setValue(scoring_cfg.get("transcript_points", 2))
         self.spin_transcript_points.setToolTip(
@@ -1590,7 +1590,7 @@ class VideoHighlighterGUI(QWidget):
         self.spin_action = QSpinBox(); self.spin_action.setRange(0,1000); self.spin_action.setValue(scoring_cfg.get("action_points", 10))
         self.spin_action.setToolTip(
             "Points on seconds an action from the action field is recognized. "
-            "Scaled by that action's confidence in this video (half, full, or 1.5x). "
+            "Scaled by that action's confidence in this video (half, full, or 1.5x）。 "
             "With that field empty these points are not counted.")
 
         self.spin_face_expression = QSpinBox(); self.spin_face_expression.setRange(0,100)
@@ -1612,7 +1612,7 @@ class VideoHighlighterGUI(QWidget):
             "scores every second a face is visible, which distinguishes "
             "nothing — so choose the ones that mark the moments you want.")
         face_menu = QMenu(self.btn_face_labels)
-        chosen = {str(x).lower()
+        chosen = {str(x）。lower()
                   for x in (scoring_cfg.get("face_expression_labels") or [])}
         for _label in EMOTION_LABELS:
             act = face_menu.addAction(_label)
@@ -1669,7 +1669,7 @@ class VideoHighlighterGUI(QWidget):
                     self.spin_scene_points, "motion", "Motion & scenes",
                     "Detect scene cuts and motion across every video in the list "
                     "and cache them (covers scene, motion event and motion peak "
-                    "— one pass). No highlights are cut.")),
+                    "— one pass）。 No highlights are cut.")),
                 ("Motion event points:", self.spin_motion_event_points),
                 ("Motion peak points:", self.spin_motion_peak),
             )),
@@ -1697,7 +1697,7 @@ class VideoHighlighterGUI(QWidget):
                     self.spin_transcript_points, "transcript", "Transcribe",
                     "Transcribe every video in the list to a _transcript.txt "
                     "sidecar and cache it (uses the model/language in the "
-                    "Transcript tab). No highlights are cut.")),
+                    "Transcript tab）。 No highlights are cut.")),
             )),
             ("Objects && actions", (
                 ("Object points:", self._points_row_with_button(
@@ -1725,7 +1725,7 @@ class VideoHighlighterGUI(QWidget):
                     self.spin_transcript_points, "transcript", "Transcribe",
                     "Transcribe every video in the list to a _transcript.txt "
                     "sidecar and cache it (uses the model/language in the "
-                    "Transcript tab). No highlights are cut.")),
+                    "Transcript tab）。 No highlights are cut.")),
             )),
             ("Objects && actions", (
                 ("Object points:", self._points_row_with_button(
@@ -1773,7 +1773,7 @@ class VideoHighlighterGUI(QWidget):
         self.spin_clip_time = QSpinBox(); self.spin_clip_time.setRange(0,300); self.spin_clip_time.setValue(highlights_cfg.get("clip_time", 10))
         self.spin_clip_time.setToolTip(
             "Length of each fixed window, in seconds, around a scored second. "
-            "0 uses auto-segmentation (min/max clip and merge gap below).")
+            "0 uses auto-segmentation (min/max clip and merge gap below）。")
 
         duration_form.addRow("Max highlight duration (s):", self.spin_max_duration)
         duration_form.addRow("Exact duration (s, 0 = off):", self.spin_exact_duration)
@@ -1866,11 +1866,11 @@ class VideoHighlighterGUI(QWidget):
             if is_auto:
                 self.auto_seg_info_label.setText(
                     "🔧 Auto mode: the app will determine clip boundaries from signal structure "
-                    "(action durations, scene cuts, keyword timing, object clusters, audio/motion peaks)."
+                    "(action durations, scene cuts, keyword timing, object clusters, audio/motion peaks）。"
                 )
             else:
                 self.auto_seg_info_label.setText(
-                    f"✂️ Fixed mode: each highlight clip will be {value}s long."
+                    f"✂️ 固定模式：每个高光片段长度为 {value}s long."
                 )
 
         self.spin_clip_time.valueChanged.connect(on_clip_time_changed)
@@ -1879,7 +1879,7 @@ class VideoHighlighterGUI(QWidget):
 
         # Highlight object classes
         obj_layout = QHBoxLayout()
-        self.objects_input = QLineEdit(",".join(self.config_data.get("objects", {}).get("interesting", [])))
+        self.objects_input = QLineEdit(",".join(self.config_data.get("objects", {}）。get("interesting", [])))
         self.objects_input.setPlaceholderText("person,glass,wine glass,sports ball")
         obj_layout.addWidget(QLabel("物体检测："))
         obj_layout.addWidget(self.objects_input)
@@ -1891,7 +1891,7 @@ class VideoHighlighterGUI(QWidget):
 
         # Action keywords
         action_kw_layout = QHBoxLayout()
-        self.actions_input = QLineEdit(",".join(self.config_data.get("actions", {}).get("interesting", [])))
+        self.actions_input = QLineEdit(",".join(self.config_data.get("actions", {}）。get("interesting", [])))
         self.actions_input.setPlaceholderText("high jump, high kick, archery")
         action_kw_layout.addWidget(QLabel("动作关键词："))
         action_kw_layout.addWidget(self.actions_input)
@@ -1902,12 +1902,12 @@ class VideoHighlighterGUI(QWidget):
         basic_layout.addLayout(action_kw_layout, 2, 0, 1, 2)
 
         # Transcript search keywords — moved here from the Transcript tab: it's a
-        # common highlight signal (score moments where these words are spoken).
+        # common highlight signal (score moments where these words are spoken）。
         # Greyed out unless transcript processing is enabled (nothing to search
         # otherwise); tracks the transcript toggle via on_transcript_toggle.
-        _kw_enabled = self.config_data.get("transcript", {}).get("enabled", False)
+        _kw_enabled = self.config_data.get("transcript", {}）。get("enabled", False)
         kw_layout = QHBoxLayout()
-        self.search_keywords_input = QLineEdit(",".join(self.config_data.get("transcript", {}).get("search_keywords", [])))
+        self.search_keywords_input = QLineEdit(",".join(self.config_data.get("transcript", {}）。get("search_keywords", [])))
         self.search_keywords_input.setPlaceholderText("goal, score, win")
         self.search_keywords_input.setToolTip("为出现这些语音关键词的时刻加分（需要启用转录）")
         self.search_keywords_input.setEnabled(_kw_enabled)
@@ -1919,7 +1919,7 @@ class VideoHighlighterGUI(QWidget):
 
         # Conditional action scoring checkbox
         self.actions_require_objects_chk = QCheckBox("仅在检测到物体时给动作加分")
-        self.actions_require_objects_chk.setChecked(self.config_data.get("actions", {}).get("require_objects", False))
+        self.actions_require_objects_chk.setChecked(self.config_data.get("actions", {}）。get("require_objects", False))
         self.actions_require_objects_chk.setToolTip("只有同一时间段也检测到物体时，动作才会获得加分")
         basic_layout.addWidget(self.actions_require_objects_chk, 4, 0, 1, 2)
 
@@ -1931,7 +1931,7 @@ class VideoHighlighterGUI(QWidget):
         # Combine every processed video's highlights into one master video.
         # Config key stays under "download" (auto_combine) so saved configs load.
         self.auto_combine_chk = QCheckBox("将所有已处理视频的高光合并为一个视频")
-        self.auto_combine_chk.setChecked(self.config_data.get("download", {}).get("auto_combine", True))
+        self.auto_combine_chk.setChecked(self.config_data.get("download", {}）。get("auto_combine", True))
         self.auto_combine_chk.setToolTip("启用后，会将所有已处理视频的高光片段合并为一个总视频")
         basic_layout.addWidget(self.auto_combine_chk, 5, 0, 1, 2)
 
@@ -1998,7 +1998,7 @@ class VideoHighlighterGUI(QWidget):
         _sub_run = self._make_analyze_button(
             "subtitles", "Make subtitles",
             "Transcribe every video in the list and write a .srt next to each "
-            "(translated when the target language differs). No highlights are cut.")
+            "(translated when the target language differs）。 No highlights are cut.")
         subtitle_form.addRow("", _sub_run)
         subtitle_group.setLayout(subtitle_form)
         transcript_layout.addWidget(subtitle_group)
@@ -2030,7 +2030,7 @@ class VideoHighlighterGUI(QWidget):
         self.vr_mode_chk = QCheckBox("VR 左右并排优化")
         self.vr_mode_chk.setChecked(bool(advanced_cfg.get("vr_mode", False)))
         self.vr_mode_chk.setToolTip(
-            "Run visual analysis on the left half only for side-by-side VR/3D videos."
+            "对于左右并排的 VR/3D 视频，仅分析画面左半部分。"
         )
         motion_layout.addRow("", self.vr_mode_chk)
         motion_box.setLayout(motion_layout)
@@ -2181,7 +2181,7 @@ class VideoHighlighterGUI(QWidget):
         self.obj_confidence_spin = QSpinBox()
         self.obj_confidence_spin.setRange(5, 95)
         self.obj_confidence_spin.setSuffix("%")
-        self.obj_confidence_spin.setValue(int(self.config_data.get("objects", {}).get("confidence", 30)))
+        self.obj_confidence_spin.setValue(int(self.config_data.get("objects", {}）。get("confidence", 30)))
         self.obj_confidence_spin.setToolTip("物体检测最低置信度阈值（越低检测越多，但误报也越多）")
 
         object_layout.addRow("Frame skip:", self.obj_frame_skip_spin)
@@ -2245,7 +2245,7 @@ class VideoHighlighterGUI(QWidget):
                 "R3D weights (*.pth);;All files (*)")
             if not src:
                 return
-            is_r3d = src.lower().endswith(".pth")
+            is_r3d = src.lower(）。endswith(".pth")
             labels_src = ""
             if not os.path.exists(os.path.splitext(src)[0] + ".json"):
                 prompt = ("R3D mapping file (idx_to_label + metadata JSON)" if is_r3d
@@ -2291,14 +2291,14 @@ class VideoHighlighterGUI(QWidget):
                     #   • R3D custom needs an R3D backend. "Auto" would *disable* R3D
                     #     on a non-CUDA machine (see pipeline.py), which would make
                     #     r3d_custom_only fail to load — so pick r3d_cuda when an
-                    #     NVIDIA GPU is present, else r3d_cpu (slow, but it runs).
+                    #     NVIDIA GPU is present, else r3d_cpu (slow, but it runs）。
                     #   • OpenVINO custom → "Auto" (lists it, and uses the Intel
-                    #     GPU / CPU at runtime).
+                    #     GPU / CPU at runtime）。
                     if select_mode == "r3d_custom_only":
                         try:
                             from modules.system.device_utils import detect_best_device
                             has_cuda = detect_best_device(
-                                log_fn=lambda *a, **k: None).pytorch_device == "cuda"
+                                log_fn=lambda *a, **k: None）。pytorch_device == "cuda"
                         except Exception:
                             has_cuda = False
                         target_backend = "r3d_cuda" if has_cuda else "r3d_cpu"
@@ -2399,9 +2399,9 @@ class VideoHighlighterGUI(QWidget):
             "Compose higher-level actions from the spatial relationships between detected objects. "
             "Example: if object A appears inside region B a certain number of times, fire action X. "
             "Each row is one spatial condition; multiple rows with the same Event Name must ALL be "
-            "satisfied together (AND logic). "
-            "Window = how many seconds of frames to smooth over (reduces flicker). "
-            "Persist = how long to keep an object 'alive' after YOLO loses sight of it (handles occlusion). "
+            "satisfied together (AND logic）。 "
+            "Window = how many seconds of frames to smooth over (reduces flicker）。 "
+            "Persist = how long to keep an object 'alive' after YOLO loses sight of it (handles occlusion）。 "
             "Saved to composition_rules.yaml next to the application."
         )
         comp_info.setWordWrap(True)
@@ -2428,17 +2428,17 @@ class VideoHighlighterGUI(QWidget):
         ])
         # chr(10) rather than an escape: this block is generated, and a
         # literal backslash-n did not survive the round trip intact.
-        self.comp_table.horizontalHeader().setToolTip(chr(10).join([
+        self.comp_table.horizontalHeader(）。setToolTip(chr(10）。join([
             "On: untick to keep a rule but stop it running",
             "Kind - Spatial: the object in Object must be inside Region.",
             "       Signal: the measurement in Signal must sit between Min and Max.",
             "Min/Max: counts for Spatial, thresholds for Signal. Left at the",
             "       extreme they mean no bound and are not written out.",
             "Region / Equals: the containing class (Spatial), or a label the",
-            "       signal must equal, such as an expression name (Signal).",
-            "Sustain: the condition must hold this many seconds in a row (Signal).",
+            "       signal must equal, such as an expression name (Signal）。",
+            "Sustain: the condition must hold this many seconds in a row (Signal）。",
             "Within: accept it if it held this many seconds either side, for",
-            "       signals not sampled at the same moments (Signal).",
+            "       signals not sampled at the same moments (Signal）。",
             "Window: seconds of frames to smooth over (reduces flicker)",
             "Persist: seconds to keep a source alive after it disappears",
             "Relation (Spatial): inside = its centre is in the region;",
@@ -2446,8 +2446,8 @@ class VideoHighlighterGUI(QWidget):
             "Outline (Spatial): trace the real shapes inside the boxes and",
             "       decide on those. Slower the first time; kept after that.",
         ]))
-        self.comp_table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
-        self.comp_table.horizontalHeader().setStretchLastSection(False)
+        self.comp_table.horizontalHeader(）。setSectionResizeMode(QHeaderView.Interactive)
+        self.comp_table.horizontalHeader(）。setStretchLastSection(False)
         for _c, _w in ((0, 34), (1, 78), (2, 140), (3, 140), (4, 150), (5, 120),
                        (6, 70), (7, 70), (8, 80), (9, 80), (10, 80), (11, 80),
                        (COMP_REL_COL, 92), (COMP_OUTLINE_COL, 60), (COMP_DEL_COL, 32)):
@@ -2479,7 +2479,7 @@ class VideoHighlighterGUI(QWidget):
             "Fetches whatever they read that is missing: a rule naming an\n"
             "object class the cache does not have starts a detection pass for\n"
             "the classes the rules name, and a signal rule measures the audio\n"
-            "(cached, so only the first run pays for it). Anything already\n"
+            "(cached, so only the first run pays for it）。 Anything already\n"
             "there is reused, so a re-run after a threshold edit is seconds.\n\n"
             "Save your rules first. Unticked rules are skipped and cost\n"
             "nothing. Safe to run repeatedly: previous results for these rules\n"
@@ -2569,7 +2569,7 @@ class VideoHighlighterGUI(QWidget):
 
         def _comp_kind_of(row):
             combo = self.comp_table.cellWidget(row, 1)
-            return (combo.currentText() if combo else "Spatial").strip()
+            return (combo.currentText() if combo else "Spatial"）。strip()
 
         def _comp_apply_kind(row):
             """Grey the cells the chosen kind does not use.
@@ -2616,7 +2616,7 @@ class VideoHighlighterGUI(QWidget):
                 if row is None:
                     return
                 item = self.comp_table.item(row, 2)
-                name = item.text().strip() if item else ''
+                name = item.text(）。strip() if item else ''
                 if not name:
                     return
                 for i in range(self.comp_table.rowCount()):
@@ -2624,7 +2624,7 @@ class VideoHighlighterGUI(QWidget):
                     twin = self.comp_table.item(i, 2)
                     if other is None or other is box or twin is None:
                         continue
-                    if twin.text().strip() == name and other.isChecked() != box.isChecked():
+                    if twin.text(）。strip() == name and other.isChecked() != box.isChecked():
                         other.blockSignals(True)
                         other.setChecked(box.isChecked())
                         other.blockSignals(False)
@@ -2699,7 +2699,7 @@ class VideoHighlighterGUI(QWidget):
             # Normalised the way the engine reads it, so `Touches` in the file
             # shows as touches instead of falling back to inside and being
             # dropped on the next save.
-            _rel = str(relation or 'inside').strip().lower()
+            _rel = str(relation or 'inside'）。strip(）。lower()
             if rel_combo.findText(_rel) < 0:
                 rel_combo.addItem(_rel)          # shown as-is; the engine says why it is wrong
             rel_combo.setCurrentText(_rel)
@@ -2735,7 +2735,7 @@ class VideoHighlighterGUI(QWidget):
 
         def _comp_collect_events():
             """The table as the rules file's ``events`` list."""
-            # Group rows by event name (preserving order of first appearance).
+            # Group rows by event name (preserving order of first appearance）。
             # A row is one *condition*; several rows can belong to one event,
             # and they may now be of either kind, so an event can carry spatial
             # and signal conditions together.
@@ -2744,18 +2744,18 @@ class VideoHighlighterGUI(QWidget):
             for r in range(self.comp_table.rowCount()):
                 def _txt(c):
                     it = self.comp_table.item(r, c)
-                    return it.text().strip() if it else ''
+                    return it.text(）。strip() if it else ''
                 kind     = _comp_kind_of(r)
                 ev_name  = _txt(2)
                 ev_label = _txt(3)
                 first    = _txt(4)
                 second   = _txt(5)
-                min_v    = self.comp_table.cellWidget(r, 6).value()
-                max_v    = self.comp_table.cellWidget(r, 7).value()
-                sustain  = self.comp_table.cellWidget(r, 8).value()
-                within   = self.comp_table.cellWidget(r, 9).value()
-                window   = self.comp_table.cellWidget(r, 10).value()
-                persist  = self.comp_table.cellWidget(r, 11).value()
+                min_v    = self.comp_table.cellWidget(r, 6）。value()
+                max_v    = self.comp_table.cellWidget(r, 7）。value()
+                sustain  = self.comp_table.cellWidget(r, 8）。value()
+                within   = self.comp_table.cellWidget(r, 9）。value()
+                window   = self.comp_table.cellWidget(r, 10）。value()
+                persist  = self.comp_table.cellWidget(r, 11）。value()
                 on_box   = self.comp_table.cellWidget(r, 0)
                 enabled  = True if on_box is None else bool(on_box.isChecked())
 
@@ -2770,7 +2770,7 @@ class VideoHighlighterGUI(QWidget):
                     # the ones it does own. `rules` and `signals` are rebuilt
                     # from the rows below and must not survive from the
                     # original, or a deleted condition would come back.
-                    entry = dict(getattr(self, '_comp_original', {}).get(ev_name, {}))
+                    entry = dict(getattr(self, '_comp_original', {}）。get(ev_name, {}))
                     entry.pop('rules', None)
                     entry.pop('signals', None)
                     entry.update({
@@ -2799,7 +2799,7 @@ class VideoHighlighterGUI(QWidget):
                         cond['sustained_secs'] = int(sustain)
                     if int(within) > 0:
                         cond['within_secs'] = int(within)
-                    entry.setdefault('signals', []).append(cond)
+                    entry.setdefault('signals', []）。append(cond)
                 else:
                     rule = {
                         'source': first,
@@ -2815,7 +2815,7 @@ class VideoHighlighterGUI(QWidget):
                     out_w = self.comp_table.cellWidget(r, COMP_OUTLINE_COL)
                     if out_w is not None and out_w.isChecked():
                         rule['outline'] = True
-                    entry.setdefault('rules', []).append(rule)
+                    entry.setdefault('rules', []）。append(rule)
 
             # Rule fields without a column (relation, outline, ...) carried
             # over from each rule's original, matched by its source and region.
@@ -2825,7 +2825,7 @@ class VideoHighlighterGUI(QWidget):
             for entry in events_ordered:
                 if entry.get('rules'):
                     entry['rules'] = carry_rule_fields(
-                        (originals.get(entry['名称']) or {}).get('rules'),
+                        (originals.get(entry['名称']) or {}）。get('rules'),
                         entry['rules'], owned=owned)
 
             # Anything the table still cannot represent — an event with neither
@@ -3033,7 +3033,7 @@ class VideoHighlighterGUI(QWidget):
         compute_layout = QFormLayout()
         self.backend_combo = QComboBox()
         # Only what this platform has: Apple's GPU on a Mac, the PC backends
-        # everywhere else (compute_backend.choices).
+        # everywhere else (compute_backend.choices）。
         for _backend, _label in compute_backend.choices():
             self.backend_combo.addItem(_label, _backend)
         if sys.platform == "darwin":
@@ -3084,8 +3084,8 @@ class VideoHighlighterGUI(QWidget):
         _adv_container.setLayout(advanced_layout)
         advanced_scroll.setWidget(_adv_container)
         advanced_tab.setLayout(QVBoxLayout())
-        advanced_tab.layout().setContentsMargins(0, 0, 0, 0)
-        advanced_tab.layout().addWidget(advanced_scroll)
+        advanced_tab.layout(）。setContentsMargins(0, 0, 0, 0)
+        advanced_tab.layout(）。addWidget(advanced_scroll)
         tabs.addTab(self._scrollable(advanced_tab), "高级")
 
         content_splitter = QSplitter(Qt.Vertical)
@@ -3106,7 +3106,7 @@ class VideoHighlighterGUI(QWidget):
         self.llm_chat = LLMChatWidget(parent=self)
         self.llm_tab_layout.addWidget(self.llm_chat)
         # Kept so the tab can reclaim the panel after the Simple view has
-        # borrowed it (see set_simple_start).
+        # borrowed it (see set_simple_start）。
         llm_tab.setLayout(self.llm_tab_layout)
         tabs.addTab(self._scrollable(llm_tab), "大模型对话")
 
@@ -3134,10 +3134,10 @@ class VideoHighlighterGUI(QWidget):
         avoid_group_layout = QVBoxLayout()
 
         self.avoid_face_recognition_chk = QCheckBox("启用人脸识别")
-        self.avoid_face_recognition_chk.setChecked(self.config_data.get("avoid", {}).get("face_recognition_enabled", False))
+        self.avoid_face_recognition_chk.setChecked(self.config_data.get("avoid", {}）。get("face_recognition_enabled", False))
         self.avoid_face_recognition_chk.setToolTip(
             "When enabled, the pipeline runs face recognition to locate avoided people and skip or crop them out.\n"
-            "Disable to skip the face-recognition step entirely (faster, no avoid enforcement)."
+            "Disable to skip the face-recognition step entirely (faster, no avoid enforcement）。"
         )
         avoid_group_layout.addWidget(self.avoid_face_recognition_chk)
 
@@ -3229,7 +3229,7 @@ class VideoHighlighterGUI(QWidget):
         self.why_report_btn = QPushButton("高光报告")
         self.why_report_btn.setToolTip(
             "Open the report explaining why each highlight was chosen.\n"
-            "Written next to the highlight on every run (Advanced tab toggles it).")
+            "Written next to the highlight on every run (Advanced tab toggles it）。")
         self.why_report_btn.clicked.connect(self.open_why_report)
         # "AI 摘要" writes a few plain-language sentences into that same
         # report. Separate button because it costs a model run and tens of
@@ -3289,7 +3289,7 @@ class VideoHighlighterGUI(QWidget):
         self.debug_console_chk.setChecked(debug_console.is_console_visible())
         self.debug_console_chk.setToolTip(
             "Open a live window mirroring all app output\n"
-            "(recent output is replayed, so it works after an error too).\n"
+            "(recent output is replayed, so it works after an error too）。\n"
             f"Everything is always saved to:\n{debug_console.log_file_path()}"
         )
         self.debug_console_chk.toggled.connect(debug_console.set_console_visible)
@@ -3387,7 +3387,7 @@ class VideoHighlighterGUI(QWidget):
         traceback — so the last line in debug.log is the evidence. See
         modules/system/display_info.py.
         """
-        super().resizeEvent(event)
+        super(）。resizeEvent(event)
         timer = getattr(self, "_size_log_timer", None)
         if timer is not None:
             timer.start()
@@ -3613,7 +3613,7 @@ class VideoHighlighterGUI(QWidget):
         self.update_worker.start()
 
     def _on_update_available(self, info):
-        """Show the banner. Runs on the GUI thread (queued signal)."""
+        """Show the banner. Runs on the GUI thread (queued signal）。"""
         self._pending_update = info
         text = f"<b>发现新版本 {info.version}（当前版本 {__version__}）</b>"
         if info.notes:
@@ -4029,7 +4029,7 @@ class VideoHighlighterGUI(QWidget):
 
     def browse_and_select_videos(self):
         """Open the thumbnail picker for the listing URL, then download the chosen videos."""
-        url = self.download_url_input.text().strip()
+        url = self.download_url_input.text(）。strip()
         if not url.startswith(("http://", "https://")):
             self.append_log("⚠️ Enter a listing URL (http:// or https://) first")
             return
@@ -4050,8 +4050,8 @@ class VideoHighlighterGUI(QWidget):
     def start_download(self, video_urls=None):
         """Start the download process. If video_urls is given (from the picker),
         those exact URLs are downloaded instead of scraping the listing."""
-        url = self.download_url_input.text().strip()
-        save_dir = self.download_save_dir_input.text().strip()
+        url = self.download_url_input.text(）。strip()
+        save_dir = self.download_save_dir_input.text(）。strip()
         pattern = "auto"  # link pattern is auto-detected from the listing page
 
         # After-download processing mode: none / immediate / batch.
@@ -4151,7 +4151,7 @@ class VideoHighlighterGUI(QWidget):
                 # custom base is prefixed with the source stem.
                 from modules.media.output_name import highlight_output_path
                 output_file = highlight_output_path(
-                    filepath, self.output_input.text().strip(), multiple=True)
+                    filepath, self.output_input.text(）。strip(), multiple=True)
 
                 # Decide whether to skip existing highlights
                 # If you later add a checkbox like self.skip_existing_highlights_chk, this will pick it up.
@@ -4204,7 +4204,7 @@ class VideoHighlighterGUI(QWidget):
                     QMetaObject.invokeMethod(
                         self, "set_process_busy",
                         Qt.QueuedConnection,
-                        Q_ARG(str, f"🔧 Processing: {filename} | Initializing…")
+                        Q_ARG(str, f"🔧 正在处理：{filename} | Initializing…")
                     )
 
                     # Thread-safe logging back to GUI
@@ -4311,7 +4311,7 @@ class VideoHighlighterGUI(QWidget):
         """Build pipeline configuration from GUI settings"""
         
         def get_list_from_input(input_field):
-            text = input_field.text().strip()
+            text = input_field.text(）。strip()
             if not text:
                 return None
             items = [s.strip() for s in text.split(",") if s.strip()]
@@ -4416,7 +4416,7 @@ class VideoHighlighterGUI(QWidget):
     def on_download_mode_changed(self):
         """Show the seconds inputs only for 'specific', and make 'same' pull in
         a processing range to reuse (auto-enable 'Process only specific time
-        range' so there's an actual range instead of the whole video)."""
+        range' so there's an actual range instead of the whole video）。"""
         mode = self.download_mode_combo.currentData()
         if hasattr(self, "download_range_widget"):
             self.download_range_widget.setVisible(mode == "specific")
@@ -4472,7 +4472,7 @@ class VideoHighlighterGUI(QWidget):
                     # List all results
                     for result in self.download_worker._download_results:
                         if result.get('success') and result.get('processed'):
-                            highlight = result.get('process_result', {}).get('highlight_file')
+                            highlight = result.get('process_result', {}）。get('highlight_file')
                             if highlight:
                                 self.append_log(f"  ✅ {os.path.basename(highlight)}")
                 
@@ -4483,7 +4483,7 @@ class VideoHighlighterGUI(QWidget):
                     
                     if hasattr(self.download_worker, '_download_results'):
                         for result in self.download_worker._download_results:
-                            highlight = result.get('process_result', {}).get('highlight_file')
+                            highlight = result.get('process_result', {}）。get('highlight_file')
                             if highlight and os.path.exists(highlight):
                                 highlight_files.append(highlight)
                     
@@ -4511,7 +4511,7 @@ class VideoHighlighterGUI(QWidget):
                 if f not in existing and os.path.exists(f):
                     self.file_list.addItem(f)
             if self.file_list.count() > 0:
-                self.append_log("\n▶️ Starting batch processing of downloaded videos...")
+                self.append_log("\n▶️ Starting batch processing of downloaded 个视频…")
                 self.auto_start_pipeline()
                 return
 
@@ -4576,8 +4576,8 @@ class VideoHighlighterGUI(QWidget):
                 self.file_list.addItem(path)
         
         # Auto-set output filename based on first video if output is empty or default
-        if file_paths and (not self.output_input.text().strip() or 
-                        self.output_input.text().strip() == "highlight.mp4"):
+        if file_paths and (not self.output_input.text(）。strip() or 
+                        self.output_input.text(）。strip() == "highlight.mp4"):
             first_video = file_paths[0]
             base_name = os.path.splitext(os.path.basename(first_video))[0]
             self.output_input.setText(f"{base_name}_highlight.mp4")
@@ -4607,7 +4607,7 @@ class VideoHighlighterGUI(QWidget):
 
     def get_file_list(self):
         """Get list of all files in the list widget"""
-        return [self.file_list.item(i).text() for i in range(self.file_list.count())]
+        return [self.file_list.item(i）。text() for i in range(self.file_list.count())]
     
     def combine_highlights(self, highlight_files, output_path):
         """Combine multiple highlight videos into one.
@@ -4760,7 +4760,7 @@ class VideoHighlighterGUI(QWidget):
             if has("scoring", key):
                 spin.setValue(int(get("scoring", key) or 0))
         if has("scoring", "face_expression_labels"):
-            chosen = {str(x).lower() for x in (get("scoring", "face_expression_labels") or [])}
+            chosen = {str(x）。lower() for x in (get("scoring", "face_expression_labels") or [])}
             for name, act in self._face_label_actions.items():
                 act.setChecked(name.lower() in chosen)
             self._update_face_labels_button()
@@ -4846,7 +4846,7 @@ class VideoHighlighterGUI(QWidget):
 
     def save_named_preset(self):
         from modules.system.presets import safe_preset_name, save_preset
-        name = self.preset_name_input.text().strip() or self.preset_combo.currentText().strip()
+        name = self.preset_name_input.text(）。strip() or self.preset_combo.currentText(）。strip()
         safe = safe_preset_name(name)
         if not safe:
             self.append_log("⚠️ Preset name is empty or not usable as a filename.")
@@ -4859,7 +4859,7 @@ class VideoHighlighterGUI(QWidget):
 
     def load_named_preset(self):
         from modules.system.presets import load_preset
-        name = self.preset_combo.currentText().strip()
+        name = self.preset_combo.currentText(）。strip()
         if not name:
             self.append_log("⚠️ No preset selected.")
             return
@@ -4877,7 +4877,7 @@ class VideoHighlighterGUI(QWidget):
 
     def delete_named_preset(self):
         from modules.system.presets import delete_preset
-        name = self.preset_combo.currentText().strip()
+        name = self.preset_combo.currentText(）。strip()
         if not name:
             self.append_log("⚠️ No preset selected.")
             return
@@ -4898,7 +4898,7 @@ class VideoHighlighterGUI(QWidget):
     def save_config(self):
         # Helper function to get non-empty text or empty list
         def get_text_list(input_field):
-            text = input_field.text().strip()
+            text = input_field.text(）。strip()
             if not text:
                 return []
             return [s.strip() for s in text.split(",") if s.strip()]
@@ -4906,8 +4906,8 @@ class VideoHighlighterGUI(QWidget):
         data = {
             "video": {"paths": self.get_file_list()},
             "download": {
-                "last_url": self.download_url_input.text().strip(),
-                "save_dir": self.download_save_dir_input.text().strip(),
+                "last_url": self.download_url_input.text(）。strip(),
+                "save_dir": self.download_save_dir_input.text(）。strip(),
                 "auto_add": self.auto_add_downloaded_chk.isChecked(),
                 "auto_combine": self.auto_combine_chk.isChecked(),
                 "download_mode": self.download_mode_combo.currentData(),
@@ -4919,7 +4919,7 @@ class VideoHighlighterGUI(QWidget):
             "highlights": {
                 "clip_time": int(self.spin_clip_time.value()),
                 "coverage": self.slider_coverage.value() / 100.0,
-                "output": self.output_input.text().strip(),
+                "output": self.output_input.text(）。strip(),
                 "max_duration": int(self.spin_max_duration.value()),
                 "exact_duration": int(self.spin_exact_duration.value()),
                 "keep_temp": self.keep_temp_chk.isChecked(),
@@ -5006,7 +5006,7 @@ class VideoHighlighterGUI(QWidget):
                 "face_recognition_enabled": self.avoid_face_recognition_chk.isChecked(),
             },
             "ui": {
-                "suppress_no_cache_warning": self.config_data.get("ui", {}).get("suppress_no_cache_warning", False),
+                "suppress_no_cache_warning": self.config_data.get("ui", {}）。get("suppress_no_cache_warning", False),
             },
         }
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
@@ -5021,7 +5021,7 @@ class VideoHighlighterGUI(QWidget):
         # lingering hidden window can stop Qt from quitting. Killing here, the
         # moment the user closes the main GUI, guarantees the process dies even
         # if native FFmpeg/onnxruntime threads are stuck (which deadlock the
-        # normal os._exit/ExitProcess path on Windows).
+        # normal os._exit/ExitProcess path on Windows）。
         _hard_exit(0)
 
     def check_worker_status(self):
@@ -5121,7 +5121,7 @@ class VideoHighlighterGUI(QWidget):
                 except Exception:
                     labels = []
             if not labels:
-                self.append_log("⚠️ No custom class names found (choose a model / check labels).")
+                self.append_log("⚠️ No custom class names found (choose a model / check labels）。")
 
         if yolo_type != "custom":  # standard or mixed -> include COCO objects
             if os.path.exists(YOLO_OBJECTS_LABELS_FILE):
@@ -5131,7 +5131,7 @@ class VideoHighlighterGUI(QWidget):
             self.append_log("⚠️ No labels available for the selected model.")
             return
 
-        current = [s.strip() for s in self.objects_input.text().split(",") if s.strip()]
+        current = [s.strip() for s in self.objects_input.text(）。split(",") if s.strip()]
         title = ("Select Object Labels (custom + YOLO)" if yolo_type == "custom_mixed"
                  else "Select Labels (custom model)" if yolo_type == "custom"
                  else "Select Object Labels (YOLO)")
@@ -5158,7 +5158,7 @@ class VideoHighlighterGUI(QWidget):
         siglip = self._siglip_action_labels()
         if siglip is not None:
             name, labels = siglip
-            current = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
+            current = [s.strip() for s in self.actions_input.text(）。split(",") if s.strip()]
             dlg = LabelSelectorDialog(
                 f"Select Action Labels (action head {name} — {len(labels)} classes)",
                 sorted(labels), current, self)
@@ -5213,7 +5213,7 @@ class VideoHighlighterGUI(QWidget):
             if not tagged:
                 self.append_log("⚠️ No label files found")
                 return
-            current = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
+            current = [s.strip() for s in self.actions_input.text(）。split(",") if s.strip()]
             overlap_count = len(overlap)
             dlg = LabelSelectorDialog(
                 f"Select Action Labels (Mixed — {len(tagged)} labels, {overlap_count} shared)",
@@ -5236,7 +5236,7 @@ class VideoHighlighterGUI(QWidget):
             self.append_log(f"⚠️ No labels found in {label_file}")
             return
 
-        current = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
+        current = [s.strip() for s in self.actions_input.text(）。split(",") if s.strip()]
         dlg = LabelSelectorDialog(title, labels, current, self)
         if dlg.exec() == QDialog.Accepted:
             selected = dlg.get_selected_labels()
@@ -5322,7 +5322,7 @@ class VideoHighlighterGUI(QWidget):
 
     @Slot(str)
     def append_log(self, text: str):
-        """Thread-safe log append (always executes on GUI thread)."""
+        """Thread-safe log append (always executes on GUI thread）。"""
         app = QApplication.instance()
         gui_thread = app.thread() if app else None
 
@@ -5344,7 +5344,7 @@ class VideoHighlighterGUI(QWidget):
 
         cursor = QTextCursor(self.log_output.document())
         cursor.movePosition(QTextCursor.End)
-        if not self.log_output.document().isEmpty():
+        if not self.log_output.document(）。isEmpty():
             cursor.insertBlock()
         cursor.insertText(text)
 
@@ -5360,7 +5360,7 @@ class VideoHighlighterGUI(QWidget):
     def _show_progress(self, visible=True):
         # Show/hide the whole progress box. Hidden when idle so it doesn't sit
         # there empty; the tabs+log splitter above absorbs the size change.
-        # The bars are made visible again by update_download/process_progress().
+        # The bars are made visible again by update_download/process_progress(）。
         self.progress_group.setVisible(visible)
         if not visible:
             self.download_progress_bar.setVisible(False)
@@ -5373,7 +5373,7 @@ class VideoHighlighterGUI(QWidget):
     def update_pipeline_progress(self, current: int, total: int, task_name: str, details: str = ""):
         """Split the batch counter off to its own row. Everything else the
         pipeline emits is a stage of the video currently being worked on."""
-        if task_name.lower().startswith("batch"):
+        if task_name.lower(）。startswith("batch"):
             self.update_batch_progress(current, total, task_name, details)
         else:
             self.update_process_progress(current, total, task_name, details)
@@ -5644,7 +5644,7 @@ class VideoHighlighterGUI(QWidget):
 
     @Slot(object, object, int)
     def on_preview_frame(self, frame_bgr, boxes, sec):
-        """Draw a live detection frame (BGR ndarray + normalised boxes)."""
+        """Draw a live detection frame (BGR ndarray + normalised boxes）。"""
         if not self.live_preview_checkbox.isChecked() or self.preview_window is None:
             return
         try:
@@ -5656,7 +5656,7 @@ class VideoHighlighterGUI(QWidget):
             h, w = frame_bgr.shape[:2]
             rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
             rgb = np.ascontiguousarray(rgb)
-            qimg = QImage(rgb.data, w, h, w * 3, QImage.Format_RGB888).copy()
+            qimg = QImage(rgb.data, w, h, w * 3, QImage.Format_RGB888）。copy()
             pix = QPixmap.fromImage(qimg)
 
             painter = QPainter(pix)
@@ -5684,7 +5684,7 @@ class VideoHighlighterGUI(QWidget):
 
     def run_pipeline(self, report_only: bool = False, simple: bool = False):
         from pipeline import run_highlighter
-        """Start the pipeline processing (UPDATED for multi-file).
+        """Start the pipeline processing (UPDATED for multi-file）。
 
         ``report_only`` scores and reports without encoding anything. Tuning
         weights is cheap — detection is cached — but re-rendering a highlight
@@ -5722,11 +5722,11 @@ class VideoHighlighterGUI(QWidget):
         loudness_burst_points = int(self.spin_loudness_burst.value())
         
         # Object points only count if objects are configured
-        highlight_objects = [s.strip() for s in self.objects_input.text().split(",") if s.strip()]
+        highlight_objects = [s.strip() for s in self.objects_input.text(）。split(",") if s.strip()]
         object_points = int(self.spin_object.value()) if highlight_objects else 0
         
         # Action points only count if actions are configured
-        interesting_actions = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
+        interesting_actions = [s.strip() for s in self.actions_input.text(）。split(",") if s.strip()]
         action_points = int(self.spin_action.value()) if interesting_actions else 0
         
         # Transcript and keyword points only count if transcript is enabled
@@ -5775,7 +5775,7 @@ class VideoHighlighterGUI(QWidget):
         # The worker always hands run_highlighter a list, so the name has to
         # travel as output_base; the batch loop used to ignore output_file.
         from modules.media.output_name import highlight_output_path
-        output_base = self.output_input.text().strip()
+        output_base = self.output_input.text(）。strip()
         output_multiple = len(video_paths) != 1
         output_file = highlight_output_path(
             video_paths[0], output_base, multiple=output_multiple)
@@ -5785,7 +5785,7 @@ class VideoHighlighterGUI(QWidget):
 
         # Helper function to get non-empty lists
         def get_list_from_input(input_field):
-            text = input_field.text().strip()
+            text = input_field.text(）。strip()
             if not text:
                 return None
             items = [s.strip() for s in text.split(",") if s.strip()]
@@ -5983,7 +5983,7 @@ class VideoHighlighterGUI(QWidget):
         # list beside every other on-demand run — and keying by kind alone let
         # the second registration drop the first, leaving a live button during a
         # run that is meant to disable them all.
-        self._analyze_buttons.setdefault(kind, []).append(btn)
+        self._analyze_buttons.setdefault(kind, []）。append(btn)
         return btn
 
     def _points_group(self, title, rows):
@@ -6010,7 +6010,7 @@ class VideoHighlighterGUI(QWidget):
     def selected_face_labels(self):
         """The expression classes chosen to score, lowercased for the pipeline."""
         return [name for name, act in
-                getattr(self, "_face_label_actions", {}).items()
+                getattr(self, "_face_label_actions", {}）。items()
                 if act.isChecked()]
 
     def _update_face_labels_button(self, *_args):
@@ -6038,7 +6038,7 @@ class VideoHighlighterGUI(QWidget):
         h.setContentsMargins(0, 0, 0, 0)
         h.setSpacing(6)
         h.addWidget(self._make_analyze_button(
-            "composition", "Apply rules", chr(10).join([
+            "composition", "Apply rules", chr(10）。join([
                 "Run the saved composition rules over every video in the",
                 "list and cache the events.",
                 "",
@@ -6069,7 +6069,7 @@ class VideoHighlighterGUI(QWidget):
         return w
 
     def _set_analyze_buttons_enabled(self, enabled):
-        for btn in [b for group in getattr(self, "_analyze_buttons", {}).values()
+        for btn in [b for group in getattr(self, "_analyze_buttons", {}）。values()
                     for b in group]:
             btn.setEnabled(enabled)
 
@@ -6099,14 +6099,14 @@ class VideoHighlighterGUI(QWidget):
         # Per-kind params + validation.
         params = {}
         if kind == "objects":
-            objs = [s.strip() for s in self.objects_input.text().split(",") if s.strip()]
+            objs = [s.strip() for s in self.objects_input.text(）。split(",") if s.strip()]
             if not objs:
-                self.append_log("⚠️ Type at least one object class first (e.g. person, car).")
+                self.append_log("⚠️ Type at least one object class first (e.g. person, car）。")
                 return
             params["objects"] = objs
         elif kind == "actions":
-            # Blank = detect every action (same as the timeline viewer).
-            params["actions"] = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
+            # Blank = detect every action (same as the timeline viewer）。
+            params["actions"] = [s.strip() for s in self.actions_input.text(）。split(",") if s.strip()]
         elif kind == "transcript":
             params["language"] = self.transcript_source_lang.currentText()
         elif kind == "subtitles":
@@ -6175,7 +6175,7 @@ class VideoHighlighterGUI(QWidget):
         try:
             names = ", ".join(getattr(exported, "class_names", []) or [])
             self.append_log(
-                f"✅ Your own detector is installed ({names}). "
+                f"✅ Your own detector is installed ({names}）。 "
                 f"Pick it under Advanced → object model.")
         except Exception as e:                     # pragma: no cover - defensive
             print(f"⚠️ Could not report the installed model: {e}")
@@ -6183,8 +6183,8 @@ class VideoHighlighterGUI(QWidget):
     def toggle_run(self, *args, simple=False):
         """Run / Pause / Resume - single button.
 
-        ``simple=True`` is the one-button workspace (built-in defaults).
-        Extra *args absorb QPushButton.clicked(bool).
+        ``simple=True`` is the one-button workspace (built-in defaults）。
+        Extra *args absorb QPushButton.clicked(bool）。
         """
         # Not running → start pipeline
         if not self.worker or not self.worker._is_running:
@@ -6234,7 +6234,7 @@ class VideoHighlighterGUI(QWidget):
             self._show_progress(False)
 
     def update_analyzed_counter(self):
-        """Refresh the analyzed-videos counter label (lifetime + this session)."""
+        """Refresh the analyzed-videos counter label (lifetime + this session）。"""
         total = analysis_stats.get_analyzed_count()
         self.analyzed_counter_label.setText(
             f"📈 Analyzed videos: {total} (session: {self.session_analyzed_count})"
@@ -6430,7 +6430,7 @@ class VideoHighlighterGUI(QWidget):
     def _get_manual_avoid_ranges(self):
         """Manual avoid ranges marked on the timeline.
 
-        Prefer the live window (same process, always current). Fall back to the
+        Prefer the live window (same process, always current）。 Fall back to the
         shared store so ranges still apply after the viewer is closed, or when
         they were marked in an earlier session. Safe if neither exists."""
         tw = getattr(self, "timeline_window", None)
@@ -6492,7 +6492,7 @@ class VideoHighlighterGUI(QWidget):
         out = []
         video_paths = self.get_file_list()
         from modules.media.output_name import highlight_output_path
-        output_base = self.output_input.text().strip()
+        output_base = self.output_input.text(）。strip()
         multiple = len(video_paths) != 1
 
         for vp in video_paths:
@@ -6591,8 +6591,8 @@ class VideoHighlighterGUI(QWidget):
             "narrate_clips": self.narrate_clips_chk.isChecked(),
             "narrate_chapters": self.narrate_chapters_chk.isChecked(),
             "narration_model": self._active_llm_model() or {},
-            "report_serve_base": self.serve_base_input.text().strip(),
-            "report_media_base": self.media_base_input.text().strip(),
+            "report_serve_base": self.serve_base_input.text(）。strip(),
+            "report_media_base": self.media_base_input.text(）。strip(),
         }
 
     def _llm_models(self):
@@ -6641,9 +6641,9 @@ class VideoHighlighterGUI(QWidget):
 
         from modules.report import advisor
         entry = model or self._active_llm_model()
-        backend = (entry or {}).get("backend", "ollama")
-        model = (entry or {}).get("model", "llama3")
-        mmproj = (entry or {}).get("mmproj")
+        backend = (entry or {}）。get("backend", "ollama")
+        model = (entry or {}）。get("model", "llama3")
+        mmproj = (entry or {}）。get("mmproj")
         self.append_log(
             f"🤖 Asking {backend}/{model} to "
             f"{'read what happens in this cut' if reading else 'summarise the report'}… "
@@ -6705,7 +6705,7 @@ class VideoHighlighterGUI(QWidget):
 
         try:
             with open(json_path, encoding="utf-8") as fh:
-                chapters = json.load(fh).get("chapters") or []
+                chapters = json.load(fh）。get("chapters") or []
         except Exception as exc:
             self.append_log(f"⚠️ Could not read the report: {exc}")
             return
@@ -6714,9 +6714,9 @@ class VideoHighlighterGUI(QWidget):
             return
 
         entry = model or self._active_llm_model()
-        backend = (entry or {}).get("backend", "ollama")
-        name = (entry or {}).get("model", "llama3")
-        mmproj = (entry or {}).get("mmproj")
+        backend = (entry or {}）。get("backend", "ollama")
+        name = (entry or {}）。get("model", "llama3")
+        mmproj = (entry or {}）。get("mmproj")
         self.append_log(
             f"📖 Asking {backend}/{name} to tell {len(chapters)} chapters — "
             "one call each, so this takes minutes, not seconds.")
@@ -6815,8 +6815,8 @@ class VideoHighlighterGUI(QWidget):
             return
 
         entry = model or self._active_llm_model()
-        backend = (entry or {}).get("backend", "ollama")
-        name = (entry or {}).get("model", "llama3")
+        backend = (entry or {}）。get("backend", "ollama")
+        name = (entry or {}）。get("model", "llama3")
         rules_path = composition_rules_path()
         self.append_log(f"🧩 Asking {backend}/{name} for a rule that would "
                         "check that…")
@@ -6862,7 +6862,7 @@ class VideoHighlighterGUI(QWidget):
 
         try:
             rule_proposal.apply(rules_path, proposal,
-                                video_path=(report.get("video") or {}).get("path"))
+                                video_path=(report.get("video") or {}）。get("path"))
         except Exception as exc:
             self.append_log(f"⚠️ Could not write the rule: {exc}")
             return
@@ -6881,13 +6881,13 @@ class VideoHighlighterGUI(QWidget):
         their own rather than pasting a line, which is a perfectly good way to
         use this and simply carries no timestamp.
         """
-        wanted = " ".join(str(claim or "").split()).lower()
+        wanted = " ".join(str(claim or ""）。split()）。lower()
         if not wanted:
             return None
         for chapter in (report.get("chapters") or []):
             for line in ((chapter.get("dialogue") or [])
                          + (chapter.get("quotes") or [])):
-                text = " ".join(str(line.get("text") or "").split()).lower()
+                text = " ".join(str(line.get("text") or ""）。split()）。lower()
                 if text and (text in wanted or wanted in text):
                     return float(line.get("start") or 0.0)
         return None
@@ -6935,7 +6935,7 @@ class VideoHighlighterGUI(QWidget):
             f"Models: {label_for(active_model)}…" if models else "Add a model…")
 
         chosen = menu.exec(self.ai_summary_opts_btn.mapToGlobal(
-            self.ai_summary_opts_btn.rect().bottomLeft()))
+            self.ai_summary_opts_btn.rect(）。bottomLeft()))
         if chosen in read_with:
             entry = read_with[chosen]
             self._save_llm_models(models, chosen=entry)
@@ -7056,7 +7056,7 @@ class VideoHighlighterGUI(QWidget):
         self._save_llm_models(dialog.models)
         if dialog.chosen:
             from PySide6.QtCore import QSettings
-            QSettings("VideoHighlighter", "Pro").setValue(
+            QSettings("VideoHighlighter", "Pro"）。setValue(
                 "advisor/model_chosen", dialog.chosen)
             self.append_log(f"🤖 The report will be written with {dialog.chosen}.")
         elif not dialog.models:
@@ -7122,7 +7122,7 @@ class VideoHighlighterGUI(QWidget):
                     same_video = (getattr(existing, 'video_path', None) == video_path)
                     if same_video:
                         # Pick up any signals added on demand since it was opened
-                        # (per-signal Run buttons fold into the cache on disk).
+                        # (per-signal Run buttons fold into the cache on disk）。
                         #
                         # Reusing the window is not the instant path it looks
                         # like: the refresh re-ingests every signal and redraws
@@ -7201,13 +7201,13 @@ class VideoHighlighterGUI(QWidget):
                 matching_files = list(cache_dir.glob(f"{video_hash}*.cache.json"))
                 
                 if matching_files:
-                    latest_file = max(matching_files, key=lambda p: p.stat().st_mtime)
+                    latest_file = max(matching_files, key=lambda p: p.stat(）。st_mtime)
                     with open(latest_file, 'r') as f:
                         cache_data = json.load(f)
                     self.append_log(f"✅ Loaded cache: {latest_file.name}")
                 else:
                     # Check if user suppressed this warning
-                    suppress = self.config_data.get("ui", {}).get("suppress_no_cache_warning", False)
+                    suppress = self.config_data.get("ui", {}）。get("suppress_no_cache_warning", False)
                     
                     if not suppress:
                         dlg = NoAnalysisWarningDialog(self)
@@ -7231,7 +7231,7 @@ class VideoHighlighterGUI(QWidget):
             # the signal timeline and the assistant panel are most of it — and
             # it blocks the GUI thread, so without the splash the app just
             # appears to hang. The window reports its own stages (see
-            # signal_timeline_viewer.init_ui).
+            # signal_timeline_viewer.init_ui）。
             startup_splash.begin("Opening timeline viewer",
                                  os.path.basename(video_path), steps=6,
                                  parent=self)
@@ -7317,13 +7317,13 @@ if __name__ == "__main__":
         pass
     reset_duration_method_cache()
     # Nobody should have to install ffmpeg: pip already brought one
-    # (imageio-ffmpeg). Give it its plain name on PATH before anything runs it.
+    # (imageio-ffmpeg）。 Give it its plain name on PATH before anything runs it.
     from modules.media.ffmpeg_tools import ensure_ffmpeg_on_path
     ensure_ffmpeg_on_path()
 
     # `--smoke-test <video>` runs the packaged app's riskiest paths with no
     # window and exits with the result; CI runs it on the built mac .app (see
-    # modules/system/smoke_test.py). Here, after every import above, so a crash
+    # modules/system/smoke_test.py）。 Here, after every import above, so a crash
     # on import still fails it — and before QApplication, which it does not need.
     if "--smoke-test" in sys.argv:
         from modules.system import smoke_test
@@ -7369,7 +7369,7 @@ if __name__ == "__main__":
     from modules.ui.wheel_guard import install as _install_wheel_guard
     _install_wheel_guard(app)
     # One icon for every window the app opens (main window, timeline viewer,
-    # dialogs). Set on the QApplication so nothing has to remember to do it.
+    # dialogs）。 Set on the QApplication so nothing has to remember to do it.
     # The .ico carries every size from 16 to 256px, all of them the same logo
     # — 16-48px have their brightness and contrast lifted, because at taskbar
     # size the artwork's thin outlines and dark glass otherwise disappear into a
@@ -7407,7 +7407,7 @@ if __name__ == "__main__":
                          f"Version {__version__}", steps=2)
 
     # Reopen the live debug-log window if it was on last session (needs the
-    # QApplication, hence here and not earlier).
+    # QApplication, hence here and not earlier）。
     debug_console.restore_console_preference()
 
     startup_splash.stage("Building the workspace…")
@@ -7417,5 +7417,5 @@ if __name__ == "__main__":
     exit_code = app.exec()
 
     # Backup hard-exit in case app.exec() does return (main closeEvent already
-    # hard-exits, so this is belt-and-suspenders).
+    # hard-exits, so this is belt-and-suspenders）。
     _hard_exit(exit_code)

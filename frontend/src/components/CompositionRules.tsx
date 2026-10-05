@@ -42,7 +42,7 @@ export function CompositionRules() {
     setLoading(true)
     const res = await saveCompositionRules(rules)
     setLoading(false)
-    if (res.ok) toast.success(`Saved ${res.events} event(s) to composition_rules.yaml`)
+    if (res.ok) toast.success(`已将 ${res.events} 个事件保存到 composition_rules.yaml`)
     else toast.error(res.error ?? "无法保存规则")
   }
 

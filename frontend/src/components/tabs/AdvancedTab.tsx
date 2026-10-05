@@ -42,10 +42,10 @@ export function AdvancedTab({ cfg, set }: Props) {
               checked={cfg.vr_mode}
               onCheckedChange={(v) => set("vr_mode", Boolean(v))}
             />
-            VR side-by-side optimization
+            VR 左右并排优化
           </label>
           <p className="text-xs text-muted-foreground">
-            Analyses the left half only, for side-by-side VR/3D footage.
+            对于左右并排的 VR/3D 视频，仅分析左半部分。
           </p>
         </CardContent>
       </Card>
@@ -78,7 +78,7 @@ export function AdvancedTab({ cfg, set }: Props) {
           {cfg.yolo_type === "custom" && (
             <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_14rem] items-center gap-3">
               <Label className="min-w-0 truncate text-sm font-normal text-muted-foreground">
-                Custom model
+                自定义模型
               </Label>
               <div className="flex gap-1">
                 <Input
@@ -160,14 +160,14 @@ export function AdvancedTab({ cfg, set }: Props) {
               checked={cfg.draw_object_boxes}
               onCheckedChange={(v) => set("draw_object_boxes", Boolean(v))}
             />
-            Draw object bounding boxes
+            绘制物体边界框
           </label>
           <label className="flex items-center gap-2 text-sm">
             <Checkbox
               checked={cfg.draw_action_labels}
               onCheckedChange={(v) => set("draw_action_labels", Boolean(v))}
             />
-            Draw action labels
+            绘制动作标签
           </label>
           <p className="text-xs text-muted-foreground">
             Creates an _annotated.mp4 alongside the temp clips, useful for

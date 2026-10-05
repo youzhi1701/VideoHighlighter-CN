@@ -76,6 +76,31 @@ $u='https://raw.githubusercontent.com/youzhi1701/VideoHighlighter-CN/main/Window
 
 ---
 
+## 中文汉化插件一键下载
+
+如果你只需要 **中文汉化插件**，不想下载整个项目，打开 PowerShell，复制下面这一整行并回车：
+
+```powershell
+$u='https://raw.githubusercontent.com/youzhi1701/VideoHighlighter-CN/main/Windows%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E4%B8%AD%E6%96%87%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6.ps1'; $p="$env:TEMP\VideoHighlighter-CN-Plugin.ps1"; Invoke-WebRequest $u -OutFile $p -UseBasicParsing; powershell -ExecutionPolicy Bypass -File $p
+```
+
+它会自动：
+
+- 下载当前最新版仓库
+- 只提取 `中文汉化插件/`
+- 保存到：
+
+```text
+下载\VideoHighlighter-中文汉化插件
+```
+
+- 如果本地已经有旧版，会先保留为 `VideoHighlighter-中文汉化插件-旧版`
+- 下载完成后自动打开插件文件夹
+
+[查看 Windows 一键下载中文汉化插件脚本](./Windows一键下载中文汉化插件.ps1)
+
+---
+
 ## 中文汉化插件
 
 仓库根目录提供了独立的：

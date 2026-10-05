@@ -685,13 +685,13 @@ class LLMChatWidget(QWidget):
         self.model_combo.setMinimumWidth(180)
         row1.addWidget(self.model_combo)
 
-        self.refresh_btn = QPushButton("Refresh")
+        self.refresh_btn = QPushButton("刷新")
         fit_width(self.refresh_btn)
         self.refresh_btn.clicked.connect(self._refresh_models)
         row1.addWidget(self.refresh_btn)
 
         # Connect + status share this row (was a separate row) to save vertical space
-        self.connect_btn = QPushButton("Connect")
+        self.connect_btn = QPushButton("连接")
         self.connect_btn.setStyleSheet(
             f"QPushButton{{background:{THEME.success};color:white;font-weight:bold;padding:6px 16px;}}"
         )
@@ -737,7 +737,7 @@ class LLMChatWidget(QWidget):
         self.gguf_path_input = QLineEdit()
         self.gguf_path_input.setPlaceholderText("请选择 model.gguf")
         gguf_inner.addWidget(self.gguf_path_input)
-        self.gguf_browse_btn = QPushButton("Browse...")
+        self.gguf_browse_btn = QPushButton("浏览…")
         self.gguf_browse_btn.clicked.connect(self._browse_gguf)
         gguf_inner.addWidget(self.gguf_browse_btn)
         self.gguf_row_widget.setLayout(gguf_inner)
@@ -752,7 +752,7 @@ class LLMChatWidget(QWidget):
         self.mmproj_path_input = QLineEdit()
         self.mmproj_path_input.setPlaceholderText("请选择 mmproj-model.gguf（可选，用于视觉模型）")
         mmproj_inner.addWidget(self.mmproj_path_input)
-        self.mmproj_browse_btn = QPushButton("Browse...")
+        self.mmproj_browse_btn = QPushButton("浏览…")
         self.mmproj_browse_btn.clicked.connect(self._browse_mmproj)
         mmproj_inner.addWidget(self.mmproj_browse_btn)
         self.mmproj_row_widget.setLayout(mmproj_inner)
@@ -785,13 +785,13 @@ class LLMChatWidget(QWidget):
         )
         row4.addWidget(self.reasoning_checkbox)
 
-        self.reasoning_stats_btn = QPushButton("Stats")
+        self.reasoning_stats_btn = QPushButton("统计")
         fit_width(self.reasoning_stats_btn)
         self.reasoning_stats_btn.setToolTip("显示推理统计")
         self.reasoning_stats_btn.clicked.connect(self._show_reasoning_stats)
         row4.addWidget(self.reasoning_stats_btn)
 
-        self.reasoning_save_btn = QPushButton("Save")
+        self.reasoning_save_btn = QPushButton("保存")
         fit_width(self.reasoning_save_btn)
         self.reasoning_save_btn.setToolTip("将推理结果保存到缓存")
         self.reasoning_save_btn.clicked.connect(self._save_reasoning_facts)
@@ -894,7 +894,7 @@ class LLMChatWidget(QWidget):
         )
         search_layout.addWidget(self.stop_on_match_cb)
 
-        self.search_btn = QPushButton("Search")
+        self.search_btn = QPushButton("搜索")
         self.search_btn.setIcon(ui_icons.search())
         self.search_btn.setStyleSheet(
             f"QPushButton{{background:{THEME.warning};color:white;font-weight:bold;padding:4px 10px;border-radius:4px;}}"
@@ -902,7 +902,7 @@ class LLMChatWidget(QWidget):
         self.search_btn.clicked.connect(self._start_visual_search)
         search_layout.addWidget(self.search_btn)
 
-        self.stop_search_btn = QPushButton("Stop")
+        self.stop_search_btn = QPushButton("停止")
         self.stop_search_btn.setIcon(ui_icons.stop())
         self.stop_search_btn.setStyleSheet(
             "QPushButton{background:#8a2a2a;color:white;font-weight:bold;padding:4px 10px;border-radius:4px;}"
@@ -969,7 +969,7 @@ class LLMChatWidget(QWidget):
         self.input_field.setEnabled(False)
         input_layout.addWidget(self.input_field, stretch=1)
 
-        self.send_btn = QPushButton("Send")
+        self.send_btn = QPushButton("发送")
         self.send_btn.setStyleSheet(
             "QPushButton{background:#2f81f7;color:white;font-weight:bold;"
             "padding:4px 14px;border-radius:4px;}"
@@ -979,7 +979,7 @@ class LLMChatWidget(QWidget):
         self.send_btn.setEnabled(False)
         input_layout.addWidget(self.send_btn)
 
-        self.stop_btn = QPushButton("Stop")
+        self.stop_btn = QPushButton("停止")
         self.stop_btn.setStyleSheet(
             "QPushButton{background:#8a2a2a;color:white;font-weight:bold;"
             "padding:4px 12px;border-radius:4px;}"
@@ -989,7 +989,7 @@ class LLMChatWidget(QWidget):
         self.stop_btn.setEnabled(False)
         input_layout.addWidget(self.stop_btn)
 
-        self.clear_btn = QPushButton("Clear")
+        self.clear_btn = QPushButton("清空")
         self.clear_btn.clicked.connect(self._clear_chat)
         input_layout.addWidget(self.clear_btn)
 
@@ -1288,7 +1288,7 @@ class LLMChatWidget(QWidget):
             f"🔍 [{engine_label}{extra}] searching for '{target}' from {start_str} "
             f"every {interval}s ({mode_str})..."
         )
-        self.search_progress.setText(f"Searching for '{target}' [{engine_label}]...")
+        self.search_progress.setText(f"正在搜索“{target}” [{engine_label}]…")
         self.search_btn.setEnabled(False)
         self.stop_search_btn.setEnabled(True)
         self.stop_btn.setEnabled(True)  # Also enable main Stop button
@@ -1909,7 +1909,7 @@ class LLMChatWidget(QWidget):
         gguf_path = ""
         mmproj_path = None
 
-        self.status_label.setText("Connecting...")
+        self.status_label.setText("正在连接…")
         self.status_label.setStyleSheet("color:#2f81f7;font-style:italic;")
         self.connect_btn.setEnabled(False)
         QApplication.processEvents()
@@ -1958,7 +1958,7 @@ class LLMChatWidget(QWidget):
             self.status_label.setStyleSheet(f"color:{THEME.success};font-weight:bold;")
             # Folded section header mirrors the connection state
             self._settings_section.set_hint(self.status_label.text())
-            self.connect_btn.setText("Reconnect")
+            self.connect_btn.setText("重新连接")
             self.input_field.setEnabled(True)
             self.send_btn.setEnabled(True)
 
@@ -2385,7 +2385,7 @@ class LLMChatWidget(QWidget):
 
         self.input_field.setEnabled(True)
         self.send_btn.setEnabled(True)
-        self.send_btn.setText("Send")
+        self.send_btn.setText("发送")
         self.stop_btn.setEnabled(False)
         self.input_field.setFocus()
 
@@ -2396,7 +2396,7 @@ class LLMChatWidget(QWidget):
         )
         self.input_field.setEnabled(True)
         self.send_btn.setEnabled(True)
-        self.send_btn.setText("Send")
+        self.send_btn.setText("发送")
         self.stop_btn.setEnabled(False)
 
     def _clear_chat(self):
@@ -2505,7 +2505,7 @@ class LLMChatWidget(QWidget):
 class LLMChatWindow(QWidget):
     def __init__(self, cache_dir: str = "./cache", video_path: str = ""):
         super().__init__()
-        self.setWindowTitle("VideoHighlighter - LLM Chat with Visual Search")
+        self.setWindowTitle("VideoHighlighter - 大模型对话与视觉搜索")
         self.setMinimumSize(700, 600)
         layout = QVBoxLayout()
         self.chat = LLMChatWidget(parent=self, cache_dir=cache_dir, video_path=video_path)

@@ -380,7 +380,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                 <Input
                   value={music ? basename(music) : ""}
                   readOnly
-                  placeholder="none"
+                  placeholder="无"
                   className="text-xs"
                 />
                 <Button
@@ -645,17 +645,17 @@ function CutRow({
           <Button variant="ghost" size="sm" onClick={() => onMove(1)} title="下移">
             <ArrowDown className="size-3.5" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={onDuplicate} title="Duplicate">
+          <Button variant="ghost" size="sm" onClick={onDuplicate} title="复制">
             <Copy className="size-3.5" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={onRemove} title="Remove">
+          <Button variant="ghost" size="sm" onClick={onRemove} title="移除">
             <Trash2 className="size-3.5 text-destructive" />
           </Button>
         </div>
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        <Label className="text-[10px] text-muted-foreground">In</Label>
+        <Label className="text-[10px] text-muted-foreground">入点</Label>
         <Input
           value={inText}
           onChange={(e) => setInText(e.target.value)}

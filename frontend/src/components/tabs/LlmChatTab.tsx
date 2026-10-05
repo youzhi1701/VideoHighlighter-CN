@@ -29,9 +29,9 @@ export function LlmChatTab({
   onModelChange,
 }: Props) {
   const [backends, setBackends] = useState<string[]>([])
-  const [models, set模型s] = useState<string[]>([])
-  const set运行后端 = on运行后端Change
-  const set模型 = on模型Change
+  const [models, setModels] = useState<string[]>([])
+  const setBackend = onBackendChange
+  const setModel = onModelChange
   const [msgs, setMsgs] = useState<Msg[]>([])
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
@@ -72,7 +72,7 @@ export function LlmChatTab({
       ...m,
       {
         role: "assistant",
-        text: res.ok ? (res.answer ?? "") : `错误：${res.error}`,
+        text: res.ok ? (res.answer ?? "") : `Error: ${res.error}`,
       },
     ])
   }

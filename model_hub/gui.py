@@ -113,8 +113,8 @@ class DetailsPage(QWizardPage):
         self.description.setFixedHeight(70)
 
         self.category = QLineEdit(placeholderText="例如：动物/马")
-        self.category.setToolTip("模型在社区中的分类路径：使用小写英文，最多三级"
-                                 "，例如 sports/tennis 或 games/some-title。")
+        self.category.setToolTip("模型在社区中的分类路径：使用小写英文，最多三级。"
+                                 "例如“体育/网球”对应 sports/tennis。")
         self.category_hint = QLabel("")
         self.category_hint.setStyleSheet("color:#999;")
         self.category.textChanged.connect(self._category_changed)
@@ -480,7 +480,7 @@ class ModelBrowserDialog(QDialog):
         self.entries: list[hub.CatalogEntry] = []
         self._all: list[hub.CatalogEntry] = []
 
-        self.query = QLineEdit(placeholderText="搜索模型，例如 helicopter")
+        self.query = QLineEdit(placeholderText="搜索模型，例如“直升机”")
         self.query.returnPressed.connect(self.refresh)
         self.category = QComboBox()
         self.category.addItem("全部分类", "")
@@ -512,6 +512,7 @@ class ModelBrowserDialog(QDialog):
         self.report_btn = QPushButton("报告问题")
         self.report_btn.clicked.connect(self._report)
         buttons = QDialogButtonBox(QDialogButtonBox.Close)
+        buttons.button(QDialogButtonBox.Close).setText("关闭")
         buttons.rejected.connect(self.reject)
         actions = QHBoxLayout()
         for b in (self.install_btn, self.page_btn, self.report_btn):

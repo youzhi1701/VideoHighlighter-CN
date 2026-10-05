@@ -107,7 +107,7 @@ export function DownloadTab({
               checked={settings.downloadFull}
               onCheckedChange={(v) => set("downloadFull", Boolean(v))}
             />
-            Download full videos
+            下载完整视频
           </label>
           {!settings.downloadFull && (
             <div className="space-y-2.5">
@@ -143,7 +143,7 @@ export function DownloadTab({
             checked={settings.autoAdd}
             onCheckedChange={(v) => set("autoAdd", Boolean(v))}
           />
-          Add downloaded videos to the input list
+          将下载的视频添加到输入列表
         </label>
 
         <div className="flex gap-2">
@@ -158,7 +158,7 @@ export function DownloadTab({
             disabled={running}
             className="gap-2"
           >
-            <LayoutGrid className="size-4" /> Browse &amp; Select…
+            <LayoutGrid className="size-4" /> 浏览并选择…
           </Button>
           <Button
             onClick={() => {

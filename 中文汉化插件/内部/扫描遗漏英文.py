@@ -163,6 +163,29 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 if k and UI_KEY_RE.match(k):
                     add(hits, rel, val, "python-ui-dict", "medium", string_value(val), allow)
 
+    # Deep pass: runtime/user-facing strings emitted indirectly from GUI files.
+    # This catches status/error/progress signals and helper-returned text that
+    # does not sit directly inside a QLabel/QPushButton constructor.
+    source_text = path.read_text(encoding="utf-8", errors="ignore")
+    gui_file = ("PySide6" in source_text or "PyQt" in source_text)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+            attr = node.func.attr
+            if attr == "emit" or attr.startswith("set"):
+                for arg in node.args[:4]:
+                    value = string_value(arg)
+                    if value and visible_candidate(value, allow):
+                        priority = "high" if gui_file else "medium"
+                        hits.append(Hit(rel, getattr(arg, "lineno", getattr(node, "lineno", 0)),
+                                        "python-runtime-text", priority, clean(value)))
+        elif gui_file and isinstance(node, (ast.Constant, ast.JoinedStr)):
+            value = string_value(node)
+            if value and len(clean(value)) >= 4 and visible_candidate(value, allow):
+                # Broad safety net for GUI-local strings. It intentionally
+                # over-reports; classification/allowlisting happens later.
+                hits.append(Hit(rel, getattr(node, "lineno", 0),
+                                "python-gui-string", "medium", clean(value)))
+
     return hits
 
 
@@ -177,7 +200,13 @@ TSX_PATTERNS = [
 def scan_ts(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     text = path.read_text(encoding="utf-8", errors="ignore")
     hits: list[Hit] = []
-    for kind, priority, pattern in TSX_PATTERNS:
+    runtime_patterns = [
+        ("tsx-toast", "high", re.compile(r"\\btoast\\.(?:error|success|warning|info)\\(\\s*([\\\"'])(.*?)\\1", re.I)),
+        ("tsx-log", "high", re.compile(r"\\bappendLog\\(\\s*([\\\"'\x60])(.*?)\\1", re.I)),
+        ("tsx-runtime-call", "medium", re.compile(r"\\b(?:setStatus|setMessage|setError|setTitle|setLabel|setHint)\\(\\s*([\\\"'])(.*?)\\1", re.I)),
+        ("tsx-option", "medium", re.compile(r"\\b(?:name|label|description|help|hint)\\s*:\\s*([\\\"'])(.*?)\\1", re.I)),
+    ]
+    for kind, priority, pattern in TSX_PATTERNS + runtime_patterns:
         for m in pattern.finditer(text):
             value = m.group(1) if kind == "tsx-text" else m.group(2)
             if visible_candidate(value, allow):
@@ -261,7 +290,7 @@ def main() -> int:
     for file, count in counts.most_common(30):
         print(f"  {count:4d}  {file}")
     print("high-priority samples:")
-    for h in [x for x in hits if x.priority == "high"][:120]:
+    for h in [x for x in hits if x.priority == "high"][:500]:
         print(f"  {h.file}:{h.line} [{h.kind}] {h.text}")
     print(f"report: {args.report}")
     return 0

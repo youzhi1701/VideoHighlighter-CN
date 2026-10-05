@@ -130,7 +130,7 @@ class DetailsPage(QWizardPage):
         # -- technical: filled in from training, shown only for a hand-picked file
         self.task = QComboBox()
         for key in sorted(USABLE_TASKS):
-            self.task.addItem(TASKS[key][0], key)
+            self.task.addItem(TASK_NAMES_ZH.get(key, TASKS[key][0]), key)
         self.output_format = QComboBox()
         self.task.currentIndexChanged.connect(self._task_changed)
         self.labels = QLineEdit(placeholderText="helicopter, airplane")
@@ -157,12 +157,12 @@ class DetailsPage(QWizardPage):
         outer.addStretch(1)          # extra height below the form, not between rows
         self._form = form
         form.addRow("模型名称", self.display_name)
-        form.addRow("Description", self.description)
-        form.addRow("Category", self.category)
+        form.addRow("描述", self.description)
+        form.addRow("分类", self.category)
         form.addRow("", self.category_hint)
-        form.addRow("Author", self.author)
-        form.addRow("Licence", self.license)
-        form.addRow("Game", self.game)
+        form.addRow("作者", self.author)
+        form.addRow("许可证", self.license)
+        form.addRow("游戏", self.game)
         form.addRow("内容类型", self.content_type)
 
         self.measured = QLabel("")
@@ -172,7 +172,7 @@ class DetailsPage(QWizardPage):
         form.addRow("", self.show_technical)
         self._technical_rows = []
         for label, widget in (("ONNX 模型", self._model_row), ("简称", self.name),
-                              ("Task", self.task), ("输出格式", self.output_format),
+                              ("任务", self.task), ("输出格式", self.output_format),
                               ("标签（逗号分隔）", self.labels), ("输入尺寸", size_box),
                               ("布局 / 颜色 / 缩放",
                                self._hbox(self.layout_, self.color, self.normalize)),
@@ -299,15 +299,30 @@ class DetailsPage(QWizardPage):
         )
 
 
+TASK_NAMES_ZH = {
+    "object_detection": "物体检测",
+    "image_classification": "画面分类",
+    "action_recognition": "动作识别",
+}
+
+
+COMPLIANCE_ZH = {
+    "terms_checked": "我已检查所有用于训练的游戏或视频来源条款，确认其未禁止 AI/ML 训练。",
+    "own_footage": "我只使用自己有权使用的素材进行训练（例如自己的录制内容）。",
+    "no_training_data": "模型包中不包含视频片段、截图、音频或其他训练数据。",
+    "non_generative": "该模型只用于检测或分类，不会生成内容。",
+}
+
+
 class ChecklistPage(QWizardPage):
     def __init__(self):
         super().__init__()
         self.setTitle("分享前确认")
-        self.setSubTitle("Shared models are public. Confirm each item; sharing stays disabled until you do.")
+        self.setSubTitle("共享的模型将公开发布。请逐项确认；全部确认前无法继续分享。")
         lay = QVBoxLayout(self)
         self.boxes: dict[str, QCheckBox] = {}
         for key, text in COMPLIANCE_ITEMS.items():
-            box = QCheckBox(text)
+            box = QCheckBox(COMPLIANCE_ZH.get(key, text))
             box.setStyleSheet("QCheckBox { padding: 4px 0; }")
             box.toggled.connect(self.completeChanged)
             lay.addWidget(box)
@@ -333,7 +348,7 @@ class CheckPage(QWizardPage):
         super().__init__()
         self._wiz = wizard
         self.setTitle("检查模型")
-        self.setSubTitle("VideoHighlighter builds the package and runs one test inference on your CPU.")
+        self.setSubTitle("VideoHighlighter 会生成模型包，并在你的 CPU 上执行一次测试推理。")
         self.output = QPlainTextEdit(readOnly=True)
         lay = QVBoxLayout(self)
         lay.addWidget(self.output)
@@ -419,8 +434,8 @@ class PublishPage(QWizardPage):
 
     def _done(self, url: str):
         self.url = url
-        self.log.appendPlainText(f"\nShared: {url}")
-        self.log.appendPlainText("It appears in the community models within a few minutes. Thank you!")
+        self.log.appendPlainText(f"\n已分享：{url}")
+        self.log.appendPlainText("几分钟后即可在社区模型中看到它，感谢分享！")
         self.completeChanged.emit()
 
     def _error(self, message: str):
@@ -455,7 +470,7 @@ class PublishWizard(QWizard):
 class ModelBrowserDialog(QDialog):
     """搜索、安装和移除社区模型。"""
 
-    COLUMNS = ["Model", "Category", "Task", "Status", "Downloads", "Updated"]
+    COLUMNS = ["模型", "分类", "任务", "状态", "下载量", "更新时间"]
     installed = Signal(object)          # InstalledModel, so the host can refresh its model list
 
     def __init__(self, parent=None, models_dir: str | Path | None = None):
@@ -552,13 +567,13 @@ class ModelBrowserDialog(QDialog):
         for row, e in enumerate(entries):
             parts = []
             if e.verified:
-                parts.append("Verified")
+                parts.append("已验证")
             if e.repo_id in installed:
-                parts.append("installed")
+                parts.append("已安装")
             if not e.usable:
                 parts.append("需要更新版本的软件")
-            status = ", ".join(parts) or "Community"
-            values = [e.repo_id, e.category or "—", TASKS.get(e.task, ("—",))[0], status,
+            status = "，".join(parts) or "社区模型"
+            values = [e.repo_id, e.category or "—", TASK_NAMES_ZH.get(e.task, TASKS.get(e.task, ("—",))[0]), status,
                       str(e.downloads), e.last_modified[:10]]
             for col, value in enumerate(values):
                 item = QTableWidgetItem(value)
@@ -569,7 +584,7 @@ class ModelBrowserDialog(QDialog):
             self.status.setText(f"共 {len(entries)} 个模型。")
         elif not self._all:
             self.status.setText("暂无社区模型。可在“训练”页训练一个并率先分享。"
-                                "and be the first to share it.")
+                                "并成为第一个分享模型的人。")
         else:
             self.status.setText("没有匹配的模型，请尝试其他关键词或分类。")
         self._selection_changed()
@@ -592,9 +607,9 @@ class ModelBrowserDialog(QDialog):
         if not e.verified:
             answer = QMessageBox.question(
                 self, "安装社区模型",
-                f"{e.repo_id} was made by another user and hasn't been reviewed.\n\n"
-                "VideoHighlighter checks the file before use and runs it only through "
-                "ONNX Runtime or OpenVINO. Install it?")
+                f"{e.repo_id} 由其他用户制作，尚未经过审核。\n\n"
+                "VideoHighlighter 会在使用前检查文件，并且只通过 "
+                "ONNX Runtime 或 OpenVINO 运行。是否安装？")
             if answer != QMessageBox.Yes:
                 return
         self.install_btn.setEnabled(False)
@@ -606,11 +621,11 @@ class ModelBrowserDialog(QDialog):
         model, report = result
         if model is None:
             QMessageBox.warning(self, "模型未安装",
-                                "The model failed the safety and compatibility checks:\n\n" + report.text())
+                                "模型未通过安全性和兼容性检查：\n\n" + report.text())
             self.status.setText("已取消安装：模型未通过检查。")
         else:
             self.status.setText(f"已安装 {model.manifest.display_name}。"
-                                "Pick it under Advanced → object model.")
+                                "可在“高级 → 物体模型”中选择该模型。")
             self.installed.emit(model)
         self._filter()
 

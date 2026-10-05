@@ -2329,11 +2329,11 @@ class VideoHighlighterGUI(QWidget):
                     self.action_models_combo.addItem(f"混合——两个 R3D 模型（{total} 个类别）", "mixed")
             else:
                 if self._intel_count:
-                    self.action_models_combo.addItem(f"Intel Kinetics-400 ({self._intel_count} classes)", "intel_only")
+                    self.action_models_combo.addItem(f"Intel Kinetics-400（{self._intel_count} 个类别）", "intel_only")
                 if self._custom_ov_count:
-                    self.action_models_combo.addItem(f"Custom OpenVINO ({self._custom_ov_count} classes)", "custom_only")
+                    self.action_models_combo.addItem(f"自定义 OpenVINO（{self._custom_ov_count} 个类别）", "custom_only")
                 if self._r3d_custom_count:
-                    self.action_models_combo.addItem(f"R3D fine-tuned ({self._r3d_custom_count} classes)", "r3d_custom_only")
+                    self.action_models_combo.addItem(f"R3D 微调模型（{self._r3d_custom_count} 个类别）", "r3d_custom_only")
                 available = sum(1 for c in [self._intel_count, self._custom_ov_count, self._r3d_custom_count] if c > 0)
                 if available >= 2:
                     total = self._intel_count + self._custom_ov_count + self._r3d_custom_count

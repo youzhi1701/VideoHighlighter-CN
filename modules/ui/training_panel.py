@@ -98,13 +98,13 @@ class ObjectTrainingWorker(QObject):
             run_started = time.perf_counter()
             stage = "正在收集帧"
             self.stage.emit(0)
-            self.progress.emit(0, "收集帧 from your videos...")
+            self.progress.emit(0, "正在从视频中收集帧…")
             dataset_dir = os.path.join(self._work_dir, "dataset")
             summary = build_dataset(
                 store, dataset_dir,
                 progress=lambda done, total: self.progress.emit(
                     int(5 * done / max(1, total)),
-                    f"收集帧... {done} of {total}"),
+                    f"正在收集帧… {done}/{total}"),
             )
             if self._should_stop():
                 raise Cancelled("训练开始前已停止")
@@ -146,7 +146,7 @@ class ObjectTrainingWorker(QObject):
                 percent = 5 + int(93 * update.fraction)
                 left = _friendly_time(update.eta)
                 self.progress.emit(percent, (
-                    f"训练中... round {update.epoch} of {update.total_epochs}"
+                    f"训练中… 第 {update.epoch}/{update.total_epochs} 轮"
                     + (f"，预计剩余 {left}" if left else "")))
 
             result = train(
@@ -163,7 +163,7 @@ class ObjectTrainingWorker(QObject):
 
             stage = "正在保存模型"
             self.stage.emit(3)
-            self.progress.emit(98, "保存 the model...")
+            self.progress.emit(98, "正在保存模型…")
             exported = install(result.weights_path, dest_dir=self._dest_dir)
             _record_speed(
                 result, self._size, extract_per_frame,
@@ -229,10 +229,13 @@ def _elapsed(seconds: float) -> str:
 
 def _parse_friendly(text: str) -> float:
     """Inverse of ``_friendly_time``, for the clock between progress events."""
-    m = re.match(r"([\d.]+) (second|minute|hour)", text or "")
+    m = re.match(r"([\d.]+)\s*(秒|分钟|小时|second|minute|hour)s?", text or "")
     if not m:
         return 0.0
-    return float(m.group(1)) * {"second": 1, "minute": 60, "hour": 3600}[m.group(2)]
+    unit = m.group(2)
+    scale = {"秒": 1, "分钟": 60, "小时": 3600,
+             "second": 1, "minute": 60, "hour": 3600}
+    return float(m.group(1)) * scale[unit]
 
 
 def _friendly_time(seconds: float) -> str:
@@ -691,9 +694,13 @@ class ObjectTrainingSection(QWidget):
     def _on_progress(self, percent: int, message: str) -> None:
         self.progress_bar.setValue(max(0, min(100, percent)))
         # The loop's own estimate, once it has one, replaces the up-front guess.
-        match = re.search(r"about (.+) left", message)
+        match = re.search(r"预计剩余\s*([\d.]+\s*(?:秒|分钟|小时))", message)
+        if not match:
+            match = re.search(r"about (.+) left", message)
         self._time_left = _parse_friendly(match.group(1)) if match else self._time_left
-        self._say(re.sub(r", about .+ left", "", message), "")
+        cleaned = re.sub(r"[，,]?\s*预计剩余\s*[\d.]+\s*(?:秒|分钟|小时)", "", message)
+        cleaned = re.sub(r", about .+ left", "", cleaned)
+        self._say(cleaned, "")
 
     @Slot(object)
     def _on_finished(self, exported) -> None:

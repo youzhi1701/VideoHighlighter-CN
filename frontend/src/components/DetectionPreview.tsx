@@ -72,7 +72,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
     <Card>
       <CardHeader className="py-3">
         <CardTitle className="text-sm font-medium">
-          Live Detection Preview
+          实时 Detection Preview
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -80,7 +80,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
           {view ? (
             <canvas ref={canvasRef} className="max-h-[420px] w-full object-contain" />
           ) : (
-            // Never a bare "Waiting…" that can't resolve: the cache case
+            // Never a bare "等待中…" that can't resolve: the cache case
             // produces no frames at all, so say that rather than spin forever.
             <div className="max-w-md p-8 text-center text-sm text-[#8890b0]">
               {cached ? (
@@ -94,9 +94,9 @@ export function DetectionPreview({ frames, running, cached }: Props) {
                   </p>
                 </>
               ) : running ? (
-                <p>Waiting for the detection stage (objects / actions)…</p>
+                <p>等待检测阶段（物体 / 动作）…</p>
               ) : (
-                <p>Frames appear here while a run is detecting objects or actions.</p>
+                <p>处理流程检测物体或动作时，检测帧会显示在这里。</p>
               )}
             </div>
           )}
@@ -122,7 +122,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
             disabled={!frames.length}
           >
             {frozen ? <Play className="size-4" /> : <Pause className="size-4" />}
-            {frozen ? "Live" : "Freeze"}
+            {frozen ? "实时" : "冻结"}
           </Button>
           <Button
             size="sm"
@@ -161,7 +161,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
             }}
             disabled={!frames.length}
           >
-            <SkipForward className="size-4" /> Live
+            <SkipForward className="size-4" /> 实时
           </Button>
         </div>
       </CardContent>

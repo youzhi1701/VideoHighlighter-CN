@@ -101,14 +101,14 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
                 checked={cfg.actions_require_objects}
                 onCheckedChange={(v) => set("actions_require_objects", Boolean(v))}
               />
-              Only score actions when objects detected
+              仅在检测到物体时给动作评分
             </label>
             <label className="flex items-center gap-2 text-sm">
               <Checkbox
                 checked={cfg.keep_temp}
                 onCheckedChange={(v) => set("keep_temp", Boolean(v))}
               />
-              Keep temp clips
+              保留临时片段
             </label>
             {/* Force reprocess lives on the main screen next to Live preview,
                 where the Qt app puts it and where it's actually needed. */}
@@ -117,7 +117,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
                 checked={cfg.skip_highlights}
                 onCheckedChange={(v) => set("skip_highlights", Boolean(v))}
               />
-              Skip highlights
+              跳过高光生成
             </label>
             <label
               className="flex items-center gap-2 text-sm"
@@ -127,7 +127,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
                 checked={cfg.quality_gate}
                 onCheckedChange={(v) => set("quality_gate", Boolean(v))}
               />
-              Penalize blurry clips
+              降低模糊片段评分
             </label>
           </div>
           {cfg.quality_gate && (

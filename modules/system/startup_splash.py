@@ -205,7 +205,7 @@ def _stage_splash_class():
             """)
             lay.addWidget(self._bar)
 
-            self._stage = QLabel("Starting…")
+            self._stage = QLabel("正在启动…")
             self._stage.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self._stage.setStyleSheet(f"color: {THEME.text_dim}; "
                                       f"font-size: 12px; background: transparent;")
@@ -336,7 +336,7 @@ class splash:
     """Context-manager form, for a block that should always take the splash
     down again::
 
-        with splash("Opening timeline viewer", steps=6, parent=self):
+        with splash("正在打开时间线查看器", steps=6, parent=self):
             window = SignalTimelineWindow(...)
         window.show()
     """

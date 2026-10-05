@@ -79,7 +79,7 @@ export async function pickScriptFile(): Promise<string | null> {
   return Array.isArray(selected) ? (selected[0] ?? null) : selected
 }
 
-/** A GPS 轨迹, for placing clips that carry no location of their own.
+/** A GPS track, for placing clips that carry no location of their own.
  *  GPX rather than a watch maker's own format: everyone exports it, so this
  *  works with a Garmin, a Coros, a Strava export or a phone. */
 export async function pickTrackFile(): Promise<string | null> {

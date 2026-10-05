@@ -68,35 +68,35 @@ const SHAPES = [
 // what a person picking one would call it; anything without an entry falls
 // back to its own name with the underscores taken out.
 const TRANSITION_LABELS: Record<string, string> = {
-  cut: "硬切",
-  crossfade: "交叉淡化",
-  dissolve: "叠化",
-  dip_to_black: "淡入黑场",
-  dip_to_white: "淡入白场",
-  fade_grays: "灰场淡化",
-  iris_open: "光圈打开",
-  iris_close: "光圈关闭",
-  circle_open: "圆形打开",
-  circle_close: "圆形关闭",
-  diamond_open: "菱形打开",
-  diamond_close: "菱形关闭",
-  box_open: "方框打开",
-  box_close: "方框关闭",
-  barn_open: "百叶门打开",
-  barn_close: "百叶门关闭",
-  barn_up: "百叶门向上",
-  barn_down: "百叶门向下",
-  clock: "时钟扫过",
-  clock_back: "时钟扫过, back",
-  blinds: "百叶窗",
-  blinds_fine: "百叶窗, fine",
-  blinds_v: "百叶窗, vertical",
-  blinds_v_fine: "百叶窗, vertical fine",
-  checker: "棋盘格",
-  grain: "胶片颗粒",
-  grain_iris: "胶片颗粒, from the middle",
-  ripple: "波纹",
-  spiral: "螺旋",
+  cut: "Cut",
+  crossfade: "Crossfade",
+  dissolve: "Dissolve",
+  dip_to_black: "Dip to black",
+  dip_to_white: "Dip to white",
+  fade_grays: "Fade through grey",
+  iris_open: "Iris open",
+  iris_close: "Iris close",
+  circle_open: "Circle open",
+  circle_close: "Circle close",
+  diamond_open: "Diamond open",
+  diamond_close: "Diamond close",
+  box_open: "Box open",
+  box_close: "Box close",
+  barn_open: "Barn doors open",
+  barn_close: "Barn doors close",
+  barn_up: "Barn doors up",
+  barn_down: "Barn doors down",
+  clock: "Clock sweep",
+  clock_back: "Clock sweep, back",
+  blinds: "Blinds",
+  blinds_fine: "Blinds, fine",
+  blinds_v: "Blinds, vertical",
+  blinds_v_fine: "Blinds, vertical fine",
+  checker: "Checkerboard",
+  grain: "Film grain",
+  grain_iris: "Film grain, from the middle",
+  ripple: "Ripple",
+  spiral: "Spiral",
 }
 
 const prettyName = (key: string) =>
@@ -106,43 +106,43 @@ const prettyName = (key: string) =>
 // What each move does. These are not transitions — they happen on the ends of
 // a shot rather than on the join, so they stack with whatever the join is.
 const MOTION_HINTS: Record<string, string> = {
-  punch: "画面在切点前放大，并在切点后稳定下来；这是最常用的效果。",
-  pull: "反向效果 — 画面在远离切点时最大，然后缓慢恢复。",
-  shake: "连接点两侧短促抖动，适合卡节拍。",
-  roll: "在切点前后加入几度旋转倾斜。",
-  glitch: "在整个运动期间抖动并分离色彩通道。",
+  punch: "The frame grows into the cut and settles after it. The most useful one.",
+  pull: "The reverse — the frame is largest away from the cut and eases back.",
+  shake: "A short kick either side of the join. Good on a beat.",
+  roll: "A few degrees of tilt into the cut and out of it.",
+  glitch: "Shake with the colour channels split for the length of the move.",
 }
 
 // What each curve does, in the terms someone choosing one is thinking in.
 const EASING_HINTS: Record<string, string> = {
-  linear: "全程匀速 — ffmpeg 的默认方式",
-  ease_in: "缓慢起步，然后全速",
-  ease_out: "快速离开，平缓落下 — 稳妥选择",
-  ease_in_out: "两端缓慢，效果更从容",
-  smooth: "比其他曲线更柔和，接近手工淡化",
-  snap: "大部分运动快速完成，随后稳定",
+  linear: "Even throughout — what ffmpeg does unaided",
+  ease_in: "Slow to start, then full speed",
+  ease_out: "Fast away, gentle landing — the safe choice",
+  ease_in_out: "Slow at both ends; reads as deliberate",
+  smooth: "Gentler than the others; closest to a hand-drawn fade",
+  snap: "Most of the move at once, then it settles",
 }
 
 // The four sections a viewer actually experiences, and what each is for. Only
 // the hook is filled in by most people, which is why it is first and explained.
 const TEXT_FIELDS = [
   {
-    section: "开场钩子",
-    label: "开场文案",
-    hint: "前两秒最重要。很多人静音观看，因此首先会看到这段文字。",
-    placeholder: "我差点在第 38 英里放弃",
+    section: "Hook",
+    label: "Opening line",
+    hint: "The first two seconds. Most people watch muted, so this is what they read.",
+    placeholder: "I nearly quit at mile 38",
   },
   {
-    section: "背景",
-    label: "背景",
-    hint: "说明地点、事件和关键矛盾，尽量简短。",
-    placeholder: "50 英里。大雨。没有备用方案。",
+    section: "Context",
+    label: "Context",
+    hint: "Where, what, what is at stake. Keep it to a few words.",
+    placeholder: "50 miles. Heavy rain. No backup plan.",
   },
   {
-    section: "结果",
-    label: "结尾",
-    hint: "结果、经验，或一个值得回答的问题。",
-    placeholder: "答案是慢下来",
+    section: "Payoff",
+    label: "Ending",
+    hint: "The result, the lesson, or a question worth answering.",
+    placeholder: "The answer was slowing down",
   },
 ]
 
@@ -153,28 +153,28 @@ interface Props {
   suggestedRoot?: string
 }
 
-export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
+export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
   const [root, setRoot] = useState("")
   const [duration, setDuration] = useState(24)
   const [pace, setPace] = useState("energetic")
-  const [shape, set画幅] = useState(0)
+  const [shape, setShape] = useState(0)
   const [music, setMusic] = useState("")
   const [texts, setTexts] = useState<Record<string, string>>({})
-  const [paces, setPaces] = useState<成片Pace[]>([])
-  const [lengths, set时长s] = useState<{ seconds: number; reason: string }[]>([])
-  const [plan, setPlan] = useState<成片Plan | null>(null)
+  const [paces, setPaces] = useState<ReelPace[]>([])
+  const [lengths, setLengths] = useState<{ seconds: number; reason: string }[]>([])
+  const [plan, setPlan] = useState<ReelPlan | null>(null)
   const [planning, setPlanning] = useState(false)
   const [status, setStatus] = useState("")
 
   // How the reel joins its shots.
-  const [options, setOptions] = useState<成片Options | null>(null)
-  const [transition, set转场] = useState("cut")
-  const [transitionSeconds, set转场Seconds] = useState(0.35)
+  const [options, setOptions] = useState<ReelOptions | null>(null)
+  const [transition, setTransition] = useState("cut")
+  const [transitionSeconds, setTransitionSeconds] = useState(0.35)
   const [easing, setEasing] = useState("ease_out")
   const [feather, setFeather] = useState(0)
   // A move on the ends of each shot — the half of a transition a mask cannot do.
   const [motion, setMotion] = useState("none")
-  const [showEvery转场, setShowEvery转场] = useState(false)
+  const [showEveryTransition, setShowEveryTransition] = useState(false)
   // Whether a shot may start later than the top of its clip.
   const [settle, setSettle] = useState(true)
   // Whether the reel avoids showing the same spot, or the same picture, twice.
@@ -184,11 +184,11 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
   const [overlays, setOverlays] = useState<string[]>([])
 
   useEffect(() => {
-    void get成片Options().then((r) => {
+    void getReelOptions().then((r) => {
       if (!r.ok) return
       setOptions(r)
       setPaces(r.paces ?? [])
-      set时长s(r.lengths ?? [])
+      setLengths(r.lengths ?? [])
     })
   }, [])
 
@@ -200,7 +200,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
     [options, transition],
   )
   const softenable = Boolean(chosen?.maskable)
-  const is硬切 = transition === "cut"
+  const isCut = transition === "cut"
 
   useEffect(() => {
     if (suggestedRoot && !root) setRoot(suggestedRoot)
@@ -209,11 +209,11 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
   const band = useMemo(() => paces.find((p) => p.key === pace), [paces, pace])
 
   const request = useCallback(
-    (): 成片Request => ({
+    (): ReelRequest => ({
       dest_root: root,
       duration,
       pace,
-      title: "成片",
+      title: "Reel",
       music,
       transition,
       transition_duration: transitionSeconds,
@@ -258,7 +258,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
     }
     let stale = false
     setPlanning(true)
-    void plan成片(request())
+    void planReel(request())
       .then((p) => {
         if (!stale) setPlan(p)
       })
@@ -273,8 +273,8 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
   const tooShort = Boolean(band && duration < band.minimum_duration - 0.5)
 
   const render = async () => {
-    const res = await render成片(request())
-    if (!res.ok) setStatus(res.error ?? "无法启动渲染")
+    const res = await renderReel(request())
+    if (!res.ok) setStatus(res.error ?? "Could not start the render")
     else setStatus(`Rendering ${res.shots} shots to ${basename(res.output ?? "")}…`)
   }
 
@@ -283,7 +283,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Clapperboard className="size-4" /> 成片
+            <Clapperboard className="size-4" /> Reel
           </CardTitle>
           {plan?.ok && (
             <div className="flex items-center gap-2">
@@ -381,7 +381,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
 
             <div className="space-y-1.5">
               <Label className="text-xs">画幅</Label>
-              <Select value={String(shape)} onValueChange={(v) => set画幅(Number(v))}>
+              <Select value={String(shape)} onValueChange={(v) => setShape(Number(v))}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
@@ -434,7 +434,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <画幅s className="size-4" /> How it joins
+            <Shapes className="size-4" /> How it joins
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -445,17 +445,17 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
                 <button
                   type="button"
                   className="text-[10px] text-muted-foreground underline-offset-2 hover:underline"
-                  onClick={() => setShowEvery转场((v) => !v)}
+                  onClick={() => setShowEveryTransition((v) => !v)}
                 >
-                  {showEvery转场 ? "show the usual ones" : "show all of them"}
+                  {showEveryTransition ? "show the usual ones" : "show all of them"}
                 </button>
               </div>
-              <Select value={transition} onValueChange={set转场}>
+              <Select value={transition} onValueChange={setTransition}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="max-h-80">
-                  {showEvery转场
+                  {showEveryTransition
                     ? (options?.families ?? []).map((family) => (
                         <SelectGroup key={family.name}>
                           <SelectLabel>{family.name}</SelectLabel>
@@ -474,7 +474,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                {is硬切
+                {isCut
                   ? "Every shot butts straight against the next. Fastest, and never wrong."
                   : softenable
                     ? "Has an edge, so it can be softened below."
@@ -484,7 +484,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
 
             <div className="space-y-1.5">
               <Label className="text-xs">运动</Label>
-              <Select value={easing} onValueChange={setEasing} disabled={is硬切}>
+              <Select value={easing} onValueChange={setEasing} disabled={isCut}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
@@ -497,7 +497,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                {is硬切
+                {isCut
                   ? "A cut has no length to move over."
                   : (EASING_HINTS[easing] ?? "How the blend moves across its length.")}
               </p>
@@ -539,8 +539,8 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
                 max={1.5}
                 step={0.01}
                 value={[transitionSeconds]}
-                onValueChange={([v]) => set转场Seconds(v)}
-                disabled={is硬切}
+                onValueChange={([v]) => setTransitionSeconds(v)}
+                disabled={isCut}
               />
               <p className="text-xs text-muted-foreground">
                 Shortened automatically if a shot is too brief to hold it.
@@ -551,7 +551,7 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
               <div className="flex items-center justify-between">
                 <Label className="text-xs">柔边</Label>
                 <span className="font-mono text-xs text-muted-foreground">
-                  {softenable && !is硬切 ? `${Math.round(feather * 100)}%` : "—"}
+                  {softenable && !isCut ? `${Math.round(feather * 100)}%` : "—"}
                 </span>
               </div>
               <Slider
@@ -560,10 +560,10 @@ export function 成片Tab({ running, onCancel, suggestedRoot }: Props) {
                 step={0.01}
                 value={[feather]}
                 onValueChange={([v]) => setFeather(v)}
-                disabled={is硬切 || !softenable}
+                disabled={isCut || !softenable}
               />
               <p className="text-xs text-muted-foreground">
-                {is硬切 || !softenable
+                {isCut || !softenable
                   ? "Pick a wipe, an iris or blinds to soften its edge."
                   : feather === 0
                     ? "A hard edge, the way ffmpeg draws it."

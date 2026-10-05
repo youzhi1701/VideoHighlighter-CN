@@ -41,7 +41,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium">Duration &amp; Cutting</CardTitle>
+            <CardTitle className="text-sm font-medium">时长与剪切</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2.5">
             <NumberField label="高光片段最长时长" hint="(s)" value={cfg.max_duration} onChange={(v) => set("max_duration", v)} />

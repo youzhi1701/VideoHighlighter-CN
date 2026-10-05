@@ -67,3 +67,46 @@ Qt 原生 `lupdate/lrelease/QTranslator` 对纯 Qt 项目非常成熟，但 Vide
 - 运行时动态字符串
 
 因此本项目采用统一的“本地化层 + 各技术栈扫描器”结构。后续如果上游把 PySide6 字符串逐步改成 `tr()`，可以继续接入 Qt Linguist，而不需要推翻当前翻译记忆库。
+
+
+## 官方更新后的维护流程
+
+推荐流程不是在旧中文版上硬合并，而是从新的官方基线重新生成：
+
+```powershell
+git fetch upstream main
+git switch -c cn-refresh upstream/main
+
+# 把 localization/ 和 tools/ 本地化工具带入这个工作树后：
+python tools/apply_zh_cn.py --root . --strict
+python tools/scan_untranslated.py --root .
+```
+
+如果注入报告全部为 `applied` / `already_applied`，说明旧翻译可以直接继承。
+
+如果出现 `changed` / `missing`，只处理这些官方新改动的界面文字。人工确认完成后，用新的官方 commit 重新生成可重放目录：
+
+```powershell
+python tools/rebuild_localization_catalog.py --upstream-ref upstream/main
+```
+
+之后再执行：
+
+```powershell
+python tools/apply_zh_cn.py --root . --dry-run --strict
+```
+
+确认新目录本身也可以重复执行且没有冲突。
+
+## 自动验证
+
+仓库内的 `Localization Layer Validation` GitHub Actions 会：
+
+1. 从 catalog 记录的官方 commit 创建一份全新官方源码；
+2. 从零运行中文注入器；
+3. 要求所有规则无冲突、无缺失；
+4. 比较重建结果与当前中文版源码；
+5. 扫描可能遗漏的用户可见英文；
+6. 上传完整报告。
+
+因此“汉化器本身是否真的能从原版重新生成中文版”不是依靠人工判断，而是由 CI 持续验证。

@@ -8835,6 +8835,150 @@
       "before": "        self.download_btn.setEnabled(n > 0)",
       "after": null,
       "hunk": "@@ -236,7 +236,7 @@ def _set_all(self, checked: bool):"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-1",
+      "file": "frontend/src/App.tsx",
+      "source": "              <FolderOpen className=\"size-4\" /> Add Folder",
+      "target": "              <FolderOpen className=\"size-4\" /> 添加文件夹",
+      "before": "            <Button size=\"sm\" variant=\"secondary\" onClick={addFolder} disabled={running}>",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-2",
+      "file": "frontend/src/App.tsx",
+      "source": "              No videos added yet",
+      "target": "              暂未添加视频",
+      "before": "            <p className=\"rounded-md border border-dashed py-6 text-center text-sm text-muted-foreground\">",
+      "after": "            </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-3",
+      "file": "frontend/src/App.tsx",
+      "source": "                Combine into one reel",
+      "target": "                合并为一个短片",
+      "before": "                />",
+      "after": "              </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-4",
+      "file": "frontend/src/App.tsx",
+      "source": "          Live detection preview",
+      "target": "          实时检测预览",
+      "before": "          />",
+      "after": "        </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-5",
+      "file": "frontend/src/App.tsx",
+      "source": "          Force reprocess (ignore cache)",
+      "target": "          强制重新处理（忽略缓存）",
+      "before": "          />",
+      "after": "        </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-6",
+      "file": "frontend/src/App.tsx",
+      "source": "                <Sparkles className=\"size-3.5\" /> Run Highlighter",
+      "target": "                <Sparkles className=\"size-3.5\" /> 开始生成高光",
+      "before": "              <>",
+      "after": "              </>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-7",
+      "file": "frontend/src/App.tsx",
+      "source": "              Keep temp",
+      "target": "              保留临时文件",
+      "before": "              />",
+      "after": "            </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-8",
+      "file": "frontend/src/App.tsx",
+      "source": "                <FolderOpen className=\"size-3.5\" /> Show output",
+      "target": "                  if (!res.ok) toast.error(res.error ?? \"无法显示输出文件\")",
+      "before": "              >",
+      "after": "              </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/App.tsx#audit-20261006-9",
+      "file": "frontend/src/App.tsx",
+      "source": "              <FileText className=\"size-3.5\" /> Log file",
+      "target": "              <FileText className=\"size-3.5\" /> 日志文件",
+      "before": "            >",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/CompositionRules.tsx#audit-20261006-10",
+      "file": "frontend/src/components/CompositionRules.tsx",
+      "source": "                    No rules yet",
+      "target": "                    暂无规则",
+      "before": "                  >",
+      "after": "                  </TableCell>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/CompositionRules.tsx#audit-20261006-11",
+      "file": "frontend/src/components/CompositionRules.tsx",
+      "source": "            <Plus className=\"size-4\" /> Add Rule",
+      "target": "            <Plus className=\"size-4\" /> 添加规则",
+      "before": "          >",
+      "after": "          </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/CompositionRules.tsx#audit-20261006-12",
+      "file": "frontend/src/components/CompositionRules.tsx",
+      "source": "            <Save className=\"size-4\" /> Save Rules",
+      "target": "    else toast.error(res.error ?? \"无法保存规则\")",
+      "before": "          <Button size=\"sm\" onClick={save} disabled={loading}>",
+      "after": "          </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/DetectionPreview.tsx#audit-20261006-13",
+      "file": "frontend/src/components/DetectionPreview.tsx",
+      "source": "          Live Detection Preview",
+      "target": "          实时检测预览",
+      "before": "        <CardTitle className=\"text-sm font-medium\">",
+      "after": "        </CardTitle>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/DetectionPreview.tsx#audit-20261006-14",
+      "file": "frontend/src/components/DetectionPreview.tsx",
+      "source": "                    This video was already analysed, so detection was skipped.",
+      "target": "                    该视频已经分析过，因此跳过了检测。",
+      "before": "                  <p className=\"text-foreground\">",
+      "after": "                  </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/TimeRange.tsx#audit-20261006-15",
+      "file": "frontend/src/components/TimeRange.tsx",
+      "source": "          Processing Time Range",
+      "target": "          处理时间范围",
+      "before": "        <CardTitle className=\"text-sm font-medium\">",
+      "after": "        </CardTitle>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/TimeRange.tsx#audit-20261006-16",
+      "file": "frontend/src/components/TimeRange.tsx",
+      "source": "          Process only specific time range",
+      "target": "          仅处理指定时间范围",
+      "before": "          />",
+      "after": "        </label>",
+      "hunk": "full-ui-audit-2026-10-06"
     }
   ]
 }

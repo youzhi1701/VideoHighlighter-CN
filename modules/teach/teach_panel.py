@@ -42,11 +42,11 @@ def describe(result: dict) -> str:
     if not isinstance(result, dict):
         return str(result)
     if result.get("error"):
-        return f"Stopped: {result['error']}"
+        return f"已停止：{result['error']}"
     lines = []
     if "checks" in result:
         for c in result["checks"]:
-            mark = "OK " if c["ok"] else ("MISSING " if c["level"] == "required" else "note ")
+            mark = "正常 " if c["ok"] else ("缺失 " if c["level"] == "required" else "提示 ")
             line = f"{mark}{c['name']}: {c['detail']}"
             if not c["ok"] and c.get("fix"):
                 line += f"  -> {c['fix']}"
@@ -54,16 +54,16 @@ def describe(result: dict) -> str:
         lines.append("Ready." if result.get("ready") else "尚未就绪：请先处理缺失项目。")
         return "\n".join(lines)
     for step in result.get("ran") or []:
-        lines.append("done: " + " ".join(step.get("args") or []))
+        lines.append("完成：" + " ".join(step.get("args") or []))
     if "classes" in result and isinstance(result["classes"], dict):
         for name, c in result["classes"].items():
-            lines.append(f"{name}: {c['accepted']} of {c['target']} accepted")
+            lines.append(f"{name}：已接受 {c['accepted']} / {c['target']}")
     nxt = result.get("next") or result.get("stopped_at") or {}
     if nxt.get("why"):
-        lines.append("Next: " + nxt["why"])
+        lines.append("下一步：" + nxt["why"])
     if result.get("message"):
         lines.append(result["message"])
-    return "\n".join(lines) or "Done."
+    return "\n".join(lines) or "完成。"
 
 
 class TeachPanel(QWidget):
@@ -82,14 +82,14 @@ class TeachPanel(QWidget):
         self._review = None
 
         intro = QLabel(
-            "Teach it something new from your own videos. Put a few short example "
-            "clips in one folder per thing, named after what it shows, and choose "
-            "the videos to learn from. It cuts, sorts and labels by itself, and asks "
-            "you only about the samples it is unsure of.")
+            "让程序从你自己的视频中学习新内容。每个目标准备一个文件夹，放入几个短示例片段，"
+            "文件夹名称就是要学习的类别，然后选择用于学习的视频。"
+            "程序会自动切片、排序和标注，只在"
+            "不确定的样本上向你确认。")
         intro.setWordWrap(True)
 
         self.task = QComboBox()
-        self.task.addItems(["actions", "objects"])
+        self.task.addItem("动作", "actions")\n        self.task.addItem("物体", "objects")
         self.task.setToolTip("动作：随时间发生的行为或运动\n"
                              "物体：单帧中可见的对象")
         self.project = QLineEdit("my-first")
@@ -102,9 +102,9 @@ class TeachPanel(QWidget):
 
         form = QFormLayout()
         form.addRow("训练类型", self.task)
-        form.addRow("Project", self.project)
-        form.addRow("Examples", self._with_browse(self.examples, folder=True))
-        form.addRow("Videos", self._with_browse(self.videos, folder=True))
+        form.addRow("项目", self.project)
+        form.addRow("示例", self._with_browse(self.examples, folder=True))
+        form.addRow("视频", self._with_browse(self.videos, folder=True))
         form.addRow("", self.focus)
 
         self.doctor_btn = QPushButton("检查当前电脑")
@@ -135,9 +135,9 @@ class TeachPanel(QWidget):
         self.background_box = QCheckBox(
             "软件空闲时在后台持续改进")
         self.background_box.setToolTip(
-            "Runs every step that needs nobody (finding, sorting, training) when you "
-            "have not touched the app for a couple of minutes, and keeps a few "
-            "questions for you. Your footage never leaves this computer.")
+            "当你几分钟没有操作时，会自动执行无需人工参与的步骤（查找、排序、训练），"
+            "只保留少量"
+            "需要你确认的问题。你的素材始终不会离开本机。")
         self.background_status = QLabel()
         self.background_status.setWordWrap(True)
         app = QApplication.instance()
@@ -188,7 +188,7 @@ class TeachPanel(QWidget):
         return self.project.text().strip() or "my-first"
 
     def start(self):
-        args = ["quick", "--task", self.task.currentText()]
+        args = ["quick", "--task", self.task.currentData()]
         if self.examples.text().strip():
             args += ["--examples", self.examples.text().strip()]
         if self.videos.text().strip():
@@ -310,11 +310,11 @@ class TeachPanel(QWidget):
 
     def _run(self, args: list):
         if self.background.running:
-            self.output.setPlainText("Improving in the background; this finishes its "
-                                     "current step first. Try again in a moment.")
+            self.output.setPlainText("正在后台继续改进；程序会先完成当前步骤。"
+                                     "请稍后再试。")
             return
         self._set_busy(True)
-        self.output.setPlainText("Working… (" + " ".join(args) + ")")
+        self.output.setPlainText("正在处理… (" + " ".join(args) + ")")
         argv = ["--project", self.project_arg(), *args]
         self._thread = QThread(self)
         self._job = _Job(lambda: self._run_cli(argv))

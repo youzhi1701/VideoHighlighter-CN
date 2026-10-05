@@ -72,7 +72,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
     <Card>
       <CardHeader className="py-3">
         <CardTitle className="text-sm font-medium">
-          实时 Detection Preview
+          Live Detection Preview
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -80,7 +80,7 @@ export function DetectionPreview({ frames, running, cached }: Props) {
           {view ? (
             <canvas ref={canvasRef} className="max-h-[420px] w-full object-contain" />
           ) : (
-            // Never a bare "等待中…" that can't resolve: the cache case
+            // Never a bare "Waiting…" that can't resolve: the cache case
             // produces no frames at all, so say that rather than spin forever.
             <div className="max-w-md p-8 text-center text-sm text-[#8890b0]">
               {cached ? (

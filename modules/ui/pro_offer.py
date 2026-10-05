@@ -185,7 +185,7 @@ def pro_only_routes(report: Mapping,
 
 
 def _trial_line() -> str:
-    return f"Pro has a free {TRIAL_DAYS}-day trial."
+    return f"Pro 提供 {TRIAL_DAYS} 天免费试用。"
 
 
 def for_unbuildable_rule(now: Optional[_dt.datetime] = None) -> Optional[Offer]:
@@ -193,12 +193,11 @@ def for_unbuildable_rule(now: Optional[_dt.datetime] = None) -> Optional[Offer]:
     if not may_offer("rule_unbuildable", now):
         return None
     return Offer("rule_unbuildable",
-                 "If what you asked about isn't one of this video's classes, "
-                 "no rule can add it — a rule only arranges what the detector "
-                 "found. You can teach a model to find it: right-click it in "
-                 "the player, then <i>Teach a model</i>. <b>VideoHighlighter "
-                 "Pro</b> can also look for it by name straight away, with no "
-                 "training. " + _trial_line())
+                 "如果你要找的内容不属于当前视频已有的检测类别，规则无法凭空添加它——"
+                 "规则只能重新组合检测器已经发现的内容。你可以训练模型来识别它："
+                 "在播放器中右键，然后选择<i>训练模型</i>。"
+                 "<b>VideoHighlighter Pro</b> 也可以直接按名称查找，无需训练。"
+                 + _trial_line())
 
 
 def for_report(report: Mapping,
@@ -224,9 +223,9 @@ def for_report(report: Mapping,
     if not missing:
         return None
     n = len(claims)
-    things = "thing that was" if n == 1 else "things that were"
+    things = "项内容"
     ways = "; ".join(r.name.lower() for r in missing)
     return Offer("report_unmeasured",
-                 f"This report lists {n} {things} said but not measured. "
-                 f"<b>VideoHighlighter Pro</b> adds ways to measure them that "
-                 f"this edition doesn't have: {ways}. " + _trial_line())
+                 f"这份报告列出了 {n} {things}提到但尚未测量。"
+                 f"<b>VideoHighlighter Pro</b> 提供当前版本没有的测量方式：{ways}。"
+                 + _trial_line())

@@ -170,8 +170,8 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
     actual = _dims(inp)
     if not _shape_matches(actual, expected):
         report.errors.append(
-            f"Input shape {actual} does not match the manifest {expected} "
-            f"(check width/height/channels/layout{'/frames' if manifest.task == 'action_recognition' else ''}).")
+            f"输入形状 {actual} 与清单中的 {expected} 不匹配 "
+            f"（请检查宽度/高度/通道/布局{'/帧数' if manifest.task == 'action_recognition' else ''}）。")
         return
     if inp.type not in ("tensor(float)", "tensor(float16)", "tensor(uint8)"):
         report.errors.append(f"不支持的输入类型：{inp.type}。")
@@ -194,20 +194,19 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
         layout = detector_layout(out.shape)
         if layout == "transposed":
             report.errors.append(
-                f"Detector output {list(out.shape)} is in the transposed [1, 4 + labels, N] "
-                "layout of an AGPL training toolkit. Only detectors trained in "
-                "VideoHighlighter (YOLOX) can be shared: a model trained with that "
-                "toolkit carries its licence.")
+                f"检测器输出 {list(out.shape)} 使用了转置的 [1, 4 + labels, N] 布局，"
+                "该布局来自 AGPL 训练工具。只有在 VideoHighlighter 中训练的 "
+                "YOLOX 检测器可以分享；使用该工具训练的模型受其许可证约束。")
             return
         if layout != "yolox" or out.shape[2] != 5 + n:
             report.errors.append(
-                f"Detector output {list(out.shape)} does not match the YOLOX format "
-                f"[1, N, {5 + n}] for {n} labels.")
+                f"检测器输出 {list(out.shape)} 与 YOLOX 格式不匹配。"
+                f"{n} 个标签应对应 [1, N, {5 + n}]。")
             return
     else:
         if out.ndim != 2 or out.shape[1] != n:
             report.errors.append(
-                f"Output {list(out.shape)} does not match {n} labels (expected [1, {n}]).")
+                f"输出 {list(out.shape)} 与 {n} 个标签不匹配（预期为 [1, {n}]）。")
             return
     report.info.append(f"输出 {list(out.shape)} 与 {n} 个标签匹配")
 
@@ -234,7 +233,7 @@ def check_package(folder: str | Path, require_compliance: bool = True,
         elif sha256_file(model) != expected:
             report.errors.append("model.onnx does not match the sha256 in the manifest.")
         else:
-            report.info.append("Checksum verified")
+            report.info.append("校验值验证通过")
 
     if report.ok:
         check_onnx(folder, manifest, report)
@@ -249,7 +248,7 @@ def build_package(model_file: str | Path, manifest: Manifest, out_dir: str | Pat
     model_file = Path(model_file)
     out = Path(out_dir)
     if out.exists() and any(out.iterdir()):
-        raise FileExistsError(f"{out} is not empty; choose an empty folder.")
+        raise FileExistsError(f"{out} 不是空文件夹；请选择一个空文件夹。")
     if model_file.suffix.lower() != ".onnx":
         raise ValueError("Only .onnx models can be published. Export your model to ONNX first.")
     out.mkdir(parents=True, exist_ok=True)

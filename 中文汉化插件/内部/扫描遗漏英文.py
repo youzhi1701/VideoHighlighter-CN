@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Find likely user-visible English that is not yet Chinese-localized.
+"""Audit likely user-visible English across the whole VideoHighlighter source tree.
 
-This is deliberately conservative: it reports candidates instead of modifying
-source. False positives can be suppressed in localization/zh_CN/allowlist.json.
+This scanner is intentionally broader than the first-pass localization scanner.
+It never edits source. It classifies candidates so maintainers can translate
+real UI text while leaving protocols, model IDs and internal values untouched.
 """
 from __future__ import annotations
 
@@ -10,30 +11,60 @@ import argparse
 import ast
 import json
 import re
-from dataclasses import dataclass, asdict
+from collections import Counter
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
-PLUGIN_DIR = Path(__file__).resolve().parent
+INTERNAL_DIR = Path(__file__).resolve().parent
+PLUGIN_DIR = INTERNAL_DIR.parent
 ROOT = PLUGIN_DIR.parent
-ALLOW = PLUGIN_DIR / "数据" / "保留英文白名单.json"
-REPORT = PLUGIN_DIR / "报告" / "遗漏英文扫描.json"
+ALLOW = INTERNAL_DIR / "保留英文白名单.json"
+REPORT = INTERNAL_DIR / "报告" / "遗漏英文扫描.json"
+
+CJK_RE = re.compile(r"[\u3400-\u9fff]")
+EN_RE = re.compile(r"[A-Za-z]{2,}")
+TECH_RE = re.compile(
+    r"^(?:VideoHighlighter|AI|CPU|GPU|CUDA|CLIP|ONNX|OpenVINO|FFmpeg|GGUF|Ollama|"
+    r"PyTorch|YOLOX|AGPLv3|FCPXML|EDL|CSV|JSON|HTTP|HTTPS|NVIDIA|Intel|AMD|"
+    r"Python|Qt|PySide6|Hugging ?Face|Whisper|SigLIP|RTMPose)(?:\b|$)",
+    re.I,
+)
 
 UI_CALLS = {
-    "QLabel", "QPushButton", "QCheckBox", "QRadioButton", "QGroupBox", "QAction", "QMenu",
-    "setWindowTitle", "setText", "setToolTip", "setStatusTip", "setPlaceholderText",
-    "addTab", "addAction", "addMenu", "showMessage", "information", "warning", "critical",
-    "question", "getText", "getItem", "getOpenFileName", "getSaveFileName",
+    "QLabel", "QPushButton", "QCheckBox", "QRadioButton", "QGroupBox", "QAction",
+    "QMenu", "QTabWidget", "QMessageBox", "setWindowTitle", "setText",
+    "setToolTip", "setStatusTip", "setPlaceholderText", "setWhatsThis",
+    "setAccessibleName", "setAccessibleDescription", "addTab", "insertTab",
+    "addAction", "addMenu", "showMessage", "information", "warning", "critical",
+    "question", "about", "getText", "getItem", "getOpenFileName",
+    "getSaveFileName", "getExistingDirectory", "setHeaderLabels",
+    "setHorizontalHeaderLabels", "setVerticalHeaderLabels", "setTitle",
+    "setLabelText", "setCancelButtonText", "setOkButtonText",
 }
-TECH_RE = re.compile(r"^(?:VideoHighlighter|AI|CPU|GPU|CUDA|CLIP|ONNX|OpenVINO|FFmpeg|GGUF|Ollama|PyTorch|YOLOX|AGPLv3|FCPXML|EDL|CSV|JSON|HTTP|HTTPS|NVIDIA|Intel|AMD)(?:\b|$)")
-ENGLISH_RE = re.compile(r"[A-Za-z]{2,}")
-CJK_RE = re.compile(r"[\u3400-\u9fff]")
+UI_NAME_RE = re.compile(
+    r"(?:text|title|label|button|btn|tooltip|tip|status|message|msg|caption|"
+    r"description|desc|placeholder|prompt|heading|header|menu|action|empty|"
+    r"warning|error|success|progress|help|hint)$",
+    re.I,
+)
+UI_KEY_RE = re.compile(
+    r"^(?:text|title|label|buttonText|tooltip|tip|status|message|caption|"
+    r"description|placeholder|prompt|heading|header|emptyText|help|hint)$",
+    re.I,
+)
+
+EXCLUDE_PARTS = {
+    ".git", ".github", ".venv", "venv", "dist", "build", "node_modules",
+    "tests", "test", "docs", "中文汉化插件", "__pycache__",
+}
 
 
-@dataclass
+@dataclass(frozen=True)
 class Hit:
     file: str
     line: int
     kind: str
+    priority: str
     text: str
 
 
@@ -49,28 +80,55 @@ def string_value(node: ast.AST) -> str | None:
     if isinstance(node, ast.Constant) and isinstance(node.value, str):
         return node.value
     if isinstance(node, ast.JoinedStr):
-        parts: list[str] = []
-        for value in node.values:
-            if isinstance(value, ast.Constant) and isinstance(value.value, str):
-                parts.append(value.value)
+        out: list[str] = []
+        for v in node.values:
+            if isinstance(v, ast.Constant) and isinstance(v.value, str):
+                out.append(v.value)
             else:
-                parts.append("{…}")
-        return "".join(parts)
+                out.append("{…}")
+        return "".join(out)
+    if isinstance(node, (ast.List, ast.Tuple)):
+        vals = [string_value(x) for x in node.elts]
+        vals = [x for x in vals if x]
+        return " | ".join(vals) if vals else None
     return None
 
 
+def clean(text: str) -> str:
+    return " ".join(text.replace("\\n", " ").split())
+
+
 def visible_candidate(text: str, allow: set[str]) -> bool:
-    t = " ".join(text.split())
-    if not t or t in allow or CJK_RE.search(t) or not ENGLISH_RE.search(t):
+    t = clean(text)
+    if not t or t in allow or CJK_RE.search(t) or not EN_RE.search(t):
         return False
-    # JSX/source-code fragments occasionally look like prose to a regex.
-    if any(tok in t for tok in ("=>", "===", "!==", "&&", "||", "?.", "??", "Number.isFinite", "Math.", "return ")):
+    if t.startswith(("http://", "https://")):
         return False
-    if TECH_RE.match(t) and len(t.split()) <= 3:
+    if re.fullmatch(r"[A-Za-z0-9_.:/{}<>+*=@%#\\-]+", t):
         return False
-    if re.fullmatch(r"[A-Za-z0-9_.:/{}<>+*=-]+", t):
+    if TECH_RE.match(t) and len(t.split()) <= 4:
+        return False
+    if any(tok in t for tok in ("=>", "===", "!==", "&&", "||", "?.", "??", "return ", "lambda ")):
         return False
     return True
+
+
+def add(hits: list[Hit], rel: str, node: ast.AST, kind: str, priority: str, value: str | None, allow: set[str]) -> None:
+    if value and visible_candidate(value, allow):
+        hits.append(Hit(rel, getattr(node, "lineno", 0), kind, priority, clean(value)))
+
+
+def assignment_names(node: ast.AST) -> list[str]:
+    if isinstance(node, ast.Name):
+        return [node.id]
+    if isinstance(node, ast.Attribute):
+        return [node.attr]
+    if isinstance(node, (ast.Tuple, ast.List)):
+        out: list[str] = []
+        for x in node.elts:
+            out.extend(assignment_names(x))
+        return out
+    return []
 
 
 def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
@@ -79,94 +137,132 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
         tree = ast.parse(path.read_text(encoding="utf-8"))
     except (SyntaxError, UnicodeDecodeError):
         return hits
+
     for node in ast.walk(tree):
-        if not isinstance(node, ast.Call):
-            continue
-        name = call_name(node.func)
-        if name not in UI_CALLS:
-            continue
-        for arg in node.args[:3]:
-            value = string_value(arg)
-            if value and visible_candidate(value, allow):
-                hits.append(Hit(rel, getattr(arg, "lineno", getattr(node, "lineno", 0)), "python-ui", value))
+        if isinstance(node, ast.Call):
+            name = call_name(node.func)
+            if name in UI_CALLS:
+                for arg in node.args[:6]:
+                    add(hits, rel, arg, "python-ui-call", "high", string_value(arg), allow)
+                for kw in node.keywords:
+                    if kw.arg and UI_KEY_RE.search(kw.arg):
+                        add(hits, rel, kw.value, "python-ui-keyword", "high", string_value(kw.value), allow)
+
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            value_node = node.value
+            if value_node is None:
+                continue
+            names = [n for t in targets for n in assignment_names(t)]
+            if any(UI_NAME_RE.search(n) for n in names):
+                add(hits, rel, value_node, "python-ui-assignment", "medium", string_value(value_node), allow)
+
+        elif isinstance(node, ast.Dict):
+            for key, val in zip(node.keys, node.values):
+                k = string_value(key) if key else None
+                if k and UI_KEY_RE.match(k):
+                    add(hits, rel, val, "python-ui-dict", "medium", string_value(val), allow)
+
     return hits
 
 
-def scan_tsx(path: Path, rel: str, allow: set[str]) -> list[Hit]:
+TSX_PATTERNS = [
+    ("tsx-text", "high", re.compile(r">\s*([^<>{}\n]*[A-Za-z][^<>{}\n]*)\s*<")),
+    ("tsx-expression-text", "high", re.compile(r">\s*\{\s*([\"'])([^\"']*[A-Za-z][^\"']*)\1\s*\}\s*<")),
+    ("tsx-attr", "high", re.compile(r"\b(?:title|placeholder|aria-label|alt|label|tooltip|description)=([\"'])(.*?)\1", re.I)),
+    ("tsx-object-ui", "medium", re.compile(r"\b(?:label|title|description|text|placeholder|tooltip|message|emptyText)\s*:\s*([\"'])(.*?)\1", re.I)),
+]
+
+
+def scan_ts(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     text = path.read_text(encoding="utf-8", errors="ignore")
     hits: list[Hit] = []
-    patterns = [
-        ("tsx-text", re.compile(r">([^<>{}\n]*[A-Za-z][^<>{}\n]*)<")),
-        ("tsx-attr", re.compile(r"\b(?:title|placeholder|aria-label|alt)=([\"'])(.*?)\1")),
-    ]
-    for kind, pattern in patterns:
+    for kind, priority, pattern in TSX_PATTERNS:
         for m in pattern.finditer(text):
             value = m.group(1) if kind == "tsx-text" else m.group(2)
             if visible_candidate(value, allow):
-                line = text.count("\n", 0, m.start()) + 1
-                hits.append(Hit(rel, line, kind, value.strip()))
+                hits.append(Hit(rel, text.count("\n", 0, m.start()) + 1, kind, priority, clean(value)))
     return hits
+
+
+ISS_HINTS = (
+    "Description:", "MsgBox(", "SuppressibleMsgBox(", "CreateDownloadPage(",
+    "ItemCaption", "Button", "Caption", "StatusLabel", "WelcomeLabel", "FinishedLabel",
+)
 
 
 def scan_iss(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     text = path.read_text(encoding="utf-8", errors="ignore")
     hits: list[Hit] = []
     for i, line in enumerate(text.splitlines(), 1):
-        if line.lstrip().startswith(";"):
-            continue
-        if not any(key in line for key in ("Description:", "MsgBox(", "CreateDownloadPage(", "ItemCaption", "SuppressibleMsgBox(")):
+        if line.lstrip().startswith(";") or not any(k in line for k in ISS_HINTS):
             continue
         for m in re.finditer(r"['\"]([^'\"]*[A-Za-z][^'\"]*)['\"]", line):
             value = m.group(1)
             if visible_candidate(value, allow):
-                hits.append(Hit(rel, i, "installer-ui", value))
+                hits.append(Hit(rel, i, "installer-ui", "high", clean(value)))
     return hits
 
 
+def excluded(path: Path, root: Path) -> bool:
+    try:
+        parts = path.relative_to(root).parts
+    except ValueError:
+        return True
+    return any(p in EXCLUDE_PARTS or p.startswith(".") for p in parts)
+
+
 def main() -> int:
-    p = argparse.ArgumentParser(description="扫描可能遗漏的用户可见英文")
-    p.add_argument("--root", type=Path, default=ROOT)
-    p.add_argument("--report", type=Path, default=REPORT)
-    args = p.parse_args()
+    ap = argparse.ArgumentParser(description="全量扫描可能遗漏的用户可见英文")
+    ap.add_argument("--root", type=Path, default=ROOT)
+    ap.add_argument("--report", type=Path, default=REPORT)
+    args = ap.parse_args()
 
     allow_data = json.loads(ALLOW.read_text(encoding="utf-8")) if ALLOW.exists() else {"exact": []}
     allow = set(allow_data.get("exact", []))
     hits: list[Hit] = []
 
     for path in args.root.rglob("*.py"):
-        rel_parts = path.relative_to(args.root).parts
-        if any(part.startswith(".") for part in rel_parts):
+        if excluded(path, args.root):
             continue
-        if any(part in {"venv", "dist", "build", "node_modules", "tests", "test", "docs", "localization"} for part in rel_parts):
-            continue
-        rel = path.relative_to(args.root).as_posix()
-        hits.extend(scan_python(path, rel, allow))
+        hits.extend(scan_python(path, path.relative_to(args.root).as_posix(), allow))
 
     front = args.root / "frontend" / "src"
     if front.exists():
         for path in front.rglob("*"):
-            if path.suffix.lower() not in {".ts", ".tsx", ".js", ".jsx"}:
+            if path.suffix.lower() not in {".ts", ".tsx", ".js", ".jsx"} or excluded(path, args.root):
                 continue
-            rel_parts = path.relative_to(args.root).parts
-            if any(part.startswith(".") for part in rel_parts):
-                continue
-            if any(part in {"tests", "test", "node_modules", "dist", "build"} for part in rel_parts):
-                continue
-            rel = path.relative_to(args.root).as_posix()
-            hits.extend(scan_tsx(path, rel, allow))
+            hits.extend(scan_ts(path, path.relative_to(args.root).as_posix(), allow))
 
     installer = args.root / "packaging" / "installer"
     if installer.exists():
         for path in installer.glob("*.iss"):
             hits.extend(scan_iss(path, path.relative_to(args.root).as_posix(), allow))
 
-    # Stable, de-duplicated output.
-    uniq = {(h.file, h.line, h.kind, h.text): h for h in hits}
+    uniq = {(h.file, h.line, h.kind, h.priority, h.text): h for h in hits}
     hits = [uniq[k] for k in sorted(uniq)]
-    payload = {"count": len(hits), "hits": [asdict(h) for h in hits]}
+    counts = Counter(h.file for h in hits)
+    priorities = Counter(h.priority for h in hits)
+
+    payload = {
+        "count": len(hits),
+        "priority_counts": dict(priorities),
+        "files_with_candidates": len(counts),
+        "top_files": counts.most_common(30),
+        "hits": [asdict(h) for h in hits],
+    }
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
     print(f"untranslated candidates: {len(hits)}")
+    print(f"files with candidates: {len(counts)}")
+    print(f"priority: {dict(priorities)}")
+    print("top files:")
+    for file, count in counts.most_common(30):
+        print(f"  {count:4d}  {file}")
+    print("high-priority samples:")
+    for h in [x for x in hits if x.priority == "high"][:120]:
+        print(f"  {h.file}:{h.line} [{h.kind}] {h.text}")
     print(f"report: {args.report}")
     return 0
 

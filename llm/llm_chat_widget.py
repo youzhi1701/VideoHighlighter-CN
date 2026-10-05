@@ -106,14 +106,14 @@ class _LLMWorker(QObject):
                 free_chat_mode=self.free_chat_mode,
             )
             if self._cancel_token.is_cancelled:
-                self.finished.emit(full_response + "\n[stopped]")
+                self.finished.emit(full_response + "\n[已停止]")
             else:
                 self.finished.emit(full_response)
         except GenerationCancelled:
-            self.finished.emit("[stopped by user]")
+            self.finished.emit("[用户已停止]")
         except Exception as e:
             if self._cancel_token.is_cancelled:
-                self.finished.emit("[stopped by user]")
+                self.finished.emit("[用户已停止]")
             else:
                 self.error.emit(str(e))
 
@@ -191,7 +191,7 @@ class _VisualSearchWorker(QObject):
             where = " < ".join(
                 f"{os.path.basename(f.filename)}:{f.lineno}" for f in reversed(frames)
             )
-            self.error.emit(f"{e} [at {where}]")
+            self.error.emit(f"{e} [位置：{where}]")
 
     # ------------------------------------------------------------------ shared
     def _vlm_analyze(self, timestamp, frame, stage_totals, scene_diff=-1.0):
@@ -292,7 +292,7 @@ class _VisualSearchWorker(QObject):
         for i, timestamp in enumerate(timestamps):
             if self._cancel_token.is_cancelled or timestamp > self.analyzer.duration + 0.1:
                 break
-            self.progress.emit(i + 1, len(timestamps), timestamp, f"Analyzing {timestamp:.1f}s")
+            self.progress.emit(i + 1, len(timestamps), timestamp, f"正在分析 {timestamp:.1f} 秒")
             self.analyzer.current_time = timestamp
             frame = self.analyzer.seek_to_time(timestamp)
             if frame is None:
@@ -340,11 +340,11 @@ class _VisualSearchWorker(QObject):
             from .clip_prefilter import ClipFramePrefilter
             from .clip_index import ClipEmbedder
         except Exception as e:
-            self.error.emit(f"CLIP prefilter import failed: {e}")
+            self.error.emit(f"CLIP 预筛选模块导入失败：{e}")
             return None
         reason = ClipFramePrefilter.import_error(self.clip_device)
         if reason is not None:
-            self.error.emit(f"CLIP unavailable — {reason}")
+            self.error.emit(f"CLIP 不可用——{reason}")
             return None
 
         if self._clip is None:

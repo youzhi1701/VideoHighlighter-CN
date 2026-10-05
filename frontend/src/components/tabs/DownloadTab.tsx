@@ -14,8 +14,8 @@ export interface DownloadSettings {
   url: string
   saveDir: string
   downloadFull: boolean
-  rangeStart: number
-  rangeEnd: number
+  range开始: number
+  range结束: number
   concurrent: number
   autoAdd: boolean
 }
@@ -24,8 +24,8 @@ export const DEFAULT_DOWNLOAD: DownloadSettings = {
   url: "",
   saveDir: "",
   downloadFull: true,
-  rangeStart: 0,
-  rangeEnd: 300,
+  range开始: 0,
+  range结束: 300,
   concurrent: 1,
   autoAdd: true,
 }
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const fmt = (s: number) =>
-  `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`
+  `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).pad开始(2, "0")}`
 
 export function DownloadTab({
   settings,
@@ -63,18 +63,18 @@ export function DownloadTab({
     if (dir) set("saveDir", dir)
   }
 
-  const duration = Math.max(0, settings.rangeEnd - settings.rangeStart)
+  const duration = Math.max(0, settings.range结束 - settings.range开始)
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm font-medium">
-          <Download className="size-4" /> Download Videos
+          <Download className="size-4" /> 下载视频
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-3">
-          <Label className="text-sm text-muted-foreground">Page URL</Label>
+          <Label className="text-sm text-muted-foreground">页面网址</Label>
           <Input
             value={settings.url}
             onChange={(e) => set("url", e.target.value)}
@@ -84,11 +84,11 @@ export function DownloadTab({
         </div>
 
         <div className="grid min-w-0 grid-cols-[5.5rem_minmax(0,1fr)_auto] items-center gap-3">
-          <Label className="text-sm text-muted-foreground">Save to</Label>
+          <Label className="text-sm text-muted-foreground">保存到</Label>
           <Input
             value={settings.saveDir}
             onChange={(e) => set("saveDir", e.target.value)}
-            placeholder={isTauri() ? "Choose a folder…" : "D:\\movies"}
+            placeholder={isTauri() ? "选择文件夹…" : "D:\\movies"}
             className="h-8 w-full"
           />
           <Button
@@ -112,17 +112,17 @@ export function DownloadTab({
           {!settings.downloadFull && (
             <div className="space-y-2.5">
               <NumberField
-                label="Start"
+                label="开始"
                 hint="(s)"
-                value={settings.rangeStart}
-                onChange={(v) => set("rangeStart", v)}
+                value={settings.range开始}
+                onChange={(v) => set("range开始", v)}
               />
               <NumberField
-                label="End"
+                label="结束"
                 hint="(s)"
-                value={settings.rangeEnd}
+                value={settings.range结束}
                 min={1}
-                onChange={(v) => set("rangeEnd", v)}
+                onChange={(v) => set("range结束", v)}
               />
               <p className="text-xs text-muted-foreground">
                 Duration: {duration}s ({fmt(duration)})
@@ -132,7 +132,7 @@ export function DownloadTab({
         </div>
 
         <NumberField
-          label="Concurrent downloads"
+          label="并发下载数"
           value={settings.concurrent}
           min={1}
           onChange={(v) => set("concurrent", v)}
@@ -150,9 +150,9 @@ export function DownloadTab({
           <Button
             variant="secondary"
             onClick={() => {
-              if (!settings.url.trim()) return toast.error("Enter a page URL")
+              if (!settings.url.trim()) return toast.error("请输入页面网址")
               if (!settings.saveDir.trim())
-                return toast.error("Choose a save folder")
+                return toast.error("请选择保存文件夹")
               setPickerOpen(true)
             }}
             disabled={running}
@@ -162,16 +162,16 @@ export function DownloadTab({
           </Button>
           <Button
             onClick={() => {
-              if (!settings.url.trim()) return toast.error("Enter a page URL")
+              if (!settings.url.trim()) return toast.error("请输入页面网址")
               if (!settings.saveDir.trim())
-                return toast.error("Choose a save folder")
+                return toast.error("请选择保存文件夹")
               onDownload()
             }}
             disabled={running}
             className="gap-2"
           >
             <Download className="size-4" />
-            {running ? "Working…" : "Download Videos"}
+            {running ? "处理中…" : "下载视频"}
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">

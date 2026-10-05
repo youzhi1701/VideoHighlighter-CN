@@ -62,7 +62,7 @@ const BLOCK_TINTS = [
 ]
 
 const RESOLUTIONS = [
-  { label: "Source", width: 0, height: 0 },
+  { label: "来源", width: 0, height: 0 },
   { label: "1080p", width: 1920, height: 1080 },
   { label: "1440p", width: 2560, height: 1440 },
   { label: "4K", width: 3840, height: 2160 },
@@ -77,7 +77,7 @@ interface Props {
 
 export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
   const [path, setPath] = useState("")
-  const [title, setTitle] = useState("Untitled")
+  const [title, setTitle] = useState("未命名")
   const [cuts, setCuts] = useState<EdlCut[]>([])
   const [music, setMusic] = useState("")
   const [musicMode, setMusicMode] = useState("replace")
@@ -102,16 +102,16 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
     if (!target) return
     const doc = await getEdl(target)
     if (!doc.ok) {
-      setError(doc.error ?? "Could not read that cut list")
+      setError(doc.error ?? "无法读取该剪辑列表")
       return
     }
     if (!doc.exists) {
-      setError("No cut list at that path yet — run the Auto tab first")
+      setError("该路径下还没有剪辑列表 — 请先运行“自动”页。")
       return
     }
     setError("")
     setPath(target)
-    setTitle(doc.title ?? "Untitled")
+    setTitle(doc.title ?? "未命名")
     setCuts(doc.cuts ?? [])
     setMusic(doc.music ?? "")
     setMusicMode(doc.music_mode ?? "replace")
@@ -122,7 +122,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
       (r) => r.width === (doc.width ?? 0) && r.height === (doc.height ?? 0),
     )
     setResolution(match >= 0 ? match : 0)
-    setStatus(`Loaded ${doc.cuts?.length ?? 0} cuts`)
+    setStatus(`已加载 ${doc.cuts?.length ?? 0} 个片段`)
   }, [])
 
   // Offer the last run's cut list without stamping over an open edit.
@@ -190,7 +190,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
     const interval = analysis?.ok ? 60 / (analysis.bpm || 0) : 0
     const meter = analysis?.meter ?? 4
     if (!interval || !Number.isFinite(interval)) {
-      setStatus("No tempo to quantise against — pick a music track first")
+      setStatus("没有可用于节拍量化的速度信息 — 请先选择音乐轨道。")
       return
     }
     const bar = interval * meter
@@ -218,7 +218,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
   const save = async () => {
     const res = await saveEdl(payload())
     if (!res.ok) {
-      setError(res.error ?? "Could not save")
+      setError(res.error ?? "无法保存")
       return
     }
     setError("")
@@ -229,7 +229,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
   const render = async () => {
     const output = path.replace(/\.edl\.ya?ml$/i, ".mp4") || "film.mp4"
     const res = await renderEdl({ ...payload(), output })
-    if (!res.ok) setError(res.error ?? "Could not start the render")
+    if (!res.ok) setError(res.error ?? "无法启动渲染")
     else {
       setError("")
       setStatus(`Rendering to ${basename(output)}…`)
@@ -304,7 +304,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
               <Wand2 className="size-3.5" /> Quantise to the bar
             </Button>
             <Separator orientation="vertical" className="h-6" />
-            <span className="text-xs text-muted-foreground">All joins:</span>
+            <span className="text-xs text-muted-foreground">全部连接：</span>
             {["cut", "crossfade", "dip_to_black"].map((k) => (
               <Button
                 key={k}
@@ -375,7 +375,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-1.5">
-              <Label className="text-xs">Track</Label>
+              <Label className="text-xs">音乐轨道</Label>
               <div className="flex gap-2">
                 <Input
                   value={music ? basename(music) : ""}
@@ -408,15 +408,15 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
 
             {music && (
               <div className="space-y-1.5">
-                <Label className="text-xs">How it sits</Label>
+                <Label className="text-xs">混音方式</Label>
                 <Select value={musicMode} onValueChange={setMusicMode}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="replace">Replace the original audio</SelectItem>
-                    <SelectItem value="mix">Mix with it</SelectItem>
-                    <SelectItem value="duck">Duck under it</SelectItem>
+                    <SelectItem value="replace">替换原音频</SelectItem>
+                    <SelectItem value="mix">与原音频混合</SelectItem>
+                    <SelectItem value="duck">自动压低原音频</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -425,7 +425,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
             <Separator />
 
             <div className="space-y-1.5">
-              <Label className="text-xs">Delivery size</Label>
+              <Label className="text-xs">输出尺寸</Label>
               <Select
                 value={String(resolution)}
                 onValueChange={(v) => setResolution(Number(v))}
@@ -528,7 +528,7 @@ function TimelineStrip({
       {beats.length > 0 && (
         <div
           className="relative h-6 w-full overflow-hidden rounded-md border bg-muted/30"
-          title="Beat grid — tall ticks are downbeats"
+          title="节拍网格 — 较高刻度表示强拍"
         >
           {(analysis?.sections ?? []).map((s) => (
             <div
@@ -662,7 +662,7 @@ function CutRow({
           onBlur={(e) => commit("start", e.target.value)}
           className="h-7 w-20 font-mono text-xs"
         />
-        <Label className="text-[10px] text-muted-foreground">Out</Label>
+        <Label className="text-[10px] text-muted-foreground">出点</Label>
         <Input
           value={outText}
           onChange={(e) => setOutText(e.target.value)}
@@ -672,7 +672,7 @@ function CutRow({
 
         {!last && (
           <>
-            <Label className="ml-2 text-[10px] text-muted-foreground">Then</Label>
+            <Label className="ml-2 text-[10px] text-muted-foreground">然后</Label>
             <Select
               value={cut.transition}
               onValueChange={(v) => onPatch({ transition: v })}
@@ -698,7 +698,7 @@ function CutRow({
                   onPatch({ transition_duration: Number(e.target.value) || 0 })
                 }
                 className="h-7 w-16 text-xs"
-                title="Transition length in seconds"
+                title="转场时长（秒）"
               />
             )}
           </>

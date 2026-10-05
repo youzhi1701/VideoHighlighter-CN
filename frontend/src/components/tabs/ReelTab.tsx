@@ -274,7 +274,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
 
   const render = async () => {
     const res = await renderReel(request())
-    if (!res.ok) setStatus(res.error ?? "Could not start the render")
+    if (!res.ok) setStatus(res.error ?? "无法开始渲染")
     else setStatus(`Rendering ${res.shots} shots to ${basename(res.output ?? "")}…`)
   }
 
@@ -314,8 +314,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Uses the highlights an earlier run already found, so nothing is
-              analysed twice.
+              直接使用之前运行时已经找到的高光结果，因此不会重复分析。
             </p>
           </div>
 

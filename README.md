@@ -78,6 +78,8 @@ $u='https://raw.githubusercontent.com/youzhi1701/VideoHighlighter-CN/main/Window
 
 ## 中文汉化插件一键下载
 
+> 已兼容 Windows PowerShell 5.1：下载脚本内部使用 ASCII 源码，避免 UTF-8 无 BOM 导致中文脚本解析错误。
+
 如果你只需要 **中文汉化插件**，不想下载整个项目，打开 PowerShell，复制下面这一整行并回车：
 
 ```powershell

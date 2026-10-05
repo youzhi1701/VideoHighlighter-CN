@@ -476,8 +476,8 @@ class BBoxOverlayItem(QGraphicsRectItem):
         # Tooltip
         self.setToolTip(
             f"{class_name}\n"
-            f"Confidence: {confidence:.1%}\n"
-            f"Time: {timestamp:.2f}s"
+            f"置信度：{confidence:.1%}\n"
+            f"时间：{timestamp:.2f} 秒"
         )
 
         self.setZValue(50)
@@ -1030,9 +1030,9 @@ class RealtimeOverlayPreview(QWidget):
         self._overlay_cb = QCheckBox("🎯 实时检测框叠加")
         self._overlay_cb.setChecked(False)
         self._overlay_cb.setToolTip(
-            "Show bounding boxes from cached detections in real-time.\n"
-            "Uses detection data already in cache — no GPU cost.\n"
-            "Only loads bboxes near current playhead position."
+            "实时显示缓存检测结果中的边界框。\n"
+            "直接使用缓存中的检测数据，不会额外占用 GPU。\n"
+            "只加载当前播放头附近的边界框。"
         )
         self._overlay_cb.stateChanged.connect(self._on_overlay_toggled)
         controls.addWidget(self._overlay_cb)
@@ -1116,9 +1116,9 @@ class RealtimeOverlayPreview(QWidget):
             if not self._live_face_mode:
                 self._overlay_cb.setEnabled(False)
             self._overlay_cb.setToolTip(
-                "No bounding box data found in cache.\n"
-                "Run detection with draw_bboxes=True and bbox saving enabled,\n"
-                "or use the pre-rendered video swap instead."
+                "缓存中没有边界框数据。\n"
+                "请运行启用了检测框绘制与保存的检测流程，\n"
+                "或改用预渲染标注视频。"
             )
 
         # Always build the filter — it now also hosts the live '人脸识别'
@@ -1229,7 +1229,7 @@ class RealtimeOverlayPreview(QWidget):
 
         for ident in identities:
             iid = ident["id"]
-            disp = ident.get("name") or f"Person {iid[:8]}"
+            disp = ident.get("name") or f"人物 {iid[:8]}"
             act = QAction(disp, menu)
             act.setCheckable(True)
             act.setChecked(not self._is_identity_hidden(iid))

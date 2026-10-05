@@ -25,32 +25,32 @@ jobs:
       - name: 读取官方基线
         shell: bash
         run: |
-          BASE=$(python -c "import json; print(json.load(open('中文汉化插件/数据/汉化规则.json', encoding='utf-8'))['upstream']['baseline_commit'])")
+          BASE=$(python -c "import json; print(json.load(open('中文汉化插件/内部/汉化规则.json', encoding='utf-8'))['upstream']['baseline_commit'])")
           mkdir -p .localization-upstream
           git archive "$BASE" | tar -x -C .localization-upstream
           echo "baseline=$BASE"
 
       - name: 从官方源码重放中文汉化
         run: |
-          python "中文汉化插件/一键植入中文.py" --root .localization-upstream --strict --report-dir "中文汉化插件/报告/CI"
+          python "中文汉化插件/一键汉化.py" --root .localization-upstream --strict --report-dir "中文汉化插件/内部/报告/CI"
 
       - name: 验证重放结果
         run: |
-          python "中文汉化插件/验证汉化完整性.py" \
+          python "中文汉化插件/内部/验证汉化完整性.py" \
             --localized-root .localization-upstream \
             --reference-root . \
-            --catalog "中文汉化插件/数据/汉化规则.json"
+            --catalog "中文汉化插件/内部/汉化规则.json"
 
       - name: 扫描遗漏英文
         run: |
-          python "中文汉化插件/扫描遗漏英文.py" \
+          python "中文汉化插件/内部/扫描遗漏英文.py" \
             --root . \
-            --report "中文汉化插件/报告/CI/遗漏英文.json"
+            --report "中文汉化插件/内部/报告/CI/遗漏英文.json"
 
       - name: 上传汉化验证报告
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: 中文汉化验证报告
-          path: 中文汉化插件/报告/CI/
+          path: 中文汉化插件/内部/报告/CI/
           retention-days: 14

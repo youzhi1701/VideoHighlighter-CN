@@ -2994,24 +2994,20 @@ class VideoHighlighterGUI(QWidget):
             self.backend_combo.addItem(_label, _backend)
         if sys.platform == "darwin":
             self.backend_combo.setToolTip(
-                "Which accelerator the run should use.\n\n"
-                "Automatic uses the Apple GPU when Core ML can reach it, else\n"
-                "the processor. Processor only is how you time a run without it.\n\n"
-                "Apple GPU (Core ML) moves object detection and action\n"
-                "recognition to the GPU / Neural Engine (experimental) \u2014\n"
-                "see docs/MAC-GPU.md. Every run reports the backend it got."
+                "选择本次运行使用的计算加速后端。\n\n"
+                "自动模式会优先使用可用的 Apple GPU / Core ML，否则使用处理器。"
+                "只使用处理器可用于对比没有 GPU 加速时的速度。\n\n"
+                "Apple GPU（Core ML）会把物体检测和动作识别交给 GPU / 神经网络引擎"
+                "（实验功能）。每次运行都会在日志中显示实际使用的后端。"
             )
         else:
             self.backend_combo.setToolTip(
-                "Which accelerator the run should use.\n\n"
-                "Automatic takes the fastest this machine has: CUDA, then Intel,\n"
-                "then DirectML, then the processor. Naming one instead is how you\n"
-                "measure it against that choice \u2014 DirectML on an Intel card, say.\n\n"
-                "A backend this machine does not have falls back to automatic and\n"
-                "says so in the log, and every run reports the one it got.\n\n"
-                "DirectML drives object detection and action recognition in\n"
-                "every build; the rest of it needs a source install \u2014\n"
-                "see docs/AMD-GPU.md."
+                "选择本次运行使用的计算加速后端。\n\n"
+                "自动模式会优先选择当前电脑最快的可用后端：CUDA、Intel、DirectML，"
+                "最后才使用处理器。你也可以手动指定某一种后端进行对比测试。\n\n"
+                "如果选择了当前电脑不可用的后端，程序会自动回退到自动模式，"
+                "并在日志中说明；每次运行都会显示最终实际使用的后端。\n\n"
+                "DirectML 可用于物体检测和动作识别；其他部分的支持取决于当前安装环境。"
             )
         _saved_backend = (compute_backend.from_config(self.config_data)
                           or compute_backend.configured()

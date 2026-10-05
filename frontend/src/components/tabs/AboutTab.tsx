@@ -63,7 +63,7 @@ export function AboutTab() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">联系与支持</CardTitle>
+          <CardTitle className="text-sm font-medium">Contact &amp; Support</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           {info && (

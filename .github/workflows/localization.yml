@@ -7,6 +7,7 @@ on:
       - 'tools/apply_zh_cn.py'
       - 'tools/scan_untranslated.py'
       - 'tools/verify_localization_replay.py'
+      - 'tools/rebuild_localization_catalog.py'
       - '.github/workflows/localization.yml'
   workflow_dispatch:
 

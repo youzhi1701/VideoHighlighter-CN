@@ -1513,7 +1513,7 @@ class SignalTimelineWindow(QMainWindow):
             QTimer.singleShot(150, lambda: self.signal_view.viewport().update())
             
             self.statusBar().showMessage(
-                f"✅ Waveform loaded ({len(waveform_data)} points)", 5000
+                f"✅ 波形已加载（{len(waveform_data)} 个采样点）", 5000
             )
         else:
             print(f"Scene not ready yet, storing waveform data")
@@ -1620,8 +1620,8 @@ class SignalTimelineWindow(QMainWindow):
             checkbox.setChecked(scene.visible_events.get(event, True))
             checkbox.setToolTip(
                 chr(10).join([
-                    f"{moments} moment(s), {seconds}s in total.",
-                    f"Show the '{event}' row, and let ◀ ▶ stop on it",
+                    f"{moments} 个时刻，总计 {seconds} 秒。",
+                    f"显示“{event}”事件轨道，并允许 ◀ ▶ 跳转到这些位置",
                 ]))
             # setChecked runs before this connect, so it can't fire the toggle.
             checkbox.stateChanged.connect(
@@ -1749,8 +1749,8 @@ class SignalTimelineWindow(QMainWindow):
         self.signal_scene.set_all_objects_visible(visible)
         self.refresh_object_checkboxes()
         self.statusBar().showMessage(
-            "Showing all objects" if visible
-            else "Hid all objects — ◀ ▶ have nothing to step",
+            "正在显示全部物体" if visible
+            else "已隐藏全部物体——◀ ▶ 当前没有可跳转项目",
             2000,
         )
 
@@ -2878,7 +2878,7 @@ class SignalTimelineWindow(QMainWindow):
         kw_row.setContentsMargins(0, 0, 0, 0)
         kw_row.setSpacing(4)
         self.analyze_transcript_kw = QLineEdit(kw_default)
-        self.analyze_transcript_kw.setPlaceholderText("标记关键词，例如 goal, score")
+        self.analyze_transcript_kw.setPlaceholderText("标记关键词，例如：进球、得分")
         self.analyze_transcript_kw.setToolTip(
             "在时间线上标记转录中出现这些关键词的时刻。之后可用“转录”轨道的 ◀▶ "
             "按钮在匹配结果之间跳转。留空会清除关键词标记。")

@@ -810,7 +810,7 @@ function ShotStrip({ plan }: { plan: ReelPlan }) {
               style={{ width: `${((cut.duration ?? 0) / total) * 100}%` }}
               title={
                 `${cut.label} — ${(cut.duration ?? 0).toFixed(1)}s\n` +
-                `${basename(cut.source)} from ${cut.start.toFixed(2)}s` +
+                `${basename(cut.source)}，从 ${cut.start.toFixed(2)} 秒开始` +
                 (moved ? " (skipped the camera being placed)" : "") +
                 (cut.transition && cut.transition !== "cut"
                   ? `\n${prettyName(cut.transition)} ${cut.transition_duration.toFixed(2)}s`

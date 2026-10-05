@@ -368,10 +368,10 @@ def _copy_one(src: str, dest: str, size: int, verify: str,
     if actual != size:
         _quiet_remove(part)
         raise RuntimeError(
-            f"{os.path.basename(src)}: copied {actual} bytes, expected {size}")
+            f"{os.path.basename(src)}：实际复制 {actual} 字节，预期 {size} 字节")
     if verify == "hash" and _hash_file(part) != _hash_file(src):
         _quiet_remove(part)
-        raise RuntimeError(f"{os.path.basename(src)}: hash mismatch after copy")
+        raise RuntimeError(f"{os.path.basename(src)}：复制后哈希校验不一致")
 
     os.replace(part, dest)
     shutil.copystat(src, dest, follow_symlinks=False)
@@ -429,7 +429,7 @@ def ingest(card: GoProCard, dest_root: str, *, folder_name: str = "",
     result = IngestResult(card=card, dest_root=dest_dir)
     done = 0
 
-    log_fn(f"📥 Ingesting {len(takes)} take(s), {_gb(total)} from {card.label} -> {dest_dir}")
+    log_fn(f"📥 正在从 {card.label} 导入 {len(takes)} 段素材，共 {_gb(total)} → {dest_dir}")
 
     for take in takes:
         take_dests: list[str] = []
@@ -447,7 +447,7 @@ def ingest(card: GoProCard, dest_root: str, *, folder_name: str = "",
                                   progress_fn=bump, cancel_check=cancel_check)
             except CopyCancelled:
                 result.seconds = time.time() - started
-                log_fn("⏹️ Ingest cancelled")
+                log_fn("⏹️ 导入已取消")
                 raise
             except (OSError, RuntimeError) as exc:
                 result.errors.append(f"{clip.name}: {exc}")
@@ -466,7 +466,7 @@ def ingest(card: GoProCard, dest_root: str, *, folder_name: str = "",
                 done += clip.size
                 if progress_fn is not None:
                     progress_fn(done, total, clip.name)
-                log_fn(f"↩️ {clip.name} already copied, skipping")
+                log_fn(f"↩️ {clip.name} 已复制，跳过")
 
             meta = _probe(dest) if probe else {}
             result.files.append(CopiedFile(
@@ -483,9 +483,9 @@ def ingest(card: GoProCard, dest_root: str, *, folder_name: str = "",
             result.takes.append(take_dests)
 
     result.seconds = time.time() - started
-    log_fn(f"✅ Ingest done: {_gb(result.copied_bytes)} copied, "
-           f"{_gb(result.skipped_bytes)} already present, "
-           f"{len(result.errors)} error(s) in {result.seconds:.0f}s")
+    log_fn(f"✅ 导入完成：已复制 {_gb(result.copied_bytes)}，"
+           f"已有 {_gb(result.skipped_bytes)}，"
+           f"{len(result.errors)} 个错误，用时 {result.seconds:.0f} 秒")
     return result
 
 
@@ -527,5 +527,5 @@ def read_manifest(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as fh:
         data = json.load(fh)
     if data.get("version") != 1:
-        raise ValueError(f"unsupported manifest version: {data.get('version')!r}")
+        raise ValueError(f"不支持的清单版本：{data.get('version')!r}")
     return data

@@ -3696,13 +3696,13 @@ class SignalTimelineWindow(QMainWindow):
 
         # Playback controls. The old Transcript/Search toggle buttons are gone:
         # those panels are now tabs on the right dock area (see init_ui).
-        playback_group = CollapsibleSection("Playback", settings_key="controls/playback")
+        playback_group = CollapsibleSection("播放", settings_key="controls/playback")
         playback_layout = QVBoxLayout()
 
         self.follow_playhead_checkbox = QCheckBox("跟随播放头")
         self.follow_playhead_checkbox.setChecked(True)
         self.follow_playhead_checkbox.setToolTip(
-            "Auto-scroll the timeline to keep the playhead visible during playback"
+            "播放时自动滚动时间线，使播放头始终保持可见"
         )
         self.follow_playhead_checkbox.stateChanged.connect(self.toggle_follow_playhead)
         playback_layout.addWidget(self.follow_playhead_checkbox)
@@ -3912,7 +3912,7 @@ class SignalTimelineWindow(QMainWindow):
     @Slot(int, int)
     def on_clip_reordered(self, from_idx, to_idx):
         self.statusBar().showMessage(
-            f"✅ Moved Clip {from_idx + 1} → position {to_idx + 1}", 3000
+            f"✅ 已将片段 {from_idx + 1} 移动到位置 {to_idx + 1}", 3000
         )
 
     @Slot(int)
@@ -3971,7 +3971,7 @@ class SignalTimelineWindow(QMainWindow):
         t1 = getattr(scene, "_selection_end_time", None)
         if t0 is None or t1 is None or abs(t1 - t0) < 0.2:
             self.statusBar().showMessage(
-                "Drag-select a range on the timeline first, then click Avoid.", 4000)
+                "请先在时间线上拖动选择一个范围，然后点击“避开”。", 4000)
             return
         lo, hi = min(t0, t1), max(t0, t1)
         ranges = list(getattr(scene, "avoid_ranges", [])) + [(lo, hi)]
@@ -3985,7 +3985,7 @@ class SignalTimelineWindow(QMainWindow):
         scene.build_timeline()
         self._persist_avoid_ranges()
         self.statusBar().showMessage(
-            f"🚫 Avoiding {lo:.1f}s–{hi:.1f}s — {len(ranges)} range(s) excluded from highlights",
+            f"🚫 已避开 {lo:.1f} 秒–{hi:.1f} 秒——共有 {len(ranges)} 个范围不会进入高光",
             5000)
 
     def _clear_avoid_ranges(self):
@@ -4303,8 +4303,8 @@ class SignalTimelineWindow(QMainWindow):
         """Handle when a clip is added to edit timeline"""
         self.update_edit_duration()
         self.statusBar().showMessage(
-            f"✅  Added clip  {start_time:.2f}s → {end_time:.2f}s  "
-            f"({end_time - start_time:.2f}s)",
+            f"✅ 已添加片段  {start_time:.2f} 秒 → {end_time:.2f} 秒  "
+            f"（{end_time - start_time:.2f} 秒）",
             3000
         )
         # Flash the newly added clip
@@ -4349,7 +4349,7 @@ class SignalTimelineWindow(QMainWindow):
         if active:
             self.edit_view.setCursor(QCursor(Qt.CrossCursor))
             self.statusBar().showMessage(
-                "✂️  Cut Mode ON — left-click a clip to cut it  |  C key = cut at cursor  |  right-click for trim menu",
+                "✂️ 切割模式：开——左键点击片段切割｜按 C 在光标处切割｜右键打开修剪菜单",
                 0  # 0 = stays until next message
             )
         else:
@@ -4369,8 +4369,8 @@ class SignalTimelineWindow(QMainWindow):
         minutes = int(cut_time // 60)
         seconds = cut_time % 60
         self.statusBar().showMessage(
-            f"✂️  Cut at {minutes:02d}:{seconds:05.2f}  —  "
-            f"{len(self.edit_scene.clips)} clips in timeline",
+            f"✂️ 已在 {minutes:02d}:{seconds:05.2f} 处切割——"
+            f"时间线共有 {len(self.edit_scene.clips)} 个片段",
             4000
         )
 
@@ -4386,7 +4386,7 @@ class SignalTimelineWindow(QMainWindow):
             start, end = self.edit_scene.clips[clip_index]
             duration = end - start
             self.statusBar().showMessage(
-                f"Trimmed clip {clip_index + 1}  →  {start:.2f}s – {end:.2f}s  ({duration:.1f}s)",
+                f"已修剪片段 {clip_index + 1} → {start:.2f} 秒 – {end:.2f} 秒（{duration:.1f} 秒）",
                 3000
             )
         else:
@@ -4444,7 +4444,7 @@ class SignalTimelineWindow(QMainWindow):
             )
         except Exception as e:
             QMessageBox.critical(self, "导出失败",
-                                 f"Failed to export timeline:\n{str(e)}")
+                                 f"导出时间线失败：\n{str(e)}")
             return
 
         formats = TimelineExporter.get_export_formats()
@@ -4463,10 +4463,10 @@ class SignalTimelineWindow(QMainWindow):
 
         layout.addWidget(QLabel("序列起始时间："))
         start_combo = QComboBox()
-        start_combo.addItem("Start at 00:00:00:00", RECORD_START_ZERO)
-        start_combo.addItem("Start at 01:00:00:00", RECORD_START_HOUR)
+        start_combo.addItem("从 00:00:00:00 开始", RECORD_START_ZERO)
+        start_combo.addItem("从 01:00:00:00 开始", RECORD_START_HOUR)
         start_combo.setItemData(
-            1, "Matches a new Resolve timeline.", Qt.ItemDataRole.ToolTipRole)
+            1, "与新建的 DaVinci Resolve 时间线起始时间一致。", Qt.ItemDataRole.ToolTipRole)
         start_combo.setCurrentIndex(0)
 
         def _sync_start_tooltip():
@@ -4495,6 +4495,8 @@ class SignalTimelineWindow(QMainWindow):
         layout.addWidget(info)
 
         buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttons.button(QDialogButtonBox.Ok).setText("确定")
+        buttons.button(QDialogButtonBox.Cancel).setText("取消")
         buttons.accepted.connect(dialog.accept)
         buttons.rejected.connect(dialog.reject)
         layout.addWidget(buttons)
@@ -4513,7 +4515,7 @@ class SignalTimelineWindow(QMainWindow):
         from PySide6.QtWidgets import QFileDialog
 
         file_path, _selected = QFileDialog.getSaveFileName(
-            self, "Save Timeline", default_path, filter_str
+            self, "保存时间线", default_path, filter_str
         )
         if not file_path:
             return
@@ -4526,27 +4528,27 @@ class SignalTimelineWindow(QMainWindow):
                 result = TimelineExporter.to_edl(
                     clips, self.video_path, file_path,
                     source=source, record_start=record_start, spans=spans)
-                msg = f"EDL exported to: {os.path.basename(result)}"
+                msg = f"EDL 已导出到：{os.path.basename(result)}"
             elif format_name.startswith("FCPXML"):
                 result = TimelineExporter.to_fcp_xml(
                     clips, self.video_path, file_path,
                     source=source, record_start=record_start, spans=spans)
-                msg = f"FCPXML exported to: {os.path.basename(result)}"
+                msg = f"FCPXML 已导出到：{os.path.basename(result)}"
             elif format_name.startswith("CSV"):
                 result = TimelineExporter.to_csv(
                     clips, self.video_path, file_path,
                     source=source, record_start=record_start, spans=spans)
-                msg = f"CSV exported to: {os.path.basename(result)}"
+                msg = f"CSV 已导出到：{os.path.basename(result)}"
             else:
-                raise ExportError(f"unknown export format {format_name!r}")
+                raise ExportError(f"未知导出格式 {format_name!r}")
 
             QMessageBox.information(
-                self, "Export Successful",
-                f"✅ Timeline exported successfully!\n\n{msg}"
+                self, "导出成功",
+                f"✅ 时间线导出成功！\n\n{msg}"
                 f"{skipped_note(result.skipped)}")
 
             reply = QMessageBox.question(self, "打开文件夹",
-                                         "Open containing folder?",
+                                         "是否打开所在文件夹？",
                                          QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
                 import subprocess
@@ -4560,7 +4562,7 @@ class SignalTimelineWindow(QMainWindow):
 
         except Exception as e:
             QMessageBox.critical(self, "导出失败",
-                                 f"Failed to export timeline:\n{str(e)}")
+                                 f"导出时间线失败：\n{str(e)}")
     
     def update_edit_duration(self):
         """Update edit duration display"""
@@ -4837,7 +4839,7 @@ class SignalTimelineWindow(QMainWindow):
         clip_num = self._edit_playlist_index
         total = len(clips)
         self.statusBar().showMessage(
-            f"▶ Clip {clip_num}/{total}: {start:.1f}s - {end:.1f}s",
+            f"▶ 片段 {clip_num}/{total}：{start:.1f} 秒 - {end:.1f} 秒",
             int(duration * 1000)
         )
 
@@ -4961,7 +4963,7 @@ class SignalTimelineWindow(QMainWindow):
         """Play a specific clip in the preview"""
         duration = end_time - start_time
         self.statusBar().showMessage(
-            f"Playing clip: {start_time:.1f}s for {duration:.1f}s", 3000
+            f"正在播放片段：从 {start_time:.1f} 秒开始，时长 {duration:.1f} 秒", 3000
         )
 
         player = self._active_player          # whichever is currently visible

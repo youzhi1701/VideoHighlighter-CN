@@ -448,7 +448,7 @@ class DetectionPreviewWindow(QWidget):
         self.pause_btn = QPushButton("⏸ 冻结")
         self.pause_btn.setFixedWidth(90)
         self.pause_btn.setToolTip("冻结预览以便检查当前帧。\n"
-                                  "Processing keeps running in the background.")
+                                  "处理会继续在后台运行。")
         self.pause_btn.clicked.connect(self._toggle_pause)
         controls.addWidget(self.pause_btn)
 
@@ -508,8 +508,8 @@ class DetectionPreviewWindow(QWidget):
         self.image_label.setPixmap(
             pix.scaled(self.image_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         )
-        live_tag = "  • LIVE" if (not self._paused and idx == len(self._frames) - 1) else \
-                   f"  • frozen {idx + 1}/{len(self._frames)}"
+        live_tag = "  • 实时" if (not self._paused and idx == len(self._frames) - 1) else \
+                   f"  • 已冻结 {idx + 1}/{len(self._frames)}"
         self.caption.setText((cap or "") + live_tag)
 
     def _toggle_pause(self):
@@ -867,7 +867,7 @@ class UpdateInstallWorker(QThread):
         except Exception as e:
             print(f"update_install: unexpected failure ({type(e).__name__}: {e})")
             result = update_install.InstallResult(
-                ok=False, message=f"The update failed: {e}")
+                ok=False, message=f"更新失败：{e}")
         self.finished_with.emit(result)
 
 
@@ -1135,11 +1135,10 @@ class VideoHighlighterGUI(QWidget):
         self.output_input = QLineEdit(self.config_data.get("highlights", {}).get("output", "highlight.mp4"))
         self.output_input.setPlaceholderText("留空 = <视频名>_highlight.mp4")
         self.output_input.setToolTip(
-            "Base name of the highlight mp4, written next to the source.\n"
-            "Leave empty for <video>_highlight.mp4.\n"
-            "One video: the name is used as the filename (.mp4 added if needed).\n"
-            "Several videos, or download-and-process: <video>_<name>.mp4 so they\n"
-            "do not overwrite each other."
+            "高光 MP4 的基础文件名，输出到源视频旁边。\n"
+            "留空时使用 <视频名>_highlight.mp4。\n"
+            "单个视频：该名称直接作为文件名（需要时自动补 .mp4）。\n"
+            "多个视频或下载后处理：使用 <视频名>_<名称>.mp4，避免互相覆盖。"
         )
         out_layout.addWidget(QLabel("输出基础名称："))
         out_layout.addWidget(self.output_input)
@@ -1153,8 +1152,8 @@ class VideoHighlighterGUI(QWidget):
         self.preset_name_input = QLineEdit()
         self.preset_name_input.setPlaceholderText("名称")
         self.preset_name_input.setToolTip(
-            "Save the current settings under this name. Stored as presets/<name>.yaml\n"
-            "next to config.yaml. config.yaml itself is unchanged until you load one."
+            "以此名称保存当前设置。预设将保存为 presets/<名称>.yaml，\n"
+            "位于 config.yaml 旁边；在加载预设前不会修改 config.yaml。"
         )
         self.preset_combo = QComboBox()
         self.preset_combo.setMinimumWidth(160)
@@ -1298,8 +1297,8 @@ class VideoHighlighterGUI(QWidget):
         # (when the pipeline starts) does not push these controls off-screen.
         self.live_preview_checkbox = QCheckBox("实时检测预览（独立窗口）")
         self.live_preview_checkbox.setToolTip(
-            "Open a window showing frames + detected object boxes live while the\n"
-            "pipeline runs. Throttled and downscaled — does not slow processing."
+            "处理流程运行时打开窗口，实时显示视频帧和检测到的物体框。\n"
+            "预览会限频并缩小显示，不会明显拖慢处理速度。"
         )
         self.live_preview_checkbox.toggled.connect(self._on_live_preview_toggled)
         layout.addWidget(self.live_preview_checkbox)
@@ -1314,9 +1313,8 @@ class VideoHighlighterGUI(QWidget):
         # preview stays blank. Tick this to ignore the cache and re-run.
         self.force_reprocess_checkbox = QCheckBox("强制重新处理（忽略缓存）")
         self.force_reprocess_checkbox.setToolTip(
-            "Re-run analysis even if cached results exist.\n"
-            "Required for the live detection preview to show anything on an\n"
-            "already-processed video."
+            "即使已有缓存结果，也重新运行分析。\n"
+            "对于已处理过的视频，如需查看实时检测预览，必须启用此项。"
         )
         layout.addWidget(self.force_reprocess_checkbox)
 

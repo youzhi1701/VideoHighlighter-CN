@@ -331,15 +331,15 @@ def _create_window():
             event.ignore()  # hide (via the call above), don't destroy
 
     win = _LogWindow()
-    win.append_chunk(f"(完整日志：{log_file_path()})\n"
-                     f"--- 正在回放最近 {len(_backlog)} 段输出 ---\n")
+    win.append_chunk(f"(full log: {log_file_path()})\n"
+                     f"--- replaying last {len(_backlog)} output chunks ---\n")
     with _lock:
         win.append_chunk("".join(_backlog))
         bridge = _Bridge(win)
         # Queued cross-thread delivery: worker threads emit, GUI thread appends.
         bridge.chunk.connect(win.append_chunk)
         _gui_sink = bridge.chunk.emit
-    win.append_chunk("--- 以下为实时输出 ---\n")
+    win.append_chunk("--- live output from here on ---\n")
     return win
 
 

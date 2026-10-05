@@ -129,7 +129,7 @@ export function VideoCard({
           </span>
         )}
         <button
-          aria-label={`Remove ${basename(path)}`}
+          aria-label={`移除 ${basename(path)}`}
           className="absolute left-1 top-1 rounded bg-black/70 p-1 text-white transition-colors hover:bg-destructive disabled:opacity-40"
           disabled={disabled}
           onClick={onRemove}

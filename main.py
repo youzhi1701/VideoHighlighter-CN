@@ -1852,7 +1852,7 @@ class VideoHighlighterGUI(QWidget):
         # Highlight object classes
         obj_layout = QHBoxLayout()
         self.objects_input = QLineEdit(",".join(self.config_data.get("objects", {}).get("interesting", [])))
-        self.objects_input.setPlaceholderText("person,glass,wine glass,sports ball")
+        self.objects_input.setPlaceholderText("人物,玻璃杯,酒杯,球类")
         obj_layout.addWidget(QLabel("物体检测："))
         obj_layout.addWidget(self.objects_input)
         self.load_objects_btn = QPushButton("加载标签")
@@ -1864,7 +1864,7 @@ class VideoHighlighterGUI(QWidget):
         # Action keywords
         action_kw_layout = QHBoxLayout()
         self.actions_input = QLineEdit(",".join(self.config_data.get("actions", {}).get("interesting", [])))
-        self.actions_input.setPlaceholderText("high jump, high kick, archery")
+        self.actions_input.setPlaceholderText("跳高,高踢,射箭")
         action_kw_layout.addWidget(QLabel("动作关键词："))
         action_kw_layout.addWidget(self.actions_input)
         self.load_actions_btn = QPushButton("加载标签")
@@ -1880,7 +1880,7 @@ class VideoHighlighterGUI(QWidget):
         _kw_enabled = self.config_data.get("transcript", {}).get("enabled", False)
         kw_layout = QHBoxLayout()
         self.search_keywords_input = QLineEdit(",".join(self.config_data.get("transcript", {}).get("search_keywords", [])))
-        self.search_keywords_input.setPlaceholderText("goal, score, win")
+        self.search_keywords_input.setPlaceholderText("进球,得分,获胜")
         self.search_keywords_input.setToolTip("为出现这些语音关键词的时刻加分（需要启用转录）")
         self.search_keywords_input.setEnabled(_kw_enabled)
         self.search_keywords_label = QLabel("转录关键词：")
@@ -2124,7 +2124,7 @@ class VideoHighlighterGUI(QWidget):
 
             if custom_only:
                 # Size applies to the standard detector, which isn't used here
-                self.yolo_model_combo.addItem("(custom model — size N/A)", "n")
+                self.yolo_model_combo.addItem("（自定义模型——尺寸未知）", "n")
                 self.yolo_model_combo.setEnabled(False)
             else:
                 self.yolo_model_combo.addItem("Nano（最快，精度最低）", "n")

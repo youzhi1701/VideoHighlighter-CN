@@ -5,7 +5,7 @@ without typing tile numbers. Each tile starts at the answer the guess implies,
 so for a batch of good guesses the whole job is one key:
 
 * a tile guessed as a class starts **accepted** (green);
-* a tile guessed "none of these" starts **none** (grey);
+* a tile guessed "都不是" starts **none** (grey);
 * an unsure tile starts **undecided** (yellow) and stays in the queue unless
   it is given an answer.
 
@@ -103,12 +103,12 @@ class Tile(QLabel):
             self.setToolTip("Click: accept / reject / none / undecided.  Right-click: "
                             "it is another class.  Double-click: play.")
         else:
-            self.setToolTip("Click: accept / reject / undecided.  Double-click: play.")
+            self.setToolTip("单击：接受 / 拒绝 / 未决定。双击：播放。")
         self.refresh()
 
     def refresh(self):
         colour = COLOURS[self.state]
-        answer = {ACCEPT: self.label, REJECT: "reject", NEGATIVE: "none of these",
+        answer = {ACCEPT: self.label, REJECT: "reject", NEGATIVE: "都不是",
                   UNDECIDED: "undecided"}[self.state]
         self.setStyleSheet(f"QLabel {{ border: 5px solid {colour}; background: #111; }}"
                            f"QLabel:focus {{ border: 5px solid #ffffff; }}")
@@ -141,8 +141,8 @@ class Tile(QLabel):
             for name in self.class_names:
                 menu.addAction(f"it is: {name}", lambda n=name: self.set_state(ACCEPT, n))
             menu.addSeparator()
-            menu.addAction("none of these", lambda: self.set_state(NEGATIVE))
-            menu.addAction("reject (unclear / bad cut)", lambda: self.set_state(REJECT))
+            menu.addAction("都不是", lambda: self.set_state(NEGATIVE))
+            menu.addAction("拒绝（不清楚 / 剪切不佳）", lambda: self.set_state(REJECT))
             menu.exec(event.globalPosition().toPoint())
 
     def mouseDoubleClickEvent(self, event):
@@ -176,7 +176,7 @@ class _SortWorker(QObject):
 
 
 class ReviewWindow(QWidget):
-    """One batch at a time; Enter saves it and moves on."""
+    """每次检查一批；按 Enter 保存并进入下一批。"""
 
     def __init__(self, root: str, size: int = 24, class_name: Optional[str] = None,
                  frame_reader: Optional[Callable] = None,
@@ -189,7 +189,7 @@ class ReviewWindow(QWidget):
         self.holders: list = []
         self.record: dict = {}
         self._thread = None
-        self.setWindowTitle("Check the guesses")
+        self.setWindowTitle("检查模型判断")
         self.resize(1300, 900)
 
         self.header = QLabel()
@@ -202,13 +202,13 @@ class ReviewWindow(QWidget):
         scroll.setWidgetResizable(True)
         scroll.setWidget(body)
 
-        self.resort = QCheckBox("Re-sort with what I just checked before the next batch")
+        self.resort = QCheckBox("进入下一批前，使用刚刚确认的结果重新排序")
         self.resort.setChecked(make_embedder is not None or frame_reader is None)
-        self.save_next = QPushButton("Save and next batch  (Enter)")
+        self.save_next = QPushButton("保存并进入下一批（Enter）")
         self.save_next.clicked.connect(lambda: self.save(and_next=True))
-        self.save_close = QPushButton("Save and close")
+        self.save_close = QPushButton("保存并关闭")
         self.save_close.clicked.connect(lambda: self.save(and_next=False))
-        all_ok = QPushButton("All shown are right")
+        all_ok = QPushButton("当前显示的全部正确")
         all_ok.clicked.connect(self.accept_all)
 
         buttons = QHBoxLayout()
@@ -310,7 +310,7 @@ class ReviewWindow(QWidget):
             return {}
         result = self.apply(Project.load(self.root))
         if result.get("errors"):
-            QMessageBox.warning(self, "Not saved", "\n".join(result["errors"]))
+            QMessageBox.warning(self, "未保存", "\n".join(result["errors"]))
             return result
         if not and_next:
             self.close()
@@ -324,7 +324,7 @@ class ReviewWindow(QWidget):
     def resort_then_load(self):
         from modules.teach.cli import make_embedder
         self.save_next.setEnabled(False)
-        self.header.setText("<b>Re-sorting with what you just checked…</b>")
+        self.header.setText("<b>正在根据刚刚确认的结果重新排序…</b>")
         self._thread = QThread(self)
         self._worker = _SortWorker(self.root, self.make_embedder or make_embedder)
         self._worker.moveToThread(self._thread)
@@ -337,7 +337,7 @@ class ReviewWindow(QWidget):
         self._thread.wait()
         self.save_next.setEnabled(True)
         if isinstance(result, dict) and result.get("error"):
-            QMessageBox.warning(self, "Re-sort failed", result["error"])
+            QMessageBox.warning(self, "重新排序失败", result["error"])
         self.load_batch()
 
 
@@ -345,14 +345,14 @@ class BoxReviewWindow(ReviewWindow):
     """The proposed boxes, one frame per tile: is the box around the thing?
 
     Same window, same keys; a tile is accepted, rejected or left undecided
-    (there is no "none of these" or relabel for a box). Verdicts go through
+    (there is no "都不是" or relabel for a box). Verdicts go through
     ``boxes.apply_verdicts``, as ``boxes verdict`` does.
     """
 
     def __init__(self, root: str, size: int = 24, read_at: Optional[Callable] = None):
         self.read_at = read_at
         super().__init__(root, size, make_embedder=None, frame_reader=read_at)
-        self.setWindowTitle("Check the boxes")
+        self.setWindowTitle("检查检测框")
         self.resort.setChecked(False)
         self.resort.hide()
 

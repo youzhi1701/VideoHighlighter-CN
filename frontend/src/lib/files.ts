@@ -20,7 +20,7 @@ export async function pickVideos(): Promise<string[]> {
   const { open } = await import("@tauri-apps/plugin-dialog")
   const selected = await open({
     multiple: true,
-    filters: [{ name: "Video", extensions: VIDEO_EXTS }],
+    filters: [{ name: "视频", extensions: VIDEO_EXTS }],
   })
   if (!selected) return []
   return Array.isArray(selected) ? selected : [selected]
@@ -45,7 +45,7 @@ export async function pickModelFile(): Promise<string | null> {
   const { open } = await import("@tauri-apps/plugin-dialog")
   const selected = await open({
     multiple: false,
-    filters: [{ name: "YOLO models", extensions: ["pt", "onnx"] }],
+    filters: [{ name: "YOLO 模型", extensions: ["pt", "onnx"] }],
   })
   if (!selected) return null
   return Array.isArray(selected) ? (selected[0] ?? null) : selected
@@ -59,7 +59,7 @@ export async function pickAudioFile(): Promise<string | null> {
   const { open } = await import("@tauri-apps/plugin-dialog")
   const selected = await open({
     multiple: false,
-    filters: [{ name: "Audio", extensions: ["mp3", "wav", "m4a", "flac", "ogg", "aac"] }],
+    filters: [{ name: "音频", extensions: ["mp3", "wav", "m4a", "flac", "ogg", "aac"] }],
   })
   if (!selected) return null
   return Array.isArray(selected) ? (selected[0] ?? null) : selected
@@ -73,7 +73,7 @@ export async function pickScriptFile(): Promise<string | null> {
   const { open } = await import("@tauri-apps/plugin-dialog")
   const selected = await open({
     multiple: false,
-    filters: [{ name: "Script", extensions: ["yaml", "yml"] }],
+    filters: [{ name: "脚本", extensions: ["yaml", "yml"] }],
   })
   if (!selected) return null
   return Array.isArray(selected) ? (selected[0] ?? null) : selected

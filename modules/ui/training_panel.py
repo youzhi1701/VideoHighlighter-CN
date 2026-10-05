@@ -408,9 +408,8 @@ class ObjectTrainingSection(QWidget):
         share_layout = QVBoxLayout(self.share_box)
         share_layout.setContentsMargins(0, 8, 0, 0)
         share_note = QLabel(
-            "It works for you — would you like to share it, so other people can find "
-            "the same things in their videos? Only the model is shared, never your "
-            "videos, frames or audio.")
+            "模型已经可以使用。是否愿意分享它，让其他人也能在自己的视频中识别"
+            "相同目标？只会分享模型，绝不会上传你的视频、视频帧或音频。")
         share_note.setWordWrap(True)
         share_layout.addWidget(share_note)
         self.share_btn = QPushButton("将此模型分享到社区…")
@@ -436,7 +435,7 @@ class ObjectTrainingSection(QWidget):
             from modules.vision.label_store import LabelStore
             store = LabelStore(path).load()
         except Exception as exc:
-            self._say(f"Could not read that file: {exc}", THEME.danger)
+            self._say(f"无法读取该文件：{exc}", THEME.danger)
             return
 
         self._store_path = path
@@ -449,7 +448,7 @@ class ObjectTrainingSection(QWidget):
             described = ", ".join(f"{name} ({n})" for name, n in sorted(counts.items()))
             note = f"可以开始训练：{described}。"
             if pending:
-                note += f"  {pending} more still need checking."
+                note += f"  还有 {pending} 个示例需要检查。"
             self.counts_label.setText(note)
             self.counts_label.setStyleSheet("")
             self.train_btn.setEnabled(True)
@@ -462,9 +461,9 @@ class ObjectTrainingSection(QWidget):
             self._refresh_estimate()
         else:
             self.counts_label.setText(
-                f"Nothing accepted yet"
-                + (f" — {pending} example(s) are waiting to be checked."
-                   if pending else " in this file."))
+                f"目前还没有已接受的示例"
+                + (f" —— 有 {pending} 个示例等待检查。"
+                   if pending else "。"))
             self.counts_label.setStyleSheet(f"color:{THEME.warning};")
             self.train_btn.setEnabled(False)
             self._frames = (0, 0)
@@ -472,17 +471,17 @@ class ObjectTrainingSection(QWidget):
 
     def _import_labeler(self) -> None:
         path, _ = QFileDialog.getOpenFileName(
-            self, "Import a labeller export", "", "标注文件 (*.json);;所有文件 (*)")
+            self, "导入标注工具数据", "", "标注文件 (*.json);;所有文件 (*)")
         if not path:
             return
         try:
             from modules.vision.label_store import LabelStore, from_labeler_export
             imported = from_labeler_export(path)
         except Exception as exc:
-            self._say(f"Could not import that export: {exc}", THEME.danger)
+            self._say(f"无法导入该数据：{exc}", THEME.danger)
             return
         if not imported:
-            self._say("That export contains no labelled points.", THEME.warning)
+            self._say("该导出文件中没有已标注的点。", THEME.warning)
             return
 
         target = self._store_path or os.path.splitext(path)[0] + ".examples.json"
@@ -491,9 +490,8 @@ class ObjectTrainingSection(QWidget):
         store.save()
         self._load_store(target)
         self._say(
-            f"Imported {len(imported)} example(s). They need checking before "
-            f"training, because the labeller records a point rather than the "
-            f"size of the thing.", THEME.warning)
+            f"已导入 {len(imported)} 个示例。训练前需要先检查这些示例，"
+            f"因为标注工具记录的是点，而不是目标的实际大小。", THEME.warning)
 
     # ── the estimate ─────────────────────────────────────────────────────
 
@@ -564,11 +562,11 @@ class ObjectTrainingSection(QWidget):
     def _update_clock(self) -> None:
         import time
         spent = time.monotonic() - self._started_at
-        text = f"{_elapsed(spent)} 已用"
+        text = f"已用 {_elapsed(spent)}"
         if self._time_left > 0:
-            text += f" · 预计剩余 {_friendly_time(self._time_left)} left"
+            text += f" · 预计剩余 {_friendly_time(self._time_left)}"
         elif self._estimate_seconds > 0:
-            text += f" · expected about {_friendly_time(max(0.0, self._estimate_seconds - spent)) or 'a moment'} more"
+            text += f" · 预计还需 {_friendly_time(max(0.0, self._estimate_seconds - spent)) or '片刻'}"
         self.clock_label.setText(text)
 
     @Slot(object)
@@ -583,14 +581,13 @@ class ObjectTrainingSection(QWidget):
         exported = self._last_export
         onnx_path = getattr(exported, "onnx_path", "") if exported is not None else ""
         if not onnx_path or not os.path.exists(onnx_path):
-            self._say("The trained model's ONNX file is no longer there, so it cannot "
-                      "be shared. Train it again to share it.", THEME.warning)
+            self._say("训练后的 ONNX 模型文件已不存在，因此无法分享。请重新训练后再分享。", THEME.warning)
             return
         try:
             from model_hub.gui import PublishWizard
             from model_hub.package import draft_for_trained_detector
         except Exception as exc:                # noqa: BLE001
-            self._say(f"Sharing is unavailable: {exc}", THEME.danger)
+            self._say(f"分享功能不可用：{exc}", THEME.danger)
             return
         last = getattr(exported, "last_round", None)
         metrics = {
@@ -706,15 +703,13 @@ class ObjectTrainingSection(QWidget):
         trained = getattr(exported, "trained_on", 0)
         checked = getattr(exported, "checked_on", 0)
         names = ", ".join(exported.class_names)
-        message = (f"Your model is ready. It learned {names} from {trained} "
-                   f"frame(s)")
+        message = (f"模型已准备就绪。它从 {trained} 个训练帧中学习了 {names}")
         if checked:
-            message += f", checked against {checked} it had not seen"
+            message += f"，并使用 {checked} 个未见过的帧进行了验证"
         last = getattr(exported, "last_round", None)
         if last and last[2]:
-            message += (f". On frames it never trained on it found {last[1]} "
-                        f"of {last[2]}")
-        message += f". Took {_elapsed(took)}."
+            message += (f"。在未参与训练的帧中，它识别出 {last[1]} / {last[2]} 个目标")
+        message += f"。耗时 {_elapsed(took)}。"
         message += "\nIt is installed and will be used when you run a scan."
         self._say(message, THEME.success)
         self._last_export = exported
@@ -803,7 +798,7 @@ class ActionTrainingWorker(QObject):
         command = self._command(sys.executable)
         try:
             self.progress.emit(
-                0, "Preparing clips - the first pass is slow...")
+                0, "正在准备片段——第一次处理会比较慢…")
             creation = 0
             if sys.platform.startswith("win"):
                 creation = getattr(subprocess, "CREATE_NO_WINDOW", 0)
@@ -831,8 +826,7 @@ class ActionTrainingWorker(QObject):
                 return
             if code != 0:
                 self.error.emit(
-                    f"训练 stopped with exit code {code}. The debug log "
-                    f"has the trainer's own output.")
+                    f"训练进程异常结束，退出代码 {code}。调试日志中保留了训练器的完整输出。")
                 return
             self.progress.emit(100, "完成。")
             self.finished.emit(note)
@@ -877,14 +871,14 @@ class ActionTrainingWorker(QObject):
         if epoch:
             done, total = int(epoch.group(1)), max(1, int(epoch.group(2)))
             self.progress.emit(int(100 * done / total),
-                               f"训练中... round {done} of {total}")
+                               f"训练中… 第 {done}/{total} 轮")
             return None
         val = self._VAL.search(line)
         if val:
             # Accuracy is the one number here worth showing: unlike a loss, a
             # person can read it without knowing the model.
             share = float(val.group(2)) * 100
-            return f"recognised {share:.0f}% of the clips it had not seen"
+            return f"在未见过的片段中识别正确率约为 {share:.0f}%"
         return None
 
 
@@ -1050,21 +1044,19 @@ class ActionTrainingSection(QWidget):
 
         colour = "#999"
         if self._pipeline == "intel":
-            where = {"cuda": "your NVIDIA GPU", "xpu": "your Intel GPU"}.get(
-                self._device, "the processor")
-            note = (f"Intel method, using {backend}. The encoder runs under "
-                    f"OpenVINO and only the decoder is trained ({where}), so "
-                    f"the first pass is slow and the rest are quick.")
+            where = {"cuda": "你的 NVIDIA GPU", "xpu": "你的 Intel GPU"}.get(
+                self._device, "处理器")
+            note = (f"Intel 方式，使用 {backend}。编码器通过 OpenVINO 运行，"
+                    f"仅训练解码器（{where}），因此第一次处理较慢，后续轮次会更快。")
             if not gpu_present:
-                note += " No GPU found, so expect the first pass to be long."
+                note += " 未检测到 GPU，第一次处理可能需要较长时间。"
                 colour = THEME.warning
         else:
             where = {"cuda": "your NVIDIA GPU", "xpu": "your Intel GPU"}.get(
                 self._device, "the processor")
-            note = f"3D CNN, training every layer on {where}."
+            note = f"3D CNN：在{where}上训练所有层。"
             if self._device == "cpu":
-                note += (" That is hours rather than minutes - the Intel "
-                         "method is usually the better choice here.")
+                note += (" 在处理器上训练可能需要数小时；这种情况下通常更适合使用 Intel 方式。")
                 colour = THEME.warning
         self.device_label.setText(note)
         self.device_label.setStyleSheet(f"color:{colour};")
@@ -1097,8 +1089,8 @@ class ActionTrainingSection(QWidget):
             self.folder_label.setText(os.path.basename(path.rstrip(os.sep)) or path)
             self.folder_label.setStyleSheet("")
             self.classes_label.setText(
-                "This folder needs a 'train' folder inside it, with one folder "
-                "per action in there (and a 'val' folder the same way).")
+                "此文件夹中需要包含 train 文件夹，其中每个动作对应一个子文件夹；"
+                "同时还需要相同结构的 val 文件夹。")
             self.classes_label.setStyleSheet(f"color:{THEME.warning};")
             self.train_btn.setEnabled(False)
             return
@@ -1127,8 +1119,7 @@ class ActionTrainingSection(QWidget):
             # its class apart from, and a single folder trains a model that
             # answers "yes" to everything it is ever shown.
             self.classes_label.setText(
-                "Needs at least two actions, one folder of clips each. A model "
-                "with only one answer gives that answer to everything.")
+                "至少需要两个动作，每个动作各有一个片段文件夹。只有一个类别时，模型无法学会区分。")
             self.classes_label.setStyleSheet(f"color:{THEME.warning};")
             self.train_btn.setEnabled(False)
             return
@@ -1139,10 +1130,9 @@ class ActionTrainingSection(QWidget):
             f"{name} ({n} + {val_counts.get(name, 0)})" for name, n in train_counts.items())
         if short:
             self.classes_label.setText(
-                f"{described}. These would be skipped for having too few clips: "
-                f"{', '.join(short)} — each action needs at least "
-                f"{self.MIN_TRAIN_CLIPS} to learn from and {self.MIN_VAL_CLIPS} "
-                f"to check against.")
+                f"{described}。以下动作因片段太少将被跳过：{', '.join(short)}。"
+                f"每个动作至少需要 {self.MIN_TRAIN_CLIPS} 个训练片段和 "
+                f"{self.MIN_VAL_CLIPS} 个验证片段。")
             self.classes_label.setStyleSheet(f"color:{THEME.warning};")
         else:
             self.classes_label.setText(f"可以开始训练：{described}。")
@@ -1189,9 +1179,9 @@ class ActionTrainingSection(QWidget):
     @Slot(str)
     def _on_finished(self, note: str) -> None:
         self._teardown()
-        message = "Your action model is ready."
+        message = "动作模型已准备就绪。"
         if note:
-            message += f" It {note}."
+            message += f" {note}。"
         self._say(message, THEME.success)
 
     @Slot(str)

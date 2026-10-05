@@ -1,0 +1,39 @@
+name: 一次性重建汉化规则库
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rebuild-localization-catalog.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 重建规则库与翻译记忆
+        run: |
+          python "中文汉化插件/内部/重建汉化规则库.py" \
+            --upstream-ref 0902c74400f6f77e2e7fb14ab02e8fa8187d2f83
+
+      - name: 提交重建结果
+        shell: bash
+        run: |
+          if git diff --quiet -- "中文汉化插件/内部/汉化规则.json" "中文汉化插件/内部/翻译记忆库.json"; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "中文汉化插件/内部/汉化规则.json" "中文汉化插件/内部/翻译记忆库.json"
+          git commit -m "i18n: 自动重建完整汉化规则库"
+          git push

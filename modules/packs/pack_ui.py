@@ -49,7 +49,7 @@ class PackInstallWorker(QThread):
             )
         except Exception as e:  # install_pack does not raise; belt and braces
             print(f"pack_install: unexpected failure ({type(e).__name__}: {e})")
-            result = pack_manager.PackResult(False, f"The download failed: {e}", self.name)
+            result = pack_manager.PackResult(False, f"下载失败：{e}", self.name)
         self.finished_with.emit(result)
 
 

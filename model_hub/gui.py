@@ -256,7 +256,7 @@ class DetailsPage(QWizardPage):
         self.category.setCompleter(completer)
 
     def _browse(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Choose ONNX 模型", "", "ONNX 模型 (*.onnx)")
+        path, _ = QFileDialog.getOpenFileName(self, "选择 ONNX 模型", "", "ONNX model (*.onnx)")
         if path:
             self.model_path.setText(path)
             if not self.display_name.text():
@@ -303,7 +303,7 @@ class ChecklistPage(QWizardPage):
     def __init__(self):
         super().__init__()
         self.setTitle("分享前确认")
-        self.setSubTitle("分享的模型将公开。请逐项确认，完成前无法分享。")
+        self.setSubTitle("Shared models are public. Confirm each item; sharing stays disabled until you do.")
         lay = QVBoxLayout(self)
         self.boxes: dict[str, QCheckBox] = {}
         for key, text in COMPLIANCE_ITEMS.items():
@@ -333,7 +333,7 @@ class CheckPage(QWizardPage):
         super().__init__()
         self._wiz = wizard
         self.setTitle("检查模型")
-        self.setSubTitle("VideoHighlighter 会构建模型包，并在 CPU 上执行一次测试推理。")
+        self.setSubTitle("VideoHighlighter builds the package and runs one test inference on your CPU.")
         self.output = QPlainTextEdit(readOnly=True)
         lay = QVBoxLayout(self)
         lay.addWidget(self.output)
@@ -420,7 +420,7 @@ class PublishPage(QWizardPage):
     def _done(self, url: str):
         self.url = url
         self.log.appendPlainText(f"\nShared: {url}")
-        self.log.appendPlainText("几分钟后会出现在社区模型中，感谢分享！")
+        self.log.appendPlainText("It appears in the community models within a few minutes. Thank you!")
         self.completeChanged.emit()
 
     def _error(self, message: str):
@@ -487,7 +487,7 @@ class ModelBrowserDialog(QDialog):
         self.table.itemSelectionChanged.connect(self._selection_changed)
         self.table.doubleClicked.connect(self._open_page)
 
-        self.status = QLabel("社区模型 are made by other users. Only models "
+        self.status = QLabel("Community models are made by other users. Only models "
                              "marked Verified were reviewed by the VideoHighlighter team.")
         self.status.setWordWrap(True)
 
@@ -523,7 +523,7 @@ class ModelBrowserDialog(QDialog):
                       on_done=self._loaded, on_error=self._load_failed)
 
     def _load_failed(self, message: str):
-        self.status.setText(f"无法加载社区模型，请检查网络连接。（{message})")
+        self.status.setText(f"Couldn't load the community models. Check your internet connection. ({message})")
 
     def _loaded(self, entries: list[hub.CatalogEntry]):
         self._all = entries
@@ -566,7 +566,7 @@ class ModelBrowserDialog(QDialog):
                     item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 self.table.setItem(row, col, item)
         if entries:
-            self.status.setText(f"{len(entries)} 个模型。")
+            self.status.setText(f"{len(entries)} model(s).")
         elif not self._all:
             self.status.setText("No community models yet. Train one in the Train tab "
                                 "and be the first to share it.")
@@ -607,15 +607,15 @@ class ModelBrowserDialog(QDialog):
         if model is None:
             QMessageBox.warning(self, "模型未安装",
                                 "The model failed the safety and compatibility checks:\n\n" + report.text())
-            self.status.setText("已取消安装：模型未通过检查。")
+            self.status.setText("Install cancelled: the model failed the checks.")
         else:
-            self.status.setText(f"已安装 {model.manifest.display_name}. "
-                                "可在“高级 → 物体模型”中选择。")
+            self.status.setText(f"Installed {model.manifest.display_name}. "
+                                "Pick it under Advanced → object model.")
             self.installed.emit(model)
         self._filter()
 
     def _install_failed(self, message: str):
-        self.status.setText(f"安装失败：{message}")
+        self.status.setText(f"Install failed: {message}")
         self._selection_changed()
 
     def _open_page(self, *_):

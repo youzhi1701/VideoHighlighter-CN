@@ -612,7 +612,8 @@
       "target": "            label=\"跳帧\"",
       "before": "          <NumberField",
       "after": "            value={cfg.object_frame_skip}",
-      "hunk": "@@ -52,23 +52,23 @@ export function AdvancedTab({ cfg, set }: Props) {"
+      "hunk": "@@ -52,23 +52,23 @@ export function AdvancedTab({ cfg, set }: Props) {",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/AdvancedTab.tsx#5",
@@ -666,7 +667,8 @@
       "target": "            label=\"跳帧\"",
       "before": "          <NumberField",
       "after": "            value={cfg.sample_rate}",
-      "hunk": "@@ -119,29 +119,29 @@ export function AdvancedTab({ cfg, set }: Props) {"
+      "hunk": "@@ -119,29 +119,29 @@ export function AdvancedTab({ cfg, set }: Props) {",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/AdvancedTab.tsx#11",
@@ -918,7 +920,8 @@
       "target": "              onKeyDown={(e) => e.key === \"添加\" && addRange()}",
       "before": "              onChange={(e) => setRangeStart(e.target.value)}",
       "after": "              placeholder=\"1:30\"",
-      "hunk": "@@ -336,19 +336,19 @@ export function AvoidTab({"
+      "hunk": "@@ -336,19 +336,19 @@ export function AvoidTab({",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/AvoidTab.tsx#5",
@@ -936,7 +939,8 @@
       "target": "              onKeyDown={(e) => e.key === \"添加\" && addRange()}",
       "before": "              onChange={(e) => setRangeEnd(e.target.value)}",
       "after": "              placeholder=\"2:00\"",
-      "hunk": "@@ -336,19 +336,19 @@ export function AvoidTab({"
+      "hunk": "@@ -336,19 +336,19 @@ export function AvoidTab({",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/AvoidTab.tsx#7",
@@ -1143,7 +1147,8 @@
       "target": "              if (!settings.url.trim()) return toast.error(\"请输入页面网址\")",
       "before": "            onClick={() => {",
       "after": "              if (!settings.saveDir.trim())",
-      "hunk": "@@ -150,9 +150,9 @@ export function DownloadTab({"
+      "hunk": "@@ -150,9 +150,9 @@ export function DownloadTab({",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/DownloadTab.tsx#9",
@@ -1152,7 +1157,8 @@
       "target": "                return toast.error(\"请选择保存文件夹\")",
       "before": "              if (!settings.saveDir.trim())",
       "after": "              setPickerOpen(true)",
-      "hunk": "@@ -150,9 +150,9 @@ export function DownloadTab({"
+      "hunk": "@@ -150,9 +150,9 @@ export function DownloadTab({",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/DownloadTab.tsx#10",
@@ -1161,7 +1167,8 @@
       "target": "              if (!settings.url.trim()) return toast.error(\"请输入页面网址\")",
       "before": "            onClick={() => {",
       "after": "              if (!settings.saveDir.trim())",
-      "hunk": "@@ -162,16 +162,16 @@ export function DownloadTab({"
+      "hunk": "@@ -162,16 +162,16 @@ export function DownloadTab({",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/DownloadTab.tsx#11",
@@ -1170,7 +1177,8 @@
       "target": "                return toast.error(\"请选择保存文件夹\")",
       "before": "              if (!settings.saveDir.trim())",
       "after": "              onDownload()",
-      "hunk": "@@ -162,16 +162,16 @@ export function DownloadTab({"
+      "hunk": "@@ -162,16 +162,16 @@ export function DownloadTab({",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/DownloadTab.tsx#12",
@@ -1629,7 +1637,8 @@
       "target": "            label=\"源语言\"",
       "before": "          <SelectField",
       "after": "            value={cfg.transcript_source_lang}",
-      "hunk": "@@ -35,14 +35,14 @@ export function TranscriptTab({ cfg, set }: Props) {"
+      "hunk": "@@ -35,14 +35,14 @@ export function TranscriptTab({ cfg, set }: Props) {",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/TranscriptTab.tsx#3",
@@ -1674,7 +1683,8 @@
       "target": "            label=\"源语言\"",
       "before": "          <SelectField",
       "after": "            value={cfg.source_lang}",
-      "hunk": "@@ -98,14 +98,14 @@ export function TranscriptTab({ cfg, set }: Props) {"
+      "hunk": "@@ -98,14 +98,14 @@ export function TranscriptTab({ cfg, set }: Props) {",
+      "safe_duplicate": true
     },
     {
       "id": "frontend/src/components/tabs/TranscriptTab.tsx#8",
@@ -2277,7 +2287,8 @@
       "target": "            self.search_progress.setText(\"当前帧结束后停止…\")",
       "before": "            )",
       "after": "            self.search_btn.setEnabled(True)",
-      "hunk": "@@ -1330,7 +1330,7 @@ def _stop_visual_search(self):"
+      "hunk": "@@ -1330,7 +1330,7 @@ def _stop_visual_search(self):",
+      "safe_duplicate": true
     },
     {
       "id": "llm/llm_chat_widget.py#54",
@@ -2556,7 +2567,8 @@
       "target": "            self.search_progress.setText(\"当前帧结束后停止…\")",
       "before": "            self.stop_search_btn.setEnabled(False)",
       "after": "            stopped_something = True",
-      "hunk": "@@ -2336,7 +2336,7 @@ def _stop_generation(self):"
+      "hunk": "@@ -2336,7 +2336,7 @@ def _stop_generation(self):",
+      "safe_duplicate": true
     },
     {
       "id": "llm/llm_chat_widget.py#85",
@@ -2565,7 +2577,8 @@
       "target": "        self.send_btn.setText(\"发送\")",
       "before": "        self.send_btn.setEnabled(True)",
       "after": "        self.stop_btn.setEnabled(False)",
-      "hunk": "@@ -2385,7 +2385,7 @@ def _on_response_done(self, full_text: str):"
+      "hunk": "@@ -2385,7 +2385,7 @@ def _on_response_done(self, full_text: str):",
+      "safe_duplicate": true
     },
     {
       "id": "llm/llm_chat_widget.py#86",
@@ -2574,7 +2587,8 @@
       "target": "        self.send_btn.setText(\"发送\")",
       "before": "        self.send_btn.setEnabled(True)",
       "after": "        self.stop_btn.setEnabled(False)",
-      "hunk": "@@ -2396,7 +2396,7 @@ def _on_response_error(self, error_msg: str):"
+      "hunk": "@@ -2396,7 +2396,7 @@ def _on_response_error(self, error_msg: str):",
+      "safe_duplicate": true
     },
     {
       "id": "llm/llm_chat_widget.py#87",
@@ -4230,7 +4244,8 @@
       "target": "            self.task_label.setText(\"✅ 已完成！\")",
       "before": "            ",
       "after": "            self.task_label.setStyleSheet(\"color: #4CAF50; font-weight: bold;\")",
-      "hunk": "@@ -4480,11 +4495,11 @@ def download_done(self, downloaded_files):"
+      "hunk": "@@ -4480,11 +4495,11 @@ def download_done(self, downloaded_files):",
+      "safe_duplicate": true
     },
     {
       "id": "main.py#184",
@@ -4347,7 +4362,8 @@
       "target": "            self.cancel_btn.setText(\"正在取消…\")",
       "before": "            self.cancel_btn.setEnabled(False)",
       "after": "            worker = self.download_worker",
-      "hunk": "@@ -5925,9 +5940,9 @@ def cancel_pipeline(self):"
+      "hunk": "@@ -5925,9 +5940,9 @@ def cancel_pipeline(self):",
+      "safe_duplicate": true
     },
     {
       "id": "main.py#197",
@@ -4365,7 +4381,8 @@
       "target": "            self.cancel_btn.setText(\"正在取消…\")",
       "before": "            self.cancel_btn.setEnabled(False)",
       "after": "            self.worker.cancel()",
-      "hunk": "@@ -5937,9 +5952,9 @@ def cancel_pipeline(self):"
+      "hunk": "@@ -5937,9 +5952,9 @@ def cancel_pipeline(self):",
+      "safe_duplicate": true
     },
     {
       "id": "main.py#199",
@@ -4437,7 +4454,8 @@
       "target": "            self.task_label.setText(\"✅ 已完成！\")",
       "before": "",
       "after": "            self.task_label.setStyleSheet(\"color: #4CAF50; font-weight: bold;\")",
-      "hunk": "@@ -6314,12 +6329,12 @@ def pipeline_done(self, output_file):"
+      "hunk": "@@ -6314,12 +6329,12 @@ def pipeline_done(self, output_file):",
+      "safe_duplicate": true
     },
     {
       "id": "main.py#207",
@@ -4833,7 +4851,8 @@
       "target": "        self.category.addItem(\"全部分类\", \"\")",
       "before": "        self.category = QComboBox()",
       "after": "        self.category.currentIndexChanged.connect(self._filter)",
-      "hunk": "@@ -453,25 +453,25 @@ def _open_page(self, result: int):"
+      "hunk": "@@ -453,25 +453,25 @@ def _open_page(self, result: int):",
+      "safe_duplicate": true
     },
     {
       "id": "model_hub/gui.py#37",
@@ -4905,7 +4924,8 @@
       "target": "        self.category.addItem(\"全部分类\", \"\")",
       "before": "        self.category.clear()",
       "after": "        for cat in hub.categories_in(entries):",
-      "hunk": "@@ -518,19 +518,19 @@ def _installed_ids(self) -> set[str]:"
+      "hunk": "@@ -518,19 +518,19 @@ def _installed_ids(self) -> set[str]:",
+      "safe_duplicate": true
     },
     {
       "id": "model_hub/gui.py#45",
@@ -5436,7 +5456,8 @@
       "target": "            self.output.setPlainText(\"请先创建项目。\")",
       "before": "        if not os.path.exists(os.path.join(root, \"project.json\")):",
       "after": "            return",
-      "hunk": "@@ -206,7 +206,7 @@ def review(self):"
+      "hunk": "@@ -206,7 +206,7 @@ def review(self):",
+      "safe_duplicate": true
     },
     {
       "id": "modules/teach/teach_panel.py#19",
@@ -5445,7 +5466,8 @@
       "target": "            self.output.setPlainText(\"请先创建项目。\")",
       "before": "        except FileNotFoundError:",
       "after": "            return",
-      "hunk": "@@ -241,7 +241,7 @@ def share(self):"
+      "hunk": "@@ -241,7 +241,7 @@ def share(self):",
+      "safe_duplicate": true
     },
     {
       "id": "modules/teach/teach_panel.py#20",
@@ -5454,7 +5476,8 @@
       "target": "            self.output.setPlainText(\"请先创建项目。\")",
       "before": "        if not root:",
       "after": "            self._show_background_setting()",
-      "hunk": "@@ -285,7 +285,7 @@ def _set_background(self, on: bool):"
+      "hunk": "@@ -285,7 +285,7 @@ def _set_background(self, on: bool):",
+      "safe_duplicate": true
     },
     {
       "id": "modules/teach/teach_panel.py#21",
@@ -5958,7 +5981,8 @@
       "target": "            self.play_btn.setText(\"▶ 播放\")",
       "before": "            self._active_player.pause()",
       "after": "        else:",
-      "hunk": "@@ -1276,10 +1276,10 @@ def _update_detection_panel(self, time_seconds):"
+      "hunk": "@@ -1276,10 +1276,10 @@ def _update_detection_panel(self, time_seconds):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#13",
@@ -5967,7 +5991,8 @@
       "target": "            self.play_btn.setText(\"⏸ 暂停\")",
       "before": "            self._active_player.play()",
       "after": null,
-      "hunk": "@@ -1276,10 +1276,10 @@ def _update_detection_panel(self, time_seconds):"
+      "hunk": "@@ -1276,10 +1276,10 @@ def _update_detection_panel(self, time_seconds):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#14",
@@ -5976,7 +6001,8 @@
       "target": "            self.play_btn.setText(\"⏸ 暂停\")",
       "before": "        if state == QMediaPlayer.PlayingState:",
       "after": "        else:",
-      "hunk": "@@ -1405,9 +1405,9 @@ def update_time_display(self, position):"
+      "hunk": "@@ -1405,9 +1405,9 @@ def update_time_display(self, position):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#15",
@@ -5985,7 +6011,8 @@
       "target": "            self.play_btn.setText(\"▶ 播放\")",
       "before": "        else:",
       "after": null,
-      "hunk": "@@ -1405,9 +1405,9 @@ def update_time_display(self, position):"
+      "hunk": "@@ -1405,9 +1405,9 @@ def update_time_display(self, position):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#16",
@@ -6030,7 +6057,8 @@
       "target": "        label = QLabel(\"显示：\")",
       "before": "        hl.setSpacing(6)",
       "after": "        label.setStyleSheet(\"color:#888;font-size:8pt;\")",
-      "hunk": "@@ -1693,14 +1693,14 @@ def _build_object_header(self) -> QWidget:"
+      "hunk": "@@ -1693,14 +1693,14 @@ def _build_object_header(self) -> QWidget:",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#21",
@@ -6057,7 +6085,8 @@
       "target": "            fold.setToolTip(\"隐藏物体列表\")",
       "before": "            fold.setText(\"▾\")",
       "after": "        else:",
-      "hunk": "@@ -1724,10 +1724,10 @@ def _apply_object_fold(self):"
+      "hunk": "@@ -1724,10 +1724,10 @@ def _apply_object_fold(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#24",
@@ -6075,7 +6104,8 @@
       "target": "        label = QLabel(\"显示：\")",
       "before": "        hl.setSpacing(6)",
       "after": "        label.setStyleSheet(\"color:#888;font-size:8pt;\")",
-      "hunk": "@@ -1760,14 +1760,14 @@ def _build_event_header(self) -> QWidget:"
+      "hunk": "@@ -1760,14 +1760,14 @@ def _build_event_header(self) -> QWidget:",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#26",
@@ -6120,7 +6150,8 @@
       "target": "        label = QLabel(\"显示：\")",
       "before": "        hl.setSpacing(6)",
       "after": "        label.setStyleSheet(\"color:#888;font-size:8pt;\")",
-      "hunk": "@@ -1842,7 +1842,7 @@ def _build_visual_query_header(self) -> QWidget:"
+      "hunk": "@@ -1842,7 +1842,7 @@ def _build_visual_query_header(self) -> QWidget:",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#31",
@@ -6129,7 +6160,8 @@
       "target": "            fold.setToolTip(\"隐藏物体列表\")",
       "before": "            fold.setText(\"▾\")",
       "after": "        else:",
-      "hunk": "@@ -1876,7 +1876,7 @@ def _apply_visual_query_fold(self):"
+      "hunk": "@@ -1876,7 +1876,7 @@ def _apply_visual_query_fold(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#32",
@@ -6606,7 +6638,8 @@
       "target": "                self.current_filters_label.setText(\"未应用筛选\")",
       "before": "            else:",
       "after": null,
-      "hunk": "@@ -3793,7 +3793,7 @@ def update_filter_summary(self):"
+      "hunk": "@@ -3793,7 +3793,7 @@ def update_filter_summary(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#85",
@@ -6705,7 +6738,8 @@
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
       "before": "        self._edit_paused = True",
       "after": "        self._active_player.pause()",
-      "hunk": "@@ -4084,7 +4084,7 @@ def on_time_clicked(self, time):"
+      "hunk": "@@ -4084,7 +4084,7 @@ def on_time_clicked(self, time):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#96",
@@ -6714,7 +6748,8 @@
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
       "before": "        self._active_player.pause()",
       "after": "        if hasattr(self, 'play_btn'):",
-      "hunk": "@@ -4112,9 +4112,9 @@ def _leave_edit_playback(self):"
+      "hunk": "@@ -4112,9 +4112,9 @@ def _leave_edit_playback(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#97",
@@ -6723,7 +6758,8 @@
       "target": "            self.play_btn.setText(\"▶ 播放\")",
       "before": "        if hasattr(self, 'play_btn'):",
       "after": null,
-      "hunk": "@@ -4112,9 +4112,9 @@ def _leave_edit_playback(self):"
+      "hunk": "@@ -4112,9 +4112,9 @@ def _leave_edit_playback(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#98",
@@ -6741,7 +6777,8 @@
       "target": "        self.statusBar().showMessage(f\"已添加片段：{start:.1f} 秒至 {end:.1f} 秒\", 2000)",
       "before": "",
       "after": null,
-      "hunk": "@@ -4162,14 +4162,14 @@ def on_add_to_edit_requested(self, time):"
+      "hunk": "@@ -4162,14 +4162,14 @@ def on_add_to_edit_requested(self, time):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#100",
@@ -6750,7 +6787,8 @@
       "target": "        self.statusBar().showMessage(f\"已添加片段：{start:.1f} 秒至 {end:.1f} 秒\", 2000)",
       "before": "        self.update_edit_duration()",
       "after": null,
-      "hunk": "@@ -4162,14 +4162,14 @@ def on_add_to_edit_requested(self, time):"
+      "hunk": "@@ -4162,14 +4162,14 @@ def on_add_to_edit_requested(self, time):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#101",
@@ -6777,7 +6815,8 @@
       "target": "        self.play_edit_btn.setText(\"⏸ 暂停\")",
       "before": "        ",
       "after": "        self.clip_timer.timeout.connect(self._on_single_clip_finished)",
-      "hunk": "@@ -4288,18 +4288,18 @@ def on_clip_double_clicked(self, start_time, end_time):"
+      "hunk": "@@ -4288,18 +4288,18 @@ def on_clip_double_clicked(self, start_time, end_time):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#104",
@@ -6786,7 +6825,8 @@
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
       "before": "        self._single_clip_playing = False",
       "after": null,
-      "hunk": "@@ -4288,18 +4288,18 @@ def on_clip_double_clicked(self, start_time, end_time):"
+      "hunk": "@@ -4288,18 +4288,18 @@ def on_clip_double_clicked(self, start_time, end_time):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#105",
@@ -6858,7 +6898,8 @@
       "target": "            QMessageBox.warning(self, \"没有片段\", \"请先向剪辑时间线添加一些片段！\")",
       "before": "        if len(self.edit_scene.clips) == 0:",
       "after": "            return",
-      "hunk": "@@ -4419,23 +4419,23 @@ def on_add_clip_clicked(self):"
+      "hunk": "@@ -4419,23 +4419,23 @@ def on_add_clip_clicked(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#113",
@@ -6867,7 +6908,8 @@
       "target": "            QMessageBox.critical(self, \"导出失败\",",
       "before": "        except Exception as e:",
       "after": "                                 f\"Failed to export timeline:\\n{str(e)}\")",
-      "hunk": "@@ -4446,25 +4446,25 @@ def on_export_clicked(self):"
+      "hunk": "@@ -4446,25 +4446,25 @@ def on_export_clicked(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#114",
@@ -6921,7 +6963,8 @@
       "target": "            QMessageBox.critical(self, \"导出失败\",",
       "before": "        except Exception as e:",
       "after": "                                 f\"Failed to export timeline:\\n{str(e)}\")",
-      "hunk": "@@ -4562,13 +4562,13 @@ def _on_format_changed():"
+      "hunk": "@@ -4562,13 +4562,13 @@ def _on_format_changed():",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#120",
@@ -6948,7 +6991,8 @@
       "target": "                self.current_filters_label.setText(\"未应用筛选\")",
       "before": "            else:",
       "after": "    ",
-      "hunk": "@@ -4688,15 +4688,15 @@ def update_filter_summary(self):"
+      "hunk": "@@ -4688,15 +4688,15 @@ def update_filter_summary(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#123",
@@ -6975,7 +7019,8 @@
       "target": "        self.play_edit_btn.setText(\"⏸ 暂停\")",
       "before": "        self._edit_start_pos = start_pos    # consumed by the first _play_next_edit_clip",
       "after": "        remaining = len(clips) - start_index",
-      "hunk": "@@ -4737,9 +4737,9 @@ def play_edit_timeline(self):"
+      "hunk": "@@ -4737,9 +4737,9 @@ def play_edit_timeline(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#126",
@@ -6993,7 +7038,8 @@
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
       "before": "                self.clip_timer.stop()",
       "after": "            return",
-      "hunk": "@@ -4751,7 +4751,7 @@ def toggle_edit_playback(self):"
+      "hunk": "@@ -4751,7 +4751,7 @@ def toggle_edit_playback(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#128",
@@ -7020,7 +7066,8 @@
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
       "before": "            self._edit_paused = True",
       "after": "            self._active_player.pause()",
-      "hunk": "@@ -4791,11 +4791,11 @@ def toggle_edit_playback(self):"
+      "hunk": "@@ -4791,11 +4791,11 @@ def toggle_edit_playback(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#131",
@@ -7047,7 +7094,8 @@
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
       "before": "            self._edit_resume_pos = None   # finished → next Play Edit starts over",
       "after": "            if hasattr(self, '_edit_progress_timer'):",
-      "hunk": "@@ -4806,21 +4806,21 @@ def toggle_edit_playback(self):"
+      "hunk": "@@ -4806,21 +4806,21 @@ def toggle_edit_playback(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#134",
@@ -7065,7 +7113,8 @@
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
       "before": "        self._edit_resume_pos = None   # Stop resets edit playback to the start",
       "after": "        self._active_player.pause()",
-      "hunk": "@@ -4947,7 +4947,7 @@ def stop_edit_playback(self):"
+      "hunk": "@@ -4947,7 +4947,7 @@ def stop_edit_playback(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#136",
@@ -7092,7 +7141,8 @@
       "target": "            QMessageBox.warning(self, \"没有片段\", \"请先向剪辑时间线添加一些片段！\")",
       "before": "        if not clips:",
       "after": "            return",
-      "hunk": "@@ -4988,7 +4988,7 @@ def on_render_highlight_clicked(self):"
+      "hunk": "@@ -4988,7 +4988,7 @@ def on_render_highlight_clicked(self):",
+      "safe_duplicate": true
     },
     {
       "id": "signal_timeline_viewer.py#139",

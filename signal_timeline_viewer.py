@@ -663,8 +663,8 @@ class SignalTimelineWindow(QMainWindow):
 
     def _on_bbox_toggled(self, label: str):
         """Visual feedback when overlay is toggled."""
-        is_original = (label == "🎥 Original")
-        state = "Original" if is_original else f"Overlay: {label}"
+        is_original = (label == "🎥 原始视频")
+        state = "原始视频" if is_original else f"叠加视频：{label}"
         self.statusBar().showMessage(f"视频来源：{state}", 3000)
 
         # Hide detection panel when viewing annotated video (avoids double info)
@@ -1061,8 +1061,8 @@ class SignalTimelineWindow(QMainWindow):
             self.video_view.set_vr_mode(vr_on)
 
             # Reset to original video if bbox_manager swapped it
-            if self.bbox_manager and self.bbox_manager._current_source != "🎥 Original":
-                self.bbox_manager._switch_to("🎥 Original")
+            if self.bbox_manager and self.bbox_manager._current_source != "🎥 原始视频":
+                self.bbox_manager._switch_to("🎥 原始视频")
 
             # Hide precomp controls
             if self._precomp_widget:

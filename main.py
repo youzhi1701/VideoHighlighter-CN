@@ -48,7 +48,7 @@ ui_scale.apply()
 # order below, which matters on Windows.
 from modules.system import startup_splash
 from modules.system import compute_backend
-startup_splash.stage("Loading the video engine…")
+startup_splash.stage("正在加载视频引擎…")
 
 import cv2
 import json
@@ -69,7 +69,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, QThread, Signal, QTimer, QMetaObject, Q_ARG, Slot, QStringListModel
 from downloader import download_videos_with_immediate_processing, extract_video_links, DownloadError, reset_duration_method_cache
-startup_splash.stage("Loading the assistant…")
+startup_splash.stage("正在加载智能助手…")
 from llm.llm_chat_widget import LLMChatWidget
 from modules.media.video_cache import VideoAnalysisCache, CachedAnalysisData, build_analysis_cache_params
 from modules.report import analysis_stats
@@ -82,7 +82,7 @@ from modules.ui.simple_start import (
 # tab's picker; the module itself loads no model until something asks it to scan.
 from modules.vision.face_emotions import EMOTION_LABELS
 
-startup_splash.stage("Loading the detection runtime…")
+startup_splash.stage("正在加载检测运行环境…")
 try:
     import openvino  # registers OpenVINO's DLL dir on Windows
 except Exception:
@@ -209,11 +209,10 @@ class NoAnalysisWarningDialog(QDialog):
         layout.addWidget(icon_label)
         
         msg = QLabel(
-            "No analysis cache found for this video.\n\n"
-            "You can still use the timeline viewer to seek through\n"
-            "the video and chat with the LLM — but motion, audio,\n"
-            "object and action signals won't be available.\n\n"
-            "Run the pipeline first to get full signal data."
+            "未找到该视频的分析缓存。\n\n"
+            "你仍然可以使用时间线查看器浏览视频并与大模型对话，\n"
+            "但运动、音频、物体和动作等分析信号将不可用。\n\n"
+            "请先运行完整分析流程，以获得全部信号数据。"
         )
         msg.setWordWrap(True)
         msg.setAlignment(Qt.AlignCenter)
@@ -1402,12 +1401,12 @@ class VideoHighlighterGUI(QWidget):
         mode_row.addWidget(QLabel("下载："))
         self.download_mode_combo = QComboBox()
         self.download_mode_combo.addItem("完整视频", "full")
-        self.download_mode_combo.addItem("Same range as processing", "same")
-        self.download_mode_combo.addItem("Specific range (seconds)", "specific")
+        self.download_mode_combo.addItem("与处理范围相同", "same")
+        self.download_mode_combo.addItem("指定范围（秒）", "specific")
         self.download_mode_combo.setToolTip(
-            "Full video — download the whole thing.\n"
-            "Same range as processing — reuse the Processing Time Range above.\n"
-            "Specific range — download only the seconds you set below."
+            "完整视频——下载全部内容。\n"
+            "与处理范围相同——复用上方“处理时间范围”。\n"
+            "指定范围——只下载下方设置的时间段。"
         )
         mode_row.addWidget(self.download_mode_combo)
         mode_row.addStretch()
@@ -1454,13 +1453,13 @@ class VideoHighlighterGUI(QWidget):
         process_row = QHBoxLayout()
         process_row.addWidget(QLabel("下载后："))
         self.process_mode_combo = QComboBox()
-        self.process_mode_combo.addItem("Don't process", "none")
-        self.process_mode_combo.addItem("Process each video as it downloads", "immediate")
-        self.process_mode_combo.addItem("Process all after downloads finish", "batch")
+        self.process_mode_combo.addItem("不处理，仅下载", "none")
+        self.process_mode_combo.addItem("每个视频下载后立即处理", "immediate")
+        self.process_mode_combo.addItem("全部下载完成后统一处理", "batch")
         self.process_mode_combo.setToolTip(
-            "Don't process — just download.\n"
-            "Process each as it downloads — run the pipeline per video, overlapping with remaining downloads.\n"
-            "Process all after downloads finish — download everything first, then run the pipeline over the list."
+            "不处理——只下载视频。\n"
+            "边下载边处理——每个视频下载完成后立即开始分析，与剩余下载并行。\n"
+            "全部下载后处理——先完成全部下载，再统一处理视频列表。"
         )
         process_row.addWidget(self.process_mode_combo)
         process_row.addStretch()

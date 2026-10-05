@@ -3,87 +3,17 @@
   "locale": "zh-CN",
   "entries": [
     {
-      "source": "  Cancel",
-      "target": "  取消",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": " - no NVIDIA card found",
-      "target": " - 未检测到 NVIDIA 显卡",
-      "files": [
-        "packaging/installer/videohighlighter-packs.iss"
-      ]
-    },
-    {
-      "source": " · ${card.chaptered_takes} chaptered",
-      "target": " · ${card.chaptered_takes} 个已分章节",
-      "files": [
-        "frontend/src/components/tabs/AutoTab.tsx"
-      ]
-    },
-    {
-      "source": " · ${sessionCount} this run",
-      "target": " · 本次运行 ${sessionCount} 个",
-      "files": [
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "source": " (skipped the camera being placed)",
-      "target": " （已跳过放置相机的片段）",
+      "source": "${basename(cut.source)} from ${cut.start.toFixed(2)}s",
+      "target": "${basename(cut.source)}，从 ${cut.start.toFixed(2)} 秒开始",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
       ]
     },
     {
-      "source": " • frame ${index + 1}/${frames.length}",
-      "target": " • 帧 ${index + 1}/${frames.length}",
+      "source": "'show only person detections', 'play the clip at 0:30'",
+      "target": "只显示人物检测、播放 0:30 处的片段。",
       "files": [
-        "frontend/src/components/DetectionPreview.tsx"
-      ]
-    },
-    {
-      "source": " could not be downloaded:",
-      "target": " 下载失败：",
-      "files": [
-        "packaging/installer/videohighlighter-packs.iss"
-      ]
-    },
-    {
-      "source": ": download cancelled by the user.",
-      "target": "：用户取消了下载。",
-      "files": [
-        "packaging/installer/videohighlighter-packs.iss"
-      ]
-    },
-    {
-      "source": ": download failed: ",
-      "target": "：下载失败：",
-      "files": [
-        "packaging/installer/videohighlighter-packs.iss"
-      ]
-    },
-    {
-      "source": "…and describe each clip",
-      "target": "…并描述每个片段",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "…and tell each chapter (slow)",
-      "target": "…并生成各章节说明（较慢）",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "({self._detection_count} detections available)",
-      "target": "（{self._detection_count} 个检测结果可用）",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -108,6 +38,13 @@
       ]
     },
     {
+      "source": "(GGUF image decoding is ~20s and cannot be interrupted mid-frame)",
+      "target": "（GGUF 图像解码单帧可能需要约 20 秒，处理中无法强制中断）",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "(higher = faster)",
       "target": "（数值越高速度越快）",
       "files": [
@@ -115,10 +52,24 @@
       ]
     },
     {
+      "source": "(hosted on Hugging Face, checked before use)",
+      "target": "模型托管在 Hugging Face，安装前会进行安全与兼容性检查。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "(lower = stricter)",
       "target": "（越低越严格）",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx"
+      ]
+    },
+    {
+      "source": "(Needs a re-analysis to populate the full list.)",
+      "target": "若要获得完整动作列表，需要重新分析。",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -178,6 +129,13 @@
       ]
     },
     {
+      "source": "(skipped the camera being placed)",
+      "target": "（已跳过放置相机的片段）",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
       "source": "(the model only, never your footage)",
       "target": "（只分享模型，不会上传你的素材）",
       "files": [
@@ -185,94 +143,73 @@
       ]
     },
     {
-      "source": "{count} match{'es' if count != 1 else ''}",
-      "target": "{count} 个匹配",
-      "files": [
-        "video_ai_editor/transcript_panel.py"
-      ]
-    },
-    {
-      "source": "{current}/{count} matches",
-      "target": "{current}/{count} 个匹配",
-      "files": [
-        "video_ai_editor/transcript_panel.py"
-      ]
-    },
-    {
-      "source": "{fmt(t0)} → {fmt(t1)}  ({duration:.2f}s)  — drag to add",
-      "target": "{fmt(t0)} → {fmt(t1)}（{duration:.2f} 秒）— 拖动可添加",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "{group}\\Uninstall {#AppName}",
-      "target": "{group}\\卸载 {#AppName}",
-      "files": [
-        "packaging/installer/videohighlighter-packs.iss"
-      ]
-    },
-    {
-      "source": "{len(entries)} model(s).",
-      "target": "共 {len(entries)} 个模型。",
-      "files": [
-        "model_hub/gui.py"
-      ]
-    },
-    {
-      "source": "{len(filtered)} of {len(self.all_labels)} labels shown",
-      "target": "已显示 {len(filtered)} / {len(self.all_labels)} 个标签",
+      "source": "(translated when the target language differs). No highlights are cut.",
+      "target": "当目标语言不同时会自动翻译。此操作不会剪切高光片段。",
       "files": [
         "main.py"
       ]
     },
     {
-      "source": "{len(segments)} clip(s) of '{label}'",
-      "target": "“{label}”共有 {len(segments)} 个片段",
+      "source": "(using current interval: {self.search_interval.value()}s)",
+      "target": "（使用当前间隔：{self.search_interval.value()} 秒）",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "(with vision)",
+      "target": "（支持视觉）",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "({self._detection_count} detections available)",
+      "target": "（{self._detection_count} 个检测结果可用）",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "+ Add All to Edit Timeline",
+      "target": "+ 全部加入剪辑时间线",
       "files": [
         "video_ai_editor/search_panel.py"
       ]
     },
     {
-      "source": "{len(self._entries)} video(s) — pick which to download.",
-      "target": "共 {len(self._entries)} 个视频 — 请选择要下载的内容。",
+      "source": "+ Edit",
+      "target": "+ 加入剪辑",
       "files": [
-        "video_picker_dialog.py"
+        "video_ai_editor/search_panel.py"
       ]
     },
     {
-      "source": "{len(self.all_labels)} labels available",
-      "target": "{len(self.all_labels)} 个标签可用",
+      "source": "+${added} video${added === 1 ? \"\" : \"s\"}",
+      "target": "已添加 ${added} 个视频",
       "files": [
-        "main.py"
+        "frontend/src/App.tsx"
       ]
     },
     {
-      "source": "{len(self.label_list.selectedItems())} selected",
-      "target": "已选择 {len(self.label_list.selectedItems())} 个",
+      "source": ", about {left} left",
+      "target": "，预计剩余 {left}",
       "files": [
-        "main.py"
+        "modules/ui/training_panel.py"
       ]
     },
     {
-      "source": "{len(self.segments)} segments",
-      "target": "{len(self.segments)} 个片段",
+      "source": ", checked against {checked} it had not seen",
+      "target": "，并使用 {checked} 个未见过的帧进行了验证",
       "files": [
-        "video_ai_editor/transcript_panel.py"
+        "modules/ui/training_panel.py"
       ]
     },
     {
-      "source": "{title} is installed and takes effect after a restart. Restart now?",
-      "target": "{title} 已安装，重启后生效。现在重启吗？",
+      "source": "- no NVIDIA card found",
+      "target": "- 未检测到 NVIDIA 显卡",
       "files": [
-        "modules/packs/pack_ui.py"
-      ]
-    },
-    {
-      "source": "{window:.1f}s",
-      "target": "{window:.1f} 秒",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
+        "packaging/installer/videohighlighter-packs.iss"
       ]
     },
     {
@@ -287,883 +224,6 @@
       "target": "请选择 model.gguf",
       "files": [
         "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "© 2026 Przemysław Kreft and contributors",
-      "target": "© 2026 Przemysław Kreft 及贡献者",
-      "files": [
-        "frontend/src/components/tabs/AboutTab.tsx"
-      ]
-    },
-    {
-      "source": "↩  Undo last swap",
-      "target": "↩  撤销上次替换",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "+ Add All to Edit Timeline",
-      "target": "+ 全部加入剪辑时间线",
-      "files": [
-        "video_ai_editor/search_panel.py"
-      ]
-    },
-    {
-      "source": "+ Add Signal",
-      "target": "+ 添加信号条件",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "+ Add Spatial",
-      "target": "+ 添加空间条件",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "+ Edit",
-      "target": "+ 加入剪辑",
-      "files": [
-        "video_ai_editor/search_panel.py"
-      ]
-    },
-    {
-      "source": "<b>{info.headline}</b>",
-      "target": "<b>发现新版本 {info.version}（当前版本 {__version__}）</b>",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "<b>{len(labels.accepted())}</b> boxes accepted, ",
-      "target": "已接受 <b>{len(labels.accepted())}</b> 个检测框，",
-      "files": [
-        "modules/teach/review_window.py"
-      ]
-    },
-    {
-      "source": "<b>Add a model</b>",
-      "target": "<b>添加模型</b>",
-      "files": [
-        "modules/ui/model_dialog.py"
-      ]
-    },
-    {
-      "source": "<b>Nothing left to check.</b> Close this window and run ",
-      "target": "<b>没有需要继续检查的内容。</b> 关闭此窗口并运行 ",
-      "files": [
-        "modules/teach/review_window.py"
-      ]
-    },
-    {
-      "source": "<b>Preparing update…</b>",
-      "target": "<b>正在准备更新…</b>",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "<b>Re-sorting with what you just checked…</b>",
-      "target": "<b>正在根据刚刚确认的结果重新排序…</b>",
-      "files": [
-        "modules/teach/review_window.py"
-      ]
-    },
-    {
-      "source": "=== Started ===",
-      "target": "=== 已开始 ===",
-      "files": [
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "source": "⌕ {len(hits)} match(es)",
-      "target": "⌕ {len(hits)} 个匹配",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⏭ Live",
-      "target": "⏭ 实时",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "⏳ Generating Actions…",
-      "target": "⏳ 正在生成动作标注…",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "⏳ Generating Objects…",
-      "target": "⏳ 正在生成物体标注…",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "⏳ Rendering… {pct}%",
-      "target": "⏳ 正在渲染… {pct}%",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⏳ Rendering… 0%",
-      "target": "⏳ 正在渲染… 0%",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⏸ Freeze",
-      "target": "⏸ 冻结",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "⏸ Pause",
-      "target": "⏸ 暂停",
-      "files": [
-        "main.py",
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⏸ Paused",
-      "target": "⏸ 已暂停",
-      "files": [
-        "main.py",
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⏹️ Cancelled",
-      "target": "⏹️ 已取消",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "⏹️ Cancelling download...",
-      "target": "⏹️ 正在取消下载…",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "⏹️ Cancelling on-demand run...",
-      "target": "⏹️ 正在取消按需任务…",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "⏹️ Cancelling pipeline...",
-      "target": "⏹️ 正在取消处理流程…",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "⏹️ Download Cancelled",
-      "target": "⏹️ 下载已取消",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "⏹ Edit playback stopped",
-      "target": "⏹ 剪辑播放已停止",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "▶ Jump",
-      "target": "▶ 跳转",
-      "files": [
-        "video_ai_editor/search_panel.py"
-      ]
-    },
-    {
-      "source": "▶ Play",
-      "target": "▶ 播放",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "▶ Play / Pause",
-      "target": "▶ 播放 / 暂停",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "▶ Play Edit",
-      "target": "▶ 播放剪辑",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "▶ Playing edit timeline: {remaining} clip(s)",
-      "target": "▶ 正在播放剪辑时间线：剩余 {remaining} 个片段",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "▶ Resume",
-      "target": "▶ 继续",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "▶ Resumed",
-      "target": "▶ 已继续",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⚠️ Cache not available for saving",
-      "target": "⚠️ 缓存不可用于保存",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
-      ]
-    },
-    {
-      "source": "⚠️ Cache saving not available in this scene",
-      "target": "⚠️ 当前场景不支持保存缓存",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⚠️ Could not capture frame at {ts_str}",
-      "target": "⚠️ 无法截取 {ts_str} 的画面",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "⚠ Couldn't save the token; it will be used only this time.",
-      "target": "⚠ 无法保存令牌，本次会话仍会使用。",
-      "files": [
-        "model_hub/gui.py"
-      ]
-    },
-    {
-      "source": "⚠️ Error saving to cache: {str(e)[:50]}...",
-      "target": "⚠️ 保存到缓存时出错：{str(e)[:50]}…",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⚠️ Failed to save to cache",
-      "target": "⚠️ 保存到缓存失败",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⚠️ LLM not connected. This engine requires a connected vision model.",
-      "target": "⚠️ 大模型未连接。此引擎需要已连接的视觉模型。",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "⚠️ No analysis data loaded. Load a cache file first.",
-      "target": "⚠️ 尚未加载分析数据，请先加载缓存文件。",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "⚠️ No clips in edit timeline",
-      "target": "⚠️ 剪辑时间线中没有片段",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⚠️ No edit timeline available",
-      "target": "⚠️ 没有可用的剪辑时间线",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⚠️ No reasoning engine to save.",
-      "target": "⚠️ 没有可保存的推理引擎。",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "⚠️ Reasoning engine not initialized. Try toggling 'Enable reasoning' checkbox.",
-      "target": "⚠️ 推理引擎尚未初始化，请尝试切换“启用推理”。",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "⚠️ Select a time first",
-      "target": "⚠️ 请先选择时间",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "⚠️ This engine needs a connected vision model. Connect one, or use CLIP only.",
-      "target": "⚠️ 此引擎需要连接视觉模型。请先连接模型，或使用“仅 CLIP”。",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "✂️   Cut here  ({_fmt_time(click_time)})",
-      "target": "✂️   在此切开（{_fmt_time(click_time)}）",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
-      ]
-    },
-    {
-      "source": "✅ Complete!",
-      "target": "✅ 已完成！",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "✅ Edit timeline playback complete",
-      "target": "✅ 剪辑时间线播放完成",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "✅ Edit timeline saved to cache",
-      "target": "✅ 剪辑时间线已保存到缓存",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "✅ Highlight rendered!",
-      "target": "✅ 高光视频渲染完成！",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "✅ Search complete. Found '{self.search_target.text()}' at {found_count} timestamp(s): {ts_list}",
-      "target": "✅ 搜索完成。在 {found_count} 个时间点找到“{self.search_target.text()}”：{ts_list}",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "✅ Video analyzer ready: {os.path.basename(path)}",
-      "target": "✅ 视频分析器已就绪：{os.path.basename(path)}",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "✏️  Name this person…",
-      "target": "✏️  为此人物命名…",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "✓ {len(result.get('audio_peaks', []))} peaks",
-      "target": "✓ {len(result.get('audio_peaks', []))} 个峰值",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "✓ {len(result.get('segments', []))} segments",
-      "target": "✓ {len(result.get('segments', []))} 个片段",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "✓ {len(result)} detections",
-      "target": "✓ {len(result)} 个检测结果",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "✓ {len(result)} seconds",
-      "target": "✓ {len(result)} 秒",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "✔ Finished: ${e.output || \"(no output)\"}",
-      "target": "✔ 已完成：${e.output || \"（无输出）\"}",
-      "files": [
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "source": "❌ Cannot start search: No video loaded or analyzer not ready",
-      "target": "❌ 无法开始搜索：尚未加载视频或分析器未就绪",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "❌ Download Failed",
-      "target": "❌ 下载失败",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "❌ Failed",
-      "target": "❌ 失败",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "❌ Failed to initialize analyzer: {e}",
-      "target": "❌ 初始化分析器失败：{e}",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "❌ Failed to save: {e}",
-      "target": "❌ 保存失败：{e}",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "❌ Please enter something to search for",
-      "target": "❌ 请输入要搜索的内容",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "❌ Render failed",
-      "target": "❌ 渲染失败",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "❌ Search complete. No '{self.search_target.text()}' found in video.",
-      "target": "❌ 搜索完成。视频中未找到“{self.search_target.text()}”。",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "❌ Search error: {error}",
-      "target": "❌ 搜索出错：{error}",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "➕  Add all “{group_name}” clips  ({len(row_clips)})",
-      "target": "➕  将“{group_name}”全部片段加入剪辑时间线（{len(row_clips)}）",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "➕  Add this clip to edit timeline",
-      "target": "➕  将此片段加入剪辑时间线",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "➕ Added ${e.paths.length} downloaded video(s)",
-      "target": "➕ 已添加 ${e.paths.length} 个下载的视频",
-      "files": [
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "source": "➡️   Trim end  ←  {_fmt_time(click_time)}",
-      "target": "➡️   修剪终点 ← {_fmt_time(click_time)}",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
-      ]
-    },
-    {
-      "source": "⟳ Auto-scroll OFF",
-      "target": "⟳ 自动滚动：关",
-      "files": [
-        "video_ai_editor/transcript_panel.py"
-      ]
-    },
-    {
-      "source": "⟳ Auto-scroll ON",
-      "target": "⟳ 自动滚动：开",
-      "files": [
-        "video_ai_editor/transcript_panel.py"
-      ]
-    },
-    {
-      "source": "⬅️   Trim start  →  {_fmt_time(click_time)}",
-      "target": "⬅️   修剪起点 → {_fmt_time(click_time)}",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
-      ]
-    },
-    {
-      "source": "🌐 Extracting video links...",
-      "target": "🌐 正在提取视频链接…",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🎥 Original",
-      "target": "🎥 原始视频",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "🎬 Action Confidence",
-      "target": "🎬 动作置信度",
-      "files": [
-        "video_ai_editor/filter_dialogs.py"
-      ]
-    },
-    {
-      "source": "🎬 Action recognition",
-      "target": "🎬 动作识别",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🎬 Actions",
-      "target": "🎬 动作",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "🎬 Generate Actions",
-      "target": "🎬 生成动作标注",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "🎬 Regenerate Actions",
-      "target": "🎬 重新生成动作标注",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "🎬 Render Highlight Video",
-      "target": "🎬 渲染高光视频",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "🎬 Rendering highlight video…",
-      "target": "🎬 正在渲染高光视频…",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "🎬 Rendering highlight video… {pct}%",
-      "target": "🎬 正在渲染高光视频… {pct}%",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "🎯 Annotated",
-      "target": "🎯 已标注",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "🎯 BBox",
-      "target": "🎯 检测框",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "🎯 Live BBox Overlay",
-      "target": "🎯 实时检测框叠加",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🎯 Overlay",
-      "target": "🎯 叠加层",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "🎯 Video Source",
-      "target": "🎯 视频来源",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "👤 Found ${e.count} identities",
-      "target": "👤 找到 ${e.count} 个身份",
-      "files": [
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "source": "💾 {mem:.0f}MB | Items: {scene_items} | Cache: {cached_buckets}buckets",
-      "target": "💾 {mem:.0f}MB | 项目：{scene_items} | 缓存：{cached_buckets} 个区块",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "💾 Reasoning facts saved to: {os.path.basename(saved_path)}",
-      "target": "💾 推理结果已保存到：{os.path.basename(saved_path)}",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "💾 Save to Cache",
-      "target": "💾 保存到缓存",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
-      ]
-    },
-    {
-      "source": "📂 Load from Cache...",
-      "target": "📂 从缓存加载…",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
-      ]
-    },
-    {
-      "source": "📦 Generate Objects",
-      "target": "📦 生成物体标注",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "📦 Object Confidence",
-      "target": "📦 物体置信度",
-      "files": [
-        "video_ai_editor/filter_dialogs.py"
-      ]
-    },
-    {
-      "source": "📦 Objects",
-      "target": "📦 物体",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "📦 Regenerate Objects",
-      "target": "📦 重新生成物体标注",
-      "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "📷 Capture Frame",
-      "target": "📷 截取当前帧",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "📸 Frame captured at {ts_str}",
-      "target": "📸 已截取 {ts_str} 的画面",
-      "files": [
-        "llm/llm_chat_widget.py"
-      ]
-    },
-    {
-      "source": "🔀  Swap for the next best moment",
-      "target": "🔀  替换为下一个最佳时刻",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "🔄 Refresh from face database",
-      "target": "🔄 从人脸库刷新",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🔍 Filter",
-      "target": "🔍 筛选",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🔍 Live Detection Preview",
-      "target": "🔍 实时检测预览",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🔍 Scan video for faces",
-      "target": "🔍 扫描视频人脸",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🔍 Scanning…",
-      "target": "🔍 扫描中…",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🔍 Search by Person",
-      "target": "🔍 按人物搜索",
-      "files": [
-        "video_ai_editor/search_panel.py"
-      ]
-    },
-    {
-      "source": "🔎 match at ${e.timestamp.toFixed(1)}s",
-      "target": "🔎 在 ${e.timestamp.toFixed(1)} 秒找到匹配",
-      "files": [
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "source": "🗑️   Delete clip",
-      "target": "🗑️   删除片段",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
-      ]
-    },
-    {
-      "source": "🗑  Remove this avoid range",
-      "target": "🗑  移除此排除区间",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "🗑 Clear faces",
-      "target": "🗑 清空人脸",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🧊 Object recognition",
-      "target": "🧊 物体识别",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🧠  Teach a model to find this — draw a box…",
-      "target": "🧠  教模型识别此内容 — 请画框…",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🧹 Clear Cache",
-      "target": "🧹 清空缓存",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🙂 Facial recognition",
-      "target": "🙂 人脸识别",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🚀 {kind.title()} (on demand)…",
-      "target": "🚀 {kind.title()}（按需运行）…",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🚀 Initializing...",
-      "target": "🚀 正在初始化…",
-      "files": [
-        "main.py"
-      ]
-    },
-    {
-      "source": "🚫  Avoid this person",
-      "target": "🚫  排除此人物",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
-      "source": "🚫  Avoid this range in highlights",
-      "target": "🚫  从高光中排除此区间",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "🚫 Avoiding {name} — {len(self.avoided_identity_ids)} total",
-      "target": "🚫 正在排除 {name} — 共 {len(self.avoided_identity_ids)} 个",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "${basename(cut.source)} from ${cut.start.toFixed(2)}s",
-      "target": "${basename(cut.source)}，从 ${cut.start.toFixed(2)} 秒开始",
-      "files": [
-        "frontend/src/components/tabs/ReelTab.tsx"
       ]
     },
     {
@@ -1188,6 +248,13 @@
       ]
     },
     {
+      "source": "0 uses auto-segmentation (min/max clip and merge gap below).",
+      "target": "设为 0 时使用自动分段（由下方最短/最长片段和合并间隔控制）。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "0.5s",
       "target": "0.5 秒",
       "files": [
@@ -1199,6 +266,237 @@
       "target": "3 个文件",
       "files": [
         "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "3D CNN model:",
+      "target": "3D CNN 模型：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "3D CNN, training every layer on {where}.",
+      "target": "3D CNN：在{where}上训练所有层。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "50 miles. Heavy rain. No backup plan.",
+      "target": "例如：50 英里，暴雨，没有备用计划。",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": ": download cancelled by the user.",
+      "target": "：用户取消了下载。",
+      "files": [
+        "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": ": download failed:",
+      "target": "：下载失败：",
+      "files": [
+        "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": "<b>Add a model</b>",
+      "target": "<b>添加模型</b>",
+      "files": [
+        "modules/ui/model_dialog.py"
+      ]
+    },
+    {
+      "source": "<b>Batch {self.record['sheet']}</b> — each tile already shows its",
+      "target": "<b>批次 {self.record['sheet']}</b> —— 每个方块已经显示模型的判断。",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<b>Boxes {self.record['sheet']}</b> — is the yellow box around the",
+      "target": "<b>检测框批次 {self.record['sheet']}</b> —— 黄色框是否准确框住目标，",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<b>Downloading {mb_done:.1f} / {mb_total:.1f} MB</b><br>{detail}",
+      "target": "<b>正在下载 {mb_done:.1f} / {mb_total:.1f} MB</b><br>{detail}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "<b>Nothing left to check.</b> Close this window and run",
+      "target": "<b>没有需要继续检查的内容。</b> 关闭此窗口后运行",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<b>Preparing update…</b>",
+      "target": "<b>正在准备更新…</b>",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "<b>Re-sorting with what you just checked…</b>",
+      "target": "<b>正在根据刚刚确认的结果重新排序…</b>",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<b>{info.headline}</b>",
+      "target": "<b>发现新版本 {info.version}（当前版本 {__version__}）</b>",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "<b>{len(labels.accepted())}</b> boxes accepted,",
+      "target": "已接受 <b>{len(labels.accepted())}</b> 个检测框，",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<b>{len(labels.pending())}</b> waiting",
+      "target": "<b>{len(labels.pending())}</b> 个待确认",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<b>{name}</b>: {c['accepted']} of {c['target']}",
+      "target": "<b>{name}</b>：{c['accepted']} / {c['target']} 已接受",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<code>status</code> for the next step.",
+      "target": "<code>status</code> 查看下一步。",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<div style=\"color:#f44336;margin-left:12px;\">Error: {error_msg}</div><br>",
+      "target": "<div style=\"color:#f44336;margin-left:12px;\">错误：{error_msg}</div><br>",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "<span style='color:#888;font-size:8pt;'>seen {ident.get('count', 0)}×</span>",
+      "target": "<span style='color:#888;font-size:8pt;'>出现 {ident.get('count', 0)} 次</span>",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "<video>_clips/ next to the concatenated highlight reel.",
+      "target": "<video>_clips/ 文件夹中。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "=== Started ===",
+      "target": "=== 已开始 ===",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "[stopped by user]",
+      "target": "[用户已停止]",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "\\n[stopped]",
+      "target": "\\n[已停止]",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "\\nMost common actions:",
+      "target": "\\n最常见动作：",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "\\nShared: {url}",
+      "target": "\\n已分享：{url}",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "\\n⏹️ === CANCELLATION REQUESTED ===",
+      "target": "\\n⏹️ === 已请求取消 ===",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "\\n⏹️ === DOWNLOAD CANCELLED ===",
+      "target": "\\n⏹️ === 下载已取消 ===",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "\\n⏹️ === DOWNLOAD CANCELLED BY USER ===",
+      "target": "\\n⏹️ === 用户已取消下载 ===",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "\\n▶️ Starting batch processing of downloaded videos...",
+      "target": "\\n▶️ 正在批量处理已下载的视频…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "\\n⚠️ === DOWNLOAD COMPLETED WITH NO FILES ===",
+      "target": "\\n⚠️ === 下载完成，但没有获得文件 ===",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "\\n✅ === DOWNLOAD COMPLETED ===",
+      "target": "\\n✅ === 下载完成 ===",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "\\n🎬 **Detected Action Sequences:**",
+      "target": "\\n🎬 **检测到的动作序列：**",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "\\n🎬 Combining all highlights...",
+      "target": "\\n🎬 正在合并全部高光…",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -1216,6 +514,13 @@
       ]
     },
     {
+      "source": "A graphics card usually makes this several times faster;",
+      "target": "使用显卡通常可以快数倍；",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "A name, or a folder. Projects live in your user data.",
       "target": "输入名称或选择文件夹。项目保存在用户数据目录。",
       "files": [
@@ -1227,6 +532,13 @@
       "target": "一个骑自行车的人",
       "files": [
         "frontend/src/components/tabs/VisionSearchTab.tsx"
+      ]
+    },
+    {
+      "source": "a smaller model size is quicker too.",
+      "target": "选择更小的模型也会更快。",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -1259,6 +571,13 @@
       ]
     },
     {
+      "source": "Action head: {head[0]} ({len(head[1])} classes)",
+      "target": "动作头：{head[0]}（{len(head[1])} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Action keywords:",
       "target": "动作关键词：",
       "files": [
@@ -1270,6 +589,13 @@
       "target": "动作模型编码器",
       "files": [
         "modules/packs/pack_ui.py"
+      ]
+    },
+    {
+      "source": "Action models (*.xml *.pth);;OpenVINO IR (*.xml);;",
+      "target": "动作模型 (*.xml *.pth);;OpenVINO IR (*.xml);;",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -1285,6 +611,8 @@
       "target": "动作",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx",
+        "modules/ui/training_panel.py",
+        "signal_timeline_viewer.py",
         "video_ai_editor/filter_dialogs.py"
       ]
     },
@@ -1310,13 +638,6 @@
       ]
     },
     {
-      "source": "actions: something that happens over time (a movement)\\n",
-      "target": "动作：随时间发生的行为或运动\\n",
-      "files": [
-        "modules/teach/teach_panel.py"
-      ]
-    },
-    {
       "source": "Add a clip at the current playhead time",
       "target": "在当前播放头位置添加片段",
       "files": [
@@ -1324,8 +645,8 @@
       ]
     },
     {
-      "source": "Add a condition on object geometry: ",
-      "target": "添加物体几何条件： ",
+      "source": "Add a condition on a per-second measurement, e.g.",
+      "target": "添加基于每秒测量值的条件，例如 vocal_density_pct 或",
       "files": [
         "main.py"
       ]
@@ -1382,13 +703,6 @@
       ]
     },
     {
-      "source": "Added {added} clip{plural} to edit timeline",
-      "target": "已向剪辑时间线添加 {added} 个片段",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
       "source": "Added audio clip: {start_time:.1f}s to {end_time:.1f}s",
       "target": "已添加音频片段：{start_time:.1f} 秒至 {end_time:.1f} 秒",
       "files": [
@@ -1410,6 +724,13 @@
       ]
     },
     {
+      "source": "Added {added} clip{plural} to edit timeline",
+      "target": "已向剪辑时间线添加 {added} 个片段",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Adjust minimum confidence separately for actions and objects.",
       "target": "分别调整动作和物体的最低置信度。",
       "files": [
@@ -1421,12 +742,20 @@
       "target": "高级",
       "files": [
         "frontend/src/App.tsx",
-        "main.py"
+        "main.py",
+        "modules/ui/training_panel.py"
       ]
     },
     {
       "source": "Advanced per-type filters",
       "target": "按类型设置高级筛选",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Advanced settings live in the main window.",
+      "target": "高级设置位于主窗口。",
       "files": [
         "signal_timeline_viewer.py"
       ]
@@ -1443,6 +772,13 @@
       "target": "下载后：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "After every round the model looks at the same few frames it was not",
+      "target": "每轮结束后，模型都会查看同一组未参与训练的帧。",
+      "files": [
+        "modules/ui/training_preview.py"
       ]
     },
     {
@@ -1495,6 +831,20 @@
       ]
     },
     {
+      "source": "Also write each scored segment as its own file under\\n",
+      "target": "除了合并后的高光视频外，还会将每个得分片段分别导出到\\n",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Analyze",
+      "target": "分析",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Analyze",
       "target": "开始分析",
       "files": [
@@ -1509,10 +859,52 @@
       ]
     },
     {
+      "source": "Analyzing {timestamp:.1f}s",
+      "target": "正在分析 {timestamp:.1f} 秒",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Another analysis is already running — let it finish first.",
+      "target": "已有其他分析任务正在运行，请等待其完成。",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Apache 2.0 (recommended)",
       "target": "Apache 2.0（推荐）",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Apply rules",
+      "target": "应用规则",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Apply saved rules:",
+      "target": "应用已保存规则：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Apply the selected preset to these controls and to config.yaml.",
+      "target": "将所选预设应用到当前控件，并写入 config.yaml。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "are replaced, not stacked.",
+      "target": "替换，而不是重复叠加。",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -1537,14 +929,21 @@
       ]
     },
     {
-      "source": "At the maximum this means 'no upper bound' ",
+      "source": "Ask anything about this cut. Answers come from these findings and",
+      "target": "你可以询问这次剪辑的任何问题。回答将依据这些分析结果和",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "At the maximum this means 'no upper bound'",
       "target": "位于最大值时表示“不设上限”",
       "files": [
         "main.py"
       ]
     },
     {
-      "source": "At the minimum this means 'no lower bound' ",
+      "source": "At the minimum this means 'no lower bound'",
       "target": "位于最小值时表示“不设下限”",
       "files": [
         "main.py"
@@ -1554,6 +953,8 @@
       "source": "Audio",
       "target": "音频",
       "files": [
+        "frontend/src/lib/files.ts",
+        "signal_timeline_viewer.py",
         "video_ai_editor/signal_timeline.py"
       ]
     },
@@ -1579,10 +980,31 @@
       ]
     },
     {
+      "source": "Author",
+      "target": "作者",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "Auto",
       "target": "自动",
       "files": [
         "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "Auto (CUDA / OpenVINO / CPU)",
+      "target": "自动（CUDA / OpenVINO / CPU）",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
+      "source": "Auto (your action head if installed, else the old models)",
+      "target": "自动（优先使用已训练动作头，否则使用旧模型）",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -1614,6 +1036,13 @@
       ]
     },
     {
+      "source": "Automatic (match my hardware)",
+      "target": "自动（匹配当前硬件）",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Automatically add downloaded videos to file list",
       "target": "下载后自动添加到视频列表",
       "files": [
@@ -1621,7 +1050,7 @@
       ]
     },
     {
-      "source": "Available: ",
+      "source": "Available:",
       "target": "可用：",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
@@ -1657,6 +1086,13 @@
       ]
     },
     {
+      "source": "back-to-back windows of this length. Used only when clip time is 0.",
+      "target": "仅在“片段时长”为 0 时生效。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Backend",
       "target": "运行后端",
       "files": [
@@ -1668,7 +1104,8 @@
       "source": "Backend:",
       "target": "运行后端：",
       "files": [
-        "llm/llm_chat_widget.py"
+        "llm/llm_chat_widget.py",
+        "main.py"
       ]
     },
     {
@@ -1693,10 +1130,31 @@
       ]
     },
     {
+      "source": "before min/max length is applied. Used only when clip time is 0.",
+      "target": "仅在“片段时长”为 0 时生效。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Before you share",
       "target": "分享前确认",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Best moments — highest-scoring parts only, wherever they fall.",
+      "target": "最佳时刻——只选择最高分部分，不限制它们在视频中的位置。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Best moments ↔ Full story:",
+      "target": "最佳时刻 ↔ 完整叙事：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -1711,6 +1169,13 @@
       "target": "浏览并选择…",
       "files": [
         "frontend/src/components/VideoPickerDialog.tsx"
+      ]
+    },
+    {
+      "source": "Browse and install small detectors other people trained and shared",
+      "target": "浏览并安装其他用户训练并分享的小型检测模型。",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -1743,6 +1208,20 @@
       ]
     },
     {
+      "source": "Cache loaded: {os.path.basename(filepath)}\\n",
+      "target": "缓存已加载：{os.path.basename(filepath)}\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "cached, so re-running after a threshold edit is seconds.",
+      "target": "写入缓存，因此修改阈值后再次运行通常只需几秒。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Call it:",
       "target": "显示名称：",
       "files": [
@@ -1755,6 +1234,7 @@
       "files": [
         "main.py",
         "modules/ui/simple_start.py",
+        "signal_timeline_viewer.py",
         "video_ai_editor/search_panel.py",
         "video_picker_dialog.py"
       ]
@@ -1767,17 +1247,17 @@
       ]
     },
     {
-      "source": "cancelling…",
-      "target": "正在取消…",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
       "source": "Cancelling...",
       "target": "正在取消…",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "cancelling…",
+      "target": "正在取消…",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -1788,10 +1268,24 @@
       ]
     },
     {
+      "source": "Category",
+      "target": "分类",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "CC0 (no conditions)",
       "target": "CC0（无附加条件）",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Chat cleared. Ready for new questions.",
+      "target": "对话已清空，可以开始新的问题。",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -1893,6 +1387,13 @@
       ]
     },
     {
+      "source": "Choose a set of examples",
+      "target": "选择一组示例",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Choose a video",
       "target": "选择视频",
       "files": [
@@ -1907,10 +1408,31 @@
       ]
     },
     {
+      "source": "Choose the clips folder",
+      "target": "选择片段文件夹",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Choose what to remove.",
+      "target": "请选择要清除的内容。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Choose what to remove.",
       "target": "选择要排除的内容。",
       "files": [
         "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Choose...",
+      "target": "选择…",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -1944,6 +1466,13 @@
       ]
     },
     {
+      "source": "Clear everything",
+      "target": "全部清除",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Clear faces",
       "target": "清空人脸",
       "files": [
@@ -1972,6 +1501,13 @@
       ]
     },
     {
+      "source": "Cleared — ${res.remaining} kept",
+      "target": "已清除——保留 ${res.remaining} 项",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
       "source": "Click a face to find all segments where they appear.",
       "target": "点击人脸，查找此人物出现的所有片段。",
       "files": [
@@ -1993,7 +1529,14 @@
       ]
     },
     {
-      "source": "Click: accept / reject / none / undecided.  Right-click: ",
+      "source": "Click to name",
+      "target": "点击命名",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Click: accept / reject / none / undecided.  Right-click:",
       "target": "单击：接受 / 拒绝 / 都不是 / 未决定。右键：",
       "files": [
         "modules/teach/review_window.py"
@@ -2009,6 +1552,13 @@
     {
       "source": "CLIP + LLM",
       "target": "CLIP + 大模型",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "CLIP + LLM : CLIP ranks all frames on the GPU, the LLM confirms the top-K.",
+      "target": "CLIP + 大模型：CLIP 先在 GPU 上对全部帧排序，再由大模型确认 Top-K 候选。",
       "files": [
         "llm/llm_chat_widget.py"
       ]
@@ -2035,10 +1585,31 @@
       ]
     },
     {
+      "source": "CLIP only  : fast GPU similarity ranking; best for broad concepts.\\n",
+      "target": "仅 CLIP：使用 GPU 快速进行相似度排序，适合宽泛概念。\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "CLIP only (fast, GPU ranker)",
       "target": "仅 CLIP（快速，GPU 排序）",
       "files": [
         "frontend/src/components/tabs/VisionSearchTab.tsx"
+      ]
+    },
+    {
+      "source": "CLIP prefilter import failed: {e}",
+      "target": "CLIP 预筛选模块导入失败：{e}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "CLIP scan {chunk[-1]:.0f}s",
+      "target": "CLIP 扫描到 {chunk[-1]:.0f} 秒",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -2049,10 +1620,24 @@
       ]
     },
     {
+      "source": "Clip time (s, 0 = auto):",
+      "target": "片段时长（秒，0 = 自动）：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Clip trimmed",
       "target": "片段已修剪",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "CLIP unavailable — {reason}",
+      "target": "CLIP 不可用——{reason}",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -2063,10 +1648,73 @@
       ]
     },
     {
+      "source": "Clips at a time:",
+      "target": "每批片段数：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Clips folder:",
+      "target": "片段文件夹：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "clips in one folder per thing, named after what it shows, and choose",
+      "target": "文件夹名称就是要学习的类别，然后选择用于学习的视频。",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Collecting frames",
+      "target": "收集帧",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Collecting frames from your videos...",
+      "target": "收集帧 from your videos...",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Collecting frames... {done} of {total}",
+      "target": "收集帧... {done} of {total}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Combine highlights from all processed videos into one video",
       "target": "将所有已处理视频的高光合并为一个视频",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Comma-separated object classes to detect. Prefilled from the main",
+      "target": "输入要检测的物体类别，用逗号分隔。默认使用主窗口中的列表；",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Community",
+      "target": "社区",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Community",
+      "target": "社区模型",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -2077,7 +1725,7 @@
       ]
     },
     {
-      "source": "Community models are made by other users. Only models ",
+      "source": "Community models are made by other users. Only models",
       "target": "社区模型由其他用户制作。只有标记为“已验证”的模型",
       "files": [
         "model_hub/gui.py"
@@ -2095,6 +1743,13 @@
       "target": "构图规则",
       "files": [
         "frontend/src/components/CompositionRules.tsx",
+        "main.py"
+      ]
+    },
+    {
+      "source": "Composition rules",
+      "target": "构图规则",
+      "files": [
         "main.py"
       ]
     },
@@ -2134,6 +1789,13 @@
       ]
     },
     {
+      "source": "Confidence threshold:",
+      "target": "置信度阈值：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Confidence: {bar.confidence:.0%}",
       "target": "置信度：{bar.confidence:.0%}",
       "files": [
@@ -2164,6 +1826,13 @@
     {
       "source": "connect to what",
       "target": "连接到哪里",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Connected to {model if backend=='ollama' else os.path.basename(gguf_path)}.",
+      "target": "已连接到 {model if backend=='ollama' else os.path.basename(gguf_path)}。",
       "files": [
         "llm/llm_chat_widget.py"
       ]
@@ -2211,6 +1880,34 @@
       ]
     },
     {
+      "source": "Context",
+      "target": "背景信息",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "Context ready: {n_obj} object entries, {n_act} actions.",
+      "target": "上下文已就绪：{n_obj} 条物体记录，{n_act} 条动作记录。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Context: {ctx_chars:,} chars | {ctx_lines} lines |",
+      "target": "上下文：{ctx_chars:,} 字符 | {ctx_lines} 行 |",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Context: {vname} | {int(dur)}s |",
+      "target": "上下文：{vname} | {int(dur)} 秒 |",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Continue",
       "target": "继续",
       "files": [
@@ -2232,10 +1929,52 @@
       ]
     },
     {
+      "source": "could not be downloaded:",
+      "target": "下载失败：",
+      "files": [
+        "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": "Could not check right now.",
+      "target": "当前无法检查更新。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Could not clear",
+      "target": "无法清除",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
       "source": "Could not determine video duration",
       "target": "无法确定视频时长",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Could not import that export: {exc}",
+      "target": "无法导入该数据：{exc}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Could not open editor",
+      "target": "无法打开编辑器",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Could not open the Timeline Viewer",
+      "target": "无法打开时间线查看器",
+      "files": [
+        "frontend/src/App.tsx"
       ]
     },
     {
@@ -2246,10 +1985,38 @@
       ]
     },
     {
+      "source": "Could not read that file: {exc}",
+      "target": "无法读取该文件：{exc}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Could not remove",
+      "target": "无法移除",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Could not run the action trainer: {exc}",
+      "target": "无法运行动作训练器：{exc}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Could not save",
       "target": "无法保存",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Could not save ranges",
+      "target": "无法保存区间",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
       ]
     },
     {
@@ -2267,10 +2034,31 @@
       ]
     },
     {
+      "source": "Could not scan folder",
+      "target": "无法扫描文件夹",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "Could not set name",
+      "target": "无法设置名称",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
       "source": "Could not show output",
       "target": "无法显示输出文件",
       "files": [
         "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "Could not start scan",
+      "target": "无法开始扫描",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
       ]
     },
     {
@@ -2288,10 +2076,24 @@
       ]
     },
     {
+      "source": "Could not update face bank",
+      "target": "无法更新人脸库",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
       "source": "Couldn't load the community models. Check your internet connection. ({message})",
       "target": "无法加载社区模型，请检查网络连接。（{message}）",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "CPU x265 (VR-safe, slow)",
+      "target": "CPU x265（VR 兼容，较慢）",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -2302,6 +2104,13 @@
       ]
     },
     {
+      "source": "create a token",
+      "target": "创建令牌",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "Create one",
       "target": "创建账号",
       "files": [
@@ -2309,10 +2118,81 @@
       ]
     },
     {
+      "source": "Create subtitles:",
+      "target": "生成字幕：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Crop samples to the people in them (actions)",
       "target": "动作样本自动裁剪到人物区域",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Crop them out (experimental)",
+      "target": "裁掉这些内容（实验性）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
+      ]
+    },
+    {
+      "source": "Ctrl+click / Shift+click / Ctrl+A to multi-select, then Delete to remove",
+      "target": "Ctrl+单击 / Shift+单击 / Ctrl+A 可多选，按 Delete 删除",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "current step first. Try again in a moment.",
+      "target": "请稍后再试。",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Custom",
+      "target": "自定义",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Custom (my trained model)",
+      "target": "自定义（我训练的模型）",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
+      "source": "Custom OpenVINO",
+      "target": "自定义 OpenVINO",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
+      "source": "Custom OpenVINO ({self._custom_ov_count} classes)",
+      "target": "自定义 OpenVINO（{self._custom_ov_count} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Custom — a model you trained (auto-detected from models/custom/)\\n",
+      "target": "自定义——你训练的模型（自动从 models/custom/ 检测）\\n",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Cut / encode:",
+      "target": "剪切 / 编码：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -2337,6 +2217,20 @@
       ]
     },
     {
+      "source": "cycles accept / reject / undecided). Then press Enter.",
+      "target": "接受 / 拒绝 / 未决定之间切换）。确认后按 Enter。",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "Data keys: {', '.join(sorted(self._analysis_data.keys()))}",
+      "target": "数据字段：{', '.join(sorted(self._analysis_data.keys()))}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "dated automatically",
       "target": "自动按日期命名",
       "files": [
@@ -2352,7 +2246,7 @@
       ]
     },
     {
-      "source": "Decide on the real shapes, traced inside the ",
+      "source": "Decide on the real shapes, traced inside the",
       "target": "根据框内描绘出的真实轮廓判断形状",
       "files": [
         "main.py"
@@ -2370,6 +2264,13 @@
       "target": "默认置信度",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "defaults (vision models recommended)",
+      "target": "默认模型（推荐使用视觉模型）",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -2403,8 +2304,8 @@
       ]
     },
     {
-      "source": "Describe your model",
-      "target": "描述你的模型",
+      "source": "Description",
+      "target": "描述",
       "files": [
         "model_hub/gui.py"
       ]
@@ -2418,10 +2319,31 @@
       ]
     },
     {
+      "source": "Detailed settings remain here for people who want the knobs.",
+      "target": "需要更多控制时仍可返回详细设置。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Detailed settings…",
       "target": "详细设置…",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "Detect audio peaks (and the waveform) over the whole video.",
+      "target": "检测整个视频的音频峰值并生成波形。",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Detect the object classes listed above",
+      "target": "检测上方列出的物体类别",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -2432,10 +2354,45 @@
       ]
     },
     {
+      "source": "Detector model size:",
+      "target": "检测模型大小：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Detector models (*.onnx *.xml);;All files (*)",
+      "target": "检测模型 (*.onnx *.xml);;所有文件 (*)",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Detector type",
       "target": "检测器类型",
       "files": [
         "frontend/src/components/tabs/AdvancedTab.tsx"
+      ]
+    },
+    {
+      "source": "Detector type:",
+      "target": "检测器类型：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "detects it. Overrides the main GUI's saved language for this run.",
+      "target": "此设置仅作用于本次运行，并覆盖主窗口保存的语言设置。",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Disable to skip the face-recognition step entirely (faster, no avoid enforcement).",
+      "target": "关闭后将完全跳过人脸识别步骤（速度更快，但不会执行人物排除）。",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -2456,7 +2413,22 @@
       "source": "Display Label",
       "target": "显示名称",
       "files": [
-        "frontend/src/components/CompositionRules.tsx"
+        "frontend/src/components/CompositionRules.tsx",
+        "main.py"
+      ]
+    },
+    {
+      "source": "Don't process",
+      "target": "不处理，仅下载",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Don't process — just download.\\n",
+      "target": "不处理——只下载视频。\\n",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -2471,6 +2443,35 @@
       "target": "不再推荐 Pro",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Done",
+      "target": "完成",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "Done.",
+      "target": "完成。",
+      "files": [
+        "modules/teach/teach_panel.py",
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "done:",
+      "target": "完成：",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "double-click to play. Then press Enter.",
+      "target": "双击播放。确认后按 Enter。",
+      "files": [
+        "modules/teach/review_window.py"
       ]
     },
     {
@@ -2503,8 +2504,8 @@
       ]
     },
     {
-      "source": "Download it now? {_mb(pack.bytes)} to download, {_mb(pack.bytes_installed)} ",
-      "target": "现在下载吗？下载量 {_mb(pack.bytes)}，安装后占用 {_mb(pack.bytes_installed)} ",
+      "source": "Download it now? {_mb(pack.bytes)} to download, {_mb(pack.bytes_installed)}",
+      "target": "现在下载吗？下载量 {_mb(pack.bytes)}，安装后占用 {_mb(pack.bytes_installed)}",
       "files": [
         "modules/packs/pack_ui.py"
       ]
@@ -2552,6 +2553,13 @@
       ]
     },
     {
+      "source": "Downloading NVIDIA GPU acceleration",
+      "target": "正在下载 NVIDIA GPU 加速组件",
+      "files": [
+        "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
       "source": "Downloading {title}…",
       "target": "正在下载 {title}…",
       "files": [
@@ -2566,10 +2574,17 @@
       ]
     },
     {
-      "source": "Downloading NVIDIA GPU acceleration",
-      "target": "正在下载 NVIDIA GPU 加速组件",
+      "source": "Downloads",
+      "target": "下载量",
       "files": [
-        "packaging/installer/videohighlighter-packs.iss"
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Drag signal bars → edit timeline\\n",
+      "target": "拖动信号条 → 添加到编辑时间线\\n",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -2608,8 +2623,22 @@
       ]
     },
     {
+      "source": "Duck under clip audio",
+      "target": "压低原声后混合",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
       "source": "Duck under it",
       "target": "自动压低原音频",
+      "files": [
+        "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Duplicate",
+      "target": "复制",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
       ]
@@ -2636,15 +2665,43 @@
       ]
     },
     {
-      "source": "Edit duration: {total_duration:.1f}s",
-      "target": "剪辑时长：{total_duration:.1f} 秒",
+      "source": "Duration: {duration}s ({minutes}:{seconds:02d})",
+      "target": "时长：{duration} 秒（{minutes}:{seconds:02d}）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Duration: {int(dur)}s ({int(dur)//60}m{int(dur)%60:02d}s) |",
+      "target": "时长：{int(dur)} 秒（{int(dur)//60} 分 {int(dur)%60:02d} 秒） |",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Duration: {mins:02d}:{secs:02d} • Actions: {len(self.action_types)} •",
+      "target": "时长：{mins:02d}:{secs:02d} • 动作：{len(self.action_types)} •",
       "files": [
         "signal_timeline_viewer.py"
       ]
     },
     {
+      "source": "e.g. why is every clip so similar?",
+      "target": "例如：为什么每个片段看起来都很相似？",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Edit duration: 0.0s",
       "target": "剪辑时长：0.0 秒",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Edit duration: {total_duration:.1f}s",
+      "target": "剪辑时长：{total_duration:.1f} 秒",
       "files": [
         "signal_timeline_viewer.py"
       ]
@@ -2693,10 +2750,24 @@
       ]
     },
     {
+      "source": "End must be after start",
+      "target": "结束时间必须晚于开始时间",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
       "source": "End time (seconds):",
       "target": "结束时间（秒）：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Ending",
+      "target": "结尾文案",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
       ]
     },
     {
@@ -2736,13 +2807,6 @@
     },
     {
       "source": "Enter",
-      "target": "添加",
-      "files": [
-        "frontend/src/components/tabs/AvoidTab.tsx"
-      ]
-    },
-    {
-      "source": "Enter",
       "target": "发送",
       "files": [
         "frontend/src/components/tabs/LlmChatTab.tsx"
@@ -2753,6 +2817,13 @@
       "target": "搜索",
       "files": [
         "frontend/src/components/tabs/VisionSearchTab.tsx"
+      ]
+    },
+    {
+      "source": "Enter",
+      "target": "添加",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
       ]
     },
     {
@@ -2777,10 +2848,10 @@
       ]
     },
     {
-      "source": "Error: {e}",
-      "target": "错误：{e}",
+      "source": "Error — see log",
+      "target": "发生错误——请查看日志",
       "files": [
-        "llm/llm_chat_widget.py"
+        "frontend/src/App.tsx"
       ]
     },
     {
@@ -2791,10 +2862,18 @@
       ]
     },
     {
+      "source": "Error: {e}",
+      "target": "错误：{e}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Event Name",
       "target": "事件名称",
       "files": [
-        "frontend/src/components/CompositionRules.tsx"
+        "frontend/src/components/CompositionRules.tsx",
+        "main.py"
       ]
     },
     {
@@ -2826,7 +2905,7 @@
       ]
     },
     {
-      "source": "Everything else works; visual search, chapters and taught categories ",
+      "source": "Everything else works; visual search, chapters and taught categories",
       "target": "其他功能仍可正常使用；视觉搜索、章节和已训练类别功能",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
@@ -2837,6 +2916,41 @@
       "target": "固定时长",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx"
+      ]
+    },
+    {
+      "source": "Exact duration (s, 0 = off):",
+      "target": "精确时长（秒，0 = 关闭）：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Examples",
+      "target": "示例",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Examples:",
+      "target": "示例：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Examples: 'add a clip at 0:10 to 0:15', 'remove clip 2',",
+      "target": "例如：添加 0:10 到 0:15 的片段、删除第 2 个片段、",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Examples: 'Person is punching person', 'Person drinking from cup', 'Multiple people talking'",
+      "target": "例如：“人物正在击打人物”“人物正在用杯子喝水”“多人正在交谈”",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -2851,6 +2965,20 @@
       "target": "导出",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Export clips: OFF",
+      "target": "单独导出片段：关",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Export clips: ON",
+      "target": "单独导出片段：开",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -2875,8 +3003,23 @@
       ]
     },
     {
+      "source": "Extra-Large (most accurate, slowest)",
+      "target": "Extra-Large（最准确，最慢）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
+      ]
+    },
+    {
       "source": "face database not available",
       "target": "人脸库不可用",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Face expression",
+      "target": "人脸表情",
       "files": [
         "main.py"
       ]
@@ -2889,13 +3032,6 @@
       ]
     },
     {
-      "source": "failed — see log",
-      "target": "失败 — 请查看日志",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
       "source": "Failed to extract waveform (None)",
       "target": "提取波形失败（无数据）",
       "files": [
@@ -2903,10 +3039,10 @@
       ]
     },
     {
-      "source": "Failed to load listing: {msg}",
-      "target": "加载列表失败：{msg}",
+      "source": "Failed to load cache: {e}",
+      "target": "加载缓存失败：{e}",
       "files": [
-        "video_picker_dialog.py"
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -2917,10 +3053,45 @@
       ]
     },
     {
+      "source": "Failed to load listing: {msg}",
+      "target": "加载列表失败：{msg}",
+      "files": [
+        "video_picker_dialog.py"
+      ]
+    },
+    {
+      "source": "Failed while {stage}: {exc}",
+      "target": "在“{stage}”阶段失败：{exc}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "failed — see log",
+      "target": "失败 — 请查看日志",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Feed video analysis cache so the LLM has context.",
       "target": "将视频分析缓存提供给大模型作为上下文。",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Fetches what the ticked rules read and the cache lacks:",
+      "target": "自动补充已勾选规则所需、但缓存中尚不存在的数据：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "FFmpeg error:\\n{last_err}",
+      "target": "FFmpeg 错误：\\n{last_err}",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -2987,10 +3158,24 @@
       ]
     },
     {
+      "source": "Filters",
+      "target": "筛选",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Find and explain the moments that matter",
       "target": "发现并解释真正重要的精彩瞬间",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "Finds: {', '.join(d.labels)}.",
+      "target": "识别内容：{', '.join(d.labels)}。",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -3058,6 +3243,20 @@
       ]
     },
     {
+      "source": "Found per round:",
+      "target": "每轮识别结果：",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "Found {len(models)} Ollama models{where}",
+      "target": "找到 {len(models)} 个 Ollama 模型{where}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Frame skip",
       "target": "跳帧",
       "files": [
@@ -3065,10 +3264,38 @@
       ]
     },
     {
+      "source": "Frame skip:",
+      "target": "帧间隔：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Frames",
+      "target": "帧数",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "Frames appear here while a run is detecting objects or actions.",
       "target": "处理流程检测物体或动作时，检测帧会显示在这里。",
       "files": [
         "frontend/src/components/DetectionPreview.tsx"
+      ]
+    },
+    {
+      "source": "Frames at a time:",
+      "target": "每批帧数：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "frames it was not trained on, and you can see what it finds.",
+      "target": "你可以直接看到它识别到了什么。",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -3100,10 +3327,31 @@
       ]
     },
     {
+      "source": "From videos",
+      "target": "从视频学习",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "From:",
       "target": "从：",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Full story — every part of the video is represented.",
+      "target": "完整叙事——视频各部分都会有所体现。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Full traceback: {traceback.format_exc()}",
+      "target": "完整错误堆栈：{traceback.format_exc()}",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3112,6 +3360,20 @@
       "files": [
         "frontend/src/components/TimeRange.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Full video — download the whole thing.\\n",
+      "target": "完整视频——下载全部内容。\\n",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Game",
+      "target": "游戏",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -3158,6 +3420,13 @@
       ]
     },
     {
+      "source": "Give it one folder per action, with a few short clips inside each.",
+      "target": "每个动作准备一个文件夹，并在其中放入若干短视频片段。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "GPS track",
       "target": "GPS 轨迹",
       "files": [
@@ -3172,6 +3441,34 @@
       ]
     },
     {
+      "source": "GPU (fast, may break VR)",
+      "target": "GPU（快速，部分 VR 播放器可能不兼容）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "guess. Click the wrong ones: click cycles accept / reject / none of",
+      "target": "点击错误项可在“接受 / 拒绝 / 都不是 / 未决定”之间切换；",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "H",
+      "target": "高",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "have not touched the app for a couple of minutes, and keeps a few",
+      "target": "只保留少量",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
       "source": "hf_… (token with write permission)",
       "target": "hf_…（具有写入权限的令牌）",
       "files": [
@@ -3179,17 +3476,17 @@
       ]
     },
     {
-      "source": "Hide all",
-      "target": "全部隐藏",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
       "source": "Hide All",
       "target": "全部隐藏",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Hide all",
+      "target": "全部隐藏",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
       ]
     },
     {
@@ -3256,24 +3553,10 @@
       ]
     },
     {
-      "source": "Higher = only the loudest moments. Use ◀▶ on the ",
+      "source": "Higher = only the loudest moments. Use ◀▶ on the",
       "target": "数值越高，只保留最明显的时刻。可使用 ◀▶ 浏览",
       "files": [
         "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "Highlight {i + 1} ({duration:.1f}s, score {score:.2f})",
-      "target": "高光 {i + 1}（{duration:.1f} 秒，得分 {score:.2f}）",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
-      ]
-    },
-    {
-      "source": "Highlight {i + 1} ({duration:.1f}s)",
-      "target": "高光 {i + 1}（{duration:.1f} 秒）",
-      "files": [
-        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -3288,6 +3571,20 @@
       "target": "高光报告",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Highlight {i + 1} ({duration:.1f}s)",
+      "target": "高光 {i + 1}（{duration:.1f} 秒）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Highlight {i + 1} ({duration:.1f}s, score {score:.2f})",
+      "target": "高光 {i + 1}（{duration:.1f} 秒，得分 {score:.2f}）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -3340,24 +3637,17 @@
       ]
     },
     {
-      "source": "ℹ️ Enable bounding boxes, creates new file with extension _annotated.mp4 for debugging",
-      "target": "ℹ️ 启用检测框后会生成带 _annotated.mp4 后缀的新文件，用于调试",
+      "source": "How many top CLIP candidates to keep (CLIP only) or send to the LLM",
+      "target": "保留多少个 CLIP 高分候选（仅 CLIP），或发送给大模型",
       "files": [
-        "main.py"
+        "llm/llm_chat_widget.py"
       ]
     },
     {
-      "source": "ℹ️ No annotated videos found yet — use Generate buttons",
-      "target": "ℹ️ 尚未找到已标注视频 — 请使用生成按钮",
+      "source": "I nearly quit at mile 38",
+      "target": "例如：我差点在第 38 英里放弃",
       "files": [
-        "video_ai_editor/bbox_overlay.py"
-      ]
-    },
-    {
-      "source": "ℹ️ No highlights to load — edit timeline starts empty",
-      "target": "ℹ️ 没有可加载的高光 — 剪辑时间线将从空白开始",
-      "files": [
-        "video_ai_editor/edit_timeline.py"
+        "frontend/src/components/tabs/ReelTab.tsx"
       ]
     },
     {
@@ -3368,10 +3658,59 @@
       ]
     },
     {
+      "source": "If you are not sure, don't share. This is general guidance, not legal advice.",
+      "target": "此处仅为一般性说明，不构成法律建议。",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Import a labeller export",
+      "target": "导入标注工具数据",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Import custom action model",
+      "target": "导入自定义动作模型",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Import from labeller...",
+      "target": "从标注工具导入…",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Import model…",
       "target": "导入模型…",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Import object detector model",
+      "target": "导入物体检测模型",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Improving in the background; this finishes its",
+      "target": "正在后台继续改进；程序会先完成当前步骤。",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "In",
+      "target": "入点",
+      "files": [
+        "frontend/src/components/tabs/TimelineTab.tsx"
       ]
     },
     {
@@ -3439,17 +3778,45 @@
       ]
     },
     {
-      "source": "Install without it? ",
+      "source": "Install without it?",
       "target": "是否不安装该组件并继续？",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
       ]
     },
     {
-      "source": "Installed {model.manifest.display_name}. ",
+      "source": "installed",
+      "target": "已安装",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Installed {model.manifest.display_name}.",
       "target": "已安装 {model.manifest.display_name}。",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Intel - OpenVINO encoder",
+      "target": "Intel - OpenVINO 编码器",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Intel Kinetics-400 ({self._intel_count} classes)",
+      "target": "Intel Kinetics-400（{self._intel_count} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Interest regions closer than this many seconds become one region",
+      "target": "间隔小于此秒数的兴趣区域会先合并，再应用最短/最长片段限制。",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3457,6 +3824,34 @@
       "target": "间隔：",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Intro (window, points):",
+      "target": "片头（时间窗、加分）：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Invalid JSON in {os.path.basename(filepath)}: {e}",
+      "target": "{os.path.basename(filepath)} 中的 JSON 无效：{e}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "It appears in the community models within a few minutes. Thank you!",
+      "target": "几分钟后即可在社区模型中看到它，感谢分享！",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "it is another class.  Double-click: play.",
+      "target": "右键可指定为其他类别；双击播放。",
+      "files": [
+        "modules/teach/review_window.py"
       ]
     },
     {
@@ -3481,6 +3876,13 @@
       ]
     },
     {
+      "source": "JSON (*.json);;All files (*)",
+      "target": "JSON (*.json);;所有文件 (*)",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Jump back to the live frame and resume following",
       "target": "跳回实时画面并继续跟随",
       "files": [
@@ -3488,10 +3890,24 @@
       ]
     },
     {
+      "source": "Jump to the newest round and keep following",
+      "target": "跳到最新一轮并持续跟随",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
       "source": "Keep improving in the background while the app is idle",
       "target": "软件空闲时在后台持续改进",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Keep named / avoided",
+      "target": "保留已命名 / 已排除",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3523,10 +3939,38 @@
       ]
     },
     {
+      "source": "Keyword points (keywords in transcript):",
+      "target": "关键词加分（转录中的关键词）：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Kind",
+      "target": "类型",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Kinetics-400 pretrained",
+      "target": "Kinetics-400 预训练",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
       "source": "Label: {bar.label}",
       "target": "标签：{bar.label}",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Labels (*.json);;All files (*)",
+      "target": "标注文件 (*.json);;所有文件 (*)",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -3537,10 +3981,25 @@
       ]
     },
     {
+      "source": "Labels file for this decoder (idx_to_label JSON)",
+      "target": "该解码器的标签文件（idx_to_label JSON）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Language:",
       "target": "语言：",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Large (accurate, slower)",
+      "target": "Large（更准确，较慢）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
       ]
     },
     {
@@ -3581,6 +4040,34 @@
       ]
     },
     {
+      "source": "Learning",
+      "target": "训练中",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Learning... round {done} of {total}",
+      "target": "训练中… 第 {done}/{total} 轮",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Learning... round {update.epoch} of {update.total_epochs}",
+      "target": "训练中... round {update.epoch} of {update.total_epochs}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Left-drag background → highlight range, then drag range → edit timeline\\n",
+      "target": "在背景上按住左键拖动 → 选择高光范围，再拖动该范围 → 添加到编辑时间线\\n",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Legal",
       "target": "法律信息",
       "files": [
@@ -3596,8 +4083,43 @@
       ]
     },
     {
+      "source": "Length of each fixed window, in seconds, around a scored second.",
+      "target": "每个固定窗口围绕得分秒数展开，单位为秒。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "levels, e.g. sports/tennis or games/some-title.",
       "target": "，例如 sports/tennis 或 games/some-title。",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Licence",
+      "target": "许可证",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "lighter",
+      "target": "更轻量",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "list and cache the events.",
+      "target": "并缓存生成的事件。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "listed in VideoHighlighter's community models.",
+      "target": "并列入 VideoHighlighter 社区模型列表。",
       "files": [
         "model_hub/gui.py"
       ]
@@ -3655,6 +4177,13 @@
     {
       "source": "LLM only",
       "target": "仅大模型",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "LLM only   : the vision model checks every frame (slow, reasons, uncensored).\\n",
+      "target": "仅大模型：视觉模型逐帧检查，速度较慢，但可以进行推理。\\n",
       "files": [
         "llm/llm_chat_widget.py"
       ]
@@ -3723,6 +4252,13 @@
       ]
     },
     {
+      "source": "loaded",
+      "target": "已加载",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Loaded",
       "target": "已加载",
       "files": [
@@ -3734,6 +4270,13 @@
       "target": "已加载 ${doc.cuts?.length ?? 0} 个片段",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Loaded {os.path.basename(json_path)} —",
+      "target": "已加载 {os.path.basename(json_path)} ——",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -3758,8 +4301,8 @@
       ]
     },
     {
-      "source": "Loading {model_name}...",
-      "target": "正在加载 {model_name}…",
+      "source": "Loading CLIP on GPU (first run downloads the model)...",
+      "target": "正在 GPU 上加载 CLIP（首次运行需要下载模型）…",
       "files": [
         "llm/llm_chat_widget.py"
       ]
@@ -3780,16 +4323,52 @@
       ]
     },
     {
+      "source": "Loading the assistant…",
+      "target": "正在加载智能助手…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Loading the detection runtime…",
+      "target": "正在加载检测运行环境…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Loading the video engine…",
+      "target": "正在加载视频引擎…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Loading {model_name}...",
+      "target": "正在加载 {model_name}…",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "loading…",
       "target": "加载中…",
       "files": [
         "video_ai_editor/edit_timeline.py",
+        "video_ai_editor/hover_preview.py",
         "video_picker_dialog.py"
       ]
     },
     {
       "source": "Log Output:",
       "target": "日志输出：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Longest auto clip, in seconds. Longer regions are split into",
+      "target": "自动片段的最长时长（秒）。更长区域会按该时长拆成连续片段。",
       "files": [
         "main.py"
       ]
@@ -3813,6 +4392,13 @@
       "target": "使用 / 分隔的小写英文，例如 animals/horses",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Make subtitles",
+      "target": "生成字幕",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3847,7 +4433,15 @@
       "source": "Max",
       "target": "最大",
       "files": [
-        "frontend/src/components/CompositionRules.tsx"
+        "frontend/src/components/CompositionRules.tsx",
+        "main.py"
+      ]
+    },
+    {
+      "source": "Max clip length (s):",
+      "target": "最长片段（秒）：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3858,10 +4452,25 @@
       ]
     },
     {
+      "source": "Max highlight duration (s):",
+      "target": "最大高光时长（秒）：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Max results",
       "target": "最大结果数",
       "files": [
         "frontend/src/components/tabs/VisionSearchTab.tsx"
+      ]
+    },
+    {
+      "source": "MC3-18 (mixed convolution)",
+      "target": "MC3-18（混合卷积）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
       ]
     },
     {
@@ -3872,10 +4481,25 @@
       ]
     },
     {
+      "source": "Medium (balanced)",
+      "target": "Medium（均衡）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
+      ]
+    },
+    {
       "source": "Merge gap",
       "target": "合并间隔",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx"
+      ]
+    },
+    {
+      "source": "Merge gap (s):",
+      "target": "合并间隔（秒）：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3886,9 +4510,24 @@
       ]
     },
     {
+      "source": "Merged into the existing person",
+      "target": "已合并到现有人物",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Method:",
+      "target": "训练方式：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Middle",
       "target": "中间",
       "files": [
+        "frontend/src/components/TimeRange.tsx",
         "main.py"
       ]
     },
@@ -3896,7 +4535,15 @@
       "source": "Min",
       "target": "最小",
       "files": [
-        "frontend/src/components/CompositionRules.tsx"
+        "frontend/src/components/CompositionRules.tsx",
+        "main.py"
+      ]
+    },
+    {
+      "source": "Min clip length (s):",
+      "target": "最短片段（秒）：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3907,6 +4554,13 @@
       ]
     },
     {
+      "source": "MISSING",
+      "target": "缺失",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
       "source": "Mix",
       "target": "混合",
       "files": [
@@ -3914,10 +4568,59 @@
       ]
     },
     {
+      "source": "Mix under clip audio",
+      "target": "与片段音频混合",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
       "source": "Mix with it",
       "target": "与原音频混合",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Mixed — all available models",
+      "target": "混合——使用全部可用模型",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
+      "source": "Mixed — all models ({total} classes)",
+      "target": "混合——全部模型（{total} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Mixed — both decoders ({total} classes)",
+      "target": "混合——两个解码器（{total} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Mixed — both R3D ({total} classes)",
+      "target": "混合——两个 R3D 模型（{total} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Mixed — standard + {m['name']} (80 + {n})",
+      "target": "混合——标准 + {m['name']}（80 + {n}）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Mixed — the standard detector + your custom model together",
+      "target": "混合——同时使用标准检测器和你的自定义模型",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -3931,7 +4634,8 @@
       "source": "Model",
       "target": "模型",
       "files": [
-        "frontend/src/components/tabs/LlmChatTab.tsx"
+        "frontend/src/components/tabs/LlmChatTab.tsx",
+        "model_hub/gui.py"
       ]
     },
     {
@@ -3963,6 +4667,13 @@
       ]
     },
     {
+      "source": "Model size:",
+      "target": "模型大小：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Model:",
       "target": "模型：",
       "files": [
@@ -3981,6 +4692,13 @@
       "target": "报告使用的模型",
       "files": [
         "modules/ui/model_dialog.py"
+      ]
+    },
+    {
+      "source": "Models:",
+      "target": "模型：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -4024,6 +4742,13 @@
       "files": [
         "frontend/src/components/tabs/AdvancedTab.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Motion: {n_motion} events, {n_peaks} peaks | Audio peaks: {n_audio}",
+      "target": "运动事件：{n_motion} | 运动峰值：{n_peaks} | 音频峰值：{n_audio}",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -4090,6 +4815,21 @@
       ]
     },
     {
+      "source": "named thing, and tight? Click the wrong ones to reject them (click",
+      "target": "并且足够贴合？点击错误项即可拒绝（点击可在",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "Nano (fastest, lowest accuracy)",
+      "target": "Nano（最快，精度最低）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
+      ]
+    },
+    {
       "source": "Need help, found a bug, or have a feature request? Reach us here:",
       "target": "需要帮助、发现问题或有功能建议？可通过以下方式联系我们：",
       "files": [
@@ -4104,8 +4844,8 @@
       ]
     },
     {
-      "source": "Needed: about ",
-      "target": "需要：约 ",
+      "source": "Needed: about",
+      "target": "需要：约",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
       ]
@@ -4140,10 +4880,24 @@
       ]
     },
     {
-      "source": "No account yet? <a href=\"https://huggingface.co/join\">Create one</a>, ",
+      "source": "Next:",
+      "target": "下一步：",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "No account yet? <a href=\"https://huggingface.co/join\">Create one</a>,",
       "target": "还没有账号？<a href=\"https://huggingface.co/join\">创建账号</a>，",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "No action head installed - train one first",
+      "target": "未安装动作头——请先训练一个",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -4151,6 +4905,13 @@
       "target": "没有分析数据",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "NO ANALYSIS DATA LOADED!\\n",
+      "target": "未加载分析数据！\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -4196,13 +4957,6 @@
       ]
     },
     {
-      "source": "No community models yet. Train one in the Train tab ",
-      "target": "暂无社区模型。可在“训练”页训练一个并率先分享。",
-      "files": [
-        "model_hub/gui.py"
-      ]
-    },
-    {
       "source": "No cut list at that path yet — run the Auto tab first",
       "target": "该路径下还没有剪辑列表 — 请先运行“自动”页。",
       "files": [
@@ -4238,6 +4992,13 @@
       ]
     },
     {
+      "source": "No GPU found, so expect the first pass to be long.",
+      "target": "未检测到 GPU，第一次处理可能需要较长时间。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "No log to show",
       "target": "暂无日志可显示",
       "files": [
@@ -4266,10 +5027,24 @@
       ]
     },
     {
+      "source": "No Ollama answered{where or ' on this machine'} - showing",
+      "target": "未检测到可用的 Ollama 服务{where or '（本机）'}，正在显示",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "No output yet",
       "target": "尚无输出",
       "files": [
         "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "No picture for this round — the live view was not open while it ran.",
+      "target": "本轮没有图片——训练进行时实时预览窗口未打开。",
+      "files": [
+        "modules/ui/training_preview.py"
       ]
     },
     {
@@ -4352,10 +5127,38 @@
       ]
     },
     {
+      "source": "No videos selected.",
+      "target": "未选择任何视频。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "none",
+      "target": "无",
+      "files": [
+        "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "none chosen",
+      "target": "尚未选择",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "none of these",
       "target": "都不是",
       "files": [
         "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "Not a loudness burst, which compares each moment to its own neighborhood.",
+      "target": "它不同于响度突增；响度突增会把每个时刻与其附近片段比较。",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -4373,8 +5176,8 @@
       ]
     },
     {
-      "source": "Not enough free space on ",
-      "target": "磁盘 ",
+      "source": "Not enough free space on",
+      "target": "磁盘",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
       ]
@@ -4398,6 +5201,27 @@
       "target": "未保存",
       "files": [
         "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "note",
+      "target": "提示",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Nothing accepted yet",
+      "target": "目前还没有已接受的示例",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "nothing else scored. Ignored when exact duration is above 0.",
+      "target": "当“精确时长”大于 0 时忽略此项。",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -4458,6 +5282,13 @@
       ]
     },
     {
+      "source": "Object model:",
+      "target": "物体模型：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Object Recognition",
       "target": "物体识别",
       "files": [
@@ -4470,6 +5301,8 @@
       "target": "物体",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx",
+        "modules/ui/training_panel.py",
+        "signal_timeline_viewer.py",
         "video_ai_editor/filter_dialogs.py"
       ]
     },
@@ -4481,10 +5314,17 @@
       ]
     },
     {
-      "source": "objects: a thing visible in one frame",
-      "target": "物体：单帧中可见的对象",
+      "source": "Objects: {len(self.object_classes)} | Edit: {edit_len:.1f}s",
+      "target": "物体：{len(self.object_classes)} | 编辑长度：{edit_len:.1f} 秒",
       "files": [
-        "modules/teach/teach_panel.py"
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Objects: {n_obj} | Actions: {n_act} |",
+      "target": "物体：{n_obj} | 动作：{n_act} |",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -4495,10 +5335,24 @@
       ]
     },
     {
+      "source": "Off (default): the ACTIONS row shows every detected action.\\n",
+      "target": "关闭（默认）：动作轨道显示检测到的全部动作。\\n",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Off — cut where the action is",
       "target": "关闭 — 按动作位置剪切",
       "files": [
         "frontend/src/components/tabs/AutoTab.tsx"
+      ]
+    },
+    {
+      "source": "OK",
+      "target": "正常",
+      "files": [
+        "modules/teach/teach_panel.py"
       ]
     },
     {
@@ -4516,10 +5370,24 @@
       ]
     },
     {
+      "source": "On",
+      "target": "启用",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "on disk. It is downloaded once; app updates keep it. {after}",
       "target": "磁盘空间。只需下载一次，软件更新时会保留。{after}",
       "files": [
         "modules/packs/pack_ui.py"
+      ]
+    },
+    {
+      "source": "On: only the actions selected into the highlight.\\n",
+      "target": "开启：只显示最终入选高光的动作。\\n",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -4530,10 +5398,38 @@
       ]
     },
     {
+      "source": "One hit per cut, not for the rest of the scene.",
+      "target": "每次切换只记一次，不会持续给后续场景加分。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "One-button workspace: drop a video, press Analyze, stay there.\\n",
+      "target": "一键式工作区：添加视频后直接分析即可。\\n",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Only score actions when objects detected",
       "target": "仅在检测到物体时给动作加分",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Only the model is shared — never your videos, frames or audio. Some",
+      "target": "只会分享模型，绝不会上传你的视频、视频帧或音频。部分发行商会在服务条款中",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "only those. Prefilled from the main window's action keywords.",
+      "target": "默认使用主窗口中的动作关键词。",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -4551,10 +5447,24 @@
       ]
     },
     {
+      "source": "ONNX Runtime or OpenVINO. Install it?",
+      "target": "ONNX Runtime 或 OpenVINO 运行。是否安装？",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "Open a grid of the site's videos (thumbnails) and pick which ones to download",
       "target": "以缩略图网格显示页面视频，并选择要下载的内容",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Open a live view: after every round the model looks at the same few",
+      "target": "打开实时预览：每轮结束后，模型都会查看同一组未参与训练的帧，",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -4593,6 +5503,13 @@
       ]
     },
     {
+      "source": "Open the report explaining why each highlight was chosen.\\n",
+      "target": "打开解释每个高光为什么被选中的报告。\\n",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Open timeline",
       "target": "打开时间线",
       "files": [
@@ -4600,10 +5517,31 @@
       ]
     },
     {
+      "source": "Opening line",
+      "target": "开场文案",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
       "source": "Opening timeline viewer",
       "target": "正在打开时间线查看器",
       "files": [
         "modules/system/startup_splash.py"
+      ]
+    },
+    {
+      "source": "OpenVINO, Intel model (deprecated)",
+      "target": "OpenVINO Intel 模型（已弃用）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "optional — shots snap to its beat",
+      "target": "可选——镜头会自动对齐节拍",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
       ]
     },
     {
@@ -4621,13 +5559,6 @@
       ]
     },
     {
-      "source": "Optional: gameplay, sports, music video…",
-      "target": "可选：游戏、体育、音乐视频等",
-      "files": [
-        "model_hub/gui.py"
-      ]
-    },
-    {
       "source": "Optional. Describe the beats of the film — press Template for a starting point.",
       "target": "可选。描述影片节奏与结构 — 可点击“模板”快速开始。",
       "files": [
@@ -4635,10 +5566,31 @@
       ]
     },
     {
+      "source": "Optional. Leave blank to detect every action; or list names to keep",
+      "target": "可选。留空表示检测全部动作；也可以输入动作名称，只保留指定动作。",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Optional: gameplay, sports, music video…",
+      "target": "可选：游戏、体育、音乐视频等",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "or click to choose a file  ·  mp4, mov, mkv, avi",
       "target": "或点击选择文件 · 支持 mp4、mov、mkv、avi",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "orange a guess that matches nothing.",
+      "target": "橙色表示预测没有匹配到任何标注。",
+      "files": [
+        "modules/ui/training_preview.py"
       ]
     },
     {
@@ -4652,7 +5604,8 @@
       "source": "Outline",
       "target": "轮廓",
       "files": [
-        "frontend/src/components/CompositionRules.tsx"
+        "frontend/src/components/CompositionRules.tsx",
+        "main.py"
       ]
     },
     {
@@ -4674,6 +5627,13 @@
       "target": "输出名称",
       "files": [
         "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "Outro (window, points):",
+      "target": "片尾（时间窗、加分）：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -4740,10 +5700,52 @@
       ]
     },
     {
+      "source": "People you name in the Timeline Viewer (right-click a face → Name)",
+      "target": "你在时间线查看器中命名的人物（右键点击人脸 → 命名）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "per action in there (and a 'val' folder the same way).",
+      "target": "同时还需要相同结构的 val 文件夹。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Persist (s)",
+      "target": "保持（秒）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Persist (s)",
       "target": "持续（秒）",
       "files": [
         "frontend/src/components/CompositionRules.tsx"
+      ]
+    },
+    {
+      "source": "pick expressions…",
+      "target": "选择表情…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Pick it under Advanced → object model.",
+      "target": "可在“高级 → 物体模型”中选择它。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Pick it under Advanced → object model.",
+      "target": "可在“高级 → 物体模型”中选择该模型。",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -4789,6 +5791,55 @@
       ]
     },
     {
+      "source": "Points on seconds with a local waveform peak above -20 dB.",
+      "target": "局部波形峰值高于 -20 dB 时对对应秒数加分。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Points on the second a scene cut starts (a jump in frame difference).",
+      "target": "场景切换开始时（帧差突然增大）对对应秒数加分。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Points, and which expressions:",
+      "target": "加分及表情选择：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Prefer:",
+      "target": "优先使用：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Preparing clips - the first pass is slow...",
+      "target": "正在准备片段——第一次处理会比较慢…",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Preparing the model",
+      "target": "准备模型",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Preparing the model...",
+      "target": "准备模型...",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Preparing update…",
       "target": "正在准备更新…",
       "files": [
@@ -4811,6 +5862,34 @@
       ]
     },
     {
+      "source": "Process all after downloads finish",
+      "target": "全部下载完成后统一处理",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Process all after downloads finish — download everything first, then run the pipeline over the list.",
+      "target": "全部下载后处理——先完成全部下载，再统一处理视频列表。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Process each as it downloads — run the pipeline per video, overlapping with remaining downloads.\\n",
+      "target": "边下载边处理——每个视频下载完成后立即开始分析，与剩余下载并行。\\n",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Process each video as it downloads",
+      "target": "每个视频下载后立即处理",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Process only specific time range",
       "target": "仅处理指定时间范围",
       "files": [
@@ -4822,6 +5901,13 @@
       "target": "处理时间范围",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "processor and be much slower.",
+      "target": "处理器训练，速度会明显较慢。",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -4839,6 +5925,13 @@
       ]
     },
     {
+      "source": "Project",
+      "target": "项目",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
       "source": "Project folder",
       "target": "项目文件夹",
       "files": [
@@ -4846,10 +5939,31 @@
       ]
     },
     {
+      "source": "pts",
+      "target": "分",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "publishers forbid AI training on their games in their terms of service.",
+      "target": "禁止使用其游戏内容进行 AI 训练；如果不确定，请不要分享。",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "PyTorch for NVIDIA cards is fetched once; app updates do not download it again.",
       "target": "NVIDIA 显卡所需的 PyTorch 仅下载一次，后续软件更新不会重复下载。",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": "questions for you. Your footage never leaves this computer.",
+      "target": "需要你确认的问题。你的素材始终不会离开本机。",
+      "files": [
+        "modules/teach/teach_panel.py"
       ]
     },
     {
@@ -4861,10 +5975,96 @@
       ]
     },
     {
+      "source": "R(2+1)D-18 (most accurate)",
+      "target": "R(2+1)D-18（最准确）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D + CPU (deprecated)",
+      "target": "R3D + CPU（已弃用）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D + CPU (PyTorch, slow)",
+      "target": "R3D + CPU（PyTorch，较慢）",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
+      "source": "R3D + CUDA (deprecated)",
+      "target": "R3D + CUDA（已弃用）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D + DirectML (deprecated)",
+      "target": "R3D + DirectML（已弃用）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D fine-tuned",
+      "target": "R3D 微调模型",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
+      "source": "R3D fine-tuned ({self._r3d_custom_count} classes)",
+      "target": "R3D 微调模型（{self._r3d_custom_count} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D Kinetics-400 pretrained ({self._intel_count} classes)",
+      "target": "R3D Kinetics-400 预训练（{self._intel_count} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D mapping file (idx_to_label + metadata JSON)",
+      "target": "R3D 映射文件（idx_to_label + 元数据 JSON）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "R3D model variant",
       "target": "R3D 模型版本",
       "files": [
         "frontend/src/components/tabs/AdvancedTab.tsx"
+      ]
+    },
+    {
+      "source": "R3D model variant:",
+      "target": "R3D 模型变体：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D weights (*.pth);;All files (*)",
+      "target": "R3D 权重 (*.pth);;所有文件 (*)",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "R3D-18 (fastest)",
+      "target": "R3D-18（最快）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
       ]
     },
     {
@@ -4879,6 +6079,13 @@
       "target": "区间开始",
       "files": [
         "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "rather than something visible in a single frame.\\n",
+      "target": "而不是只识别单帧中可见的物体。\\n",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -4910,6 +6117,13 @@
       ]
     },
     {
+      "source": "Read a tools/labeler.py export. Its points become boxes of a fixed",
+      "target": "读取 tools/labeler.py 导出的数据。点标注会被转换为固定大小的边界框，",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Read what happens in this cut…",
       "target": "读取此片段发生的内容…",
       "files": [
@@ -4929,6 +6143,13 @@
       "files": [
         "main.py",
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "Ready to learn: {described}.",
+      "target": "可以开始训练：{described}。",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -4953,6 +6174,20 @@
       ]
     },
     {
+      "source": "recognised {share:.0f}% of the clips it had not seen",
+      "target": "在未见过的片段中识别正确率约为 {share:.0f}%",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "recommended",
+      "target": "推荐",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Reconnect",
       "target": "重新连接",
       "files": [
@@ -4960,8 +6195,29 @@
       ]
     },
     {
+      "source": "Redrawing the timeline…",
+      "target": "正在重绘时间线…",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Reel",
       "target": "成片",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "Reel",
+      "target": "短片",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "Reel combine failed",
+      "target": "短片合并失败",
       "files": [
         "frontend/src/App.tsx"
       ]
@@ -4975,10 +6231,31 @@
       ]
     },
     {
+      "source": "Refreshing the panels…",
+      "target": "正在刷新面板…",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Region",
       "target": "区域",
       "files": [
         "frontend/src/components/CompositionRules.tsx"
+      ]
+    },
+    {
+      "source": "Region / Equals",
+      "target": "区域 / 等于",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "reject",
+      "target": "拒绝",
+      "files": [
+        "modules/teach/review_window.py"
       ]
     },
     {
@@ -4992,7 +6269,15 @@
       "source": "Relation",
       "target": "关系",
       "files": [
-        "frontend/src/components/CompositionRules.tsx"
+        "frontend/src/components/CompositionRules.tsx",
+        "main.py"
+      ]
+    },
+    {
+      "source": "Reloading signals…",
+      "target": "正在重新加载信号…",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -5006,6 +6291,8 @@
       "source": "Remove",
       "target": "移除",
       "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx",
+        "frontend/src/components/tabs/TimelineTab.tsx",
         "modules/ui/simple_start.py"
       ]
     },
@@ -5038,17 +6325,17 @@
       ]
     },
     {
-      "source": "Remove selected",
-      "target": "移除所选",
-      "files": [
-        "modules/ui/model_dialog.py"
-      ]
-    },
-    {
       "source": "Remove Selected",
       "target": "移除所选",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Remove selected",
+      "target": "移除所选",
+      "files": [
+        "modules/ui/model_dialog.py"
       ]
     },
     {
@@ -5073,13 +6360,6 @@
       ]
     },
     {
-      "source": "Removed {count} clips",
-      "target": "已移除 {count} 个片段",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
       "source": "Removed avoided range",
       "target": "已移除排除区间",
       "files": [
@@ -5096,6 +6376,13 @@
     {
       "source": "Removed selected clips",
       "target": "已移除所选片段",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Removed {count} clips",
+      "target": "已移除 {count} 个片段",
       "files": [
         "signal_timeline_viewer.py"
       ]
@@ -5136,6 +6423,13 @@
       ]
     },
     {
+      "source": "Replace clip audio",
+      "target": "替换片段音频",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
       "source": "Replace the original audio",
       "target": "替换原音频",
       "files": [
@@ -5164,6 +6458,13 @@
       ]
     },
     {
+      "source": "Restart now?",
+      "target": "立即重启？",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Resume",
       "target": "继续",
       "files": [
@@ -5185,17 +6486,24 @@
       ]
     },
     {
+      "source": "Rounds of learning:",
+      "target": "训练轮数：",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Run action recognition over the whole video",
+      "target": "对整个视频运行动作识别",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Run every step that needs nobody",
       "target": "运行所有无需人工确认的步骤",
       "files": [
         "modules/teach/teach_panel.py"
-      ]
-    },
-    {
-      "source": "Run face recognition over the first video in the list ",
-      "target": "对列表中的第一个视频运行人脸识别",
-      "files": [
-        "main.py"
       ]
     },
     {
@@ -5206,14 +6514,35 @@
       ]
     },
     {
-      "source": "Run this rule. Unticked keeps it in the file ",
+      "source": "Run the saved composition rules over every video in the",
+      "target": "对列表中的每个视频运行已保存的构图规则，",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Run this rule. Unticked keeps it in the file",
       "target": "运行此规则。取消勾选后仍会保留在文件中",
       "files": [
         "main.py"
       ]
     },
     {
-      "source": "Runs one pass on this video and folds it into the cache. ",
+      "source": "Run visual analysis on the left half only for side-by-side VR/3D videos.",
+      "target": "对于左右并排的 VR/3D 视频，仅分析画面左半部分。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Runs every step that needs nobody (finding, sorting, training) when you",
+      "target": "当你几分钟没有操作时，会自动执行无需人工参与的步骤（查找、排序、训练），",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Runs one pass on this video and folds it into the cache.",
       "target": "对该视频运行一次分析并写入缓存。",
       "files": [
         "signal_timeline_viewer.py"
@@ -5221,9 +6550,31 @@
     },
     {
       "source": "s",
-      "target": " 秒",
+      "target": "秒",
       "files": [
+        "main.py",
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Safe to run repeatedly: previous results for these rules",
+      "target": "可以安全重复运行：这些规则之前的结果会被",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Same range as processing",
+      "target": "与处理范围相同",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Same range as processing — reuse the Processing Time Range above.\\n",
+      "target": "与处理范围相同——复用上方“处理时间范围”。\\n",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -5313,13 +6664,6 @@
       ]
     },
     {
-      "source": "Saved — ${formatShort(res.duration ?? 0)} of film",
-      "target": "已保存 — 成片时长 ${formatShort(res.duration ?? 0)}",
-      "files": [
-        "frontend/src/components/tabs/TimelineTab.tsx"
-      ]
-    },
-    {
       "source": "Saved ${res.events} event(s) to composition_rules.yaml",
       "target": "已将 ${res.events} 个事件保存到 composition_rules.yaml",
       "files": [
@@ -5331,6 +6675,27 @@
       "target": "将使用已保存的令牌",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Saved — ${formatShort(res.duration ?? 0)} of film",
+      "target": "已保存 — 成片时长 ${formatShort(res.duration ?? 0)}",
+      "files": [
+        "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Saving",
+      "target": "保存",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Saving the model...",
+      "target": "保存 the model...",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -5395,6 +6760,13 @@
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Script",
+      "target": "脚本",
+      "files": [
+        "frontend/src/lib/files.ts"
       ]
     },
     {
@@ -5490,13 +6862,6 @@
       ]
     },
     {
-      "source": "Select “Live (real-time)” to recognise faces",
-      "target": "选择“实时（实时识别）”以识别人脸",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
       "source": "Select a backend and model first",
       "target": "请先选择运行后端和模型",
       "files": [
@@ -5525,10 +6890,45 @@
       ]
     },
     {
-      "source": "Select all",
-      "target": "全选",
+      "source": "Select Action Labels",
+      "target": "选择动作标签",
       "files": [
-        "video_picker_dialog.py"
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Action Labels (action head {name} — {len(labels)} classes)",
+      "target": "选择动作标签（动作头 {name}——{len(labels)} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Action Labels (Custom Fine-tuned — {self._custom_ov_count} classes)",
+      "target": "选择动作标签（自定义微调——{self._custom_ov_count} 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Action Labels (Intel Kinetics-400 — 400 classes)",
+      "target": "选择动作标签（Intel Kinetics-400——400 个类别）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Action Labels (Mixed — {len(tagged)} labels, {overlap_count} shared)",
+      "target": "选择动作标签（混合——{len(tagged)} 个标签，{overlap_count} 个重复标签）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Action Labels (R3D Fine-tuned)",
+      "target": "选择动作标签（R3D 微调模型）",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -5536,6 +6936,13 @@
       "target": "全选",
       "files": [
         "video_ai_editor/filter_dialogs.py"
+      ]
+    },
+    {
+      "source": "Select all",
+      "target": "全选",
+      "files": [
+        "video_picker_dialog.py"
       ]
     },
     {
@@ -5574,6 +6981,13 @@
       ]
     },
     {
+      "source": "Select Labels (custom model)",
+      "target": "选择标签（自定义模型）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Select mmproj File",
       "target": "选择 mmproj 文件",
       "files": [
@@ -5588,11 +7002,46 @@
       ]
     },
     {
+      "source": "Select Object Labels (custom + YOLO)",
+      "target": "选择物体标签（自定义 + YOLO）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Object Labels (YOLO)",
+      "target": "选择物体标签（YOLO）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Save Directory",
+      "target": "选择保存目录",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Select Video(s)",
+      "target": "选择视频",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Select videos to download",
       "target": "选择要下载的视频",
       "files": [
         "frontend/src/components/VideoPickerDialog.tsx",
         "video_picker_dialog.py"
+      ]
+    },
+    {
+      "source": "Select “Live (real-time)” to recognise faces",
+      "target": "选择“实时（实时识别）”以识别人脸",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
       ]
     },
     {
@@ -5695,10 +7144,24 @@
       ]
     },
     {
-      "source": "Share the trained detector on the model hub ",
+      "source": "Share the trained detector on the model hub",
       "target": "将训练好的检测器分享到模型中心",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Share this model with the community…",
+      "target": "将此模型分享到社区…",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Shared models are public. Confirm each item; sharing stays disabled until you do.",
+      "target": "共享的模型将公开发布。请逐项确认；全部确认前无法继续分享。",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -5706,6 +7169,13 @@
       "target": "分享…",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Sharing is unavailable: {exc}",
+      "target": "分享功能不可用：{exc}",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -5723,10 +7193,10 @@
       ]
     },
     {
-      "source": "Show '{query}' bars, and let ◀ ▶ stop on them",
-      "target": "显示“{query}”条，并允许 ◀ ▶ 在这些位置停靠",
+      "source": "Shortest auto clip, in seconds. Shorter regions are padded.",
+      "target": "自动片段的最短时长（秒）。更短的区域会被扩展。",
       "files": [
-        "signal_timeline_viewer.py"
+        "main.py"
       ]
     },
     {
@@ -5737,6 +7207,13 @@
       ]
     },
     {
+      "source": "Show '{query}' bars, and let ◀ ▶ stop on them",
+      "target": "显示“{query}”条，并允许 ◀ ▶ 在这些位置停靠",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Show AI Labels Overlay",
       "target": "显示 AI 标签叠加",
       "files": [
@@ -5744,17 +7221,17 @@
       ]
     },
     {
-      "source": "Show all",
-      "target": "全部显示",
-      "files": [
-        "video_ai_editor/realtime_overlay.py"
-      ]
-    },
-    {
       "source": "Show All",
       "target": "全部显示",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Show all",
+      "target": "全部显示",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
       ]
     },
     {
@@ -5863,10 +7340,10 @@
       ]
     },
     {
-      "source": "Show:",
-      "target": "显示：",
+      "source": "show up here. Tick someone to exclude them from generated highlights.",
+      "target": "会显示在这里。勾选人物后，其出现片段将从生成的高光中排除。",
       "files": [
-        "signal_timeline_viewer.py"
+        "main.py"
       ]
     },
     {
@@ -5877,10 +7354,31 @@
       ]
     },
     {
-      "source": "Showing: ",
+      "source": "Show:",
+      "target": "显示：",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Showing:",
       "target": "当前显示：",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "SigLIP2 + your trained action head",
+      "target": "SigLIP2 + 你训练的动作头",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "signal rules measure the file directly, and a spatial rule",
+      "target": "信号规则直接分析文件；空间规则则会",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -5898,10 +7396,54 @@
       ]
     },
     {
+      "source": "size, so they arrive needing review rather than accepted.",
+      "target": "因此导入后需要先检查确认，而不会直接作为已接受标注。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Skip this version",
       "target": "跳过此版本",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Skip those moments",
+      "target": "跳过这些时刻",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
+      ]
+    },
+    {
+      "source": "slower, a little more accurate",
+      "target": "较慢，但略微更准确",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "slower, often better",
+      "target": "较慢，通常效果更好",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Small (fast, good balance)",
+      "target": "Small（较快，平衡良好）",
+      "files": [
+        "frontend/src/lib/config.ts",
+        "main.py"
+      ]
+    },
+    {
+      "source": "smallest and fastest",
+      "target": "最小、最快",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -5935,6 +7477,34 @@
       ]
     },
     {
+      "source": "Source language:",
+      "target": "源语言：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Specific range (seconds)",
+      "target": "指定范围（秒）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Specific range — download only the seconds you set below.",
+      "target": "指定范围——只下载下方设置的时间段。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Speech",
+      "target": "语音",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Speed:",
       "target": "速度：",
       "files": [
@@ -5942,10 +7512,45 @@
       ]
     },
     {
+      "source": "Spoken language for transcription. Defaults to English; 'auto'",
+      "target": "设置语音转录的语言。默认英语；auto 会自动检测。",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Square 1:1",
       "target": "方形 1:1",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "Standard (80 objects)",
+      "target": "标准（80 类物体）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Standard YOLO (80 objects)",
+      "target": "标准 YOLO（80 类物体）",
+      "files": [
+        "frontend/src/lib/config.ts"
+      ]
+    },
+    {
+      "source": "Standard YOLOX (80 objects)",
+      "target": "标准 YOLOX（80 类物体）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Standard — the 80 COCO objects\\n",
+      "target": "标准——80 类 COCO 物体\\n",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -5985,13 +7590,6 @@
       ]
     },
     {
-      "source": "starting…",
-      "target": "正在启动…",
-      "files": [
-        "signal_timeline_viewer.py"
-      ]
-    },
-    {
       "source": "Starting…",
       "target": "正在启动…",
       "files": [
@@ -5999,10 +7597,38 @@
       ]
     },
     {
+      "source": "starting…",
+      "target": "正在启动…",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "starts a detection pass for the classes it names. Both are",
+      "target": "针对规则中指定的类别启动一次检测。两者都会",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Stats",
       "target": "统计",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Status",
+      "target": "状态",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Still",
+      "target": "静止",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
       ]
     },
     {
@@ -6017,6 +7643,7 @@
       "target": "停止",
       "files": [
         "llm/llm_chat_widget.py",
+        "modules/ui/training_panel.py",
         "signal_timeline_viewer.py"
       ]
     },
@@ -6035,10 +7662,52 @@
       ]
     },
     {
+      "source": "Stop the highlight at this many seconds. It may be shorter when",
+      "target": "高光最长不超过此秒数；若有效内容不足，结果可能更短。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Stopped",
+      "target": "已停止",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Stopped.",
+      "target": "已停止。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Stopped: {result['error']}",
+      "target": "已停止：{result['error']}",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
       "source": "Stopping after current frame...",
       "target": "当前帧结束后停止…",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Stopping after this step...",
+      "target": "将在当前步骤完成后停止…",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Stopping...",
+      "target": "正在停止…",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -6063,8 +7732,15 @@
       ]
     },
     {
-      "source": "Summary options — ask a question, ",
+      "source": "Summary options — ask a question,",
       "target": "摘要选项 — 提问、",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Sustain (s)",
+      "target": "持续（秒）",
       "files": [
         "main.py"
       ]
@@ -6077,7 +7753,7 @@
       ]
     },
     {
-      "source": "Switch these suggestions off. The About tab ",
+      "source": "Switch these suggestions off. The About tab",
       "target": "关闭此类推荐。“关于”页",
       "files": [
         "main.py"
@@ -6095,6 +7771,20 @@
       "target": "目标语言",
       "files": [
         "frontend/src/components/tabs/TranscriptTab.tsx"
+      ]
+    },
+    {
+      "source": "Target language:",
+      "target": "目标语言：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Task",
+      "target": "任务",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -6119,10 +7809,73 @@
       ]
     },
     {
+      "source": "Teach it something new from your own videos. Put a few short example",
+      "target": "让程序从你自己的视频中学习新内容。每个目标准备一个文件夹，放入几个短示例片段，",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Teach the app to find things of your own. Mark examples, and this",
+      "target": "让应用学会识别你自己的物体。先标记示例，程序会训练一个小型检测模型，",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Teach the app to recognise something that happens over time,",
+      "target": "让应用学会识别随时间发生的动作，",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Tell the story, chapter by chapter… (slow)",
       "target": "按章节讲述故事…（较慢）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "That export contains no labelled points.",
+      "target": "该导出文件中没有已标注的点。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "the advisor documentation, not from the video itself.",
+      "target": "顾问文档，而不是直接读取视频本身。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "The answer was slowing down",
+      "target": "例如：答案其实是慢下来",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "The download failed: {e}",
+      "target": "下载失败：{e}",
+      "files": [
+        "modules/packs/pack_ui.py"
+      ]
+    },
+    {
+      "source": "The first model finds some of them, not all — it improves each",
+      "target": "初次训练可能无法识别全部目标；随着你继续添加示例，模型会逐步改进。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "The first run downloads its starting weights (20-70 MB).",
+      "target": "首次运行需要下载初始权重（20–70 MB）。",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -6133,8 +7886,36 @@
       ]
     },
     {
+      "source": "The model failed the safety and compatibility checks:\\n\\n",
+      "target": "模型未通过安全性和兼容性检查：\\n\\n",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "The model is stored in your own free Hugging Face account and",
+      "target": "模型将保存到你自己的免费 Hugging Face 账号中，",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "The numbers below are still real.",
+      "target": "下面的数值仍然是真实结果。",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
       "source": "The plan",
       "target": "剪辑计划",
+      "files": [
+        "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "the project folder the Auto tab wrote to",
+      "target": "“自动”标签页写入的项目文件夹",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
       ]
@@ -6154,6 +7935,13 @@
       ]
     },
     {
+      "source": "the videos to learn from. It cuts, sorts and labels by itself, and asks",
+      "target": "程序会自动切片、排序和标注，只在",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
       "source": "The visual search model",
       "target": "视觉搜索模型",
       "files": [
@@ -6168,6 +7956,20 @@
       ]
     },
     {
+      "source": "then <a href=\"https://huggingface.co/settings/tokens\">create a token</a>",
+      "target": "然后<a href=\"https://huggingface.co/settings/tokens\">创建令牌</a>，",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "these / undecided; right-click to say which class it really is;",
+      "target": "右键可指定真实类别；",
+      "files": [
+        "modules/teach/review_window.py"
+      ]
+    },
+    {
       "source": "Thinking…",
       "target": "思考中…",
       "files": [
@@ -6175,10 +7977,24 @@
       ]
     },
     {
+      "source": "This folder needs a 'train' folder inside it, with one folder",
+      "target": "此文件夹中需要包含 train 文件夹，其中每个动作对应一个子文件夹；",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "This footage already starts clean.",
       "target": "该素材开头已经干净，无需额外处理。",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "This is why the LLM halluccinates - it has nothing to work with.\\n",
+      "target": "这会导致大模型缺少依据并产生幻觉。\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -6203,10 +8019,31 @@
       ]
     },
     {
+      "source": "Timeline connected! You can now ask me to edit the timeline.\\n",
+      "target": "时间线已连接！现在可以通过对话编辑时间线。\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Timeline Viewer",
       "target": "时间线查看器",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "to",
+      "target": "至",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "to confirm (CLIP + LLM). Higher = better recall, slower.",
+      "target": "进行确认（CLIP + 大模型）。数值越高召回率越高，但速度更慢。",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -6231,6 +8068,13 @@
       ]
     },
     {
+      "source": "Traceback:\\n{traceback.format_exc()}",
+      "target": "错误堆栈：\\n{traceback.format_exc()}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Track",
       "target": "音乐轨道",
       "files": [
@@ -6246,11 +8090,75 @@
       ]
     },
     {
+      "source": "Train a model",
+      "target": "训练模型",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Train an action model",
+      "target": "训练动作模型",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "trained on. Grey boxes are yours; green is a guess that matches one,",
+      "target": "灰色框是你的标注；绿色表示预测与标注匹配，",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "Training",
+      "target": "训练",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Training hardware:",
+      "target": "训练 hardware:",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Training hardware: no GPU found - training will use the",
+      "target": "训练 hardware: no GPU found - training will use the",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "trains a small detector that looks for them in every video.\\n",
+      "target": "用于在每个视频中寻找这些物体。\\n",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Transcribe every video in the list and write a .srt next to each",
+      "target": "转录列表中的每个视频，并在视频旁生成 .srt 字幕文件；",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Transcribe speech with Whisper",
+      "target": "使用 Whisper 转录语音",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Transcript",
       "target": "转录",
       "files": [
         "frontend/src/App.tsx",
-        "frontend/src/components/tabs/TranscriptTab.tsx"
+        "frontend/src/components/tabs/TranscriptTab.tsx",
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -6289,6 +8197,13 @@
       ]
     },
     {
+      "source": "Transcript: {n_trans} segs | Scenes: {n_scenes}\\n",
+      "target": "转录：{n_trans} 段 | 场景：{n_scenes}\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Transition",
       "target": "转场",
       "files": [
@@ -6310,10 +8225,24 @@
       ]
     },
     {
+      "source": "turns them back on.",
+      "target": "可重新开启这些推荐。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Type to filter labels...",
       "target": "输入文字筛选标签…",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "undecided",
+      "target": "未决定",
+      "files": [
+        "modules/teach/review_window.py"
       ]
     },
     {
@@ -6345,6 +8274,20 @@
       ]
     },
     {
+      "source": "up to three levels separated by /",
+      "target": "最多三级，并使用 / 分隔",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Updated",
+      "target": "更新时间",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "Updates",
       "target": "更新",
       "files": [
@@ -6352,17 +8295,59 @@
       ]
     },
     {
-      "source": "Use lowercase letters, digits and hyphens, ",
-      "target": "请使用小写字母、数字和连字符",
+      "source": "Use 'Load Cache' or run the pipeline first.",
+      "target": "请先“加载缓存”，或先运行完整分析流程。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Use 'Load Cache' to load a cache file first.",
+      "target": "请先使用“加载缓存”选择缓存文件。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Use 8B+ models for best results.",
+      "target": "建议使用 8B 及以上模型以获得更好效果。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Use lowercase letters, digits and hyphens,",
+      "target": "请使用小写字母、数字和连字符，",
       "files": [
         "model_hub/gui.py"
       ]
     },
     {
-      "source": "Version {__version__} — free & open source (AGPLv3)",
-      "target": "版本 {__version__} — 免费开源（AGPLv3）",
+      "source": "Use mm:ss or seconds",
+      "target": "请输入 mm:ss 或秒数",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Use transcript:",
+      "target": "启用转录：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Used only when clip time is 0.",
+      "target": "仅在“片段时长”为 0 时生效。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Verified",
+      "target": "已验证",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -6373,10 +8358,31 @@
       ]
     },
     {
+      "source": "Version {__version__}  ·  {__build_date__}",
+      "target": "版本 {__version__}  ·  {__build_date__}",
+      "files": [
+        "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "Version {__version__} — free & open source (AGPLv3)",
+      "target": "版本 {__version__} — 免费开源（AGPLv3）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Vertical 9:16",
       "target": "竖屏 9:16",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "Video",
+      "target": "视频",
+      "files": [
+        "frontend/src/lib/files.ts"
       ]
     },
     {
@@ -6422,6 +8428,13 @@
       ]
     },
     {
+      "source": "Video: {self._video_path}\\n",
+      "target": "视频：{self._video_path}\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "VideoHighlighter - LLM Chat with Visual Search",
       "target": "VideoHighlighter - 大模型对话与视觉搜索",
       "files": [
@@ -6429,10 +8442,17 @@
       ]
     },
     {
-      "source": "VideoHighlighter — debug log",
-      "target": "VideoHighlighter — 调试日志",
+      "source": "VideoHighlighter builds the package and runs one test inference on your CPU.",
+      "target": "VideoHighlighter 会生成模型包，并在你的 CPU 上执行一次测试推理。",
       "files": [
-        "modules/system/debug_console.py"
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "VideoHighlighter checks the file before use and runs it only through",
+      "target": "VideoHighlighter 会在使用前检查文件，并且只通过",
+      "files": [
+        "model_hub/gui.py"
       ]
     },
     {
@@ -6443,10 +8463,31 @@
       ]
     },
     {
-      "source": "VideoHighlighter will run on the processor, and you can add GPU ",
-      "target": "VideoHighlighter 将使用 CPU 运行。你可以稍后重新运行安装程序添加 GPU ",
+      "source": "VideoHighlighter will run on the processor, and you can add GPU",
+      "target": "VideoHighlighter 将使用 CPU 运行。你可以稍后重新运行安装程序添加 GPU",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": "VideoHighlighter — debug log",
+      "target": "VideoHighlighter — 调试日志",
+      "files": [
+        "modules/system/debug_console.py"
+      ]
+    },
+    {
+      "source": "Videos",
+      "target": "视频",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Videos (*.mp4 *.mov *.avi *.mkv)",
+      "target": "视频 (*.mp4 *.mov *.avi *.mkv)",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -6521,6 +8562,13 @@
       ]
     },
     {
+      "source": "vocal_density_pct or waveform_peak_density. Needs no detections.",
+      "target": "waveform_peak_density。此类规则不需要物体检测。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Volume",
       "target": "音量",
       "files": [
@@ -6550,11 +8598,39 @@
       ]
     },
     {
+      "source": "W",
+      "target": "宽",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
       "source": "Waiting for the detection stage (objects / actions)…",
       "target": "等待检测阶段（物体 / 动作）…",
       "files": [
         "frontend/src/components/DetectionPreview.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Waiting for the first round to finish…\\n\\n",
+      "target": "正在等待第一轮训练完成…\\n\\n",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "WARNING: Context is large! Small models (3B) may ignore parts.",
+      "target": "警告：上下文较大！小模型（3B）可能忽略部分内容。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "WARNING: No analysis data loaded! LLM will hallucinate.\\n",
+      "target": "⚠️ 未加载分析数据，大模型可能缺少依据并产生幻觉。\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -6600,6 +8676,13 @@
       ]
     },
     {
+      "source": "When checked, search stops and seeks to the first match.\\n",
+      "target": "勾选后，搜索会在第一个匹配处停止并跳转。\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "When checked, the LLM answers freely without being restricted to video data",
       "target": "勾选后，大模型可以自由回答，不仅限于视频数据",
       "files": [
@@ -6614,8 +8697,43 @@
       ]
     },
     {
+      "source": "When enabled, the LLM will infer relationships between detected objects and actions\\n",
+      "target": "启用后，大模型会推断检测到的物体与动作之间的关系。\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "When enabled, the pipeline runs face recognition to locate avoided people and skip or crop them out.\\n",
+      "target": "启用后，处理流程会运行人脸识别，定位需要排除的人物，并跳过或裁掉其出现的画面。\\n",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "When found",
+      "target": "识别到时",
+      "files": [
+        "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
       "source": "When found:",
       "target": "识别到时：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "When unchecked, search scans entire video and reports all matches.",
+      "target": "取消勾选时，将扫描完整视频并报告所有匹配。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Where in the video",
+      "target": "视频位置",
       "files": [
         "main.py"
       ]
@@ -6628,7 +8746,7 @@
       ]
     },
     {
-      "source": "Where the model is listed: lowercase words, up to three ",
+      "source": "Where the model is listed: lowercase words, up to three",
       "target": "模型在社区中的分类路径：使用小写英文，最多三级",
       "files": [
         "model_hub/gui.py"
@@ -6639,6 +8757,13 @@
       "target": "Whisper 模型",
       "files": [
         "frontend/src/components/tabs/TranscriptTab.tsx"
+      ]
+    },
+    {
+      "source": "Whisper model:",
+      "target": "Whisper 模型：",
+      "files": [
+        "main.py"
       ]
     },
     {
@@ -6656,10 +8781,52 @@
       ]
     },
     {
+      "source": "Window (s)",
+      "target": "窗口（秒）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "window's list; edit per run. Change the model/confidence there.",
+      "target": "每次运行前都可以修改。模型和置信度请在主窗口中设置。",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Window:",
       "target": "时间窗口：",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "with thumbnails, scores and the moments that nearly made it",
+      "target": "包含缩略图、评分以及差一点被选中的时刻。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "with write permission.",
+      "target": "并授予写入权限。",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Within (s)",
+      "target": "范围（秒）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Working out how long training will take...",
+      "target": "正在估算训练所需时间…",
+      "files": [
+        "modules/ui/training_panel.py"
       ]
     },
     {
@@ -6671,6 +8838,13 @@
       ]
     },
     {
+      "source": "Working… (",
+      "target": "正在处理… (",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
       "source": "Write a highlight report",
       "target": "生成高光报告",
       "files": [
@@ -6678,10 +8852,1828 @@
       ]
     },
     {
+      "source": "Written next to the highlight on every run (Advanced tab toggles it).",
+      "target": "报告默认写在高光视频旁，可在“高级”标签页中控制是否生成。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "YOLO models",
+      "target": "YOLO 模型",
+      "files": [
+        "frontend/src/lib/files.ts"
+      ]
+    },
+    {
+      "source": "you only about the samples it is unsure of.",
+      "target": "不确定的样本上向你确认。",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "You're on the latest version ({__version__}).",
+      "target": "当前已是最新版本（{__version__}).",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "Your action model is ready.",
+      "target": "动作模型已准备就绪。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
       "source": "Your name or handle, shown on the model page",
       "target": "你的名称或昵称，将显示在模型页面",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "{'🚫 Avoiding' if checked else '✅ Allowing'} {name}",
+      "target": "{'🚫 正在排除' if checked else '✅ 已允许'} {name}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{_elapsed(spent)} elapsed",
+      "target": "已用 {_elapsed(spent)}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "{count} match{'es' if count != 1 else ''}",
+      "target": "{count} 个匹配",
+      "files": [
+        "video_ai_editor/transcript_panel.py"
+      ]
+    },
+    {
+      "source": "{current}/{count} matches",
+      "target": "{current}/{count} 个匹配",
+      "files": [
+        "video_ai_editor/transcript_panel.py"
+      ]
+    },
+    {
+      "source": "{e.repo_id} was made by another user and hasn't been reviewed.\\n\\n",
+      "target": "{e.repo_id} 由其他用户制作，尚未经过审核。\\n\\n",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "{e} [at {where}]",
+      "target": "{e} [位置：{where}]",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "{fmt(t0)} → {fmt(t1)}  ({duration:.2f}s)  — drag to add",
+      "target": "{fmt(t0)} → {fmt(t1)}（{duration:.2f} 秒）— 拖动可添加",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "{found} — this goes on the model page.",
+      "target": "{found}——该结果会显示在模型页面。",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "{group}\\Uninstall {#AppName}",
+      "target": "{group}\\卸载 {#AppName}",
+      "files": [
+        "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": "{len(bank.all_identities())} people ·",
+      "target": "{len(bank.all_identities())} 人 ·",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{len(bank.avoided_ids())} avoided",
+      "target": "{len(bank.avoided_ids())} 个已排除",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{len(entries)} model(s).",
+      "target": "共 {len(entries)} 个模型。",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "{len(filtered)} of {len(self.all_labels)} labels shown",
+      "target": "已显示 {len(filtered)} / {len(self.all_labels)} 个标签",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{len(findings)} finding(s) from that run:",
+      "target": "本次运行发现 {len(findings)} 项问题：",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "{len(identities)} people · {named} named · {len(bank.avoided_ids())} avoided",
+      "target": "{len(identities)} 人 · {named} 个已命名 · {len(bank.avoided_ids())} 个已排除",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{len(segments)} clip(s) of '{label}'",
+      "target": "“{label}”共有 {len(segments)} 个片段",
+      "files": [
+        "video_ai_editor/search_panel.py"
+      ]
+    },
+    {
+      "source": "{len(self._entries)} video(s) — pick which to download.",
+      "target": "共 {len(self._entries)} 个视频 — 请选择要下载的内容。",
+      "files": [
+        "video_picker_dialog.py"
+      ]
+    },
+    {
+      "source": "{len(self.all_labels)} labels available",
+      "target": "{len(self.all_labels)} 个标签可用",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{len(self.label_list.selectedItems())} selected",
+      "target": "已选择 {len(self.label_list.selectedItems())} 个",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{len(self.segments)} segments",
+      "target": "{len(self.segments)} 个片段",
+      "files": [
+        "video_ai_editor/transcript_panel.py"
+      ]
+    },
+    {
+      "source": "{n_obj} obj | {n_act} act | {n_trans} transcript{tl_status}{analyzer_status}",
+      "target": "{n_obj} 个物体 | {n_act} 个动作 | {n_trans} 条转录{tl_status}{analyzer_status}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "{name.replace('_', ' ')} ({counts.get(name, 0)}s)",
+      "target": "{name.replace('_', ' ')}（{counts.get(name, 0)} 秒）",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "{name}: {c['accepted']} of {c['target']} accepted",
+      "target": "{name}：已接受 {c['accepted']} / {c['target']}",
+      "files": [
+        "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "{pending} more still need checking.",
+      "target": "还有 {pending} 个示例需要检查。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "{result.message}\\n\\nRestart Video Highlighter now?",
+      "target": "{result.message}\\n\\n是否立即重启 Video Highlighter？",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{sum(1 for i in bank.all_identities() if i['name'])} named ·",
+      "target": "{sum(1 for i in bank.all_identities() if i['name'])} 个已命名 ·",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{title} is installed and takes effect after a restart. Restart now?",
+      "target": "{title} 已安装，重启后生效。现在重启吗？",
+      "files": [
+        "modules/packs/pack_ui.py"
+      ]
+    },
+    {
+      "source": "{value}% toward full story — best moments, spread across the video.",
+      "target": "完整叙事倾向 {value}%——在保留最佳时刻的同时，让片段分布更均衡。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "{window:.1f}s",
+      "target": "{window:.1f} 秒",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "| Analyzer: ready",
+      "target": "| 分析器：就绪",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "| TL: connected",
+      "target": "| 时间线：已连接",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "~{ctx_chars // 4:,} tokens (approx)\\n",
+      "target": "约 {ctx_chars // 4:,} tokens（估算）\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "© 2026 Przemysław Kreft and contributors",
+      "target": "© 2026 Przemysław Kreft 及贡献者",
+      "files": [
+        "frontend/src/components/tabs/AboutTab.tsx"
+      ]
+    },
+    {
+      "source": "· ${card.chaptered_takes} chaptered",
+      "target": "· ${card.chaptered_takes} 个已分章节",
+      "files": [
+        "frontend/src/components/tabs/AutoTab.tsx"
+      ]
+    },
+    {
+      "source": "· ${sessionCount} this run",
+      "target": "· 本次运行 ${sessionCount} 个",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "· about {_friendly_time(self._time_left)} left",
+      "target": "· 预计剩余 {_friendly_time(self._time_left)}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "· expected about {_friendly_time(max(0.0, self._estimate_seconds - spent)) or 'a moment'} more",
+      "target": "· 预计还需 {_friendly_time(max(0.0, self._estimate_seconds - spent)) or '片刻'}",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "— {pending} example(s) are waiting to be checked.",
+      "target": "—— 有 {pending} 个示例等待检查。",
+      "files": [
+        "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "• Action clusters: {stats['action_clusters']}",
+      "target": "• 动作聚类数：{stats['action_clusters']}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "• frame ${index + 1}/${frames.length}",
+      "target": "• 帧 ${index + 1}/${frames.length}",
+      "files": [
+        "frontend/src/components/DetectionPreview.tsx"
+      ]
+    },
+    {
+      "source": "• LIVE",
+      "target": "• 实时",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "• round {index + 1} of {len(self._rounds)} so far",
+      "target": "• 当前第 {index + 1} 轮 / 共 {len(self._rounds)} 轮",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "• Timestamps with actions: {stats['timestamps_with_actions']}",
+      "target": "• 包含动作的时间点：{stats['timestamps_with_actions']}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "• Total actions: {stats['total_actions']}",
+      "target": "• 动作总数：{stats['total_actions']}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "• Unique action types: {stats['unique_actions']}",
+      "target": "• 动作类型数：{stats['unique_actions']}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "• {action}: {count} times",
+      "target": "• {action}：{count} 次",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "…and describe each clip",
+      "target": "…并描述每个片段",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "…and tell each chapter (slow)",
+      "target": "…并生成各章节说明（较慢）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Combining frame analysis with timeline context...",
+      "target": "ℹ️ 正在结合画面分析与时间线上下文…",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Enable bounding boxes, creates new file with extension _annotated.mp4 for debugging",
+      "target": "ℹ️ 启用检测框后会生成带 _annotated.mp4 后缀的新文件，用于调试",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Face bank is already empty.",
+      "target": "ℹ️ 人脸库已经为空。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "ℹ️ No annotated videos found yet — use Generate buttons",
+      "target": "ℹ️ 尚未找到已标注视频 — 请使用生成按钮",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "ℹ️ No highlights to load — edit timeline starts empty",
+      "target": "ℹ️ 没有可加载的高光 — 剪辑时间线将从空白开始",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Only one highlight file, no combining needed",
+      "target": "ℹ️ 只有一个高光文件，无需合并",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Stats available now. Connect a model for reasoning questions.",
+      "target": "ℹ️ 当前已可查看统计；连接模型后可进一步回答推理类问题。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Text mode active: using analysis data only, ignoring vision",
+      "target": "ℹ️ 文本模式已启用：仅使用分析数据，不读取画面",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Why each moment was kept: an HTML page beside the highlight,",
+      "target": "ℹ️ 解释每个时刻为什么被保留：会在高光视频旁生成 HTML 报告，",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "↩  Undo last swap",
+      "target": "↩  撤销上次替换",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "⌕ {len(hits)} match(es)",
+      "target": "⌕ {len(hits)} 个匹配",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⏭ Latest",
+      "target": "⏭ 最新",
+      "files": [
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "⏭ Live",
+      "target": "⏭ 实时",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏳ Generating Actions…",
+      "target": "⏳ 正在生成动作标注…",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "⏳ Generating Objects…",
+      "target": "⏳ 正在生成物体标注…",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "⏳ Rendering… 0%",
+      "target": "⏳ 正在渲染… 0%",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⏳ Rendering… {pct}%",
+      "target": "⏳ 正在渲染… {pct}%",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⏸ Freeze",
+      "target": "⏸ 冻结",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏸ Pause",
+      "target": "⏸ 暂停",
+      "files": [
+        "main.py",
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⏸ Paused",
+      "target": "⏸ 已暂停",
+      "files": [
+        "main.py",
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⏸ Pipeline paused",
+      "target": "⏸ 处理流程已暂停",
+      "files": [
+        "frontend/src/App.tsx",
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹ Cancellation requested…",
+      "target": "⏹ 已请求取消…",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "⏹ Cancelled",
+      "target": "⏹ 已取消",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "⏹ Edit playback stopped",
+      "target": "⏹ 剪辑播放已停止",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⏹ Stop requested — will stop after current frame finishes processing.\\n",
+      "target": "⏹ 已请求停止——将在当前帧处理完成后结束。\\n",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⏹️ Cancellation requested - stopping download...",
+      "target": "⏹️ 已请求取消，正在停止下载…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Cancellation requested - stopping pipeline...",
+      "target": "⏹️ 已请求取消，正在停止处理流程…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Cancellation requested — finishing current video...",
+      "target": "⏹️ 已请求取消——正在完成当前视频…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Cancelled",
+      "target": "⏹️ 已取消",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Cancelling download...",
+      "target": "⏹️ 正在取消下载…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Cancelling on-demand run...",
+      "target": "⏹️ 正在取消按需任务…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Cancelling pipeline...",
+      "target": "⏹️ 正在取消处理流程…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Download Cancelled",
+      "target": "⏹️ 下载已取消",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Download was cancelled",
+      "target": "⏹️ 下载已取消",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ On-demand run cancelled",
+      "target": "⏹️ 按需分析已取消",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Pipeline was cancelled",
+      "target": "⏹️ 处理流程已取消",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Stopping on-demand run...",
+      "target": "⏹️ 正在停止按需任务…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "▶ Jump",
+      "target": "▶ 跳转",
+      "files": [
+        "video_ai_editor/search_panel.py"
+      ]
+    },
+    {
+      "source": "▶ Play",
+      "target": "▶ 播放",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "▶ Play / Pause",
+      "target": "▶ 播放 / 暂停",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "▶ Play Edit",
+      "target": "▶ 播放剪辑",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "▶ Playing edit timeline: {remaining} clip(s)",
+      "target": "▶ 正在播放剪辑时间线：剩余 {remaining} 个片段",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "▶ Resume",
+      "target": "▶ 继续",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "▶ Resumed",
+      "target": "▶ 已继续",
+      "files": [
+        "frontend/src/App.tsx",
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠ Couldn't save the token; it will be used only this time.",
+      "target": "⚠ 无法保存令牌，本次会话仍会使用。",
+      "files": [
+        "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "⚠️ A pipeline run is active — let it finish first.",
+      "target": "⚠️ 完整处理流程正在运行，请先等待其结束。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Add a video first, then scan it for faces.",
+      "target": "⚠️ 请先添加视频，再扫描其中的人脸。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ An on-demand run is already going.",
+      "target": "⚠️ 已有按需任务正在运行。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Cache not available for saving",
+      "target": "⚠️ 缓存不可用于保存",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Cache saving not available in this scene",
+      "target": "⚠️ 当前场景不支持保存缓存",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Cannot capture frame: No timeline window connected",
+      "target": "⚠️ 无法截取画面：尚未连接时间线窗口",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Community models unavailable: {e}",
+      "target": "⚠️ 社区模型不可用：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not capture frame at {ts_str}",
+      "target": "⚠️ 无法截取 {ts_str} 的画面",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not initialize reasoning: {e}",
+      "target": "⚠️ 无法初始化推理引擎：{e}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not refresh timeline viewer: {e}",
+      "target": "⚠️ 无法刷新时间线查看器：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not retrieve statistics: {e}",
+      "target": "⚠️ 无法获取统计信息：{e}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Enter a listing URL (http:// or https://) first",
+      "target": "⚠️ 请先输入列表页面网址（http:// 或 https://）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Error saving to cache: {str(e)[:50]}...",
+      "target": "⚠️ 保存到缓存时出错：{str(e)[:50]}…",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Failed to save to cache",
+      "target": "⚠️ 保存到缓存失败",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Force terminating thread...",
+      "target": "⚠️ 正在强制终止线程…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Forcing download termination...",
+      "target": "⚠️ 正在强制终止下载任务…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Frame capture failed",
+      "target": "⚠️ 画面截取失败",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Label file not found: {label_file}",
+      "target": "⚠️ 找不到标签文件：{label_file}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ LLM not connected. This engine requires a connected vision model.",
+      "target": "⚠️ 大模型未连接。此引擎需要已连接的视觉模型。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ No analysis data loaded. Load a cache file first.",
+      "target": "⚠️ 尚未加载分析数据，请先加载缓存文件。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ No clips in edit timeline",
+      "target": "⚠️ 剪辑时间线中没有片段",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ No custom class names found (choose a model / check labels).",
+      "target": "⚠️ 未找到自定义类别名称（请选择模型或检查标签文件）。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No edit timeline available",
+      "target": "⚠️ 没有可用的剪辑时间线",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ No highlight files to combine",
+      "target": "⚠️ 没有可合并的高光文件",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No label files found",
+      "target": "⚠️ 未找到标签文件",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No labels available for the selected model.",
+      "target": "⚠️ 所选模型没有可用标签。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No labels found in {label_file}",
+      "target": "⚠️ {label_file} 中没有找到标签",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No reasoning engine to save.",
+      "target": "⚠️ 没有可保存的推理引擎。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ No valid highlight files found",
+      "target": "⚠️ 未找到有效的高光文件",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No videos in the list.",
+      "target": "⚠️ 视频列表为空。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Nothing to cancel - no active process",
+      "target": "⚠️ 当前没有正在运行的任务可取消",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Object model import failed: {e}",
+      "target": "⚠️ 物体模型导入失败：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Reasoning engine not initialized. Try toggling 'Enable reasoning' checkbox.",
+      "target": "⚠️ 推理引擎尚未初始化，请尝试切换“启用推理”。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Select a time first",
+      "target": "⚠️ 请先选择时间",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ This engine needs a connected vision model. Connect one, or use CLIP only.",
+      "target": "⚠️ 此引擎需要连接视觉模型。请先连接模型，或使用“仅 CLIP”。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Training panel unavailable: {e}",
+      "target": "⚠️ 训练面板不可用：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Type at least one object class first (e.g. person, car).",
+      "target": "⚠️ 请先输入至少一个物体类别（例如 person、car）。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Update: {result.message}",
+      "target": "⚠️ 更新：{result.message}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Video file(s) not found:",
+      "target": "⚠️ 找不到以下视频文件：",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Video not found: {video}",
+      "target": "⚠️ 找不到视频：{video}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ {filename} downloaded but processing failed",
+      "target": "⚠️ {filename} 已下载，但处理失败",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✂️   Cut here  ({_fmt_time(click_time)})",
+      "target": "✂️   在此切开（{_fmt_time(click_time)}）",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "✂️ Fixed mode: each highlight clip will be {value}s long.",
+      "target": "✂️ 固定模式：每个高光片段长度为 {value} 秒。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Complete!",
+      "target": "✅ 已完成！",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Edit timeline playback complete",
+      "target": "✅ 剪辑时间线播放完成",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✅ Edit timeline saved to cache",
+      "target": "✅ 剪辑时间线已保存到缓存",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✅ Face scan complete — {n} identities in the bank",
+      "target": "✅ 人脸扫描完成——人脸库中共有 {n} 个身份",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Highlight rendered!",
+      "target": "✅ 高光视频渲染完成！",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✅ Imported object model: {os.path.basename(dst)}",
+      "target": "✅ 已导入物体模型：{os.path.basename(dst)}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Installed community model: {model.manifest.display_name}",
+      "target": "✅ 已安装社区模型：{model.manifest.display_name}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Loaded {len(selected)} action labels (mixed)",
+      "target": "✅ 已加载 {len(selected)} 个动作标签（混合）",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Loaded {len(selected)} action labels from {name}",
+      "target": "✅ 已从 {name} 加载 {len(selected)} 个动作标签",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Loaded {len(selected)} action labels from {os.path.basename(label_file)}",
+      "target": "✅ 已从 {os.path.basename(label_file)} 加载 {len(selected)} 个动作标签",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Loaded {len(selected)} object labels",
+      "target": "✅ 已加载 {len(selected)} 个物体标签",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Processed: {os.path.basename(filepath)}",
+      "target": "✅ 已处理：{os.path.basename(filepath)}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Search complete. Found '{self.search_target.text()}' at {found_count} timestamp(s): {ts_list}",
+      "target": "✅ 搜索完成。在 {found_count} 个时间点找到“{self.search_target.text()}”：{ts_list}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "✅ Update: {result.message}",
+      "target": "✅ 更新：{result.message}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ Video analyzer ready: {os.path.basename(path)}",
+      "target": "✅ 视频分析器已就绪：{os.path.basename(path)}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "✅ Your own detector is installed ({names}).",
+      "target": "✅ 你的自定义检测器已安装（{names}）。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✅ {filename} downloaded and processed successfully",
+      "target": "✅ {filename} 下载并处理成功",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "✏️  Name this person…",
+      "target": "✏️  为此人物命名…",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "✓ {len(result)} detections",
+      "target": "✓ {len(result)} 个检测结果",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✓ {len(result)} seconds",
+      "target": "✓ {len(result)} 秒",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✓ {len(result.get('audio_peaks', []))} peaks",
+      "target": "✓ {len(result.get('audio_peaks', []))} 个峰值",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✓ {len(result.get('segments', []))} segments",
+      "target": "✓ {len(result.get('segments', []))} 个片段",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✔ Finished: ${e.output || \"(no output)\"}",
+      "target": "✔ 已完成：${e.output || \"（无输出）\"}",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "✖ Reel combine failed: ${res.error ?? \"unknown\"}",
+      "target": "✖ 短片合并失败：${res.error ?? \"未知错误\"}",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "❌ Cannot start search: No video loaded or analyzer not ready",
+      "target": "❌ 无法开始搜索：尚未加载视频或分析器未就绪",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ Download Failed",
+      "target": "❌ 下载失败",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ Download thread error: {e}",
+      "target": "❌ 下载线程错误：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ Face scan failed: {e}",
+      "target": "❌ 人脸扫描失败：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ Failed",
+      "target": "❌ 失败",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ Failed to combine highlights: {e}",
+      "target": "❌ 合并高光失败：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ Failed to initialize analyzer: {e}",
+      "target": "❌ 初始化分析器失败：{e}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ Failed to save: {e}",
+      "target": "❌ 保存失败：{e}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ Please enter something to search for",
+      "target": "❌ 请输入要搜索的内容",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ Processing failed: {e}",
+      "target": "❌ 处理失败：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ Render failed",
+      "target": "❌ 渲染失败",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "❌ Search complete. No '{self.search_target.text()}' found in video.",
+      "target": "❌ 搜索完成。视频中未找到“{self.search_target.text()}”。",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ Search error: {error}",
+      "target": "❌ 搜索出错：{error}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ Video picker unavailable: {e}",
+      "target": "❌ 视频选择器不可用：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ Worker error: {e}",
+      "target": "❌ 工作线程错误：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "❌ {self.kind} run error: {e}",
+      "target": "❌ {self.kind} 运行错误：{e}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "➕  Add all “{group_name}” clips  ({len(row_clips)})",
+      "target": "➕  将“{group_name}”全部片段加入剪辑时间线（{len(row_clips)}）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "➕  Add this clip to edit timeline",
+      "target": "➕  将此片段加入剪辑时间线",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "➕ Added ${e.paths.length} downloaded video(s)",
+      "target": "➕ 已添加 ${e.paths.length} 个下载的视频",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "➡️   Trim end  ←  {_fmt_time(click_time)}",
+      "target": "➡️   修剪终点 ← {_fmt_time(click_time)}",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "⟳ Auto-scroll OFF",
+      "target": "⟳ 自动滚动：关",
+      "files": [
+        "video_ai_editor/transcript_panel.py"
+      ]
+    },
+    {
+      "source": "⟳ Auto-scroll ON",
+      "target": "⟳ 自动滚动：开",
+      "files": [
+        "video_ai_editor/transcript_panel.py"
+      ]
+    },
+    {
+      "source": "⬅️   Trim start  →  {_fmt_time(click_time)}",
+      "target": "⬅️   修剪起点 → {_fmt_time(click_time)}",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "🌐 Extracting video links...",
+      "target": "🌐 正在提取视频链接…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🎉 Combined highlight: {combined_file}",
+      "target": "🎉 高光合并完成：{combined_file}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🎥 Original",
+      "target": "🎥 原始视频",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎬 Action Confidence",
+      "target": "🎬 动作置信度",
+      "files": [
+        "video_ai_editor/filter_dialogs.py"
+      ]
+    },
+    {
+      "source": "🎬 Action recognition",
+      "target": "🎬 动作识别",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "🎬 Actions",
+      "target": "🎬 动作",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎬 Combining ${files.length} highlights into a reel…",
+      "target": "🎬 正在将 ${files.length} 个高光合并为短片…",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "🎬 Generate Actions",
+      "target": "🎬 生成动作标注",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎬 Regenerate Actions",
+      "target": "🎬 重新生成动作标注",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎬 Render Highlight Video",
+      "target": "🎬 渲染高光视频",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "🎬 Rendering highlight video…",
+      "target": "🎬 正在渲染高光视频…",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "🎬 Rendering highlight video… {pct}%",
+      "target": "🎬 正在渲染高光视频… {pct}%",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "🎬 Successfully processed {processed_count}/{len(downloaded_files)} videos",
+      "target": "🎬 已成功处理 {processed_count}/{len(downloaded_files)} 个视频",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🎯 Annotated",
+      "target": "🎯 已标注",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎯 BBox",
+      "target": "🎯 检测框",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎯 Forcing VISUAL mode - will capture and analyze current frame",
+      "target": "🎯 已强制切换到视觉模式——将截取并分析当前画面",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🎯 Live BBox Overlay",
+      "target": "🎯 实时检测框叠加",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "🎯 Overlay",
+      "target": "🎯 叠加层",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎯 Video Source",
+      "target": "🎯 视频来源",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "👁 Watch it learn",
+      "target": "👁 查看训练过程",
+      "files": [
+        "modules/ui/training_panel.py",
+        "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "👤 Found ${e.count} identities",
+      "target": "👤 找到 ${e.count} 个身份",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "💾 Reasoning facts saved to: {os.path.basename(saved_path)}",
+      "target": "💾 推理结果已保存到：{os.path.basename(saved_path)}",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "💾 Save to Cache",
+      "target": "💾 保存到缓存",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "💾 {mem:.0f}MB | Items: {scene_items} | Cache: {cached_buckets}buckets",
+      "target": "💾 {mem:.0f}MB | 项目：{scene_items} | 缓存：{cached_buckets} 个区块",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "📂 Load from Cache...",
+      "target": "📂 从缓存加载…",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "📊 **Action Statistics**",
+      "target": "📊 **动作统计**",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "📊 Opening Timeline Viewer for ${basename(videos[0])}…",
+      "target": "📊 正在为 ${basename(videos[0])} 打开时间线查看器…",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "📊 Successfully downloaded {len(downloaded_files)} videos",
+      "target": "📊 已成功下载 {len(downloaded_files)} 个视频",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "📝 Forcing TEXT mode - will ignore vision keywords and use only analysis data",
+      "target": "📝 已强制切换到文本模式——忽略视觉关键词，仅使用分析数据",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "📦 Generate Objects",
+      "target": "📦 生成物体标注",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "📦 Object Confidence",
+      "target": "📦 物体置信度",
+      "files": [
+        "video_ai_editor/filter_dialogs.py"
+      ]
+    },
+    {
+      "source": "📦 Objects",
+      "target": "📦 物体",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "📦 Regenerate Objects",
+      "target": "📦 重新生成物体标注",
+      "files": [
+        "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "📷 Capture Frame",
+      "target": "📷 截取当前帧",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "📷 Frame captured at {window.current_time:.1f}s",
+      "target": "📷 已截取 {window.current_time:.1f} 秒处画面",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "📸 Frame captured at {ts_str}",
+      "target": "📸 已截取 {ts_str} 的画面",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🔀  Swap for the next best moment",
+      "target": "🔀  替换为下一个最佳时刻",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "🔄 Refresh from face database",
+      "target": "🔄 从人脸库刷新",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🔄 Refreshed the open timeline viewer.",
+      "target": "🔄 已刷新当前打开的时间线查看器。",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🔍 Filter",
+      "target": "🔍 筛选",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "🔍 Live Detection Preview",
+      "target": "🔍 实时检测预览",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🔍 Parsed search: '{target}'",
+      "target": "🔍 已解析搜索：‘{target}’",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🔍 Parsed search: '{target}' every {interval}s",
+      "target": "🔍 已解析搜索：‘{target}’，每 {interval} 秒采样一次",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🔍 Scan video for faces",
+      "target": "🔍 扫描视频人脸",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🔍 Scanning {os.path.basename(self.video_path)} for faces…",
+      "target": "🔍 正在扫描 {os.path.basename(self.video_path)} 中的人脸…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🔍 Scanning…",
+      "target": "🔍 扫描中…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🔍 Search by Person",
+      "target": "🔍 按人物搜索",
+      "files": [
+        "video_ai_editor/search_panel.py"
+      ]
+    },
+    {
+      "source": "🔎 match at ${e.timestamp.toFixed(1)}s",
+      "target": "🔎 在 ${e.timestamp.toFixed(1)} 秒找到匹配",
+      "files": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "🔧 Processing: {filename} | Initializing…",
+      "target": "🔧 正在处理：{filename} | Initializing…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🔧 Processing: {os.path.basename(filepath)}",
+      "target": "🔧 正在处理：{os.path.basename(filepath)}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🗂 Selected {len(urls)} video(s) from picker",
+      "target": "🗂 已从选择器中选择 {len(urls)} 个视频",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🗑  Remove this avoid range",
+      "target": "🗑  移除此排除区间",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "🗑 Clear faces",
+      "target": "🗑 清空人脸",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🗑 Face bank cleared — {kept} identities kept",
+      "target": "🗑 人脸库已清理——保留 {kept} 个身份",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🗑 Removed 1 person from the face bank",
+      "target": "🗑 已从人脸库移除 1 人",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🗑️   Delete clip",
+      "target": "🗑️   删除片段",
+      "files": [
+        "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "🙂 Facial recognition",
+      "target": "🙂 人脸识别",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "🚀 Initializing...",
+      "target": "🚀 正在初始化…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🚀 Starting batch processing of {len(self.video_path)} videos...",
+      "target": "🚀 开始批量处理 {len(self.video_path)} 个视频…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🚀 Starting download from: {self.url}",
+      "target": "🚀 开始下载：{self.url}",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🚀 Starting video highlighter pipeline...",
+      "target": "🚀 正在启动视频高光处理流程…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🚀 {kind.title()} (on demand)…",
+      "target": "🚀 {kind.title()}（按需运行）…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🚀 {self.kind.title()} on demand over {n} video(s)...",
+      "target": "🚀 {self.kind.title()}按需分析，共 {n} 个视频…",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
+      "source": "🚫  Avoid this person",
+      "target": "🚫  排除此人物",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "🚫  Avoid this range in highlights",
+      "target": "🚫  从高光中排除此区间",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "🚫 Avoiding {name} — {len(self.avoided_identity_ids)} total",
+      "target": "🚫 正在排除 {name} — 共 {len(self.avoided_identity_ids)} 个",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "🧊 Object recognition",
+      "target": "🧊 物体识别",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "🧠  Teach a model to find this — draw a box…",
+      "target": "🧠  教模型识别此内容 — 请画框…",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "🧠 Reasoning engine initialized with {stats['total_actions']} actions analyzed",
+      "target": "🧠 推理引擎已初始化，共分析 {stats['total_actions']} 个动作",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🧠 Reasoning engine now has LLM — 'why' questions enabled",
+      "target": "🧠 推理引擎已连接大模型，现在可以回答“为什么”类问题",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🧹 Clear Cache",
+      "target": "🧹 清空缓存",
+      "files": [
+        "video_ai_editor/realtime_overlay.py"
       ]
     }
   ]

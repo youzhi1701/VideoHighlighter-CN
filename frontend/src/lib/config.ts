@@ -115,9 +115,9 @@ export const DEFAULT_CONFIG: HighlighterConfig = {
 }
 
 export const MUSIC_MODES = [
-  { value: "replace", label: "Replace clip audio" },
-  { value: "mix", label: "Mix under clip audio" },
-  { value: "duck", label: "Duck under clip audio" },
+  { value: "replace", label: "替换片段音频" },
+  { value: "mix", label: "与片段音频混合" },
+  { value: "duck", label: "压低原声后混合" },
 ]
 
 // Option lists mirror the Qt combo boxes.
@@ -129,36 +129,36 @@ export const SUBTITLE_LANGS = [
   "en", "pl", "es", "fr", "de", "it", "pt", "ru", "ja", "ko", "zh",
 ]
 export const YOLO_TYPES = [
-  { value: "standard", label: "Standard YOLO (80 objects)" },
-  { value: "custom", label: "Custom (my trained model)" },
+  { value: "standard", label: "标准 YOLO（80 类物体）" },
+  { value: "custom", label: "自定义（我训练的模型）" },
 ]
 export const YOLO_SIZES = [
-  { value: "n", label: "Nano (fastest, lowest accuracy)" },
-  { value: "s", label: "Small (fast, good balance)" },
-  { value: "m", label: "Medium (balanced)" },
-  { value: "l", label: "Large (accurate, slower)" },
-  { value: "x", label: "Extra-Large (most accurate, slowest)" },
+  { value: "n", label: "Nano（最快，精度最低）" },
+  { value: "s", label: "Small（较快，平衡良好）" },
+  { value: "m", label: "Medium（均衡）" },
+  { value: "l", label: "Large（更准确，较慢）" },
+  { value: "x", label: "Extra-Large（最准确，最慢）" },
 ]
 export const ACTION_BACKENDS = [
-  { value: "auto", label: "Auto (CUDA / OpenVINO / CPU)" },
-  { value: "openvino", label: "OpenVINO (Intel GPU / CPU)" },
-  { value: "r3d_cuda", label: "R3D + CUDA (NVIDIA GPU)" },
-  { value: "r3d_cpu", label: "R3D + CPU (PyTorch, slow)" },
+  { value: "auto", label: "自动（CUDA / OpenVINO / CPU）" },
+  { value: "openvino", label: "OpenVINO（Intel GPU / CPU）" },
+  { value: "r3d_cuda", label: "R3D + CUDA（NVIDIA GPU）" },
+  { value: "r3d_cpu", label: "R3D + CPU（PyTorch，较慢）" },
 ]
 export const R3D_MODELS = [
-  { value: "r3d_18", label: "R3D-18 (fastest)" },
-  { value: "mc3_18", label: "MC3-18 (mixed convolution)" },
-  { value: "r2plus1d_18", label: "R(2+1)D-18 (most accurate)" },
+  { value: "r3d_18", label: "R3D-18（最快）" },
+  { value: "mc3_18", label: "MC3-18（混合卷积）" },
+  { value: "r2plus1d_18", label: "R(2+1)D-18（最准确）" },
 ]
 export const ACTION_MODELS = [
-  { value: "intel_only", label: "Kinetics-400 pretrained" },
-  { value: "custom_only", label: "Custom OpenVINO" },
-  { value: "r3d_custom_only", label: "R3D fine-tuned" },
-  { value: "mixed", label: "Mixed — all available models" },
+  { value: "intel_only", label: "Kinetics-400 预训练" },
+  { value: "custom_only", label: "自定义 OpenVINO" },
+  { value: "r3d_custom_only", label: "R3D 微调模型" },
+  { value: "mixed", label: "混合——使用全部可用模型" },
 ]
 export const AVOID_METHODS = [
-  { value: "skip", label: "Skip those moments" },
-  { value: "crop", label: "Crop them out (experimental)" },
+  { value: "skip", label: "跳过这些时刻" },
+  { value: "crop", label: "裁掉这些内容（实验性）" },
 ]
 
 /** Directory of a path, using whichever separator the path uses. */

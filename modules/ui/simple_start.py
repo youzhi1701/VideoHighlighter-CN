@@ -62,7 +62,7 @@ def build_brand_header(parent: QWidget | None = None) -> QWidget:
         f"color: {p.text}; font-size: 15pt; font-weight: 600;"
         "background: transparent;")
     text_col.addWidget(title)
-    meta = QLabel(f"Version {__version__}  ·  {__build_date__}")
+    meta = QLabel(f"版本 {__version__}  ·  {__build_date__}")
     meta.setStyleSheet(
         f"color: {p.text_mute}; font-size: 9.5pt; background: transparent;")
     text_col.addWidget(meta)

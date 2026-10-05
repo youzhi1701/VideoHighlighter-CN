@@ -286,7 +286,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
   const render = async () => {
     const res = await renderReel(request())
     if (!res.ok) setStatus(res.error ?? "无法开始渲染")
-    else setStatus(`Rendering ${res.shots} shots to ${basename(res.output ?? "")}…`)
+    else setStatus(`正在将 ${res.shots} 个镜头渲染到 ${basename(res.output ?? "")}…`)
   }
 
   return (

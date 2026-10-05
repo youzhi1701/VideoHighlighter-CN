@@ -111,10 +111,11 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
     after = rule.get("after")
     meta: dict[str, Any] = {}
 
-    if target and target in text:
-        return text, "already_applied", meta
-
     if source:
+        # Always prefer an exact source occurrence over a target found
+        # somewhere else in the file. Repeated labels often share the same
+        # Chinese target; a global "target exists" check would incorrectly
+        # skip later untranslated occurrences.
         occurrences = _count(text, source)
         if occurrences == 1:
             return _replace_once(text, source, target), "applied", meta
@@ -148,6 +149,10 @@ def _apply_rule(text: str, rule: dict[str, Any]) -> tuple[str, str, dict[str, An
                 return _replace_once(text, source, target), "applied", meta
             meta["occurrences"] = occurrences
             return text, "conflict", meta
+        # Source is gone. Only now may an exact target block mean this
+        # rule was already applied.
+        if target and _count(text, target) > 0:
+            return text, "already_applied", meta
         sim = _best_similarity(source, text)
         if sim and sim["score"] >= 0.72:
             meta["similar"] = sim

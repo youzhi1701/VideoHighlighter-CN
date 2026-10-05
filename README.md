@@ -78,12 +78,12 @@ $u='https://raw.githubusercontent.com/youzhi1701/VideoHighlighter-CN/main/Window
 
 ## 中文汉化插件一键下载
 
-> 已兼容 Windows PowerShell 5.1：下载脚本内部使用 ASCII 源码，避免 UTF-8 无 BOM 导致中文脚本解析错误。
+> 下载入口使用 ASCII 脚本文件名，并自动加入时间戳绕过 GitHub Raw/CDN 缓存，兼容 Windows PowerShell 5.1。
 
 如果你只需要 **中文汉化插件**，不想下载整个项目，打开 PowerShell，复制下面这一整行并回车：
 
 ```powershell
-$u='https://raw.githubusercontent.com/youzhi1701/VideoHighlighter-CN/main/Windows%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E4%B8%AD%E6%96%87%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6.ps1'; $p="$env:TEMP\VideoHighlighter-CN-Plugin.ps1"; Invoke-WebRequest $u -OutFile $p -UseBasicParsing; powershell -ExecutionPolicy Bypass -File $p
+$u='https://raw.githubusercontent.com/youzhi1701/VideoHighlighter-CN/main/download-cn-plugin.ps1?v='+[DateTimeOffset]::UtcNow.ToUnixTimeSeconds(); $p="$env:TEMP\download-cn-plugin.ps1"; Remove-Item $p -Force -ErrorAction SilentlyContinue; Invoke-WebRequest $u -OutFile $p -UseBasicParsing -Headers @{'Cache-Control'='no-cache'}; powershell -NoProfile -ExecutionPolicy Bypass -File $p
 ```
 
 它会自动：

@@ -1,4 +1,4 @@
-name: Localization Layer Validation
+name: 中文汉化层验证
 
 on:
   push:

@@ -238,7 +238,7 @@ class ReviewWindow(QWidget):
         self.record = self.fetch(project)
         if not self.record:
             self.header.setText("<b>没有需要继续检查的内容。</b> 关闭此窗口后运行 "
-                                "<code>status</code> 查看下一步。")
+                                "“状态”功能查看下一步。")
             self.save_next.setEnabled(False)
             self.update_progress(project)
             return

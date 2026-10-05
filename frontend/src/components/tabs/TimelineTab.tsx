@@ -241,14 +241,14 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Scissors className="size-4" /> Timeline
+            <Scissors className="size-4" /> 时间线
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-xs text-muted-foreground">
-            A cut list is what the Auto tab writes next to your film
-            (<code>film.edl.yaml</code>). Open it here to trim the clips, change
-            how they join, and render again — without re-running detection.
+            剪辑列表由“自动”标签页生成，并保存在成片旁边
+            （<code>film.edl.yaml</code>）。可在这里修剪片段、调整
+            片段衔接方式并重新渲染，无需再次运行检测。
           </p>
           <div className="flex gap-2">
             <Input
@@ -264,7 +264,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                 if (dir) setPath(`${dir}\\film.edl.yaml`)
               }}
             >
-              <FolderOpen className="size-3.5" /> Browse
+              <FolderOpen className="size-3.5" /> 浏览
             </Button>
             <Button size="sm" onClick={() => void load(path)} disabled={!path}>
               Open

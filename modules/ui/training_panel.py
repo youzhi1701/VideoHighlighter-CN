@@ -13,7 +13,7 @@ from a callback the training loop already emitted.
 
 **Progress is reported in the user's terms.** Before the run: how long it will
 take, on which hardware, and whether that number was measured on this computer
-(``training.train_estimate``). During it: which stage it is in, time elapsed and
+(``training.train_estimate``). During it: which stage it is in, time 已用 and
 left, and after every round a sentence about what the model now finds on frames
 it was not trained on (``modules.vision.training_preview``) — with a "Watch it learn"
 window for anyone who wants to see it. Loss values go to the debug log — they
@@ -41,7 +41,7 @@ from modules.ui.collapsible import CollapsibleSection
 from modules.ui.theme import DARK as THEME
 
 
-class ObjectTrainingWorker(QObject):
+class Object训练Worker(QObject):
     """Assemble, train, export — off the GUI thread.
 
     One worker for the whole chain rather than three, because the user asked
@@ -55,7 +55,7 @@ class ObjectTrainingWorker(QObject):
     finished = Signal(object)          # ExportResult
     error = Signal(str)
 
-    STAGES = ("Collecting frames", "Preparing the model", "Learning", "Saving")
+    STAGES = ("收集帧", "准备模型", "训练中", "保存")
 
     def __init__(self, store_path: str, work_dir: str, dest_dir: str,
                  epochs: int, batch_size: int, size: str):
@@ -98,13 +98,13 @@ class ObjectTrainingWorker(QObject):
             run_started = time.perf_counter()
             stage = "collecting the frames"
             self.stage.emit(0)
-            self.progress.emit(0, "Collecting frames from your videos...")
+            self.progress.emit(0, "收集帧 from your videos...")
             dataset_dir = os.path.join(self._work_dir, "dataset")
             summary = build_dataset(
                 store, dataset_dir,
                 progress=lambda done, total: self.progress.emit(
                     int(5 * done / max(1, total)),
-                    f"Collecting frames... {done} of {total}"),
+                    f"收集帧... {done} of {total}"),
             )
             if self._should_stop():
                 raise Cancelled("stopped before training")
@@ -120,8 +120,8 @@ class ObjectTrainingWorker(QObject):
             self.stage.emit(1)
             from training.train_yolox_run import pretrained_path
             first_time = not os.path.exists(pretrained_path(self._size))
-            self.progress.emit(5, "Preparing the model..." + (
-                " The first run downloads its starting weights (20-70 MB)."
+            self.progress.emit(5, "准备模型..." + (
+                " 首次运行需要下载初始权重（20–70 MB）。"
                 if first_time else ""))
 
             from modules.vision.training_preview import pick_frames, snapshot
@@ -146,8 +146,8 @@ class ObjectTrainingWorker(QObject):
                 percent = 5 + int(93 * update.fraction)
                 left = _friendly_time(update.eta)
                 self.progress.emit(percent, (
-                    f"Learning... round {update.epoch} of {update.total_epochs}"
-                    + (f", about {left} left" if left else "")))
+                    f"训练中... round {update.epoch} of {update.total_epochs}"
+                    + (f"，预计剩余 {left}" if left else "")))
 
             result = train(
                 dataset_dir=dataset_dir,
@@ -163,7 +163,7 @@ class ObjectTrainingWorker(QObject):
 
             stage = "saving the model"
             self.stage.emit(3)
-            self.progress.emit(98, "Saving the model...")
+            self.progress.emit(98, "保存 the model...")
             exported = install(result.weights_path, dest_dir=self._dest_dir)
             _record_speed(
                 result, self._size, extract_per_frame,
@@ -175,17 +175,17 @@ class ObjectTrainingWorker(QObject):
             exported.best_val_loss = result.best_val_loss
             exported.last_round = history[-1] if history else None
             exported.device = result.device
-            self.progress.emit(100, "Done.")
+            self.progress.emit(100, "完成。")
             self.finished.emit(exported)
 
         except Exception as exc:                   # noqa: BLE001 - never crash the GUI
             name = type(exc).__name__
             if name == "Cancelled":
-                self.error.emit("Stopped.")
+                self.error.emit("已停止。")
                 return
             import traceback
             traceback.print_exc()
-            self.error.emit(f"Failed while {stage}: {exc}")
+            self.error.emit(f"在“{stage}”阶段失败：{exc}")
 
 
 def _record_speed(result, size: str, extract_per_frame=None, fixed_seconds=None) -> None:
@@ -251,12 +251,12 @@ def _friendly_time(seconds: float) -> str:
     return f"{hours:.1f} hours"
 
 
-class ObjectTrainingSection(QWidget):
+class Object训练Section(QWidget):
     """Pick a set of labels, train a detector, install it.
 
     Objects are taught from **boxes in frames**: where a thing is, in a still.
     That is a different kind of example from an action, which is why this and
-    :class:`ActionTrainingSection` are separate rather than one form with a
+    :class:`Action训练Section` are separate rather than one form with a
     mode switch — they take different data and produce different models.
     """
 
@@ -271,7 +271,7 @@ class ObjectTrainingSection(QWidget):
     def __init__(self, parent=None, store_path: str = ""):
         super().__init__(parent)
         self._thread: Optional[QThread] = None
-        self._worker: Optional[TrainingWorker] = None
+        self._worker: Optional[训练Worker] = None
         self._store_path = store_path
         self._frames = (0, 0)                # (train, val) the store will produce
         self._device: Optional[tuple] = None  # (device, name) once probed
@@ -279,7 +279,7 @@ class ObjectTrainingSection(QWidget):
         self._started_at = 0.0
         self._time_left = 0.0
         self._estimate_seconds = 0.0
-        self._preview = None                 # TrainingPreviewWindow, when open
+        self._preview = None                 # 训练PreviewWindow, when open
         self._rounds: list = []              # every RoundSnapshot of this run
         self._tick = QTimer(self)
         self._tick.setInterval(1000)
@@ -295,10 +295,10 @@ class ObjectTrainingSection(QWidget):
         root = QVBoxLayout()
 
         explain = QLabel(
-            "Teach the app to find things of your own. Mark examples, and this "
-            "trains a small detector that looks for them in every video.\n"
-            "The first model finds some of them, not all — it improves each "
-            "time you add more examples."
+            "让应用学会识别你自己的物体。先标记示例，程序会训练一个小型检测模型，"
+            "用于在每个视频中寻找这些物体。\n"
+            "初次训练可能无法识别全部目标；随着你继续添加示例，模型会逐步改进。"
+            ""
         )
         explain.setWordWrap(True)
         explain.setStyleSheet("color:#999;")
@@ -306,17 +306,17 @@ class ObjectTrainingSection(QWidget):
 
         # -- where the labels come from --
         source_row = QHBoxLayout()
-        source_row.addWidget(QLabel("Examples:"))
-        self.store_label = QLabel("none chosen")
+        source_row.addWidget(QLabel("示例："))
+        self.store_label = QLabel("尚未选择")
         self.store_label.setStyleSheet("font-style:italic;color:#999;")
         source_row.addWidget(self.store_label, 1)
-        browse = QPushButton("Choose...")
+        browse = QPushButton("选择…")
         browse.clicked.connect(self._browse_store)
         source_row.addWidget(browse)
-        self.import_btn = QPushButton("Import from labeller...")
+        self.import_btn = QPushButton("从标注工具导入…")
         self.import_btn.setToolTip(
-            "Read a tools/labeler.py export. Its points become boxes of a fixed "
-            "size, so they arrive needing review rather than accepted.")
+            "读取 tools/labeler.py 导出的数据。点标注会被转换为固定大小的边界框，"
+            "因此导入后需要先检查确认，而不会直接作为已接受标注。")
         self.import_btn.clicked.connect(self._import_labeler)
         source_row.addWidget(self.import_btn)
         root.addLayout(source_row)
@@ -326,27 +326,27 @@ class ObjectTrainingSection(QWidget):
         root.addWidget(self.counts_label)
 
         # -- advanced, folded: the point is that nobody has to open it --
-        advanced = CollapsibleSection("Advanced", settings_key="training/advanced")
+        advanced = CollapsibleSection("高级", settings_key="training/advanced")
         form = QFormLayout()
         self.epochs_spin = QSpinBox()
         self.epochs_spin.setRange(1, 1000)
         self.epochs_spin.setValue(self.DEFAULT_EPOCHS)
         self.epochs_spin.valueChanged.connect(self._refresh_estimate)
-        form.addRow("Rounds of learning:", self.epochs_spin)
+        form.addRow("训练轮数：", self.epochs_spin)
 
         self.batch_spin = QSpinBox()
         self.batch_spin.setRange(1, 64)
         self.batch_spin.setValue(self.DEFAULT_BATCH)
-        form.addRow("Frames at a time:", self.batch_spin)
+        form.addRow("每批帧数：", self.batch_spin)
 
         self.size_combo = QComboBox()
-        for size, hint in (("nano", "smallest and fastest"),
-                           ("tiny", "recommended"),
-                           ("s", "slower, a little more accurate")):
+        for size, hint in (("nano", "最小、最快"),
+                           ("tiny", "推荐"),
+                           ("s", "较慢，但略微更准确")):
             self.size_combo.addItem(f"{size} - {hint}", size)
         self.size_combo.setCurrentIndex(1)
         self.size_combo.currentIndexChanged.connect(self._refresh_estimate)
-        form.addRow("Model size:", self.size_combo)
+        form.addRow("模型大小：", self.size_combo)
         advanced.setContentLayout(form)
         root.addWidget(advanced)
 
@@ -356,7 +356,7 @@ class ObjectTrainingSection(QWidget):
         root.addWidget(self.estimate_label)
 
         # -- the one button --
-        self.train_btn = QPushButton("Train a model")
+        self.train_btn = QPushButton("训练模型")
         self.train_btn.setStyleSheet(
             f"QPushButton{{background:{THEME.success};color:white;"
             f"font-weight:bold;padding:10px 18px;}}")
@@ -364,7 +364,7 @@ class ObjectTrainingSection(QWidget):
         self.train_btn.clicked.connect(self._start)
         root.addWidget(self.train_btn)
 
-        self.cancel_btn = QPushButton("Stop")
+        self.cancel_btn = QPushButton("停止")
         self.cancel_btn.clicked.connect(self._cancel)
         self.cancel_btn.setVisible(False)
         root.addWidget(self.cancel_btn)
@@ -394,10 +394,10 @@ class ObjectTrainingSection(QWidget):
         self.round_label.setVisible(False)
         root.addWidget(self.round_label)
 
-        self.watch_btn = QPushButton("👁 Watch it learn")
+        self.watch_btn = QPushButton("👁 查看训练过程")
         self.watch_btn.setToolTip(
-            "Open a live view: after every round the model looks at the same few "
-            "frames it was not trained on, and you can see what it finds.")
+            "打开实时预览：每轮结束后，模型都会查看同一组未参与训练的帧，"
+            "你可以直接看到它识别到了什么。")
         self.watch_btn.clicked.connect(self._open_preview)
         self.watch_btn.setVisible(False)
         root.addWidget(self.watch_btn)
@@ -413,7 +413,7 @@ class ObjectTrainingSection(QWidget):
             "videos, frames or audio.")
         share_note.setWordWrap(True)
         share_layout.addWidget(share_note)
-        self.share_btn = QPushButton("Share this model with the community…")
+        self.share_btn = QPushButton("将此模型分享到社区…")
         self.share_btn.clicked.connect(self._share)
         share_layout.addWidget(self.share_btn)
         self.share_box.setVisible(False)
@@ -427,7 +427,7 @@ class ObjectTrainingSection(QWidget):
 
     def _browse_store(self) -> None:
         path, _ = QFileDialog.getOpenFileName(
-            self, "Choose a set of examples", "", "Labels (*.json);;All files (*)")
+            self, "选择一组示例", "", "标注文件 (*.json);;所有文件 (*)")
         if path:
             self._load_store(path)
 
@@ -447,7 +447,7 @@ class ObjectTrainingSection(QWidget):
 
         if counts:
             described = ", ".join(f"{name} ({n})" for name, n in sorted(counts.items()))
-            note = f"Ready to learn: {described}."
+            note = f"可以开始训练：{described}。"
             if pending:
                 note += f"  {pending} more still need checking."
             self.counts_label.setText(note)
@@ -472,7 +472,7 @@ class ObjectTrainingSection(QWidget):
 
     def _import_labeler(self) -> None:
         path, _ = QFileDialog.getOpenFileName(
-            self, "Import a labeller export", "", "Labels (*.json);;All files (*)")
+            self, "Import a labeller export", "", "标注文件 (*.json);;所有文件 (*)")
         if not path:
             return
         try:
@@ -501,7 +501,7 @@ class ObjectTrainingSection(QWidget):
         if sum(self._frames) == 0:
             return
         if self._device is None:
-            self.estimate_label.setText("Working out how long training will take...")
+            self.estimate_label.setText("正在估算训练所需时间…")
             self.estimate_label.setStyleSheet("color:#999;")
             if not self._probing:
                 self._probing = True
@@ -536,8 +536,8 @@ class ObjectTrainingSection(QWidget):
         self._estimate_seconds = est.seconds
         text = est.sentence(friendly_device(device, name))
         if device_kind(device) == "cpu":
-            text += (" A graphics card usually makes this several times faster; "
-                     "a smaller model size is quicker too.")
+            text += (" 使用显卡通常可以快数倍；"
+                     "选择更小的模型也会更快。")
         self.estimate_label.setText(text)
         self.estimate_label.setStyleSheet("" if est.seconds < 1800 else f"color:{THEME.warning};")
 
@@ -550,7 +550,7 @@ class ObjectTrainingSection(QWidget):
     # ── the live parts of a run ──────────────────────────────────────────
 
     def _show_stage(self, index: int) -> None:
-        stages = ObjectTrainingWorker.STAGES
+        stages = Object训练Worker.STAGES
         parts = []
         for i, label in enumerate(stages):
             if i < index:
@@ -564,9 +564,9 @@ class ObjectTrainingSection(QWidget):
     def _update_clock(self) -> None:
         import time
         spent = time.monotonic() - self._started_at
-        text = f"{_elapsed(spent)} elapsed"
+        text = f"{_elapsed(spent)} 已用"
         if self._time_left > 0:
-            text += f" · about {_friendly_time(self._time_left)} left"
+            text += f" · 预计剩余 {_friendly_time(self._time_left)} left"
         elif self._estimate_seconds > 0:
             text += f" · expected about {_friendly_time(max(0.0, self._estimate_seconds - spent)) or 'a moment'} more"
         self.clock_label.setText(text)
@@ -605,9 +605,9 @@ class ObjectTrainingSection(QWidget):
         PublishWizard(self, model_path=onnx_path, draft=draft).exec()
 
     def _open_preview(self) -> None:
-        from modules.ui.training_preview import TrainingPreviewWindow
+        from modules.ui.training_preview import 训练PreviewWindow
         if self._preview is None:
-            self._preview = TrainingPreviewWindow(self)
+            self._preview = 训练PreviewWindow(self)
             self._preview.closed.connect(self._on_preview_closed)
             for snap in self._rounds:           # rounds before it opened, as numbers
                 self._preview.add_round(snap)
@@ -637,7 +637,7 @@ class ObjectTrainingSection(QWidget):
             os.path.dirname(os.path.abspath(__file__))))
         dest_dir = os.path.join(repo_root, "models", "custom")
 
-        self._worker = ObjectTrainingWorker(
+        self._worker = Object训练Worker(
             store_path=self._store_path,
             work_dir=work_dir,
             dest_dir=dest_dir,
@@ -664,7 +664,7 @@ class ObjectTrainingSection(QWidget):
     def _cancel(self) -> None:
         if self._worker is not None:
             self._worker.cancel()
-            self._say("Stopping after this step...", THEME.warning)
+            self._say("停止ping after this step...", THEME.warning)
 
     def _set_running(self, running: bool) -> None:
         import time
@@ -727,8 +727,8 @@ class ObjectTrainingSection(QWidget):
     def _on_error(self, message: str) -> None:
         self._teardown()
         self._say(message, THEME.danger)
-        if not message.startswith("Stopped"):
-            QMessageBox.warning(self, "Training", message)
+        if not message.startswith("停止ped"):
+            QMessageBox.warning(self, "训练", message)
 
     def _teardown(self) -> None:
         self._set_running(False)
@@ -749,7 +749,7 @@ class ObjectTrainingSection(QWidget):
         super().closeEvent(event)
 
 
-class ActionTrainingWorker(QObject):
+class Action训练Worker(QObject):
     """Drive the R3D trainer in a child process, reporting what it prints.
 
     A subprocess rather than an import, for one reason: ``model_training.r3d``
@@ -827,14 +827,14 @@ class ActionTrainingWorker(QObject):
             code = self._process.wait()
 
             if self._stop:
-                self.error.emit("Stopped.")
+                self.error.emit("已停止。")
                 return
             if code != 0:
                 self.error.emit(
-                    f"Training stopped with exit code {code}. The debug log "
+                    f"训练 stopped with exit code {code}. The debug log "
                     f"has the trainer's own output.")
                 return
-            self.progress.emit(100, "Done.")
+            self.progress.emit(100, "完成。")
             self.finished.emit(note)
         except Exception as exc:                    # noqa: BLE001
             import traceback
@@ -877,7 +877,7 @@ class ActionTrainingWorker(QObject):
         if epoch:
             done, total = int(epoch.group(1)), max(1, int(epoch.group(2)))
             self.progress.emit(int(100 * done / total),
-                               f"Learning... round {done} of {total}")
+                               f"训练中... round {done} of {total}")
             return None
         val = self._VAL.search(line)
         if val:
@@ -888,7 +888,7 @@ class ActionTrainingWorker(QObject):
         return None
 
 
-class ActionTrainingSection(QWidget):
+class Action训练Section(QWidget):
     """Train the app to recognise an action of the user's own.
 
     Actions are taught from **whole clips**, not boxes: one folder per action,
@@ -906,7 +906,7 @@ class ActionTrainingSection(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._thread: Optional[QThread] = None
-        self._worker: Optional[ActionTrainingWorker] = None
+        self._worker: Optional[Action训练Worker] = None
         self._data_path = ""
         self._device = "cpu"
         self._pipeline = "intel"
@@ -916,20 +916,20 @@ class ActionTrainingSection(QWidget):
         root = QVBoxLayout()
 
         explain = QLabel(
-            "Teach the app to recognise something that happens over time, "
-            "rather than something visible in a single frame.\n"
-            "Give it one folder per action, with a few short clips inside each."
+            "让应用学会识别随时间发生的动作，"
+            "而不是只识别单帧中可见的物体。\n"
+            "每个动作准备一个文件夹，并在其中放入若干短视频片段。"
         )
         explain.setWordWrap(True)
         explain.setStyleSheet("color:#999;")
         root.addWidget(explain)
 
         row = QHBoxLayout()
-        row.addWidget(QLabel("Clips folder:"))
-        self.folder_label = QLabel("none chosen")
+        row.addWidget(QLabel("片段文件夹："))
+        self.folder_label = QLabel("尚未选择")
         self.folder_label.setStyleSheet("font-style:italic;color:#999;")
         row.addWidget(self.folder_label, 1)
-        browse = QPushButton("Choose...")
+        browse = QPushButton("选择…")
         browse.clicked.connect(self._browse)
         row.addWidget(browse)
         root.addLayout(row)
@@ -939,31 +939,31 @@ class ActionTrainingSection(QWidget):
         root.addWidget(self.classes_label)
 
         advanced = CollapsibleSection(
-            "Advanced", settings_key="training/actions_advanced")
+            "高级", settings_key="training/actions_advanced")
         form = QFormLayout()
         self.epochs_spin = QSpinBox()
         self.epochs_spin.setRange(1, 500)
         self.epochs_spin.setValue(self.DEFAULT_EPOCHS)
-        form.addRow("Rounds of learning:", self.epochs_spin)
+        form.addRow("训练轮数：", self.epochs_spin)
 
         self.batch_spin = QSpinBox()
         self.batch_spin.setRange(1, 32)
         self.batch_spin.setValue(self.DEFAULT_BATCH)
-        form.addRow("Clips at a time:", self.batch_spin)
+        form.addRow("每批片段数：", self.batch_spin)
 
         self.pipeline_combo = QComboBox()
-        self.pipeline_combo.addItem("Automatic (match my hardware)", "auto")
-        self.pipeline_combo.addItem("Intel - OpenVINO encoder", "intel")
+        self.pipeline_combo.addItem("自动（匹配当前硬件）", "auto")
+        self.pipeline_combo.addItem("Intel - OpenVINO 编码器", "intel")
         self.pipeline_combo.addItem("NVIDIA - 3D CNN", "r3d")
         self.pipeline_combo.currentIndexChanged.connect(self._choose_pipeline)
-        form.addRow("Method:", self.pipeline_combo)
+        form.addRow("训练方式：", self.pipeline_combo)
 
         self.variant_combo = QComboBox()
-        for variant, hint in (("r3d_18", "recommended"),
-                              ("mc3_18", "lighter"),
-                              ("r2plus1d_18", "slower, often better")):
+        for variant, hint in (("r3d_18", "推荐"),
+                              ("mc3_18", "更轻量"),
+                              ("r2plus1d_18", "较慢，通常效果更好")):
             self.variant_combo.addItem(f"{variant} - {hint}", variant)
-        form.addRow("3D CNN model:", self.variant_combo)
+        form.addRow("3D CNN 模型：", self.variant_combo)
         # Held so the row can be hidden: it belongs to the 3D CNN only, and a
         # visible-but-irrelevant control reads as a setting that was ignored.
         self._advanced_form = form
@@ -975,7 +975,7 @@ class ActionTrainingSection(QWidget):
         root.addWidget(self.device_label)
         self._choose_pipeline()
 
-        self.train_btn = QPushButton("Train an action model")
+        self.train_btn = QPushButton("训练动作模型")
         self.train_btn.setStyleSheet(
             f"QPushButton{{background:{THEME.success};color:white;"
             f"font-weight:bold;padding:10px 18px;}}")
@@ -983,7 +983,7 @@ class ActionTrainingSection(QWidget):
         self.train_btn.clicked.connect(self._start)
         root.addWidget(self.train_btn)
 
-        self.cancel_btn = QPushButton("Stop")
+        self.cancel_btn = QPushButton("停止")
         self.cancel_btn.clicked.connect(self._cancel)
         self.cancel_btn.setVisible(False)
         root.addWidget(self.cancel_btn)
@@ -1077,7 +1077,7 @@ class ActionTrainingSection(QWidget):
             form.setRowVisible(self.variant_combo, self._pipeline == "r3d")
 
     def _browse(self) -> None:
-        path = QFileDialog.getExistingDirectory(self, "Choose the clips folder")
+        path = QFileDialog.getExistingDirectory(self, "选择片段文件夹")
         if path:
             self._load_folder(path)
 
@@ -1145,14 +1145,14 @@ class ActionTrainingSection(QWidget):
                 f"to check against.")
             self.classes_label.setStyleSheet(f"color:{THEME.warning};")
         else:
-            self.classes_label.setText(f"Ready to learn: {described}.")
+            self.classes_label.setText(f"可以开始训练：{described}。")
             self.classes_label.setStyleSheet("")
         self.train_btn.setEnabled(len(train_counts) - len(short) >= 2)
 
     def _start(self) -> None:
         if self._thread is not None:
             return
-        self._worker = ActionTrainingWorker(
+        self._worker = Action训练Worker(
             data_path=self._data_path,
             epochs=self.epochs_spin.value(),
             batch_size=self.batch_spin.value(),
@@ -1172,7 +1172,7 @@ class ActionTrainingSection(QWidget):
     def _cancel(self) -> None:
         if self._worker is not None:
             self._worker.cancel()
-            self._say("Stopping...", THEME.warning)
+            self._say("停止ping...", THEME.warning)
 
     def _set_running(self, running: bool) -> None:
         self.train_btn.setVisible(not running)
@@ -1218,7 +1218,7 @@ class ActionTrainingSection(QWidget):
         super().closeEvent(event)
 
 
-class TrainingPanel(QWidget):
+class 训练Panel(QWidget):
     """The two kinds of training, side by side.
 
     Separate tabs rather than one form, because the *example* differs: an
@@ -1234,9 +1234,9 @@ class TrainingPanel(QWidget):
         super().__init__(parent)
         from PySide6.QtWidgets import QTabWidget
 
-        self.objects = ObjectTrainingSection(store_path=store_path)
+        self.objects = Object训练Section(store_path=store_path)
         self.objects.model_installed.connect(self.model_installed)
-        self.actions = ActionTrainingSection()
+        self.actions = Action训练Section()
 
         tabs = QTabWidget()
         # First: the automated loop (modules/teach), cutting, sorting and
@@ -1249,8 +1249,8 @@ class TrainingPanel(QWidget):
         except Exception as exc:                # pragma: no cover - never cost the rest
             self.teach = None
             print(f"[training] teach panel unavailable: {exc}")
-        tabs.addTab(self.objects, "Objects")
-        tabs.addTab(self.actions, "Actions")
+        tabs.addTab(self.objects, "物体")
+        tabs.addTab(self.actions, "动作")
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -1277,11 +1277,11 @@ class TrainingPanel(QWidget):
             print(f"[training] could not list devices: {exc}")
 
         if devices:
-            label.setText("Training hardware: " + "; ".join(devices))
+            label.setText("训练 hardware: " + "; ".join(devices))
             label.setStyleSheet("color:#999;")
         else:
             label.setText(
-                "Training hardware: no GPU found - training will use the "
-                "processor and be much slower.")
+                "训练 hardware: no GPU found - training will use the "
+                "处理器训练，速度会明显较慢。")
             label.setStyleSheet(f"color:{THEME.warning};")
         return label

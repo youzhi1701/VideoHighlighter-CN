@@ -15,7 +15,7 @@ module fixes that in two layers:
    first but is useless in dev (the process already has a console — often a
    hidden one under VS Code — so nothing appears) and its close button kills
    the whole app; the Qt window behaves identically from source and frozen,
-   on Windows and macOS. The GUIs expose it as a "Debug log" checkbox; the
+   on Windows and macOS. The GUIs expose it as a "调试日志" checkbox; the
    preference persists via QSettings and is re-applied on next launch.
 
 Keep module-level imports light: install() runs before the heavy imports so
@@ -304,7 +304,7 @@ def _create_window():
         def __init__(self):
             super().__init__()
             self.setReadOnly(True)
-            self.setWindowTitle("VideoHighlighter — debug log")
+            self.setWindowTitle("VideoHighlighter — 调试日志")
             self.setMaximumBlockCount(10000)  # drop oldest lines, bound memory
             self.setLineWrapMode(QPlainTextEdit.NoWrap)
             self.setStyleSheet(
@@ -331,15 +331,15 @@ def _create_window():
             event.ignore()  # hide (via the call above), don't destroy
 
     win = _LogWindow()
-    win.append_chunk(f"(full log: {log_file_path()})\n"
-                     f"--- replaying last {len(_backlog)} output chunks ---\n")
+    win.append_chunk(f"(完整日志：{log_file_path()})\n"
+                     f"--- 正在回放最近 {len(_backlog)} 段输出 ---\n")
     with _lock:
         win.append_chunk("".join(_backlog))
         bridge = _Bridge(win)
         # Queued cross-thread delivery: worker threads emit, GUI thread appends.
         bridge.chunk.connect(win.append_chunk)
         _gui_sink = bridge.chunk.emit
-    win.append_chunk("--- live output from here on ---\n")
+    win.append_chunk("--- 以下为实时输出 ---\n")
     return win
 
 

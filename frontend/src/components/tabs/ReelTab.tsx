@@ -418,7 +418,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   if (p) setMusic(p)
                 }}
               >
-                Pick
+                选择
               </Button>
               {music && (
                 <Button variant="ghost" size="sm" onClick={() => setMusic("")}>
@@ -639,7 +639,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   if (p) setTrack(p)
                 }}
               >
-                Pick
+                选择
               </Button>
               {track && (
                 <Button variant="ghost" size="sm" onClick={() => setTrack("")}>

@@ -300,7 +300,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               <Input
                 value={root}
                 onChange={(e) => setRoot(e.target.value)}
-                placeholder="the project folder the Auto tab wrote to"
+                placeholder="“自动”标签页写入的项目文件夹"
               />
               <Button
                 variant="outline"
@@ -409,7 +409,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               <Input
                 value={music ? basename(music) : ""}
                 readOnly
-                placeholder="optional — shots snap to its beat"
+                placeholder="可选——镜头会自动对齐节拍"
               />
               <Button
                 variant="outline"
@@ -434,7 +434,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Shapes className="size-4" /> How it joins
+            <Shapes className="size-4" /> 拼接方式
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -543,7 +543,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                 disabled={isCut}
               />
               <p className="text-xs text-muted-foreground">
-                Shortened automatically if a shot is too brief to hold it.
+                如果镜头太短无法容纳，会自动缩短。
               </p>
             </div>
 
@@ -577,7 +577,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <Label className="flex items-center gap-1.5 text-xs">
-                <Scissors className="size-3.5" /> Skip the camera being placed
+                <Scissors className="size-3.5" /> 跳过摆放相机的画面
               </Label>
               <p className="max-w-prose text-xs text-muted-foreground">
                 Clips often open while the camera is still being raised, swung
@@ -606,7 +606,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <Label className="flex items-center gap-1.5 text-xs">
-                <MapPin className="size-3.5" /> Don't show the same view twice
+                <MapPin className="size-3.5" /> 不要连续显示相同视角
               </Label>
               <p className="max-w-prose text-xs text-muted-foreground">
                 Stopping in one spot and filming twice is the commonest way a
@@ -705,7 +705,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <Type className="size-4" /> Words on screen
+              <Type className="size-4" /> 屏幕文字
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -733,7 +733,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
           <CardContent className="space-y-3">
             {!root && (
               <p className="text-xs text-muted-foreground">
-                Choose a footage folder to see the shot plan.
+                请选择素材文件夹以查看镜头计划。
               </p>
             )}
             {plan && !plan.ok && (
@@ -759,7 +759,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   onClick={() => void render()}
                   disabled={!plan?.ok}
                 >
-                  <Play className="size-3.5" /> Make the reel
+                  <Play className="size-3.5" /> 生成短片
                 </Button>
               )}
               <Button
@@ -834,7 +834,7 @@ function ShotStrip({ plan }: { plan: ReelPlan }) {
         {(plan.trimmed ?? 0) > 0 && (
           <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
             <span className="inline-block h-1 w-3 rounded-sm bg-foreground/50" />
-            starts later than its clip does
+            开始时间晚于对应片段
           </span>
         )}
       </div>

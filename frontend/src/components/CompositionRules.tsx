@@ -80,7 +80,7 @@ export function CompositionRules() {
                     colSpan={11}
                     className="text-center text-sm text-muted-foreground"
                   >
-                    No rules yet
+                    暂无规则
                   </TableCell>
                 </TableRow>
               ) : (
@@ -159,10 +159,10 @@ export function CompositionRules() {
             variant="secondary"
             onClick={() => setRules((rs) => [...rs, { ...BLANK }])}
           >
-            <Plus className="size-4" /> Add Rule
+            <Plus className="size-4" /> 添加规则
           </Button>
           <Button size="sm" onClick={save} disabled={loading}>
-            <Save className="size-4" /> Save Rules
+            <Save className="size-4" /> 保存规则
           </Button>
         </div>
       </CardContent>

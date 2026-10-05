@@ -102,7 +102,7 @@ class _Card(QFrame):
             top.addWidget(QLabel(str(dur)))
         v.addLayout(top)
 
-        self.thumb_label = QLabel("loading…")
+        self.thumb_label = QLabel("加载中…")
         self.thumb_label.setFixedSize(_THUMB_W, _THUMB_H)
         self.thumb_label.setAlignment(Qt.AlignCenter)
         self.thumb_label.setStyleSheet("background:#222;color:#888;border:1px solid #333;")
@@ -124,7 +124,7 @@ class _Card(QFrame):
                 pix.scaled(_THUMB_W, _THUMB_H, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             )
         else:
-            self.thumb_label.setText("no preview")
+            self.thumb_label.setText("无预览")
 
     def is_checked(self) -> bool:
         return self.checkbox.isChecked()
@@ -133,7 +133,7 @@ class _Card(QFrame):
 class VideoPickerDialog(QDialog):
     def __init__(self, url: str, pattern: str = "/video/", use_browser: str = "auto", parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Select videos to download")
+        self.setWindowTitle("选择要下载的视频")
         self.resize(_COLUMNS * (_THUMB_W + 28) + 60, 640)
 
         self._entries: List[Dict] = []
@@ -146,7 +146,7 @@ class VideoPickerDialog(QDialog):
 
         root = QVBoxLayout(self)
 
-        self.status_label = QLabel("Loading listing…")
+        self.status_label = QLabel("正在加载列表…")
         self.status_label.setStyleSheet("color:#2f81f7;font-style:italic;")
         root.addWidget(self.status_label)
 
@@ -159,14 +159,14 @@ class VideoPickerDialog(QDialog):
         root.addWidget(self.scroll, stretch=1)
 
         btns = QHBoxLayout()
-        self.select_all_btn = QPushButton("Select all")
+        self.select_all_btn = QPushButton("全选")
         self.select_all_btn.clicked.connect(lambda: self._set_all(True))
-        self.select_none_btn = QPushButton("Select none")
+        self.select_none_btn = QPushButton("取消全选")
         self.select_none_btn.clicked.connect(lambda: self._set_all(False))
         btns.addWidget(self.select_all_btn)
         btns.addWidget(self.select_none_btn)
         btns.addStretch()
-        self.download_btn = QPushButton("Download selected")
+        self.download_btn = QPushButton("下载所选")
         self.download_btn.setStyleSheet(
             "QPushButton{background:#4CAF50;color:white;font-weight:bold;padding:6px 16px;}"
         )
@@ -197,9 +197,9 @@ class VideoPickerDialog(QDialog):
     def _on_entries(self, entries: List[Dict]):
         self._entries = entries or []
         if not self._entries:
-            self.status_label.setText("No videos found on that page.")
+            self.status_label.setText("该页面未找到视频。")
             return
-        self.status_label.setText(f"{len(self._entries)} video(s) — pick which to download.")
+        self.status_label.setText(f"{len(self._entries)} 个视频 — 请选择要下载的内容。")
         for idx, entry in enumerate(self._entries):
             card = _Card(entry)
             card.checkbox.stateChanged.connect(self._update_download_btn)
@@ -210,7 +210,7 @@ class VideoPickerDialog(QDialog):
 
     @Slot(str)
     def _on_scrape_error(self, msg: str):
-        self.status_label.setText(f"Failed to load listing: {msg}")
+        self.status_label.setText(f"列表加载失败：{msg}")
 
     # -------------------------------------------------------------- thumbnails
     def _start_thumbs(self):
@@ -236,7 +236,7 @@ class VideoPickerDialog(QDialog):
     def _update_download_btn(self):
         n = sum(1 for c in self._cards if c.is_checked())
         self.download_btn.setEnabled(n > 0)
-        self.download_btn.setText(f"Download selected ({n})" if n else "Download selected")
+        self.download_btn.setText(f"下载所选 ({n})" if n else "下载所选")
 
     def _accept_selection(self):
         self._selected = [c.entry for c in self._cards if c.is_checked()]
@@ -276,7 +276,7 @@ def _standalone():
     dlg = VideoPickerDialog(args.url, pattern=args.pattern, use_browser=args.browser)
     if dlg.exec():
         sel = dlg.selected_entries()
-        print(f"\nSelected {len(sel)} video(s):")
+        print(f"\nSelected {len(sel)} 个视频：")
         for e in sel:
             print(f"  {e['title']}  →  {e['url']}")
     else:

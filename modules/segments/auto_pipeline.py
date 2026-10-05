@@ -346,7 +346,7 @@ def run_auto_pipeline(
             return None
 
         announce(stage, RUNNING)
-        advance(name)
+        advance(label)
         t0 = time.time()
         try:
             value = fn(stage)

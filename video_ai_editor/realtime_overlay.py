@@ -116,7 +116,7 @@ class StickyMenu(QMenu):
 
     Qt closes the whole menu chain on any trigger, so hiding four classes
     on the overlay filter meant reopening the filter four times. Checkable
-    items now toggle in place; plain actions ("Show all", …) still close
+    items now toggle in place; plain actions ("全部显示", …) still close
     the menu the usual way.
     """
 
@@ -934,7 +934,7 @@ class OverlayView(QGraphicsView):
             self.identity_context_requested.emit(hit.data(0), event.globalPos())
             event.accept()
             return
-        # Nothing detected here: where "teach a model to find this" hooks in.
+        # Nothing detected here: where "教模型识别此内容" hooks in.
         self.empty_context_requested.emit(scene_pos, event.globalPos())
         event.accept()
 
@@ -979,17 +979,17 @@ class RealtimeOverlayPreview(QWidget):
         self._view.identity_context_requested.connect(self._on_identity_context)
         self._view.empty_context_requested.connect(self._on_empty_context)
         self._view.teach_region_requested.connect(self._on_teach_region)
-        self._pending_model_name = None     # set between "Teach a model…" and the box
+        self._pending_model_name = None     # set between "训练模型…" and the box
         self._init_player()
         
         self._face_bank = None
         self._live_face = None
         self._live_overlay = None
-        # True while the mode combo is on "Live (real-time)". Real-time inference
+        # True while the mode combo is on "实时（实时识别）". Real-time inference
         # only runs when this AND the overlay checkbox are both on, so unchecking
         # the checkbox pauses processing without leaving Live mode.
         self._live_face_mode = False
-        # Submenu handle for the live 'Facial recognition' filter group.
+        # Submenu handle for the live '人脸识别' filter group.
         self._face_filter_menu: QMenu | None = None
 
         # Create lazy loader (doesn't load data yet)
@@ -1027,7 +1027,7 @@ class RealtimeOverlayPreview(QWidget):
         controls.setContentsMargins(4, 0, 4, 4)
 
         # Overlay toggle
-        self._overlay_cb = QCheckBox("🎯 Live BBox Overlay")
+        self._overlay_cb = QCheckBox("🎯 实时检测框叠加")
         self._overlay_cb.setChecked(False)
         self._overlay_cb.setToolTip(
             "Show bounding boxes from cached detections in real-time.\n"
@@ -1044,9 +1044,9 @@ class RealtimeOverlayPreview(QWidget):
 
         # Per-class overlay filter (show/hide each detection class)
         self._filter_btn = QToolButton()
-        self._filter_btn.setText("🔍 Filter")
+        self._filter_btn.setText("🔍 筛选")
         self._filter_btn.setPopupMode(QToolButton.InstantPopup)
-        self._filter_btn.setToolTip("Show/hide individual detection classes on the overlay")
+        self._filter_btn.setToolTip("显示/隐藏叠加层中的各检测类别")
         self._filter_menu = QMenu(self._filter_btn)
         self._filter_btn.setMenu(self._filter_menu)
         self._filter_btn.setEnabled(False)
@@ -1061,12 +1061,12 @@ class RealtimeOverlayPreview(QWidget):
         controls.addWidget(self._mem_label)
 
         # Time window slider
-        controls.addWidget(QLabel("Window:"))
+        controls.addWidget(QLabel("时间窗口："))
         self._window_slider = QSlider(Qt.Horizontal)
         self._window_slider.setRange(1, 20)  # 0.1s to 2.0s
         self._window_slider.setValue(5)       # 0.5s default
         self._window_slider.setFixedWidth(80)
-        self._window_slider.setToolTip("Time window for showing nearby detections (0.1s - 2.0s)")
+        self._window_slider.setToolTip("显示附近检测结果的时间窗口（0.1 秒 - 2.0 秒）")
         self._window_slider.valueChanged.connect(self._on_window_changed)
         controls.addWidget(self._window_slider)
 
@@ -1107,10 +1107,10 @@ class RealtimeOverlayPreview(QWidget):
         self._detection_count = self._scene.load_detections_lazy(self._bbox_loader)
 
         if self._detection_count > 0:
-            self._count_label.setText(f"({self._detection_count} detections available)")
+            self._count_label.setText(f"({self._detection_count} 个检测结果可用)")
             self._overlay_cb.setEnabled(True)
         else:
-            self._count_label.setText("(no bbox data in cache)")
+            self._count_label.setText("（缓存中没有检测框数据）")
             # Don't force-disable here — real-time mode re-enables the checkbox
             # even with an empty cache (see set_live_face_enabled).
             if not self._live_face_mode:
@@ -1121,7 +1121,7 @@ class RealtimeOverlayPreview(QWidget):
                 "or use the pre-rendered video swap instead."
             )
 
-        # Always build the filter — it now also hosts the live 'Facial recognition'
+        # Always build the filter — it now also hosts the live '人脸识别'
         # group, which is available in real-time mode regardless of cached data.
         self._build_filter_menu()
 
@@ -1148,21 +1148,21 @@ class RealtimeOverlayPreview(QWidget):
         action_names = [n for n in names if n.startswith('[')]
 
         if object_names:
-            self._add_class_group("🧊 Object recognition", object_names)
+            self._add_class_group("🧊 物体识别", object_names)
         if action_names:
-            self._add_class_group("🎬 Action recognition", action_names)
+            self._add_class_group("🎬 动作识别", action_names)
 
         # Facial recognition is always offered — it's driven by the live face
         # worker, not the cache. Rebuilt on open so newly seen faces show up.
-        self._face_filter_menu = StickyMenu("🙂 Facial recognition", self._filter_menu)
+        self._face_filter_menu = StickyMenu("🙂 人脸识别", self._filter_menu)
         self._filter_menu.addMenu(self._face_filter_menu)
         self._face_filter_menu.aboutToShow.connect(self._rebuild_face_filter)
 
         if self._filter_actions:
             self._filter_menu.addSeparator()
-            show_all = self._filter_menu.addAction("Show all classes")
+            show_all = self._filter_menu.addAction("全部显示 classes")
             show_all.triggered.connect(lambda: self._set_all_classes(True))
-            hide_all = self._filter_menu.addAction("Hide all classes")
+            hide_all = self._filter_menu.addAction("隐藏全部类别")
             hide_all.triggered.connect(lambda: self._set_all_classes(False))
 
         # Reachable whenever there are cached classes or real-time faces are live.
@@ -1178,8 +1178,8 @@ class RealtimeOverlayPreview(QWidget):
         self._filter_menu.addMenu(sub)
         group_actions: list[QAction] = []
 
-        show_all = sub.addAction("Show all")
-        hide_all = sub.addAction("Hide all")
+        show_all = sub.addAction("全部显示")
+        hide_all = sub.addAction("全部隐藏")
         sub.addSeparator()
 
         for name in names:
@@ -1212,24 +1212,24 @@ class RealtimeOverlayPreview(QWidget):
         menu.clear()
 
         if self._face_bank is None:
-            act = menu.addAction("Select “Live (real-time)” to recognise faces")
+            act = menu.addAction("Select “实时（实时识别）” to recognise faces")
             act.setEnabled(False)
             return
 
         identities = self._face_bank.all_identities()
         if not identities:
-            act = menu.addAction("(no faces recognised yet)")
+            act = menu.addAction("（尚未识别人脸）")
             act.setEnabled(False)
             return
 
         face_actions: list[QAction] = []
-        show_all = menu.addAction("Show all")
-        hide_all = menu.addAction("Hide all")
+        show_all = menu.addAction("全部显示")
+        hide_all = menu.addAction("全部隐藏")
         menu.addSeparator()
 
         for ident in identities:
             iid = ident["id"]
-            disp = ident.get("name") or f"Person {iid[:8]}"
+            disp = ident.get("name") or f"人物 {iid[:8]}"
             act = QAction(disp, menu)
             act.setCheckable(True)
             act.setChecked(not self._is_identity_hidden(iid))
@@ -1329,7 +1329,7 @@ class RealtimeOverlayPreview(QWidget):
     def set_live_face_enabled(self, enabled: bool):
         """Enter/leave TRUE real-time face-recognition mode.
 
-        This only records the *mode* — the '🎯 Live BBox Overlay' checkbox is the
+        This only records the *mode* — the '🎯 实时检测框叠加' checkbox is the
         actual on/off switch for inference, so the user can pause processing
         without leaving Live mode. Entering real-time mode makes the checkbox
         usable even with no cached bbox data and switches it on so recognition
@@ -1340,7 +1340,7 @@ class RealtimeOverlayPreview(QWidget):
         if enabled:
             # Real-time needs no cached detections — make the checkbox usable even
             # with an empty cache, then switch it on so inference starts. The
-            # filter button is also enabled so the live 'Facial recognition' group
+            # filter button is also enabled so the live '人脸识别' group
             # is reachable even when there's no cached object/action data.
             self._overlay_cb.setEnabled(True)
             self._filter_btn.setEnabled(True)
@@ -1386,14 +1386,14 @@ class RealtimeOverlayPreview(QWidget):
 
     def _on_identity_context(self, identity_id, global_pos):
         menu = QMenu(self)
-        a_name  = menu.addAction("✏️  Name this person…")
-        a_avoid = menu.addAction("🚫  Avoid this person")
+        a_name  = menu.addAction("✏️  为此人物命名…")
+        a_avoid = menu.addAction("🚫  排除此人物")
         chosen = menu.exec(global_pos)
 
         if chosen == a_name and self._face_bank is not None:
             ident = self._face_bank.get_identity(identity_id)
             prefill = ident["name"] if (ident and ident["name"]) else ""
-            name, ok = QInputDialog.getText(self, "Name person", "Name:", text=prefill)
+            name, ok = QInputDialog.getText(self, "人物命名", "名称：", text=prefill)
             if ok and name.strip():
                 name = name.strip()
                 # if this name already belongs to someone, MERGE into them
@@ -1413,13 +1413,13 @@ class RealtimeOverlayPreview(QWidget):
         what is there (modules/teach/from_player.py): one box, a name, and the
         rest happens in the background while the app is idle."""
         menu = QMenu(self)
-        a_model = menu.addAction("🧠  Teach a model to find this — draw a box…")
+        a_model = menu.addAction("🧠  教模型识别此内容 — 请画框…")
         chosen = menu.exec(global_pos)
         if chosen is not a_model:
             return
         name, ok = QInputDialog.getText(
-            self, "Teach a model",
-            "What is it? (a name; the same name again adds another view)")
+            self, "训练模型",
+            "这是什么？（输入名称；再次使用相同名称可添加另一个视角）")
         if not (ok and name.strip()):
             return
         self._pending_model_name = name.strip()
@@ -1454,11 +1454,11 @@ class RealtimeOverlayPreview(QWidget):
         try:
             result = teach(self.video_path, region[1], region[0], name)
         except (ValueError, OSError) as exc:
-            QMessageBox.warning(self, "Teach a model", str(exc))
+            QMessageBox.warning(self, "训练模型", str(exc))
             return
         print(f"teach: seeded {result['class']!r} in {result['root']} "
               f"({result['seeds']} seeds)")
-        QMessageBox.information(self, "Teach a model", message(result))
+        QMessageBox.information(self, "训练模型", message(result))
 
     def _on_teach_region(self, scene_rect):
         """A box was drawn after "Teach a model…"."""
@@ -1533,7 +1533,7 @@ class RealtimeOverlayPreview(QWidget):
         return image
 
     def get_detection_count(self) -> int:
-        """Number of bbox detections available in cache."""
+        """Number of bbox 个检测结果可用 in cache."""
         return self._detection_count
 
     def get_visible_classes(self) -> set[str]:
@@ -1594,7 +1594,7 @@ if __name__ == "__main__":
     layout.addWidget(preview, 1)
 
     btn_row = QHBoxLayout()
-    play_btn = QPushButton("▶ Play / Pause")
+    play_btn = QPushButton("▶ 播放 / 暂停")
     play_btn.clicked.connect(
         lambda: preview.player.pause()
         if preview.player.playbackState() == QMediaPlayer.PlayingState
@@ -1602,7 +1602,7 @@ if __name__ == "__main__":
     )
     btn_row.addWidget(play_btn)
 
-    capture_btn = QPushButton("📷 Capture Frame")
+    capture_btn = QPushButton("📷 截取当前帧")
     def _capture():
         b64 = preview.capture_frame_base64()
         if b64:
@@ -1613,11 +1613,11 @@ if __name__ == "__main__":
                 f.write(b64mod.b64decode(b64))
             print("Saved to captured_frame.jpg")
         else:
-            print("No frame captured")
+            print("未能截取画面")
     capture_btn.clicked.connect(_capture)
     btn_row.addWidget(capture_btn)
 
-    clear_btn = QPushButton("🧹 Clear Cache")
+    clear_btn = QPushButton("🧹 清空缓存")
     clear_btn.clicked.connect(preview.clear_cache)
     btn_row.addWidget(clear_btn)
 

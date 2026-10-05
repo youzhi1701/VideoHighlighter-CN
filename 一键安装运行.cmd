@@ -15,8 +15,9 @@ if not exist "main.py" (
 
 set "VENV=%CD%\.venv"
 set "VPY=%VENV%\Scripts\python.exe"
+set "READY=%VENV%\.videohighlighter-cn-ready"
 
-if exist "%VPY%" goto RUN_APP
+if exist "%READY%" if exist "%VPY%" goto RUN_APP
 
 echo.
 echo ========================================
@@ -69,9 +70,13 @@ if not defined PY_CMD (
   )
 )
 
-echo [1/4] Creating isolated Python environment...
-%PY_CMD% -m venv "%VENV%"
-if errorlevel 1 goto SETUP_FAILED
+if not exist "%VPY%" (
+  echo [1/4] Creating isolated Python environment...
+  %PY_CMD% -m venv "%VENV%"
+  if errorlevel 1 goto SETUP_FAILED
+) else (
+  echo [1/4] Reusing incomplete Python environment...
+)
 
 echo [2/4] Updating pip...
 "%VPY%" -m pip install --upgrade pip setuptools wheel
@@ -87,6 +92,8 @@ if errorlevel 1 (
   echo [WARN] YOLOX package installation failed.
   echo [WARN] The main app can still be started; some detector training features may be unavailable.
 )
+
+> "%READY%" echo ready
 
 :RUN_APP
 echo.

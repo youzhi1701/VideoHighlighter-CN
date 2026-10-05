@@ -8979,6 +8979,240 @@
       "before": "          />",
       "after": "        </label>",
       "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/VideoPickerDialog.tsx#audit-20261006-1",
+      "file": "frontend/src/components/VideoPickerDialog.tsx",
+      "source": "              Select all",
+      "target": "              全选",
+      "before": "            >",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/VideoPickerDialog.tsx#audit-20261006-2",
+      "file": "frontend/src/components/VideoPickerDialog.tsx",
+      "source": "              Select none",
+      "target": "              取消全选",
+      "before": "            >",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AdvancedTab.tsx#audit-20261006-3",
+      "file": "frontend/src/components/tabs/AdvancedTab.tsx",
+      "source": "            VR side-by-side optimization",
+      "target": "            VR 左右并排优化",
+      "before": "            />",
+      "after": "          </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AdvancedTab.tsx#audit-20261006-4",
+      "file": "frontend/src/components/tabs/AdvancedTab.tsx",
+      "source": "            Analyses the left half only, for side-by-side VR/3D footage.",
+      "target": "            对于左右并排的 VR/3D 视频，仅分析左半部分。",
+      "before": "          <p className=\"text-xs text-muted-foreground\">",
+      "after": "          </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AdvancedTab.tsx#audit-20261006-5",
+      "file": "frontend/src/components/tabs/AdvancedTab.tsx",
+      "source": "                Custom model",
+      "target": "                自定义模型",
+      "before": "              <Label className=\"min-w-0 truncate text-sm font-normal text-muted-foreground\">",
+      "after": "              </Label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AdvancedTab.tsx#audit-20261006-6",
+      "file": "frontend/src/components/tabs/AdvancedTab.tsx",
+      "source": "            Draw object bounding boxes",
+      "target": "            绘制物体边界框",
+      "before": "            />",
+      "after": "          </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AdvancedTab.tsx#audit-20261006-7",
+      "file": "frontend/src/components/tabs/AdvancedTab.tsx",
+      "source": "            Draw action labels",
+      "target": "            绘制动作标签",
+      "before": "            />",
+      "after": "          </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AutoTab.tsx#audit-20261006-8",
+      "file": "frontend/src/components/tabs/AutoTab.tsx",
+      "source": "                <FolderOpen className=\"size-3.5\" /> Pick files instead",
+      "target": "                <FolderOpen className=\"size-3.5\" /> 改为选择文件",
+      "before": "              >",
+      "after": "              </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AutoTab.tsx#audit-20261006-9",
+      "file": "frontend/src/components/tabs/AutoTab.tsx",
+      "source": "                Open…",
+      "target": "                打开…",
+      "before": "              <Button variant=\"ghost\" size=\"sm\" onClick={() => void openScript()}>",
+      "after": "              </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AutoTab.tsx#audit-20261006-10",
+      "file": "frontend/src/components/tabs/AutoTab.tsx",
+      "source": "              Choose…",
+      "target": "              选择…",
+      "before": "            <Button variant=\"ghost\" size=\"sm\" onClick={() => void chooseMusic()}>",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AutoTab.tsx#audit-20261006-11",
+      "file": "frontend/src/components/tabs/AutoTab.tsx",
+      "source": "                <Loader2 className=\"size-3.5 animate-spin\" /> Analysing…",
+      "target": "                <Loader2 className=\"size-3.5 animate-spin\" /> 正在分析…",
+      "before": "              <p className=\"flex items-center gap-2 text-xs text-muted-foreground\">",
+      "after": "              </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AutoTab.tsx#audit-20261006-12",
+      "file": "frontend/src/components/tabs/AutoTab.tsx",
+      "source": "                <Play className=\"size-3.5\" /> Make the film",
+      "target": "                <Play className=\"size-3.5\" /> 生成影片",
+      "before": "              <Button size=\"sm\" onClick={start} disabled={!canStart}>",
+      "after": "              </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AutoTab.tsx#audit-20261006-13",
+      "file": "frontend/src/components/tabs/AutoTab.tsx",
+      "source": "              Pick a camera card or some files to begin.",
+      "target": "              请选择相机存储卡或一些文件开始。",
+      "before": "            <p className=\"text-xs text-muted-foreground\">",
+      "after": "            </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AutoTab.tsx#audit-20261006-14",
+      "file": "frontend/src/components/tabs/AutoTab.tsx",
+      "source": "              Choose a project folder to begin.",
+      "target": "              请选择项目文件夹开始。",
+      "before": "            <p className=\"text-xs text-muted-foreground\">",
+      "after": "            </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-15",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "            <ScanFace className=\"size-4\" /> Scan video",
+      "target": "            <ScanFace className=\"size-4\" /> 扫描视频",
+      "before": "          <Button size=\"sm\" variant=\"secondary\" onClick={scan} disabled={running}>",
+      "after": "          </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-16",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "          Enable face recognition",
+      "target": "          启用人脸识别",
+      "before": "          />",
+      "after": "        </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-17",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "          label=\"When found\"",
+      "target": "          label=\"识别到时\"",
+      "before": "        <SelectField",
+      "after": "          value={cfg.avoid_method}",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-18",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "                <ExternalLink className=\"size-4\" /> Open Timeline Viewer",
+      "target": "                <ExternalLink className=\"size-4\" /> 打开时间线查看器",
+      "before": "              >",
+      "after": "              </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-19",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "                    title=\"Click to name\"",
+      "target": "                    title=\"点击命名\"",
+      "before": "                    onClick={() => rename(f)}",
+      "after": "                  >",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-20",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "                Clear all",
+      "target": "                全部清除",
+      "before": "              >",
+      "after": "              </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-21",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "              Keep named / avoided",
+      "target": "              保留已命名 / 已避开项",
+      "before": "            <Button variant=\"secondary\" onClick={() => doClear(true)}>",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/AvoidTab.tsx#audit-20261006-22",
+      "file": "frontend/src/components/tabs/AvoidTab.tsx",
+      "source": "              Clear everything",
+      "target": "              清除全部",
+      "before": "            <Button variant=\"destructive\" onClick={() => doClear(false)}>",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/BasicTab.tsx#audit-20261006-23",
+      "file": "frontend/src/components/tabs/BasicTab.tsx",
+      "source": "              Only score actions when objects detected",
+      "target": "              仅在检测到物体时给动作评分",
+      "before": "              />",
+      "after": "            </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/BasicTab.tsx#audit-20261006-24",
+      "file": "frontend/src/components/tabs/BasicTab.tsx",
+      "source": "              Keep temp clips",
+      "target": "              保留临时片段",
+      "before": "              />",
+      "after": "            </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/BasicTab.tsx#audit-20261006-25",
+      "file": "frontend/src/components/tabs/BasicTab.tsx",
+      "source": "              Skip highlights",
+      "target": "              跳过高光生成",
+      "before": "              />",
+      "after": "            </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/BasicTab.tsx#audit-20261006-26",
+      "file": "frontend/src/components/tabs/BasicTab.tsx",
+      "source": "              Penalize blurry clips",
+      "target": "              降低模糊片段评分",
+      "before": "              />",
+      "after": "            </label>",
+      "hunk": "full-ui-audit-2026-10-06"
     }
   ]
 }

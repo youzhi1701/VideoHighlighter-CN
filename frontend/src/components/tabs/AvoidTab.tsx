@@ -178,7 +178,7 @@ export function AvoidTab({
             Refresh
           </Button>
           <Button size="sm" variant="secondary" onClick={scan} disabled={running}>
-            <ScanFace className="size-4" /> Scan video
+            <ScanFace className="size-4" /> 扫描视频
           </Button>
           <Button
             size="sm"
@@ -196,7 +196,7 @@ export function AvoidTab({
             checked={cfg.avoid_enabled}
             onCheckedChange={(v) => set("avoid_enabled", Boolean(v))}
           />
-          Enable face recognition
+          启用人脸识别
         </label>
         <p className="text-xs text-muted-foreground">
           Scan a video to collect everyone who appears, then tick who to exclude.
@@ -204,7 +204,7 @@ export function AvoidTab({
         </p>
 
         <SelectField
-          label="When found"
+          label="识别到时"
           value={cfg.avoid_method}
           options={AVOID_METHODS}
           onChange={(v) => set("avoid_method", v)}
@@ -231,7 +231,7 @@ export function AvoidTab({
                   if (!res.ok) toast.error(res.error ?? "Could not open editor")
                 }}
               >
-                <ExternalLink className="size-4" /> Open Timeline Viewer
+                <ExternalLink className="size-4" /> 打开时间线查看器
               </Button>
             </div>
           ) : (
@@ -255,7 +255,7 @@ export function AvoidTab({
                   <button
                     className="min-w-0 flex-1 truncate text-left hover:underline"
                     onClick={() => rename(f)}
-                    title="Click to name"
+                    title="点击命名"
                   >
                     <span className="font-medium">{f.label}</span>
                   </button>
@@ -298,7 +298,7 @@ export function AvoidTab({
                 variant="ghost"
                 onClick={() => writeRanges([], "已清空排除区间")}
               >
-                Clear all
+                全部清除
               </Button>
             )}
           </div>
@@ -376,10 +376,10 @@ export function AvoidTab({
               Cancel
             </Button>
             <Button variant="secondary" onClick={() => doClear(true)}>
-              Keep named / avoided
+              保留已命名 / 已避开项
             </Button>
             <Button variant="destructive" onClick={() => doClear(false)}>
-              Clear everything
+              清除全部
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -71,7 +71,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
               list="object-labels"
               value={cfg.highlight_objects}
               onChange={(e) => set("highlight_objects", e.target.value)}
-              placeholder="person, sports ball, dog"
+              placeholder="人物、球类、狗"
               className="h-8 w-full"
             />
             <datalist id="object-labels">
@@ -86,7 +86,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
               list="action-labels"
               value={cfg.interesting_actions}
               onChange={(e) => set("interesting_actions", e.target.value)}
-              placeholder="high jump, high kick, archery"
+              placeholder="跳高、踢腿、射箭"
               className="h-8 w-full"
             />
             <datalist id="action-labels">

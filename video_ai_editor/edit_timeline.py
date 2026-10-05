@@ -91,7 +91,7 @@ class EditClipItem(QGraphicsRectItem):
         
         # Build label text with or without clip number
         if idx >= 0:
-            label_text = f"Clip {idx + 1}\n{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
+            label_text = f"片段 {idx + 1}\n{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
         else:
             label_text = f"{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
         
@@ -378,10 +378,10 @@ class EditClipItem(QGraphicsRectItem):
         clip_num = idx + 1 if idx >= 0 else "?"
         
         self.setToolTip(
-            f"Clip {clip_num}\n"
+            f"片段 {clip_num}\n"
             f"{self.start_time:.1f}s - {self.end_time:.1f}s\n"
-            f"Duration: {duration:.1f}s\n"
-            f"Drag to reorder · Double-click to play · Right-click for menu"
+            f"时长：{duration:.1f}s\n"
+            f"拖动可重新排序 · 双击播放 · 右键打开菜单"
         )
 
         # Start decoding hover-sized frames along this clip the moment the
@@ -446,27 +446,27 @@ class EditClipItem(QGraphicsRectItem):
         """)
 
         header = menu.addAction(
-            f"Clip {current_index}   {_fmt_time(self.start_time)} → {_fmt_time(self.end_time)}  ({_fmt_duration(duration)})"
+            f"片段 {current_index}   {_fmt_time(self.start_time)} → {_fmt_time(self.end_time)}  ({_fmt_duration(duration)})"
         )
         header.setEnabled(False)
         menu.addSeparator()
 
-        cut_action = menu.addAction(f"✂️   Cut here  ({_fmt_time(click_time)})")
+        cut_action = menu.addAction(f"✂️   在此切开（{_fmt_time(click_time)})")
         too_close = (
             click_time - self.start_time < 0.2
             or self.end_time - click_time < 0.2
         )
         cut_action.setEnabled(not too_close)
         if too_close:
-            cut_action.setToolTip("Click closer to the centre of the clip")
+            cut_action.setToolTip("请点击更靠近片段中间的位置")
 
-        trim_start_action = menu.addAction(f"⬅️   Trim start  →  {_fmt_time(click_time)}")
-        trim_end_action   = menu.addAction(f"➡️   Trim end  ←  {_fmt_time(click_time)}")
+        trim_start_action = menu.addAction(f"⬅️   修剪起点 → {_fmt_time(click_time)}")
+        trim_end_action   = menu.addAction(f"➡️   修剪终点 ← {_fmt_time(click_time)}")
         trim_start_action.setEnabled(click_time > self.start_time + 0.2)
         trim_end_action.setEnabled(click_time < self.end_time - 0.2)
 
         menu.addSeparator()
-        delete_action = menu.addAction("🗑️   Delete clip")
+        delete_action = menu.addAction("🗑️   删除片段")
 
         chosen = menu.exec(event.screenPos())
 
@@ -602,7 +602,7 @@ class EditTimelineScene(QGraphicsScene):
         except Exception as e:
             print(f"⚠️ HoverPreview init failed: {e}")
             self._hover_preview = None
-        # Source time the popup is showing "loading…" for, or None when it has
+        # Source time the popup is showing "加载中…" for, or None when it has
         # its frame. Read by _deliver_hover_frame.
         self._hover_wanted = None
 
@@ -670,7 +670,7 @@ class EditTimelineScene(QGraphicsScene):
 
         Without this the popup is only ever updated by mouse movement, so a
         cursor resting on a clip whose frame had not been decoded yet stayed on
-        "loading…" for as long as it was held still. Hovering elsewhere and
+        "加载中…" for as long as it was held still. Hovering elsewhere and
         coming back appeared to fix it, but only because that second request
         found the frame in the cache.
 
@@ -736,27 +736,27 @@ class EditTimelineScene(QGraphicsScene):
             return
 
         menu = QMenu()
-        load_action = menu.addAction("📂 Load from Cache...")
+        load_action = menu.addAction("📂 从缓存加载…")
         load_action.triggered.connect(self.load_from_cache_menu)
-        save_action = menu.addAction("💾 Save to Cache")
+        save_action = menu.addAction("💾 保存到缓存")
         save_action.triggered.connect(lambda: self.save_clips_to_cache())
         menu.exec(event.screenPos())
 
     def load_from_cache_menu(self):
         """Show dialog to load different highlight versions from cache"""
         if not self.cache or not hasattr(self.cache, 'get_highlight_history'):
-            QMessageBox.warning(None, "Cache Error",
-                               "Enhanced cache not available. Cannot load from cache.")
+            QMessageBox.warning(None, "缓存错误",
+                               "增强缓存不可用，无法从缓存加载。")
             return
 
         history = self.cache.get_highlight_history(self.video_path)
         if not history:
-            QMessageBox.information(None, "No Cache",
-                                   "No cached highlight versions found for this video.")
+            QMessageBox.information(None, "没有缓存",
+                                   "此视频没有已缓存的高光版本。")
             return
 
         dialog = QDialog()
-        dialog.setWindowTitle("Load Highlight Version")
+        dialog.setWindowTitle("加载高光版本")
         dialog.resize(500, 400)
         layout = QVBoxLayout(dialog)
 
@@ -768,7 +768,7 @@ class EditTimelineScene(QGraphicsScene):
             item_text = f"Version {i+1}: {segments} clips, {duration:.1f}s ({created})"
             list_widget.addItem(item_text)
 
-        layout.addWidget(QLabel("Select cached highlight version:"))
+        layout.addWidget(QLabel("选择缓存的高光版本："))
         layout.addWidget(list_widget)
 
         buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
@@ -779,7 +779,7 @@ class EditTimelineScene(QGraphicsScene):
         dialog.exec()
 
     def load_selected_version(self, dialog, list_widget, history):
-        """Load selected highlight version"""
+        """加载所选高光版本"""
         selected = list_widget.currentRow()
         if 0 <= selected < len(history):
             entry = history[selected]
@@ -789,14 +789,14 @@ class EditTimelineScene(QGraphicsScene):
                 self.clips = segments
                 self.build_timeline()
                 QMessageBox.information(None, "Loaded",
-                                       f"Loaded {len(segments)} clips from cache.")
+                                       f"已加载 {len(segments)} 个缓存片段。")
 
         dialog.accept()
 
     def save_clips_to_cache(self, parameters=None):
-        """Save current clips to cache for future use"""
+        """Save current 个片段到缓存 for future use"""
         if not self.cache or not hasattr(self.cache, 'save_highlight_segments'):
-            print("⚠️ Cache not available for saving")
+            print("⚠️ 缓存不可用于保存")
             return False
 
         if parameters is None:
@@ -829,12 +829,12 @@ class EditTimelineScene(QGraphicsScene):
             )
 
             if success:
-                print(f"✅ Saved {len(self.clips)} clips to cache")
+                print(f"✅ 已保存 {len(self.clips)} 个片段到缓存")
                 self._saved_clips_snapshot = list(self.clips)
                 return True
             return False
         except Exception as e:
-            print(f"❌ Failed to save clips to cache: {e}")
+            print(f"❌ Failed to save 个片段到缓存: {e}")
             return False
 
     def has_unsaved_edits(self):
@@ -933,7 +933,7 @@ class EditTimelineScene(QGraphicsScene):
                             loaded.append((start, end))
                 if loaded:
                     self.clips = loaded
-                    print(f"✅ Loaded {len(self.clips)} segments from this run's final_segments")
+                    print(f"✅ 已加载 {len(self.clips)} 个本次运行生成的最终片段")
                     return
 
             # 2. Fallback — most recent highlight version from cache history.
@@ -943,7 +943,7 @@ class EditTimelineScene(QGraphicsScene):
                     segments = history[0].get('segments', [])
                     if segments:
                         self.clips = [tuple(s) for s in segments]
-                        print(f"✅ Loaded {len(self.clips)} highlight segments from cache history")
+                        print(f"✅ 已加载 {len(self.clips)} 个历史缓存高光片段")
                         return
 
             # 3. Nothing to load — start empty. We intentionally do NOT fabricate
@@ -951,7 +951,7 @@ class EditTimelineScene(QGraphicsScene):
             # and invented clips read as clutter (or a bug) and risk being
             # exported by accident. build_timeline() shows an empty-state hint
             # instead. (Real runs use final_segments; standalone uses history.)
-            print("ℹ️ No highlights to load — edit timeline starts empty")
+            print("ℹ️ 没有可加载的高光 — 剪辑时间线将从空白开始")
 
     def build_timeline(self):
         """Build the edit timeline visualization"""

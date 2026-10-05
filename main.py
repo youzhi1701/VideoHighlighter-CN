@@ -3729,8 +3729,8 @@ class VideoHighlighterGUI(QWidget):
         upd_auto = QCheckBox("自动检查新版本")
         upd_auto.setChecked(_update_check.is_enabled())
         upd_auto.setToolTip(
-            "Once a day, downloads a small text file listing the latest "
-            "version. Nothing about you or this computer is sent."
+            "每天最多检查一次，只会下载一个记录最新版本号的小型文本文件。"
+            "不会上传任何与你或这台电脑有关的信息。"
         )
         upd_auto.toggled.connect(_update_check.set_enabled)
         upd_layout.addWidget(upd_auto)

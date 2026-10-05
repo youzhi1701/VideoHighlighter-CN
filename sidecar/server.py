@@ -602,7 +602,7 @@ async def start_combine(req: CombineRequest) -> dict:
     if missing:
         return {"ok": False, "error": f"File(s) not found: {missing}"}
     if not (req.output or "").strip():
-        return {"ok": False, "error": "No output path provided"}
+        return {"ok": False, "error": "未提供输出路径"}
 
     job: dict = {"kind": "combine", "files": files, "output": req.output}
     if req.music_path:
@@ -846,9 +846,9 @@ class EdlRenderRequest(EdlSaveRequest):
 async def render_edl_endpoint(req: EdlRenderRequest) -> dict:
     """Render a timeline as a job, so it streams progress like any other run."""
     if not (req.output or "").strip():
-        return {"ok": False, "error": "No output path provided"}
+        return {"ok": False, "error": "未提供输出路径"}
     if not req.cuts:
-        return {"ok": False, "error": "The timeline is empty"}
+        return {"ok": False, "error": "时间线为空"}
     try:
         edl = _edl_from_request(req)
     except Exception as exc:  # noqa: BLE001
@@ -1009,7 +1009,7 @@ def _build_reel_edl(req: "ReelRequest"):
     sources = _reel_sources(req)
     if not sources:
         raise ValueError(
-            "no clips to work from — run the Auto tab first, or pick files")
+            "没有可用于生成成片的片段——请先运行“自动”流程，或手动选择素材文件")
 
     analysis = None
     if req.music and os.path.exists(req.music):
@@ -1155,12 +1155,12 @@ class AutoRunRequest(BaseModel):
 async def start_auto(req: AutoRunRequest) -> dict:
     """Run card-to-film as one job. Validated before the run slot is taken."""
     if not (req.dest_root or "").strip():
-        return {"ok": False, "error": "No destination folder provided"}
+        return {"ok": False, "error": "未提供目标文件夹"}
     if not req.card_root and not req.source_paths:
-        return {"ok": False, "error": "Pick a camera card or some source files"}
-    for label, path in (("Script", req.script_path), ("Music", req.music_path)):
+        return {"ok": False, "error": "请选择相机存储卡或源视频文件"}
+    for label, path in (("脚本", req.script_path), ("音乐", req.music_path)):
         if path and not os.path.exists(path):
-            return {"ok": False, "error": f"{label} file not found: {path}"}
+            return {"ok": False, "error": f"未找到{label}文件：{path}"}
     # Reject an unknown transition here rather than after the detection pass:
     # the render is the last stage, and finding out about a typo then costs the
     # whole run.
@@ -1173,8 +1173,8 @@ async def start_auto(req: AutoRunRequest) -> dict:
         pass
     if (req.quantise or "") not in ("", "bar", "beat"):
         return {"ok": False,
-                "error": f"unknown quantise unit {req.quantise!r} "
-                         f"(expected 'bar', 'beat' or nothing)"}
+                "error": f"未知的节拍对齐单位 {req.quantise!r} "
+                         f"（内部值应为 'bar'、'beat' 或留空）"}
 
     job = {
         "kind": "auto",

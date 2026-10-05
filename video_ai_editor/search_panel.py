@@ -383,7 +383,7 @@ class SearchPanel(QWidget):
         self._face_grid_layout.setSpacing(6)
         self._face_grid_layout.addStretch()
 
-        self._no_faces_lbl = QLabel("No tagged identities found.\nRun identity tagging first.")
+        self._no_faces_lbl = QLabel("未找到已标记人物。\n请先运行人物标记。")
         self._no_faces_lbl.setWordWrap(True)
         self._no_faces_lbl.setAlignment(Qt.AlignCenter)
         self._no_faces_lbl.setStyleSheet("color: #606060; font-size: 11px;")

@@ -81,7 +81,7 @@ export function AvoidTab({
   const writeRanges = async (next: [number, number][], okMsg: string) => {
     if (!videoPath) return
     const res = await saveAvoidRanges(videoPath, next)
-    if (!res.ok) return toast.error(res.error ?? "Could not save ranges")
+    if (!res.ok) return toast.error(res.error ?? "无法保存区间")
     onAvoidRangesChange()
     toast.success(okMsg)
   }
@@ -89,8 +89,8 @@ export function AvoidTab({
   const addRange = async () => {
     const a = parseTime(rangeStart)
     const b = parseTime(rangeEnd)
-    if (a === null || b === null) return toast.error("Use mm:ss or seconds")
-    if (b <= a) return toast.error("End must be after start")
+    if (a === null || b === null) return toast.error("请输入 mm:ss 或秒数")
+    if (b <= a) return toast.error("结束时间必须晚于开始时间")
     await writeRanges([...avoidRanges, [a, b]], "Added avoided range")
     setRangeStart("")
     setRangeEnd("")
@@ -127,7 +127,7 @@ export function AvoidTab({
     syncAvoidIds(optimistic)
     const res = await setFaceAvoid(f.id, next)
     if (!res.ok) {
-      toast.error(res.error ?? "Could not update face bank")
+      toast.error(res.error ?? "无法更新人脸库")
       void refresh()
     }
   }
@@ -136,29 +136,29 @@ export function AvoidTab({
     const name = window.prompt("Name this person:", f.name)
     if (name === null) return
     const res = await nameFace(f.id, name)
-    if (!res.ok) return toast.error(res.error ?? "Could not set name")
-    if (res.merged_into) toast.success("Merged into the existing person")
+    if (!res.ok) return toast.error(res.error ?? "无法设置名称")
+    if (res.merged_into) toast.success("已合并到现有人物")
     void refresh()
   }
 
   const remove = async (f: FaceIdentity) => {
     const res = await removeFace(f.id)
-    if (!res.ok) return toast.error("Could not remove")
+    if (!res.ok) return toast.error("无法移除")
     void refresh()
   }
 
   const doClear = async (keepNamed: boolean) => {
     setClearOpen(false)
     const res = await clearFaces(keepNamed)
-    if (!res.ok) return toast.error(res.error ?? "Could not clear")
-    toast.success(`Cleared — ${res.remaining} kept`)
+    if (!res.ok) return toast.error(res.error ?? "无法清除")
+    toast.success(`已清除——保留 ${res.remaining} 项`)
     void refresh()
   }
 
   const scan = async () => {
-    if (!videoPath) return toast.error("Add a video first")
+    if (!videoPath) return toast.error("请先添加视频")
     const res = await scanFaces(videoPath)
-    if (!res.ok) toast.error(res.error ?? "Could not start scan")
+    if (!res.ok) toast.error(res.error ?? "无法开始扫描")
     else toast("Scanning for faces — see the log below")
   }
 
@@ -228,7 +228,7 @@ export function AvoidTab({
                   // Separate Qt process; it takes a few seconds to show up.
                   toast("Opening Timeline Viewer — it takes a few seconds…")
                   const res = await openEditor(videoPath)
-                  if (!res.ok) toast.error(res.error ?? "Could not open editor")
+                  if (!res.ok) toast.error(res.error ?? "无法打开编辑器")
                 }}
               >
                 <ExternalLink className="size-4" /> 打开时间线查看器
@@ -265,7 +265,7 @@ export function AvoidTab({
                   <button
                     className="shrink-0 text-muted-foreground hover:text-destructive"
                     onClick={() => remove(f)}
-                    title="Remove"
+                    title="移除"
                   >
                     <X className="size-4" />
                   </button>
@@ -342,7 +342,7 @@ export function AvoidTab({
               disabled={!videoPath}
               className="h-8 w-24 text-xs tabular-nums"
             />
-            <span className="pb-1.5 text-xs text-muted-foreground">to</span>
+            <span className="pb-1.5 text-xs text-muted-foreground">至</span>
             <Input
               value={rangeEnd}
               onChange={(e) => setRangeEnd(e.target.value)}

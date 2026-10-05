@@ -91,7 +91,7 @@ export function AvoidTab({
     const b = parseTime(rangeEnd)
     if (a === null || b === null) return toast.error("请输入 mm:ss 或秒数")
     if (b <= a) return toast.error("结束时间必须晚于开始时间")
-    await writeRanges([...avoidRanges, [a, b]], "Added avoided range")
+    await writeRanges([...avoidRanges, [a, b]], "已添加避开时间段")
     setRangeStart("")
     setRangeEnd("")
   }
@@ -101,7 +101,7 @@ export function AvoidTab({
     const res = await getFaces()
     setLoading(false)
     if (!res.ok) {
-      setError(res.error ?? "Face bank unavailable")
+      setError(res.error ?? "人脸库不可用")
       setFaces([])
       return
     }
@@ -133,7 +133,7 @@ export function AvoidTab({
   }
 
   const rename = async (f: FaceIdentity) => {
-    const name = window.prompt("Name this person:", f.name)
+    const name = window.prompt("为此人命名：", f.name)
     if (name === null) return
     const res = await nameFace(f.id, name)
     if (!res.ok) return toast.error(res.error ?? "无法设置名称")
@@ -159,7 +159,7 @@ export function AvoidTab({
     if (!videoPath) return toast.error("请先添加视频")
     const res = await scanFaces(videoPath)
     if (!res.ok) toast.error(res.error ?? "无法开始扫描")
-    else toast("Scanning for faces — see the log below")
+    else toast("正在扫描人脸，请查看下方日志")
   }
 
   const avoidCount = faces.filter((f) => f.avoid).length
@@ -169,8 +169,8 @@ export function AvoidTab({
     <Card>
       <CardHeader className="flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-2 text-sm font-medium">
-          <UserX className="size-4" /> Avoid People
-          {avoidCount > 0 && <Badge>{avoidCount} avoided</Badge>}
+          <UserX className="size-4" /> 避开人物
+          {avoidCount > 0 && <Badge>{avoidCount} 个已避开</Badge>}
         </CardTitle>
         <div className="flex gap-2">
           <Button size="sm" variant="secondary" onClick={refresh} disabled={loading}>
@@ -186,7 +186,7 @@ export function AvoidTab({
             onClick={() => setClearOpen(true)}
             disabled={!faces.length}
           >
-            <Trash2 className="size-4" /> Clear
+            <Trash2 className="size-4" /> 清空
           </Button>
         </div>
       </CardHeader>
@@ -226,7 +226,7 @@ export function AvoidTab({
                 disabled={!videoPath}
                 onClick={async () => {
                   // Separate Qt process; it takes a few seconds to show up.
-                  toast("Opening Timeline Viewer — it takes a few seconds…")
+                  toast("正在打开时间线查看器，可能需要几秒钟…")
                   const res = await openEditor(videoPath)
                   if (!res.ok) toast.error(res.error ?? "无法打开编辑器")
                 }}
@@ -276,7 +276,7 @@ export function AvoidTab({
         </div>
         {faces.length > 0 && (
           <p className="text-xs text-muted-foreground">
-            {faces.length} people · {namedCount} named · {avoidCount} avoided
+            {faces.length} people · {namedCount} named · {avoidCount} 个已避开
           </p>
         )}
 
@@ -368,7 +368,7 @@ export function AvoidTab({
       <Dialog open={clearOpen} onOpenChange={setClearOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Clear the face bank ({faces.length} identities)?</DialogTitle>
+            <DialogTitle>清空人脸库（{faces.length} 个身份）？</DialogTitle>
             <DialogDescription>选择要排除的内容。</DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2">

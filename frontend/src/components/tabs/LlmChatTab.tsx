@@ -29,9 +29,9 @@ export function LlmChatTab({
   onModelChange,
 }: Props) {
   const [backends, setBackends] = useState<string[]>([])
-  const [models, setModels] = useState<string[]>([])
-  const setBackend = onBackendChange
-  const setModel = onModelChange
+  const [models, set模型s] = useState<string[]>([])
+  const set运行后端 = on运行后端Change
+  const set模型 = on模型Change
   const [msgs, setMsgs] = useState<Msg[]>([])
   const [input, setInput] = useState("")
   const [busy, setBusy] = useState(false)
@@ -41,7 +41,7 @@ export function LlmChatTab({
   const refresh = async () => {
     const res = await getLlmBackends()
     if (!res.ok) {
-      setError(res.error ?? "LLM stack unavailable")
+      setError(res.error ?? "大模型组件不可用")
       return
     }
     setError(null)
@@ -72,7 +72,7 @@ export function LlmChatTab({
       ...m,
       {
         role: "assistant",
-        text: res.ok ? (res.answer ?? "") : `Error: ${res.error}`,
+        text: res.ok ? (res.answer ?? "") : `错误：${res.error}`,
       },
     ])
   }
@@ -105,21 +105,21 @@ export function LlmChatTab({
         ) : (
           <div className="grid gap-2">
             <SelectField
-              label="Backend"
+              label="运行后端"
               value={backend}
               options={backends}
               onChange={setBackend}
             />
             {models.length > 0 ? (
               <SelectField
-                label="Model"
+                label="模型"
                 value={model}
                 options={models}
                 onChange={setModel}
               />
             ) : (
               <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_14rem] items-center gap-3">
-                <span className="text-sm text-muted-foreground">Model</span>
+                <span className="text-sm text-muted-foreground">模型</span>
                 <Input
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
@@ -154,7 +154,7 @@ export function LlmChatTab({
                 </div>
               ))}
               {busy && (
-                <p className="text-sm text-muted-foreground">Thinking…</p>
+                <p className="text-sm text-muted-foreground">思考中…</p>
               )}
               <div ref={endRef} />
             </div>
@@ -164,9 +164,9 @@ export function LlmChatTab({
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !busy && send()}
+            onKeyDown={(e) => e.key === "发送" && !busy && send()}
             placeholder={
-              ready ? "Ask about this video…" : "Select a backend and model first"
+              ready ? "询问这个视频…" : "请先选择运行后端和模型"
             }
             disabled={!ready || busy}
           />

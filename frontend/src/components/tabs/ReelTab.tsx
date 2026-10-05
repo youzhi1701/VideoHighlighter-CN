@@ -811,7 +811,7 @@ function ShotStrip({ plan }: { plan: ReelPlan }) {
               title={
                 `${cut.label} — ${(cut.duration ?? 0).toFixed(1)}s\n` +
                 `${basename(cut.source)}，从 ${cut.start.toFixed(2)} 秒开始` +
-                (moved ? " (skipped the camera being placed)" : "") +
+                (moved ? " （已跳过放置相机的片段）" : "") +
                 (cut.transition && cut.transition !== "cut"
                   ? `\n${prettyName(cut.transition)} ${cut.transition_duration.toFixed(2)}s`
                   : "") +

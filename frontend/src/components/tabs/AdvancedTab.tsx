@@ -170,8 +170,7 @@ export function AdvancedTab({ cfg, set }: Props) {
             绘制动作标签
           </label>
           <p className="text-xs text-muted-foreground">
-            Creates an _annotated.mp4 alongside the temp clips, useful for
-            debugging what the detector saw.
+            会在临时片段旁生成 _annotated.mp4，用于检查检测器实际识别到了什么内容。
           </p>
         </CardContent>
       </Card>

@@ -121,3 +121,6 @@ labels/
 
 # Named GUI settings (presets/*.yaml next to config.yaml). User data.
 presets/
+
+# Local Python environment created by 一键安装运行.cmd
+.venv/

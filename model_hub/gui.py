@@ -115,7 +115,7 @@ class DetailsPage(QWizardPage):
 
         self.category = QLineEdit(placeholderText="animals/horses")
         self.category.setToolTip("模型在社区中的分类路径：使用小写英文，最多三级"
-                                 "levels, e.g. sports/tennis or games/some-title.")
+                                 "，例如 sports/tennis 或 games/some-title。")
         self.category_hint = QLabel("")
         self.category_hint.setStyleSheet("color:#999;")
         self.category.textChanged.connect(self._category_changed)
@@ -488,7 +488,7 @@ class ModelBrowserDialog(QDialog):
         self.table.doubleClicked.connect(self._open_page)
 
         self.status = QLabel("社区模型由其他用户制作。只有标记为“已验证”的模型"
-                             "marked Verified were reviewed by the VideoHighlighter team.")
+                             "标记为“已验证”才表示经过 VideoHighlighter 团队审核。")
         self.status.setWordWrap(True)
 
         self.install_btn = QPushButton("安装")

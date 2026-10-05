@@ -288,7 +288,7 @@ export default function App() {
   const handleEvent = (e: RunEvent) => {
     switch (e.type) {
       case "started":
-        appendLog("=== Started ===", "ok")
+        appendLog("=== 已开始 ===", "ok")
         break
       case "log":
         appendLog(e.message)
@@ -303,11 +303,11 @@ export default function App() {
       case "downloaded":
         if (dlRef.current.autoAdd && e.paths.length) {
           setVideos((v) => [...new Set([...v, ...e.paths])])
-          appendLog(`➕ Added ${e.paths.length} downloaded video(s)`, "ok")
+          appendLog(`➕ 已添加 ${e.paths.length} 个下载的视频`, "ok")
         }
         break
       case "faces_scanned":
-        appendLog(`👤 Found ${e.count} identities`, "ok")
+        appendLog(`👤 找到 ${e.count} 个身份`, "ok")
         setFaceRefresh((n) => n + 1)
         break
       case "preview":
@@ -317,7 +317,7 @@ export default function App() {
         })
         break
       case "vision_hit":
-        appendLog(`🔎 match at ${e.timestamp.toFixed(1)}s`, "ok")
+        appendLog(`🔎 在 ${e.timestamp.toFixed(1)} 秒找到匹配`, "ok")
         break
       case "vision_results":
         setVisionResults(e.results)
@@ -329,9 +329,9 @@ export default function App() {
         }))
         break
       case "finished":
-        appendLog(`✔ Finished: ${e.output || "(no output)"}`, "ok")
+        appendLog(`✔ 已完成：${e.output || "（无输出）"}`, "ok")
         setSessionCount((n) => n + 1)
-        // Downloads and face scans reuse this event for a summary ("3 file(s)"),
+        // Downloads and face scans reuse this event for a summary ("3 个文件"),
         // so only keep an output that's actually a file we can reveal.
         if (/\.[a-z0-9]{2,4}$/i.test(e.output)) setLastOutput(e.output)
         // Stash produced highlights so `done` can combine them into a reel.
@@ -952,7 +952,7 @@ export default function App() {
                   const res = await revealOutput(lastOutput)
                   if (!res.ok) toast.error(res.error ?? "无法显示输出文件")
                 }}
-                title={`Show ${lastOutput} in the file manager`}
+                title={`在文件管理器中显示 ${lastOutput}`}
                 className="gap-1.5"
               >
                 <FolderOpen className="size-3.5" /> Show output
@@ -965,7 +965,7 @@ export default function App() {
                 const res = await revealLog()
                 if (!res.ok) toast.error(res.error ?? "暂无日志可显示")
               }}
-              title="Show debug.log in the file manager"
+              title="在文件管理器中显示 debug.log"
               className="gap-1.5"
             >
               <FileText className="size-3.5" /> Log file

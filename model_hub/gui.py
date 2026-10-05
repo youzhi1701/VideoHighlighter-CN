@@ -40,6 +40,26 @@ LICENSE_NAMES = {
     "cc0-1.0": "CC0（无附加条件）",
 }
 
+LAYOUT_NAMES_ZH = {
+    "NCHW": "NCHW（通道优先）",
+    "NHWC": "NHWC（通道最后）",
+}
+COLOR_NAMES_ZH = {
+    "RGB": "RGB（红绿蓝）",
+    "BGR": "BGR（蓝绿红）",
+}
+NORMALIZATION_NAMES_ZH = {
+    "0-1": "0-1（归一化）",
+    "0-255": "0-255（原始像素范围）",
+    "imagenet": "ImageNet 标准化",
+    "minus1-1": "-1 到 1",
+}
+OUTPUT_FORMAT_NAMES_ZH = {
+    "yolox": "YOLOX 检测输出",
+    "logits": "Logits（原始分数）",
+    "probabilities": "概率",
+}
+
 
 # ------------------------------------------------------------------ worker
 class _Worker(QObject):
@@ -137,11 +157,14 @@ class DetailsPage(QWizardPage):
         self.height_ = QSpinBox(minimum=16, maximum=2048, value=416)
         self.frames = QSpinBox(minimum=1, maximum=128, value=1)
         self.layout_ = QComboBox()
-        self.layout_.addItems(sorted(LAYOUTS))
+        for value in sorted(LAYOUTS):
+            self.layout_.addItem(LAYOUT_NAMES_ZH.get(value, value), value)
         self.color = QComboBox()
-        self.color.addItems(sorted(COLOR_ORDERS))
+        for value in sorted(COLOR_ORDERS):
+            self.color.addItem(COLOR_NAMES_ZH.get(value, value), value)
         self.normalize = QComboBox()
-        self.normalize.addItems(sorted(NORMALIZATIONS))
+        for value in sorted(NORMALIZATIONS):
+            self.normalize.addItem(NORMALIZATION_NAMES_ZH.get(value, value), value)
         self.threshold = QDoubleSpinBox(minimum=0.01, maximum=0.99, singleStep=0.05, value=0.3)
         size = QHBoxLayout()
         for w, label in ((self.width_, "宽"), (self.height_, "高"), (self.frames, "帧数")):
@@ -209,13 +232,21 @@ class DetailsPage(QWizardPage):
         if idx >= 0:
             self.task.setCurrentIndex(idx)
         self._task_changed()
-        self.output_format.setCurrentText(d.output_format)
+        idx = self.output_format.findData(d.output_format)
+        if idx >= 0:
+            self.output_format.setCurrentIndex(idx)
         self.labels.setText(", ".join(d.labels))
         self.width_.setValue(d.input.width)
         self.height_.setValue(d.input.height)
-        self.layout_.setCurrentText(d.input.layout)
-        self.color.setCurrentText(d.input.color)
-        self.normalize.setCurrentText(d.input.normalize)
+        idx = self.layout_.findData(d.input.layout)
+        if idx >= 0:
+            self.layout_.setCurrentIndex(idx)
+        idx = self.color.findData(d.input.color)
+        if idx >= 0:
+            self.color.setCurrentIndex(idx)
+        idx = self.normalize.findData(d.input.normalize)
+        if idx >= 0:
+            self.normalize.setCurrentIndex(idx)
         self.threshold.setValue(d.confidence_threshold)
         if d.author:
             self.author.setText(d.author)
@@ -264,7 +295,8 @@ class DetailsPage(QWizardPage):
     def _task_changed(self):
         task = self.task.currentData()
         self.output_format.clear()
-        self.output_format.addItems(sorted(TASKS[task][1]))
+        for value in sorted(TASKS[task][1]):
+            self.output_format.addItem(OUTPUT_FORMAT_NAMES_ZH.get(value, value), value)
         is_action = task == "action_recognition"
         self.frames.setEnabled(is_action)
         self.frames.setValue(16 if is_action else 1)
@@ -288,9 +320,9 @@ class DetailsPage(QWizardPage):
             license=self.license.currentData(),
             category=self.category.text().strip(),
             input=InputSpec(width=self.width_.value(), height=self.height_.value(),
-                            layout=self.layout_.currentText(), color=self.color.currentText(),
-                            normalize=self.normalize.currentText(), frames=self.frames.value()),
-            output_format=self.output_format.currentText(),
+                            layout=self.layout_.currentData(), color=self.color.currentData(),
+                            normalize=self.normalize.currentData(), frames=self.frames.value()),
+            output_format=self.output_format.currentData(),
             confidence_threshold=round(self.threshold.value(), 3),
             game=self.game.text().strip(),
             content_type=self.content_type.text().strip(),

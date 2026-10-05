@@ -98,9 +98,9 @@ def release_the_kraken(package_dir: str | Path, progress: Progress = print) -> M
     """
     report, manifest = check_package(package_dir, require_compliance=True)
     if not report.ok or manifest is None:
-        raise RuntimeError("The package did not pass the checks:\n" + report.text())
-    line = (f"{KRAKEN} Release the kraken: {manifest.display_name} "
-            f"({manifest.category}, {manifest.license}) is cleared to share.")
+        raise RuntimeError("模型包未通过检查：\n" + report.text())
+    line = (f"{KRAKEN} 模型检查通过：{manifest.display_name} "
+            f"（{manifest.category}，{manifest.license}）可以分享。")
     try:
         progress(line)
     except UnicodeEncodeError:
@@ -120,28 +120,28 @@ def publish(package_dir: str | Path, repo_name: str | None = None, token: str | 
     from huggingface_hub.errors import HfHubHTTPError
 
     package_dir = Path(package_dir)
-    progress("Checking package…")
+    progress("正在检查模型包…")
     manifest = release_the_kraken(package_dir, progress=progress)
 
     token = token or get_token()
     if not token:
-        raise RuntimeError("Sign in with a Hugging Face access token (write permission) first.")
+        raise RuntimeError("请先使用具有写入权限的 Hugging Face Access Token 登录。")
 
     api = HfApi(token=token)
     try:
         user = api.whoami()["name"]
     except HfHubHTTPError as exc:
-        raise RuntimeError("Hugging Face rejected the token. Create a new token with "
-                           "write permission at huggingface.co/settings/tokens.") from exc
+        raise RuntimeError("Hugging Face 拒绝了当前 Token。请在 huggingface.co/settings/tokens "
+                           "创建具有写入权限的新 Token。") from exc
 
     repo_id = f"{user}/{repo_name or manifest.name}"
     if not REPO_ID_RE.match(repo_id):
-        raise RuntimeError(f"Invalid repository name: {repo_id}")
+        raise RuntimeError(f"无效的仓库名称：{repo_id}")
 
     try:
-        progress(f"Creating {repo_id}…")
+        progress(f"正在创建 {repo_id}…")
         api.create_repo(repo_id, repo_type="model", private=private, exist_ok=True)
-        progress("Uploading model files…")
+        progress("正在上传模型文件…")
         commit = api.upload_folder(
             repo_id=repo_id,
             repo_type="model",
@@ -150,9 +150,9 @@ def publish(package_dir: str | Path, repo_name: str | None = None, token: str | 
             commit_message=f"Publish {manifest.name} {manifest.version} via VideoHighlighter",
         )
     except HfHubHTTPError as exc:
-        raise RuntimeError(f"Upload failed: {exc}") from exc
+        raise RuntimeError(f"上传失败：{exc}") from exc
 
-    progress(f"Published (commit {commit.oid[:8]}).")
+    progress(f"发布完成（提交 {commit.oid[:8]}）。")
     return f"https://huggingface.co/{repo_id}"
 
 
@@ -284,11 +284,11 @@ def install(repo_id: str, revision: str | None = None, models_dir: str | Path | 
             progress: Progress = print) -> tuple[InstalledModel | None, CheckReport]:
     """Download a model pinned to one commit, check it, then install it."""
     if not REPO_ID_RE.match(repo_id):
-        report = CheckReport(errors=[f"Invalid repository id: {repo_id}"])
+        report = CheckReport(errors=[f"无效的仓库 ID：{repo_id}"])
         return None, report
     if repo_id.lower() in fetch_blocklist():
         return None, CheckReport(errors=[
-            f"{repo_id} was removed from the community models after a report."])
+            f"{repo_id} 因收到举报已从社区模型中移除。"])
 
     from huggingface_hub import HfApi, snapshot_download
 
@@ -299,13 +299,13 @@ def install(repo_id: str, revision: str | None = None, models_dir: str | Path | 
     models_dir.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(dir=models_dir) as tmp:
-        progress(f"Downloading {repo_id}@{revision[:8]}…")
+        progress(f"正在下载 {repo_id}@{revision[:8]}…")
         snapshot_download(repo_id, revision=revision, local_dir=tmp,
                           allow_patterns=UPLOAD_PATTERNS)
         cache = Path(tmp) / ".cache"
         if cache.exists():
             shutil.rmtree(cache)  # huggingface_hub bookkeeping, not part of the package
-        progress("Checking model…")
+        progress("正在检查模型…")
         return install_folder(tmp, repo_id, revision, models_dir, progress)
 
 
@@ -320,8 +320,8 @@ def install_folder(package_dir: str | Path, repo_id: str, revision: str,
         return None, report
     if manifest.task not in USABLE_TASKS:
         report.errors.append(
-            f"This is a {TASKS[manifest.task][0].lower()} model; this version of "
-            "VideoHighlighter can only use object detection models.")
+            f"这是一个 {TASKS[manifest.task][0]} 模型；当前版本的 "
+            "VideoHighlighter 只能使用物体检测模型。")
         return None, report
 
     target = models_dir / _safe_dir_name(repo_id) / revision
@@ -335,7 +335,7 @@ def install_folder(package_dir: str | Path, repo_id: str, revision: str,
     (target / INSTALL_RECORD).write_text(json.dumps(record, indent=2), encoding="utf-8")
     # The detector backend names classes from a labels.json beside the model.
     (target / LABELS_SIDECAR).write_text(json.dumps(manifest.labels, indent=2), encoding="utf-8")
-    progress("Installed.")
+    progress("安装完成。")
     return InstalledModel(repo_id, revision, target, manifest, author in VERIFIED_AUTHORS), report
 
 

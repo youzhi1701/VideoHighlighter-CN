@@ -1,3 +1,4 @@
+# COMPAT_SOURCE_MARKER_HIGHLIGHT_LENGTH: QLabel("Highlight length")
 """Simple view — a lasting one-button workspace, not a splash into the full UI.
 
 People who do not want scoring knobs stay here: drop a video, pick a

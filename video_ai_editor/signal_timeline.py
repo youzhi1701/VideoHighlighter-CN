@@ -130,19 +130,19 @@ class SignalTimelineScene(QGraphicsScene):
         # timeline stacks them makes the checkbox for a row hard to find, which
         # is the one job the panel has.
         self.group_order = [
-            ('events', [f"Event: {e}" for e in self.event_types]),
-            ('transcript', ['Transcript']),
-            ('actions', [f"Action: {a}" for a in self.action_types]),
-            ('objects', [f"Object: {o}" for o in self.object_classes]),
-            ('visual_search', [f"Search: {q}" for q in self.visual_queries]),
-            ('scenes', ['Scenes']),
-            ('motion', ['Motion Events', 'Motion Peaks']),
-            ('audio', ['Audio Peaks']),
-            ('highlights', ['Final Highlights']),
+            ('events', [f"事件：{e}" for e in self.event_types]),
+            ('transcript', ['转录文本']),
+            ('actions', [f"动作：{a}" for a in self.action_types]),
+            ('objects', [f"物体：{o}" for o in self.object_classes]),
+            ('visual_search', [f"搜索：{q}" for q in self.visual_queries]),
+            ('scenes', ['场景']),
+            ('motion', ['运动事件', '运动峰值']),
+            ('audio', ['音频峰值']),
+            ('highlights', ['最终高光']),
             # Last, so it sits at the bottom of the stack — as close as the
             # signal timeline gets to the edit timeline directly beneath it,
             # which is the strip you are comparing it against.
-            ('filmstrip', ['Filmstrip']),
+            ('filmstrip', ['胶片条']),
         ]
         
         # Layer visibility - initialize all to visible
@@ -1271,7 +1271,7 @@ class SignalTimelineScene(QGraphicsScene):
         if not action_groups:
             # Show filter status message
             if self.min_action_confidence > 0 or self.max_action_confidence < 1:
-                text = self.addText(f"(filtered: confidence {self.min_action_confidence:.0%}-{self.max_action_confidence:.0%})",
+                text = self.addText(f"（已筛选：置信度 {self.min_action_confidence:.0%}-{self.max_action_confidence:.0%}）",
                                    QFont("Arial", 9))
             else:
                 text = self.addText("（无动作）", QFont("Arial", 9))
@@ -1356,7 +1356,7 @@ class SignalTimelineScene(QGraphicsScene):
         if not object_groups:
             # Show filter status message
             if self.min_object_confidence > 0 or self.max_object_confidence < 1:
-                text = self.addText(f"(filtered: confidence {self.min_object_confidence:.0%}-{self.max_object_confidence:.0%})",
+                text = self.addText(f"（已筛选：置信度 {self.min_object_confidence:.0%}-{self.max_object_confidence:.0%}）",
                                    QFont("Arial", 9))
             else:
                 text = self.addText("（无物体）", QFont("Arial", 9))

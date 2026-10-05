@@ -284,10 +284,10 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
             <Scissors className="size-4" /> {title}
           </CardTitle>
           <div className="flex items-center gap-2">
-            <Badge variant="secondary">{cuts.length} cuts</Badge>
+            <Badge variant="secondary">{cuts.length} 个剪辑段</Badge>
             <Badge>{formatShort(totals.reel)}</Badge>
             {totals.overlap > 0.05 && (
-              <Badge variant="outline">−{totals.overlap.toFixed(1)}s blended</Badge>
+              <Badge variant="outline">−{totals.overlap.toFixed(1)} 秒重叠混合</Badge>
             )}
           </div>
         </CardHeader>
@@ -317,7 +317,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
             ))}
             <div className="ml-auto flex items-center gap-2">
               <Button variant="outline" size="sm" onClick={() => void save()}>
-                <Save className="size-3.5" /> Save
+                <Save className="size-3.5" /> 保存
               </Button>
               {running ? (
                 <Button variant="destructive" size="sm" onClick={onCancel}>
@@ -325,7 +325,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                 </Button>
               ) : (
                 <Button size="sm" onClick={() => void render()}>
-                  <Play className="size-3.5" /> Render
+                  <Play className="size-3.5" /> 渲染
                 </Button>
               )}
             </div>
@@ -345,7 +345,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <FileText className="size-4" /> Cuts
+              <FileText className="size-4" /> 剪辑段
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -449,7 +449,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs">Quality (CRF {crf})</Label>
+              <Label className="text-xs">画质（CRF {crf}）</Label>
               <Input
                 type="number"
                 value={crf}

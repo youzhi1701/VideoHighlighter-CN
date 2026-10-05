@@ -199,7 +199,7 @@ class VideoPickerDialog(QDialog):
         if not self._entries:
             self.status_label.setText("该页面未找到视频。")
             return
-        self.status_label.setText(f"{len(self._entries)} 个视频 — 请选择要下载的内容。")
+        self.status_label.setText(f"{len(self._entries)} video(s) — pick which to download.")
         for idx, entry in enumerate(self._entries):
             card = _Card(entry)
             card.checkbox.stateChanged.connect(self._update_download_btn)
@@ -210,7 +210,7 @@ class VideoPickerDialog(QDialog):
 
     @Slot(str)
     def _on_scrape_error(self, msg: str):
-        self.status_label.setText(f"列表加载失败：{msg}")
+        self.status_label.setText(f"Failed to load listing: {msg}")
 
     # -------------------------------------------------------------- thumbnails
     def _start_thumbs(self):
@@ -236,7 +236,7 @@ class VideoPickerDialog(QDialog):
     def _update_download_btn(self):
         n = sum(1 for c in self._cards if c.is_checked())
         self.download_btn.setEnabled(n > 0)
-        self.download_btn.setText(f"下载所选 ({n})" if n else "下载所选")
+        self.download_btn.setText(f"下载所选（{n}）" if n else "下载所选")
 
     def _accept_selection(self):
         self._selected = [c.entry for c in self._cards if c.is_checked()]
@@ -276,7 +276,7 @@ def _standalone():
     dlg = VideoPickerDialog(args.url, pattern=args.pattern, use_browser=args.browser)
     if dlg.exec():
         sel = dlg.selected_entries()
-        print(f"\nSelected {len(sel)} 个视频：")
+        print(f"\nSelected {len(sel)} video(s):")
         for e in sel:
             print(f"  {e['title']}  →  {e['url']}")
     else:

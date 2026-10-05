@@ -788,7 +788,7 @@ class EditTimelineScene(QGraphicsScene):
             if segments:
                 self.clips = segments
                 self.build_timeline()
-                QMessageBox.information(None, "Loaded",
+                QMessageBox.information(None, "已加载",
                                        f"Loaded {len(segments)} clips from cache.")
 
         dialog.accept()

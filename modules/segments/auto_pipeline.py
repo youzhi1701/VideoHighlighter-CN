@@ -590,8 +590,8 @@ def run_auto_pipeline(
     save_job(state, state_path)
     seconds = time.time() - started
     ok = not any(s.status == FAILED for s in state.stages.values())
-    log_fn(f"{'✅' if ok else '⚠️'} Job {state.job_id} finished in {seconds:.0f}s "
-           f"-> {state.final or '(no output)'}")
+    log_fn(f"{'✅' if ok else '⚠️'} 任务 {state.job_id} 已完成，用时 {seconds:.0f} 秒 "
+           f"→ {state.final or '（无输出）'}")
     if progress_fn is not None:
         progress_fn(1.0, "完成")
     return JobResult(state=state, output=state.final, seconds=seconds, ok=ok)

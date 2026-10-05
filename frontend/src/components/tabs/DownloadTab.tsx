@@ -40,7 +40,7 @@ interface Props {
 }
 
 const fmt = (s: number) =>
-  `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).pad开始(2, "0")}`
+  `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`
 
 export function DownloadTab({
   settings,
@@ -115,14 +115,14 @@ export function DownloadTab({
                 label="开始"
                 hint="(s)"
                 value={settings.rangeStart}
-                onChange={(v) => set("range开始", v)}
+                onChange={(v) => set("rangeStart", v)}
               />
               <NumberField
                 label="结束"
                 hint="(s)"
                 value={settings.rangeEnd}
                 min={1}
-                onChange={(v) => set("range结束", v)}
+                onChange={(v) => set("rangeEnd", v)}
               />
               <p className="text-xs text-muted-foreground">
                 Duration: {duration}s ({fmt(duration)})

@@ -42,7 +42,7 @@ def describe(result: dict) -> str:
     if not isinstance(result, dict):
         return str(result)
     if result.get("error"):
-        return f"Stopped: {result['error']}"
+        return f"已停止：{result['error']}"
     lines = []
     if "checks" in result:
         for c in result["checks"]:
@@ -51,23 +51,23 @@ def describe(result: dict) -> str:
             if not c["ok"] and c.get("fix"):
                 line += f"  -> {c['fix']}"
             lines.append(line)
-        lines.append("Ready." if result.get("ready") else "Not ready yet: fix the MISSING items.")
+        lines.append("Ready." if result.get("ready") else "尚未就绪：请先处理缺失项目。")
         return "\n".join(lines)
     for step in result.get("ran") or []:
-        lines.append("done: " + " ".join(step.get("args") or []))
+        lines.append("已完成： " + " ".join(step.get("args") or []))
     if "classes" in result and isinstance(result["classes"], dict):
         for name, c in result["classes"].items():
             lines.append(f"{name}: {c['accepted']} of {c['target']} accepted")
     nxt = result.get("next") or result.get("stopped_at") or {}
     if nxt.get("why"):
-        lines.append("Next: " + nxt["why"])
+        lines.append("下一步： " + nxt["why"])
     if result.get("message"):
         lines.append(result["message"])
     return "\n".join(lines) or "Done."
 
 
 class TeachPanel(QWidget):
-    """The loop for people who never open a terminal."""
+    """无需打开终端的完整训练流程。"""
 
     def __init__(self, parent=None, run_cli: Optional[Callable] = None,
                  open_review: Optional[Callable] = None,
@@ -93,35 +93,35 @@ class TeachPanel(QWidget):
         self.task.setToolTip("actions: something that happens over time (a movement)\n"
                              "objects: a thing visible in one frame")
         self.project = QLineEdit("my-first")
-        self.project.setToolTip("A name, or a folder. Projects live in your user data.")
+        self.project.setToolTip("输入名称或选择文件夹。项目保存在用户数据目录。")
         self.examples = QLineEdit()
-        self.examples.setPlaceholderText("folder with one subfolder of clips per thing")
+        self.examples.setPlaceholderText("包含各类别片段子文件夹的目录")
         self.videos = QLineEdit()
-        self.videos.setPlaceholderText("a folder of videos (or type the path of one video)")
-        self.focus = QCheckBox("Crop samples to the people in them (actions)")
+        self.videos.setPlaceholderText("视频文件夹（或输入单个视频路径）")
+        self.focus = QCheckBox("动作样本自动裁剪到人物区域")
 
         form = QFormLayout()
-        form.addRow("What kind", self.task)
+        form.addRow("训练类型", self.task)
         form.addRow("Project", self.project)
         form.addRow("Examples", self._with_browse(self.examples, folder=True))
         form.addRow("Videos", self._with_browse(self.videos, folder=True))
         form.addRow("", self.focus)
 
-        self.doctor_btn = QPushButton("Check this computer")
+        self.doctor_btn = QPushButton("检查当前电脑")
         self.doctor_btn.clicked.connect(lambda: self._run(["doctor"]))
         self.start_btn = QPushButton("Start")
         self.start_btn.clicked.connect(self.start)
-        self.review_btn = QPushButton("Check guesses…")
+        self.review_btn = QPushButton("检查模型判断…")
         self.review_btn.clicked.connect(self.review)
         self.continue_btn = QPushButton("Continue")
-        self.continue_btn.setToolTip("Run every step that needs nobody")
+        self.continue_btn.setToolTip("运行所有无需人工确认的步骤")
         self.continue_btn.clicked.connect(lambda: self._run(["auto"]))
         self.train_btn = QPushButton("Train")
-        self.train_btn.setToolTip("Continue, including training (can take a while)")
+        self.train_btn.setToolTip("继续，包括训练（可能需要较长时间）")
         self.train_btn.clicked.connect(lambda: self._run(["auto", "--train"]))
-        self.share_btn = QPushButton("Share…")
-        self.share_btn.setToolTip("Share the trained detector on the model hub "
-                                  "(the model only, never your footage)")
+        self.share_btn = QPushButton("分享…")
+        self.share_btn.setToolTip("将训练好的检测器分享到模型中心 "
+                                  "（只分享模型，不会上传你的素材）")
         self.share_btn.clicked.connect(self.share)
         buttons = QHBoxLayout()
         for b in (self.doctor_btn, self.start_btn, self.review_btn, self.continue_btn,
@@ -133,7 +133,7 @@ class TeachPanel(QWidget):
 
         from modules.teach import background
         self.background_box = QCheckBox(
-            "Keep improving in the background while the app is idle")
+            "软件空闲时在后台持续改进")
         self.background_box.setToolTip(
             "Runs every step that needs nobody (finding, sorting, training) when you "
             "have not touched the app for a couple of minutes, and keeps a few "
@@ -155,7 +155,7 @@ class TeachPanel(QWidget):
 
         self.output = QPlainTextEdit()
         self.output.setReadOnly(True)
-        self.output.setPlaceholderText("What happened, and what comes next, shows here.")
+        self.output.setPlaceholderText("这里会显示已发生的操作和下一步。")
 
         layout = QVBoxLayout(self)
         layout.addWidget(intro)
@@ -169,11 +169,11 @@ class TeachPanel(QWidget):
         row = QHBoxLayout()
         row.setContentsMargins(0, 0, 0, 0)
         row.addWidget(edit, 1)
-        btn = QPushButton("Choose…")
+        btn = QPushButton("选择…")
 
         def pick():
-            path = (QFileDialog.getExistingDirectory(self, "Choose a folder") if folder
-                    else QFileDialog.getOpenFileName(self, "Choose a video")[0])
+            path = (QFileDialog.getExistingDirectory(self, "选择文件夹") if folder
+                    else QFileDialog.getOpenFileName(self, "选择视频")[0])
             if path:
                 edit.setText(path)
         btn.clicked.connect(pick)
@@ -206,7 +206,7 @@ class TeachPanel(QWidget):
             self.project.setText(root)
             self._show_background_setting()
         if not os.path.exists(os.path.join(root, "project.json")):
-            self.output.setPlainText("Start a project first.")
+            self.output.setPlainText("请先创建项目。")
             return
         if self._open_review is not None:
             self._open_review(root)
@@ -241,7 +241,7 @@ class TeachPanel(QWidget):
         try:
             onnx, draft = share_draft(Project.load(root))
         except FileNotFoundError:
-            self.output.setPlainText("Start a project first.")
+            self.output.setPlainText("请先创建项目。")
             return
         except NotShareable as exc:
             self.output.setPlainText(str(exc))
@@ -285,7 +285,7 @@ class TeachPanel(QWidget):
         from modules.teach.project import Project
         root = self._panel_root()
         if not root:
-            self.output.setPlainText("Start a project first.")
+            self.output.setPlainText("请先创建项目。")
             self._show_background_setting()
             return
         project = Project.load(root)
@@ -306,7 +306,7 @@ class TeachPanel(QWidget):
         from modules.teach.background import waiting
         self._waiting = waiting(self._roots())
         n = sum(self._waiting.values())
-        self.review_btn.setText(f"Check guesses… ({n})" if n else "Check guesses…")
+        self.review_btn.setText(f"检查模型判断… ({n})" if n else "检查模型判断…")
 
     def _run(self, args: list):
         if self.background.running:
@@ -314,7 +314,7 @@ class TeachPanel(QWidget):
                                      "current step first. Try again in a moment.")
             return
         self._set_busy(True)
-        self.output.setPlainText("Working… (" + " ".join(args) + ")")
+        self.output.setPlainText("处理中…（" + " ".join(args) + ")")
         argv = ["--project", self.project_arg(), *args]
         self._thread = QThread(self)
         self._job = _Job(lambda: self._run_cli(argv))

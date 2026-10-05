@@ -175,8 +175,8 @@ export function DownloadTab({
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Browse &amp; Select opens a grid of the page's videos so you can pick
-          individually. Progress and log output appear below. Requires yt-dlp.
+          “浏览并选择”会打开该页面中的视频网格，你可以逐个选择需要下载的视频。
+          下载进度和日志会显示在下方。此功能需要 yt-dlp。
         </p>
 
         <VideoPickerDialog

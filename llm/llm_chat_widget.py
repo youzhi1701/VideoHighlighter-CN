@@ -349,7 +349,7 @@ class _VisualSearchWorker(QObject):
 
         if self._clip is None:
             self.progress.emit(0, 1, self.start_time,
-                               "Loading CLIP on GPU (first run downloads the model)...")
+                               "正在 GPU 上加载 CLIP（首次运行需要下载模型）…")
             self._clip = ClipEmbedder(device=self.clip_device)
             self._clip.load()
         self._clip.set_query(self.target)
@@ -387,7 +387,7 @@ class _VisualSearchWorker(QObject):
                 if ts in batch:
                     scored.append((ts, batch[ts]))
             self.progress.emit(min(c + BATCH, len(timestamps)), len(timestamps),
-                               chunk[-1], f"CLIP scan {chunk[-1]:.0f}s")
+                               chunk[-1], f"CLIP 扫描到 {chunk[-1]:.0f} 秒")
 
         elapsed = time.perf_counter() - t0
         encoded = self._clip_memo_added
@@ -716,11 +716,10 @@ class LLMChatWidget(QWidget):
         self.ollama_host_input = QLineEdit()
         self.ollama_host_input.setPlaceholderText(OLLAMA_DEFAULT_URL)
         self.ollama_host_input.setToolTip(
-            "Where Ollama is running. Blank means " + OLLAMA_DEFAULT_URL + ".\n"
-            "A machine on the network works too - 192.168.1.50, or\n"
-            "http://box.lan:11434. That server has to have been started with\n"
-            "OLLAMA_HOST=0.0.0.0 for anything but itself to reach it.\n"
-            "The whole app follows this: chat, report, narration and advisor."
+            "Ollama 服务地址。留空时使用 " + OLLAMA_DEFAULT_URL + "。\n"
+            "也可以连接局域网中的其他电脑，例如 192.168.1.50 或\n"
+            "http://box.lan:11434。远程 Ollama 需要以 OLLAMA_HOST=0.0.0.0 启动，\n"
+            "才能被其他设备访问。聊天、报告、旁白和顾问功能都会使用这里的地址。"
         )
         # editingFinished, not textChanged: normalising while somebody is still
         # typing an address rewrites the field under the cursor.
@@ -1031,14 +1030,14 @@ class LLMChatWidget(QWidget):
                 )
                 stats = self.reasoning_engine.reasoning_engine.get_action_statistics()
                 self._append_system(
-                    f"🧠 Reasoning engine initialized with {stats['total_actions']} actions analyzed"
+                    f"🧠 推理引擎已初始化，共分析 {stats['total_actions']} 个动作"
                 )
                 if not llm:
                     self._append_system(
-                        "ℹ️ Stats available now. Connect a model for reasoning questions."
+                        "ℹ️ 当前已可查看统计；连接模型后可进一步回答推理类问题。"
                     )
             except Exception as e:
-                self._append_system(f"⚠️ Could not initialize reasoning: {e}")
+                self._append_system(f"⚠️ 无法初始化推理引擎：{e}")
                 self.reasoning_engine = None
 
     @staticmethod
@@ -1069,9 +1068,9 @@ class LLMChatWidget(QWidget):
             self._timeline_bridge.set_scan_callback(self._trigger_visual_scan)
             self._update_context_label()
             self._append_system(
-                "Timeline connected! You can now ask me to edit the timeline.\n"
-                "Examples: 'add a clip at 0:10 to 0:15', 'remove clip 2', "
-                "'show only person detections', 'play the clip at 0:30'"
+                "时间线已连接！现在可以通过对话编辑时间线。\n"
+                "例如：添加 0:10 到 0:15 的片段、删除第 2 个片段、"
+                "只显示人物检测、播放 0:30 处的片段。"
             )
 
         # Always grab video path from timeline window
@@ -1635,19 +1634,19 @@ class LLMChatWidget(QWidget):
             n_audio = len(audio.get("peaks", [])) if isinstance(audio, dict) else 0
 
             self._append_system(
-                f"Cache 已加载: {os.path.basename(filepath)}\n"
-                f"  Duration: {int(dur)}s ({int(dur)//60}m{int(dur)%60:02d}s) | "
-                f"Objects: {n_obj} | Actions: {n_act} | "
-                f"Transcript: {n_trans} segs | Scenes: {n_scenes}\n"
-                f"  Motion: {n_motion} events, {n_peaks} peaks | Audio peaks: {n_audio}"
+                f"缓存已加载：{os.path.basename(filepath)}\n"
+                f"  时长：{int(dur)} 秒（{int(dur)//60} 分 {int(dur)%60:02d} 秒） | "
+                f"物体：{n_obj} | 动作：{n_act} | "
+                f"转录：{n_trans} 段 | 场景：{n_scenes}\n"
+                f"  运动事件：{n_motion} | 运动峰值：{n_peaks} | 音频峰值：{n_audio}"
             )
             return True
 
         except json.JSONDecodeError as e:
-            self._append_system(f"Invalid JSON in {os.path.basename(filepath)}: {e}")
+            self._append_system(f"{os.path.basename(filepath)} 中的 JSON 无效：{e}")
             return False
         except Exception as e:
-            self._append_system(f"Failed to load cache: {e}")
+            self._append_system(f"加载缓存失败：{e}")
             return False
 
     def _load_cache_from_file(self):
@@ -1760,22 +1759,22 @@ class LLMChatWidget(QWidget):
             try:
                 stats = self.reasoning_engine.reasoning_engine.get_action_statistics()
                 lines = [
-                    "📊 **Action Statistics**",
-                    f"• Total actions: {stats['total_actions']}",
-                    f"• Unique action types: {stats['unique_actions']}",
-                    f"• Timestamps with actions: {stats['timestamps_with_actions']}",
-                    f"• Action clusters: {stats['action_clusters']}",
-                    "\nMost common actions:"
+                    "📊 **动作统计**",
+                    f"• 动作总数：{stats['total_actions']}",
+                    f"• 动作类型数：{stats['unique_actions']}",
+                    f"• 包含动作的时间点：{stats['timestamps_with_actions']}",
+                    f"• 动作聚类数：{stats['action_clusters']}",
+                    "\n最常见动作："
                 ]
                 for action, count in stats['most_common'][:5]:
-                    lines.append(f"  • {action}: {count} times")
+                    lines.append(f"  • {action}：{count} 次")
                 
                 # This block was previously OUTSIDE the except, referencing
                 # `lines` that only existed inside. Now it's properly scoped.
                 if hasattr(self.reasoning_engine, 'reasoning_engine') and \
                    hasattr(self.reasoning_engine.reasoning_engine, 'action_sequences') and \
                    self.reasoning_engine.reasoning_engine.action_sequences:
-                    lines.append("\n🎬 **Detected Action Sequences:**")
+                    lines.append("\n🎬 **检测到的动作序列：**")
                     for seq in self.reasoning_engine.reasoning_engine.action_sequences[:3]:
                         lines.append(
                             f"  • {seq.description} "
@@ -1785,7 +1784,7 @@ class LLMChatWidget(QWidget):
                 
                 self._append_system("\n".join(lines))
             except Exception as e:
-                self._append_system(f"⚠️ Could not retrieve statistics: {e}")
+                self._append_system(f"⚠️ 无法获取统计信息：{e}")
 
     def _save_reasoning_facts(self):
         """Save inferred facts to cache."""
@@ -2063,11 +2062,11 @@ class LLMChatWidget(QWidget):
         if text.startswith('!visual'):
             force_visual = True
             actual_message = text[7:].strip()
-            self._append_system("🎯 Forcing VISUAL mode - will capture and analyze current frame")
+            self._append_system("🎯 已强制切换到视觉模式——将截取并分析当前画面")
         elif text.startswith('!text'):
             force_text = True
             actual_message = text[5:].strip()
-            self._append_system("📝 Forcing TEXT mode - will ignore vision keywords and use only analysis data")
+            self._append_system("📝 已强制切换到文本模式——忽略视觉关键词，仅使用分析数据")
 
         # Handle seek commands (still useful)
         if self._handle_seek_command(actual_message):
@@ -2076,8 +2075,8 @@ class LLMChatWidget(QWidget):
 
         if not self._analysis_data:
             self._append_system(
-                "WARNING: No analysis data 已加载! LLM will hallucinate.\n"
-                "Use 'Load Cache' to load a cache file first."
+                "⚠️ 未加载分析数据，大模型可能缺少依据并产生幻觉。\n"
+                "请先使用“加载缓存”选择缓存文件。"
             )
 
         self._append_user(actual_message)
@@ -2129,21 +2128,21 @@ class LLMChatWidget(QWidget):
                     frame_b64 = window.capture_current_frame_base64()
                     if frame_b64:
                         self._append_system(
-                            f"📷 Frame captured at {window.current_time:.1f}s "
-                            f"({len(frame_b64)//1024}KB)"
+                            f"📷 已截取 {window.current_time:.1f} 秒处画面"
+                            f"（{len(frame_b64)//1024} KB）"
                         )
                         if has_timeline:
                             self._append_system(
-                                "ℹ️ Combining frame analysis with timeline context..."
+                                "ℹ️ 正在结合画面分析与时间线上下文…"
                             )
                     else:
-                        self._append_system("⚠️ Frame capture failed")
+                        self._append_system("⚠️ 画面截取失败")
             else:
-                self._append_system("⚠️ Cannot capture frame: No timeline window connected")
+                self._append_system("⚠️ 无法截取画面：尚未连接时间线窗口")
         
         elif force_text:
             frame_b64 = None
-            self._append_system("ℹ️ Text mode active: using analysis data only, ignoring vision")
+            self._append_system("ℹ️ 文本模式已启用：仅使用分析数据，不读取画面")
         
         else:
             _wants_vision = any(kw in _text_lower for kw in _VISION_KEYWORDS)
@@ -2289,11 +2288,11 @@ class LLMChatWidget(QWidget):
         self.search_target.setText(target)
         if interval is not None:
             self.search_interval.setValue(interval)
-            self._append_system(f"🔍 Parsed search: '{target}' every {interval}s")
+            self._append_system(f"🔍 已解析搜索：‘{target}’，每 {interval} 秒采样一次")
         else:
             self._append_system(
-                f"🔍 Parsed search: '{target}' "
-                f"(using current interval: {self.search_interval.value()}s)"
+                f"🔍 已解析搜索：‘{target}’"
+                f"（使用当前间隔：{self.search_interval.value()} 秒）"
             )
         self._start_visual_search()
         return True
@@ -2341,8 +2340,8 @@ class LLMChatWidget(QWidget):
         if stopped_something:
             self.stop_btn.setEnabled(False)
             self._append_system(
-                "⏹ Stop requested — will stop after current frame finishes processing.\n"
-                "   (GGUF image decoding is ~20s and cannot be interrupted mid-frame)"
+                "⏹ 已请求停止——将在当前帧处理完成后结束。\n"
+                "   （GGUF 图像解码单帧可能需要约 20 秒，处理中无法强制中断）"
             )
 
     @Slot(str)
@@ -2392,7 +2391,7 @@ class LLMChatWidget(QWidget):
     @Slot(str)
     def _on_response_error(self, error_msg: str):
         self._append_html(
-            f'<div style="color:#f44336;margin-left:12px;">Error: {error_msg}</div><br>'
+            f'<div style="color:#f44336;margin-left:12px;">错误：{error_msg}</div><br>'
         )
         self.input_field.setEnabled(True)
         self.send_btn.setEnabled(True)
@@ -2403,7 +2402,7 @@ class LLMChatWidget(QWidget):
         self.chat_display.clear()
         self._chat_history.clear()
         if self._llm and self._llm.is_loaded():
-            self._append_system("Chat cleared. Ready for new questions.")
+            self._append_system("对话已清空，可以开始新的问题。")
 
     # ------------------------------------------------ Display helpers
 

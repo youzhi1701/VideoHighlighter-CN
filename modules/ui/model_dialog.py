@@ -38,7 +38,7 @@ from PySide6.QtWidgets import (
 
 from modules.narration.llm_models import BACKENDS, label_for
 
-GGUF_FILTER = "GGUF models (*.gguf);;All files (*)"
+GGUF_FILTER = "GGUF 模型 (*.gguf);;所有文件 (*)"
 
 
 class ModelDialog(QDialog):
@@ -72,8 +72,8 @@ class ModelDialog(QDialog):
 
         root = QVBoxLayout(self)
         root.addWidget(QLabel(
-            "The report can be written with any of these. The one selected is "
-            "used until you pick another."))
+            "报告可以使用以下任一模型生成。当前选中的模型"
+            "会一直使用，直到你选择其他模型。"))
 
         self.list = QListWidget()
         self.list.setMinimumHeight(110)
@@ -92,10 +92,10 @@ class ModelDialog(QDialog):
         self.backend = QComboBox()
         for name in BACKENDS:
             self.backend.addItem(
-                "Ollama (local server)" if name == "ollama"
-                else "llama-cpp (GGUF file)", name)
+                "Ollama（本地服务）" if name == "ollama"
+                else "llama-cpp（GGUF 文件）", name)
         self.backend.currentIndexChanged.connect(self._backend_changed)
-        form.addRow("Backend:", self.backend)
+        form.addRow("后端：", self.backend)
 
         # Ollama takes a tag, llama-cpp takes a file. Two fields rather than one
         # that means different things: the Browse button belongs to only one of
@@ -133,14 +133,14 @@ class ModelDialog(QDialog):
         self.gguf = QLineEdit()
         self.gguf.setPlaceholderText("D:/models/some-model.Q4_K_M.gguf")
         self.gguf_row = self._labelled("GGUF 路径：", self.gguf,
-                                       browse="Select a GGUF model")
+                                       browse="选择 GGUF 模型")
         form.addRow(self.gguf_row)
 
         self.mmproj = QLineEdit()
         self.mmproj.setPlaceholderText(
-            "optional — the mmproj file, for a vision model")
+            "可选：视觉模型使用的 mmproj 文件")
         self.mmproj_row = self._labelled("视觉投影器：", self.mmproj,
-                                         browse="Select the mmproj file")
+                                         browse="选择 mmproj 文件")
         form.addRow(self.mmproj_row)
 
         self.label = QLineEdit()
@@ -214,9 +214,9 @@ class ModelDialog(QDialog):
             asked = ""
         where = f" at {asked}" if asked else ""
         self.status.setText(
-            f"{len(found)} model(s) on the Ollama server{where}." if found else
-            f"No Ollama server answered{where} — type a name, or start it and "
-            "press Refresh.")
+            f"Ollama 服务{where}上找到 {len(found)} 个模型。" if found else
+            f"Ollama 服务{where}无响应——请输入模型名，或启动服务后"
+            "点击刷新。")
 
     def _refresh_tags(self):
         self._fill_tags(refresh=True)
@@ -231,7 +231,7 @@ class ModelDialog(QDialog):
         for path in found:
             self.recent.addItem(os.path.basename(path), path)
         if not found:
-            self.recent.addItem("(none yet — use Browse)", "")
+            self.recent.addItem("（暂无，请使用“浏览”选择）", "")
         self.recent.setEnabled(bool(found))
 
     def _recent_chosen(self, _index):

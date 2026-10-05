@@ -269,7 +269,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
               disabled={scanning}
             >
               <RefreshCw className={scanning ? "size-3.5 animate-spin" : "size-3.5"} />
-              Rescan
+              重新扫描
             </Button>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -299,15 +299,15 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                     <Badge variant={active ? "default" : "secondary"}>{card.root}</Badge>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {card.take_count} take{card.take_count === 1 ? "" : "s"} ·{" "}
-                    {card.file_count} file{card.file_count === 1 ? "" : "s"} ·{" "}
+                    {card.take_count} 组素材 ·{" "}
+                    {card.file_count} 个文件 ·{" "}
                     {gb(card.total_bytes)}
                     {card.chaptered_takes > 0 &&
                       ` · ${card.chaptered_takes} 个已分章节`}
                   </p>
                   {card.firmware && (
                     <p className="text-xs text-muted-foreground/70">
-                      firmware {card.firmware}
+                      固件 {card.firmware}
                     </p>
                   )}
                 </button>
@@ -332,7 +332,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
               </Button>
               {manualFiles.length > 0 && (
                 <span className="text-xs text-muted-foreground">
-                  {manualFiles.length} file{manualFiles.length === 1 ? "" : "s"} selected
+                  已选择 {manualFiles.length} 个文件
                 </span>
               )}
             </div>
@@ -363,7 +363,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                     if (dir) setDestRoot(dir)
                   }}
                 >
-                  Browse
+                  浏览
                 </Button>
               </div>
             </div>
@@ -398,7 +398,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
 
             {prior && (
               <p className="text-xs text-muted-foreground">
-                Earlier run found:{" "}
+                上次运行可复用：{" "}
                 {prior.filter((s) => s.satisfied).map((s) => STAGE_LABELS[s.name]).join(", ") ||
                   "没有可复用内容"}
               </p>
@@ -414,7 +414,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
             </CardTitle>
             <div className="flex gap-1">
               <Button variant="ghost" size="sm" onClick={() => void loadExample()}>
-                Template
+                模板
               </Button>
               <Button variant="ghost" size="sm" onClick={() => void openScript()}>
                 打开…
@@ -426,7 +426,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
               <div className="flex items-center justify-between gap-2 rounded-md border p-2">
                 <span className="truncate text-xs">{basename(scriptPath)}</span>
                 <Button variant="ghost" size="sm" onClick={() => setScriptPath("")}>
-                  Clear
+                  清除
                 </Button>
               </div>
             ) : (
@@ -445,16 +445,14 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                     onClick={() => void checkScript()}
                     disabled={!scriptText.trim()}
                   >
-                    Check
+                    检查
                   </Button>
                   {scriptCheck &&
                     (scriptCheck.ok ? (
                       <span className="text-xs text-emerald-500">
-                        {scriptCheck.beats?.length} beat
-                        {scriptCheck.beats?.length === 1 ? "" : "s"} ·{" "}
-                        {scriptCheck.clip_count} clip
-                        {scriptCheck.clip_count === 1 ? "" : "s"} ·{" "}
-                        {Math.round(scriptCheck.target_duration ?? 0)}s
+                        {scriptCheck.beats?.length} 个节拍 ·{" "}
+                        {scriptCheck.clip_count} 个片段 ·{" "}
+                        {Math.round(scriptCheck.target_duration ?? 0)} 秒
                       </span>
                     ) : (
                       <span className="text-xs text-destructive">{scriptCheck.error}</span>
@@ -474,7 +472,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <Music className="size-4" /> Music
+              <Music className="size-4" /> 音乐
             </CardTitle>
             <Button variant="ghost" size="sm" onClick={() => void chooseMusic()}>
               选择…
@@ -483,8 +481,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
           <CardContent className="space-y-3">
             {!musicPath && (
               <p className="text-xs text-muted-foreground">
-                Optional. A track here is analysed for its beat, and laid over the
-                finished film.
+                可选。添加音乐后会分析节拍，并将音乐铺到最终成片中。
               </p>
             )}
 
@@ -499,7 +496,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                     setMusic(null)
                   }}
                 >
-                  Clear
+                  清除
                 </Button>
               </div>
             )}
@@ -514,9 +511,9 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
               <>
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge>{music.bpm?.toFixed(1)} BPM</Badge>
-                  <Badge variant="secondary">{music.beats?.length ?? 0} beats</Badge>
+                  <Badge variant="secondary">{music.beats?.length ?? 0} 个节拍</Badge>
                   <Badge variant="secondary">
-                    {music.downbeats?.length ?? 0} bars
+                    {music.downbeats?.length ?? 0} 个小节
                   </Badge>
                   <Badge variant="outline">{music.backend}</Badge>
                 </div>
@@ -535,7 +532,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Scissors className="size-4" /> Cutting
+            <Scissors className="size-4" /> 剪辑
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
@@ -616,7 +613,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
           <div className="flex gap-2">
             {running ? (
               <Button variant="destructive" size="sm" onClick={onCancel}>
-                Cancel
+                取消
               </Button>
             ) : (
               <Button size="sm" onClick={start} disabled={!canStart}>

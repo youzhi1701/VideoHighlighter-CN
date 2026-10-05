@@ -64,6 +64,19 @@ const SHAPES = [
   { key: "wide", label: "横屏 16:9", width: 1920, height: 1080, fill: "pad" },
 ]
 
+const PACE_LABELS: Record<string, string> = {
+  calm: "舒缓风景 / 情绪",
+  vlog: "Vlog / 回顾",
+  energetic: "活力蒙太奇",
+  intense: "高强度 / 喜剧 / 强音乐",
+}
+
+const LENGTH_REASON_ZH: Record<number, string> = {
+  15: "一个核心想法或一个强烈瞬间",
+  24: "通用叙事长度",
+  50: "仅适合需要完整铺垫的故事",
+}
+
 // Transition names are the renderer's, which are terse by design. These are
 // what a person picking one would call it; anything without an entry falls
 // back to its own name with the underscores taken out.
@@ -321,7 +334,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   if (dir) setRoot(dir)
                 }}
               >
-                Browse
+                浏览
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
@@ -340,9 +353,9 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   variant={duration === l.seconds ? "default" : "outline"}
                   size="sm"
                   onClick={() => setDuration(l.seconds)}
-                  title={l.reason}
+                  title={LENGTH_REASON_ZH[l.seconds] ?? l.reason}
                 >
-                  {l.seconds}s
+                  {l.seconds} 秒
                 </Button>
               ))}
               <Input
@@ -354,7 +367,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                 className="w-20"
               />
               <span className="text-xs text-muted-foreground">
-                {lengths.find((l) => l.seconds === duration)?.reason ?? "seconds"}
+                {LENGTH_REASON_ZH[duration] ?? lengths.find((l) => l.seconds === duration)?.reason ?? "秒"}
               </span>
             </div>
           </div>
@@ -369,22 +382,20 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                 <SelectContent>
                   {paces.map((p) => (
                     <SelectItem key={p.key} value={p.key}>
-                      {p.label} — {p.min_shot}–{p.max_shot}s shots
+                      {PACE_LABELS[p.key] ?? p.label} — 单镜头 {p.min_shot}–{p.max_shot} 秒
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               {band && (
                 <p className="text-xs text-muted-foreground">
-                  {band.cuts_per_minute[0]}–{band.cuts_per_minute[1]} cuts per
-                  minute.
+                  每分钟约 {band.cuts_per_minute[0]}–{band.cuts_per_minute[1]} 次剪切。
                 </p>
               )}
               {tooShort && band && (
                 <p className="text-xs text-amber-500">
-                  A {band.label.toLowerCase()} story needs about{" "}
-                  {band.minimum_duration.toFixed(0)}s. Pick a faster pace or a
-                  longer reel.
+                  “{PACE_LABELS[band.key] ?? band.label}”节奏的故事大约需要{" "}
+                  {band.minimum_duration.toFixed(0)} 秒。请选择更快的节奏或更长的成片时长。
                 </p>
               )}
             </div>
@@ -405,8 +416,8 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               </Select>
               <p className="text-xs text-muted-foreground">
                 {SHAPES[shape].fill === "crop"
-                  ? "Fills the frame — the sides of a wide shot are cropped away."
-                  : "Keeps the whole frame, with bars where it does not fit."}
+                  ? "填满画面——宽画面的两侧会被裁切。"
+                  : "保留完整画面——无法填满的位置会使用留边。"}
               </p>
             </div>
           </div>

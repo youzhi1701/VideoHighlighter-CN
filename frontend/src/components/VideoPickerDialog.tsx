@@ -104,7 +104,7 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
               onClick={() => setPicked(new Set(entries.map((e) => e.url)))}
               disabled={!entries.length}
             >
-              Select all
+              全选
             </Button>
             <Button
               size="sm"
@@ -112,7 +112,7 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
               onClick={() => setPicked(new Set())}
               disabled={!picked.size}
             >
-              Select none
+              取消全选
             </Button>
           </div>
           <div className="flex gap-2">

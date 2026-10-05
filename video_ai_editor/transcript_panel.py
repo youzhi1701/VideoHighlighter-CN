@@ -309,7 +309,7 @@ class TranscriptPanel(QWidget):
         # Re-add stretch at end
         self.content_layout.addStretch()
 
-        self.match_label.setText(f"{len(self.segments)} 个片段")
+        self.match_label.setText(f"{len(self.segments)} segments")
 
     def _on_segment_clicked(self, time: float):
         """User clicked a segment — seek video and disable auto-scroll temporarily"""
@@ -342,19 +342,19 @@ class TranscriptPanel(QWidget):
         if self.match_indices:
             self.current_match_idx = 0
             count = len(self.match_indices)
-            self.match_label.setText(f"{count} 个匹配{'es' if count != 1 else ''}")
+            self.match_label.setText(f"{count} match{'es' if count != 1 else ''}")
             self.match_label.setStyleSheet("color: #aaff60; font-size: 10px; padding: 0 4px;")
             self.prev_btn.setEnabled(True)
             self.next_btn.setEnabled(True)
             # Scroll to first match
             self._scroll_to_match(0)
         elif keyword:
-            self.match_label.setText("No 个匹配es")
+            self.match_label.setText("无匹配结果")
             self.match_label.setStyleSheet("color: #ff6060; font-size: 10px; padding: 0 4px;")
             self.prev_btn.setEnabled(False)
             self.next_btn.setEnabled(False)
         else:
-            self.match_label.setText(f"{len(self.segments)} 个片段")
+            self.match_label.setText(f"{len(self.segments)} segments")
             self.match_label.setStyleSheet("color: #999999; font-size: 10px; padding: 0 4px;")
             self.prev_btn.setEnabled(False)
             self.next_btn.setEnabled(False)
@@ -377,10 +377,10 @@ class TranscriptPanel(QWidget):
         if self.match_indices:
             count = len(self.match_indices)
             current = self.current_match_idx + 1
-            self.match_label.setText(f"{current}/{count} 个匹配es")
+            self.match_label.setText(f"{current}/{count} matches")
 
     def _scroll_to_match(self, match_idx: int):
-        """Scroll to a specific 个匹配 and seek video to it"""
+        """Scroll to a specific match and seek video to it"""
         if not self.match_indices or match_idx >= len(self.match_indices):
             return
         seg_idx = self.match_indices[match_idx]
@@ -428,7 +428,7 @@ class TranscriptPanel(QWidget):
                 self._scroll_to_widget(self.segment_widgets[new_idx])
 
     def reload_segments(self, segments: list):
-        """Replace all 个片段 (e.g. after cache reload)"""
+        """Replace all segments (e.g. after cache reload)"""
         # Clear existing
         for w in self.segment_widgets:
             self.content_layout.removeWidget(w)

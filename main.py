@@ -1538,24 +1538,22 @@ class VideoHighlighterGUI(QWidget):
 
         self.spin_scene_points = QSpinBox(); self.spin_scene_points.setRange(0,100); self.spin_scene_points.setValue(scoring_cfg.get("scene_points", 0))
         self.spin_scene_points.setToolTip(
-            "Points on the second a scene cut starts (a jump in frame difference). "
-            "One hit per cut, not for the rest of the scene.")
+            "场景切换开始时（帧差突然增大）对对应秒数加分。"
+            "每次切换只记一次，不会持续给后续场景加分。")
 
         self.spin_motion_event_points = QSpinBox(); self.spin_motion_event_points.setRange(0,100); self.spin_motion_event_points.setValue(scoring_cfg.get("motion_event_points", 0))
         self.spin_motion_event_points.setToolTip(
-            "Points on seconds where a sampled frame has motion "
-            "(contour area above the detector minimum). Not a spike-then-quiet — "
-            "that is motion peak points.")
+            "采样帧检测到运动时对对应秒数加分（轮廓面积超过检测阈值）。"
+            "这不是运动峰值；运动峰值用于检测突然增强后又降低的运动。")
 
         self.spin_motion_peak = QSpinBox(); self.spin_motion_peak.setRange(0,100); self.spin_motion_peak.setValue(scoring_cfg.get("motion_peak_points", 3))
         self.spin_motion_peak.setToolTip(
-            "Points when motion inside a scene rises above that scene's average, "
-            "then stays low for about 4 seconds of samples.")
+            "当场景内运动强度高于该场景平均值，随后约 4 秒采样保持较低时加分。")
 
         self.spin_audio_peak = QSpinBox(); self.spin_audio_peak.setRange(0,100); self.spin_audio_peak.setValue(scoring_cfg.get("audio_peak_points", 0))
         self.spin_audio_peak.setToolTip(
-            "Points on seconds with a local waveform peak above -20 dB. "
-            "Not a loudness burst, which compares each moment to its own neighborhood.")
+            "局部波形峰值高于 -20 dB 时对对应秒数加分。"
+            "它不同于响度突增；响度突增会把每个时刻与其附近片段比较。")
 
         self.spin_loudness_burst = QSpinBox(); self.spin_loudness_burst.setRange(0,100)
         self.spin_loudness_burst.setValue(scoring_cfg.get("loudness_burst_points", 0))
@@ -1570,46 +1568,37 @@ class VideoHighlighterGUI(QWidget):
 
         self.spin_keyword_points = QSpinBox(); self.spin_keyword_points.setRange(0,100); self.spin_keyword_points.setValue(scoring_cfg.get("keyword_points", 2))
         self.spin_keyword_points.setToolTip(
-            "Points on each second of a transcript span that contains a search keyword. "
-            "Ignored unless transcript is enabled.")
+            "转录片段中出现搜索关键词时，对该片段覆盖的每一秒加分。未启用转录时忽略。")
         # Keyword scoring only works with a transcript — grey it out until then.
         self.spin_keyword_points.setEnabled(self.config_data.get("transcript", {}).get("enabled", False))
 
         self.spin_transcript_points = QSpinBox(); self.spin_transcript_points.setRange(0,100); self.spin_transcript_points.setValue(scoring_cfg.get("transcript_points", 2))
         self.spin_transcript_points.setToolTip(
-            "Stored with the run, but not added to any second. Keyword points are "
-            "what mark spoken words. Counts in the 'all points are 0' check only "
-            "while transcript is enabled.")
+            "转录结果会随本次分析保存，但此项本身不会直接给某一秒加分。"
+            "语音关键词由“关键词加分”标记；仅在启用转录时参与评分有效性检查。")
 
         self.spin_object = QSpinBox(); self.spin_object.setRange(0,100); self.spin_object.setValue(scoring_cfg.get("object_points", 1))
         self.spin_object.setToolTip(
-            "Points on each second a class from the object field is detected. "
-            "With that field empty these points are not counted.")
+            "检测到“物体检测”字段中的类别时，对对应秒数加分。字段为空时不计此项。")
 
         self.spin_action = QSpinBox(); self.spin_action.setRange(0,1000); self.spin_action.setValue(scoring_cfg.get("action_points", 10))
         self.spin_action.setToolTip(
-            "Points on seconds an action from the action field is recognized. "
-            "Scaled by that action's confidence in this video (half, full, or 1.5x). "
-            "With that field empty these points are not counted.")
+            "识别到“动作关键词”字段中的动作时加分；分数会按该动作在当前视频中的"
+            "置信度缩放（0.5 倍、1 倍或 1.5 倍）。字段为空时不计此项。")
 
         self.spin_face_expression = QSpinBox(); self.spin_face_expression.setRange(0,100)
         self.spin_face_expression.setValue(scoring_cfg.get("face_expression_points", 0))
         self.spin_face_expression.setToolTip(
-            "Points for a second whose strongest face reads as one of the "
-            "expressions you pick beside this.\n\nThe scan runs only when this "
-            "is above 0 AND at least one expression is chosen — with either "
-            "missing there is no outcome it could change, so it is skipped.\n\n"
-            "It reports what a five-class classifier saw on a face, not what "
-            "anyone felt: it has no notion of intensity, degrades on profile "
-            "and occlusion, and cannot tell a performed expression from a felt "
-            "one.")
+            "当画面中最明显的人脸被识别为你选择的表情之一时，对对应秒数加分。\n\n"
+            "只有分数大于 0 且至少选择一种表情时才会运行扫描。\n\n"
+            "这里显示的是五分类模型对人脸外观的识别结果，不代表人物真实情绪；"
+            "侧脸、遮挡等情况会降低准确性，也无法判断表情是表演还是真实感受。")
         self._face_label_actions = {}
         self.btn_face_labels = QToolButton()
         self.btn_face_labels.setPopupMode(QToolButton.InstantPopup)
         self.btn_face_labels.setToolTip(
-            "Which expressions earn the points above. Picking all of them "
-            "scores every second a face is visible, which distinguishes "
-            "nothing — so choose the ones that mark the moments you want.")
+            "选择哪些表情可以获得上方分数。若全部选择，则只要出现人脸的每一秒都会加分，"
+            "失去区分意义；建议只选择真正代表目标时刻的表情。")
         face_menu = QMenu(self.btn_face_labels)
         chosen = {str(x).lower()
                   for x in (scoring_cfg.get("face_expression_labels") or [])}
@@ -1622,16 +1611,16 @@ class VideoHighlighterGUI(QWidget):
         self.btn_face_labels.setMenu(face_menu)
         self._update_face_labels_button()
 
-        self.spin_beginning_seconds = QSpinBox(); self.spin_beginning_seconds.setRange(0,3600); self.spin_beginning_seconds.setSuffix(" s"); self.spin_beginning_seconds.setValue(scoring_cfg.get("beginning_seconds", 60))
+        self.spin_beginning_seconds = QSpinBox(); self.spin_beginning_seconds.setRange(0,3600); self.spin_beginning_seconds.setSuffix(" 秒"); self.spin_beginning_seconds.setValue(scoring_cfg.get("beginning_seconds", 60))
         self.spin_beginning_seconds.setToolTip("从视频开头计算多少秒作为片头时间窗")
 
-        self.spin_beginning_points = QSpinBox(); self.spin_beginning_points.setRange(0,100); self.spin_beginning_points.setSuffix(" pts"); self.spin_beginning_points.setValue(scoring_cfg.get("beginning_points", 0))
+        self.spin_beginning_points = QSpinBox(); self.spin_beginning_points.setRange(0,100); self.spin_beginning_points.setSuffix(" 分"); self.spin_beginning_points.setValue(scoring_cfg.get("beginning_points", 0))
         self.spin_beginning_points.setToolTip("片头时间窗内每秒增加的分数；提高可让片头更容易被选为高光，设为 0 则与普通片段同等评分")
 
-        self.spin_ending_seconds = QSpinBox(); self.spin_ending_seconds.setRange(0,3600); self.spin_ending_seconds.setSuffix(" s"); self.spin_ending_seconds.setValue(scoring_cfg.get("ending_seconds", 120))
+        self.spin_ending_seconds = QSpinBox(); self.spin_ending_seconds.setRange(0,3600); self.spin_ending_seconds.setSuffix(" 秒"); self.spin_ending_seconds.setValue(scoring_cfg.get("ending_seconds", 120))
         self.spin_ending_seconds.setToolTip("视频结束前多少秒作为片尾时间窗")
 
-        self.spin_ending_points = QSpinBox(); self.spin_ending_points.setRange(0,100); self.spin_ending_points.setSuffix(" pts"); self.spin_ending_points.setValue(scoring_cfg.get("ending_points", 0))
+        self.spin_ending_points = QSpinBox(); self.spin_ending_points.setRange(0,100); self.spin_ending_points.setSuffix(" 分"); self.spin_ending_points.setValue(scoring_cfg.get("ending_points", 0))
         self.spin_ending_points.setToolTip("片尾时间窗内每秒增加的分数；提高可让片尾更容易被选为高光，设为 0 则与普通片段同等评分")
 
         intro_row = QHBoxLayout()
@@ -1663,21 +1652,19 @@ class VideoHighlighterGUI(QWidget):
         # the button lives on the first of the three and runs all three.
         # Keyword + transcript points likewise share one transcription pass.
         groups = (
-            ("Movement && scenes", (
-                ("Scene points:", self._points_row_with_button(
-                    self.spin_scene_points, "motion", "Motion & scenes",
-                    "Detect scene cuts and motion across every video in the list "
-                    "and cache them (covers scene, motion event and motion peak "
-                    "— one pass). No highlights are cut.")),
-                ("Motion event points:", self.spin_motion_event_points),
-                ("Motion peak points:", self.spin_motion_peak),
+            ("运动与场景", (
+                ("场景切换加分：", self._points_row_with_button(
+                    self.spin_scene_points, "motion", "运动与场景",
+                    "检测列表中每个视频的场景切换与运动，并写入缓存。"
+                    "一次分析同时覆盖场景切换、运动事件和运动峰值，不会剪切高光。")),
+                ("运动事件加分：", self.spin_motion_event_points),
+                ("运动峰值加分：", self.spin_motion_peak),
             )),
-            ("Audio", (
-                ("Audio peak points:", self._points_row_with_button(
-                    self.spin_audio_peak, "audio", "Audio",
-                    "Detect audio peaks across every video in the list and cache "
-                    "them. No highlights are cut.")),
-                ("Loudness burst points (vs local level):",
+            ("音频", (
+                ("音频峰值加分：", self._points_row_with_button(
+                    self.spin_audio_peak, "audio", "音频",
+                    "检测列表中每个视频的音频峰值并写入缓存，不会剪切高光。")),
+                ("响度突增加分（相对局部响度）：",
                  self.spin_loudness_burst),
             )),
             # Composition earns a row here rather than living only beside its
@@ -1686,36 +1673,33 @@ class VideoHighlighterGUI(QWidget):
             # and cache a result — and they are the one kind that needs no
             # previous run, so requiring a trip to another tab to start them put
             # the cheapest signal behind the most navigation.
-            ("Composition rules", (
-                ("Apply saved rules:", self._rules_run_row()),
+            ("构图规则", (
+                ("应用已保存规则：", self._rules_run_row()),
             )),
-            ("Speech", (
-                ("Keyword points (keywords in transcript):",
+            ("语音", (
+                ("关键词加分（转录中的关键词）：",
                  self.spin_keyword_points),
-                ("Transcript points (all words):", self._points_row_with_button(
-                    self.spin_transcript_points, "transcript", "Transcribe",
-                    "Transcribe every video in the list to a _transcript.txt "
-                    "sidecar and cache it (uses the model/language in the "
-                    "Transcript tab). No highlights are cut.")),
+                ("转录加分（全部语音）：", self._points_row_with_button(
+                    self.spin_transcript_points, "transcript", "转录",
+                    "转录列表中的每个视频，将结果保存为 _transcript.txt 并写入缓存。"
+                    "使用“转录”标签页设置的模型和语言，不会剪切高光。")),
             )),
-            ("Objects && actions", (
-                ("Object points:", self._points_row_with_button(
-                    self.spin_object, "objects", "Objects",
-                    "Detect the classes from the 'Object detection' field below, "
-                    "across every video in the list, and cache them. No "
-                    "highlights are cut.")),
-                ("Action points:", self._points_row_with_button(
-                    self.spin_action, "actions", "Actions",
-                    "Detect the actions from the 'Action keywords' field below "
-                    "(blank = all actions), across every video in the list, and "
-                    "cache them. No highlights are cut.")),
+            ("物体与动作", (
+                ("物体加分：", self._points_row_with_button(
+                    self.spin_object, "objects", "物体",
+                    "在列表中的每个视频中检测下方“物体检测”字段指定的类别并写入缓存。"
+                    "不会剪切高光。")),
+                ("动作加分：", self._points_row_with_button(
+                    self.spin_action, "actions", "动作",
+                    "在列表中的每个视频中检测下方“动作关键词”指定的动作并写入缓存。"
+                    "留空表示检测全部动作；不会剪切高光。")),
             )),
-            ("Face expression", (
-                ("Points, and which expressions:", face_row),
+            ("人脸表情", (
+                ("加分及表情选择：", face_row),
             )),
-            ("Where in the video", (
-                ("Intro (window, points):", intro_widget),
-                ("Outro (window, points):", outro_widget),
+            ("视频位置", (
+                ("片头（时间窗、加分）：", intro_widget),
+                ("片尾（时间窗、加分）：", outro_widget),
             )),
             ("Speech", (
                 ("Keyword points (keywords in transcript):",

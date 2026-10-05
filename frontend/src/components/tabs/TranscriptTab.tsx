@@ -32,7 +32,7 @@ export function TranscriptTab({ cfg, set }: Props) {
               checked={cfg.use_transcript}
               onCheckedChange={(v) => set("use_transcript", Boolean(v))}
             />
-            Enable transcript processing (Whisper)
+            启用语音转写处理（Whisper）
           </label>
           <SelectField
             label="源语言"
@@ -50,7 +50,7 @@ export function TranscriptTab({ cfg, set }: Props) {
           />
           <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_14rem] items-center gap-3">
             <Label className="min-w-0 truncate text-sm font-normal text-muted-foreground">
-              Search keywords
+              搜索关键词
             </Label>
             <Input
               value={cfg.search_keywords}
@@ -62,7 +62,7 @@ export function TranscriptTab({ cfg, set }: Props) {
           </div>
           <div className="space-y-2.5 border-t pt-3">
             <p className="text-xs text-muted-foreground">
-              These scores only count while transcript is enabled.
+              仅在启用语音转写时才计入这些分数。
             </p>
             <NumberField
               label="关键词加分"
@@ -90,11 +90,11 @@ export function TranscriptTab({ cfg, set }: Props) {
               onCheckedChange={(v) => set("create_subtitles", Boolean(v))}
               disabled={!on}
             />
-            Generate subtitles (.srt)
+            生成字幕（.srt）
           </label>
           {!on && (
             <p className="text-xs text-muted-foreground">
-              Enable transcript first to generate subtitles.
+              请先启用语音转写，然后再生成字幕。
             </p>
           )}
           <SelectField

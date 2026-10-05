@@ -103,7 +103,7 @@ class Tile(QLabel):
             self.setToolTip("Click: accept / reject / none / undecided.  Right-click: "
                             "it is another class.  Double-click: play.")
         else:
-            self.setToolTip("单击：接受 / 拒绝 / 未决定。双击：播放。")
+            self.setToolTip("Click: accept / reject / undecided.  Double-click: play.")
         self.refresh()
 
     def refresh(self):

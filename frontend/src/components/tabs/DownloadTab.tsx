@@ -97,7 +97,7 @@ export function DownloadTab({
             onClick={chooseDir}
             disabled={picking}
           >
-            <FolderOpen className="size-4" /> Browse
+            <FolderOpen className="size-4" /> 浏览
           </Button>
         </div>
 

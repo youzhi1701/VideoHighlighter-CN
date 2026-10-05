@@ -89,7 +89,8 @@ class TeachPanel(QWidget):
         intro.setWordWrap(True)
 
         self.task = QComboBox()
-        self.task.addItem("动作", "actions")\n        self.task.addItem("物体", "objects")
+        self.task.addItem("动作", "actions")
+        self.task.addItem("物体", "objects")
         self.task.setToolTip("动作：随时间发生的行为或运动\n"
                              "物体：单帧中可见的对象")
         self.project = QLineEdit("my-first")

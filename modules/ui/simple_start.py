@@ -81,7 +81,7 @@ def persist_simple_start(on: bool) -> None:
 
 
 class DropZone(QFrame):
-    """Click or drop 个视频 here. Forwards paths to the host GUI file list."""
+    """Click or drop videos here. Forwards paths to the host GUI file list."""
 
     def __init__(self, on_paths, on_browse, parent=None):
         super().__init__(parent)
@@ -141,10 +141,10 @@ class DropZone(QFrame):
             self._set_chrome(loaded=False)
             return
         if len(names) == 1:
-            self._title.setText(f"已加载：{names[0]}")
-            self._hint.setText("点击继续添加，或将更多视频拖到这里")
+            self._title.setText(f"Loaded: {names[0]}")
+            self._hint.setText("click to add another  ·  or drop more here")
         else:
-            self._title.setText(f"已加载：{len(names)} 个视频")
+            self._title.setText(f"Loaded: {len(names)} videos")
             extra = f"  ·  +{len(names) - 2} more" if len(names) > 2 else ""
             self._hint.setText(", ".join(names[:2]) + extra)
         self._set_chrome(loaded=True)
@@ -199,7 +199,7 @@ class SimpleStartPage(QWidget):
         root.addWidget(headline)
 
         blurb = QLabel(
-            "Footage stays on your disk. 开始分析 finds strong moments with "
+            "Footage stays on your disk. Analyze finds strong moments with "
             "built-in defaults (motion peaks and loudness), writes a highlight "
             "reel plus separate clips, and shows why each moment scored — "
             "timeline, report, and chat. Open Detailed settings only when you "
@@ -299,7 +299,7 @@ class SimpleStartPage(QWidget):
         self.log = QTextEdit()
         self.log.setReadOnly(True)
         self.log.setMaximumHeight(96)
-        self.log.setPlaceholderText("Progress shows up here while 开始分析 runs.")
+        self.log.setPlaceholderText("分析运行时，进度会显示在这里。")
         self.log.setStyleSheet(
             "QTextEdit { font-family: 'Courier New', monospace; font-size: 9pt; }")
         root.addWidget(self.log)

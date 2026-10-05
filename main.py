@@ -1701,33 +1701,30 @@ class VideoHighlighterGUI(QWidget):
                 ("片头（时间窗、加分）：", intro_widget),
                 ("片尾（时间窗、加分）：", outro_widget),
             )),
-            ("Speech", (
-                ("Keyword points (keywords in transcript):",
+            ("语音", (
+                ("关键词加分（转录中的关键词）：",
                  self.spin_keyword_points),
-                ("Transcript points (all words):", self._points_row_with_button(
-                    self.spin_transcript_points, "transcript", "Transcribe",
-                    "Transcribe every video in the list to a _transcript.txt "
-                    "sidecar and cache it (uses the model/language in the "
-                    "Transcript tab). No highlights are cut.")),
+                ("转录加分（全部语音）：", self._points_row_with_button(
+                    self.spin_transcript_points, "transcript", "转录",
+                    "转录列表中的每个视频，将结果保存为 _transcript.txt 并写入缓存。"
+                    "使用“转录”标签页设置的模型和语言，不会剪切高光。")),
             )),
-            ("Objects && actions", (
-                ("Object points:", self._points_row_with_button(
-                    self.spin_object, "objects", "Objects",
-                    "Detect the classes from the 'Object detection' field below, "
-                    "across every video in the list, and cache them. No "
-                    "highlights are cut.")),
-                ("Action points:", self._points_row_with_button(
-                    self.spin_action, "actions", "Actions",
-                    "Detect the actions from the 'Action keywords' field below "
-                    "(blank = all actions), across every video in the list, and "
-                    "cache them. No highlights are cut.")),
+            ("物体与动作", (
+                ("物体加分：", self._points_row_with_button(
+                    self.spin_object, "objects", "物体",
+                    "在列表中的每个视频中检测下方“物体检测”字段指定的类别并写入缓存。"
+                    "不会剪切高光。")),
+                ("动作加分：", self._points_row_with_button(
+                    self.spin_action, "actions", "动作",
+                    "在列表中的每个视频中检测下方“动作关键词”指定的动作并写入缓存。"
+                    "留空表示检测全部动作；不会剪切高光。")),
             )),
-            ("Face expression", (
-                ("Points, and which expressions:", face_row),
+            ("人脸表情", (
+                ("加分及表情选择：", face_row),
             )),
-            ("Where in the video", (
-                ("Intro (window, points):", intro_widget),
-                ("Outro (window, points):", outro_widget),
+            ("视频位置", (
+                ("片头（时间窗、加分）：", intro_widget),
+                ("片尾（时间窗、加分）：", outro_widget),
             )),
         )
         for title, rows in groups:
@@ -2006,7 +2003,7 @@ class VideoHighlighterGUI(QWidget):
             "Motion and scene detection read every Nth frame. "
             "Higher is faster and can miss a short cut or a brief motion.")
 
-        motion_layout.addRow("Frame skip:", self.frame_skip_spin)
+        motion_layout.addRow("帧间隔：", self.frame_skip_spin)
         self.vr_mode_chk = QCheckBox("VR 左右并排优化")
         self.vr_mode_chk.setChecked(bool(advanced_cfg.get("vr_mode", False)))
         self.vr_mode_chk.setToolTip(
@@ -2028,7 +2025,7 @@ class VideoHighlighterGUI(QWidget):
             "Higher is faster and can miss an object that is only briefly on screen.")
 
         self.yolo_type_combo = QComboBox()
-        self.yolo_type_combo.addItem("Standard YOLOX (80 objects)", "standard")
+        self.yolo_type_combo.addItem("标准 YOLOX（80 类物体）", "standard")
 
         # Custom keypoint models are unsupported: their only trainer was AGPL.
         self._custom_pose_model = None
@@ -2040,9 +2037,9 @@ class VideoHighlighterGUI(QWidget):
         # each model's metadata or the labels.json beside it.
         self.object_model_combo = QComboBox()
         self.object_model_combo.setToolTip(
-            "Standard — the 80 COCO objects\n"
-            "Custom — a model you trained (auto-detected from models/custom/)\n"
-            "Mixed — the standard detector + your custom model together")
+            "标准——80 类 COCO 物体\n"
+            "自定义——你训练的模型（自动从 models/custom/ 检测）\n"
+            "混合——同时使用标准检测器和你的自定义模型")
 
         import_obj_btn = QPushButton("导入模型…")
         import_obj_btn.setToolTip("将训练好的模型（.onnx / OpenVINO .xml）复制到 models/custom/")
@@ -2052,8 +2049,8 @@ class VideoHighlighterGUI(QWidget):
         obj_model_row.addWidget(import_obj_btn)
         community_btn = QPushButton("社区模型…")
         community_btn.setToolTip(
-            "Browse and install small detectors other people trained and shared "
-            "(hosted on Hugging Face, checked before use)")
+            "浏览并安装其他用户训练并分享的小型检测模型。"
+            "模型托管在 Hugging Face，安装前会进行安全与兼容性检查。")
         obj_model_row.addWidget(community_btn)
         self.object_model_widget = QWidget()
         self.object_model_widget.setLayout(obj_model_row)
@@ -2064,7 +2061,7 @@ class VideoHighlighterGUI(QWidget):
             from modules.system.app_paths import discover_object_models
             self.object_model_combo.blockSignals(True)
             self.object_model_combo.clear()
-            self.object_model_combo.addItem("Standard (80 objects)", ("standard", ""))
+            self.object_model_combo.addItem("标准（80 类物体）", ("standard", ""))
             models = []
             try:
                 models = discover_object_models()
@@ -2072,13 +2069,13 @@ class VideoHighlighterGUI(QWidget):
                 print(f"⚠️ object model discovery failed: {e}")
             for m in models:
                 n = len(m["classes"])
-                kind = "Community" if m.get("community") else "Custom"
+                kind = "社区" if m.get("community") else "自定义"
                 self.object_model_combo.addItem(
                     f"{kind} — {m['name']} ({n} classes)", ("custom", m["path"]))
             for m in models:
                 n = len(m["classes"])
                 self.object_model_combo.addItem(
-                    f"Mixed — standard + {m['name']} (80 + {n})", ("custom_mixed", m["path"]))
+                    f"混合——标准 + {m['name']}（80 + {n}）", ("custom_mixed", m["path"]))
 
             # Restore selection by (type, path); fall back to standard.
             target = (select_type or "standard", select_path or "")
@@ -2090,16 +2087,16 @@ class VideoHighlighterGUI(QWidget):
         def _import_object_model():
             from modules.system.app_paths import import_object_model
             src, _ = QFileDialog.getOpenFileName(
-                self, "Import object detector model", "",
-                "Detector models (*.onnx *.xml);;All files (*)")
+                self, "导入物体检测模型", "",
+                "检测模型 (*.onnx *.xml);;所有文件 (*)")
             if not src:
                 return
             try:
                 dst = import_object_model(src)
                 _populate_object_models(select_type="custom", select_path=dst)
-                self.append_log(f"✅ Imported object model: {os.path.basename(dst)}")
+                self.append_log(f"✅ 已导入物体模型：{os.path.basename(dst)}")
             except Exception as e:
-                self.append_log(f"⚠️ Object model import failed: {e}")
+                self.append_log(f"⚠️ 物体模型导入失败：{e}")
 
         import_obj_btn.clicked.connect(_import_object_model)
 
@@ -2107,13 +2104,13 @@ class VideoHighlighterGUI(QWidget):
             try:
                 from model_hub.gui import ModelBrowserDialog
             except Exception as e:
-                self.append_log(f"⚠️ Community models unavailable: {e}")
+                self.append_log(f"⚠️ 社区模型不可用：{e}")
                 return
             dialog = ModelBrowserDialog(self)
 
             def _on_installed(model):
                 _populate_object_models(select_type="custom", select_path=str(model.model_path))
-                self.append_log(f"✅ Installed community model: {model.manifest.display_name}")
+                self.append_log(f"✅ 已安装社区模型：{model.manifest.display_name}")
 
             dialog.installed.connect(_on_installed)
             dialog.exec()
@@ -2164,11 +2161,11 @@ class VideoHighlighterGUI(QWidget):
         self.obj_confidence_spin.setValue(int(self.config_data.get("objects", {}).get("confidence", 30)))
         self.obj_confidence_spin.setToolTip("物体检测最低置信度阈值（越低检测越多，但误报也越多）")
 
-        object_layout.addRow("Frame skip:", self.obj_frame_skip_spin)
-        object_layout.addRow("Detector type:", self.yolo_type_combo)
-        object_layout.addRow("Detector model size:", self.yolo_model_combo)
-        object_layout.addRow("Object model:", self.object_model_widget)
-        object_layout.addRow("Confidence threshold:", self.obj_confidence_spin)
+        object_layout.addRow("帧间隔：", self.obj_frame_skip_spin)
+        object_layout.addRow("检测器类型：", self.yolo_type_combo)
+        object_layout.addRow("检测模型大小：", self.yolo_model_combo)
+        object_layout.addRow("物体模型：", self.object_model_widget)
+        object_layout.addRow("置信度阈值：", self.obj_confidence_spin)
 
         object_box.setLayout(object_layout)
         advanced_layout.addWidget(object_box, 2, 0)
@@ -2362,10 +2359,10 @@ class VideoHighlighterGUI(QWidget):
         if restore_idx >= 0:
             self.action_models_combo.setCurrentIndex(restore_idx)
 
-        action_layout.addRow("Frame skip:", self.sample_rate_spin)
-        action_layout.addRow("Backend:", self.action_backend_combo)
-        action_layout.addRow("Models:", action_model_widget)
-        action_layout.addRow("R3D model variant:", self.r3d_model_combo)
+        action_layout.addRow("帧间隔：", self.sample_rate_spin)
+        action_layout.addRow("运行后端：", self.action_backend_combo)
+        action_layout.addRow("模型：", action_model_widget)
+        action_layout.addRow("R3D 模型变体：", self.r3d_model_combo)
 
         action_box.setLayout(action_layout)
         advanced_layout.addWidget(action_box, 2, 1)
@@ -3037,7 +3034,7 @@ class VideoHighlighterGUI(QWidget):
         self.backend_combo.currentIndexChanged.connect(
             lambda: compute_backend.set_now(self.backend_combo.currentData(),
                                             log=self.append_log))
-        compute_layout.addRow("Prefer:", self.backend_combo)
+        compute_layout.addRow("优先使用：", self.backend_combo)
         compute_box.setLayout(compute_layout)
         advanced_layout.addWidget(compute_box, 0, 1)
 
@@ -3180,14 +3177,14 @@ class VideoHighlighterGUI(QWidget):
 
         _export_on = bool(highlights_cfg.get("export_separate_clips", False))
         self.export_clips_chk = QPushButton(
-            "Export clips: ON" if _export_on else "Export clips: OFF")
+            "单独导出片段：开" if _export_on else "单独导出片段：关")
         self.export_clips_chk.setCheckable(True)
         self.export_clips_chk.setChecked(_export_on)
         self.export_clips_chk.clicked.connect(lambda: self.export_clips_chk.setText(
-            "Export clips: ON" if self.export_clips_chk.isChecked() else "Export clips: OFF"))
+            "单独导出片段：开" if self.export_clips_chk.isChecked() else "单独导出片段：关"))
         self.export_clips_chk.setToolTip(
-            "Also write each scored segment as its own file under\n"
-            "<video>_clips/ next to the concatenated highlight reel.")
+            "除了合并后的高光视频外，还会将每个得分片段分别导出到\n"
+            "<video>_clips/ 文件夹中。")
 
         self.timeline_btn = QPushButton("时间线查看器")
         self.timeline_btn.setStyleSheet("QPushButton { background-color: #2f81f7; color: white; font-weight: bold; padding: 8px; }")
@@ -3195,8 +3192,8 @@ class VideoHighlighterGUI(QWidget):
 
         self.why_report_btn = QPushButton("高光报告")
         self.why_report_btn.setToolTip(
-            "Open the report explaining why each highlight was chosen.\n"
-            "Written next to the highlight on every run (Advanced tab toggles it).")
+            "打开解释每个高光为什么被选中的报告。\n"
+            "报告默认写在高光视频旁，可在“高级”标签页中控制是否生成。")
         self.why_report_btn.clicked.connect(self.open_why_report)
         # "AI 摘要" writes a few plain-language sentences into that same
         # report. Separate button because it costs a model run and tens of
@@ -3222,8 +3219,8 @@ class VideoHighlighterGUI(QWidget):
 
         self.simple_start_btn = QPushButton("简洁视图")
         self.simple_start_btn.setToolTip(
-            "One-button workspace: drop a video, press Analyze, stay there.\n"
-            "Detailed settings remain here for people who want the knobs.")
+            "一键式工作区：添加视频后直接分析即可。\n"
+            "需要更多控制时仍可返回详细设置。")
         self.simple_start_btn.clicked.connect(lambda: self.set_simple_start(True))
 
         self.cancel_btn = QPushButton("取消")

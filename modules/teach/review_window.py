@@ -100,10 +100,10 @@ class Tile(QLabel):
         self.setFocusPolicy(Qt.StrongFocus)
         self.setAlignment(Qt.AlignCenter)
         if NEGATIVE in self.choices:
-            self.setToolTip("Click: accept / reject / none / undecided.  Right-click: "
+            self.setToolTip("单击：接受 / 拒绝 / 都不是 / 未决定。右键："
                             "it is another class.  Double-click: play.")
         else:
-            self.setToolTip("Click: accept / reject / undecided.  Double-click: play.")
+            self.setToolTip("单击：接受 / 拒绝 / 未决定。双击：播放。")
         self.refresh()
 
     def refresh(self):
@@ -139,7 +139,7 @@ class Tile(QLabel):
         elif event.button() == Qt.RightButton and NEGATIVE in self.choices:
             menu = QMenu(self)
             for name in self.class_names:
-                menu.addAction(f"it is: {name}", lambda n=name: self.set_state(ACCEPT, n))
+                menu.addAction(f"这是：{name}", lambda n=name: self.set_state(ACCEPT, n))
             menu.addSeparator()
             menu.addAction("都不是", lambda: self.set_state(NEGATIVE))
             menu.addAction("拒绝（不清楚 / 剪切不佳）", lambda: self.set_state(REJECT))
@@ -237,7 +237,7 @@ class ReviewWindow(QWidget):
         project = Project.load(self.root)
         self.record = self.fetch(project)
         if not self.record:
-            self.header.setText("<b>Nothing left to check.</b> Close this window and run "
+            self.header.setText("<b>没有需要继续检查的内容。</b> 关闭此窗口并运行 "
                                 "<code>status</code> for the next step.")
             self.save_next.setEnabled(False)
             self.update_progress(project)
@@ -387,7 +387,7 @@ class BoxReviewWindow(ReviewWindow):
     def update_progress(self, project: Project):
         from modules.teach import boxes
         labels = boxes.store(project)
-        self.progress.setText(f"<b>{len(labels.accepted())}</b> boxes accepted, "
+        self.progress.setText(f"已接受 <b>{len(labels.accepted())}</b> 个检测框，"
                               f"<b>{len(labels.pending())}</b> waiting")
 
 

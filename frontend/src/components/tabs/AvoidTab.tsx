@@ -217,8 +217,7 @@ export function AvoidTab({
           ) : faces.length === 0 ? (
             <div className="space-y-3 p-6 text-center">
               <p className="text-sm text-muted-foreground">
-                No faces in the bank yet. Scan a video, or name faces in the
-                Timeline Viewer.
+                人脸库中暂无人物。请先扫描视频，或在时间线查看器中为人物命名。
               </p>
               <Button
                 size="sm"

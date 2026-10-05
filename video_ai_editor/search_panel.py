@@ -513,7 +513,7 @@ class SearchPanel(QWidget):
             card.set_avoided(avoided)
         if identity_id in self._identities:
             self._identities[identity_id]["avoided"] = avoided
-        name = (self._identities.get(identity_id) or {}).get("name", "this person")
+        name = (self._identities.get(identity_id) or {}).get("name", "此人物")
         self._expr_status.setText(
             f"下次运行时将{'跳过' if avoided else '包含'} {name}。")
 
@@ -527,7 +527,7 @@ class SearchPanel(QWidget):
 
         total = sum(e - s for s, e in segments)
         self._results_header.setText(
-            f"{name} — {len(segments)} segment{'s' if len(segments) != 1 else ''}, {total:.1f}s total"
+            f"{name} — {len(segments)} 个片段，总计 {total:.1f} 秒"
         )
         self._add_all_btn.setEnabled(bool(segments))
         self._refresh_results(segments)
@@ -561,7 +561,7 @@ class SearchPanel(QWidget):
         worker.failed.connect(self._on_expression_scan_failed)
         worker.progress.connect(
             lambda at, total: self._expr_status.setText(
-                f"Scanning… {at / total * 100:.0f}%" if total else "扫描中…"))
+                f"扫描中… {at / total * 100:.0f}%" if total else "扫描中…"))
         worker.finished.connect(self._on_expression_worker_finished)
         self._expr_worker = worker
         worker.start()

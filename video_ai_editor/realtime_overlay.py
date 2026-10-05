@@ -1046,7 +1046,7 @@ class RealtimeOverlayPreview(QWidget):
         self._filter_btn = QToolButton()
         self._filter_btn.setText("🔍 筛选")
         self._filter_btn.setPopupMode(QToolButton.InstantPopup)
-        self._filter_btn.setToolTip("显示/隐藏叠加层中的各检测类别")
+        self._filter_btn.setToolTip("Show/hide individual detection classes on the overlay")
         self._filter_menu = QMenu(self._filter_btn)
         self._filter_btn.setMenu(self._filter_menu)
         self._filter_btn.setEnabled(False)
@@ -1066,7 +1066,7 @@ class RealtimeOverlayPreview(QWidget):
         self._window_slider.setRange(1, 20)  # 0.1s to 2.0s
         self._window_slider.setValue(5)       # 0.5s default
         self._window_slider.setFixedWidth(80)
-        self._window_slider.setToolTip("显示附近检测结果的时间窗口（0.1 秒 - 2.0 秒）")
+        self._window_slider.setToolTip("Time window for showing nearby detections (0.1s - 2.0s)")
         self._window_slider.valueChanged.connect(self._on_window_changed)
         controls.addWidget(self._window_slider)
 
@@ -1107,10 +1107,10 @@ class RealtimeOverlayPreview(QWidget):
         self._detection_count = self._scene.load_detections_lazy(self._bbox_loader)
 
         if self._detection_count > 0:
-            self._count_label.setText(f"({self._detection_count} 个检测结果可用)")
+            self._count_label.setText(f"({self._detection_count} detections available)")
             self._overlay_cb.setEnabled(True)
         else:
-            self._count_label.setText("（缓存中没有检测框数据）")
+            self._count_label.setText("(no bbox data in cache)")
             # Don't force-disable here — real-time mode re-enables the checkbox
             # even with an empty cache (see set_live_face_enabled).
             if not self._live_face_mode:
@@ -1160,7 +1160,7 @@ class RealtimeOverlayPreview(QWidget):
 
         if self._filter_actions:
             self._filter_menu.addSeparator()
-            show_all = self._filter_menu.addAction("全部显示 classes")
+            show_all = self._filter_menu.addAction("显示全部类别")
             show_all.triggered.connect(lambda: self._set_all_classes(True))
             hide_all = self._filter_menu.addAction("隐藏全部类别")
             hide_all.triggered.connect(lambda: self._set_all_classes(False))
@@ -1212,7 +1212,7 @@ class RealtimeOverlayPreview(QWidget):
         menu.clear()
 
         if self._face_bank is None:
-            act = menu.addAction("Select “实时（实时识别）” to recognise faces")
+            act = menu.addAction("选择“实时（实时识别）”以识别人脸")
             act.setEnabled(False)
             return
 
@@ -1229,7 +1229,7 @@ class RealtimeOverlayPreview(QWidget):
 
         for ident in identities:
             iid = ident["id"]
-            disp = ident.get("name") or f"人物 {iid[:8]}"
+            disp = ident.get("name") or f"Person {iid[:8]}"
             act = QAction(disp, menu)
             act.setCheckable(True)
             act.setChecked(not self._is_identity_hidden(iid))
@@ -1533,7 +1533,7 @@ class RealtimeOverlayPreview(QWidget):
         return image
 
     def get_detection_count(self) -> int:
-        """Number of bbox 个检测结果可用 in cache."""
+        """Number of bbox detections available in cache."""
         return self._detection_count
 
     def get_visible_classes(self) -> set[str]:

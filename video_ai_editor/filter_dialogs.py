@@ -11,7 +11,7 @@ class FilterDialog(QDialog):
     def __init__(self, scene, parent=None):
         super().__init__(parent)
         self.scene = scene
-        self.setWindowTitle("Filter Actions & Objects")
+        self.setWindowTitle("筛选动作与物体")
         self.setModal(False)  # Non-modal so users can keep it open
         self.resize(500, 600)
         
@@ -28,13 +28,13 @@ class FilterDialog(QDialog):
         actions_layout = QVBoxLayout(actions_tab)
         
         # Actions filter controls
-        actions_header = QLabel("Filter Actions")
+        actions_header = QLabel("筛选动作")
         actions_header.setStyleSheet("font-weight: bold; font-size: 14px; color: #cccccc;")
         actions_layout.addWidget(actions_header)
         
         # Search box for actions
         self.action_search = QLineEdit()
-        self.action_search.setPlaceholderText("Search actions...")
+        self.action_search.setPlaceholderText("搜索动作…")
         self.action_search.textChanged.connect(self.filter_action_list)
         actions_layout.addWidget(self.action_search)
         
@@ -46,29 +46,29 @@ class FilterDialog(QDialog):
         
         # Action buttons
         action_buttons = QHBoxLayout()
-        self.select_all_actions = QPushButton("Select All")
+        self.select_all_actions = QPushButton("全选")
         self.select_all_actions.clicked.connect(lambda: self.set_all_actions(True))
-        self.deselect_all_actions = QPushButton("Deselect All")
+        self.deselect_all_actions = QPushButton("取消全选")
         self.deselect_all_actions.clicked.connect(lambda: self.set_all_actions(False))
         
         action_buttons.addWidget(self.select_all_actions)
         action_buttons.addWidget(self.deselect_all_actions)
         actions_layout.addLayout(action_buttons)
         
-        tabs.addTab(actions_tab, "Actions")
+        tabs.addTab(actions_tab, "动作")
         
         # Objects tab
         objects_tab = QWidget()
         objects_layout = QVBoxLayout(objects_tab)
         
         # Objects filter controls
-        objects_header = QLabel("Filter Objects")
+        objects_header = QLabel("筛选物体")
         objects_header.setStyleSheet("font-weight: bold; font-size: 14px; color: #ffa0a0;")
         objects_layout.addWidget(objects_header)
         
         # Search box for objects
         self.object_search = QLineEdit()
-        self.object_search.setPlaceholderText("Search objects...")
+        self.object_search.setPlaceholderText("搜索物体…")
         self.object_search.textChanged.connect(self.filter_object_list)
         objects_layout.addWidget(self.object_search)
         
@@ -80,16 +80,16 @@ class FilterDialog(QDialog):
         
         # Object buttons
         object_buttons = QHBoxLayout()
-        self.select_all_objects = QPushButton("Select All")
+        self.select_all_objects = QPushButton("全选")
         self.select_all_objects.clicked.connect(lambda: self.set_all_objects(True))
-        self.deselect_all_objects = QPushButton("Deselect All")
+        self.deselect_all_objects = QPushButton("取消全选")
         self.deselect_all_objects.clicked.connect(lambda: self.set_all_objects(False))
         
         object_buttons.addWidget(self.select_all_objects)
         object_buttons.addWidget(self.deselect_all_objects)
         objects_layout.addLayout(object_buttons)
         
-        tabs.addTab(objects_tab, "Objects")
+        tabs.addTab(objects_tab, "物体")
 
         # Events tab — composition-rule events. Only added when the cache has
         # some, so a video that was never run through the rules doesn't show an
@@ -99,7 +99,7 @@ class FilterDialog(QDialog):
             events_tab = QWidget()
             events_layout = QVBoxLayout(events_tab)
 
-            events_header = QLabel("Filter Composed Events")
+            events_header = QLabel("筛选组合事件")
             events_header.setStyleSheet(
                 "font-weight: bold; font-size: 14px; color: #e6b45a;")
             events_layout.addWidget(events_header)
@@ -111,7 +111,7 @@ class FilterDialog(QDialog):
             events_layout.addWidget(events_note)
 
             self.event_search = QLineEdit()
-            self.event_search.setPlaceholderText("Search events...")
+            self.event_search.setPlaceholderText("搜索事件…")
             self.event_search.textChanged.connect(self.filter_event_list)
             events_layout.addWidget(self.event_search)
 
@@ -121,15 +121,15 @@ class FilterDialog(QDialog):
             events_layout.addWidget(self.event_list)
 
             event_buttons = QHBoxLayout()
-            select_all_events = QPushButton("Select All")
+            select_all_events = QPushButton("全选")
             select_all_events.clicked.connect(lambda: self.set_all_events(True))
-            deselect_all_events = QPushButton("Deselect All")
+            deselect_all_events = QPushButton("取消全选")
             deselect_all_events.clicked.connect(lambda: self.set_all_events(False))
             event_buttons.addWidget(select_all_events)
             event_buttons.addWidget(deselect_all_events)
             events_layout.addLayout(event_buttons)
 
-            tabs.addTab(events_tab, "Events")
+            tabs.addTab(events_tab, "事件")
 
         layout.addWidget(tabs)
         
@@ -293,7 +293,7 @@ class ConfidenceFilterDialog(QDialog):
     def __init__(self, scene, parent=None):
         super().__init__(parent)
         self.scene = scene
-        self.setWindowTitle("Confidence Filter")
+        self.setWindowTitle("置信度筛选")
         self.setModal(False)
         self.resize(450, 400)
         self.init_ui()
@@ -301,17 +301,17 @@ class ConfidenceFilterDialog(QDialog):
     def init_ui(self):
         layout = QVBoxLayout(self)
 
-        title = QLabel("Filter by Confidence Level")
+        title = QLabel("按置信度筛选")
         title.setStyleSheet("font-weight: bold; font-size: 14px; color: #cccccc;")
         layout.addWidget(title)
 
-        desc = QLabel("Adjust minimum confidence separately for actions and objects.")
+        desc = QLabel("分别调整动作和物体的最低置信度。")
         desc.setStyleSheet("color: #cccccc; font-size: 11px;")
         desc.setWordWrap(True)
         layout.addWidget(desc)
 
         # ── Actions confidence ──
-        action_group = QGroupBox("🎬 Action Confidence")
+        action_group = QGroupBox("🎬 动作置信度")
         action_layout = QVBoxLayout()
 
         self.action_slider = QSlider(Qt.Horizontal)
@@ -328,7 +328,7 @@ class ConfidenceFilterDialog(QDialog):
         layout.addWidget(action_group)
 
         # ── Objects confidence ──
-        object_group = QGroupBox("📦 Object Confidence")
+        object_group = QGroupBox("📦 物体置信度")
         object_layout = QVBoxLayout()
 
         self.object_slider = QSlider(Qt.Horizontal)
@@ -347,13 +347,13 @@ class ConfidenceFilterDialog(QDialog):
         # ── Presets ──
         preset_layout = QHBoxLayout()
 
-        high_btn = QPushButton("High (70%)")
+        high_btn = QPushButton("高（70%）")
         high_btn.clicked.connect(lambda: self.set_both(70))
-        medium_btn = QPushButton("Medium (40%)")
+        medium_btn = QPushButton("中（40%）")
         medium_btn.clicked.connect(lambda: self.set_both(40))
-        low_btn = QPushButton("Low (10%)")
+        low_btn = QPushButton("低（10%）")
         low_btn.clicked.connect(lambda: self.set_both(10))
-        all_btn = QPushButton("All (0%)")
+        all_btn = QPushButton("全部（0%）")
         all_btn.clicked.connect(lambda: self.set_both(0))
 
         preset_layout.addWidget(high_btn)
@@ -433,8 +433,8 @@ class ConfidenceFilterDialog(QDialog):
                 visible_objects += 1
 
         self.stats_label.setText(
-            f"Actions: {visible_actions}/{total_actions} visible (≥{action_min:.0%})\n"
-            f"Objects: {visible_objects}/{total_objects} visible (≥{object_min:.0%})"
+            f"动作: {visible_actions}/{total_actions} visible (≥{action_min:.0%})\n"
+            f"物体: {visible_objects}/{total_objects} visible (≥{object_min:.0%})"
         )
 
     def apply_filters(self):

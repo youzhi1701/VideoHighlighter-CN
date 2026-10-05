@@ -80,23 +80,23 @@ class ObjectTrainingWorker(QObject):
 
     @Slot()
     def run(self) -> None:
-        stage = "starting"
+        stage = "正在启动"
         try:
             from modules.vision.label_store import LabelStore, build_dataset
             from training.train_yolox_run import Cancelled, train
             from training.export_yolox import install
 
-            stage = "reading the labels"
+            stage = "正在读取标签"
             store = LabelStore(self._store_path).load()
             counts = store.counts()
             if not counts:
                 raise ValueError(
-                    "No accepted labels in this store. Mark some examples and "
-                    "accept them before training.")
+                    "当前标签库中没有已接受的标签。请先标记一些示例并"
+                    "接受它们，然后再开始训练。")
 
             import time
             run_started = time.perf_counter()
-            stage = "collecting the frames"
+            stage = "正在收集帧"
             self.stage.emit(0)
             self.progress.emit(0, "收集帧 from your videos...")
             dataset_dir = os.path.join(self._work_dir, "dataset")
@@ -107,16 +107,16 @@ class ObjectTrainingWorker(QObject):
                     f"收集帧... {done} of {total}"),
             )
             if self._should_stop():
-                raise Cancelled("stopped before training")
+                raise Cancelled("训练开始前已停止")
 
             trained = summary["splits"]["train"]["images"]
             checked = summary["splits"].get("val", {}).get("images", 0)
             extract_per_frame = ((time.perf_counter() - run_started)
                                  / max(1, trained + checked))
             if trained == 0:
-                raise ValueError("No frames could be read from your videos.")
+                raise ValueError("无法从视频中读取任何帧。")
 
-            stage = "preparing the model"
+            stage = "正在准备模型"
             self.stage.emit(1)
             from training.train_yolox_run import pretrained_path
             first_time = not os.path.exists(pretrained_path(self._size))
@@ -136,7 +136,7 @@ class ObjectTrainingWorker(QObject):
                       f"{report.train_loss:.4f}, val loss {report.val_loss:.4f}")
                 self.round_done.emit(snap)
 
-            stage = "training"
+            stage = "正在训练"
 
             def on_progress(update):
                 if not learning_started[0]:
@@ -161,7 +161,7 @@ class ObjectTrainingWorker(QObject):
             )
             export_started = time.perf_counter()
 
-            stage = "saving the model"
+            stage = "正在保存模型"
             self.stage.emit(3)
             self.progress.emit(98, "保存 the model...")
             exported = install(result.weights_path, dest_dir=self._dest_dir)
@@ -243,12 +243,12 @@ def _friendly_time(seconds: float) -> str:
     if seconds <= 0:
         return ""
     if seconds < 90:
-        return f"{seconds} seconds"
+        return f"{seconds} 秒"
     minutes = round(seconds / 60)
     if minutes < 60:
-        return f"{minutes} minute{'s' if minutes != 1 else ''}"
+        return f"{minutes} 分钟"
     hours = seconds / 3600
-    return f"{hours:.1f} hours"
+    return f"{hours:.1f} 小时"
 
 
 class ObjectTrainingSection(QWidget):
@@ -710,7 +710,7 @@ class ObjectTrainingSection(QWidget):
         if last and last[2]:
             message += (f"。在未参与训练的帧中，它识别出 {last[1]} / {last[2]} 个目标")
         message += f"。耗时 {_elapsed(took)}。"
-        message += "\nIt is installed and will be used when you run a scan."
+        message += "\n模型已安装，并会在下次扫描时自动使用。"
         self._say(message, THEME.success)
         self._last_export = exported
         self.share_box.setVisible(bool(getattr(exported, "onnx_path", "")))

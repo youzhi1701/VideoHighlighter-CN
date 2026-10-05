@@ -64,18 +64,18 @@ class RoundSnapshot:
     history: list = field(default_factory=list)   # [(epoch, found, expected)]
 
     def sentence(self) -> str:
-        where = ("on frames it has not learned from" if self.held_out
-                 else "on frames it learned from (no held-out frames yet)")
+        where = ("在未参与训练的帧上" if self.held_out
+                 else "在已参与训练的帧上（目前没有留出的验证帧）")
         if self.expected == 0:
             return f"Round {self.epoch} of {self.total_epochs}."
-        text = (f"Round {self.epoch} of {self.total_epochs}: found "
-                f"{self.found} of {self.expected} {where}")
+        text = (f"第 {self.epoch}/{self.total_epochs} 轮："
+                f"{where}识别到 {self.found}/{self.expected} 个目标")
         if self.false_alarms:
-            text += f", {self.false_alarms} wrong guess{'es' if self.false_alarms != 1 else ''}"
+            text += f"，误报 {self.false_alarms} 个"
         earlier = [h for h in self.history if h[0] < self.epoch]
         if earlier:
             first = earlier[0]
-            text += f" (round {first[0]}: {first[1]} of {first[2]})"
+            text += f"（第 {first[0]} 轮：{first[1]}/{first[2]}）"
         return text + "."
 
 
@@ -223,7 +223,7 @@ def render(frames: Sequence, per_frame: Sequence, caption: str = "",
                         (p1[0] + 2, max(12, p1[1] - 3)), cv2.FONT_HERSHEY_SIMPLEX,
                         0.38, colour, 1, cv2.LINE_AA)
         if not frame.truth and not dets:
-            cv2.putText(tile, "nothing here - correctly quiet", (6, ch - 8),
+            cv2.putText(tile, "no target - correct", (6, ch - 8),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.38, HIT_COLOUR, 1, cv2.LINE_AA)
 
         r, c = divmod(idx, cols)
@@ -258,5 +258,5 @@ def snapshot(report, frames: Sequence, history: list, draw: bool) -> RoundSnapsh
         # Short on purpose: the full sentence sits under the picture, where it can wrap.
         snap.mosaic_rgb = render(
             frames, per_frame,
-            caption=f"Round {snap.epoch} of {snap.total_epochs}: found {found} of {expected}")
+            caption=f"第 {snap.epoch}/{snap.total_epochs} 轮：识别到 {found}/{expected} 个目标"
     return snap

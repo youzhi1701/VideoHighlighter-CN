@@ -74,10 +74,10 @@ class Pace:
 
 
 for _p in (
-    Pace("calm", "Calm scenic or emotional", 3.0, 6.0),
-    Pace("vlog", "Vlog or recap", 2.0, 4.0),
-    Pace("energetic", "Energetic montage", 1.0, 2.5),
-    Pace("intense", "Intense, comedy or music-heavy", 0.5, 1.5),
+    Pace("calm", "舒缓风景 / 情绪", 3.0, 6.0),
+    Pace("vlog", "Vlog / 回顾", 2.0, 4.0),
+    Pace("energetic", "活力蒙太奇", 1.0, 2.5),
+    Pace("intense", "高强度 / 喜剧 / 强音乐", 0.5, 1.5),
 ):
     PACES[_p.key] = _p
 
@@ -127,9 +127,9 @@ STRUCTURE: tuple[Section, ...] = (
 
 # The three lengths worth testing, and what each is for.
 LENGTHS: tuple[tuple[int, str], ...] = (
-    (15, "One idea, one striking moment"),
-    (24, "General-purpose storytelling"),
-    (50, "Only when the story needs the setup"),
+    (15, "一个核心想法或一个强烈瞬间"),
+    (24, "通用叙事长度"),
+    (50, "仅适合需要完整铺垫的故事"),
 )
 
 # Below this a shot is a flash rather than an image, whatever the pace says.
@@ -471,7 +471,7 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
             pool.append(_Source(path=path, duration=length,
                                 score=float(scores.get(path, 0.0)), order=i))
     if not pool:
-        raise ValueError("no usable clips to build a reel from")
+        raise ValueError("没有可用于生成成片的有效片段")
 
     # Framing, so the sections can prefer the kind of shot they read best in
     # and the body can alternate. Optional in both directions: a caller that
@@ -553,16 +553,16 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
 
     unit = _musical_unit(analysis, band.typical) if (analysis and quantise) else 0.0
     if unit:
-        log_fn(f"🎼 Snapping shots to {unit:.2f}s "
-               f"({'beat' if unit < 2.0 else 'bar'})")
+        log_fn(f"🎼 镜头长度将对齐到 {unit:.2f} 秒"
+               f"（{'节拍' if unit < 2.0 else '小节'}）")
 
     # Plan enough footage that the reel runs for as long as was asked *after*
     # the transitions have taken their share of it.
     footage = _footage_for(duration, band, structure, unit,
                            transition, transition_duration)
     if footage > duration + 0.05:
-        log_fn(f"⏱️ Planning {footage:.1f}s of footage so the reel runs "
-               f"{duration:.0f}s once the transitions overlap")
+        log_fn(f"⏱️ 正在规划 {footage:.1f} 秒素材，使转场重叠后成片时长约为 "
+               f"{duration:.0f} 秒")
 
     shots: list[Shot] = []
     # How many shots the reel has already taken from each spot. The first key
@@ -600,7 +600,7 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
             used_looks.append(picked.look)
 
     if not shots:
-        raise ValueError("could not place any shots — clips are too short")
+        raise ValueError("无法安排任何镜头——可用片段太短")
 
     cuts: list[Cut] = []
     for i, shot in enumerate(shots):
@@ -615,17 +615,16 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
 
     reel = Edl(title=title, cuts=cuts, music=music,
                width=int(width), height=int(height))
-    log_fn(f"🎬 {title}: {len(cuts)} shots, {reel.duration:.0f}s, "
-           f"{cuts_per_minute(reel):.0f} cuts/min ({band.label})")
+    log_fn(f"🎬 {title}：{len(cuts)} 个镜头，{reel.duration:.0f} 秒，"
+           f"每分钟 {cuts_per_minute(reel):.0f} 次剪切（{band.label}）")
 
     # Worth saying out loud: an in-point the user did not choose is the kind of
     # thing that looks like a bug until you know why it happened.
     moved = [c for c in cuts if c.start > 0.25]
     if moved:
         latest = max(c.start for c in moved)
-        log_fn(f"✂️ {len(moved)} of {len(cuts)} shots start later than frame "
-               f"zero (up to {latest:.1f}s in) — the camera was still being "
-               f"placed at the top of those clips")
+        log_fn(f"✂️ {len(moved)}/{len(cuts)} 个镜头没有从片段开头开始"
+               f"（最晚从 {latest:.1f} 秒处开始），因为这些片段开头仍在摆放相机")
 
     # A repeated spot is the thing the viewer notices and the log never
     # mentioned, so say it either way: that the reel is all different views,
@@ -634,26 +633,25 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
         visited = [s.place for s in shots if s.place >= 0]
         repeated = len(visited) - len(set(visited))
         if repeated:
-            log_fn(f"📍 {len(set(visited))} different spot(s) across "
-                   f"{len(visited)} shots — {repeated} had to be shown twice, "
-                   f"which is what a shoot with fewer places than shots costs")
+            log_fn(f"📍 {len(visited)} 个镜头覆盖 {len(set(visited))} 个不同位置——"
+                   f"其中 {repeated} 个位置需要重复使用，因为可用拍摄位置少于镜头数量")
         else:
-            log_fn(f"📍 Every shot is from a different spot")
+            log_fn("📍 每个镜头都来自不同的拍摄位置")
     if reel.duration > duration * 1.12:
         # Not a rounding miss: the structure has a floor of one hook, two
         # context shots, three of escalation and a held payoff, and at a slow
         # pace those seven shots are simply longer than the target. Saying so
         # is more use than silently returning something half again as long.
         faster = _faster_than(pace)
-        log_fn(f"⚠️ {duration:.0f}s is shorter than a {band.label.lower()} "
-               f"story fits into ({reel.duration:.0f}s is the least it can be)"
-               + (f" — try the {PACES[faster].label.lower()} pace" if faster else ""))
+        log_fn(f"⚠️ {duration:.0f} 秒不足以容纳“{band.label}”节奏的完整结构"
+               f"（最短约需 {reel.duration:.0f} 秒）"
+               + (f"——可尝试“{PACES[faster].label}”节奏" if faster else ""))
     elif reel.duration < duration * 0.9:
         # The other direction, and a different cause: the structure fitted, the
         # footage did not. Worth naming because the fix is more clips rather
         # than a different setting.
-        log_fn(f"⚠️ Came up short at {reel.duration:.0f}s of the {duration:.0f}s "
-               f"asked for — there is not enough usable footage to fill it")
+        log_fn(f"⚠️ 目标时长为 {duration:.0f} 秒，但只能生成约 {reel.duration:.0f} 秒——"
+               f"可用素材不足，无法填满目标时长")
     return reel
 
 
@@ -719,26 +717,27 @@ def describe_plan(edl: Edl) -> str:
     lines is exactly the output nobody reads.
     """
     if not edl.cuts:
-        return "empty reel"
+        return "空成片"
     order: list[str] = []
     grouped: dict[str, list[Cut]] = {}
     for cut in edl.cuts:
-        name = cut.label or "Shots"
+        name = cut.label or "镜头"
         if name not in grouped:
             grouped[name] = []
             order.append(name)
         grouped[name].append(cut)
 
-    lines = [f"{edl.duration:.0f}s, {len(edl.cuts)} shots, "
-             f"{cuts_per_minute(edl):.0f} cuts/min"]
+    lines = [f"{edl.duration:.0f} 秒，{len(edl.cuts)} 个镜头，"
+             f"每分钟 {cuts_per_minute(edl):.0f} 次剪切"]
     at = 0.0
     for name in order:
         group = grouped[name]
         span = sum(c.duration for c in group)
         shortest = min(c.duration for c in group)
         longest = max(c.duration for c in group)
-        length = (f"{shortest:.1f}s" if abs(longest - shortest) < 0.05
-                  else f"{shortest:.1f}-{longest:.1f}s")
-        lines.append(f"  {at:5.1f}s  {name:11} {len(group):2d} shot(s) @ {length}")
+        length = (f"{shortest:.1f} 秒" if abs(longest - shortest) < 0.05
+                  else f"{shortest:.1f}-{longest:.1f} 秒")
+        section_zh = {"Hook": "开场", "Context": "背景", "Escalation": "推进", "Payoff": "结尾"}.get(name, name)
+        lines.append(f"  {at:5.1f} 秒  {section_zh:11} {len(group):2d} 个镜头 · {length}")
         at += span
     return "\n".join(lines)

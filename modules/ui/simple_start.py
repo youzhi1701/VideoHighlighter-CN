@@ -142,10 +142,10 @@ class DropZone(QFrame):
             self._set_chrome(loaded=False)
             return
         if len(names) == 1:
-            self._title.setText(f"Loaded: {names[0]}")
-            self._hint.setText("click to add another  ·  or drop more here")
+            self._title.setText(f"已加载：{names[0]}")
+            self._hint.setText("点击继续添加，或将更多视频拖到这里")
         else:
-            self._title.setText(f"Loaded: {len(names)} videos")
+            self._title.setText(f"已加载：{len(names)} 个视频")
             extra = f"  ·  +{len(names) - 2} more" if len(names) > 2 else ""
             self._hint.setText(", ".join(names[:2]) + extra)
         self._set_chrome(loaded=True)

@@ -1556,13 +1556,10 @@ class VideoHighlighterGUI(QWidget):
         self.spin_loudness_burst = QSpinBox(); self.spin_loudness_burst.setRange(0,100)
         self.spin_loudness_burst.setValue(scoring_cfg.get("loudness_burst_points", 0))
         self.spin_loudness_burst.setToolTip(
-            "Points where the audio rises above its OWN local level, not a fixed "
-            "threshold.\n\nUse this instead of audio peak points when the interesting "
-            "moments are loud for this part of this video rather than loud in "
-            "absolute terms \u2014 it self-calibrates, so the same setting works on "
-            "quietly and loudly mastered files.\n\nFinds brief moments that stand out "
-            "from their surroundings; a passage that is loud throughout will not "
-            "stand out from itself and is not reported.")
+            "当音频相对其自身局部平均响度明显升高时加分，而不是使用固定阈值。"
+            "\n\n如果精彩时刻只是相对于当前片段更响，而非绝对音量更大，建议使用此项；"
+            "它会自动适配不同响度的视频。"
+            "\n\n该功能用于查找短暂突出的声音；如果整段始终很响，则不会被视为局部突发。")
 
         self.spin_keyword_points = QSpinBox(); self.spin_keyword_points.setRange(0,100); self.spin_keyword_points.setValue(scoring_cfg.get("keyword_points", 2))
         self.spin_keyword_points.setToolTip(

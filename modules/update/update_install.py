@@ -96,14 +96,14 @@ def install_update(
         raw = get(manifest_url)
         signature = get(manifest_url + ".sig").decode("ascii").strip()
     except Exception as exc:
-        result.message = f"Could not reach the update server ({exc})."
+        result.message = f"无法连接更新服务器（{exc})."
         return result
 
     manifest = update_manifest.verify_manifest(raw, signature)
     if manifest is None:
         # Deliberately blunt: this is either corruption or an attack, and in
         # both cases the answer is to stop and get the file from the vendor.
-        result.message = ("This update could not be verified as genuine and "
+        result.message = ("无法验证此更新的真实性，"
                           "was not installed. Download it from your account "
                           "page instead.")
         return result
@@ -118,7 +118,7 @@ def install_update(
     result.version = str(manifest.get("version", ""))
     base_url = str(manifest.get("base_url") or "")
     if not base_url:
-        result.message = "This release does not publish individual files."
+        result.message = "此版本未提供独立文件。"
         return result
 
     # 2. Diff ---------------------------------------------------------------
@@ -126,12 +126,12 @@ def install_update(
     plan = update_manifest.plan_update(manifest, root)
     if plan.is_empty:
         result.ok = True
-        result.message = "Already up to date."
+        result.message = "已经是最新版本。"
         return result
 
     if should_cancel and should_cancel():
         result.cancelled = True
-        result.message = "Cancelled."
+        result.message = "已取消。"
         return result
 
     # 3. Download -----------------------------------------------------------
@@ -149,12 +149,12 @@ def install_update(
 
     if downloaded.cancelled:
         result.cancelled = True
-        result.message = ("Cancelled. What was downloaded is kept, so trying "
+        result.message = ("已取消。 What was downloaded is kept, so trying "
                           "again resumes.")
         return result
     if not downloaded.ok:
         first = downloaded.failed[0]
-        result.message = (f"{len(downloaded.failed)} file(s) failed to "
+        result.message = (f"{len(downloaded.failed)} 个文件失败："
                           f"download ({first[0]}: {first[1]}). Nothing was "
                           "changed; try again.")
         return result
@@ -164,14 +164,14 @@ def install_update(
     applied = update_apply.apply_update(
         root, staging, downloaded.staged, plan.delete, manifest_bytes=raw)
     if not applied.ok:
-        result.message = (f"The update could not be installed ({applied.error}). "
+        result.message = (f"无法安装更新（{applied.error}). "
                           "Your existing version was restored.")
         return result
 
     _cleanup(staging)
     result.ok = True
     result.restart_required = True
-    result.message = f"Version {result.version} installed. Restart to use it."
+    result.message = f"版本 {result.version} 已安装。重启后生效。"
     return result
 
 

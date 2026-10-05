@@ -91,7 +91,7 @@ class EditClipItem(QGraphicsRectItem):
         
         # Build label text with or without clip number
         if idx >= 0:
-            label_text = f"片段 {idx + 1}\n{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
+            label_text = f"Clip {idx + 1}\n{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
         else:
             label_text = f"{_fmt_time(self.start_time)} - {_fmt_time(self.end_time)}\n({_fmt_duration(duration)})"
         
@@ -378,9 +378,9 @@ class EditClipItem(QGraphicsRectItem):
         clip_num = idx + 1 if idx >= 0 else "?"
         
         self.setToolTip(
-            f"片段 {clip_num}\n"
+            f"Clip {clip_num}\n"
             f"{self.start_time:.1f}s - {self.end_time:.1f}s\n"
-            f"时长：{duration:.1f}s\n"
+            f"Duration: {duration:.1f}s\n"
             f"拖动可重新排序 · 双击播放 · 右键打开菜单"
         )
 
@@ -446,12 +446,12 @@ class EditClipItem(QGraphicsRectItem):
         """)
 
         header = menu.addAction(
-            f"片段 {current_index}   {_fmt_time(self.start_time)} → {_fmt_time(self.end_time)}  ({_fmt_duration(duration)})"
+            f"Clip {current_index}   {_fmt_time(self.start_time)} → {_fmt_time(self.end_time)}  ({_fmt_duration(duration)})"
         )
         header.setEnabled(False)
         menu.addSeparator()
 
-        cut_action = menu.addAction(f"✂️   在此切开（{_fmt_time(click_time)})")
+        cut_action = menu.addAction(f"✂️   在此切开（{_fmt_time(click_time)}）")
         too_close = (
             click_time - self.start_time < 0.2
             or self.end_time - click_time < 0.2
@@ -789,12 +789,12 @@ class EditTimelineScene(QGraphicsScene):
                 self.clips = segments
                 self.build_timeline()
                 QMessageBox.information(None, "Loaded",
-                                       f"已加载 {len(segments)} 个缓存片段。")
+                                       f"Loaded {len(segments)} clips from cache.")
 
         dialog.accept()
 
     def save_clips_to_cache(self, parameters=None):
-        """Save current 个片段到缓存 for future use"""
+        """Save current clips to cache for future use"""
         if not self.cache or not hasattr(self.cache, 'save_highlight_segments'):
             print("⚠️ 缓存不可用于保存")
             return False
@@ -829,12 +829,12 @@ class EditTimelineScene(QGraphicsScene):
             )
 
             if success:
-                print(f"✅ 已保存 {len(self.clips)} 个片段到缓存")
+                print(f"✅ Saved {len(self.clips)} clips to cache")
                 self._saved_clips_snapshot = list(self.clips)
                 return True
             return False
         except Exception as e:
-            print(f"❌ Failed to save 个片段到缓存: {e}")
+            print(f"❌ Failed to save clips to cache: {e}")
             return False
 
     def has_unsaved_edits(self):
@@ -933,7 +933,7 @@ class EditTimelineScene(QGraphicsScene):
                             loaded.append((start, end))
                 if loaded:
                     self.clips = loaded
-                    print(f"✅ 已加载 {len(self.clips)} 个本次运行生成的最终片段")
+                    print(f"✅ Loaded {len(self.clips)} segments from this run's final_segments")
                     return
 
             # 2. Fallback — most recent highlight version from cache history.
@@ -943,7 +943,7 @@ class EditTimelineScene(QGraphicsScene):
                     segments = history[0].get('segments', [])
                     if segments:
                         self.clips = [tuple(s) for s in segments]
-                        print(f"✅ 已加载 {len(self.clips)} 个历史缓存高光片段")
+                        print(f"✅ Loaded {len(self.clips)} highlight segments from cache history")
                         return
 
             # 3. Nothing to load — start empty. We intentionally do NOT fabricate

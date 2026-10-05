@@ -55,7 +55,7 @@ export function TranscriptTab({ cfg, set }: Props) {
             <Input
               value={cfg.search_keywords}
               onChange={(e) => set("search_keywords", e.target.value)}
-              placeholder="goal, score, win"
+              placeholder="进球、得分、获胜"
               className="h-8 w-full"
               disabled={!on}
             />

@@ -146,7 +146,7 @@ class DropZone(QFrame):
             self._hint.setText("点击继续添加，或将更多视频拖到这里")
         else:
             self._title.setText(f"已加载：{len(names)} 个视频")
-            extra = f"  ·  +{len(names) - 2} more" if len(names) > 2 else ""
+            extra = f"  ·  另有 {len(names) - 2} 个" if len(names) > 2 else ""
             self._hint.setText(", ".join(names[:2]) + extra)
         self._set_chrome(loaded=True)
 
@@ -200,11 +200,11 @@ class SimpleStartPage(QWidget):
         root.addWidget(headline)
 
         blurb = QLabel(
-            "Footage stays on your disk. Analyze finds strong moments with "
-            "built-in defaults (motion peaks and loudness), writes a highlight "
-            "reel plus separate clips, and shows why each moment scored — "
-            "timeline, report, and chat. Open Detailed settings only when you "
-            "need full control or to teach it what to look for.")
+            "素材始终保留在你的本地磁盘。分析功能会使用内置默认规则"
+            "（运动峰值和响度）寻找精彩片段，并生成高光成片"
+            "和独立片段，同时展示每个片段入选的原因——"
+            "包括时间线、报告和聊天。只有需要完整控制或训练模型时"
+            "才需要打开“详细设置”。")
         blurb.setWordWrap(True)
         blurb.setStyleSheet(f"color: {p.text_dim}; font-size: 11pt;")
         root.addWidget(blurb)
@@ -221,9 +221,9 @@ class SimpleStartPage(QWidget):
         length_lab = QLabel("高光时长")
         length_lab.setStyleSheet(f"color: {p.text_dim};")
         self.length = QComboBox()
-        self.length.addItem("Short  — about 1–2 minutes", "short")
-        self.length.addItem("Medium  — about 4 minutes", "medium")
-        self.length.addItem("Longer  — about 7 minutes", "long")
+        self.length.addItem("短片 — 约 1–2 分钟", "short")
+        self.length.addItem("中等 — 约 4 分钟", "medium")
+        self.length.addItem("较长 — 约 7 分钟", "long")
         self.length.setCurrentIndex(1)
         self.length.setMinimumWidth(200)
         length_row.addWidget(length_lab)
@@ -279,7 +279,7 @@ class SimpleStartPage(QWidget):
         root.addLayout(result_row)
 
         self.chat_section = CollapsibleSection(
-            "Ask about this video", self,
+            "询问这个视频", self,
             expanded=False, settings_key="ui/simple_chat")
         self._chat_layout = QVBoxLayout()
         self._chat_layout.setSpacing(4)
@@ -294,7 +294,7 @@ class SimpleStartPage(QWidget):
         self._chat_host.setMinimumHeight(560)
         self._chat_layout.addWidget(self._chat_host)
         self.chat_section.setContentLayout(self._chat_layout)
-        self.chat_section.set_hint("why a moment was picked")
+        self.chat_section.set_hint("为什么这个片段会被选中")
         root.addWidget(self.chat_section)
 
         self.log = QTextEdit()
@@ -311,8 +311,8 @@ class SimpleStartPage(QWidget):
         detailed.setStyleSheet(f"QPushButton {{ color: {p.text_dim}; text-align: left; }}"
                                f"QPushButton:hover {{ color: {p.accent}; }}")
         detailed.setToolTip(
-            "Scoring, objects, transcript, training, and every other control. "
-            "Optional — you are not sent here automatically.")
+            "评分、对象、转录、训练及其他全部控制项。"
+            "这是可选功能，不会自动跳转到这里。")
         detailed.clicked.connect(lambda: gui.set_simple_start(False))
         root.addWidget(detailed)
 
@@ -408,7 +408,7 @@ class SimpleStartPage(QWidget):
         gui = self._gui
         self.analyze_btn.setEnabled(gui.run_btn.isEnabled())
         text = gui.run_btn.text()
-        if text == "Run Highlighter":
+        if text == "运行高光提取":
             self.analyze_btn.setText("开始分析")
         else:
             self.analyze_btn.setText(text)
@@ -419,11 +419,11 @@ class SimpleStartPage(QWidget):
         self.length.setEnabled(not busy)
         self.file_list.setEnabled(gui.file_list.isEnabled())
         task = gui.task_label.text() or ""
-        done = "Complete" in task
+        done = "完成" in task
         self.show_results(done)
         self.chat_section.set_hint(
-            "ask why these moments were picked" if done
-            else "why a moment was picked")
+            "询问为什么选中了这些片段" if done
+            else "为什么这个片段会被选中")
         self.progress.setVisible(gui.process_progress_bar.isVisible()
                                  or gui.progress_group.isVisible())
         self.progress.setRange(gui.process_progress_bar.minimum(),

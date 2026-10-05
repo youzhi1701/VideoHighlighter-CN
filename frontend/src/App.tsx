@@ -1000,7 +1000,7 @@ export default function App() {
                 title="已成功分析的视频。累计总数会跨会话保留。"
               >
                 {analyzed} analyzed
-                {sessionCount > 0 && ` · ${sessionCount} this run`}
+                {sessionCount > 0 && ` · 本次运行 ${sessionCount} 个`}
               </span>
             )}
           </div>

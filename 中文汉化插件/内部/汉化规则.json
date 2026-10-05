@@ -9213,6 +9213,204 @@
       "before": "              />",
       "after": "            </label>",
       "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/DownloadTab.tsx#audit-20261006-1",
+      "file": "frontend/src/components/tabs/DownloadTab.tsx",
+      "source": "            Download full videos",
+      "target": "            下载完整视频",
+      "before": "            />",
+      "after": "          </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/DownloadTab.tsx#audit-20261006-2",
+      "file": "frontend/src/components/tabs/DownloadTab.tsx",
+      "source": "          Add downloaded videos to the input list",
+      "target": "          将下载的视频添加到输入列表",
+      "before": "          />",
+      "after": "        </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/DownloadTab.tsx#audit-20261006-3",
+      "file": "frontend/src/components/tabs/DownloadTab.tsx",
+      "source": "            <LayoutGrid className=\"size-4\" /> Browse &amp; Select…",
+      "target": "            <LayoutGrid className=\"size-4\" /> 浏览并选择…",
+      "before": "          >",
+      "after": "          </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/LlmChatTab.tsx#audit-20261006-4",
+      "file": "frontend/src/components/tabs/LlmChatTab.tsx",
+      "source": "              Ask about the selected video. Answers use its cached analysis.",
+      "target": "              询问所选视频。回答将使用该视频的缓存分析数据。",
+      "before": "            <p className=\"py-8 text-center text-sm text-muted-foreground\">",
+      "after": "            </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-5",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "                placeholder=\"the project folder the Auto tab wrote to\"",
+      "target": "                placeholder=\"“自动”标签页写入的项目文件夹\"",
+      "before": "                onChange={(e) => setRoot(e.target.value)}",
+      "after": "              />",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-6",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "                placeholder=\"optional — shots snap to its beat\"",
+      "target": "                placeholder=\"可选——镜头会自动对齐节拍\"",
+      "before": "                readOnly",
+      "after": "              />",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-7",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "            <Shapes className=\"size-4\" /> How it joins",
+      "target": "            <Shapes className=\"size-4\" /> 拼接方式",
+      "before": "          <CardTitle className=\"flex items-center gap-2 text-sm font-medium\">",
+      "after": "          </CardTitle>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-8",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "                Shortened automatically if a shot is too brief to hold it.",
+      "target": "                如果镜头太短无法容纳，会自动缩短。",
+      "before": "              <p className=\"text-xs text-muted-foreground\">",
+      "after": "              </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-9",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "                <Scissors className=\"size-3.5\" /> Skip the camera being placed",
+      "target": "                <Scissors className=\"size-3.5\" /> 跳过摆放相机的画面",
+      "before": "              <Label className=\"flex items-center gap-1.5 text-xs\">",
+      "after": "              </Label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-10",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "                <MapPin className=\"size-3.5\" /> Don't show the same view twice",
+      "target": "                <MapPin className=\"size-3.5\" /> 不要连续显示相同视角",
+      "before": "              <Label className=\"flex items-center gap-1.5 text-xs\">",
+      "after": "              </Label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-11",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "              <Type className=\"size-4\" /> Words on screen",
+      "target": "              <Type className=\"size-4\" /> 屏幕文字",
+      "before": "            <CardTitle className=\"flex items-center gap-2 text-sm font-medium\">",
+      "after": "            </CardTitle>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-12",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "                Choose a footage folder to see the shot plan.",
+      "target": "                请选择素材文件夹以查看镜头计划。",
+      "before": "              <p className=\"text-xs text-muted-foreground\">",
+      "after": "              </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-13",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "                  <Play className=\"size-3.5\" /> Make the reel",
+      "target": "                  <Play className=\"size-3.5\" /> 生成短片",
+      "before": "                >",
+      "after": "                </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/ReelTab.tsx#audit-20261006-14",
+      "file": "frontend/src/components/tabs/ReelTab.tsx",
+      "source": "            starts later than its clip does",
+      "target": "            开始时间晚于对应片段",
+      "before": "            <span className=\"inline-block h-1 w-3 rounded-sm bg-foreground/50\" />",
+      "after": "          </span>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TimelineTab.tsx#audit-20261006-15",
+      "file": "frontend/src/components/tabs/TimelineTab.tsx",
+      "source": "              <Wand2 className=\"size-3.5\" /> Quantise to the bar",
+      "target": "              <Wand2 className=\"size-3.5\" /> 对齐到小节",
+      "before": "            <Button variant=\"outline\" size=\"sm\" onClick={quantise}>",
+      "after": "            </Button>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TimelineTab.tsx#audit-20261006-16",
+      "file": "frontend/src/components/tabs/TimelineTab.tsx",
+      "source": "              <Music className=\"size-4\" /> Music &amp; output",
+      "target": "              <Music className=\"size-4\" /> 音乐与输出",
+      "before": "            <CardTitle className=\"flex items-center gap-2 text-sm font-medium\">",
+      "after": "            </CardTitle>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TimelineTab.tsx#audit-20261006-17",
+      "file": "frontend/src/components/tabs/TimelineTab.tsx",
+      "source": "                Lower is better and bigger. 18 is close to source, 23 is small.",
+      "target": "                数值越低画质越好、文件越大。18 接近源画质，23 文件较小。",
+      "before": "              <p className=\"text-xs text-muted-foreground\">",
+      "after": "              </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TranscriptTab.tsx#audit-20261006-18",
+      "file": "frontend/src/components/tabs/TranscriptTab.tsx",
+      "source": "            Enable transcript processing (Whisper)",
+      "target": "            启用语音转写处理（Whisper）",
+      "before": "            />",
+      "after": "          </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TranscriptTab.tsx#audit-20261006-19",
+      "file": "frontend/src/components/tabs/TranscriptTab.tsx",
+      "source": "              Search keywords",
+      "target": "              搜索关键词",
+      "before": "            <Label className=\"min-w-0 truncate text-sm font-normal text-muted-foreground\">",
+      "after": "            </Label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TranscriptTab.tsx#audit-20261006-20",
+      "file": "frontend/src/components/tabs/TranscriptTab.tsx",
+      "source": "              These scores only count while transcript is enabled.",
+      "target": "              仅在启用语音转写时才计入这些分数。",
+      "before": "            <p className=\"text-xs text-muted-foreground\">",
+      "after": "            </p>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TranscriptTab.tsx#audit-20261006-21",
+      "file": "frontend/src/components/tabs/TranscriptTab.tsx",
+      "source": "            Generate subtitles (.srt)",
+      "target": "            生成字幕（.srt）",
+      "before": "            />",
+      "after": "          </label>",
+      "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "frontend/src/components/tabs/TranscriptTab.tsx#audit-20261006-22",
+      "file": "frontend/src/components/tabs/TranscriptTab.tsx",
+      "source": "              Enable transcript first to generate subtitles.",
+      "target": "              请先启用语音转写，然后再生成字幕。",
+      "before": "            <p className=\"text-xs text-muted-foreground\">",
+      "after": "            </p>",
+      "hunk": "full-ui-audit-2026-10-06"
     }
   ]
 }

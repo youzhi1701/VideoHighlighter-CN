@@ -537,7 +537,7 @@ class SignalTimelineWindow(QMainWindow):
         debug_log(f"  - action_types: {self.action_types}")
         debug_log(f"  - object_classes: {self.object_classes}")
         
-        self.setWindowTitle(f"Signal Timeline - {os.path.basename(video_path)}")
+        self.setWindowTitle(f"信号时间线 - {os.path.basename(video_path)}")
         screen = QApplication.primaryScreen().availableGeometry()
         w = min(1600, screen.width() - 20)
         h = min(1000, screen.height() - 20)
@@ -665,7 +665,7 @@ class SignalTimelineWindow(QMainWindow):
         """Visual feedback when overlay is toggled."""
         is_original = (label == "🎥 Original")
         state = "Original" if is_original else f"Overlay: {label}"
-        self.statusBar().showMessage(f"Video source: {state}", 3000)
+        self.statusBar().showMessage(f"视频来源：{state}", 3000)
 
         # Hide detection panel when viewing annotated video (avoids double info)
         if hasattr(self, 'detection_panel'):
@@ -696,13 +696,13 @@ class SignalTimelineWindow(QMainWindow):
         # ──────────────────────────────────────────────────────────
         mode_row = QHBoxLayout()
 
-        mode_label = QLabel("Overlay:")
+        mode_label = QLabel("叠加层：")
         mode_label.setStyleSheet("color: #cccccc; font-weight: bold;")
         mode_row.addWidget(mode_label)
 
         self.overlay_mode_combo = QComboBox()
         self.overlay_mode_combo.addItems([
-            "Off",
+            "关闭",
             "Live (cache)",
             "Live (real-time)",
             "Precomp (swap video)",
@@ -775,7 +775,7 @@ class SignalTimelineWindow(QMainWindow):
         video_and_info.addWidget(self.preview_stack)
 
         # -- Right: Detection info panel --
-        self.detection_panel = QLabel("No detections")
+        self.detection_panel = QLabel("无检测结果")
         self.detection_panel.setWordWrap(True)
         self.detection_panel.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self.detection_panel.setMinimumWidth(180)
@@ -818,7 +818,7 @@ class SignalTimelineWindow(QMainWindow):
         controls_layout.setContentsMargins(0, 4, 0, 0)
 
         # Play button
-        self.play_btn = QPushButton("▶ Play")
+        self.play_btn = QPushButton("▶ 播放")
         self.play_btn.clicked.connect(self.toggle_video_playback)
         self.play_btn.setStyleSheet("""
             QPushButton {
@@ -856,13 +856,13 @@ class SignalTimelineWindow(QMainWindow):
         controls_layout.addWidget(self.preview_time_label)
 
         # Show detections checkbox
-        self.show_detections_checkbox = QCheckBox("Show Detections")
+        self.show_detections_checkbox = QCheckBox("显示检测结果")
         self.show_detections_checkbox.setChecked(True)
         self.show_detections_checkbox.stateChanged.connect(self._toggle_detection_panel)
         controls_layout.addWidget(self.show_detections_checkbox)
 
         # VR half-frame checkbox
-        self.vr_mode_checkbox = QCheckBox("VR Half-Frame")
+        self.vr_mode_checkbox = QCheckBox("VR 半画面")
         self.vr_mode_checkbox.setToolTip(
             "Show only the left half of the frame (side-by-side 3D / 180° VR videos)"
         )
@@ -876,7 +876,7 @@ class SignalTimelineWindow(QMainWindow):
         self.mute_btn = QPushButton("🔊")
         self.mute_btn.setFixedWidth(36)
         self.mute_btn.setCheckable(True)
-        self.mute_btn.setToolTip("Mute / Unmute")
+        self.mute_btn.setToolTip("静音 / 取消静音")
         self.mute_btn.setStyleSheet("""
             QPushButton { background: transparent; border: none; font-size: 16px; }
             QPushButton:checked { color: #ff4444; }
@@ -977,7 +977,7 @@ class SignalTimelineWindow(QMainWindow):
                     "⚠️ Live overlay not available — module not loaded", 3000
                 )
                 self.overlay_mode_combo.blockSignals(True)
-                self.overlay_mode_combo.setCurrentText("Off")
+                self.overlay_mode_combo.setCurrentText("关闭")
                 self.overlay_mode_combo.blockSignals(False)
                 return
 
@@ -1073,7 +1073,7 @@ class SignalTimelineWindow(QMainWindow):
             if was_playing:
                 self._active_player.play()
 
-            self.statusBar().showMessage("Video overlay off", 3000)
+            self.statusBar().showMessage("视频叠加层已关闭", 3000)
 
     def _on_shared_player_position(self, position):
         """Position updates from shared player (Off + Precomp modes)."""
@@ -1276,10 +1276,10 @@ class SignalTimelineWindow(QMainWindow):
     def toggle_video_playback(self):
         if self._active_player.playbackState() == QMediaPlayer.PlayingState:
             self._active_player.pause()
-            self.play_btn.setText("▶ Play")
+            self.play_btn.setText("▶ 播放")
         else:
             self._active_player.play()
-            self.play_btn.setText("⏸ Pause")
+            self.play_btn.setText("⏸ 暂停")
 
     def _on_slider_pressed(self):
         """Hold off position updates while the handle is held."""
@@ -1405,9 +1405,9 @@ class SignalTimelineWindow(QMainWindow):
     def update_play_button(self, state):
         """Update play button based on playback state"""
         if state == QMediaPlayer.PlayingState:
-            self.play_btn.setText("⏸ Pause")
+            self.play_btn.setText("⏸ 暂停")
         else:
-            self.play_btn.setText("▶ Play")
+            self.play_btn.setText("▶ 播放")
 
     def _apply_pending_waveform(self):
         if hasattr(self, '_pending_waveform_data'):
@@ -1455,7 +1455,7 @@ class SignalTimelineWindow(QMainWindow):
 
             if not any(s.get("codec_type") == "audio" for s in streams):
                 print("⚠️ Video has NO AUDIO STREAM → no waveform possible")
-                self.statusBar().showMessage("Video has no audio track", 5000)
+                self.statusBar().showMessage("视频没有音轨", 5000)
                 return
             else:
                 print("✓ Video contains audio stream")
@@ -1487,7 +1487,7 @@ class SignalTimelineWindow(QMainWindow):
         """GUI-thread slot for waveform_ready (queued from the worker thread)."""
         print(f"🧵 [ui] waveform_ready received ({len(data) if data else 0} points)")
         if data is None:
-            self.statusBar().showMessage("Failed to extract waveform (None)", 6000)
+            self.statusBar().showMessage("提取波形失败（无数据）", 6000)
         else:
             self.update_waveform_data(data)
 
@@ -1693,14 +1693,14 @@ class SignalTimelineWindow(QMainWindow):
         hl = QHBoxLayout(header)
         hl.setContentsMargins(0, 0, 0, 2)
         hl.setSpacing(6)
-        label = QLabel("Show:")
+        label = QLabel("显示：")
         label.setStyleSheet("color:#888;font-size:8pt;")
         hl.addWidget(label)
-        all_btn = self._mini_button("all", "Show every object class")
+        all_btn = self._mini_button("all", "显示全部物体类别")
         all_btn.setFixedSize(24, 16)
         all_btn.clicked.connect(lambda: self._set_all_object_rows(True))
         hl.addWidget(all_btn)
-        none_btn = self._mini_button("none", "Hide every object class")
+        none_btn = self._mini_button("none", "隐藏全部物体类别")
         none_btn.setFixedSize(30, 16)
         none_btn.clicked.connect(lambda: self._set_all_object_rows(False))
         hl.addWidget(none_btn)
@@ -1724,7 +1724,7 @@ class SignalTimelineWindow(QMainWindow):
         total = len(boxes)
         if expanded:
             fold.setText("▾")
-            fold.setToolTip("Hide the object list")
+            fold.setToolTip("隐藏物体列表")
         else:
             fold.setText("▸" if shown == total else f"▸ {shown}/{total}")
             fold.setToolTip(f"Show the object list ({shown}/{total} visible)")
@@ -1760,14 +1760,14 @@ class SignalTimelineWindow(QMainWindow):
         hl = QHBoxLayout(header)
         hl.setContentsMargins(0, 0, 0, 2)
         hl.setSpacing(6)
-        label = QLabel("Show:")
+        label = QLabel("显示：")
         label.setStyleSheet("color:#888;font-size:8pt;")
         hl.addWidget(label)
-        all_btn = self._mini_button("all", "Show every event")
+        all_btn = self._mini_button("all", "显示全部事件")
         all_btn.setFixedSize(24, 16)
         all_btn.clicked.connect(lambda: self._set_all_event_rows(True))
         hl.addWidget(all_btn)
-        none_btn = self._mini_button("none", "Hide every event")
+        none_btn = self._mini_button("none", "隐藏全部事件")
         none_btn.setFixedSize(30, 16)
         none_btn.clicked.connect(lambda: self._set_all_event_rows(False))
         hl.addWidget(none_btn)
@@ -1791,7 +1791,7 @@ class SignalTimelineWindow(QMainWindow):
         total = len(boxes)
         if expanded:
             fold.setText("▾")
-            fold.setToolTip("Hide the event list")
+            fold.setToolTip("隐藏事件列表")
         else:
             fold.setText("▸" if shown == total else f"▸ {shown}/{total}")
             fold.setToolTip(f"Show the event list ({shown}/{total} visible)")
@@ -1842,7 +1842,7 @@ class SignalTimelineWindow(QMainWindow):
         hl = QHBoxLayout(header)
         hl.setContentsMargins(0, 0, 0, 2)
         hl.setSpacing(6)
-        label = QLabel("Show:")
+        label = QLabel("显示：")
         label.setStyleSheet("color:#888;font-size:8pt;")
         hl.addWidget(label)
         all_btn = self._mini_button("all", "Show every object")
@@ -1876,7 +1876,7 @@ class SignalTimelineWindow(QMainWindow):
         total = len(boxes)
         if expanded:
             fold.setText("▾")
-            fold.setToolTip("Hide the object list")
+            fold.setToolTip("隐藏物体列表")
         else:
             # Only advertise a number when it's news — "3/3" is just noise.
             fold.setText("▸" if shown == total else f"▸ {shown}/{total}")
@@ -2701,7 +2701,7 @@ class SignalTimelineWindow(QMainWindow):
         was a synced duplicate of the main GUI's (modules.system.debug_console keeps
         them in step, so the one in the main window still drives it).
         """
-        self.time_label = QLabel("No time selected")
+        self.time_label = QLabel("未选择时间")
         self.time_label.setStyleSheet("color: #ff8080; font-family: Consolas; font-weight: bold;")
         self.statusBar().addPermanentWidget(self.time_label)
 
@@ -2726,7 +2726,7 @@ class SignalTimelineWindow(QMainWindow):
         filter_layout = QVBoxLayout()
         
         # Filter summary
-        self.filter_summary = QLabel("All actions/objects visible")
+        self.filter_summary = QLabel("所有动作/物体均可见")
         self.filter_summary.setStyleSheet(f"color: {THEME.text_dim}; font-size: 11px;")
         filter_layout.addWidget(self.filter_summary)
 
@@ -2738,13 +2738,13 @@ class SignalTimelineWindow(QMainWindow):
         # Quick filter buttons
         quick_filter_layout = QHBoxLayout()
         
-        show_all_btn = QPushButton("Show All")
+        show_all_btn = QPushButton("全部显示")
         show_all_btn.clicked.connect(self.show_all_filters)
-        show_all_btn.setToolTip("Show all actions and objects")
+        show_all_btn.setToolTip("显示全部动作和物体")
         
-        hide_all_btn = QPushButton("Hide All")
+        hide_all_btn = QPushButton("全部隐藏")
         hide_all_btn.clicked.connect(self.hide_all_filters)
-        hide_all_btn.setToolTip("Hide all actions and objects")
+        hide_all_btn.setToolTip("隐藏全部动作和物体")
         
         quick_filter_layout.addWidget(show_all_btn)
         quick_filter_layout.addWidget(hide_all_btn)
@@ -2755,14 +2755,14 @@ class SignalTimelineWindow(QMainWindow):
         # screen bottom, hiding the LLM chat behind the taskbar).
         _filt_style = "QPushButton { background-color: #2f81f7; padding: 4px 6px; }"
         filter_btn_row = QHBoxLayout()
-        self.confidence_filter_btn = QPushButton("Confidence…")
-        self.confidence_filter_btn.setToolTip("Set minimum confidence for actions/objects")
+        self.confidence_filter_btn = QPushButton("置信度…")
+        self.confidence_filter_btn.setToolTip("设置动作/物体最低置信度")
         self.confidence_filter_btn.clicked.connect(self.open_confidence_filter)
         self.confidence_filter_btn.setStyleSheet(_filt_style)
         filter_btn_row.addWidget(self.confidence_filter_btn)
 
-        self.filter_dialog_btn = QPushButton("Advanced…")
-        self.filter_dialog_btn.setToolTip("Advanced per-type filters")
+        self.filter_dialog_btn = QPushButton("高级…")
+        self.filter_dialog_btn.setToolTip("按类型设置高级筛选")
         self.filter_dialog_btn.clicked.connect(self.open_filter_dialog)
         self.filter_dialog_btn.setStyleSheet(_filt_style)
         filter_btn_row.addWidget(self.filter_dialog_btn)
@@ -2775,7 +2775,7 @@ class SignalTimelineWindow(QMainWindow):
         filter_layout.addWidget(self.current_filters_label)
 
         # Lives here (not loose in the dock) because it filters the ACTIONS row.
-        self.only_highlight_actions_cb = QCheckBox("Show only highlight actions")
+        self.only_highlight_actions_cb = QCheckBox("仅显示高光动作")
         self.only_highlight_actions_cb.setChecked(False)
         self.only_highlight_actions_cb.setToolTip(
             "Off (default): the ACTIONS row shows every detected action.\n"
@@ -2833,7 +2833,7 @@ class SignalTimelineWindow(QMainWindow):
 
         # Actions: optional keep-list (blank = all actions).
         self.analyze_actions_field = QLineEdit(act_default)
-        self.analyze_actions_field.setPlaceholderText("all actions (or: high kick, archery…)")
+        self.analyze_actions_field.setPlaceholderText("全部动作（或输入：high kick, archery…）")
         self.analyze_actions_field.setToolTip(
             "Optional. Leave blank to detect every action; or list names to keep "
             "only those. Prefilled from the main window's action keywords.")
@@ -2861,7 +2861,7 @@ class SignalTimelineWindow(QMainWindow):
         lang_row = QHBoxLayout()
         lang_row.setContentsMargins(0, 0, 0, 0)
         lang_row.setSpacing(4)
-        lang_row.addWidget(QLabel("Language:"))
+        lang_row.addWidget(QLabel("语言："))
         self.analyze_transcript_lang = QComboBox()
         for code in ["auto", "en", "pl", "es", "fr", "de", "it", "pt", "ru", "ja", "ko", "zh"]:
             self.analyze_transcript_lang.addItem(code, code)
@@ -2879,7 +2879,7 @@ class SignalTimelineWindow(QMainWindow):
         kw_row.setContentsMargins(0, 0, 0, 0)
         kw_row.setSpacing(4)
         self.analyze_transcript_kw = QLineEdit(kw_default)
-        self.analyze_transcript_kw.setPlaceholderText("mark words, e.g. goal, score")
+        self.analyze_transcript_kw.setPlaceholderText("标记关键词，例如 goal, score")
         self.analyze_transcript_kw.setToolTip(
             "Mark transcript moments where these words are spoken, on the "
             "timeline. The TRANSCRIPT ◀▶ arrows then jump between the hits. "
@@ -2889,7 +2889,7 @@ class SignalTimelineWindow(QMainWindow):
         kw_btn = QPushButton()
         kw_btn.setIcon(ui_icons.search(color=THEME.text))
         fit_icon_button(kw_btn)
-        kw_btn.setToolTip("Mark these words on the timeline")
+        kw_btn.setToolTip("在时间线上标记这些词")
         kw_btn.clicked.connect(self._apply_transcript_keywords)
         kw_row.addWidget(kw_btn)
         tr_v.addLayout(kw_row)
@@ -2934,7 +2934,7 @@ class SignalTimelineWindow(QMainWindow):
         if self._analysis_running == kind:
             if self._analysis_cancel is not None:
                 self._analysis_cancel.set()
-            self._analyze_rows[kind]["status"].setText("cancelling…")
+            self._analyze_rows[kind]["status"].setText("正在取消…")
             return
         if self._analysis_running is not None:
             self.statusBar().showMessage(
@@ -2951,7 +2951,7 @@ class SignalTimelineWindow(QMainWindow):
         self._analysis_cancel = cancel
         self._analysis_running = kind
         self._set_analyze_busy(kind, True)
-        self._analyze_rows[kind]["status"].setText("starting…")
+        self._analyze_rows[kind]["status"].setText("正在启动…")
 
         def progress(current, total, task="", details=""):
             try:
@@ -3003,7 +3003,7 @@ class SignalTimelineWindow(QMainWindow):
         disable (heavy GPU work — one at a time)."""
         for k, row in self._analyze_rows.items():
             if k == kind:
-                row["btn"].setText("  Cancel" if busy else f"  {row['label']}")
+                row["btn"].setText("  取消" if busy else f"  {row['label']}")
                 row["btn"].setIcon(ui_icons.stop() if busy else ui_icons.play())
             else:
                 row["btn"].setEnabled(not busy)
@@ -3027,10 +3027,10 @@ class SignalTimelineWindow(QMainWindow):
         if isinstance(result, Exception):
             if isinstance(result, _Cancelled):
                 if row:
-                    row["status"].setText("cancelled")
+                    row["status"].setText("已取消")
             else:
                 if row:
-                    row["status"].setText("failed — see log")
+                    row["status"].setText("失败 — 请查看日志")
                 self.statusBar().showMessage(
                     f"{kind.title()} analysis failed: {str(result)[:80]}", 6000)
                 print(f"❌ {kind} analysis failed: {result}")
@@ -3170,7 +3170,7 @@ class SignalTimelineWindow(QMainWindow):
         layout.setContentsMargins(4, 2, 4, 2)
 
         # -- Playback --
-        self.play_edit_btn = QPushButton("Play Edit")
+        self.play_edit_btn = QPushButton("播放剪辑")
         self.play_edit_btn.setIcon(ui_icons.play())
         self.play_edit_btn.clicked.connect(self.toggle_edit_playback)
         self.play_edit_btn.setStyleSheet(f"""
@@ -3185,10 +3185,10 @@ class SignalTimelineWindow(QMainWindow):
             QPushButton:hover {{ background-color: {THEME.accent_hover}; }}
             QPushButton:pressed {{ background-color: {THEME.accent_press}; }}
         """)
-        self.play_edit_btn.setToolTip("Play all clips in the edit timeline sequentially")
+        self.play_edit_btn.setToolTip("按顺序播放剪辑时间线中的全部片段")
         layout.addWidget(self.play_edit_btn)
 
-        self.stop_edit_btn = QPushButton("Stop")
+        self.stop_edit_btn = QPushButton("停止")
         self.stop_edit_btn.setIcon(ui_icons.stop())
         self.stop_edit_btn.clicked.connect(self.stop_edit_playback)
         self.stop_edit_btn.setStyleSheet("""
@@ -3207,18 +3207,18 @@ class SignalTimelineWindow(QMainWindow):
         layout.addWidget(self._toolbar_separator())
 
         # -- Clip operations --
-        self.add_clip_btn = QPushButton("Add Clip")
+        self.add_clip_btn = QPushButton("添加片段")
         self.add_clip_btn.setIcon(ui_icons.plus())
-        self.add_clip_btn.setToolTip("Add a clip at the current playhead time")
+        self.add_clip_btn.setToolTip("在当前播放头位置添加片段")
         self.add_clip_btn.clicked.connect(self.on_add_clip_clicked)
 
-        self.remove_clips_btn = QPushButton("Delete")
+        self.remove_clips_btn = QPushButton("删除")
         self.remove_clips_btn.setIcon(ui_icons.trash())
-        self.remove_clips_btn.setToolTip("Delete the selected clips from the edit timeline")
+        self.remove_clips_btn.setToolTip("从剪辑时间线删除所选片段")
         self.remove_clips_btn.clicked.connect(self.on_remove_clips_clicked)
 
         # Cut Mode toggle
-        self.cut_mode_btn = QPushButton("Cut Mode")
+        self.cut_mode_btn = QPushButton("切割模式")
         self.cut_mode_btn.setIcon(ui_icons.scissors())
         self.cut_mode_btn.setCheckable(True)
         self.cut_mode_btn.setToolTip(
@@ -3242,15 +3242,15 @@ class SignalTimelineWindow(QMainWindow):
         self.save_cache_btn = QPushButton("Save")
         self.save_cache_btn.setIcon(ui_icons.save())
         self.save_cache_btn.clicked.connect(self.on_save_cache_clicked)
-        self.save_cache_btn.setToolTip("Save current edit timeline to cache for future use")
+        self.save_cache_btn.setToolTip("将当前剪辑时间线保存到缓存以便以后使用")
 
-        self.export_btn = QPushButton("Export")
+        self.export_btn = QPushButton("导出")
         self.export_btn.setIcon(ui_icons.export())
-        self.export_btn.setToolTip("Export the edit timeline")
+        self.export_btn.setToolTip("导出剪辑时间线")
         self.export_btn.clicked.connect(self.on_export_clicked)
 
         # Duration label
-        self.edit_duration_label = QLabel("Edit duration: 0.0s")
+        self.edit_duration_label = QLabel("剪辑时长：0.0 秒")
         self.edit_duration_label.setStyleSheet(
             f"color: {THEME.success}; font-weight: 600;")
 
@@ -3281,7 +3281,7 @@ class SignalTimelineWindow(QMainWindow):
             lambda: self._save_render_mode(self.render_mode_combo.currentData()))
         layout.addWidget(self.render_mode_combo)
 
-        self.render_highlight_btn = QPushButton("Render Highlight Video")
+        self.render_highlight_btn = QPushButton("渲染高光视频")
         self.render_highlight_btn.setIcon(ui_icons.render())
         self.render_highlight_btn.clicked.connect(self.on_render_highlight_clicked)
         self.render_highlight_btn.setStyleSheet("""
@@ -3291,7 +3291,7 @@ class SignalTimelineWindow(QMainWindow):
                 padding: 4px 8px;
             }
         """)
-        self.render_highlight_btn.setToolTip("Render edit timeline clips into a single highlight video file")
+        self.render_highlight_btn.setToolTip("将剪辑时间线片段渲染为一个高光视频文件")
         layout.addWidget(self.render_highlight_btn)
 
         layout.addStretch()
@@ -3497,7 +3497,7 @@ class SignalTimelineWindow(QMainWindow):
             checkbox.setChecked(has_data)
             if not has_data:
                 self.signal_scene.visible_layers[layer_name] = False
-                checkbox.setToolTip("No detections for this signal type")
+                checkbox.setToolTip("此信号类型没有检测结果")
                 any_hidden = True
             checkbox.stateChanged.connect(
                 lambda state, name=layer_name: self.toggle_layer(name, state)
@@ -3514,7 +3514,7 @@ class SignalTimelineWindow(QMainWindow):
                 row_layout.setSpacing(4)
                 row_layout.addWidget(checkbox)
                 row_layout.addStretch()
-                self._object_fold = self._mini_button("▾", "Hide the object list")
+                self._object_fold = self._mini_button("▾", "隐藏物体列表")
                 self._object_fold.setFixedSize(34, 16)
                 self._object_fold.setVisible(False)   # nothing to fold until detections exist
                 self._object_fold.clicked.connect(self._toggle_object_fold)
@@ -3542,7 +3542,7 @@ class SignalTimelineWindow(QMainWindow):
                 row_layout.setSpacing(4)
                 row_layout.addWidget(checkbox)
                 row_layout.addStretch()
-                self._event_fold = self._mini_button("▾", "Hide the event list")
+                self._event_fold = self._mini_button("▾", "隐藏事件列表")
                 self._event_fold.setFixedSize(34, 16)
                 self._event_fold.setVisible(False)   # nothing to fold until rules run
                 self._event_fold.clicked.connect(self._toggle_event_fold)
@@ -3610,7 +3610,7 @@ class SignalTimelineWindow(QMainWindow):
         avoid_group = CollapsibleSection(
             "Avoid in Highlights", expanded=False, settings_key="controls/avoid")
         avoid_layout = QHBoxLayout()
-        self.avoid_range_btn = QPushButton("Avoid selected range")
+        self.avoid_range_btn = QPushButton("排除所选区间")
         self.avoid_range_btn.setIcon(ui_icons.ban())
         self.avoid_range_btn.setToolTip(
             "Drag-select a range on the timeline, then click to exclude it from "
@@ -3618,8 +3618,8 @@ class SignalTimelineWindow(QMainWindow):
         )
         self.avoid_range_btn.clicked.connect(self._avoid_selected_range)
         avoid_layout.addWidget(self.avoid_range_btn)
-        self.clear_avoid_btn = QPushButton("Clear")
-        self.clear_avoid_btn.setToolTip("Remove all avoid ranges")
+        self.clear_avoid_btn = QPushButton("清空")
+        self.clear_avoid_btn.setToolTip("移除全部排除区间")
         self.clear_avoid_btn.clicked.connect(self._clear_avoid_ranges)
         avoid_layout.addWidget(self.clear_avoid_btn)
         avoid_group.setContentLayout(avoid_layout)
@@ -3631,7 +3631,7 @@ class SignalTimelineWindow(QMainWindow):
         merge_layout = QVBoxLayout()
 
         merge_row = QHBoxLayout()
-        merge_row.addWidget(QLabel("Gap:"))
+        merge_row.addWidget(QLabel("间隔："))
 
         self.merge_slider = QSlider(Qt.Orientation.Horizontal)
         self.merge_slider.setMinimum(0)
@@ -3642,13 +3642,13 @@ class SignalTimelineWindow(QMainWindow):
         self.merge_slider.valueChanged.connect(self.on_merge_changed)
         merge_row.addWidget(self.merge_slider)
 
-        self.merge_value_label = QLabel("Off")
+        self.merge_value_label = QLabel("关闭")
         self.merge_value_label.setStyleSheet(f"color: {THEME.accent}; font-weight: bold; min-width: 36px;")
         merge_row.addWidget(self.merge_value_label)
 
         merge_layout.addLayout(merge_row)
 
-        merge_hint = QLabel("Merge nearby signals into continuous blocks")
+        merge_hint = QLabel("将相邻信号合并为连续区块")
         merge_hint.setStyleSheet("color: #888; font-size: 10px;")
         merge_hint.setWordWrap(True)
         merge_layout.addWidget(merge_hint)
@@ -3667,7 +3667,7 @@ class SignalTimelineWindow(QMainWindow):
         wpeak_layout = QVBoxLayout()
 
         wpeak_row = QHBoxLayout()
-        wpeak_row.addWidget(QLabel("Sensitivity:"))
+        wpeak_row.addWidget(QLabel("灵敏度："))
 
         self.wpeak_slider = QSlider(Qt.Orientation.Horizontal)
         self.wpeak_slider.setMinimum(0)
@@ -3685,7 +3685,7 @@ class SignalTimelineWindow(QMainWindow):
 
         wpeak_layout.addLayout(wpeak_row)
 
-        wpeak_hint = QLabel("Higher = only the loudest moments. Use ◀▶ on the "
+        wpeak_hint = QLabel("数值越高，只保留最明显的时刻。可使用 ◀▶ 浏览"
                             "AUDIO WAVEFORM row to jump between them.")
         wpeak_hint.setStyleSheet("color: #888; font-size: 10px;")
         wpeak_hint.setWordWrap(True)
@@ -3702,7 +3702,7 @@ class SignalTimelineWindow(QMainWindow):
         playback_group = CollapsibleSection("Playback", settings_key="controls/playback")
         playback_layout = QVBoxLayout()
 
-        self.follow_playhead_checkbox = QCheckBox("Follow Playhead")
+        self.follow_playhead_checkbox = QCheckBox("跟随播放头")
         self.follow_playhead_checkbox.setChecked(True)
         self.follow_playhead_checkbox.setToolTip(
             "Auto-scroll the timeline to keep the playhead visible during playback"
@@ -3768,7 +3768,7 @@ class SignalTimelineWindow(QMainWindow):
                 shown = sum(1 for v in events.values() if v)
                 parts.append(f"{shown}/{len(events)} events")
 
-            self.filter_summary.setText("Showing: " + ", ".join(parts))
+            self.filter_summary.setText("当前显示：" + ", ".join(parts))
             self.confidence_label.setText(f"Actions: {self.signal_scene.min_action_confidence:.0%} | Objects: {self.signal_scene.min_object_confidence:.0%}")
 
             # Show which specific filters are active
@@ -3793,7 +3793,7 @@ class SignalTimelineWindow(QMainWindow):
             if filter_details:
                 self.current_filters_label.setText(" | ".join(filter_details))
             else:
-                self.current_filters_label.setText("No filters applied")
+                self.current_filters_label.setText("未应用筛选")
 
     # ── swap a chosen clip for the next best one ───────────────────────
     def _swap_session(self):
@@ -3832,7 +3832,7 @@ class SignalTimelineWindow(QMainWindow):
         return session
 
     def _swap_message(self, text):
-        QMessageBox.information(self, "Swap clip", text)
+        QMessageBox.information(self, "替换片段", text)
 
     def _apply_swapped_segments(self, session):
         """Push the session's segments back into the timeline and redraw."""
@@ -3935,15 +3935,15 @@ class SignalTimelineWindow(QMainWindow):
                 if hasattr(self.edit_scene, 'save_clips_to_cache'):
                     success = self.edit_scene.save_clips_to_cache()
                     if success:
-                        self.statusBar().showMessage("✅ Edit timeline saved to cache", 3000)
+                        self.statusBar().showMessage("✅ 剪辑时间线已保存到缓存", 3000)
                     else:
-                        self.statusBar().showMessage("⚠️ Failed to save to cache", 3000)
+                        self.statusBar().showMessage("⚠️ 保存到缓存失败", 3000)
                 else:
-                    self.statusBar().showMessage("⚠️ Cache saving not available in this scene", 3000)
+                    self.statusBar().showMessage("⚠️ 当前场景不支持保存缓存", 3000)
             except Exception as e:
                 self.statusBar().showMessage(f"⚠️ Error saving to cache: {str(e)[:50]}...", 3000)
         else:
-            self.statusBar().showMessage("⚠️ No edit timeline available", 3000)
+            self.statusBar().showMessage("⚠️ 没有可用的剪辑时间线", 3000)
 
     @Slot(str, int)
     def toggle_layer(self, layer_name, state):
@@ -3995,7 +3995,7 @@ class SignalTimelineWindow(QMainWindow):
         self.signal_scene.avoid_ranges = []
         self.signal_scene.build_timeline()
         self._persist_avoid_ranges()
-        self.statusBar().showMessage("Cleared all avoid ranges", 3000)
+        self.statusBar().showMessage("已清空全部排除区间", 3000)
 
     def _persist_avoid_ranges(self):
         """Write the ranges to the shared store so consumers outside this
@@ -4018,7 +4018,7 @@ class SignalTimelineWindow(QMainWindow):
         """Handle merge threshold slider change (debounced)"""
         seconds = value / 10.0
         if seconds == 0:
-            self.merge_value_label.setText("Off")
+            self.merge_value_label.setText("关闭")
         else:
             self.merge_value_label.setText(f"{seconds:.1f}s")
         
@@ -4114,7 +4114,7 @@ class SignalTimelineWindow(QMainWindow):
         self._active_player.pause()
         self.play_edit_btn.setText("▶ Play Edit")
         if hasattr(self, 'play_btn'):
-            self.play_btn.setText("▶ Play")
+            self.play_btn.setText("▶ 播放")
 
     @Slot(float)
     def on_time_dragged(self, time):
@@ -4179,7 +4179,7 @@ class SignalTimelineWindow(QMainWindow):
             self.edit_scene.add_clip(float(start), float(end))
             added += 1
         self.update_edit_duration()
-        plural = "s" if added != 1 else ""
+        plural = " 秒" if added != 1 else ""
         self.statusBar().showMessage(f"Added {added} clip{plural} to edit timeline", 2500)
 
     @Slot(float)
@@ -4293,7 +4293,7 @@ class SignalTimelineWindow(QMainWindow):
         self._single_clip_playing = True
         self.play_video_clip(start_time, end_time)
         
-        self.play_edit_btn.setText("⏸ Pause")
+        self.play_edit_btn.setText("⏸ 暂停")
         self.clip_timer.timeout.connect(self._on_single_clip_finished)
 
     def _on_single_clip_finished(self):
@@ -4359,7 +4359,7 @@ class SignalTimelineWindow(QMainWindow):
             self.edit_view.setCursor(QCursor(Qt.ArrowCursor))
             # Make sure no stale indicator line remains
             self.edit_scene._hide_cut_indicator()
-            self.statusBar().showMessage("Cut Mode OFF", 3000)
+            self.statusBar().showMessage("切割模式：关", 3000)
 
     @Slot(float)
     def on_clip_cut(self, cut_time: float):
@@ -4393,7 +4393,7 @@ class SignalTimelineWindow(QMainWindow):
                 3000
             )
         else:
-            self.statusBar().showMessage("Clip trimmed", 2000)
+            self.statusBar().showMessage("片段已修剪", 2000)
 
     def process_pending_removals(self):
         """Process multiple clip removals at once"""
@@ -4421,7 +4421,7 @@ class SignalTimelineWindow(QMainWindow):
             self.update_edit_duration()
             self.statusBar().showMessage(f"Added clip at {self.current_time:.1f}s", 2000)
         else:
-            self.statusBar().showMessage("⚠️ Select a time first", 2000)
+            self.statusBar().showMessage("⚠️ 请先选择时间", 2000)
     
     @Slot()
     def on_remove_clips_clicked(self):
@@ -4429,13 +4429,13 @@ class SignalTimelineWindow(QMainWindow):
         if hasattr(self, 'edit_scene'):
             self.edit_scene.remove_selected_clips()
             self.update_edit_duration()
-            self.statusBar().showMessage("Removed selected clips", 2000)
+            self.statusBar().showMessage("已移除所选片段", 2000)
     
     @Slot()
     def on_export_clicked(self):
         """Export every clip on the edit timeline."""
         if len(self.edit_scene.clips) == 0:
-            QMessageBox.warning(self, "No Clips", "Add some clips to the edit timeline first!")
+            QMessageBox.warning(self, "没有片段", "请先向剪辑时间线添加一些片段！")
             return
 
         try:
@@ -4446,25 +4446,25 @@ class SignalTimelineWindow(QMainWindow):
                 self.edit_scene.get_total_duration(),
             )
         except Exception as e:
-            QMessageBox.critical(self, "Export Failed",
+            QMessageBox.critical(self, "导出失败",
                                  f"Failed to export timeline:\n{str(e)}")
             return
 
         formats = TimelineExporter.get_export_formats()
 
         dialog = QDialog(self)
-        dialog.setWindowTitle("Export Timeline")
+        dialog.setWindowTitle("导出时间线")
         dialog.resize(440, 280)
 
         layout = QVBoxLayout(dialog)
-        layout.addWidget(QLabel("Select export format:"))
+        layout.addWidget(QLabel("选择导出格式："))
 
         format_combo = QComboBox()
         for name, _pattern in formats:
             format_combo.addItem(name)
         layout.addWidget(format_combo)
 
-        layout.addWidget(QLabel("Sequence start:"))
+        layout.addWidget(QLabel("序列起始时间："))
         start_combo = QComboBox()
         start_combo.addItem("Start at 00:00:00:00", RECORD_START_ZERO)
         start_combo.addItem("Start at 01:00:00:00", RECORD_START_HOUR)
@@ -4510,7 +4510,7 @@ class SignalTimelineWindow(QMainWindow):
             default_path, filter_str = default_export_path(
                 self.video_path, format_pattern)
         except ExportError as e:
-            QMessageBox.warning(self, "Export", str(e))
+            QMessageBox.warning(self, "导出", str(e))
             return
 
         from PySide6.QtWidgets import QFileDialog
@@ -4548,7 +4548,7 @@ class SignalTimelineWindow(QMainWindow):
                 f"✅ Timeline exported successfully!\n\n{msg}"
                 f"{skipped_note(result.skipped)}")
 
-            reply = QMessageBox.question(self, "Open Folder",
+            reply = QMessageBox.question(self, "打开文件夹",
                                          "Open containing folder?",
                                          QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
@@ -4562,7 +4562,7 @@ class SignalTimelineWindow(QMainWindow):
                     subprocess.run(['xdg-open', folder])
 
         except Exception as e:
-            QMessageBox.critical(self, "Export Failed",
+            QMessageBox.critical(self, "导出失败",
                                  f"Failed to export timeline:\n{str(e)}")
     
     def update_edit_duration(self):
@@ -4669,7 +4669,7 @@ class SignalTimelineWindow(QMainWindow):
                 shown = sum(1 for v in events.values() if v)
                 parts.append(f"{shown}/{len(events)} events")
 
-            self.filter_summary.setText("Showing: " + ", ".join(parts))
+            self.filter_summary.setText("当前显示：" + ", ".join(parts))
             
             # Show which specific filters are active
             if len(visible_actions) < total_actions or len(visible_objects) < total_objects:
@@ -4688,7 +4688,7 @@ class SignalTimelineWindow(QMainWindow):
                 
                 self.current_filters_label.setText(" | ".join(filter_details))
             else:
-                self.current_filters_label.setText("No filters applied")
+                self.current_filters_label.setText("未应用筛选")
     
     @Slot(dict)
     def on_filter_changed(self, filters):
@@ -4696,7 +4696,7 @@ class SignalTimelineWindow(QMainWindow):
         self.update_filter_summary()
     
     def _edit_resume_target(self, clips):
-        """Where 'Play Edit' should resume from.
+        """Where '播放剪辑' should resume from.
 
         Uses _edit_resume_pos — the point where edit playback last stopped,
         tracked independently of the main playhead so playing the source
@@ -4728,7 +4728,7 @@ class SignalTimelineWindow(QMainWindow):
         """
         clips = self.edit_scene.get_clip_times()
         if not clips:
-            self.statusBar().showMessage("⚠️ No clips in edit timeline", 2000)
+            self.statusBar().showMessage("⚠️ 剪辑时间线中没有片段", 2000)
             return
 
         start_index, start_pos = self._edit_resume_target(clips)
@@ -4737,7 +4737,7 @@ class SignalTimelineWindow(QMainWindow):
         self._edit_playback_active = True   # sentinel instead of snapshot
         self._edit_playlist_index = start_index
         self._edit_start_pos = start_pos    # consumed by the first _play_next_edit_clip
-        self.play_edit_btn.setText("⏸ Pause")
+        self.play_edit_btn.setText("⏸ 暂停")
         remaining = len(clips) - start_index
         self.statusBar().showMessage(f"▶ Playing edit timeline: {remaining} clip(s)", 3000)
         self._play_next_edit_clip()
@@ -4779,7 +4779,7 @@ class SignalTimelineWindow(QMainWindow):
                 self.signal_scene.set_current_time(edit_pos)
             
             self._edit_paused = False
-            self.play_edit_btn.setText("⏸ Pause")
+            self.play_edit_btn.setText("⏸ 暂停")
             self._active_player.play()
             
             # Restart progress timer
@@ -4791,7 +4791,7 @@ class SignalTimelineWindow(QMainWindow):
                 if hasattr(self, '_edit_clip_timer'):
                     self._edit_clip_timer.start(self._edit_remaining_ms)
             
-            self.statusBar().showMessage("▶ Resumed", 2000)
+            self.statusBar().showMessage("▶ 已继续", 2000)
         else:
             # Pause
             self._edit_paused = True
@@ -4806,14 +4806,14 @@ class SignalTimelineWindow(QMainWindow):
             if hasattr(self, '_edit_progress_timer'):
                 self._edit_progress_timer.stop()
             
-            self.statusBar().showMessage("⏸ Paused", 2000)
+            self.statusBar().showMessage("⏸ 已暂停", 2000)
 
     def _play_next_edit_clip(self):
         """Play the next clip in the edit playlist"""
         clips = self.edit_scene.get_clip_times()
         
         if not clips or self._edit_playlist_index >= len(clips):
-            self.statusBar().showMessage("✅ Edit timeline playback complete", 3000)
+            self.statusBar().showMessage("✅ 剪辑时间线播放完成", 3000)
             self._active_player.pause()
             self.edit_scene.clear_active_clip()
             self._edit_playback_active = False
@@ -4876,7 +4876,7 @@ class SignalTimelineWindow(QMainWindow):
     def _follow_edit_playhead(self):
         """Auto-scroll the edit timeline to keep the active clip's playhead visible.
 
-        Honors the same "Follow Playhead" toggle used for the source timeline
+        Honors the same "跟随播放头" toggle used for the source timeline
         (on by default), so Play Edit follows the playhead without extra setup.
         """
         if not hasattr(self, 'edit_view') or not hasattr(self, 'edit_scene'):
@@ -4958,7 +4958,7 @@ class SignalTimelineWindow(QMainWindow):
             self.signal_view.ensure_time_visible(0)
         self.time_label.setText("00:00.000")
         
-        self.statusBar().showMessage("⏹ Edit playback stopped", 2000)
+        self.statusBar().showMessage("⏹ 剪辑播放已停止", 2000)
 
     def play_video_clip(self, start_time, end_time):
         """Play a specific clip in the preview"""
@@ -4973,7 +4973,7 @@ class SignalTimelineWindow(QMainWindow):
 
         # Immediate UI update — the playbackStateChanged signal will agree
         # a moment later, but this avoids the brief mismatch.
-        self.play_btn.setText("⏸ Pause")
+        self.play_btn.setText("⏸ 暂停")
 
         # Stop at clip end on the SAME player
         if hasattr(self, 'clip_timer'):
@@ -4988,7 +4988,7 @@ class SignalTimelineWindow(QMainWindow):
         """Render edit timeline clips into a single highlight video"""
         clips = self.edit_scene.get_clip_times()
         if not clips:
-            QMessageBox.warning(self, "No Clips", "Add some clips to the edit timeline first!")
+            QMessageBox.warning(self, "没有片段", "请先向剪辑时间线添加一些片段！")
             return
 
         from PySide6.QtWidgets import QFileDialog
@@ -5002,9 +5002,9 @@ class SignalTimelineWindow(QMainWindow):
         if not output_path:
             return
 
-        self.statusBar().showMessage("🎬 Rendering highlight video…")
+        self.statusBar().showMessage("🎬 正在渲染高光视频…")
         self.render_highlight_btn.setEnabled(False)
-        self.render_highlight_btn.setText("⏳ Rendering… 0%")
+        self.render_highlight_btn.setText("⏳ 正在渲染… 0%")
 
         # Store for the callback. Read the combo on the main thread; the worker
         # thread must not touch Qt widgets.
@@ -5157,14 +5157,14 @@ class SignalTimelineWindow(QMainWindow):
     def on_render_finished(self, success, message):
         """Handle render completion on the main thread"""
         self.render_highlight_btn.setEnabled(True)
-        self.render_highlight_btn.setText("🎬 Render Highlight Video")
+        self.render_highlight_btn.setText("🎬 渲染高光视频")
 
         if success:
-            self.statusBar().showMessage("✅ Highlight rendered!", 5000)
-            QMessageBox.information(self, "Render Complete", message)
+            self.statusBar().showMessage("✅ 高光视频渲染完成！", 5000)
+            QMessageBox.information(self, "渲染完成", message)
         else:
-            self.statusBar().showMessage("❌ Render failed", 5000)
-            QMessageBox.critical(self, "Render Failed", message)
+            self.statusBar().showMessage("❌ 渲染失败", 5000)
+            QMessageBox.critical(self, "渲染失败", message)
 
     def apply_dark_theme(self):
         """Window-specific chrome on top of the global theme (modules.ui.theme):

@@ -41,7 +41,7 @@ from modules.ui.collapsible import CollapsibleSection
 from modules.ui.theme import DARK as THEME
 
 
-class Object训练Worker(QObject):
+class ObjectTrainingWorker(QObject):
     """Assemble, train, export — off the GUI thread.
 
     One worker for the whole chain rather than three, because the user asked
@@ -251,12 +251,12 @@ def _friendly_time(seconds: float) -> str:
     return f"{hours:.1f} hours"
 
 
-class Object训练Section(QWidget):
+class ObjectTrainingSection(QWidget):
     """Pick a set of labels, train a detector, install it.
 
     Objects are taught from **boxes in frames**: where a thing is, in a still.
     That is a different kind of example from an action, which is why this and
-    :class:`Action训练Section` are separate rather than one form with a
+    :class:`ActionTrainingSection` are separate rather than one form with a
     mode switch — they take different data and produce different models.
     """
 
@@ -271,7 +271,7 @@ class Object训练Section(QWidget):
     def __init__(self, parent=None, store_path: str = ""):
         super().__init__(parent)
         self._thread: Optional[QThread] = None
-        self._worker: Optional[训练Worker] = None
+        self._worker: Optional[TrainingWorker] = None
         self._store_path = store_path
         self._frames = (0, 0)                # (train, val) the store will produce
         self._device: Optional[tuple] = None  # (device, name) once probed
@@ -279,7 +279,7 @@ class Object训练Section(QWidget):
         self._started_at = 0.0
         self._time_left = 0.0
         self._estimate_seconds = 0.0
-        self._preview = None                 # 训练PreviewWindow, when open
+        self._preview = None                 # TrainingPreviewWindow, when open
         self._rounds: list = []              # every RoundSnapshot of this run
         self._tick = QTimer(self)
         self._tick.setInterval(1000)
@@ -550,7 +550,7 @@ class Object训练Section(QWidget):
     # ── the live parts of a run ──────────────────────────────────────────
 
     def _show_stage(self, index: int) -> None:
-        stages = Object训练Worker.STAGES
+        stages = ObjectTrainingWorker.STAGES
         parts = []
         for i, label in enumerate(stages):
             if i < index:
@@ -605,9 +605,9 @@ class Object训练Section(QWidget):
         PublishWizard(self, model_path=onnx_path, draft=draft).exec()
 
     def _open_preview(self) -> None:
-        from modules.ui.training_preview import 训练PreviewWindow
+        from modules.ui.training_preview import TrainingPreviewWindow
         if self._preview is None:
-            self._preview = 训练PreviewWindow(self)
+            self._preview = TrainingPreviewWindow(self)
             self._preview.closed.connect(self._on_preview_closed)
             for snap in self._rounds:           # rounds before it opened, as numbers
                 self._preview.add_round(snap)
@@ -637,7 +637,7 @@ class Object训练Section(QWidget):
             os.path.dirname(os.path.abspath(__file__))))
         dest_dir = os.path.join(repo_root, "models", "custom")
 
-        self._worker = Object训练Worker(
+        self._worker = ObjectTrainingWorker(
             store_path=self._store_path,
             work_dir=work_dir,
             dest_dir=dest_dir,
@@ -664,7 +664,7 @@ class Object训练Section(QWidget):
     def _cancel(self) -> None:
         if self._worker is not None:
             self._worker.cancel()
-            self._say("停止ping after this step...", THEME.warning)
+            self._say("将在当前步骤完成后停止…", THEME.warning)
 
     def _set_running(self, running: bool) -> None:
         import time
@@ -727,7 +727,7 @@ class Object训练Section(QWidget):
     def _on_error(self, message: str) -> None:
         self._teardown()
         self._say(message, THEME.danger)
-        if not message.startswith("停止ped"):
+        if not message.startswith("已停止"):
             QMessageBox.warning(self, "训练", message)
 
     def _teardown(self) -> None:
@@ -749,7 +749,7 @@ class Object训练Section(QWidget):
         super().closeEvent(event)
 
 
-class Action训练Worker(QObject):
+class ActionTrainingWorker(QObject):
     """Drive the R3D trainer in a child process, reporting what it prints.
 
     A subprocess rather than an import, for one reason: ``model_training.r3d``
@@ -888,7 +888,7 @@ class Action训练Worker(QObject):
         return None
 
 
-class Action训练Section(QWidget):
+class ActionTrainingSection(QWidget):
     """Train the app to recognise an action of the user's own.
 
     Actions are taught from **whole clips**, not boxes: one folder per action,
@@ -906,7 +906,7 @@ class Action训练Section(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._thread: Optional[QThread] = None
-        self._worker: Optional[Action训练Worker] = None
+        self._worker: Optional[ActionTrainingWorker] = None
         self._data_path = ""
         self._device = "cpu"
         self._pipeline = "intel"
@@ -1152,7 +1152,7 @@ class Action训练Section(QWidget):
     def _start(self) -> None:
         if self._thread is not None:
             return
-        self._worker = Action训练Worker(
+        self._worker = ActionTrainingWorker(
             data_path=self._data_path,
             epochs=self.epochs_spin.value(),
             batch_size=self.batch_spin.value(),
@@ -1172,7 +1172,7 @@ class Action训练Section(QWidget):
     def _cancel(self) -> None:
         if self._worker is not None:
             self._worker.cancel()
-            self._say("停止ping...", THEME.warning)
+            self._say("正在停止…", THEME.warning)
 
     def _set_running(self, running: bool) -> None:
         self.train_btn.setVisible(not running)
@@ -1218,7 +1218,7 @@ class Action训练Section(QWidget):
         super().closeEvent(event)
 
 
-class 训练Panel(QWidget):
+class TrainingPanel(QWidget):
     """The two kinds of training, side by side.
 
     Separate tabs rather than one form, because the *example* differs: an
@@ -1234,9 +1234,9 @@ class 训练Panel(QWidget):
         super().__init__(parent)
         from PySide6.QtWidgets import QTabWidget
 
-        self.objects = Object训练Section(store_path=store_path)
+        self.objects = ObjectTrainingSection(store_path=store_path)
         self.objects.model_installed.connect(self.model_installed)
-        self.actions = Action训练Section()
+        self.actions = ActionTrainingSection()
 
         tabs = QTabWidget()
         # First: the automated loop (modules/teach), cutting, sorting and

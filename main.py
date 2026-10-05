@@ -2392,13 +2392,12 @@ class VideoHighlighterGUI(QWidget):
         comp_outer = QVBoxLayout()
 
         comp_info = QLabel(
-            "Compose higher-level actions from the spatial relationships between detected objects. "
-            "Example: if object A appears inside region B a certain number of times, fire action X. "
-            "Each row is one spatial condition; multiple rows with the same Event Name must ALL be "
-            "satisfied together (AND logic). "
-            "Window = how many seconds of frames to smooth over (reduces flicker). "
-            "Persist = how long to keep an object 'alive' after YOLO loses sight of it (handles occlusion). "
-            "Saved to composition_rules.yaml next to the application."
+            "根据检测物体之间的空间关系组合更高层级的事件。"
+            "例如：物体 A 在区域 B 内出现达到一定次数后触发事件 X。"
+            "每一行代表一个条件；同一事件名称下的多行条件必须全部满足（AND 逻辑）。"
+            "“窗口”表示用于平滑检测结果的时间长度，可减少闪烁；"
+            "“保持”表示 YOLO 暂时丢失目标后继续保留该目标的时间，用于处理遮挡。"
+            "规则保存在应用旁边的 composition_rules.yaml。"
         )
         comp_info.setWordWrap(True)
         comp_info.setStyleSheet("color: #888; font-size: 9pt;")
@@ -2417,30 +2416,28 @@ class VideoHighlighterGUI(QWidget):
         COMP_REL_COL, COMP_OUTLINE_COL, COMP_DEL_COL = 12, 13, 14
         self.comp_table = QTableWidget(0, 15)
         self.comp_table.setHorizontalHeaderLabels([
-            "On", "Kind", "Event Name", "Display Label",
-            "物体 / 信号", "Region / Equals",
-            "Min", "Max", "Sustain (s)", "Within (s)",
-            "Window (s)", "Persist (s)", "Relation", "Outline", "",
+            "启用", "类型", "事件名称", "显示名称",
+            "物体 / 信号", "区域 / 等于",
+            "最小", "最大", "持续（秒）", "范围（秒）",
+            "窗口（秒）", "保持（秒）", "关系", "轮廓", "",
         ])
         # chr(10) rather than an escape: this block is generated, and a
         # literal backslash-n did not survive the round trip intact.
         self.comp_table.horizontalHeader().setToolTip(chr(10).join([
-            "On: untick to keep a rule but stop it running",
-            "Kind - Spatial: the object in Object must be inside Region.",
-            "       Signal: the measurement in Signal must sit between Min and Max.",
-            "Min/Max: counts for Spatial, thresholds for Signal. Left at the",
-            "       extreme they mean no bound and are not written out.",
-            "Region / Equals: the containing class (Spatial), or a label the",
-            "       signal must equal, such as an expression name (Signal).",
-            "Sustain: the condition must hold this many seconds in a row (Signal).",
-            "Within: accept it if it held this many seconds either side, for",
-            "       signals not sampled at the same moments (Signal).",
-            "Window: seconds of frames to smooth over (reduces flicker)",
-            "Persist: seconds to keep a source alive after it disappears",
-            "Relation (Spatial): inside = its centre is in the region;",
-            "       overlaps = most of it is in the region; touches = they meet.",
-            "Outline (Spatial): trace the real shapes inside the boxes and",
-            "       decide on those. Slower the first time; kept after that.",
+            "启用：取消勾选可保留规则，但停止执行",
+            "类型 - 空间：物体必须位于指定区域内。",
+            "       信号：测量值必须位于最小值和最大值之间。",
+            "最小/最大：空间规则表示次数，信号规则表示阈值；",
+            "       保持极端默认值时表示无上下界，不会写入配置。",
+            "区域 / 等于：空间规则中的容器类别，或信号规则必须等于的标签。",
+            "持续：条件必须连续满足多少秒（信号规则）。",
+            "范围：允许条件在前后多少秒内满足，用于不同采样时刻的信号。",
+            "窗口：用于平滑帧结果的秒数，可减少闪烁。",
+            "保持：来源消失后继续保留多少秒。",
+            "关系（空间）：inside = 中心点位于区域内；",
+            "       overlaps = 大部分区域重叠；touches = 两者接触。",
+            "轮廓（空间）：使用检测框内的真实形状进行判断。",
+            "       首次运行较慢，结果会缓存供后续使用。",
         ]))
         self.comp_table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.comp_table.horizontalHeader().setStretchLastSection(False)
@@ -2455,12 +2452,11 @@ class VideoHighlighterGUI(QWidget):
 
         comp_btn_row = QHBoxLayout()
         comp_add_btn = QPushButton("+ 添加空间条件")
-        comp_add_btn.setToolTip("添加物体几何条件： "
-                                "this class inside that class")
+        comp_add_btn.setToolTip("添加物体几何条件，例如：某个类别位于另一个类别内部")
         comp_add_signal_btn = QPushButton("+ 添加信号条件")
         comp_add_signal_btn.setToolTip(
-            "Add a condition on a per-second measurement, e.g. "
-            "vocal_density_pct or waveform_peak_density. Needs no detections.")
+            "添加基于每秒测量值的条件，例如 vocal_density_pct 或 "
+            "waveform_peak_density。此类规则不需要物体检测。")
         comp_save_btn = QPushButton("保存规则")
         comp_save_btn.setToolTip("将构图规则保存到 composition_rules.yaml")
         comp_btn_row.addWidget(comp_add_btn)
@@ -2470,16 +2466,13 @@ class VideoHighlighterGUI(QWidget):
         # changed. Applying them is seconds against what is already cached; the
         # alternative was a full pipeline run just to see a rule edit.
         comp_btn_row.addWidget(self._make_analyze_button(
-            "composition", "Run Rules",
-            "Run the ticked rules over every video in the list.\n\n"
-            "Fetches whatever they read that is missing: a rule naming an\n"
-            "object class the cache does not have starts a detection pass for\n"
-            "the classes the rules name, and a signal rule measures the audio\n"
-            "(cached, so only the first run pays for it). Anything already\n"
-            "there is reused, so a re-run after a threshold edit is seconds.\n\n"
-            "Save your rules first. Unticked rules are skipped and cost\n"
-            "nothing. Safe to run repeatedly: previous results for these rules\n"
-            "are replaced, not stacked."))
+            "composition", "运行规则",
+            "对列表中的每个视频运行已勾选的规则。\n\n"
+            "如果规则所需的数据尚未缓存，会自动补充："
+            "缺少指定物体类别时会启动检测；信号规则会直接测量音频。\n"
+            "这些结果都会缓存，因此修改阈值后再次运行通常只需几秒。\n\n"
+            "请先保存规则。未勾选的规则会跳过且不产生额外开销。"
+            "可以安全重复运行；旧结果会被替换，而不是重复叠加。"))
         comp_btn_row.addWidget(comp_save_btn)
         comp_outer.addLayout(comp_btn_row)
 
@@ -2896,8 +2889,8 @@ class VideoHighlighterGUI(QWidget):
         report_layout = QVBoxLayout()
 
         report_info = QLabel(
-            "ℹ️ Why each moment was kept: an HTML page beside the highlight, "
-            "with thumbnails, scores and the moments that nearly made it")
+            "ℹ️ 解释每个时刻为什么被保留：会在高光视频旁生成 HTML 报告，"
+            "包含缩略图、评分以及差一点被选中的时刻。")
         report_info.setStyleSheet("color: #666; font-size: 9pt; font-style: italic;")
         report_info.setWordWrap(True)
         report_layout.addWidget(report_info)
@@ -2908,11 +2901,10 @@ class VideoHighlighterGUI(QWidget):
         self.why_report_chk.setChecked(
             visualization_cfg.get("write_highlight_report", True))
         self.why_report_chk.setToolTip(
-            "Writes <output>_why.html next to the highlight: every kept segment with\n"
-            "its score breakdown, the objects and actions that triggered it, and the\n"
-            "moments that scored well but were left out.\n\n"
-            "One self-contained file with thumbnails embedded — openable in any\n"
-            "browser and sendable to a client. A matching .json holds the same data.")
+            "在高光视频旁生成 <output>_why.html：列出每个保留片段的评分构成、\n"
+            "触发它的物体与动作，以及得分较高但最终未入选的时刻。\n\n"
+            "报告为单个自包含文件，缩略图已嵌入，可直接用浏览器打开或发送给他人。\n"
+            "同时生成对应的 .json 文件保存相同数据。")
         report_layout.addWidget(self.why_report_chk)
 
         # The narration passes, which used to be reachable only from the
@@ -2923,11 +2915,9 @@ class VideoHighlighterGUI(QWidget):
         self.narrate_clips_chk.setChecked(
             visualization_cfg.get("narrate_clips", True))
         self.narrate_clips_chk.setToolTip(
-            "Asks the chosen model to describe every kept clip from its frames,\n"
-            "at the end of the run.\n\n"
-            "One model call per clip, so it adds a minute or two — and it needs a\n"
-            "model with a vision half. The clip cards are written from the\n"
-            "pictures; without this they carry only what was measured.")
+            "处理结束时，让所选视觉模型根据画面描述每个保留片段。\n\n"
+            "每个片段需要调用模型一次，因此会增加一些处理时间，并要求模型支持视觉。\n"
+            "启用后，片段卡片会包含画面内容说明；否则只显示实际测量到的数据。")
         report_layout.addWidget(self.narrate_clips_chk)
 
         # The label carries the warning the default cannot: this is the slowest
@@ -2937,11 +2927,9 @@ class VideoHighlighterGUI(QWidget):
         self.narrate_chapters_chk.setChecked(
             visualization_cfg.get("narrate_chapters", True))
         self.narrate_chapters_chk.setToolTip(
-            "Asks the chosen model to narrate every chapter of the video, at the\n"
-            "end of the run.\n\n"
-            "One model call per chapter — minutes, not seconds, and the slowest\n"
-            "pass here. A chapter can be told from its transcript, so this adds\n"
-            "least on footage that already has speech in it.")
+            "处理结束时，让所选模型为视频的每个章节生成说明。\n\n"
+            "每个章节需要调用模型一次，这是报告流程中最慢的步骤之一。\n"
+            "如果素材已有充分的语音转录，额外收益可能较小。")
         report_layout.addWidget(self.narrate_chapters_chk)
 
         for _chk in (self.narrate_clips_chk, self.narrate_chapters_chk):
@@ -3003,8 +2991,8 @@ class VideoHighlighterGUI(QWidget):
         output_box = QGroupBox("视频输出")
         output_layout = QFormLayout()
         self.render_mode_combo = QComboBox()
-        self.render_mode_combo.addItem("CPU x265 (VR-safe, slow)", "cpu")
-        self.render_mode_combo.addItem("GPU (fast, may break VR)", "gpu")
+        self.render_mode_combo.addItem("CPU x265（VR 兼容，较慢）", "cpu")
+        self.render_mode_combo.addItem("GPU（快速，部分 VR 播放器可能不兼容）", "gpu")
         self.render_mode_combo.setToolTip(
             "How the highlight video is encoded:\n"
             "CPU x265 — re-encode on the CPU with libx265 (HEVC), matching how VR\n"
@@ -3016,7 +3004,7 @@ class VideoHighlighterGUI(QWidget):
         _rm_idx = self.render_mode_combo.findData(_saved_render_mode)
         if _rm_idx >= 0:
             self.render_mode_combo.setCurrentIndex(_rm_idx)
-        output_layout.addRow("Cut / encode:", self.render_mode_combo)
+        output_layout.addRow("剪切 / 编码：", self.render_mode_combo)
         output_box.setLayout(output_layout)
         advanced_layout.addWidget(output_box, 0, 0)
 

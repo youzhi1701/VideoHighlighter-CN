@@ -19,7 +19,7 @@ interface Props {
   onPick: (urls: string[]) => void
 }
 
-/** Web equivalent of the Qt "Browse & Select…" thumbnail grid. */
+/** Web equivalent of the Qt "浏览并选择…" thumbnail grid. */
 export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
   const [entries, setEntries] = useState<ListingEntry[]>([])
   const [picked, setPicked] = useState<Set<string>>(new Set())
@@ -30,13 +30,13 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
     if (!open) return
     setEntries([])
     setPicked(new Set())
-    setStatus("Loading listing…")
+    setStatus("正在加载列表…")
     setLoading(true)
     void browseListing(url).then((r) => {
       setLoading(false)
       if (!r.ok) return setStatus(`Failed to load listing: ${r.error}`)
       setEntries(r.entries)
-      setStatus(r.entries.length ? "" : "No videos found on that page.")
+      setStatus(r.entries.length ? "" : "该页面未找到视频。")
     })
   }, [open, url])
 
@@ -51,7 +51,7 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle>Select videos to download</DialogTitle>
+          <DialogTitle>选择要下载的视频</DialogTitle>
         </DialogHeader>
 
         {status && (
@@ -77,7 +77,7 @@ export function VideoPickerDialog({ open, onOpenChange, url, onPick }: Props) {
                       loading="lazy"
                     />
                   ) : (
-                    <span className="text-xs text-muted-foreground">no preview</span>
+                    <span className="text-xs text-muted-foreground">无预览</span>
                   )}
                   {e.duration && (
                     <span className="absolute right-1 top-1 rounded bg-black/70 px-1 text-[10px] text-white">

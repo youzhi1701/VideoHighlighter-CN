@@ -77,7 +77,7 @@ def _has_audio(path: str, log_fn=print) -> bool:
         )
         return "Audio:" in (result.stderr or "")
     except Exception as e:
-        log_fn(f"⚠️ Could not detect audio in {os.path.basename(path)}: {e}")
+        log_fn(f"⚠️ 无法检测 {os.path.basename(path)} 的音频：{e}")
         return False
 
 
@@ -88,7 +88,7 @@ def _target_canvas(files, log_fn) -> tuple[int, int, int]:
     try:
         from modules.media.video_probe import probe_video
     except Exception as e:
-        log_fn(f"⚠️ Video probe unavailable ({e}); using default 1920x1080")
+        log_fn(f"⚠️ 视频信息探测不可用（{e}），使用默认 1920x1080")
         return 1920, 1080, 30
     best = None
     for f in files:
@@ -102,7 +102,7 @@ def _target_canvas(files, log_fn) -> tuple[int, int, int]:
             if best is None or w * h > best[0] * best[1]:
                 best = (w, h, fps)
         except Exception as e:
-            log_fn(f"⚠️ Could not analyze {os.path.basename(f)}: {e}")
+            log_fn(f"⚠️ 无法分析 {os.path.basename(f)}：{e}")
     if best is None:
         return 1920, 1080, 30
     w, h, fps = best
@@ -150,13 +150,13 @@ def _normalize(src: str, dst: str, width: int, height: int, fps: int,
     result = subprocess.run(cmd, capture_output=True, text=True,
                             encoding="utf-8", errors="replace", timeout=600)
     if result.returncode != 0 or not os.path.exists(dst) or os.path.getsize(dst) == 0:
-        err = (result.stderr or "").strip()[-500:] or "unknown error"
-        raise RuntimeError(f"Normalization failed for {os.path.basename(src)}: {err}")
+        err = (result.stderr or "").strip()[-500:] or "未知错误"
+        raise RuntimeError(f"{os.path.basename(src)} 标准化失败：{err}")
 
 
 def _check_cancel(cancel_check) -> None:
     if cancel_check is not None and cancel_check():
-        raise CombineCancelled("Combine cancelled")
+        raise CombineCancelled("合并已取消")
 
 
 def combine_videos(files, output, log_fn=print, progress_fn=None,
@@ -175,9 +175,9 @@ def combine_videos(files, output, log_fn=print, progress_fn=None,
         if f and os.path.exists(f):
             valid.append(f)
         elif f:
-            log_fn(f"⚠️ Skipping missing input: {f}")
+            log_fn(f"⚠️ 跳过缺失的输入文件：{f}")
     if not valid:
-        raise ValueError("No valid input files to combine")
+        raise ValueError("没有可用于合并的有效输入文件")
 
     # Validate the music request up front: rejecting a bad mode after the
     # expensive normalize/concat has already run would waste minutes and leave
@@ -192,17 +192,17 @@ def combine_videos(files, output, log_fn=print, progress_fn=None,
         mode = music.get("mode", "replace")
         if mode not in modes:
             raise ValueError(
-                f"unknown music mode: {mode!r} (expected one of {modes})")
+                f"未知音乐模式：{mode!r}（应为 {modes} 之一）")
 
     output = os.path.abspath(output)
     out_dir = os.path.dirname(output)
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
 
-    log_fn(f"🎬 Combining {len(valid)} videos into one...")
-    log_fn("🔍 Analyzing input videos...")
+    log_fn(f"🎬 正在合并 {len(valid)} 个视频…")
+    log_fn("🔍 正在分析输入视频…")
     width, height, fps = _target_canvas(valid, log_fn)
-    log_fn(f"🎯 Target format: {width}x{height} @ {fps}fps")
+    log_fn(f"🎯 目标格式：{width}x{height} @ {fps}fps")
 
     total = len(valid)
     temp_dir = tempfile.mkdtemp(prefix="vh_combine_")
@@ -219,10 +219,10 @@ def combine_videos(files, output, log_fn=print, progress_fn=None,
             _check_cancel(cancel_check)
             if progress_fn:
                 try:
-                    progress_fn(i, total, "Combining", f"file {i + 1}/{total}")
+                    progress_fn(i, total, "正在合并", f"文件 {i + 1}/{total}")
                 except Exception:
                     pass
-            log_fn(f"⚙️ Normalizing {i + 1}/{total}: {os.path.basename(src)}")
+            log_fn(f"⚙️ 正在标准化 {i + 1}/{total}：{os.path.basename(src)}")
             dst = os.path.join(temp_dir, f"normalized_{i:03d}.mp4")
             _normalize(src, dst, width, height, fps, log_fn)
             normalized.append(dst)
@@ -230,10 +230,10 @@ def combine_videos(files, output, log_fn=print, progress_fn=None,
         _check_cancel(cancel_check)
         if progress_fn:
             try:
-                progress_fn(total, total, "Combining", "concatenating")
+                progress_fn(total, total, "正在合并", "正在拼接")
             except Exception:
                 pass
-        log_fn("🔗 Concatenating normalized videos...")
+        log_fn("🔗 正在拼接标准化后的视频…")
         concat_list = os.path.join(temp_dir, "concat_list.txt")
         with open(concat_list, "w", encoding="utf-8") as f:
             for dst in normalized:
@@ -248,14 +248,14 @@ def combine_videos(files, output, log_fn=print, progress_fn=None,
             timeout=600,
         )
         if result.returncode != 0 or not os.path.exists(staged) or os.path.getsize(staged) == 0:
-            err = (result.stderr or "").strip()[-500:] or "unknown error"
-            raise RuntimeError(f"Concatenation failed: {err}")
+            err = (result.stderr or "").strip()[-500:] or "未知错误"
+            raise RuntimeError(f"视频拼接失败：{err}")
 
         if music and music.get("path"):
             _check_cancel(cancel_check)
             from modules.media import music_track
             music_tmp = os.path.join(temp_dir, f"reel_music{out_ext or '.mp4'}")
-            log_fn(f"🎵 Applying music: {os.path.basename(music['path'])}")
+            log_fn(f"🎵 正在应用音乐：{os.path.basename(music['path'])}")
             music_track.apply_music(
                 staged, music["path"], music_tmp,
                 mode=music.get("mode", "replace"),
@@ -269,7 +269,7 @@ def combine_videos(files, output, log_fn=print, progress_fn=None,
         # the destination; the temp copy is cleaned up in finally.
         _check_cancel(cancel_check)
         shutil.copyfile(staged, output)
-        log_fn(f"✅ Combined video saved: {output}")
+        log_fn(f"✅ 合并视频已保存：{output}")
         return output
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)

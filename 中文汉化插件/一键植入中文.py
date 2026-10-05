@@ -304,6 +304,51 @@ def write_report(report: dict[str, Any], out_dir: Path) -> tuple[Path, Path]:
     return json_path, md_path
 
 
+
+def _detect_target_kind(root: Path) -> str:
+    """Classify the target before touching files."""
+    source_markers = [
+        root / "main.py",
+        root / "frontend",
+        root / "modules",
+    ]
+    exe_markers = list(root.glob("*.exe"))
+    internal_markers = [
+        root / "_internal",
+        root / "internal",
+    ]
+
+    source_score = sum(1 for p in source_markers if p.exists())
+    packaged = bool(exe_markers) and any(p.exists() for p in internal_markers)
+
+    if source_score >= 2:
+        return "source"
+    if packaged:
+        return "portable"
+    if exe_markers and not (root / "main.py").exists():
+        return "packaged"
+    return "unknown"
+
+
+def _print_target_error(root: Path, kind: str) -> None:
+    print("")
+    print("VideoHighlighter 中文汉化插件：目标目录检查失败")
+    print(f"目标目录: {root.resolve()}")
+    print("")
+    if kind in {"portable", "packaged"}:
+        print("检测到的是已经打包好的 Windows 便携版 / EXE。")
+        print("当前“一键植入中文”是源码级汉化器，不能直接修改已冻结进 EXE 的界面文字。")
+        print("未修改任何文件。")
+        print("")
+        print("正确做法：")
+        print("1. 对 VideoHighlighter 官方源码执行汉化；")
+        print("2. 汉化完成后重新打包生成中文便携版 / 中文安装包。")
+    else:
+        print("没有检测到完整的 VideoHighlighter 源码结构。")
+        print("至少应包含 main.py、frontend/、modules/ 等源码内容。")
+        print("未修改任何文件。")
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description="将 zh-CN 本地化层安全注入 VideoHighlighter 源码")
     p.add_argument("--root", type=Path, default=ROOT, help="目标源码根目录")
@@ -312,6 +357,11 @@ def main() -> int:
     p.add_argument("--strict", action="store_true", help="出现 changed/conflict/missing 时返回非零状态")
     p.add_argument("--report-dir", type=Path, default=DEFAULT_REPORT_DIR)
     args = p.parse_args()
+
+    kind = _detect_target_kind(args.root)
+    if kind != "source":
+        _print_target_error(args.root, kind)
+        return 3
 
     report = apply_catalog(args.root, args.catalog, args.dry_run)
     jp, mp = write_report(report, args.report_dir)

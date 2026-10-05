@@ -71,7 +71,7 @@ def get_duration_from_ffprobe(filepath: str, log_fn: Callable = print) -> Option
         # Not (yet) a readable media file, e.g. a partial download.
         return None
     except Exception as e:
-        log_fn(f"⚠️ Duration probe failed: {str(e)[:120]}...")
+        log_fn(f"⚠️ 时长探测失败：{str(e)[:120]}…")
     return None
 
 def parse_iso8601_duration_enhanced(duration_str: str) -> Optional[float]:
@@ -301,7 +301,7 @@ def parse_duration_from_javascript(html: str, log_fn: Callable = print) -> Optio
         return None
     # Dedup and sort
     candidates = sorted(set(candidates))
-    log_fn(f" • JS candidates: {', '.join(f'{x:.1f}' for x in candidates)}")
+    log_fn(f" • JS 候选时长：{', '.join(f'{x:.1f}' for x in candidates)}")
     # Common ad durations to deprioritize
     ad_common = {5.0, 6.0, 10.0, 15.0, 30.0}
     # Filter reasonable (>=30s) and tiny
@@ -385,41 +385,41 @@ def parse_duration_from_url(url: str) -> Optional[float]:
     return None
 
 def parse_duration_comprehensive(html: str, url: str = None, log_fn: Callable = print) -> Optional[float]:
-    log_fn(" • Checking HTML meta/microdata...")
+    log_fn(" • 正在检查 HTML meta/microdata…")
     d = parse_duration_from_html_meta(html)
     if d:
-        log_fn(f" ✓ Found in meta/microdata: {d:.1f}s")
+        log_fn(f" ✓ 从 meta/microdata 获取：{d:.1f} 秒")
         return d
-    log_fn(" • Checking JSON-LD...")
+    log_fn(" • 正在检查 JSON-LD…")
     d = parse_duration_from_json_ld(html)
     if d:
-        log_fn(f" ✓ Found in JSON-LD: {d:.1f}s")
+        log_fn(f" ✓ 从 JSON-LD 获取：{d:.1f} 秒")
         return d
-    log_fn(" • Checking inline JavaScript...")
+    log_fn(" • 正在检查内联 JavaScript…")
     d = parse_duration_from_javascript(html, log_fn)
     if d:
         # JS durations are noisy. Ignore tiny ones unless nothing else works.
         if d < 30:
-            log_fn(f" ⚠ JS duration {d:.1f}s looks suspicious (ad/preview?). Continuing...")
+            log_fn(f" ⚠ JS 时长 {d:.1f} 秒看起来可疑（可能是广告/预览），继续检查…")
         else:
-            log_fn(f" ✓ Found in JavaScript: {d:.1f}s")
+            log_fn(f" ✓ 从 JavaScript 获取：{d:.1f} 秒")
             return d
-    log_fn(" • Checking player configurations...")
+    log_fn(" • 正在检查播放器配置…")
     d2 = extract_duration_from_player_config(html)
     if d2:
-        log_fn(f" ✓ Found in player config: {d2:.1f}s")
+        log_fn(f" ✓ 从播放器配置获取：{d2:.1f} 秒")
         return d2
     if url:
-        log_fn(" • Checking URL params...")
+        log_fn(" • 正在检查 URL 参数…")
         d3 = parse_duration_from_url(url)
         if d3:
-            log_fn(f" ✓ Found in URL: {d3:.1f}s")
+            log_fn(f" ✓ 从 URL 获取：{d3:.1f} 秒")
             return d3
     # NEW: if we had a small JS duration and found nothing better, return it as last resort
     if d and d > 0:
-        log_fn(f" ⚠ Returning low-confidence JS duration: {d:.1f}s")
+        log_fn(f" ⚠ 使用低置信度 JS 时长：{d:.1f} 秒")
         return d
-    log_fn(" ✗ No duration found in HTML/JS")
+    log_fn(" ✗ 未在 HTML/JS 中找到时长")
     return None
 
 # -----------------------------
@@ -452,17 +452,17 @@ def try_duration_from_manifest(url: str, log_fn: Callable = print) -> Optional[f
                 except Exception:
                     pass
             if found and total > 0:
-                log_fn(f" ✓ Found via HLS EXTINF sum: {total:.1f}s")
+                log_fn(f" ✓ 通过 HLS EXTINF 合计得到：{total:.1f} 秒")
                 return float(total)
         if base.endswith(".mpd"):
             m = re.search(r'mediaPresentationDuration="([^"]+)"', text)
             if m:
                 d = parse_iso8601_duration_enhanced(m.group(1))
                 if d:
-                    log_fn(f" ✓ Found via DASH MPD duration: {d:.1f}s")
+                    log_fn(f" ✓ 通过 DASH MPD 获取时长：{d:.1f} 秒")
                     return float(d)
     except Exception as e:
-        log_fn(f" ⚠ Manifest duration check failed: {str(e)[:80]}...")
+        log_fn(f" ⚠ 清单时长检查失败：{str(e)[:80]}…")
     return None
 
 # -----------------------------
@@ -486,7 +486,7 @@ def get_duration_with_browser_automation(url: str, log_fn: Callable = print) -> 
         from selenium.webdriver.common.by import By
         from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
 
-        log_fn(" • Starting browser automation (with iframe support)...")
+        log_fn(" • 正在启动浏览器自动化（支持 iframe）…")
         chrome_options = Options()
         chrome_options.add_argument("--headless=new")
         chrome_options.add_argument("--disable-gpu")
@@ -502,19 +502,19 @@ def get_duration_with_browser_automation(url: str, log_fn: Callable = print) -> 
             from selenium.webdriver.chrome.service import Service
             service = Service(ChromeDriverManager().install())
             driver = webdriver.Chrome(service=service, options=chrome_options)
-            log_fn(" ✓ Using webdriver-manager ChromeDriver")
+            log_fn(" ✓ 使用 webdriver-manager ChromeDriver")
         except ImportError:
             driver = webdriver.Chrome(options=chrome_options)
-            log_fn(" ✓ Using system ChromeDriver")
+            log_fn(" ✓ 使用系统 ChromeDriver")
         driver.set_page_load_timeout(40)
         # ────────────────────────────────────────────────
         # Step 1: Load the page
         # ────────────────────────────────────────────────
-        log_fn(f" • Loading URL: {url[:90]}...")
+        log_fn(f" • 正在加载 URL：{url[:90]}…")
         try:
             driver.get(url)
         except WebDriverException as e:
-            log_fn(f" ✗ Page load failed: {str(e)[:120]}")
+            log_fn(f" ✗ 页面加载失败：{str(e)[:120]}")
             driver.quit()
             return None
         # Give page some initial breathing room
@@ -532,9 +532,9 @@ def get_duration_with_browser_automation(url: str, log_fn: Callable = print) -> 
                 WebDriverWait(driver, 12).until(
                     lambda d: d.execute_script("return document.querySelectorAll('video').length > 0")
                 )
-                log_fn(f" ✓ Found <video> tag(s) in {current_context}")
+                log_fn(f" ✓ 在 {current_context} 中找到 <video> 标签")
             except TimeoutException:
-                log_fn(f" • No <video> found in {current_context} after wait")
+                log_fn(f" • 等待后仍未在 {current_context} 中找到 <video>")
                 return None
             # Poll for duration
             deadline = time.time() + 35
@@ -573,7 +573,7 @@ def get_duration_with_browser_automation(url: str, log_fn: Callable = print) -> 
                     return findBestVideoDuration();
                 """)
                 if duration:
-                    log_fn(f" → Got duration in {current_context}: {duration:.1f}s")
+                    log_fn(f" → 在 {current_context} 中获取到时长：{duration:.1f} 秒")
                     if duration > (local_best or 0):
                         local_best = duration
                     if duration >= 30:
@@ -583,16 +583,16 @@ def get_duration_with_browser_automation(url: str, log_fn: Callable = print) -> 
         # ────────────────────────────────────────────────
         # First: try main page
         # ────────────────────────────────────────────────
-        log_fn(" • Trying main document...")
+        log_fn(" • 正在尝试主文档…")
         best_duration = try_get_duration_in_current_context()
         # ────────────────────────────────────────────────
         # Then: try switching into iframes
         # ────────────────────────────────────────────────
         if best_duration is None or best_duration < 30:
-            log_fn(" • Main page had no good duration → checking iframes...")
+            log_fn(" • 主页面未获取到可靠时长 → 正在检查 iframe…")
             driver.switch_to.default_content()
             iframes = driver.find_elements(By.TAG_NAME, "iframe")
-            log_fn(f" • Found {len(iframes)} iframe(s)")
+            log_fn(f" • 找到 {len(iframes)} 个 iframe")
             for i, iframe in enumerate(iframes, 1):
                 try:
                     src = iframe.get_attribute("src") or ""
@@ -600,30 +600,30 @@ def get_duration_with_browser_automation(url: str, log_fn: Callable = print) -> 
                     # Skip clearly non-video iframes (ads, comments, etc.)
                     if not any(kw in src.lower() for kw in video_keywords) and not any(kw in (iframe.get_attribute("id") or "").lower() for kw in video_keywords):
                         continue
-                    log_fn(f" • Trying iframe {i}/{len(iframes)}: {short_src}")
+                    log_fn(f" • 正在尝试 iframe {i}/{len(iframes)}：{short_src}")
                     driver.switch_to.frame(iframe)
                     current_context = f"iframe {i} ({short_src})"
                     duration = try_get_duration_in_current_context()
                     if duration and (best_duration is None or duration > best_duration):
                         best_duration = duration
-                        log_fn(f" → Better duration found in iframe: {duration:.1f}s")
+                        log_fn(f" → 在 iframe 中找到更可靠的时长：{duration:.1f} 秒")
                     driver.switch_to.default_content()
                     if best_duration and best_duration >= 30:
                         break # no need to check more iframes
                 except Exception as e:
-                    log_fn(f" ⚠ Iframe {i} failed: {str(e)[:80]}")
+                    log_fn(f" ⚠ iframe {i} 失败：{str(e)[:80]}")
                     driver.switch_to.default_content()
         driver.quit()
         if best_duration and best_duration > 0:
-            log_fn(f" ✓ Final best duration from browser: {best_duration:.1f}s")
+            log_fn(f" ✓ 浏览器最终获取的最佳时长：{best_duration:.1f} 秒")
             return float(best_duration)
         else:
-            log_fn(" ✗ No usable duration found even after checking iframes")
+            log_fn(" ✗ 检查 iframe 后仍未找到可用时长")
     except ImportError:
-        log_fn(" ⚠ Selenium not installed → run: pip install selenium")
+        log_fn(" ⚠ 未安装 Selenium → 请运行：pip install selenium")
     except Exception as e:
-        log_fn(f" ✗ Browser automation crashed: {type(e).__name__}: {str(e)[:120]}")
-    log_fn(" 💡 Tip: If this keeps failing, the site may require Playwright or yt-dlp is more reliable here.")
+        log_fn(f" ✗ 浏览器自动化异常：{type(e).__name__}：{str(e)[:120]}")
+    log_fn(" 💡 提示：如果持续失败，该网站可能需要 Playwright，或使用 yt-dlp 会更可靠。")
     return None
 
 # -----------------------------
@@ -696,13 +696,13 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
         with _duration_method_cache_lock:
             cached_method = _duration_method_cache.get(current_domain)
     if cached_method:
-        log_fn(f"🚀 Trying cached method first: {cached_method['name']}")
+        log_fn(f"🚀 优先尝试缓存的方法：{cached_method['name']}")
        
         try:
             if cached_method["type"] == "manifest":
                 d = try_duration_from_manifest(url, log_fn)
                 if d:
-                    log_fn(f"✅ Cached method worked: {d:.1f}s")
+                    log_fn(f"✅ 缓存方法成功：{d:.1f} 秒")
                     return d
             elif cached_method["type"] == "html_js":
                 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
@@ -710,7 +710,7 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
                 if resp.status_code == 200 and resp.text:
                     d = parse_duration_comprehensive(resp.text, url, log_fn)
                     if d and d >= 30:
-                        log_fn(f"✅ Cached method worked: {d:.1f}s")
+                        log_fn(f"✅ 缓存方法成功：{d:.1f} 秒")
                         return d
             elif cached_method["type"] == "yt_dlp":
                 cmd = cached_method["cmd"] + [url]
@@ -724,7 +724,7 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
                             try:
                                 d = float(out)
                                 if 0 < d <= 86400:
-                                    log_fn(f"✅ Cached method worked: {d:.1f}s")
+                                    log_fn(f"✅ 缓存方法成功：{d:.1f} 秒")
                                     return d
                             except Exception:
                                 pass
@@ -741,7 +741,7 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
                         if data:
                             d = _parse_yt_dlp_json_duration(data)
                             if d and 0 < d <= 86400:
-                                log_fn(f"✅ Cached method worked: {d:.1f}s")
+                                log_fn(f"✅ 缓存方法成功：{d:.1f} 秒")
                                 return d
                            
                             entries = data.get("entries") if isinstance(data, dict) else None
@@ -749,22 +749,22 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
                                 for e in entries:
                                     d = _parse_yt_dlp_json_duration(e)
                                     if d and 0 < d <= 86400:
-                                        log_fn(f"✅ Cached method worked: {d:.1f}s")
+                                        log_fn(f"✅ 缓存方法成功：{d:.1f} 秒")
                                         return d
         except Exception as e:
-            log_fn(f"⚠️ Cached method failed: {str(e)[:80]}... Trying all methods")
+            log_fn(f"⚠️ 缓存方法失败：{str(e)[:80]}… 将尝试全部方法")
        
-        log_fn("⚠️ Cached method didn't work, trying all methods...")
+        log_fn("⚠️ 缓存方法不可用，正在尝试全部方法…")
     
     # Continue with normal duration extraction if cached method fails or not available
-    log_fn("🔍 Trying manifest duration...")
+    log_fn("🔍 正在尝试从媒体清单获取时长…")
     d = try_duration_from_manifest(url, log_fn)
     if d and d > 0:
         with _duration_method_cache_lock:
             _duration_method_cache[current_domain] = {"type": "...", "name": "..."}
         return d
    
-    log_fn("🔍 Trying HTML/JS extraction...")
+    log_fn("🔍 正在尝试 HTML/JS 提取…")
     try:
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
         resp = requests.get(url, headers=headers, timeout=12)
@@ -775,9 +775,9 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
                     _duration_method_cache[current_domain] = {"type": "...", "name": "..."}
                 return d
     except Exception as e:
-        log_fn(f"⚠️ HTML fetch failed: {e}")
+        log_fn(f"⚠️ HTML 获取失败：{e}")
    
-    log_fn("🔍 Trying yt-dlp info...")
+    log_fn("🔍 正在尝试 yt-dlp 信息…")
     try:
         # Try --print duration (fast)
         cmd_print = ["yt-dlp", "--print", "%(duration)s", "--no-warnings", "--no-playlist", "--force-ipv4", "--socket-timeout", "15", url]
@@ -786,7 +786,7 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
             try:
                 d = float(result.stdout.strip())
                 if 0 < d <= 86400:
-                    log_fn(f"✅ Got duration from yt-dlp print: {d:.1f}s")
+                    log_fn(f"✅ 从 yt-dlp 输出获取时长：{d:.1f} 秒")
                     with _duration_method_cache_lock:
                         _duration_method_cache[current_domain] = {"type": "...", "name": "..."}
                     return d
@@ -809,21 +809,21 @@ def get_video_duration_advanced(url: str, log_fn: Callable = print, skip_cache: 
             if data:
                 d = _parse_yt_dlp_json_duration(data)
                 if d and 0 < d <= 86400:
-                    log_fn(f"✅ Got duration from yt-dlp JSON: {d:.1f}s")
+                    log_fn(f"✅ 从 yt-dlp JSON 获取时长：{d:.1f} 秒")
                     with _duration_method_cache_lock:
                         _duration_method_cache[current_domain] = {"type": "...", "name": "..."}
                     return d
     except Exception as e:
-        log_fn(f"⚠️ yt-dlp duration extraction failed: {e}")
+        log_fn(f"⚠️ yt-dlp 时长提取失败：{e}")
      
-    log_fn("🔍 Trying browser automation...")
+    log_fn("🔍 正在尝试浏览器自动化…")
     d = get_duration_with_browser_automation(url, log_fn)
     if d and d > 0:
         with _duration_method_cache_lock:
             _duration_method_cache[current_domain] = {"type": "...", "name": "..."}
         return d
    
-    log_fn("❌ All duration extraction methods failed")
+    log_fn("❌ 所有时长提取方法均失败")
     return None
 
 # -----------------------------
@@ -903,7 +903,7 @@ def get_safe_filename(url: str, index: int, log_fn: Callable = print) -> str:
     # Try to get filename from URL first
     url_filename = extract_filename_from_url(url)
     if url_filename:
-        log_fn(f"📝 Extracted filename from URL: {url_filename}")
+        log_fn(f"📝 从 URL 提取文件名：{url_filename}")
        
         # Check if it already has a video extension
         video_extensions = ['.mp4', '.mkv', '.webm', '.avi', '.mov', '.flv', '.m4v', '.wmv']
@@ -919,7 +919,7 @@ def get_safe_filename(url: str, index: int, log_fn: Callable = print) -> str:
             return f"{index:03d} - {clean_name}.%(ext)s"
    
     # Fallback to yt-dlp's title extraction
-    log_fn("📝 Getting title from yt-dlp...")
+    log_fn("📝 正在通过 yt-dlp 获取标题…")
     try:
         cmd = [
             "yt-dlp",
@@ -936,7 +936,7 @@ def get_safe_filename(url: str, index: int, log_fn: Callable = print) -> str:
             title = re.sub(r'[\\/*?:"<>|]', "_", title)
             return f"{index:03d} - {title}.%(ext)s"
     except Exception as e:
-        log_fn(f"⚠️ Failed to get title: {e}")
+        log_fn(f"⚠️ 获取标题失败：{e}")
    
     # Last resort: use URL hash
     url_hash = hashlib.md5(url.encode()).hexdigest()[:8]
@@ -1083,7 +1083,7 @@ def _fetch_listing_html(url: str, log_fn: Callable = print, browser: bool = Fals
             resp.raise_for_status()
             return resp.text
         except requests.RequestException as e:
-            log_fn(f"⚠️ Static fetch failed: {e}")
+            log_fn(f"⚠️ 静态页面获取失败：{e}")
             return ""
     driver = None
     try:
@@ -1096,7 +1096,7 @@ def _fetch_listing_html(url: str, log_fn: Callable = print, browser: bool = Fals
             time.sleep(1.2)
         return driver.page_source
     except Exception as e:
-        log_fn(f"❌ Browser fetch failed: {e}")
+        log_fn(f"❌ 浏览器页面获取失败：{e}")
         return ""
     finally:
         if driver is not None:
@@ -1157,14 +1157,14 @@ def detect_link_pattern(soup, base_url: str, log_fn: Callable = print) -> Option
 
     if counts:
         best = max(counts, key=lambda k: (counts[k], -_VIDEO_LINK_CANDIDATES.index(k)))
-        log_fn(f"🔎 Auto-detected link pattern: {best} ({counts[best]} link(s))")
+        log_fn(f"🔎 自动识别链接规则：{best}（{counts[best]} 个链接）")
         return best
 
     # Generic fallback: the most common first path segment that isn't nav/taxonomy.
     for seg, n in seg_counts.most_common(10):
         if len(seg) >= 2 and seg not in _NAV_SEGMENTS and n >= 5:
             pat = f"/{seg}/"
-            log_fn(f"🔎 Auto-detected link pattern (generic): {pat} ({n} link(s))")
+            log_fn(f"🔎 自动识别通用链接规则：{pat}（{n} 个链接）")
             return pat
 
     log_fn("⚠️ 无法自动识别链接规则，将回退使用 /video/")
@@ -1308,7 +1308,7 @@ def get_duration_with_playwright_automation(
     try:
         from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout, Error as PWError
 
-        log_fn("  • Starting Playwright automation...")
+        log_fn("  • 正在启动 Playwright 自动化…")
 
         browser = None
         context = None
@@ -1393,23 +1393,23 @@ def get_duration_with_playwright_automation(
                             return
                         
                         video_urls.add(req_url)
-                        log_fn(f"      📡 Captured video request: {req_url[:100]}...")
+                        log_fn(f"      📡 捕获到视频请求：{req_url[:100]}…")
                 
                 page.on("request", handle_request)
             else:
                 page = context.new_page()
 
-            log_fn(f"    • Loading: {url[:90]}...")
+            log_fn(f"    • 正在加载：{url[:90]}…")
             
             # Use domcontentloaded first, then wait for networkidle
             response = page.goto(url, wait_until="domcontentloaded", timeout=timeout * 1000)
             
             if not response:
-                log_fn("    ✗ No response")
+                log_fn("    ✗ 没有响应")
                 return None
             
             if response.status >= 400:
-                log_fn(f"    ✗ Bad response: {response.status}")
+                log_fn(f"    ✗ 响应异常：{response.status}")
                 # Continue anyway, some sites work despite 4xx
             
             # Wait a bit for initial load
@@ -1425,12 +1425,12 @@ def get_duration_with_playwright_automation(
             best_dur = None
             
             # Strategy 1: Look for video elements directly
-            log_fn("    • Strategy 1: Looking for video elements...")
+            log_fn("    • 策略 1：查找视频元素…")
             
             # Check for video elements without waiting
             has_video = page.evaluate("document.querySelectorAll('video').length > 0")
             if has_video:
-                log_fn("    ✓ Found video element(s)")
+                log_fn("    ✓ 找到视频元素")
                 
                 # Try to trigger video loading
                 page.evaluate("""
@@ -1460,7 +1460,7 @@ def get_duration_with_playwright_automation(
                     """)
                     
                     if duration and duration > 0:
-                        log_fn(f"      → Video duration: {duration:.1f}s")
+                        log_fn(f"      → 视频时长：{duration:.1f} 秒")
                         if duration >= 30:
                             best_dur = duration
                             break
@@ -1471,9 +1471,9 @@ def get_duration_with_playwright_automation(
             
             # Strategy 2: Check iframes (if main strategy failed)
             if not best_dur or best_dur < 30:
-                log_fn("    • Strategy 2: Checking iframes...")
+                log_fn("    • 策略 2：检查 iframe…")
                 iframes = page.query_selector_all("iframe")
-                log_fn(f"      Found {len(iframes)} iframes")
+                log_fn(f"      找到 {len(iframes)} 个 iframe")
                 
                 for i, iframe in enumerate(iframes, 1):
                     try:
@@ -1482,7 +1482,7 @@ def get_duration_with_playwright_automation(
                         if not src or "ad" in src.lower() or "facebook" in src.lower():
                             continue
                         
-                        log_fn(f"      • Trying iframe {i}: {src[:80]}...")
+                        log_fn(f"      • 正在尝试 iframe {i}：{src[:80]}…")
                         
                         frame = iframe.content_frame()
                         if not frame:
@@ -1500,21 +1500,21 @@ def get_duration_with_playwright_automation(
                         """)
                         
                         if dur and dur > (best_dur or 0):
-                            log_fn(f"        → Duration in iframe {i}: {dur:.1f}s")
+                            log_fn(f"        → iframe {i} 中的时长：{dur:.1f} 秒")
                             best_dur = dur
                         
                         if best_dur and best_dur >= 30:
                             break
                             
                     except Exception as iframe_err:
-                        log_fn(f"      ⚠ Iframe {i} failed: {str(iframe_err)[:80]}")
+                        log_fn(f"      ⚠ iframe {i} 失败：{str(iframe_err)[:80]}")
             
             # Strategy 3: Network capture (if enabled)
             if use_network_capture and (not best_dur or best_dur < 30):
-                log_fn("    • Strategy 3: Analyzing captured network requests...")
+                log_fn("    • 策略 3：分析捕获到的网络请求…")
                 
                 if video_urls:
-                    log_fn(f"      Found {len(video_urls)} potential video URLs")
+                    log_fn(f"      找到 {len(video_urls)} 个潜在视频 URL")
                     
                     # Filter out any remaining non-video URLs
                     filtered_urls = []
@@ -1523,26 +1523,26 @@ def get_duration_with_playwright_automation(
                         
                         # Skip image files masquerading as videos
                         if any(vu_lower.endswith(ext) for ext in ['.mp4.jpg', '.mp4.jpeg', '.mp4.png', '.mp4.gif']):
-                            log_fn(f"      ⚠ Skipping image file masquerading as video: {vu[:80]}...")
+                            log_fn(f"      ⚠ 跳过伪装成视频的图片文件：{vu[:80]}…")
                             continue
                         
                         # Skip URLs that clearly indicate thumbnails
                         if any(pattern in vu_lower for pattern in ['thumb', 'poster', 'cover', 'snapshot']):
-                            log_fn(f"      ⚠ Skipping thumbnail URL: {vu[:80]}...")
+                            log_fn(f"      ⚠ 跳过缩略图 URL：{vu[:80]}…")
                             continue
                         
                         filtered_urls.append(vu)
                     
-                    log_fn(f"      After filtering: {len(filtered_urls)} actual video URLs")
+                    log_fn(f"      过滤后剩余 {len(filtered_urls)} 个真实视频 URL")
                     
                     # Try to get duration from first video URL
                     for video_url in filtered_urls[:3]:  # Try first 3
-                        log_fn(f"      • Testing video URL: {video_url[:100]}...")
+                        log_fn(f"      • 正在测试视频 URL：{video_url[:100]}…")
                         
                         # Try to get duration from manifest
                         dur = try_duration_from_manifest(video_url, log_fn)
                         if dur and dur > (best_dur or 0):
-                            log_fn(f"        → Got duration from manifest: {dur:.1f}s")
+                            log_fn(f"        → 从清单获取时长：{dur:.1f} 秒")
                             best_dur = dur
                             break
                         
@@ -1554,8 +1554,8 @@ def get_duration_with_playwright_automation(
             # ========== ENHANCED PLAY BUTTON DEBUGGING ==========
             # Strategy 4: Try to click common play buttons (if no video found)
             if not has_video:
-                log_fn("    • 🔘 Strategy 4: Looking for play buttons...")
-                log_fn("    • 🔍 DEBUG: Starting play button detection...")
+                log_fn("    • 🔘 策略 4：查找播放按钮…")
+                log_fn("    • 🔍 调试：开始检测播放按钮…")
                 
                 # Comprehensive list of play button selectors organized by category
                 play_selectors = {
@@ -1651,7 +1651,7 @@ def get_duration_with_playwright_automation(
                 }
                 
                 # First, let's debug what elements exist on the page
-                log_fn("    • 🔍 DEBUG: Analyzing page structure for clickable elements...")
+                log_fn("    • 🔍 调试：分析页面可点击元素结构…")
                 
                 # Get all buttons and their attributes for debugging
                 all_buttons = page.evaluate("""
@@ -1682,12 +1682,12 @@ def get_duration_with_playwright_automation(
                 """)
                 
                 if all_buttons and len(all_buttons) > 0:
-                    log_fn(f"    • 🔍 DEBUG: Found {len(all_buttons)} potentially clickable elements")
+                    log_fn(f"    • 🔍 调试：找到 {len(all_buttons)} 个可能可点击的元素")
                     # Log first 5 buttons for debugging
                     for i, btn in enumerate(all_buttons[:5]):
-                        log_fn(f"      • Button {i+1}: {btn}")
+                        log_fn(f"      • 按钮 {i+1}：{btn}")
                 else:
-                    log_fn("    • 🔍 DEBUG: No clickable elements found on page")
+                    log_fn("    • 🔍 调试：页面上未找到可点击元素")
                 
                 # Also check for video containers that might need interaction
                 video_containers = page.evaluate("""
@@ -1710,13 +1710,13 @@ def get_duration_with_playwright_automation(
                 """)
                 
                 if video_containers and len(video_containers) > 0:
-                    log_fn(f"    • 🔍 DEBUG: Found {len(video_containers)} video player containers")
+                    log_fn(f"    • 🔍 调试：找到 {len(video_containers)} 个视频播放器容器")
                     for container in video_containers:
-                        log_fn(f"      • Container: {container}")
+                        log_fn(f"      • 容器：{container}")
                 
                 # Now try each category of selectors with detailed logging
                 for category, selectors in play_selectors.items():
-                    log_fn(f"    • 🔍 Trying {category} selectors...")
+                    log_fn(f"    • 🔍 正在尝试 {category} 选择器…")
                     
                     for selector in selectors:
                         try:
@@ -1724,7 +1724,7 @@ def get_duration_with_playwright_automation(
                             elements = page.query_selector_all(selector)
                             
                             if elements and len(elements) > 0:
-                                log_fn(f"      ✓ Found {len(elements)} element(s) with selector: {selector}")
+                                log_fn(f"      ✓ 使用选择器 {selector} 找到 {len(elements)} 个元素")
                                 
                                 for idx, element in enumerate(elements):
                                     try:
@@ -1733,7 +1733,7 @@ def get_duration_with_playwright_automation(
                                         is_enabled = element.is_enabled()
                                         
                                         if is_visible and is_enabled:
-                                            log_fn(f"        • Element {idx+1}: Visible ✓, Enabled ✓")
+                                            log_fn(f"        • 元素 {idx+1}：可见 ✓，可用 ✓")
                                             
                                             # Get element details for debugging
                                             element_info = element.evaluate("""
@@ -1755,10 +1755,10 @@ def get_duration_with_playwright_automation(
                                                     }
                                                 })
                                             """)
-                                            log_fn(f"        • Element details: {element_info}")
+                                            log_fn(f"        • 元素详情：{element_info}")
                                             
                                             # Try to click
-                                            log_fn(f"        • Attempting to click...")
+                                            log_fn("        • 正在尝试点击…")
                                             # Scroll element into view
                                             element.scroll_into_view_if_needed()
                                             page.wait_for_timeout(500)
@@ -1769,18 +1769,18 @@ def get_duration_with_playwright_automation(
                                             # Strategy A: Regular click
                                             try:
                                                 element.click(timeout=5000)
-                                                log_fn(f"        • ✓ Regular click succeeded")
+                                                log_fn("        • ✓ 普通点击成功")
                                                 click_success = True
                                             except Exception as click_err:
-                                                log_fn(f"        • ⚠ Regular click failed: {str(click_err)[:80]}")
+                                                log_fn(f"        • ⚠ 普通点击失败：{str(click_err)[:80]}")
                                                 
                                                 # Strategy B: Force click via JavaScript
                                                 try:
                                                     element.evaluate("el => el.click()")
-                                                    log_fn(f"        • ✓ JavaScript click succeeded")
+                                                    log_fn("        • ✓ JavaScript 点击成功")
                                                     click_success = True
                                                 except Exception as js_click_err:
-                                                    log_fn(f"        • ⚠ JavaScript click failed: {str(js_click_err)[:80]}")
+                                                    log_fn(f"        • ⚠ JavaScript 点击失败：{str(js_click_err)[:80]}")
                                                     
                                                     # Strategy C: Dispatch click event
                                                     try:
@@ -1794,19 +1794,19 @@ def get_duration_with_playwright_automation(
                                                                 el.dispatchEvent(event);
                                                             }
                                                         """)
-                                                        log_fn(f"        • ✓ DispatchEvent succeeded")
+                                                        log_fn("        • ✓ DispatchEvent 成功")
                                                         click_success = True
                                                     except Exception as dispatch_err:
-                                                        log_fn(f"        • ⚠ DispatchEvent failed: {str(dispatch_err)[:80]}")
+                                                        log_fn(f"        • ⚠ DispatchEvent 失败：{str(dispatch_err)[:80]}")
                                                 
                                                 if click_success:
-                                                    log_fn(f"      • ✅ Successfully clicked play button with selector: {selector}")
+                                                    log_fn(f"      • ✅ 已使用选择器成功点击播放按钮：{selector}")
                                                     page.wait_for_timeout(5000)
                                                     
                                                     # Check again for video after click
                                                     post_click_video = page.evaluate("document.querySelectorAll('video').length > 0")
                                                     if post_click_video:
-                                                        log_fn(f"      • ✓ Video element appeared after clicking play button!")
+                                                        log_fn("      • ✓ 点击播放按钮后出现视频元素！")
                                                         
                                                         # Try to get duration now
                                                         dur = page.evaluate("""
@@ -1816,23 +1816,23 @@ def get_duration_with_playwright_automation(
                                                             }
                                                         """)
                                                         if dur and dur > (best_dur or 0):
-                                                            log_fn(f"        → Got duration after play click: {dur:.1f}s")
+                                                            log_fn(f"        → 点击播放后获取时长：{dur:.1f} 秒")
                                                             best_dur = dur
                                                             break
                                                     else:
-                                                        log_fn(f"      • ⚠ No video element appeared after click")
+                                                        log_fn("      • ⚠ 点击后没有出现视频元素")
                                                     
                                                     # If we clicked successfully, break out of element loop
                                                     if best_dur:
                                                         break
                                                 else:
-                                                    log_fn(f"        • ✗ All click strategies failed")
+                                                    log_fn("        • ✗ 所有点击方式均失败")
                                                     
                                         else:
-                                            log_fn(f"        • Element {idx+1}: Visible: {is_visible}, Enabled: {is_enabled} - SKIPPING")
+                                            log_fn(f"        • 元素 {idx+1}：可见={is_visible}，可用={is_enabled}——跳过")
                                             
                                     except Exception as e:
-                                        log_fn(f"        • ⚠ Error checking element: {str(e)[:80]}")
+                                        log_fn(f"        • ⚠ 检查元素时出错：{str(e)[:80]}")
                                         continue
                                 
                                 # If we found and clicked a play button, break out of selector loop
@@ -1840,19 +1840,19 @@ def get_duration_with_playwright_automation(
                                     break
                                     
                         except Exception as selector_err:
-                            log_fn(f"      ⚠ Error with selector {selector}: {str(selector_err)[:80]}")
+                            log_fn(f"      ⚠ 选择器 {selector} 出错：{str(selector_err)[:80]}")
                             continue
                     
                     # If we found duration, break out of category loop
                     if best_dur:
-                        log_fn(f"    • ✅ Found duration from {category} selectors: {best_dur:.1f}s")
+                        log_fn(f"    • ✅ 从 {category} 选择器获取时长：{best_dur:.1f} 秒")
                         break
                 
                 if not best_dur:
-                    log_fn("    • ✗ No play button could be clicked successfully")
+                    log_fn("    • ✗ 没有可成功点击的播放按钮")
                     
                     # Additional debug: Try to find any clickable area in video players
-                    log_fn("    • 🔍 DEBUG: Looking for any clickable area in video players...")
+                    log_fn("    • 🔍 调试：正在查找视频播放器中的可点击区域…")
                     
                     # Try clicking on video player containers
                     player_containers = [
@@ -1864,40 +1864,40 @@ def get_duration_with_playwright_automation(
                     for container_selector in player_containers:
                         containers = page.query_selector_all(container_selector)
                         if containers:
-                            log_fn(f"      • Found {len(containers)} container(s) with selector: {container_selector}")
+                            log_fn(f"      • 使用选择器 {container_selector} 找到 {len(containers)} 个容器")
                             for idx, container in enumerate(containers):
                                 if container.is_visible():
-                                    log_fn(f"        • Clicking container {idx+1}")
+                                    log_fn(f"        • 正在点击容器 {idx+1}")
                                     try:
                                         container.click(timeout=5000)
-                                        log_fn(f"        • ✓ Container clicked")
+                                        log_fn("        • ✓ 容器点击成功")
                                         page.wait_for_timeout(3000)
                                         
                                         # Check for video after container click
                                         post_click_video = page.evaluate("document.querySelectorAll('video').length > 0")
                                         if post_click_video:
-                                            log_fn(f"        • ✓ Video appeared after container click!")
+                                            log_fn("        • ✓ 点击容器后出现视频！")
                                             break
                                     except Exception as container_err:
-                                        log_fn(f"        • ⚠ Container click failed: {str(container_err)[:80]}")
+                                        log_fn(f"        • ⚠ 容器点击失败：{str(container_err)[:80]}")
             
             # Final result
             if best_dur and best_dur > 0:
-                log_fn(f"    ✓ Final Playwright duration: {best_dur:.1f}s")
+                log_fn(f"    ✓ Playwright 最终时长：{best_dur:.1f} 秒")
                 return float(best_dur)
             elif video_urls and not best_dur:
                 # If we captured video URLs but no duration, return a placeholder
-                log_fn("    ⚠ Found video URLs but couldn't get duration")
+                log_fn("    ⚠ 找到了视频 URL，但无法获取时长")
                 return None
             else:
-                log_fn("    ✗ No reliable duration found with Playwright")
+                log_fn("    ✗ Playwright 未找到可靠时长")
                 return None
 
     except ImportError:
-        log_fn("    ⚠ Playwright not installed → pip install playwright && playwright install")
+        log_fn("    ⚠ 未安装 Playwright → pip install playwright && playwright install")
         return None
     except Exception as e:
-        log_fn(f"    ✗ Playwright crashed: {type(e).__name__}: {str(e)[:120]}")
+        log_fn(f"    ✗ Playwright 异常：{type(e).__name__}：{str(e)[:120]}")
         return None
     finally:
         # Safe cleanup (this will run even if an exception occurred)

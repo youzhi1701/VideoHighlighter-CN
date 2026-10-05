@@ -1,5 +1,5 @@
 @echo off
-setlocal EnableExtensions
+setlocal EnableExtensions EnableDelayedExpansion
 cd /d "%~dp0"
 
 title VideoHighlighter-CN Setup and Run
@@ -25,17 +25,9 @@ echo   VideoHighlighter-CN first-time setup
 echo ========================================
 echo.
 
-set "PY_CMD="
+call :FIND_PYTHON
 
-py -3.12 -c "import sys; assert sys.version_info[:2] == (3,12)" >nul 2>&1
-if %errorlevel%==0 set "PY_CMD=py -3.12"
-
-if not defined PY_CMD (
-  python -c "import sys; assert sys.version_info[:2] == (3,12)" >nul 2>&1
-  if %errorlevel%==0 set "PY_CMD=python"
-)
-
-if not defined PY_CMD (
+if not defined PYEXE (
   echo [INFO] Python 3.12 was not found.
   where winget >nul 2>&1
   if errorlevel 1 (
@@ -57,22 +49,36 @@ if not defined PY_CMD (
     exit /b 3
   )
 
-  set "PY312=%LocalAppData%\Programs\Python\Python312\python.exe"
-  if exist "%PY312%" (
-    set "PY_CMD="%PY312%""
-  ) else (
-    echo.
-    echo [INFO] Python was installed, but this terminal cannot see it yet.
-    echo Close this window and double-click this file again.
-    echo.
-    pause
-    exit /b 0
+  echo [INFO] Python installation finished. Detecting the new installation...
+
+  set /a RETRIES=0
+  :PY_RETRY
+  set /a RETRIES+=1
+  call :FIND_PYTHON
+  if defined PYEXE goto PY_READY
+
+  if !RETRIES! LSS 10 (
+    timeout /t 2 /nobreak >nul
+    goto PY_RETRY
   )
+
+  echo.
+  echo [ERROR] Python 3.12 was installed, but its executable could not be located.
+  echo Common install locations were checked automatically.
+  echo.
+  echo You can close this window and run this file again.
+  echo If the problem repeats, verify Python 3.12 in Windows Settings ^> Apps.
+  echo.
+  pause
+  exit /b 4
 )
+
+:PY_READY
+echo [INFO] Using Python: "%PYEXE%"
 
 if not exist "%VPY%" (
   echo [1/4] Creating isolated Python environment...
-  %PY_CMD% -m venv "%VENV%"
+  "%PYEXE%" -m venv "%VENV%"
   if errorlevel 1 goto SETUP_FAILED
 ) else (
   echo [1/4] Reusing incomplete Python environment...
@@ -101,12 +107,58 @@ echo [INFO] Starting VideoHighlighter-CN...
 start "" "%VPY%" "%CD%\main.py"
 exit /b 0
 
+:FIND_PYTHON
+set "PYEXE="
+
+for /f "usebackq delims=" %%P in (`py -3.12 -c "import sys; print(sys.executable)" 2^>nul`) do (
+  if exist "%%~P" set "PYEXE=%%~P"
+)
+if defined PYEXE goto :eof
+
+for /f "usebackq delims=" %%P in (`python -c "import sys; assert sys.version_info[:2] == (3,12); print(sys.executable)" 2^>nul`) do (
+  if exist "%%~P" set "PYEXE=%%~P"
+)
+if defined PYEXE goto :eof
+
+for %%P in (
+  "%LocalAppData%\Programs\Python\Python312\python.exe"
+  "%ProgramFiles%\Python312\python.exe"
+  "%ProgramFiles(x86)%\Python312\python.exe"
+) do (
+  if exist "%%~P" (
+    "%%~P" -c "import sys; assert sys.version_info[:2] == (3,12)" >nul 2>&1
+    if not errorlevel 1 set "PYEXE=%%~P"
+  )
+)
+if defined PYEXE goto :eof
+
+for /d %%D in ("%LocalAppData%\Programs\Python\Python312*") do (
+  if exist "%%~fD\python.exe" (
+    "%%~fD\python.exe" -c "import sys; assert sys.version_info[:2] == (3,12)" >nul 2>&1
+    if not errorlevel 1 set "PYEXE=%%~fD\python.exe"
+  )
+)
+if defined PYEXE goto :eof
+
+for /d %%D in ("%ProgramFiles%\Python312*") do (
+  if exist "%%~fD\python.exe" (
+    "%%~fD\python.exe" -c "import sys; assert sys.version_info[:2] == (3,12)" >nul 2>&1
+    if not errorlevel 1 set "PYEXE=%%~fD\python.exe"
+  )
+)
+
+goto :eof
+
 :SETUP_FAILED
 echo.
 echo ========================================
 echo [ERROR] Installation did not complete.
-echo No system Python files were modified.
-echo Delete the .venv folder and run this file again if needed.
+echo The project source was not modified.
+echo The incomplete environment is kept in:
+echo %VENV%
+echo.
+echo Run this file again to retry. If the same dependency keeps failing,
+echo delete the .venv folder and try again.
 echo ========================================
 echo.
 pause

@@ -1995,8 +1995,8 @@ class VideoHighlighterGUI(QWidget):
         self.frame_skip_spin.setRange(1, 30)
         self.frame_skip_spin.setValue(advanced_cfg.get("frame_skip", 5))
         self.frame_skip_spin.setToolTip(
-            "Motion and scene detection read every Nth frame. "
-            "Higher is faster and can miss a short cut or a brief motion.")
+            "运动和场景检测每隔 N 帧读取一次。"
+            "数值越大速度越快，但可能漏掉短暂切镜或瞬间运动。")
 
         motion_layout.addRow("帧间隔：", self.frame_skip_spin)
         self.vr_mode_chk = QCheckBox("VR 左右并排优化")
@@ -2016,8 +2016,8 @@ class VideoHighlighterGUI(QWidget):
         self.obj_frame_skip_spin.setRange(1, 60)
         self.obj_frame_skip_spin.setValue(advanced_cfg.get("object_frame_skip", 10))
         self.obj_frame_skip_spin.setToolTip(
-            "Object detection samples every Nth frame. "
-            "Higher is faster and can miss an object that is only briefly on screen.")
+            "物体检测每隔 N 帧采样一次。"
+            "数值越大速度越快，但可能漏掉只短暂出现在画面中的物体。")
 
         self.yolo_type_combo = QComboBox()
         self.yolo_type_combo.addItem("标准 YOLOX（80 类物体）", "standard")
@@ -2066,7 +2066,7 @@ class VideoHighlighterGUI(QWidget):
                 n = len(m["classes"])
                 kind = "社区" if m.get("community") else "自定义"
                 self.object_model_combo.addItem(
-                    f"{kind} — {m['name']} ({n} classes)", ("custom", m["path"]))
+                    f"{kind} — {m['name']}（{n} 个类别）", ("custom", m["path"]))
             for m in models:
                 n = len(m["classes"])
                 self.object_model_combo.addItem(

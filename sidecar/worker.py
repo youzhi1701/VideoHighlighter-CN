@@ -101,7 +101,7 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
 
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        emit({"type": "error", "message": f"Could not open video: {video_path}"})
+        emit({"type": "error", "message": f"无法打开视频：{video_path}"})
         return
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
@@ -116,14 +116,14 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
         err = ClipFramePrefilter.import_error()
         if err:
             cap.release()
-            emit({"type": "error", "message": f"CLIP unavailable: {err}"})
+            emit({"type": "error", "message": f"CLIP 不可用：{err}"})
             return
 
-        log_fn(f"🔍 CLIP search for '{query}' on {device} (every {interval}s)")
+        log_fn(f"🔍 正在使用 {device} 进行 CLIP 搜索“{query}”（每 {interval} 秒采样一次）")
         pf = ClipFramePrefilter(device=device)
         pf.load()
         pf.set_query(query)
-        log_fn(f"   CLIP ready on {pf.device}")
+        log_fn(f"   CLIP 已在 {pf.device} 上就绪")
 
         batch_frames, batch_ts = [], []
         idx = 0
@@ -137,7 +137,7 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
                                   batch_frames):
                 scored.append((ts, float(sc), fr))
             done += len(batch_frames)
-            progress_fn(done, expected, "CLIP scan", f"{done}/{expected} frames")
+            progress_fn(done, expected, "CLIP 扫描", f"{done}/{expected} 帧")
             batch_frames.clear()
             batch_ts.clear()
 
@@ -160,18 +160,18 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
         scored.sort(key=lambda r: -r[1])
         if mode == "clip":
             hits = [r for r in scored if r[1] >= threshold][:top_k]
-            log_fn(f"✅ {len(hits)} frame(s) above {threshold:.2f}")
+            log_fn(f"✅ 有 {len(hits)} 帧高于阈值 {threshold:.2f}")
             emit({"type": "vision_results", "results": [
                 {"timestamp": ts, "score": sc, "thumb": _jpeg_b64(fr),
                  "analysis": ""}
                 for ts, sc, fr in hits
             ]})
-            emit({"type": "finished", "output": f"{len(hits)} match(es)"})
+            emit({"type": "finished", "output": f"{len(hits)} 个匹配结果"})
             return
 
         # clip_llm: keep the best K for the VLM to confirm.
         scored = scored[:top_k]
-        log_fn(f"🤖 Confirming top {len(scored)} frame(s) with the vision model…")
+        log_fn(f"🤖 正在使用视觉模型确认排名前 {len(scored)} 帧…")
 
     else:
         # Pure LLM: sample the video directly, no ranking pass.
@@ -185,7 +185,7 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
                     scored.append((idx / fps, 0.0, frame))
             idx += 1
         cap.release()
-        log_fn(f"🤖 Checking {len(scored)} frame(s) with the vision model…")
+        log_fn(f"🤖 正在使用视觉模型检查 {len(scored)} 帧…")
 
     # VLM confirmation pass (clip_llm and llm).
     from llm.llm_module import LLMModule
@@ -198,7 +198,7 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
     for i, (ts, sc, frame) in enumerate(scored, 1):
         if cancel_evt.is_set():
             break
-        progress_fn(i, len(scored), "Vision check", f"{i}/{len(scored)}")
+        progress_fn(i, len(scored), "视觉检查", f"{i}/{len(scored)}")
         try:
             # Vision mode is selected by passing frame_base64; the frame goes at
             # full resolution because downscaling hurts VLM accuracy (the
@@ -209,7 +209,7 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
                 free_chat_mode=True,
             )
         except Exception as exc:  # noqa: BLE001 — one bad frame shouldn't end it
-            log_fn(f"⚠️ frame {ts:.1f}s: {exc}")
+            log_fn(f"⚠️ 第 {ts:.1f} 秒画面：{exc}")
             continue
         text = str(answer)
         hit = text.strip().lower().startswith("yes") or " yes" in text.lower()[:40]
@@ -220,7 +220,7 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
 
     results.sort(key=lambda r: r["timestamp"])
     emit({"type": "vision_results", "results": results})
-    emit({"type": "finished", "output": f"{len(results)} match(es)"})
+    emit({"type": "finished", "output": f"{len(results)} 个匹配结果"})
 
 
 def run_job(conn, job: dict, cancel_evt, pause_evt, preview_flag) -> None:
@@ -315,9 +315,9 @@ def run_job(conn, job: dict, cancel_evt, pause_evt, preview_flag) -> None:
                         n = 1 if output else 0
                     if n:
                         total = analysis_stats.increment_analyzed(n)
-                        log_fn(f"📈 Analyzed videos: +{n} this run — lifetime total: {total}")
+                        log_fn(f"📈 本次已分析视频：+{n}，累计：{total}")
                 except Exception as exc:  # noqa: BLE001
-                    log_fn(f"⚠️ could not update the analyzed counter: {exc}")
+                    log_fn(f"⚠️ 无法更新已分析视频计数：{exc}")
 
                 # run_highlighter returns a single output path (str) for one
                 # video, or [(input, output_or_None), ...] for a batch. Keep the
@@ -353,7 +353,7 @@ def run_job(conn, job: dict, cancel_evt, pause_evt, preview_flag) -> None:
                 emit({"type": "cancelled"})
             else:
                 emit({"type": "downloaded", "paths": paths})
-                emit({"type": "finished", "output": f"{len(paths)} file(s)"})
+                emit({"type": "finished", "output": f"{len(paths)} 个文件"})
 
         elif kind == "vision_search":
             _vision_search(job, emit, log_fn, progress_fn, cancel_evt)
@@ -370,7 +370,7 @@ def run_job(conn, job: dict, cancel_evt, pause_evt, preview_flag) -> None:
             )
             n = len(bank.all_identities())
             emit({"type": "faces_scanned", "count": n})
-            emit({"type": "finished", "output": f"{n} identities"})
+            emit({"type": "finished", "output": f"识别到 {n} 个人物"})
 
         elif kind == "combine":
             from modules.media import combine_videos
@@ -421,7 +421,7 @@ def run_job(conn, job: dict, cancel_evt, pause_evt, preview_flag) -> None:
                 root = job["card_root"]
                 cards = find_gopro_cards(extra_roots=[root], scan_mounts=False)
                 if not cards:
-                    raise RuntimeError(f"no GoPro card found at {root}")
+                    raise RuntimeError(f"在 {root} 未找到 GoPro 存储卡")
                 card = cards[0]
 
             try:
@@ -494,7 +494,7 @@ def run_job(conn, job: dict, cancel_evt, pause_evt, preview_flag) -> None:
                 emit({"type": "cancelled"})
 
         else:
-            emit({"type": "error", "message": f"unknown job kind: {kind}"})
+            emit({"type": "error", "message": f"未知任务类型：{kind}"})
 
     except Exception as exc:  # noqa: BLE001 — report everything, crash nothing
         emit({"type": "error", "message": str(exc),

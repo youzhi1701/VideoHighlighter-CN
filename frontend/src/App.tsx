@@ -338,15 +338,15 @@ export default function App() {
         if (e.outputs && e.outputs.length > 1) pendingReelRef.current = e.outputs
         // The cut list is what makes the run editable rather than final.
         if (e.edl) setLastEdl(e.edl)
-        toast.success("Done")
+        toast.success("完成")
         break
       case "cancelled":
-        appendLog("⏹ Cancelled", "err")
+        appendLog("⏹ 已取消", "err")
         toast("Cancelled")
         break
       case "error":
         appendLog(`✖ ${e.message}`, "err")
-        toast.error("Error — see log")
+        toast.error("发生错误——请查看日志")
         break
       case "done": {
         wsRef.current?.close()
@@ -381,7 +381,7 @@ export default function App() {
     const dir = pathDir(files[0])
     const stem = (outputRef.current || "highlight.mp4").replace(/\.[^.]+$/, "")
     const out = `${dir}${stem}_reel.mp4`
-    appendLog(`🎬 Combining ${files.length} highlights into a reel…`, "ok")
+    appendLog(`🎬 正在将 ${files.length} 个高光合并为短片…`, "ok")
     setTask("Combining reel")
     wsRef.current = openEventSocket(handleEvent)
     await new Promise((r) => setTimeout(r, 150))
@@ -397,8 +397,8 @@ export default function App() {
         : {}),
     })
     if (!res.ok) {
-      appendLog(`✖ Reel combine failed: ${res.error ?? "unknown"}`, "err")
-      toast.error(res.error ?? "Reel combine failed")
+      appendLog(`✖ 短片合并失败：${res.error ?? "未知错误"}`, "err")
+      toast.error(res.error ?? "短片合并失败")
       setRunning(false)
       setTask("")
       wsRef.current?.close()
@@ -455,11 +455,11 @@ export default function App() {
     if (paused) {
       await resumeRun()
       setPaused(false)
-      appendLog("▶ Resumed")
+      appendLog("▶ 已继续")
     } else {
       await pauseRun()
       setPaused(true)
-      appendLog("⏸ Pipeline paused")
+      appendLog("⏸ 处理流程已暂停")
     }
   }
 
@@ -480,7 +480,7 @@ export default function App() {
 
   const onCancel = async () => {
     await cancelRun()
-    appendLog("⏹ Cancellation requested…", "err")
+    appendLog("⏹ 已请求取消…", "err")
   }
 
   /** Card-to-film in one job. The engine config comes from the other tabs, so
@@ -509,7 +509,7 @@ export default function App() {
     const dir = await pickDirectory()
     if (!dir) return
     const res = await scanFolder(dir, true)
-    if (!res.ok) return toast.error(res.error ?? "Could not scan folder")
+    if (!res.ok) return toast.error(res.error ?? "无法扫描文件夹")
     if (!res.files.length) return toast("No videos found in that folder")
     let added = 0
     setVideos((v) => {
@@ -517,7 +517,7 @@ export default function App() {
       added = merged.length - v.length
       return merged
     })
-    toast.success(`+${added} video${added === 1 ? "" : "s"}`)
+    toast.success(`已添加 ${added} 个视频`)
   }
 
   const pickMusic = async () => {
@@ -526,14 +526,14 @@ export default function App() {
   }
 
   const launchEditor = async () => {
-    if (!videos.length) return toast.error("Add a video first")
+    if (!videos.length) return toast.error("请先添加视频")
     // The viewer is a separate Qt process and takes ~10s to appear, so say so —
     // otherwise the click looks like it did nothing.
     toast("Opening Timeline Viewer — it takes a few seconds to appear…")
-    appendLog(`📊 Opening Timeline Viewer for ${basename(videos[0])}…`)
+    appendLog(`📊 正在为 ${basename(videos[0])} 打开时间线查看器…`)
     const res = await openEditor(videos[0])
     if (!res.ok) {
-      toast.error(res.error ?? "Could not open the Timeline Viewer")
+      toast.error(res.error ?? "无法打开时间线查看器")
       appendLog(`✖ ${res.error}`, "err")
     }
   }

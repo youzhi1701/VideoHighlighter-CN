@@ -66,6 +66,14 @@ STAGE_MUSIC_MIX = "music_mix"
 STAGE_ORDER = (STAGE_INGEST, STAGE_MUSIC, STAGE_HIGHLIGHT,
                STAGE_COMBINE, STAGE_MUSIC_MIX)
 
+STAGE_LABELS_ZH = {
+    STAGE_INGEST: "导入素材",
+    STAGE_MUSIC: "音乐分析",
+    STAGE_HIGHLIGHT: "高光分析",
+    STAGE_COMBINE: "合成成片",
+    STAGE_MUSIC_MIX: "音乐混合",
+}
+
 PENDING = "pending"
 RUNNING = "running"
 DONE = "done"
@@ -193,14 +201,14 @@ def load_job(path: str) -> JobState:
         data = json.load(fh)
     if data.get("version") != STATE_VERSION:
         raise ValueError(
-            f"unsupported job state version: {data.get('version')!r} "
-            f"(this build understands {STATE_VERSION})")
+            f"不支持的任务状态版本：{data.get('version')!r} "
+            f"（当前版本支持 {STATE_VERSION}）")
     return JobState.from_dict(data)
 
 
 def _check_cancel(cancel_check) -> None:
     if cancel_check is not None and cancel_check():
-        raise PipelineCancelled("cancelled")
+        raise PipelineCancelled("已取消")
 
 
 def _default_highlight_runner(paths, gui_config, log_fn, progress_fn, cancel_flag):
@@ -260,7 +268,7 @@ def run_auto_pipeline(
     """
     started = time.time()
     if card is None and not source_paths:
-        raise ValueError("run_auto_pipeline needs either card= or source_paths=")
+        raise ValueError("自动流程需要提供存储卡或源视频文件")
 
     os.makedirs(dest_root, exist_ok=True)
     state_path = job_path(dest_root)
@@ -269,12 +277,12 @@ def run_auto_pipeline(
     if resume and os.path.exists(state_path):
         try:
             state = load_job(state_path)
-            log_fn(f"↩️ Resuming job {state.job_id}")
+            log_fn(f"↩️ 正在继续任务 {state.job_id}")
         except (OSError, ValueError) as exc:
             # An unreadable state file must not block a fresh run; say so
             # loudly, because the user is about to redo work they may think
             # is already done.
-            log_fn(f"⚠️ Ignoring unusable job state ({exc}); starting fresh")
+            log_fn(f"⚠️ 已忽略无法使用的任务状态（{exc}），将重新开始")
             state = None
     if state is None:
         state = JobState(
@@ -320,6 +328,7 @@ def run_auto_pipeline(
         """
         nonlocal done_count
         stage = state.stage(name)
+        label = STAGE_LABELS_ZH.get(name, name)
         _check_cancel(cancel_check)
 
         # Compared against the key recorded by the *previous* run, then
@@ -329,9 +338,9 @@ def run_auto_pipeline(
         stage.key = key
 
         if reusable:
-            log_fn(f"↩️ {name}: already done, skipping")
+            log_fn(f"↩️ {label}：已完成，跳过")
             done_count += 1
-            advance(f"{name} (cached)")
+            advance(f"{label}（缓存）")
             if stage_fn is not None:
                 stage_fn(name, SKIPPED, stage.detail)
             return None
@@ -342,14 +351,14 @@ def run_auto_pipeline(
         try:
             value = fn(stage)
         except PipelineCancelled:
-            announce(stage, PENDING, "cancelled")
+            announce(stage, PENDING, "已取消")
             raise
         except Exception as exc:
             stage.seconds = time.time() - t0
             stage.error = f"{type(exc).__name__}: {exc}"
-            state.errors.append(f"{name}: {stage.error}")
+            state.errors.append(f"{label}：{stage.error}")
             announce(stage, FAILED)
-            log_fn(f"❌ {name} failed: {stage.error}")
+            log_fn(f"❌ {label}失败：{stage.error}")
             print(traceback.format_exc())   # debug log only; see CLAUDE.md
             if optional:
                 return None
@@ -357,7 +366,7 @@ def run_auto_pipeline(
         stage.seconds = time.time() - t0
         announce(stage, DONE)
         done_count += 1
-        advance(f"{name} done")
+        advance(f"{label}完成")
         return value
 
     # --- ingest ------------------------------------------------------------
@@ -369,7 +378,7 @@ def run_auto_pipeline(
                 base = done_count / len(planned)
                 span = 1.0 / len(planned)
                 progress_fn(min(1.0, base + span * (done / total)),
-                            f"Copying {name}")
+                            f"正在复制 {name}")
 
         result = ingest_card(card, dest_root, folder_name=folder_name,
                              verify=verify, log_fn=log_fn,
@@ -378,7 +387,7 @@ def run_auto_pipeline(
         manifest = write_manifest(result)
         state.clips = result.paths
         stage.outputs = [manifest]
-        stage.detail = f"{len(result.paths)} clip(s)"
+        stage.detail = f"{len(result.paths)} 个片段"
         return result
 
     if card is not None:
@@ -397,7 +406,7 @@ def run_auto_pipeline(
         state.stage(STAGE_INGEST).status = SKIPPED
 
     if not state.clips:
-        raise RuntimeError("no source clips to work with")
+        raise RuntimeError("没有可处理的源视频片段")
 
     # --- music analysis ----------------------------------------------------
     def _music(stage: Stage):
@@ -408,7 +417,7 @@ def run_auto_pipeline(
         save_analysis(analysis, out)
         state.music_analysis = out
         stage.outputs = [out]
-        stage.detail = f"{analysis.bpm:.1f} BPM, {len(analysis.beats)} beats"
+        stage.detail = f"{analysis.bpm:.1f} BPM，{len(analysis.beats)} 个节拍"
         log_fn(f"🎵 {os.path.basename(music_path)}: {stage.detail}")
         return analysis
 
@@ -429,10 +438,10 @@ def run_auto_pipeline(
                     from modules.audio.music_analysis import load_analysis
                     analysis = load_analysis(saved[0])
                     state.music_analysis = saved[0]
-                    log_fn(f"↩️ Reusing the beat grid: {analysis.bpm:.1f} BPM")
+                    log_fn(f"↩️ 正在复用节拍网格：{analysis.bpm:.1f} BPM")
                 except Exception as exc:
-                    log_fn(f"⚠️ Saved beat grid unusable ({exc}); "
-                           f"cuts will not be quantised")
+                    log_fn(f"⚠️ 已保存的节拍网格无法使用（{exc}）；"
+                           f"剪切点将不进行节拍对齐")
 
     # --- script ------------------------------------------------------------
     script = None
@@ -440,13 +449,13 @@ def run_auto_pipeline(
         try:
             from modules.segments.script_plan import load_script
             script = load_script(script_path)
-            log_fn(f"📝 Script '{script.title}': {script.clip_count} clip(s), "
-                   f"target {script.target_duration:.0f}s")
+            log_fn(f"📝 脚本“{script.title}”：{script.clip_count} 个片段，"
+                   f"目标时长 {script.target_duration:.0f} 秒")
         except Exception as exc:
             # A malformed script is a user error worth surfacing, but it must
             # not strand footage that is already copied and analysable.
-            log_fn(f"⚠️ Script ignored ({type(exc).__name__}: {exc})")
-            state.errors.append(f"script: {exc}")
+            log_fn(f"⚠️ 脚本已忽略（{type(exc).__name__}：{exc}）")
+            state.errors.append(f"脚本：{exc}")
 
     # --- highlights --------------------------------------------------------
     def _highlight(stage: Stage):
@@ -461,7 +470,7 @@ def run_auto_pipeline(
             # detail text is reliably useful here.
             detail = next((a for a in args if isinstance(a, str)), "")
             if progress_fn is not None and planned:
-                progress_fn(min(1.0, done_count / len(planned)), detail or "Analysing")
+                progress_fn(min(1.0, done_count / len(planned)), detail or "正在分析")
 
         class _CancelFlag:
             """Adapts ``cancel_check()`` to the ``.is_set()`` flag the engine
@@ -483,10 +492,10 @@ def run_auto_pipeline(
                     outputs.append(out)
         outputs = [p for p in outputs if p and os.path.exists(p)]
         if not outputs:
-            raise RuntimeError("the engine produced no highlight clips")
+            raise RuntimeError("分析引擎没有生成任何高光片段")
         state.highlights = outputs
         stage.outputs = list(outputs)
-        stage.detail = f"{len(outputs)} highlight(s)"
+        stage.detail = f"{len(outputs)} 个高光片段"
         return outputs
 
     run_stage(STAGE_HIGHLIGHT, _highlight)
@@ -522,12 +531,12 @@ def run_auto_pipeline(
                                          transition_bars=transition_bars,
                                          log_fn=log_fn)
         elif quantise:
-            log_fn("⚠️ Beat quantising asked for, but no music analysis — skipped")
+            log_fn("⚠️ 已启用节拍对齐，但没有可用的音乐分析结果——已跳过")
 
         save_edl(cut_list, edl_out)
         state.edl = edl_out
-        log_fn(f"📝 Cut list: {edl_out} "
-               f"({len(cut_list.cuts)} cuts, {cut_list.duration:.0f}s)")
+        log_fn(f"📝 剪辑列表：{edl_out} "
+               f"（{len(cut_list.cuts)} 个剪切，{cut_list.duration:.0f} 秒）")
 
         untouched = (
             len(cut_list.cuts) == 1
@@ -542,7 +551,7 @@ def run_auto_pipeline(
             import shutil
             if os.path.abspath(cut_list.cuts[0].source) != os.path.abspath(reel):
                 shutil.copy2(cut_list.cuts[0].source, reel)
-            log_fn("🎬 One clip, kept whole — copied rather than re-encoded")
+            log_fn("🎬 只有一个完整片段——直接复制，不重新编码")
         else:
             # render_edl re-cuts each clip at its (possibly quantised)
             # timestamps and joins with transitions. Music is applied there
@@ -556,7 +565,7 @@ def run_auto_pipeline(
         state.reel = reel
         state.final = reel
         stage.outputs = [reel, edl_out]
-        stage.detail = f"{len(cut_list.cuts)} cuts, {cut_list.duration:.0f}s"
+        stage.detail = f"{len(cut_list.cuts)} 个剪切，{cut_list.duration:.0f} 秒"
         return reel
 
     # Everything the finished reel's shape depends on. Changing any of it must
@@ -584,7 +593,7 @@ def run_auto_pipeline(
     log_fn(f"{'✅' if ok else '⚠️'} Job {state.job_id} finished in {seconds:.0f}s "
            f"-> {state.final or '(no output)'}")
     if progress_fn is not None:
-        progress_fn(1.0, "done")
+        progress_fn(1.0, "完成")
     return JobResult(state=state, output=state.final, seconds=seconds, ok=ok)
 
 

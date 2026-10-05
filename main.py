@@ -678,18 +678,21 @@ class SignalRunWorker(QThread):
         self._is_running = True
         n = len(self.video_paths)
         done = 0
+        kind_label = {"motion": "运动", "audio": "音频", "objects": "物体",
+                      "actions": "动作", "transcript": "转录", "subtitles": "字幕"}.get(
+                          self.kind, self.kind)
         try:
-            self.log.emit(f"🚀 {self.kind.title()}按需分析，共 {n} 个视频…")
+            self.log.emit(f"🚀 {kind_label}按需分析，共 {n} 个视频…")
             for i, vp in enumerate(self.video_paths):
                 if self._cancel_flag.is_set():
                     break
                 name = os.path.basename(vp)
-                self.log.emit(f"▶️ {self.kind} [{i+1}/{n}]: {name}")
+                self.log.emit(f"▶️ {kind_label} [{i+1}/{n}]：{name}")
 
                 def progress(cur, tot, task, det, _i=i, _name=name):
                     frac = (cur / tot) if tot else 0.0
                     overall = int(((_i + frac) / n) * 100)
-                    self.progress.emit(overall, 100, self.kind.title(), f"{_name}: {det}")
+                    self.progress.emit(overall, 100, kind_label, f"{_name}：{det}")
 
                 try:
                     patch = self._run_one(aod, vp, progress)
@@ -708,10 +711,10 @@ class SignalRunWorker(QThread):
                 self.cancelled.emit()
                 self.finished.emit("")
             else:
-                self.finished.emit(f"{self.kind.title()}: {done}/{n} done")
+                self.finished.emit(f"{kind_label}：已完成 {done}/{n}")
         except Exception as e:
             import traceback
-            self.log.emit(f"❌ {self.kind} 运行错误：{e}")
+            self.log.emit(f"❌ {kind_label}运行错误：{e}")
             self.log.emit(traceback.format_exc())
             self.finished.emit("")
         finally:

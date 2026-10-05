@@ -666,20 +666,20 @@ class LLMChatWidget(QWidget):
 
         # --- Settings section (foldable: once connected it's set-and-forget,
         # so folding it gives its height back to the chat/search below) ---
-        settings_group = CollapsibleSection("LLM Settings", settings_key="llm/settings")
+        settings_group = CollapsibleSection("大模型设置", settings_key="llm/settings")
         settings_layout = QVBoxLayout()
         settings_layout.setSpacing(4)
 
         # Row 1: backend + model + connect + status (one row to save height)
         row1 = QHBoxLayout()
-        row1.addWidget(QLabel("Backend:"))
+        row1.addWidget(QLabel("运行后端："))
         self.backend_combo = QComboBox()
-        self.backend_combo.addItem("Ollama (local server)", "ollama")
-        self.backend_combo.addItem("llama-cpp (GGUF file)", "llama-cpp")
+        self.backend_combo.addItem("Ollama（本地服务）", "ollama")
+        self.backend_combo.addItem("llama-cpp（GGUF 文件）", "llama-cpp")
         self.backend_combo.currentIndexChanged.connect(self._on_backend_changed)
         row1.addWidget(self.backend_combo)
 
-        row1.addWidget(QLabel("Model:"))
+        row1.addWidget(QLabel("模型："))
         self.model_combo = QComboBox()
         self.model_combo.setEditable(True)
         self.model_combo.setMinimumWidth(180)
@@ -698,7 +698,7 @@ class LLMChatWidget(QWidget):
         self.connect_btn.clicked.connect(self._connect_llm)
         row1.addWidget(self.connect_btn)
 
-        self.status_label = QLabel("Not connected")
+        self.status_label = QLabel("未连接")
         self.status_label.setStyleSheet("color:#999;font-style:italic;")
         row1.addWidget(self.status_label)
         row1.addStretch()
@@ -706,13 +706,13 @@ class LLMChatWidget(QWidget):
 
         # Row 1b: which Ollama server. Hidden for llama-cpp, which has no
         # server to point anywhere. It sits next to Backend rather than in a
-        # preferences dialog because this is the row where "connect to what"
+        # preferences dialog because this is the row where "连接到哪里"
         # is already being answered, and because a run that fails with "model
         # not found" needs the machine that was asked to be on screen.
         self.ollama_row_widget = QWidget()
         ollama_inner = QHBoxLayout()
         ollama_inner.setContentsMargins(0, 0, 0, 0)
-        ollama_inner.addWidget(QLabel("Ollama host:"))
+        ollama_inner.addWidget(QLabel("Ollama 地址："))
         self.ollama_host_input = QLineEdit()
         self.ollama_host_input.setPlaceholderText(OLLAMA_DEFAULT_URL)
         self.ollama_host_input.setToolTip(
@@ -733,9 +733,9 @@ class LLMChatWidget(QWidget):
         self.gguf_row_widget = QWidget()
         gguf_inner = QHBoxLayout()
         gguf_inner.setContentsMargins(0, 0, 0, 0)
-        gguf_inner.addWidget(QLabel("GGUF path:"))
+        gguf_inner.addWidget(QLabel("GGUF 路径："))
         self.gguf_path_input = QLineEdit()
-        self.gguf_path_input.setPlaceholderText("/path/to/model.gguf")
+        self.gguf_path_input.setPlaceholderText("请选择 model.gguf")
         gguf_inner.addWidget(self.gguf_path_input)
         self.gguf_browse_btn = QPushButton("Browse...")
         self.gguf_browse_btn.clicked.connect(self._browse_gguf)
@@ -748,9 +748,9 @@ class LLMChatWidget(QWidget):
         self.mmproj_row_widget = QWidget()
         mmproj_inner = QHBoxLayout()
         mmproj_inner.setContentsMargins(0, 0, 0, 0)
-        mmproj_inner.addWidget(QLabel("mmproj path:"))
+        mmproj_inner.addWidget(QLabel("mmproj 路径："))
         self.mmproj_path_input = QLineEdit()
-        self.mmproj_path_input.setPlaceholderText("/path/to/mmproj-model.gguf (optional, for vision)")
+        self.mmproj_path_input.setPlaceholderText("请选择 mmproj-model.gguf（可选，用于视觉模型）")
         mmproj_inner.addWidget(self.mmproj_path_input)
         self.mmproj_browse_btn = QPushButton("Browse...")
         self.mmproj_browse_btn.clicked.connect(self._browse_mmproj)
@@ -773,11 +773,11 @@ class LLMChatWidget(QWidget):
         # of their own) so the compact LLM panel doesn't overflow and clip its
         # lower controls below the panel's action bar when there's no context.
         row4 = QHBoxLayout()
-        self.context_label = QLabel("No video context")
+        self.context_label = QLabel("没有视频上下文")
         self.context_label.setStyleSheet("color:#f44336;font-size:9pt;font-weight:bold;")
         row4.addWidget(self.context_label)
 
-        self.reasoning_checkbox = QCheckBox("Enable reasoning")
+        self.reasoning_checkbox = QCheckBox("启用推理")
         self.reasoning_checkbox.setChecked(True)
         self.reasoning_checkbox.setToolTip(
             "When enabled, the LLM will infer relationships between detected objects and actions\n"
@@ -787,25 +787,25 @@ class LLMChatWidget(QWidget):
 
         self.reasoning_stats_btn = QPushButton("Stats")
         fit_width(self.reasoning_stats_btn)
-        self.reasoning_stats_btn.setToolTip("Show reasoning statistics")
+        self.reasoning_stats_btn.setToolTip("显示推理统计")
         self.reasoning_stats_btn.clicked.connect(self._show_reasoning_stats)
         row4.addWidget(self.reasoning_stats_btn)
 
         self.reasoning_save_btn = QPushButton("Save")
         fit_width(self.reasoning_save_btn)
-        self.reasoning_save_btn.setToolTip("Save inferred facts to cache")
+        self.reasoning_save_btn.setToolTip("将推理结果保存到缓存")
         self.reasoning_save_btn.clicked.connect(self._save_reasoning_facts)
         row4.addWidget(self.reasoning_save_btn)
 
         row4.addStretch()
 
-        self.load_cache_btn = QPushButton("Load Cache")
-        self.load_cache_btn.setToolTip("Manually pick a .cache.json file")
+        self.load_cache_btn = QPushButton("加载缓存")
+        self.load_cache_btn.setToolTip("手动选择 .cache.json 文件")
         self.load_cache_btn.clicked.connect(self._load_cache_from_file)
         row4.addWidget(self.load_cache_btn)
 
-        self.show_context_btn = QPushButton("Show Context")
-        self.show_context_btn.setToolTip("See exactly what text the LLM receives")
+        self.show_context_btn = QPushButton("显示上下文")
+        self.show_context_btn.setToolTip("查看大模型实际接收到的完整文本")
         self.show_context_btn.clicked.connect(self._show_context_debug)
         row4.addWidget(self.show_context_btn)
 
@@ -813,42 +813,42 @@ class LLMChatWidget(QWidget):
         
         # Visual search — its own foldable section, sibling of the settings
         # (it used to be nested inside them, so it vanished with them too).
-        search_group = CollapsibleSection("Visual Search", settings_key="llm/visual-search")
+        search_group = CollapsibleSection("视觉搜索", settings_key="llm/visual-search")
         search_layout = QHBoxLayout()
         
-        search_layout.addWidget(QLabel("Search for:"))
+        search_layout.addWidget(QLabel("搜索内容："))
         self.search_target = QLineEdit()
-        self.search_target.setPlaceholderText("explosion, person, car, etc.")
+        self.search_target.setPlaceholderText("爆炸、人物、汽车等")
         search_layout.addWidget(self.search_target)
         
-        search_layout.addWidget(QLabel("From:"))
+        search_layout.addWidget(QLabel("从："))
         self.search_start_time = TimeSpinBox()
         self.search_start_time.setRange(0, 99999)
         self.search_start_time.setValue(0)
         self.search_start_time.setSingleStep(10)
         self.search_start_time.setDecimals(2)
         self.search_start_time.setToolTip(
-            "Start searching from this timestamp. Type seconds (90) or mm:ss (1:30)."
+            "从此时间点开始搜索。可输入秒数（90）或 mm:ss（1:30）。"
         )
         search_layout.addWidget(self.search_start_time)
 
-        search_layout.addWidget(QLabel("Interval:"))
+        search_layout.addWidget(QLabel("间隔："))
         self.search_interval = TimeSpinBox()
         self.search_interval.setRange(0.5, 600.0)  # up to 10 minutes per step
         self.search_interval.setValue(1.0)
         self.search_interval.setSingleStep(1.0)
         self.search_interval.setDecimals(2)
         self.search_interval.setToolTip(
-            "Time between sampled frames. Type seconds (60) or mm:ss (1:00)."
+            "采样帧之间的时间间隔。可输入秒数（60）或 mm:ss（1:00）。"
         )
         search_layout.addWidget(self.search_interval)
         
         # Engine selector: CLIP (fast GPU ranker) / LLM (VLM) / CLIP+LLM (funnel)
-        search_layout.addWidget(QLabel("Engine:"))
+        search_layout.addWidget(QLabel("引擎："))
         self.search_engine_combo = QComboBox()
-        self.search_engine_combo.addItem("CLIP + LLM", "clip_llm")
-        self.search_engine_combo.addItem("CLIP only", "clip")
-        self.search_engine_combo.addItem("LLM only", "llm")
+        self.search_engine_combo.addItem("CLIP + 大模型", "clip_llm")
+        self.search_engine_combo.addItem("仅 CLIP", "clip")
+        self.search_engine_combo.addItem("仅大模型", "llm")
         self.search_engine_combo.setToolTip(
             "CLIP only  : fast GPU similarity ranking; best for broad concepts.\n"
             "LLM only   : the vision model checks every frame (slow, reasons, uncensored).\n"
@@ -857,7 +857,7 @@ class LLMChatWidget(QWidget):
         self.search_engine_combo.currentIndexChanged.connect(self._on_search_engine_changed)
         search_layout.addWidget(self.search_engine_combo)
 
-        self.search_topk_label = QLabel("Top-K:")
+        self.search_topk_label = QLabel("Top-K：")
         search_layout.addWidget(self.search_topk_label)
         self.search_topk = QSpinBox()
         self.search_topk.setRange(1, 1000)
@@ -882,7 +882,7 @@ class LLMChatWidget(QWidget):
         self._on_search_engine_changed()  # sync Top-K visibility to restored engine
 
         # Add "stop on first match" checkbox
-        self.stop_on_match_cb = QCheckBox("Stop on find")
+        self.stop_on_match_cb = QCheckBox("找到后停止")
         # Off by default: a full scan reports every match and, since frame
         # embeddings are memoised, it also leaves the video fully indexed — so
         # every later search on it is instant. Stopping early saves time once
@@ -914,7 +914,7 @@ class LLMChatWidget(QWidget):
         # Match navigation: step through found timestamps with arrows
         self.search_prev_btn = QPushButton("◀")
         self.search_prev_btn.setFixedWidth(30)
-        self.search_prev_btn.setToolTip("Previous match")
+        self.search_prev_btn.setToolTip("上一个匹配")
         self.search_prev_btn.clicked.connect(lambda: self._step_search_result(-1))
         self.search_prev_btn.setEnabled(False)
         search_layout.addWidget(self.search_prev_btn)
@@ -926,7 +926,7 @@ class LLMChatWidget(QWidget):
 
         self.search_next_btn = QPushButton("▶")
         self.search_next_btn.setFixedWidth(30)
-        self.search_next_btn.setToolTip("Next match")
+        self.search_next_btn.setToolTip("下一个匹配")
         self.search_next_btn.clicked.connect(lambda: self._step_search_result(1))
         self.search_next_btn.setEnabled(False)
         search_layout.addWidget(self.search_next_btn)
@@ -961,7 +961,7 @@ class LLMChatWidget(QWidget):
         # --- Input bar ---
         input_layout = QHBoxLayout()
         self.input_field = QLineEdit()
-        self.input_field.setPlaceholderText("Ask about the video analysis or search visually...")
+        self.input_field.setPlaceholderText("询问视频分析结果，或进行视觉搜索…")
         self.input_field.setStyleSheet(
             "QLineEdit{padding:4px 8px;font-size:10pt;border:1px solid #555;border-radius:4px;}"
         )
@@ -993,9 +993,9 @@ class LLMChatWidget(QWidget):
         self.clear_btn.clicked.connect(self._clear_chat)
         input_layout.addWidget(self.clear_btn)
 
-        self.free_chat_chk = QCheckBox("Free chat")
+        self.free_chat_chk = QCheckBox("自由对话")
         self.free_chat_chk.setToolTip(
-            "When checked, the LLM answers freely without being restricted to video data"
+            "勾选后，大模型可以自由回答，不仅限于视频数据"
         )
         input_layout.addWidget(self.free_chat_chk)
 
@@ -1006,7 +1006,7 @@ class LLMChatWidget(QWidget):
     # --------------------------------------------------------- Public API
 
     def set_analysis_data(self, data: dict, video_path: str = ""):
-        """Feed video analysis cache so the LLM has context."""
+        """将视频分析缓存提供给大模型作为上下文。"""
         self._analysis_data = data
         self._video_path = video_path
         self._update_context_label()
@@ -1152,7 +1152,7 @@ class LLMChatWidget(QWidget):
             return False
 
         if require_llm and (not self._llm or not self._llm.is_loaded()):
-            self._append_system("⚠️ LLM not connected. This engine requires a connected vision model.")
+            self._append_system("⚠️ 大模型未连接。此引擎需要已连接的视觉模型。")
             return False
         
         try:
@@ -1160,10 +1160,10 @@ class LLMChatWidget(QWidget):
                 self._analyzer.close()
             
             self._analyzer = VideoSeekAnalyzer(path, self._llm, verbose=False)
-            self._append_system(f"✅ Video analyzer ready: {os.path.basename(path)}")
+            self._append_system(f"✅ 视频分析器已就绪：{os.path.basename(path)}")
             return True
         except Exception as e:
-            self._append_system(f"❌ Failed to initialize analyzer: {e}")
+            self._append_system(f"❌ 初始化分析器失败：{e}")
             return False
 
     # ------------------------------------------------ Visual search
@@ -1224,7 +1224,7 @@ class LLMChatWidget(QWidget):
         """Start visual search for target in video."""
         target = self.search_target.text().strip()
         if not target:
-            self._append_system("❌ Please enter something to search for")
+            self._append_system("❌ 请输入要搜索的内容")
             return
 
         engine = self.search_engine_combo.currentData()  # "clip_llm" | "clip" | "llm"
@@ -1232,14 +1232,14 @@ class LLMChatWidget(QWidget):
 
         if not self._analyzer:
             if not self._init_analyzer(require_llm=(engine != "clip")):
-                self._append_system("❌ Cannot start search: No video loaded or analyzer not ready")
+                self._append_system("❌ 无法开始搜索：尚未加载视频或分析器未就绪")
                 return
 
         # Engines that use the VLM need a live model. The analyzer may have been
         # created earlier by a CLIP-only run (with no LLM), so sync the current one.
         if engine != "clip":
             if not self._llm or not self._llm.is_loaded():
-                self._append_system("⚠️ This engine needs a connected vision model. Connect one, or use CLIP only.")
+                self._append_system("⚠️ 此引擎需要连接视觉模型。请先连接模型，或使用“仅 CLIP”。")
                 return
             self._analyzer.llm = self._llm
         
@@ -1330,7 +1330,7 @@ class LLMChatWidget(QWidget):
                 "⏹ Stop requested — will stop after current frame finishes.\n"
                 "   (GGUF image decoding cannot be interrupted mid-frame)"
             )
-            self.search_progress.setText("Stopping after current frame...")
+            self.search_progress.setText("当前帧结束后停止…")
             self.search_btn.setEnabled(True)
             self.stop_search_btn.setEnabled(False)
             self.stop_btn.setEnabled(False)
@@ -1415,7 +1415,7 @@ class LLMChatWidget(QWidget):
         if self._timeline_bridge and self._timeline_bridge.is_connected:
             self._timeline_bridge._cmd_seek({'time': str(timestamp)})
         
-        self.search_progress.setText(f"Analyzing frame at {timestamp_str}...")
+        self.search_progress.setText(f"正在分析 {timestamp_str} 的画面…")
 
     @Slot(float, str, str)
     # ---- match navigation (◀ ▶) -------------------------------------------
@@ -1488,7 +1488,7 @@ class LLMChatWidget(QWidget):
         if found_count > 0:
             ts_list = ", ".join(r["timestamp_str"] for r in found_results)
             self._append_system(
-                f"✅ Search complete. Found '{self.search_target.text()}' at {found_count} timestamp(s): {ts_list}"
+                f"✅ 搜索完成。在 {found_count} 个时间点找到“{self.search_target.text()}”：{ts_list}"
             )
             
             # Worker is finished so _seek_to_timestamp (which touches the
@@ -1497,7 +1497,7 @@ class LLMChatWidget(QWidget):
 
         else:
             self._append_system(
-                f"❌ Search complete. No '{self.search_target.text()}' found in video."
+                f"❌ 搜索完成。视频中未找到“{self.search_target.text()}”。"
             )
 
         # ── Persist findings (added live during scan) to disk once ──
@@ -1521,8 +1521,8 @@ class LLMChatWidget(QWidget):
     @Slot(str)
     def _on_search_error(self, error: str):
         """Handle search error."""
-        self._append_system(f"❌ Search error: {error}")
-        self.search_progress.setText("Search failed")
+        self._append_system(f"❌ 搜索出错：{error}")
+        self.search_progress.setText("搜索失败")
         self.search_btn.setEnabled(True)
         self.stop_search_btn.setEnabled(False)
         if not self._llm_thread_running():
@@ -1557,9 +1557,9 @@ class LLMChatWidget(QWidget):
             if hasattr(self._preview_window, 'capture_current_frame'):
                 frame_image = self._preview_window.capture_current_frame()
                 if frame_image:
-                    self._append_system(f"📸 Frame captured at {ts_str}")
+                    self._append_system(f"📸 已截取 {ts_str} 的画面")
                 else:
-                    self._append_system(f"⚠️ Could not capture frame at {ts_str}")
+                    self._append_system(f"⚠️ 无法截取 {ts_str} 的画面")
         
         # Also use timeline bridge if available
         if self._timeline_bridge and self._timeline_bridge.is_connected:
@@ -1588,7 +1588,7 @@ class LLMChatWidget(QWidget):
 
         if not all_caches:
             self._append_system(
-                "No cache files found. Run the pipeline on a video first."
+                "未找到缓存文件。请先对视频运行处理流程。"
             )
             return
 
@@ -1654,8 +1654,8 @@ class LLMChatWidget(QWidget):
         """Manual cache file picker dialog."""
         start_dir = self._cache_dir if os.path.isdir(self._cache_dir) else "."
         path, _ = QFileDialog.getOpenFileName(
-            self, "Select Cache File", start_dir,
-            "Cache Files (*.cache.json);;JSON Files (*.json);;All Files (*)"
+            self, "选择缓存文件", start_dir,
+            "缓存文件 (*.cache.json);;JSON 文件 (*.json);;所有文件 (*)"
         )
         if path:
             self._load_cache_file(path)
@@ -1675,7 +1675,7 @@ class LLMChatWidget(QWidget):
         ctx_lines = context_text.count("\n") + 1
 
         dlg = QDialog(self)
-        dlg.setWindowTitle("LLM Context Debug - What the LLM sees")
+        dlg.setWindowTitle("大模型上下文调试 - 查看模型实际输入")
         dlg.setMinimumSize(700, 500)
         layout = QVBoxLayout()
 
@@ -1713,7 +1713,7 @@ class LLMChatWidget(QWidget):
 
     def _update_context_label(self):
         if not self._analysis_data:
-            self.context_label.setText("No video context - LLM will hallucinate!")
+            self.context_label.setText("没有视频上下文 — 大模型可能产生幻觉！")
             self.context_label.setStyleSheet("color:#f44336;font-size:9pt;font-weight:bold;")
             return
 
@@ -1746,9 +1746,9 @@ class LLMChatWidget(QWidget):
         """
         if not hasattr(self, 'reasoning_engine') or not self.reasoning_engine:
             if self._analysis_data:
-                self._append_system("⚠️ Reasoning engine not initialized. Try toggling 'Enable reasoning' checkbox.")
+                self._append_system("⚠️ 推理引擎尚未初始化，请尝试切换“启用推理”。")
             else:
-                self._append_system("⚠️ No analysis data loaded. Load a cache file first.")
+                self._append_system("⚠️ 尚未加载分析数据，请先加载缓存文件。")
             return
         
         try:
@@ -1790,14 +1790,14 @@ class LLMChatWidget(QWidget):
     def _save_reasoning_facts(self):
         """Save inferred facts to cache."""
         if not hasattr(self, 'reasoning_engine') or not self.reasoning_engine:
-            self._append_system("⚠️ No reasoning engine to save.")
+            self._append_system("⚠️ 没有可保存的推理引擎。")
             return
         
         try:
             saved_path = self.reasoning_engine.save_analysis(self._cache_dir)
-            self._append_system(f"💾 Reasoning facts saved to: {os.path.basename(saved_path)}")
+            self._append_system(f"💾 推理结果已保存到：{os.path.basename(saved_path)}")
         except Exception as e:
-            self._append_system(f"❌ Failed to save: {e}")
+            self._append_system(f"❌ 保存失败：{e}")
 
     # ------------------------------------------------ Handlers
 
@@ -1852,7 +1852,7 @@ class LLMChatWidget(QWidget):
             self.model_combo.setCurrentIndex(0)
             self._on_recent_gguf_selected(0)
         else:
-            self.model_combo.addItem("(no recent models — use Browse)")
+            self.model_combo.addItem("（没有最近使用的模型 — 请使用“浏览”）")
 
     def _on_recent_gguf_selected(self, index):
         """When user picks a recent GGUF from dropdown, fill the path input."""
@@ -1865,7 +1865,7 @@ class LLMChatWidget(QWidget):
         backend = self.backend_combo.currentData()
         
         if backend == "llama-cpp":
-            self.model_combo.addItem("(select GGUF file below)")
+            self.model_combo.addItem("（请在下方选择 GGUF 文件）")
             return
             
         if backend == "ollama":
@@ -1890,7 +1890,7 @@ class LLMChatWidget(QWidget):
 
     def _browse_gguf(self):
         path, _ = QFileDialog.getOpenFileName(
-            self, "Select GGUF Model", "", "GGUF Models (*.gguf);;All Files (*)"
+            self, "选择 GGUF 模型", "", "GGUF 模型 (*.gguf);;所有文件 (*)"
         )
         if path:
             self.gguf_path_input.setText(path)
@@ -1898,7 +1898,7 @@ class LLMChatWidget(QWidget):
     def _browse_mmproj(self):
         """Browse for mmproj file (for vision models)."""
         path, _ = QFileDialog.getOpenFileName(
-            self, "Select mmproj File", "", "GGUF Models (*.gguf);;All Files (*)"
+            self, "选择 mmproj 文件", "", "GGUF 模型 (*.gguf);;所有文件 (*)"
         )
         if path:
             self.mmproj_path_input.setText(path)
@@ -1922,7 +1922,7 @@ class LLMChatWidget(QWidget):
             elif backend == "llama-cpp":
                 gguf_path = self.gguf_path_input.text().strip()
                 if not gguf_path:
-                    raise ValueError("Select a GGUF model file first")
+                    raise ValueError("请先选择 GGUF 模型文件")
                 
                 mmproj_path = self.mmproj_path_input.text().strip() or None
                 
@@ -1934,10 +1934,10 @@ class LLMChatWidget(QWidget):
                 )
                 
                 model_name = os.path.basename(gguf_path)
-                self.status_label.setText(f"Loading {model_name}...")
+                self.status_label.setText(f"正在加载 {model_name}…")
                 QApplication.processEvents()
             else:
-                raise ValueError(f"Unknown backend: {backend}")
+                raise ValueError(f"未知运行后端：{backend}")
 
             self._llm.load()
 
@@ -1951,9 +1951,9 @@ class LLMChatWidget(QWidget):
                 model_name = os.path.basename(gguf_path)
                 if mmproj_path:
                     model_name += " (with vision)"
-                self.status_label.setText(f"Connected: {model_name}")
+                self.status_label.setText(f"已连接：{model_name}")
             else:
-                self.status_label.setText(f"Connected: {model}")
+                self.status_label.setText(f"已连接：{model}")
                 
             self.status_label.setStyleSheet(f"color:{THEME.success};font-weight:bold;")
             # Folded section header mirrors the connection state
@@ -1980,11 +1980,11 @@ class LLMChatWidget(QWidget):
             else:
                 self._append_system(
                     f"Connected to {model if backend=='ollama' else os.path.basename(gguf_path)}. "
-                    f"WARNING: No video context! Use 'Load Cache' first."
+                    f"警告：没有视频上下文！请先使用“加载缓存”。"
                 )
 
         except Exception as e:
-            self.status_label.setText(f"Error: {e}")
+            self.status_label.setText(f"错误：{e}")
             self.status_label.setStyleSheet("color:#f44336;font-style:italic;")
             self.input_field.setEnabled(False)
             self.send_btn.setEnabled(False)
@@ -2016,10 +2016,10 @@ class LLMChatWidget(QWidget):
         if not text:
             return
         if not self._llm or not self._llm.is_loaded():
-            self._append_system("Not connected. Click 'Connect' first.")
+            self._append_system("尚未连接，请先点击“连接”。")
             return
         if self._llm_thread_running():
-            self._append_system("Still generating... please wait.")
+            self._append_system("仍在生成中，请稍候。")
             return
         
         # Special handling for reasoning questions
@@ -2336,7 +2336,7 @@ class LLMChatWidget(QWidget):
                 self._search_worker.cancel()
             self.search_btn.setEnabled(True)
             self.stop_search_btn.setEnabled(False)
-            self.search_progress.setText("Stopping after current frame...")
+            self.search_progress.setText("当前帧结束后停止…")
             stopped_something = True
         if stopped_something:
             self.stop_btn.setEnabled(False)

@@ -112,10 +112,13 @@ LZMANumBlockThreads=4
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 
+[Languages]
+Name: "chinesesimplified"; MessagesFile: "compiler:Languages\\ChineseSimplified.isl"
+
 [Tasks]
-Name: "nvidia"; Description: "NVIDIA GPU acceleration (downloads about {#CudaPackMB} MB)"; Flags: unchecked
-Name: "clip"; Description: "Visual search model, CLIP (downloads about {#ClipPackMB} MB)"
-Name: "desktopicon"; Description: "Create a &desktop shortcut"
+Name: "nvidia"; Description: "NVIDIA GPU 加速（约下载 {#CudaPackMB} MB）"; Flags: unchecked
+Name: "clip"; Description: "视觉搜索模型 CLIP（约下载 {#ClipPackMB} MB）"
+Name: "desktopicon"; Description: "创建桌面快捷方式(&D)"
 
 ; The bundle folder is replaced whole on every install. A build from before
 ; packs carried torch inside _internal, and _internal is on the frozen app's
@@ -133,11 +136,11 @@ Source: "{#CpuPackDir}\*"; DestDir: "{app}\packs\torch-cpu"; Flags: ignoreversio
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExe}"
-Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
+Name: "{group}\卸载 {#AppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#AppExe}"; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#AppExe}"; Description: "启动 {#AppName}"; Flags: nowait postinstall skipifsilent
 
 ; Packs unpacked by 7-Zip and everything the app wrote at runtime are not
 ; tracked by the installer, so the folder is removed whole — the same full
@@ -194,7 +197,7 @@ function OnDownloadProgress(const Url, FileName: String; const Progress, Progres
 begin
   if ProgressMax > 0 then
     DownloadPage.SetText(FileName,
-      IntToStr(Progress div 1048576) + ' of ' + IntToStr(ProgressMax div 1048576) + ' MB');
+      IntToStr(Progress div 1048576) + ' / ' + IntToStr(ProgressMax div 1048576) + ' MB');
   Result := True;
 end;
 
@@ -202,8 +205,8 @@ procedure InitializeWizard;
 begin
   NvidiaFound := HasNvidiaGpu;
   DownloadPage := CreateDownloadPage(
-    'Downloading NVIDIA GPU acceleration',
-    'PyTorch for NVIDIA cards is fetched once; app updates do not download it again.',
+    '正在下载 NVIDIA GPU 加速组件',
+    'NVIDIA 显卡所需的 PyTorch 仅下载一次，后续软件更新不会重复下载。',
     @OnDownloadProgress);
 end;
 
@@ -214,14 +217,14 @@ var
   I: Integer;
 begin
   for I := 0 to WizardForm.TasksList.Items.Count - 1 do
-    if Pos('NVIDIA GPU acceleration', WizardForm.TasksList.ItemCaption[I]) = 1 then
+    if Pos('NVIDIA GPU 加速', WizardForm.TasksList.ItemCaption[I]) = 1 then
     begin
       if NvidiaFound then
         WizardForm.TasksList.ItemCaption[I] := WizardForm.TasksList.ItemCaption[I]
-          + ' - recommended for your ' + NvidiaName
+          + ' - 检测到 ' + NvidiaName + '，建议启用'
       else
         WizardForm.TasksList.ItemCaption[I] := WizardForm.TasksList.ItemCaption[I]
-          + ' - no NVIDIA card found';
+          + ' - 未检测到 NVIDIA 显卡';
       Exit;
     end;
 end;
@@ -269,10 +272,10 @@ begin
   Free := FreeSpaceMB(AppDir);
   if (Free >= 0) and (Free < Need) then
   begin
-    MsgBox('Not enough free space on ' + ExtractFileDrive(AppDir) + '.' + #13#10#13#10
-      + 'Needed: about ' + IntToStr(Need) + ' MB' + #13#10
-      + 'Available: ' + IntToStr(Free) + ' MB' + #13#10#13#10
-      + 'Free up space, choose a folder on another drive, or untick NVIDIA GPU acceleration.',
+    MsgBox('磁盘 ' + ExtractFileDrive(AppDir) + ' 可用空间不足。' + #13#10#13#10
+      + '需要：约 ' + IntToStr(Need) + ' MB' + #13#10
+      + '可用：' + IntToStr(Free) + ' MB' + #13#10#13#10
+      + '请释放磁盘空间、选择其他磁盘的安装目录，或取消勾选 NVIDIA GPU 加速。',
       mbError, MB_OK);
     Result := False;
   end;
@@ -291,13 +294,13 @@ begin
     Result := True;
   except
     if DownloadPage.AbortedByUser then
-      Log(What + ': download cancelled by the user.')
+      Log(What + '：用户取消了下载。')
     else
-      Log(What + ': download failed: ' + GetExceptionMessage);
+      Log(What + '：下载失败：' + GetExceptionMessage);
     Stay := SuppressibleMsgBox(
-      What + ' could not be downloaded:' + #13#10
+      What + ' 下载失败：' + #13#10
       + AddPeriod(GetExceptionMessage) + #13#10#13#10
-      + 'Install without it? ' + Without,
+      + '是否不安装该组件并继续？' + #13#10 + Without,
       mbConfirmation, MB_YESNO, IDYES) <> IDYES;
   end;
 end;
@@ -331,14 +334,14 @@ begin
   try
     if WizardIsTaskSelected('nvidia') then
       CudaPackDownloaded := FetchComponent('{#CudaPackAsset}', '{#CudaPackSha256}',
-        'NVIDIA GPU acceleration',
-        'VideoHighlighter will run on the processor, and you can add GPU '
-        + 'acceleration later by running Setup again.', Stay);
+        'NVIDIA GPU 加速',
+        'VideoHighlighter 将使用 CPU 运行。你可以稍后重新运行安装程序添加 GPU '
+        + '加速组件。', Stay);
     if (not Stay) and WizardIsTaskSelected('clip') then
       ClipPackDownloaded := FetchComponent('{#ClipPackAsset}', '{#ClipPackSha256}',
-        'The visual search model',
-        'Everything else works; visual search, chapters and taught categories '
-        + 'need it, and running Setup again adds it.', Stay);
+        '视觉搜索模型',
+        '其他功能仍可正常使用；视觉搜索、章节和已训练类别功能'
+        + '需要此组件，可稍后重新运行安装程序添加。', Stay);
   finally
     DownloadPage.Hide;
   end;

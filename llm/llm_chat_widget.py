@@ -780,8 +780,8 @@ class LLMChatWidget(QWidget):
         self.reasoning_checkbox = QCheckBox("启用推理")
         self.reasoning_checkbox.setChecked(True)
         self.reasoning_checkbox.setToolTip(
-            "When enabled, the LLM will infer relationships between detected objects and actions\n"
-            "Examples: 'Person is punching person', 'Person drinking from cup', 'Multiple people talking'"
+            "启用后，大模型会推断检测到的物体与动作之间的关系。\n"
+            "例如：“人物正在击打人物”“人物正在用杯子喝水”“多人正在交谈”"
         )
         row4.addWidget(self.reasoning_checkbox)
 
@@ -850,9 +850,9 @@ class LLMChatWidget(QWidget):
         self.search_engine_combo.addItem("仅 CLIP", "clip")
         self.search_engine_combo.addItem("仅大模型", "llm")
         self.search_engine_combo.setToolTip(
-            "CLIP only  : fast GPU similarity ranking; best for broad concepts.\n"
-            "LLM only   : the vision model checks every frame (slow, reasons, uncensored).\n"
-            "CLIP + LLM : CLIP ranks all frames on the GPU, the LLM confirms the top-K."
+            "仅 CLIP：使用 GPU 快速进行相似度排序，适合宽泛概念。\n"
+            "仅大模型：视觉模型逐帧检查，速度较慢，但可以进行推理。\n"
+            "CLIP + 大模型：CLIP 先在 GPU 上对全部帧排序，再由大模型确认 Top-K 候选。"
         )
         self.search_engine_combo.currentIndexChanged.connect(self._on_search_engine_changed)
         search_layout.addWidget(self.search_engine_combo)
@@ -863,8 +863,8 @@ class LLMChatWidget(QWidget):
         self.search_topk.setRange(1, 1000)
         self.search_topk.setValue(30)
         self.search_topk.setToolTip(
-            "How many top CLIP candidates to keep (CLIP only) or send to the LLM "
-            "to confirm (CLIP + LLM). Higher = better recall, slower."
+            "保留多少个 CLIP 高分候选（仅 CLIP），或发送给大模型"
+            "进行确认（CLIP + 大模型）。数值越高召回率越高，但速度更慢。"
         )
         search_layout.addWidget(self.search_topk)
         self.search_topk.valueChanged.connect(self._save_search_prefs)
@@ -889,8 +889,8 @@ class LLMChatWidget(QWidget):
         # and forfeits that.
         self.stop_on_match_cb.setChecked(False)
         self.stop_on_match_cb.setToolTip(
-            "When checked, search stops and seeks to the first match.\n"
-            "When unchecked, search scans entire video and reports all matches."
+            "勾选后，搜索会在第一个匹配处停止并跳转。\n"
+            "取消勾选时，将扫描完整视频并报告所有匹配。"
         )
         search_layout.addWidget(self.stop_on_match_cb)
 
@@ -1025,7 +1025,7 @@ class LLMChatWidget(QWidget):
             self._reasoning_sig = sig
             try:
                 from .llm_reasoning import ReasoningLLMIntegration
-                llm = self._llm if (self._llm and self._llm.is_loaded()) else None
+                llm = self._llm if (self._llm and self._llm.is_已加载()) else None
                 self.reasoning_engine = ReasoningLLMIntegration(
                     llm, data, video_path
                 )
@@ -1151,7 +1151,7 @@ class LLMChatWidget(QWidget):
         if not path or not os.path.exists(path):
             return False
 
-        if require_llm and (not self._llm or not self._llm.is_loaded()):
+        if require_llm and (not self._llm or not self._llm.is_已加载()):
             self._append_system("⚠️ 大模型未连接。此引擎需要已连接的视觉模型。")
             return False
         
@@ -1238,7 +1238,7 @@ class LLMChatWidget(QWidget):
         # Engines that use the VLM need a live model. The analyzer may have been
         # created earlier by a CLIP-only run (with no LLM), so sync the current one.
         if engine != "clip":
-            if not self._llm or not self._llm.is_loaded():
+            if not self._llm or not self._llm.is_已加载():
                 self._append_system("⚠️ 此引擎需要连接视觉模型。请先连接模型，或使用“仅 CLIP”。")
                 return
             self._analyzer.llm = self._llm
@@ -1535,7 +1535,7 @@ class LLMChatWidget(QWidget):
         # Update analyzer position
         if self._analyzer:
             self._analyzer.current_time = seconds
-            # Actually seek and read a frame to ensure it's loaded
+            # Actually seek and read a frame to ensure it's 已加载
             frame = self._analyzer.seek_to_time(seconds)
             if frame is not None:
                 # Optionally cache the frame for later use
@@ -1635,7 +1635,7 @@ class LLMChatWidget(QWidget):
             n_audio = len(audio.get("peaks", [])) if isinstance(audio, dict) else 0
 
             self._append_system(
-                f"Cache loaded: {os.path.basename(filepath)}\n"
+                f"Cache 已加载: {os.path.basename(filepath)}\n"
                 f"  Duration: {int(dur)}s ({int(dur)//60}m{int(dur)%60:02d}s) | "
                 f"Objects: {n_obj} | Actions: {n_act} | "
                 f"Transcript: {n_trans} segs | Scenes: {n_scenes}\n"
@@ -1664,9 +1664,9 @@ class LLMChatWidget(QWidget):
         """Show exactly what context text would be sent to the LLM."""
         if not self._analysis_data:
             self._append_system(
-                "NO ANALYSIS DATA LOADED!\n"
-                "This is why the LLM halluccinates - it has nothing to work with.\n"
-                "Use 'Load Cache' or run the pipeline first."
+                "未加载分析数据！\n"
+                "这会导致大模型缺少依据并产生幻觉。\n"
+                "请先“加载缓存”，或先运行完整分析流程。"
             )
             return
 
@@ -1680,18 +1680,18 @@ class LLMChatWidget(QWidget):
         layout = QVBoxLayout()
 
         stats = QLabel(
-            f"Context: {ctx_chars:,} chars | {ctx_lines} lines | "
-            f"~{ctx_chars // 4:,} tokens (approx)\n"
-            f"Video: {self._video_path}\n"
-            f"Data keys: {', '.join(sorted(self._analysis_data.keys()))}"
+            f"上下文：{ctx_chars:,} 字符 | {ctx_lines} 行 | "
+            f"约 {ctx_chars // 4:,} tokens（估算）\n"
+            f"视频：{self._video_path}\n"
+            f"数据字段：{', '.join(sorted(self._analysis_data.keys()))}"
         )
         stats.setStyleSheet("font-weight:bold;padding:4px;")
         layout.addWidget(stats)
 
         if ctx_chars > 8000:
             warn = QLabel(
-                "WARNING: Context is large! Small models (3B) may ignore parts. "
-                "Use 8B+ models for best results."
+                "警告：上下文较大！小模型（3B）可能忽略部分内容。"
+                "建议使用 8B 及以上模型以获得更好效果。"
             )
             warn.setStyleSheet("color:#ff9800;font-weight:bold;padding:4px;")
             layout.addWidget(warn)
@@ -1724,17 +1724,17 @@ class LLMChatWidget(QWidget):
         t_data = self._analysis_data.get("transcript", {})
         n_trans = len(t_data.get("segments", [])) if isinstance(t_data, dict) else 0
 
-        vname = os.path.basename(self._video_path) if self._video_path else "loaded"
+        vname = os.path.basename(self._video_path) if self._video_path else "已加载"
 
-        analyzer_status = " | Analyzer: ready" if self._analyzer else ""
+        analyzer_status = " | 分析器：就绪" if self._analyzer else ""
 
         tl_status = ""
         if self._timeline_bridge and self._timeline_bridge.is_connected:
-            tl_status = " | TL: connected"
+            tl_status = " | 时间线：已连接"
 
         self.context_label.setText(
-            f"Context: {vname} | {int(dur)}s | "
-            f"{n_obj} obj | {n_act} act | {n_trans} transcript{tl_status}{analyzer_status}"
+            f"上下文：{vname} | {int(dur)} 秒 | "
+            f"{n_obj} 个物体 | {n_act} 个动作 | {n_trans} 条转录{tl_status}{analyzer_status}"
         )
         self.context_label.setStyleSheet("color:#4CAF50;font-size:9pt;font-weight:bold;")
 
@@ -1872,20 +1872,20 @@ class LLMChatWidget(QWidget):
             host = resolve_ollama_host()
             # Named only when it is not the default: on localhost the URL is
             # noise, and on another machine it is the whole answer.
-            where = f" at {host}" if ollama_is_remote(host) else ""
+            where = f"（{host}）" if ollama_is_remote(host) else ""
             models = get_ollama_models(host)
             if models:
                 for m in models:
                     self.model_combo.addItem(m)
                 self.status_label.setText(
-                    f"Found {len(models)} Ollama models{where}")
+                    f"找到 {len(models)} 个 Ollama 模型{where}")
                 self.status_label.setStyleSheet("color:#4CAF50;font-style:italic;")
             else:
                 for m in ["llama3.2", "llama3.2-vision", "llava", "bakllava", "llava-llama3"]:
                     self.model_combo.addItem(m)
                 self.status_label.setText(
-                    f"No Ollama answered{where or ' on this machine'} - showing "
-                    "defaults (vision models recommended)")
+                    f"未检测到可用的 Ollama 服务{where or '（本机）'}，正在显示"
+                    "默认模型（推荐使用视觉模型）")
                 self.status_label.setStyleSheet("color:#ff9800;font-style:italic;")
 
     def _browse_gguf(self):
@@ -1950,7 +1950,7 @@ class LLMChatWidget(QWidget):
             if backend == "llama-cpp":
                 model_name = os.path.basename(gguf_path)
                 if mmproj_path:
-                    model_name += " (with vision)"
+                    model_name += "（支持视觉）"
                 self.status_label.setText(f"已连接：{model_name}")
             else:
                 self.status_label.setText(f"已连接：{model}")
@@ -1968,18 +1968,18 @@ class LLMChatWidget(QWidget):
             # Update reasoning engine with now-connected LLM
             if hasattr(self, 'reasoning_engine') and self.reasoning_engine:
                 self.reasoning_engine.llm = self._llm
-                self._append_system("🧠 Reasoning engine now has LLM — 'why' questions enabled")
+                self._append_system("🧠 推理引擎已连接大模型，现在可以回答“为什么”类问题")
 
             if self._analysis_data:
                 n_obj = len(self._analysis_data.get("objects", []))
                 n_act = len(self._analysis_data.get("actions", []))
                 self._append_system(
-                    f"Connected to {model if backend=='ollama' else os.path.basename(gguf_path)}. "
-                    f"Context ready: {n_obj} object entries, {n_act} actions."
+                    f"已连接到 {model if backend=='ollama' else os.path.basename(gguf_path)}。"
+                    f"上下文已就绪：{n_obj} 条物体记录，{n_act} 条动作记录。"
                 )
             else:
                 self._append_system(
-                    f"Connected to {model if backend=='ollama' else os.path.basename(gguf_path)}. "
+                    f"已连接到 {model if backend=='ollama' else os.path.basename(gguf_path)}。"
                     f"警告：没有视频上下文！请先使用“加载缓存”。"
                 )
 
@@ -2015,7 +2015,7 @@ class LLMChatWidget(QWidget):
         text = self.input_field.text().strip()
         if not text:
             return
-        if not self._llm or not self._llm.is_loaded():
+        if not self._llm or not self._llm.is_已加载():
             self._append_system("尚未连接，请先点击“连接”。")
             return
         if self._llm_thread_running():
@@ -2076,7 +2076,7 @@ class LLMChatWidget(QWidget):
 
         if not self._analysis_data:
             self._append_system(
-                "WARNING: No analysis data loaded! LLM will hallucinate.\n"
+                "WARNING: No analysis data 已加载! LLM will hallucinate.\n"
                 "Use 'Load Cache' to load a cache file first."
             )
 
@@ -2402,7 +2402,7 @@ class LLMChatWidget(QWidget):
     def _clear_chat(self):
         self.chat_display.clear()
         self._chat_history.clear()
-        if self._llm and self._llm.is_loaded():
+        if self._llm and self._llm.is_已加载():
             self._append_system("Chat cleared. Ready for new questions.")
 
     # ------------------------------------------------ Display helpers
@@ -2457,15 +2457,15 @@ class LLMChatWidget(QWidget):
         findings = diagnose(report)
         self._advisor_context = build_prompt(report, findings, question=" ")
         self._append_system(
-            f"Loaded {os.path.basename(json_path)} — "
-            f"{len(findings)} finding(s) from that run:")
+            f"已加载 {os.path.basename(json_path)} —— "
+            f"本次运行发现 {len(findings)} 项问题：")
         self._append_system(format_findings(findings))
         self._append_system(
-            "Ask anything about this cut. Answers come from these findings and "
-            "the advisor documentation, not from the video itself.")
+            "你可以询问这次剪辑的任何问题。回答将依据这些分析结果和"
+            "顾问文档，而不是直接读取视频本身。")
         if hasattr(self, "input_field"):
             self.input_field.setPlaceholderText(
-                "e.g. why is every clip so similar?")
+                "例如：为什么每个片段看起来都很相似？")
             self.input_field.setFocus()
 
     def _log(self, msg: str):

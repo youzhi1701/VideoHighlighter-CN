@@ -175,7 +175,7 @@ export function AvoidTab({
         <div className="flex gap-2">
           <Button size="sm" variant="secondary" onClick={refresh} disabled={loading}>
             <RefreshCw className={loading ? "size-4 animate-spin" : "size-4"} />
-            Refresh
+            刷新
           </Button>
           <Button size="sm" variant="secondary" onClick={scan} disabled={running}>
             <ScanFace className="size-4" /> 扫描视频
@@ -199,8 +199,8 @@ export function AvoidTab({
           启用人脸识别
         </label>
         <p className="text-xs text-muted-foreground">
-          Scan a video to collect everyone who appears, then tick who to exclude.
-          You can also name people here or in the Timeline Viewer.
+          扫描视频以收集出现过的人物，然后勾选需要排除的人。
+          你也可以在这里或时间线查看器中为人物命名。
         </p>
 
         <SelectField
@@ -276,7 +276,7 @@ export function AvoidTab({
         </div>
         {faces.length > 0 && (
           <p className="text-xs text-muted-foreground">
-            {faces.length} people · {namedCount} named · {avoidCount} 个已避开
+            {faces.length} 人 · {namedCount} 个已命名 · {avoidCount} 个已避开
           </p>
         )}
 
@@ -285,10 +285,10 @@ export function AvoidTab({
         <div className="space-y-2 border-t pt-3">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium">
-              Avoided time ranges
+              已避开的时间范围
               {avoidRanges.length > 0 && (
                 <span className="ml-2 text-xs font-normal text-muted-foreground">
-                  {avoidRanges.length} range(s)
+                  {avoidRanges.length} 个区间
                 </span>
               )}
             </p>
@@ -304,8 +304,7 @@ export function AvoidTab({
           </div>
           {avoidRanges.length === 0 ? (
             <p className="text-xs text-muted-foreground">
-              None yet. Add one below, or drag-select a span in the Timeline
-              Viewer — either way it applies to your runs.
+              暂无区间。你可以在下方添加，或在时间线查看器中拖动选择一个范围；两种方式都会应用到后续运行。
             </p>
           ) : (
             <ul className="flex flex-wrap gap-2">
@@ -336,7 +335,7 @@ export function AvoidTab({
             <Input
               value={rangeStart}
               onChange={(e) => setRangeStart(e.target.value)}
-              onKeyDown={(e) => e.key === "添加" && addRange()}
+              onKeyDown={(e) => e.key === "Enter" && addRange()}
               placeholder="1:30"
               aria-label="区间开始"
               disabled={!videoPath}
@@ -346,7 +345,7 @@ export function AvoidTab({
             <Input
               value={rangeEnd}
               onChange={(e) => setRangeEnd(e.target.value)}
-              onKeyDown={(e) => e.key === "添加" && addRange()}
+              onKeyDown={(e) => e.key === "Enter" && addRange()}
               placeholder="2:00"
               aria-label="区间结束"
               disabled={!videoPath}
@@ -359,7 +358,7 @@ export function AvoidTab({
               disabled={!videoPath || !rangeStart || !rangeEnd}
               title={videoPath ? "排除此时间段" : "请先添加视频"}
             >
-              Add
+              添加
             </Button>
           </div>
         </div>
@@ -373,7 +372,7 @@ export function AvoidTab({
           </DialogHeader>
           <DialogFooter className="gap-2">
             <Button variant="ghost" onClick={() => setClearOpen(false)}>
-              Cancel
+              取消
             </Button>
             <Button variant="secondary" onClick={() => doClear(true)}>
               保留已命名 / 已避开项

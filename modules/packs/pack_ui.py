@@ -49,7 +49,7 @@ class PackInstallWorker(QThread):
             )
         except Exception as e:  # install_pack does not raise; belt and braces
             print(f"pack_install: unexpected failure ({type(e).__name__}: {e})")
-            result = pack_manager.PackResult(False, f"下载失败：{e}", self.name)
+            result = pack_manager.PackResult(False, f"The download failed: {e}", self.name)
         self.finished_with.emit(result)
 
 
@@ -84,11 +84,11 @@ def ensure_pack(parent, name: str, *, why: str = "") -> bool:
         QMessageBox.warning(parent, title, reason)
         return False
 
-    after = ("VideoHighlighter 会重启一次以切换到该组件。"
-             if not pack.is_model else "安装完成后立即生效。")
+    after = ("VideoHighlighter restarts once to switch to it."
+             if not pack.is_model else "It works as soon as it is installed.")
     text = (f"{why}\n\n" if why else "") + (
-        f"现在下载吗？{_mb(pack.bytes)} 下载量，{_mb(pack.bytes_installed)} "
-        f" 磁盘占用。只需下载一次，软件更新时会保留。{after}")
+        f"Download it now? {_mb(pack.bytes)} to download, {_mb(pack.bytes_installed)} "
+        f"on disk. It is downloaded once; app updates keep it. {after}")
     if QMessageBox.question(parent, title, text,
                             QMessageBox.Yes | QMessageBox.No,
                             QMessageBox.Yes) != QMessageBox.Yes:
@@ -107,7 +107,7 @@ def ensure_pack(parent, name: str, *, why: str = "") -> bool:
 
 
 def _run_with_progress(parent, name, title):
-    dialog = QProgressDialog(f"正在下载 {title}…", "Pause", 0, 1000, parent)
+    dialog = QProgressDialog(f"Downloading {title}…", "Pause", 0, 1000, parent)
     dialog.setWindowTitle(title)
     dialog.setWindowModality(Qt.WindowModal)
     dialog.setMinimumDuration(0)
@@ -123,13 +123,13 @@ def _run_with_progress(parent, name, title):
         if phase == pack_manager.DOWNLOADING and total:
             dialog.setRange(0, 1000)
             dialog.setValue(min(1000, int(done * 1000 / total)))
-            dialog.setLabelText(f"正在下载 {title}…\n{_mb(done)} of {_mb(total)}")
+            dialog.setLabelText(f"Downloading {title}…\n{_mb(done)} of {_mb(total)}")
         elif phase == pack_manager.VERIFYING:
             dialog.setLabelText("正在检查下载文件…")
         elif phase == pack_manager.INSTALLING:
             dialog.setRange(0, 0)          # busy: 7-Zip reports no progress
             dialog.setCancelButton(None)   # unpacking is not interruptible
-            dialog.setLabelText(f"正在解压 {title}…，可能需要几分钟。")
+            dialog.setLabelText(f"Unpacking {title}… this can take a few minutes.")
 
     def on_done(result):
         holder["result"] = result
@@ -148,7 +148,7 @@ def _run_with_progress(parent, name, title):
 def _offer_restart(parent, title):
     answer = QMessageBox.question(
         parent, title,
-        f"{title} 已安装，重启后生效。现在重启吗？",
+        f"{title} is installed and takes effect after a restart. Restart now?",
         QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
     if answer != QMessageBox.Yes:
         return

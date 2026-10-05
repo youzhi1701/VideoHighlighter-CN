@@ -448,7 +448,7 @@ class DetectionPreviewWindow(QWidget):
         controls = QHBoxLayout()
         self.pause_btn = QPushButton("⏸ 冻结")
         self.pause_btn.setFixedWidth(90)
-        self.pause_btn.setToolTip("Freeze the preview to inspect a frame.\n"
+        self.pause_btn.setToolTip("冻结预览以便检查当前帧。\n"
                                   "Processing keeps running in the background.")
         self.pause_btn.clicked.connect(self._toggle_pause)
         controls.addWidget(self.pause_btn)
@@ -2459,7 +2459,7 @@ class VideoHighlighterGUI(QWidget):
 
         comp_btn_row = QHBoxLayout()
         comp_add_btn = QPushButton("+ 添加空间条件")
-        comp_add_btn.setToolTip("Add a condition on object geometry: "
+        comp_add_btn.setToolTip("添加物体几何条件： "
                                 "this class inside that class")
         comp_add_signal_btn = QPushButton("+ 添加信号条件")
         comp_add_signal_btn.setToolTip(
@@ -2703,7 +2703,7 @@ class VideoHighlighterGUI(QWidget):
             if rel_combo.findText(_rel) < 0:
                 rel_combo.addItem(_rel)          # shown as-is; the engine says why it is wrong
             rel_combo.setCurrentText(_rel)
-            rel_combo.setToolTip("inside: its centre is in the region\n"
+            rel_combo.setToolTip("内部：中心位于区域内\n"
                                  "overlaps: most of its area is in the region\n"
                                  "touches: the two meet")
             self.comp_table.setCellWidget(r, COMP_REL_COL, rel_combo)

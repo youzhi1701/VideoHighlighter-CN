@@ -259,7 +259,7 @@ class SignalTimelineScene(QGraphicsScene):
                     QPen(Qt.NoPen), QBrush(QColor(12, 12, 12, 50)))
         
         # Draw waveform label
-        self.row_labels.append(("AUDIO WAVEFORM", waveform_y))
+        self.row_labels.append(("音频波形", waveform_y))
         
         # Draw the actual waveform
         if len(self.waveform) > 0 and self.video_duration > 0:
@@ -1143,7 +1143,7 @@ class SignalTimelineScene(QGraphicsScene):
 
     def draw_filmstrip_layer(self, y_pos, width):
         """Thumbnails of the whole video, as the bottom lane."""
-        self.row_labels.append(("FILMSTRIP", y_pos))
+        self.row_labels.append(("胶片条", y_pos))
         cache = self._ensure_thumb_cache()
         item = FilmstripLane(width, self.video_duration, cache,
                              height=FILMSTRIP_LANE_HEIGHT,
@@ -1203,7 +1203,7 @@ class SignalTimelineScene(QGraphicsScene):
         `dimmed` renders the whole row greyed (used when the transcript layer is
         toggled off but data exists — a disabled/ghost track). Keyword marks are
         skipped while dimmed."""
-        self.row_labels.append(("TRANSCRIPT", y_pos))
+        self.row_labels.append(("转录文本", y_pos))
 
         keywords_active = bool(getattr(self, "transcript_keywords", [])) and not dimmed
         if 'transcript' in self.cache_data and self.cache_data['transcript'].get('segments'):
@@ -1253,7 +1253,7 @@ class SignalTimelineScene(QGraphicsScene):
     
     def draw_improved_actions_layer(self, y_pos):
         """Draw action detections with organized classification and filtering"""
-        self.row_labels.append(("ACTIONS", y_pos))
+        self.row_labels.append(("动作", y_pos))
         
         # Group actions by type
         action_groups = defaultdict(list)
@@ -1274,7 +1274,7 @@ class SignalTimelineScene(QGraphicsScene):
                 text = self.addText(f"(filtered: confidence {self.min_action_confidence:.0%}-{self.max_action_confidence:.0%})",
                                    QFont("Arial", 9))
             else:
-                text = self.addText("(no actions)", QFont("Arial", 9))
+                text = self.addText("（无动作）", QFont("Arial", 9))
             text.setPos(150, y_pos + 15)
             text.setDefaultTextColor(QColor(150, 150, 150))
             return y_pos + self.layer_height + self.layer_spacing
@@ -1336,7 +1336,7 @@ class SignalTimelineScene(QGraphicsScene):
     
     def draw_improved_objects_layer(self, y_pos):
         """Draw object detections organized by class with filtering"""
-        self.row_labels.append(("OBJECTS", y_pos))
+        self.row_labels.append(("物体", y_pos))
         
         # Group objects by class
         object_groups = defaultdict(list)
@@ -1359,7 +1359,7 @@ class SignalTimelineScene(QGraphicsScene):
                 text = self.addText(f"(filtered: confidence {self.min_object_confidence:.0%}-{self.max_object_confidence:.0%})",
                                    QFont("Arial", 9))
             else:
-                text = self.addText("(no objects)", QFont("Arial", 9))
+                text = self.addText("（无物体）", QFont("Arial", 9))
             text.setPos(150, y_pos + 15)
             text.setDefaultTextColor(QColor(150, 150, 150))
             return y_pos + self.layer_height + self.layer_spacing
@@ -1426,7 +1426,7 @@ class SignalTimelineScene(QGraphicsScene):
         filter is applied: an event is a rule either holding or not, so the
         confidence sliders (which threshold detector scores) do not apply to it.
         """
-        self.row_labels.append(("EVENTS", y_pos))
+        self.row_labels.append(("事件", y_pos))
 
         composed = self._composed_names_normalised()
         groups = defaultdict(list)
@@ -1440,7 +1440,7 @@ class SignalTimelineScene(QGraphicsScene):
                     groups[name].append(timestamp)
 
         if not groups:
-            text = self.addText("(no composed events)", QFont("Arial", 9))
+            text = self.addText("（无组合事件）", QFont("Arial", 9))
             text.setPos(150, y_pos + 15)
             text.setDefaultTextColor(QColor(150, 150, 150))
             return y_pos + self.layer_height + self.layer_spacing
@@ -1500,7 +1500,7 @@ class SignalTimelineScene(QGraphicsScene):
 
     def draw_scenes_layer(self, y_pos):
         """Draw scene changes with improved labeling"""
-        self.row_labels.append(("SCENES", y_pos))
+        self.row_labels.append(("场景", y_pos))
         
         if 'scenes' in self.cache_data:
             for i, scene in enumerate(self.cache_data['scenes']):
@@ -1524,12 +1524,12 @@ class SignalTimelineScene(QGraphicsScene):
     
     def draw_motion_events_layer(self, y_pos):
         """Draw motion events as spikes, with optional merging"""
-        self.row_labels.append(("MOTION EVENTS", y_pos))
+        self.row_labels.append(("运动事件", y_pos))
 
         # Build intervals
         intervals = []
         for timestamp in self.cache_data.get('motion_events', []):
-            intervals.append((timestamp, timestamp + 0.5, {'label': 'Motion'}))
+            intervals.append((timestamp, timestamp + 0.5, {'label': '运动'}))
 
         # Merge nearby intervals
         merged = self._merge_intervals(intervals)
@@ -1541,7 +1541,7 @@ class SignalTimelineScene(QGraphicsScene):
                 bar_label = f"Motion x{count} ({avg_conf:.0%})"
             else:
                 conf = meta.get('confidence', 0)
-                bar_label = f"Motion ({conf:.0%})" if conf else "Motion"
+                bar_label = f"Motion ({conf:.0%})" if conf else "运动"
 
             bar = TimelineBar(
                 start, end,
@@ -1557,11 +1557,11 @@ class SignalTimelineScene(QGraphicsScene):
    
     def draw_motion_peaks_layer(self, y_pos):
         """Draw motion peaks, with optional merging"""
-        self.row_labels.append(("MOTION PEAKS", y_pos))
+        self.row_labels.append(("运动峰值", y_pos))
 
         intervals = []
         for timestamp in self.cache_data.get('motion_peaks', []):
-            intervals.append((timestamp, timestamp + 0.5, {'label': 'Peak'}))
+            intervals.append((timestamp, timestamp + 0.5, {'label': '峰值'}))
 
         merged = self._merge_intervals(intervals)
 
@@ -1571,7 +1571,7 @@ class SignalTimelineScene(QGraphicsScene):
                 avg_conf = meta.get('avg_confidence', 0)
                 bar_label = f"Peak x{count} ({avg_conf:.0%})" if avg_conf else f"Peak x{count}"
             else:
-                bar_label = "Peak"
+                bar_label = "峰值"
 
             bar = TimelineBar(
                 start, end,
@@ -1589,11 +1589,11 @@ class SignalTimelineScene(QGraphicsScene):
 
     def draw_audio_peaks_layer(self, y_pos):
         """Draw audio peaks, with optional merging"""
-        self.row_labels.append(("AUDIO PEAKS", y_pos))
+        self.row_labels.append(("音频峰值", y_pos))
 
         intervals = []
         for timestamp in self.cache_data.get('audio_peaks', []):
-            intervals.append((timestamp, timestamp + 0.5, {'label': 'Audio'}))
+            intervals.append((timestamp, timestamp + 0.5, {'label': '音频'}))
 
         merged = self._merge_intervals(intervals)
 
@@ -1603,7 +1603,7 @@ class SignalTimelineScene(QGraphicsScene):
                 avg_conf = meta.get('avg_confidence', 0)
                 bar_label = f"Audio x{count} ({avg_conf:.0%})" if avg_conf else f"Audio x{count}"
             else:
-                bar_label = "Audio"
+                bar_label = "音频"
 
             bar = TimelineBar(
                 start, end,
@@ -1621,7 +1621,7 @@ class SignalTimelineScene(QGraphicsScene):
     
     def draw_highlights_layer(self, y_pos):
         """Draw final highlight segments with improved labeling"""
-        self.row_labels.append(("HIGHLIGHTS", y_pos))
+        self.row_labels.append(("高光", y_pos))
 
         # Pipeline writes 'highlight_segments'; keep older keys as fallback
         segments = (
@@ -1667,9 +1667,9 @@ class SignalTimelineScene(QGraphicsScene):
 
             duration = end - start
             if score is not None:
-                label = f"Highlight {i + 1} ({duration:.1f}s, score {score:.2f})"
+                label = f"高光 {i + 1}（{duration:.1f} 秒，得分 {score:.2f}）"
             else:
-                label = f"Highlight {i + 1} ({duration:.1f}s)"
+                label = f"高光 {i + 1}（{duration:.1f} 秒）"
 
             bar = TimelineBar(
                 start, end, y_pos, self.layer_height,
@@ -1828,7 +1828,7 @@ class SignalTimelineScene(QGraphicsScene):
         # Create detailed tooltip
         duration = bar.end_time - bar.start_time
         tooltip_lines = [
-            f"Label: {bar.label}",
+            f"标签：{bar.label}",
             f"Time: {bar.start_time:.2f}s - {bar.end_time:.2f}s",
             f"Duration: {duration:.2f}s"
         ]
@@ -1836,9 +1836,9 @@ class SignalTimelineScene(QGraphicsScene):
         # Add confidence if available
         if bar.confidence is not None:
             if bar.confidence <= 1.0:
-                tooltip_lines.append(f"Confidence: {bar.confidence:.0%}")
+                tooltip_lines.append(f"置信度：{bar.confidence:.0%}")
             else:
-                tooltip_lines.append(f"Confidence: {bar.confidence:.1f}/10")
+                tooltip_lines.append(f"置信度：{bar.confidence:.1f}/10")
         
         # Add metadata
         if bar.metadata:
@@ -2048,7 +2048,7 @@ class SignalTimelineScene(QGraphicsScene):
             return f"{int(m):02d}:{s:05.2f}"
 
         duration = t1 - t0
-        text = f"{fmt(t0)} → {fmt(t1)}  ({duration:.2f}s)  — drag to add"
+        text = f"{fmt(t0)} → {fmt(t1)}（{duration:.2f} 秒）— 拖动可添加"
 
         font = QFont("Consolas", 9, QFont.Weight.Bold)
 
@@ -2361,7 +2361,7 @@ class SignalTimelineScene(QGraphicsScene):
     # ─────────────────────────────────────────────────────────────────
     def draw_visual_findings_layer(self, y_pos):
         """Draw visual search findings: one row per query, merged into intervals."""
-        self.row_labels.append(("VISUAL SEARCH", y_pos))
+        self.row_labels.append(("视觉搜索", y_pos))
 
         # Group findings by query, applying filters
         query_groups = defaultdict(list)
@@ -2713,18 +2713,18 @@ class SignalTimelineView(QGraphicsView):
         group_name = meta.get("query") or meta.get("type") or "row"
 
         menu = QMenu(self)
-        act_one = menu.addAction("➕  Add this clip to edit timeline")
+        act_one = menu.addAction("➕  将此片段加入剪辑时间线")
         act_all = None
         if len(row_clips) > 1:
-            act_all = menu.addAction(f"➕  Add all “{group_name}” clips  ({len(row_clips)})")
+            act_all = menu.addAction(f"➕  将“{group_name}”全部片段加入剪辑时间线（{len(row_clips)}）")
 
         # A chosen clip can also be exchanged for the best moment that lost to
         # it. Costs a re-select, not a re-analysis, so it is offered inline.
         act_swap = act_undo = None
         if meta.get("layer") == "highlights" and meta.get("index") is not None:
             menu.addSeparator()
-            act_swap = menu.addAction("🔀  Swap for the next best moment")
-            act_undo = menu.addAction("↩  Undo last swap")
+            act_swap = menu.addAction("🔀  替换为下一个最佳时刻")
+            act_undo = menu.addAction("↩  撤销上次替换")
             act_undo.setEnabled(bool(getattr(scene, "highlight_swaps_done", 0)))
 
         chosen = menu.exec(event.globalPosition().toPoint())
@@ -2742,8 +2742,8 @@ class SignalTimelineView(QGraphicsView):
         """Right-click menu on a selection: exclude the range from highlights."""
         scene = self.scene()
         menu = QMenu(self)
-        act_avoid = menu.addAction("🚫  Avoid this range in highlights")
-        act_clear = menu.addAction("Clear all avoid ranges")
+        act_avoid = menu.addAction("🚫  从高光中排除此区间")
+        act_clear = menu.addAction("清空全部排除区间")
         if not getattr(scene, "avoid_ranges", None):
             act_clear.setEnabled(False)
         chosen = menu.exec(event.globalPosition().toPoint())
@@ -2790,8 +2790,8 @@ class SignalTimelineView(QGraphicsView):
         """Right-click menu on an existing red avoid range: remove one / clear all."""
         scene = self.scene()
         menu = QMenu(self)
-        act_remove = menu.addAction("🗑  Remove this avoid range")
-        act_clear = menu.addAction("Clear all avoid ranges")
+        act_remove = menu.addAction("🗑  移除此排除区间")
+        act_clear = menu.addAction("清空全部排除区间")
         chosen = menu.exec(event.globalPosition().toPoint())
         if chosen is act_remove:
             try:

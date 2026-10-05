@@ -1025,7 +1025,7 @@ class LLMChatWidget(QWidget):
             self._reasoning_sig = sig
             try:
                 from .llm_reasoning import ReasoningLLMIntegration
-                llm = self._llm if (self._llm and self._llm.is_已加载()) else None
+                llm = self._llm if (self._llm and self._llm.is_loaded()) else None
                 self.reasoning_engine = ReasoningLLMIntegration(
                     llm, data, video_path
                 )
@@ -1151,7 +1151,7 @@ class LLMChatWidget(QWidget):
         if not path or not os.path.exists(path):
             return False
 
-        if require_llm and (not self._llm or not self._llm.is_已加载()):
+        if require_llm and (not self._llm or not self._llm.is_loaded()):
             self._append_system("⚠️ 大模型未连接。此引擎需要已连接的视觉模型。")
             return False
         
@@ -1238,7 +1238,7 @@ class LLMChatWidget(QWidget):
         # Engines that use the VLM need a live model. The analyzer may have been
         # created earlier by a CLIP-only run (with no LLM), so sync the current one.
         if engine != "clip":
-            if not self._llm or not self._llm.is_已加载():
+            if not self._llm or not self._llm.is_loaded():
                 self._append_system("⚠️ 此引擎需要连接视觉模型。请先连接模型，或使用“仅 CLIP”。")
                 return
             self._analyzer.llm = self._llm
@@ -2015,7 +2015,7 @@ class LLMChatWidget(QWidget):
         text = self.input_field.text().strip()
         if not text:
             return
-        if not self._llm or not self._llm.is_已加载():
+        if not self._llm or not self._llm.is_loaded():
             self._append_system("尚未连接，请先点击“连接”。")
             return
         if self._llm_thread_running():
@@ -2402,7 +2402,7 @@ class LLMChatWidget(QWidget):
     def _clear_chat(self):
         self.chat_display.clear()
         self._chat_history.clear()
-        if self._llm and self._llm.is_已加载():
+        if self._llm and self._llm.is_loaded():
             self._append_system("Chat cleared. Ready for new questions.")
 
     # ------------------------------------------------ Display helpers

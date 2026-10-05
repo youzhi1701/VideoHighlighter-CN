@@ -683,7 +683,7 @@ class SignalTimelineWindow(QMainWindow):
         from PySide6.QtMultimediaWidgets import QVideoWidget
         from PySide6.QtWidgets import QStackedWidget
 
-        dock = QDockWidget("Video Preview", self)
+        dock = QDockWidget("视频预览", self)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 
         preview_widget = QWidget()
@@ -703,14 +703,14 @@ class SignalTimelineWindow(QMainWindow):
         self.overlay_mode_combo = QComboBox()
         self.overlay_mode_combo.addItems([
             "关闭",
-            "Live (cache)",
-            "Live (real-time)",
-            "Precomp (swap video)",
+            "实时（缓存）",
+            "实时（即时识别）",
+            "预渲染（切换视频）",
         ])
         self.overlay_mode_combo.setToolTip(
-            "Off — plain video, no overlays\n"
-            "Live — real-time bboxes from cache (needs bbox data)\n"
-            "Precomp — swap to pre-rendered annotated video"
+            关闭 — 仅显示原始视频，不显示叠加层\n"
+            实时 — 从缓存显示检测框（需要检测框数据）\n"
+            预渲染 — 切换到已生成标注的视频"
         )
         self.overlay_mode_combo.setStyleSheet("""
             QComboBox {
@@ -864,7 +864,7 @@ class SignalTimelineWindow(QMainWindow):
         # VR half-frame checkbox
         self.vr_mode_checkbox = QCheckBox("VR 半画面")
         self.vr_mode_checkbox.setToolTip(
-            "Show only the left half of the frame (side-by-side 3D / 180° VR videos)"
+            "仅显示画面左半部分（适用于并排 3D / 180° VR 视频）"
         )
         self.vr_mode_checkbox.stateChanged.connect(self._toggle_vr_mode)
         controls_layout.addWidget(self.vr_mode_checkbox)
@@ -974,7 +974,7 @@ class SignalTimelineWindow(QMainWindow):
             # ── Switch to Live real-time overlay ──
             if self.realtime_preview is None:
                 self.statusBar().showMessage(
-                    "⚠️ Live overlay not available — module not loaded", 3000
+                    "⚠️ 实时叠加层不可用——相关模块未加载", 3000
                 )
                 self.overlay_mode_combo.blockSignals(True)
                 self.overlay_mode_combo.setCurrentText("关闭")
@@ -1004,17 +1004,17 @@ class SignalTimelineWindow(QMainWindow):
 
             if is_realtime:
                 self.statusBar().showMessage(
-                    "🟢 Live (real-time) — recognising faces on the current frame", 3000
+                    "🟢 实时（即时识别）——正在识别当前画面中的人脸", 3000
                 )
             else:
                 count = self.realtime_preview.get_detection_count()
                 self.statusBar().showMessage(
-                    f"🎯 Live (cache) — {count} detections from cache", 3000
+                    f"🎯 实时（缓存）——缓存中有 {count} 个检测结果", 3000
                 )
 
             count = self.realtime_preview.get_detection_count()
             self.statusBar().showMessage(
-                f"🎯 Live overlay mode — {count} detections from cache", 3000
+                f"🎯 实时叠加模式——缓存中有 {count} 个检测结果", 3000
             )
             
         elif "Precomp" in text:
@@ -1042,7 +1042,7 @@ class SignalTimelineWindow(QMainWindow):
                 self._active_player.play()
 
             self.statusBar().showMessage(
-                "🎬 Precomp mode — select annotated video from dropdown", 3000
+                "🎬 预渲染模式——请从下拉菜单选择已标注视频", 3000
             )
 
         else:
@@ -1227,7 +1227,7 @@ class SignalTimelineWindow(QMainWindow):
         actions.sort(key=lambda x: x[1], reverse=True)
         
         if actions:
-            lines.append('<b style="color: #cccccc;">━━ ACTIONS ━━</b>')
+            lines.append('<b style="color: #cccccc;">━━ 动作 ━━</b>')
             for name, conf, model in actions[:5]:
                 # Confidence bar using block chars
                 bar_len = int(conf * 12)
@@ -1258,7 +1258,7 @@ class SignalTimelineWindow(QMainWindow):
                     objects.append(obj_name)
         
         if objects:
-            lines.append('<b style="color: #80ff80;">━━ OBJECTS ━━</b>')
+            lines.append('<b style="color: #80ff80;">━━ 物体 ━━</b>')
             for obj in objects[:8]:
                 lines.append(f'  • {obj}')
             lines.append('')
@@ -1269,7 +1269,7 @@ class SignalTimelineWindow(QMainWindow):
         lines.insert(0, f'<b style="color: #00ffff; font-size: 13px;">{mins:02d}:{secs:02d}.{ms:02d}</b>')
         
         if not actions and not objects:
-            lines.append('<span style="color: #666;">No detections</span>')
+            lines.append('<span style="color: #666;">暂无检测结果</span>')
         
         self.detection_panel.setText('<br>'.join(lines))
 

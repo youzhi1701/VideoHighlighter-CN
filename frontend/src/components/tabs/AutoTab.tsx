@@ -328,7 +328,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                   }
                 }}
               >
-                <FolderOpen className="size-3.5" /> Pick files instead
+                <FolderOpen className="size-3.5" /> 改为选择文件
               </Button>
               {manualFiles.length > 0 && (
                 <span className="text-xs text-muted-foreground">
@@ -417,7 +417,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                 Template
               </Button>
               <Button variant="ghost" size="sm" onClick={() => void openScript()}>
-                Open…
+                打开…
               </Button>
             </div>
           </CardHeader>
@@ -477,7 +477,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
               <Music className="size-4" /> Music
             </CardTitle>
             <Button variant="ghost" size="sm" onClick={() => void chooseMusic()}>
-              Choose…
+              选择…
             </Button>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -506,7 +506,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
 
             {analysing && (
               <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Loader2 className="size-3.5 animate-spin" /> Analysing…
+                <Loader2 className="size-3.5 animate-spin" /> 正在分析…
               </p>
             )}
 
@@ -620,7 +620,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
               </Button>
             ) : (
               <Button size="sm" onClick={start} disabled={!canStart}>
-                <Play className="size-3.5" /> Make the film
+                <Play className="size-3.5" /> 生成影片
               </Button>
             )}
           </div>
@@ -628,12 +628,12 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
         <CardContent>
           {!hasSource && (
             <p className="text-xs text-muted-foreground">
-              Pick a camera card or some files to begin.
+              请选择相机存储卡或一些文件开始。
             </p>
           )}
           {hasSource && !destRoot && (
             <p className="text-xs text-muted-foreground">
-              Choose a project folder to begin.
+              请选择项目文件夹开始。
             </p>
           )}
 

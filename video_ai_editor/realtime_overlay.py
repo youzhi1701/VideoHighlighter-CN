@@ -1070,7 +1070,7 @@ class RealtimeOverlayPreview(QWidget):
         self._window_slider.valueChanged.connect(self._on_window_changed)
         controls.addWidget(self._window_slider)
 
-        self._window_label = QLabel("0.5s")
+        self._window_label = QLabel("0.5 秒")
         self._window_label.setStyleSheet("color: #aaa; font-size: 11px; min-width: 30px;")
         controls.addWidget(self._window_label)
 

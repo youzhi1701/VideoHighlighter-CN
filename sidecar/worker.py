@@ -204,7 +204,7 @@ def _vision_search(job: dict, emit, log_fn, progress_fn, cancel_evt) -> None:
             # full resolution because downscaling hurts VLM accuracy (the
             # thumbnail below is only for the results list).
             answer = llm.query(
-                f"Is there {query} in this image? Answer yes or no, then explain briefly.",
+                f"Is there {query} in this image? Start with YES or NO, then explain briefly in Chinese.",
                 frame_base64=_jpeg_b64(frame, max_w=10_000),
                 free_chat_mode=True,
             )

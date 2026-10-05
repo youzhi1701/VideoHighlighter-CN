@@ -68,6 +68,38 @@ const RESOLUTIONS = [
   { label: "4K", width: 3840, height: 2160 },
 ]
 
+const TRANSITION_LABELS: Record<string, string> = {
+  cut: "直接切换",
+  crossfade: "交叉淡化",
+  dissolve: "溶解",
+  dip_to_black: "淡入黑场",
+  dip_to_white: "淡入白场",
+  fade_grays: "灰色过渡",
+  iris_open: "光圈打开",
+  iris_close: "光圈关闭",
+  circle_open: "圆形展开",
+  circle_close: "圆形收拢",
+  diamond_open: "菱形展开",
+  diamond_close: "菱形收拢",
+  box_open: "方框展开",
+  box_close: "方框收拢",
+  barn_open: "双门打开",
+  barn_close: "双门关闭",
+  barn_up: "双门向上",
+  barn_down: "双门向下",
+  clock: "时钟扫动",
+  clock_back: "反向时钟扫动",
+  blinds: "百叶窗",
+  blinds_fine: "细百叶窗",
+  blinds_v: "垂直百叶窗",
+  blinds_v_fine: "细垂直百叶窗",
+  checker: "棋盘格",
+  grain: "胶片颗粒",
+  grain_iris: "中心扩散胶片颗粒",
+  ripple: "涟漪",
+  spiral: "螺旋",
+}
+
 interface Props {
   running: boolean
   onCancel: () => void
@@ -312,7 +344,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                 size="sm"
                 onClick={() => applyToAll(k, k === "cut" ? 0 : 0.5)}
               >
-                {k.replace(/_/g, " ")}
+                {TRANSITION_LABELS[k] ?? k.replace(/_/g, " ")}
               </Button>
             ))}
             <div className="ml-auto flex items-center gap-2">
@@ -682,7 +714,7 @@ function CutRow({
               <SelectContent>
                 {kinds.map((k) => (
                   <SelectItem key={k} value={k}>
-                    {k.replace(/_/g, " ")}
+                    {TRANSITION_LABELS[k] ?? k.replace(/_/g, " ")}
                   </SelectItem>
                 ))}
               </SelectContent>

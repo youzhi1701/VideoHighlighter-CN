@@ -2089,7 +2089,7 @@ class LLMChatWidget(QWidget):
         self.stop_btn.setEnabled(True)
 
         self._append_html(
-            '<div style="color:#8BC34A;margin-top:8px;"><b>Assistant:</b></div>'
+            '<div style="color:#8BC34A;margin-top:8px;"><b>助手：</b></div>'
         )
 
         # Build timeline context if connected
@@ -2374,7 +2374,7 @@ class LLMChatWidget(QWidget):
                         )
             except Exception as e:
                 self._append_html(
-                    f'<div style="color:#ff9800;">Command error: {e}</div>'
+                    f'<div style="color:#ff9800;">命令错误：{e}</div>'
                 )
 
         cursor = self.chat_display.textCursor()
@@ -2423,7 +2423,7 @@ class LLMChatWidget(QWidget):
         safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         safe = safe.replace("\n", "<br>")
         self._append_html(
-            f'<div style="color:#2f81f7;margin-top:8px;"><b>You:</b></div>'
+            f'<div style="color:#2f81f7;margin-top:8px;"><b>你：</b></div>'
             f'<div style="color:#ccc;margin-left:12px;">{safe}</div><br>'
         )
 

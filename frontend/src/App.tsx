@@ -342,7 +342,7 @@ export default function App() {
         break
       case "cancelled":
         appendLog("⏹ 已取消", "err")
-        toast("Cancelled")
+        toast("已取消")
         break
       case "error":
         appendLog(`✖ ${e.message}`, "err")
@@ -382,7 +382,7 @@ export default function App() {
     const stem = (outputRef.current || "highlight.mp4").replace(/\.[^.]+$/, "")
     const out = `${dir}${stem}_reel.mp4`
     appendLog(`🎬 正在将 ${files.length} 个高光合并为短片…`, "ok")
-    setTask("Combining reel")
+    setTask("正在合并成片")
     wsRef.current = openEventSocket(handleEvent)
     await new Promise((r) => setTimeout(r, 150))
     const res = await combineVideos({
@@ -446,7 +446,7 @@ export default function App() {
         willCombine,
       }),
     )
-    if (!res.ok) failRun(res.error ?? "Failed to start")
+    if (!res.ok) failRun(res.error ?? "启动失败")
   }
 
   /** Run -> Pause -> Resume, matching the Qt toggle_run tri-state. */
@@ -475,7 +475,7 @@ export default function App() {
       concurrent: dl.concurrent,
       ...(urls?.length ? { video_urls: urls } : {}),
     })
-    if (!res.ok) failRun(res.error ?? "Failed to start download")
+    if (!res.ok) failRun(res.error ?? "启动下载失败")
   }
 
   const onCancel = async () => {
@@ -497,7 +497,7 @@ export default function App() {
         avoidIds,
       }),
     })
-    if (!res.ok) failRun(res.error ?? "Failed to start the pipeline")
+    if (!res.ok) failRun(res.error ?? "启动处理流程失败")
   }
 
   const addVideos = async () => {
@@ -510,7 +510,7 @@ export default function App() {
     if (!dir) return
     const res = await scanFolder(dir, true)
     if (!res.ok) return toast.error(res.error ?? "无法扫描文件夹")
-    if (!res.files.length) return toast("No videos found in that folder")
+    if (!res.files.length) return toast("该文件夹中未找到视频")
     let added = 0
     setVideos((v) => {
       const merged = [...new Set([...v, ...res.files])]
@@ -529,7 +529,7 @@ export default function App() {
     if (!videos.length) return toast.error("请先添加视频")
     // The viewer is a separate Qt process and takes ~10s to appear, so say so —
     // otherwise the click looks like it did nothing.
-    toast("Opening Timeline Viewer — it takes a few seconds to appear…")
+    toast("正在打开时间线查看器，可能需要几秒钟…")
     appendLog(`📊 正在为 ${basename(videos[0])} 打开时间线查看器…`)
     const res = await openEditor(videos[0])
     if (!res.ok) {
@@ -584,7 +584,7 @@ export default function App() {
           <div className="flex gap-2">
             {/* Inputs lock during a run, same as the Qt GUI. */}
             <Button size="sm" variant="secondary" onClick={addVideos} disabled={running}>
-              <Plus className="size-4" /> Add
+              <Plus className="size-4" /> 添加
             </Button>
             <Button size="sm" variant="secondary" onClick={addFolder} disabled={running}>
               <FolderOpen className="size-4" /> 添加文件夹
@@ -595,7 +595,7 @@ export default function App() {
               onClick={() => setVideos([])}
               disabled={!videos.length || running}
             >
-              <Trash2 className="size-4" /> Clear
+              <Trash2 className="size-4" /> 清空
             </Button>
           </div>
         </CardHeader>

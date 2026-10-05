@@ -104,7 +104,7 @@ class DetailsPage(QWizardPage):
         self._model_row = self._hbox(self.model_path, browse)
 
         self.display_name = QLineEdit(placeholderText="模型识别内容，例如：直升机检测器")
-        self.name = QLineEdit(placeholderText="helicopter-detector")
+        self.name = QLineEdit(placeholderText="例如：直升机检测器")
         self._name_edited = False
         self.name.textEdited.connect(lambda _t: setattr(self, "_name_edited", True))
         self.display_name.textChanged.connect(self._sync_name)
@@ -112,7 +112,7 @@ class DetailsPage(QWizardPage):
         self.description.setPlaceholderText("说明它识别什么，以及适合哪类视频素材。")
         self.description.setFixedHeight(70)
 
-        self.category = QLineEdit(placeholderText="animals/horses")
+        self.category = QLineEdit(placeholderText="例如：动物/马")
         self.category.setToolTip("模型在社区中的分类路径：使用小写英文，最多三级"
                                  "，例如 sports/tennis 或 games/some-title。")
         self.category_hint = QLabel("")
@@ -132,7 +132,7 @@ class DetailsPage(QWizardPage):
             self.task.addItem(TASK_NAMES_ZH.get(key, TASKS[key][0]), key)
         self.output_format = QComboBox()
         self.task.currentIndexChanged.connect(self._task_changed)
-        self.labels = QLineEdit(placeholderText="helicopter, airplane")
+        self.labels = QLineEdit(placeholderText="例如：直升机、飞机")
         self.width_ = QSpinBox(minimum=16, maximum=2048, value=416)
         self.height_ = QSpinBox(minimum=16, maximum=2048, value=416)
         self.frames = QSpinBox(minimum=1, maximum=128, value=1)

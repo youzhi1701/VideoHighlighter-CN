@@ -79,17 +79,17 @@ export async function pickScriptFile(): Promise<string | null> {
   return Array.isArray(selected) ? (selected[0] ?? null) : selected
 }
 
-/** A GPS track, for placing clips that carry no location of their own.
+/** A GPS 轨迹, for placing clips that carry no location of their own.
  *  GPX rather than a watch maker's own format: everyone exports it, so this
  *  works with a Garmin, a Coros, a Strava export or a phone. */
 export async function pickTrackFile(): Promise<string | null> {
   if (!isTauri()) {
-    return window.prompt("Paste the path to a GPS track (.gpx):") || null
+    return window.prompt("请输入 GPS 轨迹文件（.gpx）的路径：") || null
   }
   const { open } = await import("@tauri-apps/plugin-dialog")
   const selected = await open({
     multiple: false,
-    filters: [{ name: "GPS track", extensions: ["gpx"] }],
+    filters: [{ name: "GPS 轨迹", extensions: ["gpx"] }],
   })
   if (!selected) return null
   return Array.isArray(selected) ? (selected[0] ?? null) : selected

@@ -3560,7 +3560,21 @@ class VideoHighlighterGUI(QWidget):
             return False
         from modules.ui import pro_offer
 
-        self.pro_label.setText(offer.text)
+        if getattr(offer, "moment", "") == "rule_unbuildable":
+            pro_text = (
+                "如果你要找的内容不在当前视频的检测类别中，构图规则无法新增类别；"
+                "规则只能组合已有检测结果。你可以在播放器中右键目标并选择"
+                "“训练模型”来教会程序识别。<b>VideoHighlighter Pro</b> 也可以直接按名称查找，"
+                "无需训练，并提供免费试用。"
+            )
+        elif getattr(offer, "moment", "") == "report_unmeasured":
+            pro_text = (
+                "这份报告包含尚未被实际测量的内容。<b>VideoHighlighter Pro</b> "
+                "提供当前版本没有的额外分析方式来补充这些测量，并提供免费试用。"
+            )
+        else:
+            pro_text = offer.text
+        self.pro_label.setText(pro_text)
         self.pro_banner.setVisible(True)
         pro_offer.mark_shown(offer.moment)
         print(f"pro_offer: showed '{offer.moment}'")
@@ -3601,7 +3615,7 @@ class VideoHighlighterGUI(QWidget):
     def _on_update_available(self, info):
         """Show the banner. Runs on the GUI thread (queued signal)."""
         self._pending_update = info
-        text = f"<b>{info.headline}</b>"
+        text = f"<b>发现新版本 {info.version}（当前版本 {__version__}）</b>"
         if info.notes:
             text += f"<br>{info.notes}"
         self.update_label.setText(text)

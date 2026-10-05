@@ -978,8 +978,8 @@ class EditTimelineScene(QGraphicsScene):
         # load_initial_clips), so guide the user instead of showing a blank bar.
         if not self.clips:
             hint = self.addText(
-                "No clips yet — drag a segment from the signal timeline above, "
-                "or use 'Add Clip' to start your edit.",
+                "暂无剪辑片段——可从上方信号时间线拖入片段，"
+                "或使用“添加片段”开始编辑。",
                 QFont("Arial", 11)
             )
             hint.setDefaultTextColor(QColor(170, 170, 170))

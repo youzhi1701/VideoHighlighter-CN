@@ -9519,6 +9519,925 @@
       "before": "                \"下面的数值仍然是真实结果。\")",
       "after": "        self.caption.setText(caption + tag)",
       "hunk": "full-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-1",
+      "file": "modules/ui/training_panel.py",
+      "source": "    STAGES = (\"Collecting frames\", \"Preparing the model\", \"Learning\", \"Saving\")",
+      "target": "    STAGES = (\"收集帧\", \"Preparing the model\", \"Learning\", \"Saving\")",
+      "before": "",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-2",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.progress.emit(0, \"Collecting frames from your videos...\")",
+      "target": "            self.progress.emit(0, \"收集帧 from your videos...\")",
+      "before": "            self.stage.emit(0)",
+      "after": "            dataset_dir = os.path.join(self._work_dir, \"dataset\")",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-3",
+      "file": "modules/ui/training_panel.py",
+      "source": "                    f\"Collecting frames... {done} of {total}\"),",
+      "target": "                    f\"收集帧... {done} of {total}\"),",
+      "before": "                    int(5 * done / max(1, total)),",
+      "after": "            )",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-4",
+      "file": "modules/ui/training_panel.py",
+      "source": "    STAGES = (\"收集帧\", \"Preparing the model\", \"Learning\", \"Saving\")",
+      "target": "    STAGES = (\"收集帧\", \"准备模型\", \"Learning\", \"Saving\")",
+      "before": "",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-5",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.progress.emit(5, \"Preparing the model...\" + (",
+      "target": "            self.progress.emit(5, \"准备模型...\" + (",
+      "before": "            first_time = not os.path.exists(pretrained_path(self._size))",
+      "after": "                \" The first run downloads its starting weights (20-70 MB).\"",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-6",
+      "file": "modules/ui/training_panel.py",
+      "source": "    STAGES = (\"收集帧\", \"准备模型\", \"Learning\", \"Saving\")",
+      "target": "    STAGES = (\"收集帧\", \"准备模型\", \"训练中\", \"Saving\")",
+      "before": "",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-7",
+      "file": "modules/ui/training_panel.py",
+      "source": "                    f\"Learning... round {update.epoch} of {update.total_epochs}\"",
+      "target": "                    f\"训练中... round {update.epoch} of {update.total_epochs}\"",
+      "before": "                self.progress.emit(percent, (",
+      "after": "                    + (f\", about {left} left\" if left else \"\")))",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-8",
+      "file": "modules/ui/training_panel.py",
+      "source": "                               f\"Learning... round {done} of {total}\")",
+      "target": "                               f\"训练中... round {done} of {total}\")",
+      "before": "            self.progress.emit(int(100 * done / total),",
+      "after": "            return None",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-9",
+      "file": "modules/ui/training_panel.py",
+      "source": "    STAGES = (\"收集帧\", \"准备模型\", \"训练中\", \"Saving\")",
+      "target": "    STAGES = (\"收集帧\", \"准备模型\", \"训练中\", \"保存\")",
+      "before": "",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-10",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.progress.emit(98, \"Saving the model...\")",
+      "target": "            self.progress.emit(98, \"保存 the model...\")",
+      "before": "            self.stage.emit(3)",
+      "after": "            exported = install(result.weights_path, dest_dir=self._dest_dir)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-11",
+      "file": "modules/ui/training_panel.py",
+      "source": "                \" The first run downloads its starting weights (20-70 MB).\"",
+      "target": "                \" 首次运行需要下载初始权重（20–70 MB）。\"",
+      "before": "            self.progress.emit(5, \"准备模型...\" + (",
+      "after": "                if first_time else \"\"))",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-12",
+      "file": "modules/ui/training_panel.py",
+      "source": "                    + (f\", about {left} left\" if left else \"\")))",
+      "target": "                    + (f\"，预计剩余 {left}\" if left else \"\")))",
+      "before": "                    f\"训练中... round {update.epoch} of {update.total_epochs}\"",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-13",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.progress.emit(100, \"Done.\")",
+      "target": "            self.progress.emit(100, \"完成。\")",
+      "before": "            exported.device = result.device",
+      "after": "            self.finished.emit(exported)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-14",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.progress.emit(100, \"Done.\")",
+      "target": "            self.progress.emit(100, \"完成。\")",
+      "before": "                return",
+      "after": "            self.finished.emit(note)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-15",
+      "file": "modules/ui/training_panel.py",
+      "source": "                self.error.emit(\"Stopped.\")",
+      "target": "                self.error.emit(\"已停止。\")",
+      "before": "            if name == \"Cancelled\":",
+      "after": "                return",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-16",
+      "file": "modules/ui/training_panel.py",
+      "source": "                self.error.emit(\"Stopped.\")",
+      "target": "                self.error.emit(\"已停止。\")",
+      "before": "            if self._stop:",
+      "after": "                return",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-17",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.error.emit(f\"Failed while {stage}: {exc}\")",
+      "target": "            self.error.emit(f\"在“{stage}”阶段失败：{exc}\")",
+      "before": "            traceback.print_exc()",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-18",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"Teach the app to find things of your own. Mark examples, and this \"",
+      "target": "            \"让应用学会识别你自己的物体。先标记示例，程序会训练一个小型检测模型，\"",
+      "before": "        explain = QLabel(",
+      "after": "            \"trains a small detector that looks for them in every video.\\n\"",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-19",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"trains a small detector that looks for them in every video.\\n\"",
+      "target": "            \"用于在每个视频中寻找这些物体。\\n\"",
+      "before": "            \"让应用学会识别你自己的物体。先标记示例，程序会训练一个小型检测模型，\"",
+      "after": "            \"The first model finds some of them, not all — it improves each \"",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-20",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"The first model finds some of them, not all — it improves each \"",
+      "target": "            \"初次训练可能无法识别全部目标；随着你继续添加示例，模型会逐步改进。\"",
+      "before": "            \"用于在每个视频中寻找这些物体。\\n\"",
+      "after": "            \"time you add more examples.\"",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-21",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"time you add more examples.\"",
+      "target": "            \"\"",
+      "before": "            \"初次训练可能无法识别全部目标；随着你继续添加示例，模型会逐步改进。\"",
+      "after": "        )",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-22",
+      "file": "modules/ui/training_panel.py",
+      "source": "        source_row.addWidget(QLabel(\"Examples:\"))",
+      "target": "        source_row.addWidget(QLabel(\"示例：\"))",
+      "before": "        source_row = QHBoxLayout()",
+      "after": "        self.store_label = QLabel(\"none chosen\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-23",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.store_label = QLabel(\"none chosen\")",
+      "target": "        self.store_label = QLabel(\"尚未选择\")",
+      "before": "        source_row.addWidget(QLabel(\"示例：\"))",
+      "after": "        self.store_label.setStyleSheet(\"font-style:italic;color:#999;\")",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-24",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.folder_label = QLabel(\"none chosen\")",
+      "target": "        self.folder_label = QLabel(\"尚未选择\")",
+      "before": "        row.addWidget(QLabel(\"Clips folder:\"))",
+      "after": "        self.folder_label.setStyleSheet(\"font-style:italic;color:#999;\")",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-25",
+      "file": "modules/ui/training_panel.py",
+      "source": "        browse = QPushButton(\"Choose...\")",
+      "target": "        browse = QPushButton(\"选择…\")",
+      "before": "        source_row.addWidget(self.store_label, 1)",
+      "after": "        browse.clicked.connect(self._browse_store)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-26",
+      "file": "modules/ui/training_panel.py",
+      "source": "        browse = QPushButton(\"Choose...\")",
+      "target": "        browse = QPushButton(\"选择…\")",
+      "before": "        row.addWidget(self.folder_label, 1)",
+      "after": "        browse.clicked.connect(self._browse)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-27",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.import_btn = QPushButton(\"Import from labeller...\")",
+      "target": "        self.import_btn = QPushButton(\"从标注工具导入…\")",
+      "before": "        source_row.addWidget(browse)",
+      "after": "        self.import_btn.setToolTip(",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-28",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"Read a tools/labeler.py export. Its points become boxes of a fixed \"",
+      "target": "            \"读取 tools/labeler.py 导出的数据。点标注会被转换为固定大小的边界框，\"",
+      "before": "        self.import_btn.setToolTip(",
+      "after": "            \"size, so they arrive needing review rather than accepted.\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-29",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"size, so they arrive needing review rather than accepted.\")",
+      "target": "            \"因此导入后需要先检查确认，而不会直接作为已接受标注。\")",
+      "before": "            \"读取 tools/labeler.py 导出的数据。点标注会被转换为固定大小的边界框，\"",
+      "after": "        self.import_btn.clicked.connect(self._import_labeler)",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-30",
+      "file": "modules/ui/training_panel.py",
+      "source": "        advanced = CollapsibleSection(\"Advanced\", settings_key=\"training/advanced\")",
+      "target": "        advanced = CollapsibleSection(\"高级\", settings_key=\"training/advanced\")",
+      "before": "        # -- advanced, folded: the point is that nobody has to open it --",
+      "after": "        form = QFormLayout()",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-31",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"Advanced\", settings_key=\"training/actions_advanced\")",
+      "target": "            \"高级\", settings_key=\"training/actions_advanced\")",
+      "before": "        advanced = CollapsibleSection(",
+      "after": "        form = QFormLayout()",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-32",
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"Rounds of learning:\", self.epochs_spin)",
+      "target": "        form.addRow(\"训练轮数：\", self.epochs_spin)",
+      "before": "        self.epochs_spin.valueChanged.connect(self._refresh_estimate)",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-33",
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"Rounds of learning:\", self.epochs_spin)",
+      "target": "        form.addRow(\"训练轮数：\", self.epochs_spin)",
+      "before": "        self.epochs_spin.setValue(self.DEFAULT_EPOCHS)",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-34",
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"Frames at a time:\", self.batch_spin)",
+      "target": "        form.addRow(\"每批帧数：\", self.batch_spin)",
+      "before": "        self.batch_spin.setValue(self.DEFAULT_BATCH)",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-35",
+      "file": "modules/ui/training_panel.py",
+      "source": "        for size, hint in ((\"nano\", \"smallest and fastest\"),",
+      "target": "        for size, hint in ((\"nano\", \"最小、最快\"),",
+      "before": "        self.size_combo = QComboBox()",
+      "after": "                           (\"tiny\", \"recommended\"),",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-36",
+      "file": "modules/ui/training_panel.py",
+      "source": "                           (\"tiny\", \"recommended\"),",
+      "target": "                           (\"tiny\", \"推荐\"),",
+      "before": "        for size, hint in ((\"nano\", \"最小、最快\"),",
+      "after": "                           (\"s\", \"slower, a little more accurate\")):",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-37",
+      "file": "modules/ui/training_panel.py",
+      "source": "        for variant, hint in ((\"r3d_18\", \"recommended\"),",
+      "target": "        for variant, hint in ((\"r3d_18\", \"推荐\"),",
+      "before": "        self.variant_combo = QComboBox()",
+      "after": "                              (\"mc3_18\", \"lighter\"),",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-38",
+      "file": "modules/ui/training_panel.py",
+      "source": "                           (\"s\", \"slower, a little more accurate\")):",
+      "target": "                           (\"s\", \"较慢，但略微更准确\")):",
+      "before": "                           (\"tiny\", \"推荐\"),",
+      "after": "            self.size_combo.addItem(f\"{size} - {hint}\", size)",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-39",
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"Model size:\", self.size_combo)",
+      "target": "        form.addRow(\"模型大小：\", self.size_combo)",
+      "before": "        self.size_combo.currentIndexChanged.connect(self._refresh_estimate)",
+      "after": "        advanced.setContentLayout(form)",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-40",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.train_btn = QPushButton(\"Train a model\")",
+      "target": "        self.train_btn = QPushButton(\"训练模型\")",
+      "before": "        # -- the one button --",
+      "after": "        self.train_btn.setStyleSheet(",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-41",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.cancel_btn = QPushButton(\"Stop\")",
+      "target": "        self.cancel_btn = QPushButton(\"停止\")",
+      "before": "",
+      "after": "        self.cancel_btn.clicked.connect(self._cancel)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-42",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self._say(\"Stopping after this step...\", THEME.warning)",
+      "target": "            self._say(\"停止ping after this step...\", THEME.warning)",
+      "before": "            self._worker.cancel()",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-43",
+      "file": "modules/ui/training_panel.py",
+      "source": "        if not message.startswith(\"Stopped\"):",
+      "target": "        if not message.startswith(\"停止ped\"):",
+      "before": "        self._say(message, THEME.danger)",
+      "after": "            QMessageBox.warning(self, \"Training\", message)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-44",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.cancel_btn = QPushButton(\"Stop\")",
+      "target": "        self.cancel_btn = QPushButton(\"停止\")",
+      "before": "",
+      "after": "        self.cancel_btn.clicked.connect(self._cancel)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-45",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self._say(\"Stopping...\", THEME.warning)",
+      "target": "            self._say(\"停止ping...\", THEME.warning)",
+      "before": "            self._worker.cancel()",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-46",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.watch_btn = QPushButton(\"👁 Watch it learn\")",
+      "target": "        self.watch_btn = QPushButton(\"👁 查看训练过程\")",
+      "before": "",
+      "after": "        self.watch_btn.setToolTip(",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-47",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"Open a live view: after every round the model looks at the same few \"",
+      "target": "            \"打开实时预览：每轮结束后，模型都会查看同一组未参与训练的帧，\"",
+      "before": "        self.watch_btn.setToolTip(",
+      "after": "            \"frames it was not trained on, and you can see what it finds.\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-48",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"frames it was not trained on, and you can see what it finds.\")",
+      "target": "            \"你可以直接看到它识别到了什么。\")",
+      "before": "            \"打开实时预览：每轮结束后，模型都会查看同一组未参与训练的帧，\"",
+      "after": "        self.watch_btn.clicked.connect(self._open_preview)",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-49",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.share_btn = QPushButton(\"Share this model with the community…\")",
+      "target": "        self.share_btn = QPushButton(\"将此模型分享到社区…\")",
+      "before": "        share_layout.addWidget(share_note)",
+      "after": "        self.share_btn.clicked.connect(self._share)",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-50",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self, \"Choose a set of examples\", \"\", \"Labels (*.json);;All files (*)\")",
+      "target": "            self, \"选择一组示例\", \"\", \"Labels (*.json);;All files (*)\")",
+      "before": "        path, _ = QFileDialog.getOpenFileName(",
+      "after": "        if path:",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-51",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self, \"选择一组示例\", \"\", \"Labels (*.json);;All files (*)\")",
+      "target": "            self, \"选择一组示例\", \"\", \"标注文件 (*.json);;所有文件 (*)\")",
+      "before": "        path, _ = QFileDialog.getOpenFileName(",
+      "after": "        if path:",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-52",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self, \"Import a labeller export\", \"\", \"Labels (*.json);;All files (*)\")",
+      "target": "            self, \"Import a labeller export\", \"\", \"标注文件 (*.json);;所有文件 (*)\")",
+      "before": "        path, _ = QFileDialog.getOpenFileName(",
+      "after": "        if not path:",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-53",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.estimate_label.setText(\"Working out how long training will take...\")",
+      "target": "            self.estimate_label.setText(\"正在估算训练所需时间…\")",
+      "before": "        if self._device is None:",
+      "after": "            self.estimate_label.setStyleSheet(\"color:#999;\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-54",
+      "file": "modules/ui/training_panel.py",
+      "source": "            text += (\" A graphics card usually makes this several times faster; \"",
+      "target": "            text += (\" 使用显卡通常可以快数倍；\"",
+      "before": "        if device_kind(device) == \"cpu\":",
+      "after": "                     \"a smaller model size is quicker too.\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-55",
+      "file": "modules/ui/training_panel.py",
+      "source": "                     \"a smaller model size is quicker too.\")",
+      "target": "                     \"选择更小的模型也会更快。\")",
+      "before": "            text += (\" 使用显卡通常可以快数倍；\"",
+      "after": "        self.estimate_label.setText(text)",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-56",
+      "file": "modules/ui/training_panel.py",
+      "source": "(``training.train_estimate``). During it: which stage it is in, time elapsed and",
+      "target": "(``training.train_estimate``). During it: which stage it is in, time 已用 and",
+      "before": "take, on which hardware, and whether that number was measured on this computer",
+      "after": "left, and after every round a sentence about what the model now finds on frames",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-57",
+      "file": "modules/ui/training_panel.py",
+      "source": "        text = f\"{_elapsed(spent)} elapsed\"",
+      "target": "        text = f\"{_elapsed(spent)} 已用\"",
+      "before": "        spent = time.monotonic() - self._started_at",
+      "after": "        if self._time_left > 0:",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-58",
+      "file": "modules/ui/training_panel.py",
+      "source": "            text += f\" · about {_friendly_time(self._time_left)} left\"",
+      "target": "            text += f\" · 预计剩余 {_friendly_time(self._time_left)} left\"",
+      "before": "        if self._time_left > 0:",
+      "after": "        elif self._estimate_seconds > 0:",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-59",
+      "file": "modules/ui/training_panel.py",
+      "source": "class ObjectTrainingWorker(QObject):",
+      "target": "class Object训练Worker(QObject):",
+      "before": "",
+      "after": "    \"\"\"Assemble, train, export — off the GUI thread.",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-60",
+      "file": "modules/ui/training_panel.py",
+      "source": "class ObjectTrainingSection(QWidget):",
+      "target": "class Object训练Section(QWidget):",
+      "before": "",
+      "after": "    \"\"\"Pick a set of labels, train a detector, install it.",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-61",
+      "file": "modules/ui/training_panel.py",
+      "source": "    :class:`ActionTrainingSection` are separate rather than one form with a",
+      "target": "    :class:`Action训练Section` are separate rather than one form with a",
+      "before": "    That is a different kind of example from an action, which is why this and",
+      "after": "    mode switch — they take different data and produce different models.",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-62",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self._worker: Optional[TrainingWorker] = None",
+      "target": "        self._worker: Optional[训练Worker] = None",
+      "before": "        self._thread: Optional[QThread] = None",
+      "after": "        self._store_path = store_path",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-63",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self._preview = None                 # TrainingPreviewWindow, when open",
+      "target": "        self._preview = None                 # 训练PreviewWindow, when open",
+      "before": "        self._estimate_seconds = 0.0",
+      "after": "        self._rounds: list = []              # every RoundSnapshot of this run",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-64",
+      "file": "modules/ui/training_panel.py",
+      "source": "        stages = ObjectTrainingWorker.STAGES",
+      "target": "        stages = Object训练Worker.STAGES",
+      "before": "    def _show_stage(self, index: int) -> None:",
+      "after": "        parts = []",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-65",
+      "file": "modules/ui/training_panel.py",
+      "source": "        from modules.ui.training_preview import TrainingPreviewWindow",
+      "target": "        from modules.ui.training_preview import 训练PreviewWindow",
+      "before": "    def _open_preview(self) -> None:",
+      "after": "        if self._preview is None:",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-66",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self._preview = TrainingPreviewWindow(self)",
+      "target": "            self._preview = 训练PreviewWindow(self)",
+      "before": "        if self._preview is None:",
+      "after": "            self._preview.closed.connect(self._on_preview_closed)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-67",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self._worker = ObjectTrainingWorker(",
+      "target": "        self._worker = Object训练Worker(",
+      "before": "",
+      "after": "            store_path=self._store_path,",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-68",
+      "file": "modules/ui/training_panel.py",
+      "source": "            QMessageBox.warning(self, \"Training\", message)",
+      "target": "            QMessageBox.warning(self, \"训练\", message)",
+      "before": "        if not message.startswith(\"停止ped\"):",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-69",
+      "file": "modules/ui/training_panel.py",
+      "source": "class ActionTrainingWorker(QObject):",
+      "target": "class Action训练Worker(QObject):",
+      "before": "",
+      "after": "    \"\"\"Drive the R3D trainer in a child process, reporting what it prints.",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-70",
+      "file": "modules/ui/training_panel.py",
+      "source": "                    f\"Training stopped with exit code {code}. The debug log \"",
+      "target": "                    f\"训练 stopped with exit code {code}. The debug log \"",
+      "before": "                self.error.emit(",
+      "after": "                    f\"has the trainer's own output.\")",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-71",
+      "file": "modules/ui/training_panel.py",
+      "source": "class ActionTrainingSection(QWidget):",
+      "target": "class Action训练Section(QWidget):",
+      "before": "",
+      "after": "    \"\"\"Train the app to recognise an action of the user's own.",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-72",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self._worker: Optional[ActionTrainingWorker] = None",
+      "target": "        self._worker: Optional[Action训练Worker] = None",
+      "before": "        self._thread: Optional[QThread] = None",
+      "after": "        self._data_path = \"\"",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-73",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self._worker = ActionTrainingWorker(",
+      "target": "        self._worker = Action训练Worker(",
+      "before": "            return",
+      "after": "            data_path=self._data_path,",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-74",
+      "file": "modules/ui/training_panel.py",
+      "source": "class TrainingPanel(QWidget):",
+      "target": "class 训练Panel(QWidget):",
+      "before": "",
+      "after": "    \"\"\"The two kinds of training, side by side.",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-75",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.objects = ObjectTrainingSection(store_path=store_path)",
+      "target": "        self.objects = Object训练Section(store_path=store_path)",
+      "before": "",
+      "after": "        self.objects.model_installed.connect(self.model_installed)",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-76",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.actions = ActionTrainingSection()",
+      "target": "        self.actions = Action训练Section()",
+      "before": "        self.objects.model_installed.connect(self.model_installed)",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-77",
+      "file": "modules/ui/training_panel.py",
+      "source": "            label.setText(\"Training hardware: \" + \"; \".join(devices))",
+      "target": "            label.setText(\"训练 hardware: \" + \"; \".join(devices))",
+      "before": "        if devices:",
+      "after": "            label.setStyleSheet(\"color:#999;\")",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-78",
+      "file": "modules/ui/training_panel.py",
+      "source": "                \"Training hardware: no GPU found - training will use the \"",
+      "target": "                \"训练 hardware: no GPU found - training will use the \"",
+      "before": "            label.setText(",
+      "after": "                \"processor and be much slower.\")",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-79",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"Teach the app to recognise something that happens over time, \"",
+      "target": "            \"让应用学会识别随时间发生的动作，\"",
+      "before": "        explain = QLabel(",
+      "after": "            \"rather than something visible in a single frame.\\n\"",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-80",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"rather than something visible in a single frame.\\n\"",
+      "target": "            \"而不是只识别单帧中可见的物体。\\n\"",
+      "before": "            \"让应用学会识别随时间发生的动作，\"",
+      "after": "            \"Give it one folder per action, with a few short clips inside each.\"",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-81",
+      "file": "modules/ui/training_panel.py",
+      "source": "            \"Give it one folder per action, with a few short clips inside each.\"",
+      "target": "            \"每个动作准备一个文件夹，并在其中放入若干短视频片段。\"",
+      "before": "            \"而不是只识别单帧中可见的物体。\\n\"",
+      "after": "        )",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-82",
+      "file": "modules/ui/training_panel.py",
+      "source": "        row.addWidget(QLabel(\"Clips folder:\"))",
+      "target": "        row.addWidget(QLabel(\"片段文件夹：\"))",
+      "before": "        row = QHBoxLayout()",
+      "after": "        self.folder_label = QLabel(\"尚未选择\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-83",
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"Clips at a time:\", self.batch_spin)",
+      "target": "        form.addRow(\"每批片段数：\", self.batch_spin)",
+      "before": "        self.batch_spin.setValue(self.DEFAULT_BATCH)",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-84",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.pipeline_combo.addItem(\"Automatic (match my hardware)\", \"auto\")",
+      "target": "        self.pipeline_combo.addItem(\"自动（匹配当前硬件）\", \"auto\")",
+      "before": "        self.pipeline_combo = QComboBox()",
+      "after": "        self.pipeline_combo.addItem(\"Intel - OpenVINO encoder\", \"intel\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-85",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.pipeline_combo.addItem(\"Intel - OpenVINO encoder\", \"intel\")",
+      "target": "        self.pipeline_combo.addItem(\"Intel - OpenVINO 编码器\", \"intel\")",
+      "before": "        self.pipeline_combo.addItem(\"自动（匹配当前硬件）\", \"auto\")",
+      "after": "        self.pipeline_combo.addItem(\"NVIDIA - 3D CNN\", \"r3d\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-86",
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"Method:\", self.pipeline_combo)",
+      "target": "        form.addRow(\"训练方式：\", self.pipeline_combo)",
+      "before": "        self.pipeline_combo.currentIndexChanged.connect(self._choose_pipeline)",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-87",
+      "file": "modules/ui/training_panel.py",
+      "source": "                              (\"mc3_18\", \"lighter\"),",
+      "target": "                              (\"mc3_18\", \"更轻量\"),",
+      "before": "        for variant, hint in ((\"r3d_18\", \"推荐\"),",
+      "after": "                              (\"r2plus1d_18\", \"slower, often better\")):",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-88",
+      "file": "modules/ui/training_panel.py",
+      "source": "                              (\"r2plus1d_18\", \"slower, often better\")):",
+      "target": "                              (\"r2plus1d_18\", \"较慢，通常效果更好\")):",
+      "before": "                              (\"mc3_18\", \"更轻量\"),",
+      "after": "            self.variant_combo.addItem(f\"{variant} - {hint}\", variant)",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-89",
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"3D CNN model:\", self.variant_combo)",
+      "target": "        form.addRow(\"3D CNN 模型：\", self.variant_combo)",
+      "before": "            self.variant_combo.addItem(f\"{variant} - {hint}\", variant)",
+      "after": "        # Held so the row can be hidden: it belongs to the 3D CNN only, and a",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-90",
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.train_btn = QPushButton(\"Train an action model\")",
+      "target": "        self.train_btn = QPushButton(\"训练动作模型\")",
+      "before": "",
+      "after": "        self.train_btn.setStyleSheet(",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-91",
+      "file": "modules/ui/training_panel.py",
+      "source": "        path = QFileDialog.getExistingDirectory(self, \"Choose the clips folder\")",
+      "target": "        path = QFileDialog.getExistingDirectory(self, \"选择片段文件夹\")",
+      "before": "    def _browse(self) -> None:",
+      "after": "        if path:",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-92",
+      "file": "modules/ui/training_panel.py",
+      "source": "            note = f\"Ready to learn: {described}.\"",
+      "target": "            note = f\"可以开始训练：{described}。\"",
+      "before": "            described = \", \".join(f\"{name} ({n})\" for name, n in sorted(counts.items()))",
+      "after": "            if pending:",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-93",
+      "file": "modules/ui/training_panel.py",
+      "source": "            self.classes_label.setText(f\"Ready to learn: {described}.\")",
+      "target": "            self.classes_label.setText(f\"可以开始训练：{described}。\")",
+      "before": "        else:",
+      "after": "            self.classes_label.setStyleSheet(\"\")",
+      "hunk": "deep-ui-audit-2026-10-06",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-94",
+      "file": "modules/ui/training_panel.py",
+      "source": "        tabs.addTab(self.objects, \"Objects\")",
+      "target": "        tabs.addTab(self.objects, \"物体\")",
+      "before": "            print(f\"[training] teach panel unavailable: {exc}\")",
+      "after": "        tabs.addTab(self.actions, \"Actions\")",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-95",
+      "file": "modules/ui/training_panel.py",
+      "source": "        tabs.addTab(self.actions, \"Actions\")",
+      "target": "        tabs.addTab(self.actions, \"动作\")",
+      "before": "        tabs.addTab(self.objects, \"物体\")",
+      "after": "",
+      "hunk": "deep-ui-audit-2026-10-06"
+    },
+    {
+      "id": "modules/ui/training_panel.py#deep-96",
+      "file": "modules/ui/training_panel.py",
+      "source": "                \"processor and be much slower.\")",
+      "target": "                \"处理器训练，速度会明显较慢。\")",
+      "before": "                \"训练 hardware: no GPU found - training will use the \"",
+      "after": "            label.setStyleSheet(f\"color:{THEME.warning};\")",
+      "hunk": "deep-ui-audit-2026-10-06"
     }
   ]
 }

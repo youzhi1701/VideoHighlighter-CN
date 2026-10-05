@@ -302,9 +302,8 @@ def python_tag() -> str:
 def incompatibility(pack: Pack) -> Optional[str]:
     """Why this pack cannot work in this app, or None."""
     if pack.python and pack.python != python_tag():
-        return (f"The {pack.name} pack is built for Python {pack.python}, but this "
-                f"app runs {python_tag()}. The app and its packs are out of step; "
-                f"download the current release.")
+        return (f"{pack.name} 组件包适用于 Python {pack.python}，但当前软件运行的是 "
+                f"{python_tag()}。软件与组件包版本不匹配，请下载当前最新版本。")
     return None
 
 
@@ -368,15 +367,13 @@ def cuda_pack_advice(gpus: list) -> Optional[str]:
     runs (a card newer than the pack's kernels passes this and fails there).
     """
     if not gpus:
-        return ("No NVIDIA graphics card was found, so the NVIDIA download would "
-                "not speed anything up. VideoHighlighter keeps using the "
-                "processor or your Intel/AMD graphics.")
+        return ("未检测到 NVIDIA 显卡，因此下载 NVIDIA 加速组件不会提升速度。"
+                "VideoHighlighter 将继续使用处理器或 Intel/AMD 显卡。")
     best = max(gpus, key=lambda g: _driver_tuple(g.driver))
     if _driver_tuple(best.driver) < MIN_DRIVER:
         need = ".".join(str(p) for p in MIN_DRIVER)
-        return (f"Your NVIDIA driver ({best.driver}) is too old for GPU "
-                f"acceleration. Update it to {need} or newer from nvidia.com, "
-                f"then try again.")
+        return (f"当前 NVIDIA 驱动（{best.driver}）版本过低，无法使用 GPU 加速。"
+                f"请从 nvidia.com 更新到 {need} 或更高版本后重试。")
     return None
 
 
@@ -501,23 +498,21 @@ def download_pack(
             if _size(part) == pack.bytes:
                 break
             raise ConnectionError(
-                f"connection closed at {_size(part)} of {pack.bytes} bytes")
+                f"连接在已下载 {_size(part)} / {pack.bytes} 字节时中断")
         except _Restart:
             _remove(part)
             failures += 1
         except (OSError, http.client.HTTPException) as exc:
             code = _http_code(exc)
             if code is not None and 400 <= code < 500 and code not in (408, 416, 429):
-                raise PackError(f"{pack.asset} could not be downloaded "
-                                f"(HTTP {code} from {pack.url}).") from exc
+                raise PackError(f"{pack.asset} 下载失败（{pack.url} 返回 HTTP {code}）。") from exc
             failures += 1
             if failures > RETRIES:
-                raise PackError(f"{pack.asset} could not be downloaded: {exc}. "
-                                f"What arrived is kept; trying again continues "
-                                f"from there.") from exc
+                raise PackError(f"{pack.asset} 下载失败：{exc}。已下载的数据会保留，"
+                                f"下次重试时将继续下载。") from exc
             print(f"[packs] {pack.asset}: {exc}; retrying ({failures}/{RETRIES})")
         if failures > RETRIES:
-            raise PackError(f"{pack.asset}: the server kept sending a different file.")
+            raise PackError(f"{pack.asset}：服务器持续返回与预期不一致的文件。")
         sleep(min(2 ** failures, 30))
 
     if progress:
@@ -525,9 +520,8 @@ def download_pack(
     actual = hash_file(part)
     if actual != pack.sha256:
         _remove(part)
-        raise PackError(f"{pack.asset} did not match its checksum and was "
-                        f"discarded. Try again; if it keeps happening, the "
-                        f"download is being altered on the way.")
+        raise PackError(f"{pack.asset} 校验值不匹配，已丢弃该文件。请重试；"
+                        f"如果持续出现此问题，下载内容可能在传输过程中被修改。")
     os.replace(part, final)
     return final
 
@@ -566,15 +560,15 @@ def extract(archive: str, dest: str, *, run: Callable = subprocess.run,
                    capture_output=True, text=True, **_no_window())
         if proc.returncode != 0:
             tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-3:]
-            raise PackError(f"7-Zip could not unpack {os.path.basename(archive)} "
-                            f"(exit code {proc.returncode}). {' '.join(tail)}".strip())
+            raise PackError(f"7-Zip 无法解压 {os.path.basename(archive)} "
+                            f"（退出代码 {proc.returncode}）。 {' '.join(tail)}".strip())
         return
     try:
         import py7zr  # dev fallback only; the packaged app ships 7zr.exe
     except ImportError:
-        raise PackError("7-Zip was not found, so the download cannot be unpacked. "
-                        "7zr.exe belongs next to VideoHighlighter.exe; "
-                        "re-extract the portable archive.") from None
+        raise PackError("未找到 7-Zip，因此无法解压下载内容。"
+                        "7zr.exe 应与 VideoHighlighter.exe 位于同一目录；"
+                        "请重新解压便携版程序。") from None
     with py7zr.SevenZipFile(archive, "r") as z:
         z.extractall(dest)
 
@@ -600,8 +594,8 @@ def _place_python(pack: Pack, unpacked: str, root: str) -> str:
     """Move an unpacked PyTorch pack into ``root/packs``; returns where it went."""
     if not (os.path.isdir(os.path.join(unpacked, "site-packages"))
             and os.path.isfile(os.path.join(unpacked, "pack.json"))):
-        raise PackError(f"{pack.asset} does not hold a pack (no site-packages "
-                        f"and pack.json at its top).")
+        raise PackError(f"{pack.asset} 不是有效组件包（顶层缺少 site-packages "
+                        f"和 pack.json）。")
     packs = os.path.join(root, PACKS_DIRNAME)
     os.makedirs(packs, exist_ok=True)
     target = os.path.join(packs, pack.name)
@@ -652,7 +646,7 @@ def _place_model(pack: Pack, unpacked: str, root: str) -> str:
         dirname = entries[0] if len(entries) == 1 else None
     source = os.path.join(source_models, dirname) if dirname else ""
     if not dirname or not os.path.isdir(source):
-        raise PackError(f"{pack.asset} does not hold a models/ folder.")
+        raise PackError(f"{pack.asset} 中缺少 models/ 文件夹。")
     models = os.path.join(root, MODELS_DIRNAME)
     os.makedirs(models, exist_ok=True)
     target = os.path.join(models, dirname)
@@ -661,8 +655,7 @@ def _place_model(pack: Pack, unpacked: str, root: str) -> str:
         try:
             os.rename(target, aside)
         except OSError as exc:
-            raise PackError("The visual search model is in use. Close visual "
-                            "search and try again.") from exc
+            raise PackError("视觉搜索模型正在使用中。请关闭视觉搜索后重试。") from exc
         shutil.rmtree(aside, ignore_errors=True)
     os.replace(source, target)
     return target
@@ -683,13 +676,13 @@ def install_pack(
     lock = load_lock() if lock is None else lock
     pack = lock.get(name)
     if pack is None:
-        return PackResult(False, f"This build does not offer {name} "
-                                 f"(no {LOCK_NAME} entry).", name)
+        return PackResult(False, f"当前版本未提供 {name} "
+                                 f"（{LOCK_NAME} 中没有对应条目）。", name)
     reason = incompatibility(pack)
     if reason:
         return PackResult(False, reason, name)
     if status(pack) in (INSTALLED, PENDING):
-        return PackResult(True, f"{name} is already installed.", name,
+        return PackResult(True, f"{name} 已安装。", name,
                           restart_required=status(pack) == PENDING)
 
     root = root or target_root()
@@ -699,16 +692,15 @@ def install_pack(
     free = _free_bytes(root)
     if 0 <= free < need:
         return PackResult(False, (
-            f"Not enough free space for {name} on {os.path.splitdrive(os.path.abspath(root))[0] or root}: "
-            f"needs about {-(-need // 2**20)} MB, {free // 2**20} MB free."), name)
+            f"{os.path.splitdrive(os.path.abspath(root))[0] or root} 上没有足够空间安装 {name}："
+            f"约需 {-(-need // 2**20)} MB，当前可用 {free // 2**20} MB。"), name)
 
     unpacked = os.path.join(staging, pack.name + ".unpacked")
     try:
         archive = download_pack(pack, staging, progress=progress,
                                 should_cancel=should_cancel, opener=opener, sleep=sleep)
         if archive is None:
-            return PackResult(False, "Download paused. It continues where it "
-                                     "stopped the next time.", name, cancelled=True)
+            return PackResult(False, "下载已暂停。下次会从上次停止的位置继续。", name, cancelled=True)
         if progress:
             progress(INSTALLING, 0, 0, pack.name)
         (extractor or extract)(archive, unpacked)
@@ -721,7 +713,7 @@ def install_pack(
     except PackError as exc:
         return PackResult(False, str(exc), name)
     except OSError as exc:
-        return PackResult(False, f"{name} could not be installed: {exc}", name)
+        return PackResult(False, f"{name} 安装失败：{exc}", name)
     finally:
         shutil.rmtree(unpacked, ignore_errors=True)
 
@@ -731,8 +723,8 @@ def install_pack(
     except OSError:
         pass
     print(f"[packs] installed {name} {pack.version} at {where}")
-    msg = (f"{name} is installed. Restart VideoHighlighter to use it."
-           if restart else f"{name} is installed.")
+    msg = (f"{name} 已安装。重启 VideoHighlighter 后即可使用。"
+           if restart else f"{name} 已安装。")
     return PackResult(True, msg, name, restart_required=restart)
 
 

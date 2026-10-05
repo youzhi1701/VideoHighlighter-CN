@@ -14,8 +14,8 @@ export interface DownloadSettings {
   url: string
   saveDir: string
   downloadFull: boolean
-  range开始: number
-  range结束: number
+  rangeStart: number
+  rangeEnd: number
   concurrent: number
   autoAdd: boolean
 }
@@ -24,8 +24,8 @@ export const DEFAULT_DOWNLOAD: DownloadSettings = {
   url: "",
   saveDir: "",
   downloadFull: true,
-  range开始: 0,
-  range结束: 300,
+  rangeStart: 0,
+  rangeEnd: 300,
   concurrent: 1,
   autoAdd: true,
 }
@@ -63,7 +63,7 @@ export function DownloadTab({
     if (dir) set("saveDir", dir)
   }
 
-  const duration = Math.max(0, settings.range结束 - settings.range开始)
+  const duration = Math.max(0, settings.rangeEnd - settings.rangeStart)
 
   return (
     <Card>
@@ -114,13 +114,13 @@ export function DownloadTab({
               <NumberField
                 label="开始"
                 hint="(s)"
-                value={settings.range开始}
+                value={settings.rangeStart}
                 onChange={(v) => set("range开始", v)}
               />
               <NumberField
                 label="结束"
                 hint="(s)"
-                value={settings.range结束}
+                value={settings.rangeEnd}
                 min={1}
                 onChange={(v) => set("range结束", v)}
               />

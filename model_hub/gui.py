@@ -114,7 +114,7 @@ class DetailsPage(QWizardPage):
         self.description.setFixedHeight(70)
 
         self.category = QLineEdit(placeholderText="animals/horses")
-        self.category.setToolTip("Where the model is listed: lowercase words, up to three "
+        self.category.setToolTip("模型在社区中的分类路径：使用小写英文，最多三级"
                                  "levels, e.g. sports/tennis or games/some-title.")
         self.category_hint = QLabel("")
         self.category_hint.setStyleSheet("color:#999;")
@@ -242,11 +242,11 @@ class DetailsPage(QWizardPage):
     def _category_changed(self, text: str) -> None:
         text = text.strip()
         if not text:
-            self.category_hint.setText("Lowercase words separated by /, e.g. animals/horses")
+            self.category_hint.setText("使用 / 分隔的小写英文，例如 animals/horses")
         elif CATEGORY_RE.match(text):
-            self.category_hint.setText(f"Listed under: {' › '.join(text.split('/'))}")
+            self.category_hint.setText(f"分类位置：{' › '.join(text.split('/'))}")
         else:
-            self.category_hint.setText("Use lowercase letters, digits and hyphens, "
+            self.category_hint.setText("请使用小写字母、数字和连字符"
                                        "up to three levels separated by /")
 
     def _set_categories(self, categories: list[str]) -> None:
@@ -256,7 +256,7 @@ class DetailsPage(QWizardPage):
         self.category.setCompleter(completer)
 
     def _browse(self):
-        path, _ = QFileDialog.getOpenFileName(self, "选择 ONNX 模型", "", "ONNX model (*.onnx)")
+        path, _ = QFileDialog.getOpenFileName(self, "选择 ONNX 模型", "", "ONNX 模型 (*.onnx)")
         if path:
             self.model_path.setText(path)
             if not self.display_name.text():
@@ -371,19 +371,19 @@ class PublishPage(QWizardPage):
         self.setSubTitle("The model is stored in your own free Hugging Face account and "
                          "listed in VideoHighlighter's community models.")
         self.token = QLineEdit(echoMode=QLineEdit.Password)
-        self.token.setPlaceholderText("hf_… (token with write permission)")
+        self.token.setPlaceholderText("hf_…（具有写入权限的令牌）")
         saved = hub.get_token()
         if saved:
             self.token.setPlaceholderText("将使用已保存的令牌")
         self.remember = QCheckBox("在系统凭据存储中记住令牌")
         self.remember.setChecked(True)
-        get_token = QLabel('No account yet? <a href="https://huggingface.co/join">Create one</a>, '
+        get_token = QLabel('还没有账号？<a href="https://huggingface.co/join">创建账号</a>，'
                            'then <a href="https://huggingface.co/settings/tokens">create a token</a> '
                            'with write permission.')
         get_token.setOpenExternalLinks(True)
         get_token.setWordWrap(True)
         self.repo = QLineEdit()
-        self.publish_btn = QPushButton("Share")
+        self.publish_btn = QPushButton("分享")
         self.publish_btn.clicked.connect(self._publish)
         self.log = QPlainTextEdit(readOnly=True)
         self.url: str | None = None
@@ -471,7 +471,7 @@ class ModelBrowserDialog(QDialog):
         self.category = QComboBox()
         self.category.addItem("全部分类", "")
         self.category.currentIndexChanged.connect(self._filter)
-        search = QPushButton("Search")
+        search = QPushButton("搜索")
         search.clicked.connect(self.refresh)
         top = QHBoxLayout()
         top.addWidget(self.query, 1)
@@ -487,11 +487,11 @@ class ModelBrowserDialog(QDialog):
         self.table.itemSelectionChanged.connect(self._selection_changed)
         self.table.doubleClicked.connect(self._open_page)
 
-        self.status = QLabel("Community models are made by other users. Only models "
+        self.status = QLabel("社区模型由其他用户制作。只有标记为“已验证”的模型"
                              "marked Verified were reviewed by the VideoHighlighter team.")
         self.status.setWordWrap(True)
 
-        self.install_btn = QPushButton("Install")
+        self.install_btn = QPushButton("安装")
         self.install_btn.clicked.connect(self._install)
         self.page_btn = QPushButton("打开模型页面")
         self.page_btn.clicked.connect(self._open_page)
@@ -523,7 +523,7 @@ class ModelBrowserDialog(QDialog):
                       on_done=self._loaded, on_error=self._load_failed)
 
     def _load_failed(self, message: str):
-        self.status.setText(f"Couldn't load the community models. Check your internet connection. ({message})")
+        self.status.setText(f"无法加载社区模型，请检查网络连接。（{message}）")
 
     def _loaded(self, entries: list[hub.CatalogEntry]):
         self._all = entries
@@ -566,9 +566,9 @@ class ModelBrowserDialog(QDialog):
                     item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 self.table.setItem(row, col, item)
         if entries:
-            self.status.setText(f"{len(entries)} model(s).")
+            self.status.setText(f"共 {len(entries)} 个模型。")
         elif not self._all:
-            self.status.setText("No community models yet. Train one in the Train tab "
+            self.status.setText("暂无社区模型。可在“训练”页训练一个并率先分享。"
                                 "and be the first to share it.")
         else:
             self.status.setText("没有匹配的模型，请尝试其他关键词或分类。")
@@ -607,15 +607,15 @@ class ModelBrowserDialog(QDialog):
         if model is None:
             QMessageBox.warning(self, "模型未安装",
                                 "The model failed the safety and compatibility checks:\n\n" + report.text())
-            self.status.setText("Install cancelled: the model failed the checks.")
+            self.status.setText("已取消安装：模型未通过检查。")
         else:
-            self.status.setText(f"Installed {model.manifest.display_name}. "
+            self.status.setText(f"已安装 {model.manifest.display_name}。"
                                 "Pick it under Advanced → object model.")
             self.installed.emit(model)
         self._filter()
 
     def _install_failed(self, message: str):
-        self.status.setText(f"Install failed: {message}")
+        self.status.setText(f"安装失败：{message}")
         self._selection_changed()
 
     def _open_page(self, *_):

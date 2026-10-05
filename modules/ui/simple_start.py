@@ -80,7 +80,7 @@ def persist_simple_start(on: bool) -> None:
 
 
 class DropZone(QFrame):
-    """Click or drop videos here. Forwards paths to the host GUI file list."""
+    """Click or drop 个视频 here. Forwards paths to the host GUI file list."""
 
     def __init__(self, on_paths, on_browse, parent=None):
         super().__init__(parent)
@@ -95,12 +95,12 @@ class DropZone(QFrame):
         lay = QVBoxLayout(self)
         lay.setAlignment(Qt.AlignCenter)
         p = DARK
-        self._title = QLabel("Drop a video here")
+        self._title = QLabel("将视频拖到这里")
         self._title.setStyleSheet(f"color: {p.text}; font-size: 16pt; font-weight: 600;"
                                   "background: transparent; border: none;")
         self._title.setAlignment(Qt.AlignCenter)
         self._title.setWordWrap(True)
-        self._hint = QLabel("or click to choose a file  ·  mp4, mov, mkv, avi")
+        self._hint = QLabel("或点击选择文件 · 支持 mp4、mov、mkv、avi")
         self._hint.setStyleSheet(f"color: {p.text_dim}; background: transparent; border: none;")
         self._hint.setAlignment(Qt.AlignCenter)
         self._hint.setWordWrap(True)
@@ -135,15 +135,15 @@ class DropZone(QFrame):
         """
         names = [os.path.basename(p) for p in paths if p]
         if not names:
-            self._title.setText("Drop a video here")
-            self._hint.setText("or click to choose a file  ·  mp4, mov, mkv, avi")
+            self._title.setText("将视频拖到这里")
+            self._hint.setText("或点击选择文件 · 支持 mp4、mov、mkv、avi")
             self._set_chrome(loaded=False)
             return
         if len(names) == 1:
-            self._title.setText(f"Loaded: {names[0]}")
-            self._hint.setText("click to add another  ·  or drop more here")
+            self._title.setText(f"已加载：{names[0]}")
+            self._hint.setText("点击继续添加，或将更多视频拖到这里")
         else:
-            self._title.setText(f"Loaded: {len(names)} videos")
+            self._title.setText(f"已加载：{len(names)} 个视频")
             extra = f"  ·  +{len(names) - 2} more" if len(names) > 2 else ""
             self._hint.setText(", ".join(names[:2]) + extra)
         self._set_chrome(loaded=True)
@@ -191,14 +191,14 @@ class SimpleStartPage(QWidget):
 
         root.addWidget(build_brand_header(self))
 
-        headline = QLabel("Find and explain the moments that matter")
+        headline = QLabel("发现并解释真正重要的精彩瞬间")
         headline.setWordWrap(True)
         headline.setStyleSheet(
             f"color: {p.text}; font-size: 18pt; font-weight: 600;")
         root.addWidget(headline)
 
         blurb = QLabel(
-            "Footage stays on your disk. Analyze finds strong moments with "
+            "Footage stays on your disk. 开始分析 finds strong moments with "
             "built-in defaults (motion peaks and loudness), writes a highlight "
             "reel plus separate clips, and shows why each moment scored — "
             "timeline, report, and chat. Open Detailed settings only when you "
@@ -216,7 +216,7 @@ class SimpleStartPage(QWidget):
         root.addWidget(self.file_list)
 
         length_row = QHBoxLayout()
-        length_lab = QLabel("Highlight length")
+        length_lab = QLabel("高光时长")
         length_lab.setStyleSheet(f"color: {p.text_dim};")
         self.length = QComboBox()
         self.length.addItem("Short  — about 1–2 minutes", "short")
@@ -227,13 +227,13 @@ class SimpleStartPage(QWidget):
         length_row.addWidget(length_lab)
         length_row.addWidget(self.length)
         length_row.addStretch()
-        self.clear_btn = QPushButton("Remove")
+        self.clear_btn = QPushButton("移除")
         self.clear_btn.clicked.connect(self._remove_selected)
         self.clear_btn.setVisible(False)
         length_row.addWidget(self.clear_btn)
         root.addLayout(length_row)
 
-        self.status = QLabel("Ready")
+        self.status = QLabel("就绪")
         self.status.setStyleSheet(f"color: {p.text_dim}; font-weight: 600;")
         root.addWidget(self.status)
 
@@ -244,10 +244,10 @@ class SimpleStartPage(QWidget):
         root.addWidget(self.progress)
 
         actions = QHBoxLayout()
-        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn = QPushButton("取消")
         self.cancel_btn.setEnabled(False)
         self.cancel_btn.clicked.connect(gui.cancel_pipeline)
-        self.analyze_btn = QPushButton("Analyze")
+        self.analyze_btn = QPushButton("开始分析")
         self.analyze_btn.setMinimumHeight(48)
         self.analyze_btn.setMinimumWidth(180)
         self.analyze_btn.setStyleSheet(
@@ -265,10 +265,10 @@ class SimpleStartPage(QWidget):
         root.addLayout(actions)
 
         result_row = QHBoxLayout()
-        self.timeline_btn = QPushButton("Open timeline")
+        self.timeline_btn = QPushButton("打开时间线")
         self.timeline_btn.setVisible(False)
         self.timeline_btn.clicked.connect(gui.open_timeline_viewer)
-        self.report_btn = QPushButton("Open report")
+        self.report_btn = QPushButton("打开报告")
         self.report_btn.setVisible(False)
         self.report_btn.clicked.connect(gui.open_why_report)
         result_row.addWidget(self.timeline_btn)
@@ -298,12 +298,12 @@ class SimpleStartPage(QWidget):
         self.log = QTextEdit()
         self.log.setReadOnly(True)
         self.log.setMaximumHeight(96)
-        self.log.setPlaceholderText("Progress shows up here while Analyze runs.")
+        self.log.setPlaceholderText("Progress shows up here while 开始分析 runs.")
         self.log.setStyleSheet(
             "QTextEdit { font-family: 'Courier New', monospace; font-size: 9pt; }")
         root.addWidget(self.log)
 
-        detailed = QPushButton("Detailed settings…")
+        detailed = QPushButton("详细设置…")
         detailed.setFlat(True)
         detailed.setCursor(Qt.PointingHandCursor)
         detailed.setStyleSheet(f"QPushButton {{ color: {p.text_dim}; text-align: left; }}"
@@ -407,7 +407,7 @@ class SimpleStartPage(QWidget):
         self.analyze_btn.setEnabled(gui.run_btn.isEnabled())
         text = gui.run_btn.text()
         if text == "Run Highlighter":
-            self.analyze_btn.setText("Analyze")
+            self.analyze_btn.setText("开始分析")
         else:
             self.analyze_btn.setText(text)
         self.cancel_btn.setEnabled(gui.cancel_btn.isEnabled())

@@ -27,12 +27,12 @@ export function AdvancedTab({ cfg, set }: Props) {
     <div className="grid min-w-0 gap-5 md:grid-cols-2 [&>*]:min-w-0">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Motion Recognition</CardTitle>
+          <CardTitle className="text-sm font-medium">运动识别</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2.5">
           <NumberField
-            label="Frame skip"
-            hint="(higher = faster)"
+            label="跳帧"
+            hint="（数值越高速度越快）"
             value={cfg.frame_skip}
             min={1}
             onChange={(v) => set("frame_skip", v)}
@@ -52,23 +52,23 @@ export function AdvancedTab({ cfg, set }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Object Recognition</CardTitle>
+          <CardTitle className="text-sm font-medium">物体识别</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2.5">
           <NumberField
-            label="Frame skip"
+            label="跳帧"
             value={cfg.object_frame_skip}
             min={1}
             onChange={(v) => set("object_frame_skip", v)}
           />
           <SelectField
-            label="Detector type"
+            label="检测器类型"
             value={cfg.yolo_type}
             options={YOLO_TYPES}
             onChange={(v) => set("yolo_type", v)}
           />
           <SelectField
-            label="Model size"
+            label="模型大小"
             value={cfg.yolo_model_size}
             options={YOLO_SIZES}
             onChange={(v) => set("yolo_model_size", v)}
@@ -84,7 +84,7 @@ export function AdvancedTab({ cfg, set }: Props) {
                 <Input
                   readOnly
                   value={cfg.yolo_custom_model_path}
-                  placeholder="(no model chosen)"
+                  placeholder="（未选择模型）"
                   className="h-8"
                 />
                 <Button
@@ -108,7 +108,7 @@ export function AdvancedTab({ cfg, set }: Props) {
             </div>
           )}
           <NumberField
-            label="Confidence threshold"
+            label="置信度阈值"
             hint="(%)"
             value={cfg.obj_confidence}
             min={5}
@@ -119,29 +119,29 @@ export function AdvancedTab({ cfg, set }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Action Recognition</CardTitle>
+          <CardTitle className="text-sm font-medium">动作识别</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2.5">
           <NumberField
-            label="Frame skip"
+            label="跳帧"
             value={cfg.sample_rate}
             min={1}
             onChange={(v) => set("sample_rate", v)}
           />
           <SelectField
-            label="Backend"
+            label="运行后端"
             value={cfg.action_backend}
             options={ACTION_BACKENDS}
             onChange={(v) => set("action_backend", v)}
           />
           <SelectField
-            label="Models"
+            label="模型"
             value={cfg.action_models}
             options={ACTION_MODELS}
             onChange={(v) => set("action_models", v)}
           />
           <SelectField
-            label="R3D model variant"
+            label="R3D 模型版本"
             value={cfg.r3d_model}
             options={R3D_MODELS}
             onChange={(v) => set("r3d_model", v)}
@@ -152,7 +152,7 @@ export function AdvancedTab({ cfg, set }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Visualization</CardTitle>
+          <CardTitle className="text-sm font-medium">可视化</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <label className="flex items-center gap-2 text-sm">

@@ -54,10 +54,10 @@ export function CompositionRules() {
       <CardContent className="space-y-3">
         <p className="text-xs text-muted-foreground">
           Compose higher-level actions from spatial relationships between detected
-          objects — e.g. if object A appears 内部 region B enough times, fire
-          action X. Rows sharing an 事件名称 must all be satisfied together (AND).
-          关系: 内部 (its centre is in the region), 重叠 (most of it
-          is), 接触 (they meet). 轮廓 decides on the real shapes 内部 the
+          objects — e.g. if object A appears inside region B enough times, fire
+          action X. Rows sharing an Event Name must all be satisfied together (AND).
+          Relation: inside (its centre is in the region), overlaps (most of it
+          is), touches (they meet). Outline decides on the real shapes inside the
           boxes; a source like person.hand uses the body part. Window smooths over
           flicker; Persist keeps an object alive through occlusion. Saved to
           composition_rules.yaml.
@@ -127,7 +127,7 @@ export function CompositionRules() {
                           upd(i, { relation: e.target.value as CompRule["relation"] })
                         }
                         className="h-7 w-full rounded-md border bg-transparent px-1 text-sm"
-                        title="内部: its centre is in the region · 重叠: most of it is · 接触: they meet"
+                        title="内部：中心位于区域内 · 重叠：大部分位于区域内 · 接触：边界相交"
                       >
                         <option value="内部">内部</option>
                         <option value="重叠">重叠</option>
@@ -139,7 +139,7 @@ export function CompositionRules() {
                         type="checkbox"
                         checked={Boolean(r.outline)}
                         onChange={(e) => upd(i, { outline: e.target.checked })}
-                        title="Decide on the real shapes, traced 内部 the boxes"
+                        title="根据框内实际轮廓判断真实形状"
                       />
                     </TableCell>
                     <TableCell className="p-1">

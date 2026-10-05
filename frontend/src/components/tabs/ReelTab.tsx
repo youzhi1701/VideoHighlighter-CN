@@ -283,13 +283,13 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Clapperboard className="size-4" /> Reel
+            <Clapperboard className="size-4" /> 成片
           </CardTitle>
           {plan?.ok && (
             <div className="flex items-center gap-2">
-              <Badge>{plan.duration?.toFixed(0)}s</Badge>
-              <Badge variant="secondary">{plan.shots} shots</Badge>
-              <Badge variant="outline">{plan.cuts_per_minute} cuts/min</Badge>
+              <Badge>{plan.duration?.toFixed(0)} 秒</Badge>
+              <Badge variant="secondary">{plan.shots} 个镜头</Badge>
+              <Badge variant="outline">{plan.cuts_per_minute} 次剪切/分钟</Badge>
             </div>
           )}
         </CardHeader>
@@ -403,7 +403,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
 
           <div className="space-y-1.5">
             <Label className="flex items-center gap-1.5 text-xs">
-              <Music className="size-3.5" /> Music
+              <Music className="size-3.5" /> 音乐
             </Label>
             <div className="flex gap-2">
               <Input
@@ -588,7 +588,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   <>
                     {" "}
                     <span className="text-foreground">
-                      {plan.trimmed} of {plan.shots} shots moved, the latest
+                      {plan.trimmed} of {plan.shots} 个镜头 moved, the latest
                       starting {plan.trimmed_max?.toFixed(1)}s in.
                     </span>
                   </>
@@ -664,7 +664,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
 
           <div className="space-y-2">
             <Label className="flex items-center gap-1.5 text-xs">
-              <Spline className="size-3.5" /> Graphics
+              <Spline className="size-3.5" /> 图形
             </Label>
             <div className="grid gap-2 sm:grid-cols-2">
               {(options?.overlays ?? []).map((item) => {
@@ -768,7 +768,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                 onClick={() => void planReel(request()).then(setPlan)}
                 disabled={!root}
               >
-                <RefreshCw className="size-3.5" /> Re-plan
+                <RefreshCw className="size-3.5" /> 重新规划
               </Button>
             </div>
             {status && <p className="text-xs text-muted-foreground">{status}</p>}

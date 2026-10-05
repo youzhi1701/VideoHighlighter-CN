@@ -122,7 +122,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
       (r) => r.width === (doc.width ?? 0) && r.height === (doc.height ?? 0),
     )
     setResolution(match >= 0 ? match : 0)
-    setStatus(`Loaded ${doc.cuts?.length ?? 0} cuts`)
+    setStatus(`已加载 ${doc.cuts?.length ?? 0} 个片段`)
   }, [])
 
   // Offer the last run's cut list without stamping over an open edit.
@@ -200,7 +200,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
         return { ...c, end: c.start + bars * bar }
       }),
     )
-    setStatus(`Rounded every clip to the ${bar.toFixed(2)}s bar`)
+    setStatus(`已将所有片段对齐到 ${bar.toFixed(2)} 秒的小节`)
   }
 
   const payload = () => ({
@@ -223,7 +223,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
     }
     setError("")
     setWarnings(res.warnings ?? [])
-    setStatus(`Saved — ${formatShort(res.duration ?? 0)} of film`)
+    setStatus(`已保存 — 成片时长 ${formatShort(res.duration ?? 0)}`)
   }
 
   const render = async () => {
@@ -232,7 +232,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
     if (!res.ok) setError(res.error ?? "无法启动渲染")
     else {
       setError("")
-      setStatus(`Rendering to ${basename(output)}…`)
+      setStatus(`正在渲染到 ${basename(output)}…`)
     }
   }
 
@@ -254,7 +254,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
             <Input
               value={path}
               onChange={(e) => setPath(e.target.value)}
-              placeholder="path to a .edl.yaml"
+              placeholder="选择 .edl.yaml 文件路径"
             />
             <Button
               variant="outline"
@@ -639,10 +639,10 @@ function CutRow({
           {formatTime(duration)}
         </Badge>
         <div className="flex shrink-0">
-          <Button variant="ghost" size="sm" onClick={() => onMove(-1)} title="Move up">
+          <Button variant="ghost" size="sm" onClick={() => onMove(-1)} title="上移">
             <ArrowUp className="size-3.5" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => onMove(1)} title="Move down">
+          <Button variant="ghost" size="sm" onClick={() => onMove(1)} title="下移">
             <ArrowDown className="size-3.5" />
           </Button>
           <Button variant="ghost" size="sm" onClick={onDuplicate} title="Duplicate">

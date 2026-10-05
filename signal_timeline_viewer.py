@@ -2264,7 +2264,7 @@ class SignalTimelineWindow(QMainWindow):
         self.cache_data = fresh
 
         # Re-ingest signals (updates cache_data, action/object type lists, redraws).
-        startup_splash.stage("Reloading signals…")
+        startup_splash.stage("正在重新加载信号…")
         self.signal_scene.reload_cache_data(self.cache_data)
         self.refresh_event_checkboxes()   # composed events may have just appeared
         self.refresh_object_checkboxes()  # and so may object classes
@@ -2292,11 +2292,11 @@ class SignalTimelineWindow(QMainWindow):
             except Exception:
                 continue
 
-        startup_splash.stage("Redrawing the timeline…")
+        startup_splash.stage("正在重绘时间线…")
         self.signal_scene.build_timeline()
 
         # Refresh side panels + status line.
-        startup_splash.stage("Refreshing the panels…")
+        startup_splash.stage("正在刷新面板…")
         self.action_types = self.signal_scene.action_types
         self.object_classes = self.signal_scene.object_classes
         if hasattr(self, 'label_panel'):
@@ -2688,9 +2688,9 @@ class SignalTimelineWindow(QMainWindow):
     # Interaction hints, shown as the signal timeline's tooltip rather than a
     # permanent bar — they're learn-once, and the bar cost a row of height.
     TIMELINE_HINTS = (
-        "Drag signal bars → edit timeline\n"
-        "Left-drag background → highlight range, then drag range → edit timeline\n"
-        "Ctrl+click / Shift+click / Ctrl+A to multi-select, then Delete to remove"
+        "拖动信号条 → 添加到编辑时间线\n"
+        "在背景上按住左键拖动 → 选择高光范围，再拖动该范围 → 添加到编辑时间线\n"
+        "Ctrl+单击 / Shift+单击 / Ctrl+A 可多选，按 Delete 删除"
     )
 
     def _install_status_info(self):
@@ -2715,14 +2715,14 @@ class SignalTimelineWindow(QMainWindow):
         except Exception:
             edit_len = 0.0
         self.statusBar().showMessage(
-            f"Duration: {mins:02d}:{secs:02d} • Actions: {len(self.action_types)} • "
-            f"Objects: {len(self.object_classes)} | Edit: {edit_len:.1f}s"
+            f"时长：{mins:02d}:{secs:02d} • 动作：{len(self.action_types)} • "
+            f"物体：{len(self.object_classes)} | 编辑长度：{edit_len:.1f} 秒"
         )
 
 
     def create_filter_controls(self):
         """Create filter controls for the dock widget"""
-        filter_group = CollapsibleSection("Filters", settings_key="controls/filters")
+        filter_group = CollapsibleSection("筛选", settings_key="controls/filters")
         filter_layout = QVBoxLayout()
         
         # Filter summary
@@ -2778,9 +2778,9 @@ class SignalTimelineWindow(QMainWindow):
         self.only_highlight_actions_cb = QCheckBox("仅显示高光动作")
         self.only_highlight_actions_cb.setChecked(False)
         self.only_highlight_actions_cb.setToolTip(
-            "Off (default): the ACTIONS row shows every detected action.\n"
-            "On: only the actions selected into the highlight.\n"
-            "(Needs a re-analysis to populate the full list.)"
+            "关闭（默认）：动作轨道显示检测到的全部动作。\n"
+            "开启：只显示最终入选高光的动作。\n"
+            "若要获得完整动作列表，需要重新分析。"
         )
         self.only_highlight_actions_cb.stateChanged.connect(self.on_only_highlight_actions_changed)
         filter_layout.addWidget(self.only_highlight_actions_cb)
@@ -2796,7 +2796,7 @@ class SignalTimelineWindow(QMainWindow):
         cache. Advanced knobs stay in the main GUI — these buttons run using
         that GUI's saved settings (read from config.yaml)."""
         section = CollapsibleSection(
-            "Analyze", expanded=False, settings_key="controls/analyze")
+            "分析", expanded=False, settings_key="controls/analyze")
         lay = QVBoxLayout()
         lay.setSpacing(8)
 
@@ -2824,30 +2824,29 @@ class SignalTimelineWindow(QMainWindow):
         # Motion & scenes / Audio: no inputs — one detector pass each, folded
         # into the cache. Motion covers scene, motion-event and motion-peak rows.
         lay.addLayout(self._make_analyze_row(
-            "motion", "Motion & scenes",
-            "Detect scene cuts and motion over the whole video (scene, motion "
-            "event and motion peak — one pass)."))
+            "motion", "运动与场景",
+            "检测整个视频的场景切换与运动，一次分析同时覆盖场景、运动事件和运动峰值。"))
         lay.addLayout(self._make_analyze_row(
-            "audio", "Audio",
-            "Detect audio peaks (and the waveform) over the whole video."))
+            "audio", "音频",
+            "检测整个视频的音频峰值并生成波形。"))
 
         # Actions: optional keep-list (blank = all actions).
         self.analyze_actions_field = QLineEdit(act_default)
         self.analyze_actions_field.setPlaceholderText("全部动作（或输入：high kick, archery…）")
         self.analyze_actions_field.setToolTip(
-            "Optional. Leave blank to detect every action; or list names to keep "
-            "only those. Prefilled from the main window's action keywords.")
+            "可选。留空表示检测全部动作；也可以输入动作名称，只保留指定动作。"
+            "默认使用主窗口中的动作关键词。")
         lay.addLayout(self._make_analyze_row(
-            "actions", "Actions", "Run action recognition over the whole video",
+            "actions", "动作", "对整个视频运行动作识别",
             extra=self.analyze_actions_field))
 
         self.analyze_objects_field = QLineEdit(obj_default)
         self.analyze_objects_field.setPlaceholderText("person, car, dog…")
         self.analyze_objects_field.setToolTip(
-            "Comma-separated object classes to detect. Prefilled from the main "
-            "window's list; edit per run. Change the model/confidence there.")
+            "输入要检测的物体类别，用逗号分隔。默认使用主窗口中的列表；"
+            "每次运行前都可以修改。模型和置信度请在主窗口中设置。")
         lay.addLayout(self._make_analyze_row(
-            "objects", "Objects", "Detect the object classes listed above",
+            "objects", "物体", "检测上方列出的物体类别",
             extra=self.analyze_objects_field))
 
         # Transcript: Run transcribes; a language picker (English by default)
@@ -2869,8 +2868,8 @@ class SignalTimelineWindow(QMainWindow):
         if _li >= 0:
             self.analyze_transcript_lang.setCurrentIndex(_li)
         self.analyze_transcript_lang.setToolTip(
-            "Spoken language for transcription. Defaults to English; 'auto' "
-            "detects it. Overrides the main GUI's saved language for this run.")
+            "设置语音转录的语言。默认英语；auto 会自动检测。"
+            "此设置仅作用于本次运行，并覆盖主窗口保存的语言设置。")
         lang_row.addWidget(self.analyze_transcript_lang)
         lang_row.addStretch()
         tr_v.addLayout(lang_row)
@@ -2881,9 +2880,8 @@ class SignalTimelineWindow(QMainWindow):
         self.analyze_transcript_kw = QLineEdit(kw_default)
         self.analyze_transcript_kw.setPlaceholderText("标记关键词，例如 goal, score")
         self.analyze_transcript_kw.setToolTip(
-            "Mark transcript moments where these words are spoken, on the "
-            "timeline. The TRANSCRIPT ◀▶ arrows then jump between the hits. "
-            "Blank clears the marking.")
+            "在时间线上标记转录中出现这些关键词的时刻。之后可用“转录”轨道的 ◀▶ "
+            "按钮在匹配结果之间跳转。留空会清除关键词标记。")
         self.analyze_transcript_kw.returnPressed.connect(self._apply_transcript_keywords)
         kw_row.addWidget(self.analyze_transcript_kw, 1)
         kw_btn = QPushButton()
@@ -2895,11 +2893,11 @@ class SignalTimelineWindow(QMainWindow):
         tr_v.addLayout(kw_row)
 
         lay.addLayout(self._make_analyze_row(
-            "transcript", "Transcript", "Transcribe speech with Whisper",
+            "transcript", "转录", "使用 Whisper 转录语音",
             extra=tr_extra))
 
         hint = QLabel("对该视频运行一次分析并写入缓存。"
-                      "Advanced settings live in the main window.")
+                      "高级设置位于主窗口。")
         hint.setStyleSheet(f"color: {THEME.text_mute}; font-size: 10px;")
         hint.setWordWrap(True)
         lay.addWidget(hint)
@@ -2938,7 +2936,7 @@ class SignalTimelineWindow(QMainWindow):
             return
         if self._analysis_running is not None:
             self.statusBar().showMessage(
-                "Another analysis is already running — let it finish first.", 3000)
+                "已有其他分析任务正在运行，请等待其完成。", 3000)
             return
         self._start_analysis(kind)
 

@@ -51,7 +51,7 @@ const PRESETS = [
   { key: "first_5", label: "前 5 分钟" },
   { key: "last_5", label: "后 5 分钟" },
   { key: "last_10", label: "后 10 分钟" },
-  { key: "middle", label: "Middle" },
+  { key: "middle", label: "中间" },
   { key: "full", label: "完整视频" },
 ]
 

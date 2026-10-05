@@ -328,7 +328,7 @@ class UpdateInfo:
 
     @property
     def headline(self) -> str:
-        return f"Version {self.version} is available (you have {__version__})."
+        return f"发现新版本 {self.version}（当前版本 {__version__}）。"
 
 
 def check_for_update(

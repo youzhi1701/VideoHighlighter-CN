@@ -20,18 +20,18 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
       <div className="grid min-w-0 gap-5 md:grid-cols-2 [&>*]:min-w-0">
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-sm font-medium">Scoring Points</CardTitle>
+            <CardTitle className="text-sm font-medium">评分项</CardTitle>
             <Badge variant={totalPoints(cfg) ? "default" : "secondary"}>
               total {totalPoints(cfg)}
             </Badge>
           </CardHeader>
           <CardContent className="space-y-2.5">
-            <NumberField label="Scene" value={cfg.scene_points} onChange={(v) => set("scene_points", v)} />
-            <NumberField label="Motion event" value={cfg.motion_event_points} onChange={(v) => set("motion_event_points", v)} />
-            <NumberField label="Motion peak" value={cfg.motion_peak_points} onChange={(v) => set("motion_peak_points", v)} />
-            <NumberField label="Audio peak" value={cfg.audio_peak_points} onChange={(v) => set("audio_peak_points", v)} />
-            <NumberField label="Object" value={cfg.object_points} onChange={(v) => set("object_points", v)} />
-            <NumberField label="Action" value={cfg.action_points} onChange={(v) => set("action_points", v)} />
+            <NumberField label="场景" value={cfg.scene_points} onChange={(v) => set("scene_points", v)} />
+            <NumberField label="运动事件" value={cfg.motion_event_points} onChange={(v) => set("motion_event_points", v)} />
+            <NumberField label="运动峰值" value={cfg.motion_peak_points} onChange={(v) => set("motion_peak_points", v)} />
+            <NumberField label="音频峰值" value={cfg.audio_peak_points} onChange={(v) => set("audio_peak_points", v)} />
+            <NumberField label="物体" value={cfg.object_points} onChange={(v) => set("object_points", v)} />
+            <NumberField label="动作" value={cfg.action_points} onChange={(v) => set("action_points", v)} />
             <p className="pt-1 text-xs text-muted-foreground">
               Keyword and transcript points live in the Transcript tab — they
               only count while transcript is enabled.
@@ -41,32 +41,32 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium">Duration &amp; Cutting</CardTitle>
+            <CardTitle className="text-sm font-medium">时长与剪切</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2.5">
-            <NumberField label="Max highlight duration" hint="(s)" value={cfg.max_duration} onChange={(v) => set("max_duration", v)} />
-            <NumberField label="Exact duration" hint="(0=off)" value={cfg.exact_duration} onChange={(v) => set("exact_duration", v)} />
-            <NumberField label="Clip time" hint="(0=auto)" value={cfg.clip_time} onChange={(v) => set("clip_time", v)} />
+            <NumberField label="高光片段最长时长" hint="(s)" value={cfg.max_duration} onChange={(v) => set("max_duration", v)} />
+            <NumberField label="固定时长" hint="（0=关闭）" value={cfg.exact_duration} onChange={(v) => set("exact_duration", v)} />
+            <NumberField label="片段时长" hint="（0=自动）" value={cfg.clip_time} onChange={(v) => set("clip_time", v)} />
             <Separator className="my-1" />
             <p className="text-xs text-muted-foreground">
               {cfg.clip_time === 0
-                ? "Auto mode: clip boundaries come from signal structure (actions, scene cuts, peaks)."
-                : `Fixed mode: every clip is ${cfg.clip_time}s long.`}
+                ? "自动模式：片段边界根据动作、场景切换和峰值等信号结构确定。"
+                : `固定模式：每个片段时长均为 ${cfg.clip_time} 秒。`}
             </p>
-            <NumberField label="Auto min clip" hint="(s)" value={cfg.auto_min_clip} step={0.5} onChange={(v) => set("auto_min_clip", v)} />
-            <NumberField label="Auto max clip" hint="(s)" value={cfg.auto_max_clip} step={0.5} onChange={(v) => set("auto_max_clip", v)} />
-            <NumberField label="Merge gap" hint="(s)" value={cfg.auto_merge_gap} step={0.5} onChange={(v) => set("auto_merge_gap", v)} />
+            <NumberField label="自动片段最短时长" hint="(s)" value={cfg.auto_min_clip} step={0.5} onChange={(v) => set("auto_min_clip", v)} />
+            <NumberField label="自动片段最长时长" hint="(s)" value={cfg.auto_max_clip} step={0.5} onChange={(v) => set("auto_max_clip", v)} />
+            <NumberField label="合并间隔" hint="(s)" value={cfg.auto_merge_gap} step={0.5} onChange={(v) => set("auto_merge_gap", v)} />
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Detection Targets</CardTitle>
+          <CardTitle className="text-sm font-medium">检测目标</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid min-w-0 grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3">
-            <Label className="text-sm text-muted-foreground">Objects</Label>
+            <Label className="text-sm text-muted-foreground">物体s</Label>
             <Input
               list="object-labels"
               value={cfg.highlight_objects}
@@ -81,7 +81,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
             </datalist>
           </div>
           <div className="grid min-w-0 grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3">
-            <Label className="text-sm text-muted-foreground">Actions</Label>
+            <Label className="text-sm text-muted-foreground">动作s</Label>
             <Input
               list="action-labels"
               value={cfg.interesting_actions}
@@ -121,7 +121,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
             </label>
             <label
               className="flex items-center gap-2 text-sm"
-              title="Scores clips by variance-of-Laplacian sharpness; blurry ones are penalized so they lose to sharp clips of equal interest."
+              title="根据拉普拉斯方差评估清晰度；模糊片段会被降权，在兴趣度相同时优先选择更清晰的片段。"
             >
               <Checkbox
                 checked={cfg.quality_gate}
@@ -133,8 +133,8 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
           {cfg.quality_gate && (
             <div className="max-w-xs pt-1">
               <NumberField
-                label="Sharpness threshold"
-                hint="(lower = stricter)"
+                label="清晰度阈值"
+                hint="（越低越严格）"
                 value={cfg.quality_threshold}
                 onChange={(v) => set("quality_threshold", v)}
               />

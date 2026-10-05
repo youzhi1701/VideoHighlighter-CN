@@ -22,6 +22,14 @@ from PySide6.QtWidgets import (
 
 from modules.vision.face_emotions import EMOTION_LABELS
 
+EMOTION_LABELS_ZH = {
+    "neutral": "中性",
+    "happy": "开心",
+    "sad": "悲伤",
+    "surprise": "惊讶",
+    "anger": "生气",
+}
+
 THUMB_SIZE = 56    # face card thumbnail px
 MERGE_GAP  = 2.0  # seconds — gaps smaller than this are merged
 MIN_DUR    = 0.5  # seconds — segments shorter than this are dropped
@@ -352,7 +360,7 @@ class SearchPanel(QWidget):
         self._expr_combo = QComboBox()
         self._expr_combo.addItem("— 选择表情 —", "")
         for _label in EMOTION_LABELS:
-            self._expr_combo.addItem(_label, _label)
+            self._expr_combo.addItem(EMOTION_LABELS_ZH.get(_label, _label), _label)
         self._expr_combo.setEnabled(False)
         self._expr_combo.currentIndexChanged.connect(self._on_expression_picked)
         expr_row.addWidget(self._expr_combo, 1)

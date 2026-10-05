@@ -301,7 +301,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" onClick={quantise}>
-              <Wand2 className="size-3.5" /> Quantise to the bar
+              <Wand2 className="size-3.5" /> 对齐到小节
             </Button>
             <Separator orientation="vertical" className="h-6" />
             <span className="text-xs text-muted-foreground">全部连接：</span>
@@ -370,7 +370,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <Music className="size-4" /> Music &amp; output
+              <Music className="size-4" /> 音乐与输出
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -458,7 +458,7 @@ export function TimelineTab({ running, onCancel, suggestedPath }: Props) {
                 onChange={(e) => setCrf(Number(e.target.value) || 20)}
               />
               <p className="text-xs text-muted-foreground">
-                Lower is better and bigger. 18 is close to source, 23 is small.
+                数值越低画质越好、文件越大。18 接近源画质，23 文件较小。
               </p>
             </div>
           </CardContent>

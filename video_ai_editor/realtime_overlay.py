@@ -1046,7 +1046,7 @@ class RealtimeOverlayPreview(QWidget):
         self._filter_btn = QToolButton()
         self._filter_btn.setText("🔍 筛选")
         self._filter_btn.setPopupMode(QToolButton.InstantPopup)
-        self._filter_btn.setToolTip("Show/hide individual detection classes on the overlay")
+        self._filter_btn.setToolTip("显示/隐藏叠加层中的各检测类别")
         self._filter_menu = QMenu(self._filter_btn)
         self._filter_btn.setMenu(self._filter_menu)
         self._filter_btn.setEnabled(False)
@@ -1066,7 +1066,7 @@ class RealtimeOverlayPreview(QWidget):
         self._window_slider.setRange(1, 20)  # 0.1s to 2.0s
         self._window_slider.setValue(5)       # 0.5s default
         self._window_slider.setFixedWidth(80)
-        self._window_slider.setToolTip("Time window for showing nearby detections (0.1s - 2.0s)")
+        self._window_slider.setToolTip("显示附近检测结果的时间窗口（0.1 秒 - 2.0 秒）")
         self._window_slider.valueChanged.connect(self._on_window_changed)
         controls.addWidget(self._window_slider)
 
@@ -1107,10 +1107,10 @@ class RealtimeOverlayPreview(QWidget):
         self._detection_count = self._scene.load_detections_lazy(self._bbox_loader)
 
         if self._detection_count > 0:
-            self._count_label.setText(f"({self._detection_count} detections available)")
+            self._count_label.setText(f"（{self._detection_count} 个检测结果可用）")
             self._overlay_cb.setEnabled(True)
         else:
-            self._count_label.setText("(no bbox data in cache)")
+            self._count_label.setText("（缓存中没有检测框数据）")
             # Don't force-disable here — real-time mode re-enables the checkbox
             # even with an empty cache (see set_live_face_enabled).
             if not self._live_face_mode:
@@ -1271,7 +1271,7 @@ class RealtimeOverlayPreview(QWidget):
             mem = psutil.Process().memory_info().rss / (1024 * 1024)
             scene_items = self._scene.get_memory_usage()
             cached_buckets = len(self._bbox_loader._bucket_cache) if hasattr(self, '_bbox_loader') else 0
-            self._mem_label.setText(f"💾 {mem:.0f}MB | Items: {scene_items} | Cache: {cached_buckets}buckets")
+            self._mem_label.setText(f"💾 {mem:.0f}MB | 项目：{scene_items} | 缓存：{cached_buckets} 个区块")
         except:
             pass
 
@@ -1307,7 +1307,7 @@ class RealtimeOverlayPreview(QWidget):
 
     def _on_window_changed(self, value):
         window = value / 10.0
-        self._window_label.setText(f"{window:.1f}s")
+        self._window_label.setText(f"{window:.1f} 秒")
         
         # Update immediately if overlay is enabled
         if self._overlay_enabled:
@@ -1579,7 +1579,7 @@ if __name__ == "__main__":
 
     # Create test window
     win = QMainWindow()
-    win.setWindowTitle("Real-Time BBox Overlay Test (Memory Optimized)")
+    win.setWindowTitle("实时检测框叠加测试（内存优化）")
     win.resize(1280, 800)
 
     preview = RealtimeOverlayPreview(

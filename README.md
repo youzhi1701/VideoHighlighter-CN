@@ -1,157 +1,203 @@
 <p align="center">
-  <img src="assets/icon.png" alt="VideoHighlighter" width="160">
+  <img src="assets/icon.png" alt="VideoHighlighter-CN" width="160">
 </p>
+
+# VideoHighlighter-CN
+
+**VideoHighlighter 简体中文本地化版本**
+
+本仓库基于上游开源项目 **Aseiel/VideoHighlighter** 持续维护。目标不是做一次性汉化，而是建立一套可以长期跟随官方更新的中文本地化版本。
 
 <p align="center">
-  <a href="https://discord.gg/cUPJqPAMmm"><img src="https://img.shields.io/discord/1471915944652832788?logo=discord&logoColor=white&label=Discord&color=brightgreen" alt="Discord"></a>
+  <a href="https://github.com/youzhi1701/VideoHighlighter-CN/archive/refs/heads/main.zip">
+    <img src="https://img.shields.io/badge/一键下载-当前中文版源码_ZIP-brightgreen?style=for-the-badge" alt="一键下载中文版">
+  </a>
+  &nbsp;
+  <a href="https://github.com/youzhi1701/VideoHighlighter-CN/tree/main/%E4%B8%AD%E6%96%87%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6">
+    <img src="https://img.shields.io/badge/中文汉化插件-打开目录-blue?style=for-the-badge" alt="中文汉化插件">
+  </a>
 </p>
 
-# VideoHighlighter
+> **一键下载说明：** 点击上方“当前中文版源码 ZIP”即可直接下载整个中文版项目。  
+> Windows 安装版后续发布到 GitHub Releases 后，会在这里增加固定的“一键下载安装版”按钮。
 
-<!-- hy-mt2-i18n:start -->
-**English** | [中文](./README_zh-CN.md) | [日本語](./README_ja.md) | [Español](./README_es.md)
-<!-- hy-mt2-i18n:end -->
+---
 
-**Find and explain the moments that matter in footage you won't upload — then export a cut, on your machine.**
+## 这是哪个版本？
 
-A local desktop app. Drop in raw video; it scores strong moments from scene,
-motion, audio, objects, actions and the transcript, shows you *why* each one
-scored on a signal timeline and in a report, then exports a highlight reel and
-the individual clips. Nothing is uploaded for analysis, and the basic pipeline
-needs no API key.
+这是 **VideoHighlighter 的简体中文维护版**。
 
-Free and open source (AGPL-3.0). Windows, macOS, Linux. Intel, AMD and NVIDIA
-GPUs.
+- 上游官方项目：Aseiel/VideoHighlighter
+- 中文维护仓库：youzhi1701/VideoHighlighter-CN
+- 核心功能、算法与主要架构来自上游项目
+- 本仓库主要维护简体中文界面、本地化工具、Windows 中文安装体验以及上游更新兼容
 
-> **It's free.** To make sure you see new releases in future, please click the
-> motivation button: the ⭐ at the top of the page. It's the cheapest payment we
-> accept.
+如果你需要查看官方原始英文说明：
 
-## What people use it for
+[查看官方原版自述文件](./README_官方原版.md)
 
-- **A 4-hour Twitch or YouTube VOD → a few minutes of highlights.** Crowd noise,
-  your own reactions and scene changes all score, so the loud parts surface
-  without scrubbing.
-- **A night of CCTV or trail-camera footage → the minutes something moved.**
-  Object detection plus motion, on hours of nothing, locally — which matters
-  when the footage is of your own property.
-- **A GoPro or drone card → a finished film.** The **Auto** tab finds the card,
-  copies it off, cuts the highlights, builds the reel and lays music on the
-  beat, as one resumable job.
-- **A match → the goals.** Write a rule for "ball inside net" and it scores that
-  event by name, instead of hoping a 400-class action model has a word for it.
-- **A long interview, lecture or podcast → chapters and subtitles.** Local
-  Whisper transcript, chaptered video, optional local translation.
-- **Dashcam or bodycam review → an account you can hand to someone.** The report
-  states what was measured, what was only said, and what it could not determine.
+---
 
-Not sure which detector fits your footage?
-[docs/DETECTION-GUIDE.md](docs/DETECTION-GUIDE.md) covers what each one is good
-at and where it falls down.
+## 中文版主要内容
 
-## What makes it different
+- 主程序界面简体中文化
+- 时间线与视频预览界面中文化
+- AI 检测、动作识别、物体识别界面中文化
+- 模型中心与训练模块中文化
+- LLM 对话与视觉搜索中文化
+- 转录、字幕、下载、设置等页面中文化
+- React / TypeScript 前端中文化
+- Windows 安装程序简体中文化
+- 弹窗、状态栏、工具提示、错误提示等用户可见文字中文化
+- 保留内部枚举、API、配置键和协议字段，避免汉化影响程序逻辑
 
-**[Every run explains itself.](docs/REPORTS.md)** The report is the arithmetic
-behind each kept moment — the per-signal point breakdown, what fired, what
-scored well and still missed the cut. It names the claims that came from the
-transcript and were never measured, instead of scoring them anyway.
-**[Open a real one →](https://aseiel.github.io/VideoHighlighter-site/example-report.html)**
+---
 
-**[Composition rules.](docs/DETECTION-GUIDE.md#4-the-composition-engine)** You
-say what a *combination* of detections means for your footage — one class inside
-another, counted, held over a window — and that becomes an event under a name
-you choose. Because a rule re-reads detections that already exist, editing one
-and re-running costs milliseconds.
+## 中文汉化插件
 
-## Preview
+仓库根目录提供了独立的：
 
-![VideoHighlighter](assets/Highlighter.png)
+```text
+中文汉化插件/
+```
 
-**Timeline Viewer**
+完整结构：
 
-![Timeline Viewer](assets/TimelineViewer.png)
+```text
+中文汉化插件/
+├─ 一键植入中文.py
+├─ 扫描遗漏英文.py
+├─ 验证汉化完整性.py
+├─ 重建汉化规则库.py
+├─ 汉化日志.md
+├─ 数据/
+│  ├─ 汉化规则.json
+│  ├─ 翻译记忆库.json
+│  └─ 保留英文白名单.json
+├─ 资源/
+│  └─ ChineseSimplified.isl
+└─ README.md
+```
 
-**Demo**
+### 一键植入中文
 
-https://github.com/user-attachments/assets/5c85af94-9228-4537-926a-1ed7a91fa5ee
+在项目根目录运行：
 
-## Install
+```powershell
+python "中文汉化插件/一键植入中文.py" --root . --strict
+```
 
-Grab a build from [Releases](https://github.com/Aseiel/VideoHighlighter/releases):
+### 扫描遗漏英文
 
-- **Windows** — run
-  [`00-VideoHighlighter-Windows-Setup.exe`](https://github.com/Aseiel/VideoHighlighter/releases/latest/download/00-VideoHighlighter-Windows-Setup.exe).
-  Per-user, no admin. It is not code-signed yet, so click through *More info →
-  Run anyway*.
-- **macOS** — drag the `.dmg` into Applications, then clear the quarantine flag
-  once: `xattr -dr com.apple.quarantine /Applications/VideoHighlighter.app`
-  ([why](docs/INSTALL.md#macos)).
-- **Linux / from source** — `pip install -r requirements.txt && python main.py`.
-  FFmpeg comes with it.
+```powershell
+python "中文汉化插件/扫描遗漏英文.py" --root .
+```
 
-Portable builds, GPU setup, where it writes, and fixing an oversized UI:
-**[docs/INSTALL.md](docs/INSTALL.md)**.
+---
 
-## Documentation
+## 汉化维护逻辑
 
-| | |
-| --- | --- |
-| [Choosing a detector](docs/DETECTION-GUIDE.md) | Objects, actions, CLIP search, composition rules — what each is for |
-| [Why these moments](docs/REPORTS.md) | What the report contains and why it is built that way |
-| [The Auto pipeline](docs/AUTO-PIPELINE.md) | Card → ingest → script → music → reel, resumable |
-| [Installing](docs/INSTALL.md) | Every platform, GPU backends, settings |
-| [Training a model](docs/CUSTOM-MODEL-TRAINING.md) | Label your own class and train it |
-| [Community models](docs/COMMUNITY-MODELS.md) | Install models other people trained, publish your own |
-| [Intel GPU](docs/INTEL-GPU.md) · [AMD GPU](docs/AMD-GPU.md) · [Apple GPU](docs/MAC-GPU.md) | Vendor-specific acceleration |
-| [Remote ollama](docs/OLLAMA-REMOTE.md) | Run the local LLM on another box on your LAN |
+以后官方项目更新时，不需要重新人工汉化整个软件。
 
-## Pro edition
+```text
+官方新版本
+   ↓
+应用已有汉化规则
+   ↓
+复用翻译记忆
+   ↓
+扫描新增 / 变化英文
+   ↓
+只处理 changed / missing
+   ↓
+重建汉化规则库
+   ↓
+生成新的中文版
+```
 
-**VideoHighlighter — this repository — is free software under AGPL-3.0, and
-stays that way.** It includes offline analysis, live face detection, VR
-side-by-side playback, CLIP search, the composition engine, model training —
-including teaching a model from one box drawn in the player, which then keeps
-improving while the app is idle — and the model hub.
+当前汉化系统采用：
 
-**[VideoHighlighter Pro](https://aseiel.github.io/VideoHighlighter-site/)** is a
-separate paid edition that adds real-time work on top: live object and action
-overlays during playback, teaching a live category mid-playback,
-find-more-like-this search, open-vocabulary detection and counter/scoreboard
-detection.
+- 文件级精确匹配
+- 上下文判断
+- 翻译记忆库
+- 冲突检测
+- 新增英文扫描
+- CI 自动重放验证
 
-Explanation is not among them. The report, the findings and the advisor are
-identical in both editions — a cloud tool gives you a button and a result you
-cannot interrogate; answering "why", locally, is what this is instead.
+不会使用简单的全局字符串替换，以避免误改程序内部值。
 
-## Community
+---
 
-VideoHighlighter occasionally has feelings about your footage. When it does:
-[join the Discord](https://discord.gg/cUPJqPAMmm) and yell in #support, I'm
-usually around. Bugs and ideas are welcome in
-[Issues](https://github.com/Aseiel/VideoHighlighter/issues).
+## 汉化验证
 
-**Frequently asked questions.** [Read the FAQ](docs/FAQ/faq.md) for help with:
-- Choosing detectors and tuning scoring
-- Performance tips on CPU/GPU
-- Troubleshooting common issues
+目前汉化层已经验证可以从干净的官方源码重新植入中文。
 
-## License
+验证流程包括：
 
-Copyright (C) 2026 Przemysław Kreft and Meric Donmezer.
+- 从官方基线重新创建源码
+- 自动运行中文注入器
+- 检查冲突与缺失
+- 对比重建后的中文版文件
+- 扫描可能遗漏的用户可见英文
+- 运行项目现有测试
 
-Released under the GNU Affero General Public License v3.0 — use, modify and
-distribute it freely, provided modified versions, including ones offered over a
-network, make their complete source available under the same license. Full text
-in [LICENSE](LICENSE); notice in [COPYRIGHT](COPYRIGHT).
+GitHub Actions 中可以看到：
 
-Contributors keep copyright in their own work — see
-[CONTRIBUTING.md](CONTRIBUTING.md) and [CLA.md](CLA.md). VideoHighlighter is
-also offered under a separate commercial license by the copyright holders.
+```text
+中文汉化层验证
+```
 
-## Contributing
+---
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on code quality, testing,
-and what makes a good contribution. The project welcomes bug reports, small fixes,
-and feature proposals — please check the CLA before your first PR.
+## 汉化日志
 
-![Stars History](assets/star-history-2026630.png)
+中文版自己的维护记录：
+
+[查看汉化日志](./中文汉化插件/汉化日志.md)
+
+这里仅记录：
+
+- 汉化新增内容
+- 翻译修正
+- 本地化规则变化
+- 翻译记忆库变化
+- Windows 中文安装器变化
+- 上游更新兼容情况
+- 汉化验证结果
+
+不会把官方原项目开发日志混入中文版汉化日志。
+
+---
+
+## 关于上游
+
+VideoHighlighter 是原作者持续维护的开源项目。
+
+中文版会尽量保持：
+
+```text
+官方功能不变
++
+程序逻辑不变
++
+内部协议不变
++
+用户可见界面中文化
+```
+
+当官方发布新版本时，本仓库会通过中文汉化插件尽可能自动继承已有翻译，并集中处理新增或变化的界面内容。
+
+---
+
+## 许可证
+
+本仓库继续遵循上游项目原有许可证。
+
+请同时保留和遵守仓库中的：
+
+```text
+LICENSE
+COPYRIGHT
+```
+
+中文本地化不改变原项目的许可证和版权归属。

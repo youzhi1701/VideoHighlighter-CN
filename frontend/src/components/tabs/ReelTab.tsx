@@ -121,7 +121,78 @@ const TRANSITION_LABELS: Record<string, string> = {
   ease_in_out: "缓入缓出",
   smooth: "平滑",
   snap: "快速定格",
+  none: "无",
+  wipe_left: "向左擦除",
+  wipe_right: "向右擦除",
+  wipe_up: "向上擦除",
+  wipe_down: "向下擦除",
+  slide_left: "向左滑动",
+  slide_right: "向右滑动",
+  slide_up: "向上滑动",
+  slide_down: "向下滑动",
+  smooth_left: "平滑向左",
+  smooth_right: "平滑向右",
+  smooth_up: "平滑向上",
+  smooth_down: "平滑向下",
+  radial: "放射过渡",
+  circle_crop: "圆形裁切",
+  rect_crop: "矩形裁切",
+  distance: "距离过渡",
+  vert_open: "垂直展开",
+  vert_close: "垂直收拢",
+  horz_open: "水平展开",
+  horz_close: "水平收拢",
+  pixelize: "像素化",
+  diag_tl: "对角线·左上",
+  diag_tr: "对角线·右上",
+  diag_bl: "对角线·左下",
+  diag_br: "对角线·右下",
+  hl_slice: "水平左切片",
+  hr_slice: "水平右切片",
+  vu_slice: "垂直上切片",
+  vd_slice: "垂直下切片",
+  blur: "模糊淡化",
+  wipe_tl: "擦除至左上",
+  wipe_tr: "擦除至右上",
+  wipe_bl: "擦除至左下",
+  wipe_br: "擦除至右下",
+  squeeze_h: "水平挤压",
+  squeeze_v: "垂直挤压",
+  zoom_in: "放大进入",
+  fade_fast: "快速淡化",
+  fade_slow: "慢速淡化",
+  wind_left: "向左风切",
+  wind_right: "向右风切",
+  wind_up: "向上风切",
+  wind_down: "向下风切",
+  cover_left: "向左覆盖",
+  cover_right: "向右覆盖",
+  cover_up: "向上覆盖",
+  cover_down: "向下覆盖",
+  reveal_left: "向左揭示",
+  reveal_right: "向右揭示",
+  reveal_up: "向上揭示",
+  reveal_down: "向下揭示",
 }
+
+const FAMILY_LABELS: Record<string, string> = {
+  Cut: "直接切换",
+  Fades: "淡化",
+  Wipes: "擦除",
+  Shapes: "形状",
+  Bands: "条带",
+  Grain: "颗粒",
+  Slides: "滑动",
+}
+
+const OVERLAY_LABELS: Record<string, string> = {
+  elevation: "海拔曲线",
+  route: "路线图",
+  readout: "距离与爬升",
+  ticker: "镜头进度",
+}
+
+
 
 const prettyName = (key: string) =>
   TRANSITION_LABELS[key] ??
@@ -468,7 +539,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   className="text-[10px] text-muted-foreground underline-offset-2 hover:underline"
                   onClick={() => setShowEveryTransition((v) => !v)}
                 >
-                  {showEveryTransition ? "show the usual ones" : "show all of them"}
+                  {showEveryTransition ? "仅显示常用转场" : "显示全部转场"}
                 </button>
               </div>
               <Select value={transition} onValueChange={setTransition}>
@@ -479,7 +550,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                   {showEveryTransition
                     ? (options?.families ?? []).map((family) => (
                         <SelectGroup key={family.name}>
-                          <SelectLabel>{family.name}</SelectLabel>
+                          <SelectLabel>{FAMILY_LABELS[family.name] ?? family.name}</SelectLabel>
                           {family.items.map((t) => (
                             <SelectItem key={t.key} value={t.key}>
                               {prettyName(t.key)}
@@ -496,10 +567,10 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               </Select>
               <p className="text-xs text-muted-foreground">
                 {isCut
-                  ? "Every shot butts straight against the next. Fastest, and never wrong."
+                  ? "镜头直接衔接，不添加过渡。速度最快，也最稳妥。"
                   : softenable
-                    ? "Has an edge, so it can be softened below."
-                    : "Blends or slides the whole frame — there is no edge to soften."}
+                    ? "该转场具有明确边缘，可在下方调节柔边。"
+                    : "整个画面会进行混合或滑动，没有可单独柔化的边缘。"}
               </p>
             </div>
 
@@ -519,8 +590,8 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               </Select>
               <p className="text-xs text-muted-foreground">
                 {isCut
-                  ? "A cut has no length to move over."
-                  : (EASING_HINTS[easing] ?? "How the blend moves across its length.")}
+                  ? "直接切换没有过渡时长，因此无需缓动。"
+                  : (EASING_HINTS[easing] ?? "控制转场在整个持续时间内的运动节奏。")}
               </p>
             </div>
           </div>
@@ -534,16 +605,16 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               <SelectContent>
                 {(options?.motions ?? [{ key: "none", label: "静止" }]).map((m) => (
                   <SelectItem key={m.key} value={m.key}>
-                    {m.label}
+                    {prettyName(m.key)}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <p className="max-w-prose text-xs text-muted-foreground">
               {motion === "none"
-                ? "Every transition above is a shape moving over two still pictures, which is why they can start to feel alike. This moves the picture itself on the ends of each shot."
+                ? "上方转场主要改变两个画面之间的切换方式；这里则直接让镜头画面在切点前后产生运动，可明显减少模板化观感。"
                 : (MOTION_HINTS[motion] ??
-                  "Applied to the ends of each shot, so it stacks with the transition.")}
+                  "应用在每个镜头的首尾，因此可以与所选转场叠加使用。")}
             </p>
           </div>
 
@@ -552,7 +623,7 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               <div className="flex items-center justify-between">
                 <Label className="text-xs">时长</Label>
                 <span className="font-mono text-xs text-muted-foreground">
-                  {transitionSeconds.toFixed(2)}s
+                  {transitionSeconds.toFixed(2)} 秒
                 </span>
               </div>
               <Slider
@@ -585,10 +656,10 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
               />
               <p className="text-xs text-muted-foreground">
                 {isCut || !softenable
-                  ? "Pick a wipe, an iris or blinds to soften its edge."
+                  ? "请选择擦除、光圈、百叶窗等带边缘的转场后再调节柔边。"
                   : feather === 0
-                    ? "A hard edge, the way ffmpeg draws it."
-                    : "Feathers the edge instead of flipping each pixel at once."}
+                    ? "当前为硬边，与 FFmpeg 默认绘制效果一致。"
+                    : "让转场边缘逐渐混合，而不是像素瞬间切换。"}
               </p>
             </div>
           </div>
@@ -703,14 +774,13 @@ export function ReelTab({ running, onCancel, suggestedRoot }: Props) {
                         )
                       }
                     />
-                    {item.label}
+                    {OVERLAY_LABELS[item.key] ?? item.label}
                   </label>
                 )
               })}
             </div>
             <p className="text-xs text-muted-foreground">
-              Drawn over the finished reel. The profile and the route come from
-              the track, and the marker jumps to wherever each shot was filmed.
+              图形会叠加在最终成片上。海拔曲线和路线图来自 GPS 轨迹，标记点会随镜头切换到对应的拍摄位置。
             </p>
           </div>
         </CardContent>

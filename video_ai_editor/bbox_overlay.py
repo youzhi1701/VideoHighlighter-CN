@@ -48,11 +48,11 @@ def find_annotated_videos(video_path: str) -> dict[str, str]:
 
     found = {}
     patterns = [
-        (f"{base_name}*action*annotated*", "🎬 Actions"),
-        (f"{base_name}*object*annotated*", "📦 Objects"),
-        (f"{base_name}_annotated*", "🎯 Annotated"),
-        (f"{base_name}_bbox*", "🎯 BBox"),
-        (f"{base_name}_overlay*", "🎯 Overlay"),
+        (f"{base_name}*action*annotated*", "🎬 动作"),
+        (f"{base_name}*object*annotated*", "📦 物体"),
+        (f"{base_name}_annotated*", "🎯 已标注"),
+        (f"{base_name}_bbox*", "🎯 检测框"),
+        (f"{base_name}_overlay*", "🎯 叠加层"),
     ]
 
     for pattern, label in patterns:
@@ -68,9 +68,9 @@ def find_annotated_videos(video_path: str) -> dict[str, str]:
 
             fname = os.path.basename(match).lower()
             if 'action' in fname:
-                display = "🎬 Actions"
+                display = "🎬 动作"
             elif 'object' in fname:
-                display = "📦 Objects"
+                display = "📦 物体"
             else:
                 display = label
 
@@ -104,19 +104,19 @@ class AnnotatedVideoManager(QObject):
         self.video_path = os.path.abspath(video_path)
         self.cache_data = cache_data or {}
         self._player = player
-        self._current_source = "🎥 Original"
+        self._current_source = "🎥 原始视频"
         self._generating_actions = False
         self._generating_objects = False
 
         # Build source list
-        self._sources: dict[str, str] = {"🎥 Original": self.video_path}
+        self._sources: dict[str, str] = {"🎥 原始视频": self.video_path}
         self._sources.update(find_annotated_videos(self.video_path))
 
         if len(self._sources) > 1:
-            names = [k for k in self._sources if k != "🎥 Original"]
+            names = [k for k in self._sources if k != "🎥 原始视频"]
             print(f"✅ Found annotated videos: {', '.join(names)}")
         else:
-            print("ℹ️ No annotated videos found yet — use Generate buttons")
+            print("ℹ️ 尚未找到已标注视频 — 请使用生成按钮")
 
         # UI (created lazily)
         self._widget: Optional[QWidget] = None
@@ -131,9 +131,9 @@ class AnnotatedVideoManager(QObject):
         self._player = player
 
     def refresh(self):
-        """Re-scan for annotated videos."""
+        """重新扫描已标注视频."""
         old_keys = set(self._sources.keys())
-        self._sources = {"🎥 Original": self.video_path}
+        self._sources = {"🎥 原始视频": self.video_path}
         self._sources.update(find_annotated_videos(self.video_path))
 
         if set(self._sources.keys()) != old_keys and self._combo:
@@ -158,13 +158,13 @@ class AnnotatedVideoManager(QObject):
             if self._gen_actions_btn:
                 self._gen_actions_btn.setEnabled(not generating)
                 self._gen_actions_btn.setText(
-                    "⏳ Generating Actions…" if generating else "🎬 Generate Actions")
+                    "⏳ 正在生成动作标注…" if generating else "🎬 生成动作标注")
         elif which == "objects":
             self._generating_objects = generating
             if self._gen_objects_btn:
                 self._gen_objects_btn.setEnabled(not generating)
                 self._gen_objects_btn.setText(
-                    "⏳ Generating Objects…" if generating else "📦 Generate Objects")
+                    "⏳ 正在生成物体标注…" if generating else "📦 生成物体标注")
 
     # ---- widget factory ---------------------------------------------------
 
@@ -172,7 +172,7 @@ class AnnotatedVideoManager(QObject):
         if self._widget is not None:
             return self._widget
 
-        self._widget = grp = QGroupBox("🎯 Video Source")
+        self._widget = grp = QGroupBox("🎯 视频来源")
         grp.setStyleSheet("""
             QGroupBox {
                 font-weight: bold; color: #ccc;
@@ -210,7 +210,7 @@ class AnnotatedVideoManager(QObject):
         row1.addWidget(self._combo, 1)
 
         refresh_btn = QPushButton("🔄")
-        refresh_btn.setToolTip("Re-scan for annotated videos")
+        refresh_btn.setToolTip("重新扫描已标注视频")
         refresh_btn.setFixedWidth(36)
         refresh_btn.clicked.connect(self.refresh)
         refresh_btn.setStyleSheet("""
@@ -226,9 +226,9 @@ class AnnotatedVideoManager(QObject):
 
         # Row 2: generate buttons
         row2 = QHBoxLayout()
-        self._gen_actions_btn = QPushButton("🎬 Generate Actions")
+        self._gen_actions_btn = QPushButton("🎬 生成动作标注")
         self._gen_actions_btn.setToolTip(
-            "Run action detection with bounding boxes (uses your existing pipeline)")
+            "运行带检测框的动作检测（使用现有处理流程）")
         self._gen_actions_btn.clicked.connect(self._on_generate_actions)
         self._gen_actions_btn.setStyleSheet("""
             QPushButton {
@@ -240,9 +240,9 @@ class AnnotatedVideoManager(QObject):
         """)
         row2.addWidget(self._gen_actions_btn)
 
-        self._gen_objects_btn = QPushButton("📦 Generate Objects")
+        self._gen_objects_btn = QPushButton("📦 生成物体标注")
         self._gen_objects_btn.setToolTip(
-            "Run object detection with bounding boxes (uses your existing pipeline)")
+            "运行带检测框的物体检测（使用现有处理流程）")
         self._gen_objects_btn.clicked.connect(self._on_generate_objects)
         self._gen_objects_btn.setStyleSheet("""
             QPushButton {
@@ -335,7 +335,7 @@ class AnnotatedVideoManager(QObject):
         if self._generating_actions:
             return
 
-        print("🎬 Generate Actions button clicked")
+        print("🎬 生成动作标注 button clicked")
         self.set_generating(True, "actions")
         self._set_status("🎬 Running action detection with bounding boxes…")
 
@@ -395,7 +395,7 @@ class AnnotatedVideoManager(QObject):
         if self._generating_objects:
             return
 
-        print("📦 Generate Objects button clicked")
+        print("📦 生成物体标注 button clicked")
         self.set_generating(True, "objects")
         self._set_status("📦 Running object detection with bounding boxes…")
 
@@ -467,7 +467,7 @@ class AnnotatedVideoManager(QObject):
             # Show a message box
             if self._widget:
                 QMessageBox.information(
-                    self._widget, "Generation Complete",
+                    self._widget, "生成完成",
                     f"{which.title()} annotated video is ready!\n"
                     f"Select it from the dropdown to view.\n\n"
                     f"File: {os.path.basename(result)} ({size_mb:.1f} MB)"
@@ -485,26 +485,26 @@ class AnnotatedVideoManager(QObject):
     def _update_status(self):
         n = len(self._sources) - 1
         if n == 0:
-            self._set_status("No annotated videos found — click Generate")
+            self._set_status("未找到已标注视频 — 请点击“生成”")
         else:
             path = self._sources.get(self._current_source, "")
             if path and os.path.isfile(path):
                 size_mb = os.path.getsize(path) / (1024 * 1024)
                 self._set_status(
                     f"{n} source{'s' if n > 1 else ''} · "
-                    f"Current: {os.path.basename(path)} ({size_mb:.1f} MB)")
+                    f"当前：{os.path.basename(path)} ({size_mb:.1f} MB)")
             else:
-                self._set_status(f"{n} source{'s' if n > 1 else ''} available")
+                self._set_status(f"{n} source{'s' if n > 1 else ''} 可用")
 
     def _update_button_labels(self):
-        has_actions = "🎬 Actions" in self._sources
-        has_objects = "📦 Objects" in self._sources
+        has_actions = "🎬 动作" in self._sources
+        has_objects = "📦 物体" in self._sources
         if self._gen_actions_btn and not self._generating_actions:
             self._gen_actions_btn.setText(
-                "🎬 Regenerate Actions" if has_actions else "🎬 Generate Actions")
+                "🎬 重新生成动作标注" if has_actions else "🎬 生成动作标注")
         if self._gen_objects_btn and not self._generating_objects:
             self._gen_objects_btn.setText(
-                "📦 Regenerate Objects" if has_objects else "📦 Generate Objects")
+                "📦 重新生成物体标注" if has_objects else "📦 生成物体标注")
     
     def _save_cache_to_disk(self):
         """Write updated cache_data back to the existing cache JSON file."""
@@ -546,7 +546,7 @@ class AnnotatedVideoManager(QObject):
             print(f"💾 Cache written to: {cache_path.name}")
             
         except ImportError:
-            print("⚠️ VideoAnalysisCache not available — saving to fallback path")
+            print("⚠️ VideoAnalysisCache not 可用 — saving to fallback path")
             cache_path = Path(self.video_path).with_suffix('.bbox_cache.json')
             with open(cache_path, 'w', encoding='utf-8') as f:
                 json.dump(self.cache_data, f, indent=2, ensure_ascii=False)

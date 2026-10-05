@@ -61,32 +61,32 @@ def sha256_file(path: Path) -> str:
 # ---------------------------------------------------------------- file layout
 def check_layout(folder: Path, report: CheckReport, extra_allowed: frozenset[str] = frozenset()) -> None:
     if not folder.is_dir():
-        report.errors.append(f"{folder} is not a folder.")
+        report.errors.append(f"{folder} 不是文件夹。")
         return
     for p in folder.rglob("*"):
         rel = p.relative_to(folder)
         if any(part.startswith(".git") and part != ".gitattributes" for part in rel.parts):
             continue  # local git metadata is never uploaded
         if p.is_symlink():
-            report.errors.append(f"Symbolic links are not allowed: {rel}")
+            report.errors.append(f"不允许使用符号链接：{rel}")
         elif p.is_dir():
-            report.errors.append(f"Subfolders are not allowed: {rel}/")
+            report.errors.append(f"不允许包含子文件夹：{rel}/")
         elif str(rel) not in ALLOWED_FILES | extra_allowed:
             report.errors.append(
-                f"Not allowed in a model package: {rel} "
-                "(only model.onnx, videohighlighter.json, README.md and LICENSE; "
-                "never include clips, images, audio or training data)")
+                f"模型包中不允许包含：{rel} "
+                "（只允许 model.onnx、videohighlighter.json、README.md 和 LICENSE；"
+                "绝不能包含视频片段、图片、音频或训练数据）")
     model = folder / "model.onnx"
     if not model.is_file():
-        report.errors.append("model.onnx is missing.")
+        report.errors.append("缺少 model.onnx。")
     elif model.stat().st_size > MAX_MODEL_BYTES:
-        report.errors.append(f"model.onnx is larger than {MAX_MODEL_BYTES // 2**20} MB.")
+        report.errors.append(f"model.onnx 大于 {MAX_MODEL_BYTES // 2**20} MB。")
     elif model.stat().st_size < 64:
-        report.errors.append("model.onnx is empty or truncated.")
+        report.errors.append("model.onnx 为空或文件不完整。")
     for name in ("README.md", "LICENSE", MANIFEST_NAME):
         f = folder / name
         if f.is_file() and f.stat().st_size > MAX_TEXT_BYTES:
-            report.errors.append(f"{name} is too large.")
+            report.errors.append(f"{name} 文件过大。")
 
 
 # ------------------------------------------------------------ onnx checks
@@ -123,14 +123,14 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
         import numpy as np
         import onnxruntime as ort
     except ImportError:
-        report.errors.append("onnxruntime is required to check models.")
+        report.errors.append("检查模型需要安装 onnxruntime。")
         return
 
     model_path = folder / manifest.model_file
     with open(model_path, "rb") as fh:
         head = fh.read(1)
     if head != ONNX_MAGIC_HINT:
-        report.warnings.append("model.onnx has an unusual header; continuing with a full load.")
+        report.warnings.append("model.onnx 文件头异常，将继续进行完整加载检查。")
 
     # Reject external-data models: all weights must live inside model.onnx.
     try:
@@ -138,19 +138,19 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
         proto = onnx.load(str(model_path), load_external_data=False)
         from onnx.external_data_helper import uses_external_data
         if any(uses_external_data(t) for t in proto.graph.initializer):
-            report.errors.append("model.onnx references external weight files; export as one file.")
+            report.errors.append("model.onnx 引用了外部权重文件；请导出为单一文件。")
             return
         custom = sorted({n.domain for n in proto.graph.node
                          if n.domain not in ("", "ai.onnx", "ai.onnx.ml", "com.microsoft")})
         if custom:
-            report.errors.append(f"Custom operator domains are not supported: {', '.join(custom)}")
+            report.errors.append(f"不支持自定义算子域：{', '.join(custom)}")
             return
         report.info.append(f"ONNX opset {max((o.version for o in proto.opset_import if o.domain in ('', 'ai.onnx')), default='?')}")
         del proto
     except ImportError:
-        report.warnings.append("Package 'onnx' not installed; skipped external-data check.")
+        report.warnings.append("未安装 onnx 包，已跳过外部数据检查。")
     except Exception as exc:  # noqa: BLE001 - any parse failure is a hard error
-        report.errors.append(f"model.onnx could not be parsed: {exc}")
+        report.errors.append(f"无法解析 model.onnx：{exc}")
         return
 
     so = ort.SessionOptions()
@@ -158,12 +158,12 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
     try:
         sess = ort.InferenceSession(str(model_path), so, providers=["CPUExecutionProvider"])
     except Exception as exc:  # noqa: BLE001
-        report.errors.append(f"ONNX Runtime cannot load the model: {exc}")
+        report.errors.append(f"ONNX Runtime 无法加载模型：{exc}")
         return
 
     inputs = sess.get_inputs()
     if len(inputs) != 1:
-        report.errors.append(f"Model must have exactly one input (has {len(inputs)}).")
+        report.errors.append(f"模型必须只有一个输入（当前有 {len(inputs)} 个）。")
         return
     inp = inputs[0]
     expected = manifest.expected_input_shape()
@@ -174,7 +174,7 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
             f"(check width/height/channels/layout{'/frames' if manifest.task == 'action_recognition' else ''}).")
         return
     if inp.type not in ("tensor(float)", "tensor(float16)", "tensor(uint8)"):
-        report.errors.append(f"Unsupported input type {inp.type}.")
+        report.errors.append(f"不支持的输入类型：{inp.type}。")
         return
     report.info.append(f"Input {inp.name} {expected} {inp.type}")
 
@@ -184,9 +184,9 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
     try:
         outputs = sess.run(None, {inp.name: dummy})
     except Exception as exc:  # noqa: BLE001
-        report.errors.append(f"Test inference failed: {exc}")
+        report.errors.append(f"测试推理失败：{exc}")
         return
-    report.info.append("Test inference ran on CPU")
+    report.info.append("已在 CPU 上完成测试推理")
 
     n = len(manifest.labels)
     out = outputs[0]
@@ -209,7 +209,7 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
             report.errors.append(
                 f"Output {list(out.shape)} does not match {n} labels (expected [1, {n}]).")
             return
-    report.info.append(f"Output {list(out.shape)} matches {n} label(s)")
+    report.info.append(f"输出 {list(out.shape)} 与 {n} 个标签匹配")
 
 
 # ------------------------------------------------------------------ public api

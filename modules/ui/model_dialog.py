@@ -66,7 +66,7 @@ class ModelDialog(QDialog):
         self._host = host or self._default_host
         self._list_recent = list_recent or self._default_recent
         self._remember_fn = remember or self._default_remember
-        self.setWindowTitle("Models for the report")
+        self.setWindowTitle("报告使用的模型")
         self.models = [dict(m) for m in (models or ())]
         self.chosen = chosen
 
@@ -80,13 +80,13 @@ class ModelDialog(QDialog):
         root.addWidget(self.list)
 
         row = QHBoxLayout()
-        self.remove_btn = QPushButton("Remove selected")
+        self.remove_btn = QPushButton("移除所选")
         self.remove_btn.clicked.connect(self._remove_selected)
         row.addWidget(self.remove_btn)
         row.addStretch(1)
         root.addLayout(row)
 
-        root.addWidget(QLabel("<b>Add a model</b>"))
+        root.addWidget(QLabel("<b>添加模型</b>"))
         form = QFormLayout()
 
         self.backend = QComboBox()
@@ -109,8 +109,8 @@ class ModelDialog(QDialog):
         self.tag = QComboBox()
         self.tag.setEditable(True)
         self.tag.lineEdit().setPlaceholderText("llama3.2")
-        self.tag_row = self._labelled("Model name:", self.tag,
-                                      button=("Refresh", self._refresh_tags))
+        self.tag_row = self._labelled("模型名称：", self.tag,
+                                      button=("刷新", self._refresh_tags))
         form.addRow(self.tag_row)
 
         # What the ask turned up, said plainly. "Nothing found" is an ordinary
@@ -127,27 +127,27 @@ class ModelDialog(QDialog):
         # Browse rather than a second, competing way of saying the same thing.
         self.recent = QComboBox()
         self.recent.activated.connect(self._recent_chosen)
-        self.recent_row = self._labelled("Recently used:", self.recent)
+        self.recent_row = self._labelled("最近使用：", self.recent)
         form.addRow(self.recent_row)
 
         self.gguf = QLineEdit()
         self.gguf.setPlaceholderText("D:/models/some-model.Q4_K_M.gguf")
-        self.gguf_row = self._labelled("GGUF path:", self.gguf,
+        self.gguf_row = self._labelled("GGUF 路径：", self.gguf,
                                        browse="Select a GGUF model")
         form.addRow(self.gguf_row)
 
         self.mmproj = QLineEdit()
         self.mmproj.setPlaceholderText(
             "optional — the mmproj file, for a vision model")
-        self.mmproj_row = self._labelled("Vision projector:", self.mmproj,
+        self.mmproj_row = self._labelled("视觉投影器：", self.mmproj,
                                          browse="Select the mmproj file")
         form.addRow(self.mmproj_row)
 
         self.label = QLineEdit()
-        self.label.setPlaceholderText("optional — what to call it in the menu")
-        form.addRow("Call it:", self.label)
+        self.label.setPlaceholderText("可选 — 菜单中显示的名称")
+        form.addRow("显示名称：", self.label)
 
-        add = QPushButton("Add to the list")
+        add = QPushButton("添加到列表")
         add.clicked.connect(self._add)
         form.addRow("", add)
         root.addLayout(form)
@@ -216,7 +216,7 @@ class ModelDialog(QDialog):
         self.status.setText(
             f"{len(found)} model(s) on the Ollama server{where}." if found else
             f"No Ollama server answered{where} — type a name, or start it and "
-            "press Refresh.")
+            "press 刷新.")
 
     def _refresh_tags(self):
         self._fill_tags(refresh=True)
@@ -251,7 +251,7 @@ class ModelDialog(QDialog):
         row.addWidget(caption)
         row.addWidget(field, 1)
         if browse:
-            find = QPushButton("Browse…")
+            find = QPushButton("浏览…")
             find.clicked.connect(lambda: self._browse(field, browse))
             row.addWidget(find)
         if button:
@@ -318,7 +318,7 @@ class ModelDialog(QDialog):
         try:
             self._remember_fn(path)
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Could not remember the GGUF path: {exc}")
+            print(f"⚠️ Could not remember the GGUF 路径： {exc}")
         self._fill_recent()
 
     def _remove_selected(self):

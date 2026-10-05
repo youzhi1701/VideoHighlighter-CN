@@ -341,9 +341,9 @@ class VideoPreviewWindow(QMainWindow):
         """Load a video file"""
         if os.path.exists(path):
             self.player.setSource(QUrl.fromLocalFile(path))
-            self.status_bar.showMessage(f"Loaded: {os.path.basename(path)}", 3000)
+            self.status_bar.showMessage(f"已加载：{os.path.basename(path)}", 3000)
         else:
-            self.status_bar.showMessage(f"File not found: {path}", 5000)
+            self.status_bar.showMessage(f"文件不存在：{path}", 5000)
 
     def show_frame_analysis_status(self, timestamp: float, contains_target: bool):
         """Show a temporary overlay indicating frame analysis result"""

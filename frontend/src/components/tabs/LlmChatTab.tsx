@@ -84,7 +84,7 @@ export function LlmChatTab({
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Bot className="size-4" /> LLM Chat
+            <Bot className="size-4" /> LLM 聊天
             {videoPath && (
               <Badge variant="secondary" className="font-normal">
                 context: {basename(videoPath)}
@@ -92,7 +92,7 @@ export function LlmChatTab({
             )}
           </CardTitle>
           <Button size="sm" variant="secondary" onClick={refresh}>
-            <RefreshCw className="size-4" /> Refresh
+            <RefreshCw className="size-4" /> 刷新
           </Button>
         </div>
         {error ? (

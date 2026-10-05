@@ -153,6 +153,7 @@ class ModelDialog(QDialog):
         root.addLayout(form)
 
         buttons = QDialogButtonBox(QDialogButtonBox.Close)
+        buttons.button(QDialogButtonBox.Close).setText("关闭")
         buttons.rejected.connect(self.accept)
         buttons.accepted.connect(self.accept)
         root.addWidget(buttons)

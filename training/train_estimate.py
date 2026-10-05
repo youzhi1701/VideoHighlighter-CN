@@ -80,25 +80,25 @@ def friendly_device(device: str, name: str = "") -> str:
     """"your Intel Arc A750" / "the processor" — how a person names it."""
     kind = device_kind(device)
     if kind == "cpu":
-        return "the processor"
+        return "处理器"
     if name:
-        return f"your {name}"
-    return {"xpu": "your Intel graphics card", "cuda": "your NVIDIA graphics card",
-            "dml": "your graphics card (DirectML)"}.get(kind, "your graphics card")
+        return f"{name}"
+    return {"xpu": "Intel 显卡", "cuda": "NVIDIA 显卡",
+            "dml": "显卡（DirectML）"}.get(kind, "显卡")
 
 
 def friendly_duration(seconds: float) -> str:
     """"about 4 minutes" — rounded the way a person would say it."""
     seconds = max(0.0, float(seconds or 0))
     if seconds < 60:
-        return "under a minute"
+        return "不到 1 分钟"
     minutes = seconds / 60
     if minutes < 10:
-        return f"about {max(1, round(minutes))} minute{'s' if round(minutes) != 1 else ''}"
+        return f"约 {max(1, round(minutes))} 分钟"
     if minutes < 60:
-        return f"about {int(5 * round(minutes / 5))} minutes"
+        return f"约 {int(5 * round(minutes / 5))} 分钟"
     hours = minutes / 60
-    return f"about {hours:.1f} hours".replace(".0 hours", " hours")
+    return f"约 {hours:.1f} 小时".replace(".0 小时", " 小时")
 
 
 # --------------------------------------------------------------------------- #
@@ -204,12 +204,12 @@ class Estimate:
     def sentence(self, device_phrase: str) -> str:
         """The line shown next to the Train button."""
         span = friendly_duration(self.seconds)
-        basis = ("measured on this computer" if self.measured
-                 else "a first guess; it gets exact after one run")
-        text = f"Training will take {span} on {device_phrase} ({basis})."
+        basis = ("根据本机实测" if self.measured
+                 else "首次估算，完成一次训练后会更准确")
+        text = f"预计使用 {device_phrase} 训练需要 {span}（{basis}）。"
         if self.train_frames + self.val_frames < MIN_USEFUL_FRAMES:
-            text += (f" Only {self.train_frames + self.val_frames} frames so far — "
-                     f"a model usually needs {MIN_USEFUL_FRAMES}+ to find anything.")
+            text += (f" 当前只有 {self.train_frames + self.val_frames} 帧——"
+                     f"通常至少需要 {MIN_USEFUL_FRAMES} 帧，模型才更容易学到有效特征。")
         return text
 
 

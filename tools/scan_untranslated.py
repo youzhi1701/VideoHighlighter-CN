@@ -62,6 +62,9 @@ def visible_candidate(text: str, allow: set[str]) -> bool:
     t = " ".join(text.split())
     if not t or t in allow or CJK_RE.search(t) or not ENGLISH_RE.search(t):
         return False
+    # JSX/source-code fragments occasionally look like prose to a regex.
+    if any(tok in t for tok in ("=>", "===", "!==", "&&", "||", "?.", "??", "Number.isFinite", "Math.", "return ")):
+        return False
     if TECH_RE.match(t) and len(t.split()) <= 3:
         return False
     if re.fullmatch(r"[A-Za-z0-9_.:/{}<>+*=-]+", t):
@@ -130,7 +133,10 @@ def main() -> int:
     hits: list[Hit] = []
 
     for path in args.root.rglob("*.py"):
-        if any(part in {".git", ".venv", "venv", "dist", "build", "node_modules"} for part in path.parts):
+        rel_parts = path.relative_to(args.root).parts
+        if any(part.startswith(".") for part in rel_parts):
+            continue
+        if any(part in {"venv", "dist", "build", "node_modules", "tests", "test", "docs", "localization"} for part in rel_parts):
             continue
         rel = path.relative_to(args.root).as_posix()
         hits.extend(scan_python(path, rel, allow))
@@ -139,6 +145,11 @@ def main() -> int:
     if front.exists():
         for path in front.rglob("*"):
             if path.suffix.lower() not in {".ts", ".tsx", ".js", ".jsx"}:
+                continue
+            rel_parts = path.relative_to(args.root).parts
+            if any(part.startswith(".") for part in rel_parts):
+                continue
+            if any(part in {"tests", "test", "node_modules", "dist", "build"} for part in rel_parts):
                 continue
             rel = path.relative_to(args.root).as_posix()
             hits.extend(scan_tsx(path, rel, allow))

@@ -3785,10 +3785,10 @@ class VideoHighlighterGUI(QWidget):
         support_layout.addWidget(intro)
 
         links = QLabel(
-            f'📧 Email: <a href="mailto:{SUPPORT_EMAIL}?subject=VideoHighlighter%20support">{SUPPORT_EMAIL}</a><br>'
+            f'📧 邮箱：<a href="mailto:{SUPPORT_EMAIL}?subject=VideoHighlighter%20support">{SUPPORT_EMAIL}</a><br>'
             f'💬 Discord: <a href="{DISCORD_URL}">{DISCORD_URL}</a><br>'
-            f'🌐 Website: <a href="{WEBSITE_URL}">{WEBSITE_URL}</a><br>'
-            f'⭐ Source code: <a href="{REPO_URL}">{REPO_URL}</a>'
+            f'🌐 官网：<a href="{WEBSITE_URL}">{WEBSITE_URL}</a><br>'
+            f'⭐ 源代码：<a href="{REPO_URL}">{REPO_URL}</a>'
         )
         links.setOpenExternalLinks(True)
         links.setTextInteractionFlags(Qt.TextBrowserInteraction)
@@ -3808,12 +3808,11 @@ class VideoHighlighterGUI(QWidget):
         legal_group = QGroupBox("法律信息")
         legal_layout = QVBoxLayout(legal_group)
         legal = QLabel(
-            "© 2026 Przemysław Kreft and Meric Donmezer.<br>"
-            "VideoHighlighter is free software licensed under the "
-            f'<a href="{REPO_URL}/blob/main/LICENSE">GNU AGPLv3</a>. '
-            f'Contributions are accepted under a <a href="{REPO_URL}/blob/main/CLA.md">CLA</a>.<br>'
-            "Includes third-party components (e.g. PySide6, FFmpeg) under their "
-            "respective licenses."
+            "© 2026 Przemysław Kreft 和 Meric Donmezer。<br>"
+            "VideoHighlighter 是依据 "
+            f'<a href="{REPO_URL}/blob/main/LICENSE">GNU AGPLv3</a> 许可发布的自由软件。'
+            f'代码贡献依据 <a href="{REPO_URL}/blob/main/CLA.md">CLA</a> 接收。<br>'
+            "软件包含 PySide6、FFmpeg 等第三方组件，各自遵循对应许可证。"
         )
         legal.setOpenExternalLinks(True)
         legal.setTextInteractionFlags(Qt.TextBrowserInteraction)
@@ -3831,7 +3830,7 @@ class VideoHighlighterGUI(QWidget):
             from video_ai_editor.face_identity import FaceIdentityBank
         except ImportError as e:
             if hasattr(self, "log_output"):
-                self.append_log(f"⚠️ Face bank unavailable: {e}")
+                self.append_log(f"⚠️ 人脸库不可用：{e}")
             return None
         if getattr(self, "_face_bank", None) is None:
             self._face_bank = FaceIdentityBank(db_path="./cache/face_db.json")

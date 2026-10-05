@@ -135,7 +135,7 @@ export function LlmChatTab({
         <ScrollArea className="h-72 rounded-md border p-3">
           {msgs.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              Ask about the selected video. Answers use its cached analysis.
+              询问所选视频。回答将使用该视频的缓存分析数据。
             </p>
           ) : (
             <div className="space-y-3">

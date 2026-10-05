@@ -1059,8 +1059,8 @@ class ActionTrainingSection(QWidget):
                 note += " 未检测到 GPU，第一次处理可能需要较长时间。"
                 colour = THEME.warning
         else:
-            where = {"cuda": "your NVIDIA GPU", "xpu": "your Intel GPU"}.get(
-                self._device, "the processor")
+            where = {"cuda": "NVIDIA GPU", "xpu": "Intel GPU"}.get(
+                self._device, "处理器")
             note = f"3D CNN：在{where}上训练所有层。"
             if self._device == "cpu":
                 note += (" 在处理器上训练可能需要数小时；这种情况下通常更适合使用 Intel 方式。")

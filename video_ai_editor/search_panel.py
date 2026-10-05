@@ -561,7 +561,7 @@ class SearchPanel(QWidget):
         worker.failed.connect(self._on_expression_scan_failed)
         worker.progress.connect(
             lambda at, total: self._expr_status.setText(
-                f"扫描中… {at / total * 100:.0f}%" if total else "扫描中…"))
+                f"Scanning… {at / total * 100:.0f}%" if total else "扫描中…"))
         worker.finished.connect(self._on_expression_worker_finished)
         self._expr_worker = worker
         worker.start()
@@ -607,7 +607,7 @@ class SearchPanel(QWidget):
         segments = segments_for(self._expr_seconds, label,
                                 duration=self._video_duration)
         self._current_segments = segments
-        self._results_header.setText(f"{len(segments)} 个片段，人物/类别：'{label}'")
+        self._results_header.setText(f"{len(segments)} clip(s) of '{label}'")
         self._add_all_btn.setEnabled(bool(segments))
         self._refresh_results(segments)
 

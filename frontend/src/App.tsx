@@ -39,7 +39,7 @@ import {
 import type { HighlighterConfig } from "@/lib/config"
 import {
   startRun,
-  startDownload,
+  start下载,
   cancelRun,
   pauseRun,
   resumeRun,
@@ -51,15 +51,15 @@ import {
   getConfigFile,
   saveConfigFile,
   getVideoInfo,
-  getAvoidRanges,
+  get排除Ranges,
   openEditor,
   revealLog,
   revealOutput,
   scanFolder,
   combineVideos,
-  startAuto,
-  type AutoStageName,
-  type AutoStageStatus,
+  start自动,
+  type 自动StageName,
+  type 自动StageStatus,
   type RunEvent,
 } from "@/lib/api"
 import { VideoCard } from "@/components/VideoCard"
@@ -72,22 +72,22 @@ import {
   type PreviewFrame,
 } from "@/components/DetectionPreview"
 import { setPreview } from "@/lib/api"
-import { AutoTab } from "@/components/tabs/AutoTab"
-import { ReelTab } from "@/components/tabs/ReelTab"
-import { TimelineTab } from "@/components/tabs/TimelineTab"
-import { BasicTab } from "@/components/tabs/BasicTab"
-import { TranscriptTab } from "@/components/tabs/TranscriptTab"
-import { AdvancedTab } from "@/components/tabs/AdvancedTab"
-import { AvoidTab } from "@/components/tabs/AvoidTab"
+import { 自动Tab } from "@/components/tabs/自动Tab"
+import { 成片Tab } from "@/components/tabs/成片Tab"
+import { 时间线Tab } from "@/components/tabs/时间线Tab"
+import { 基础Tab } from "@/components/tabs/基础Tab"
+import { 转录Tab } from "@/components/tabs/转录Tab"
+import { 高级Tab } from "@/components/tabs/高级Tab"
+import { 排除Tab } from "@/components/tabs/排除Tab"
 import { LlmChatTab } from "@/components/tabs/LlmChatTab"
 import { VisionSearchTab } from "@/components/tabs/VisionSearchTab"
-import { AboutTab } from "@/components/tabs/AboutTab"
+import { 关于Tab } from "@/components/tabs/关于Tab"
 import type { VisionResult } from "@/lib/api"
 import {
-  DownloadTab,
+  下载Tab,
   DEFAULT_DOWNLOAD,
-  type DownloadSettings,
-} from "@/components/tabs/DownloadTab"
+  type 下载Settings,
+} from "@/components/tabs/下载Tab"
 
 type LogLine = { text: string; kind: "info" | "err" | "ok" }
 
@@ -96,9 +96,9 @@ export default function App() {
   const [videos, setVideos] = useState<string[]>([])
   const [output, setOutput] = useState("highlight.mp4")
   const [cfg, setCfg] = useState<HighlighterConfig>(DEFAULT_CONFIG)
-  const [dl, setDl] = useState<DownloadSettings>(DEFAULT_DOWNLOAD)
-  const [avoidIds, setAvoidIds] = useState<string[]>([])
-  const [avoidRanges, setAvoidRanges] = useState<[number, number][]>([])
+  const [dl, setDl] = useState<下载Settings>(DEFAULT_DOWNLOAD)
+  const [avoidIds, set排除Ids] = useState<string[]>([])
+  const [avoidRanges, set排除Ranges] = useState<[number, number][]>([])
   const [objectLabels, setObjectLabels] = useState<string[]>([])
   const [actionLabels, setActionLabels] = useState<string[]>([])
   const [timeRange, setTimeRange] = useState<TimeRangeState>(DEFAULT_TIME_RANGE)
@@ -124,25 +124,25 @@ export default function App() {
   // Last finished run's output file, so the user can jump to the video they
   // just made instead of hunting for it.
   const [lastOutput, setLastOutput] = useState("")
-  // Shared by the LLM Chat and Visual Search tabs.
+  // Shared by the 大模型对话 and 视觉搜索 tabs.
   const [llmBackend, setLlmBackend] = useState("")
   const [llmModel, setLlmModel] = useState("")
   const [visionResults, setVisionResults] = useState<VisionResult[]>([])
   const [lastEdl, setLastEdl] = useState("")
   const [lastRoot, setLastRoot] = useState("")
-  const [autoStages, setAutoStages] = useState<
-    Partial<Record<AutoStageName, { status: AutoStageStatus; detail: string }>>
+  const [autoStages, set自动Stages] = useState<
+    Partial<Record<自动StageName, { status: 自动StageStatus; detail: string }>>
   >({})
   const wsRef = useRef<WebSocket | null>(null)
   const logEndRef = useRef<HTMLDivElement | null>(null)
   // Read inside WS callbacks, which close over the mount-time value otherwise.
   const dlRef = useRef(dl)
   dlRef.current = dl
-  // Reel chaining: when a multi-video run finishes, its outputs are stashed here
+  // 成片 chaining: when a multi-video run finishes, its outputs are stashed here
   // and the `done` handler kicks off a /combine. Cleared before that POST so a
   // combine run can never re-trigger itself. Read cfg/output through refs so the
   // WS callback (closed over mount-time values) sees the current settings.
-  const pendingReelRef = useRef<string[] | null>(null)
+  const pending成片Ref = useRef<string[] | null>(null)
   const cfgRef = useRef(cfg)
   cfgRef.current = cfg
   const outputRef = useRef(output)
@@ -248,23 +248,23 @@ export default function App() {
     )
   }, [videos])
 
-  /** Ranges the user marked in the native Timeline Viewer, via the shared store.
+  /** Ranges the user marked in the native 时间线 Viewer, via the shared store.
    *  Refreshed on video change and whenever the window regains focus, so ranges
    *  marked in the viewer land here without a manual reload. */
-  const refreshAvoidRanges = () => {
+  const refresh排除Ranges = () => {
     if (!videos.length) {
-      setAvoidRanges([])
+      set排除Ranges([])
       return
     }
-    void getAvoidRanges(videos[0]).then((r) =>
-      setAvoidRanges(r.ok ? r.ranges : []),
+    void get排除Ranges(videos[0]).then((r) =>
+      set排除Ranges(r.ok ? r.ranges : []),
     )
   }
 
   useEffect(() => {
-    refreshAvoidRanges()
-    window.addEventListener("focus", refreshAvoidRanges)
-    return () => window.removeEventListener("focus", refreshAvoidRanges)
+    refresh排除Ranges()
+    window.addEventListener("focus", refresh排除Ranges)
+    return () => window.removeEventListener("focus", refresh排除Ranges)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videos])
 
@@ -323,7 +323,7 @@ export default function App() {
         setVisionResults(e.results)
         break
       case "stage":
-        setAutoStages((s) => ({
+        set自动Stages((s) => ({
           ...s,
           [e.stage]: { status: e.status, detail: e.detail },
         }))
@@ -331,22 +331,22 @@ export default function App() {
       case "finished":
         appendLog(`✔ Finished: ${e.output || "(no output)"}`, "ok")
         setSessionCount((n) => n + 1)
-        // Downloads and face scans reuse this event for a summary ("3 file(s)"),
+        // 下载s and face scans reuse this event for a summary ("3 file(s)"),
         // so only keep an output that's actually a file we can reveal.
         if (/\.[a-z0-9]{2,4}$/i.test(e.output)) setLastOutput(e.output)
         // Stash produced highlights so `done` can combine them into a reel.
-        if (e.outputs && e.outputs.length > 1) pendingReelRef.current = e.outputs
+        if (e.outputs && e.outputs.length > 1) pending成片Ref.current = e.outputs
         // The cut list is what makes the run editable rather than final.
         if (e.edl) setLastEdl(e.edl)
-        toast.success("Done")
+        toast.success("完成")
         break
       case "cancelled":
-        appendLog("⏹ Cancelled", "err")
-        toast("Cancelled")
+        appendLog("⏹ 已取消", "err")
+        toast("已取消")
         break
       case "error":
         appendLog(`✖ ${e.message}`, "err")
-        toast.error("Error — see log")
+        toast.error("错误 — 请查看日志")
         break
       case "done": {
         wsRef.current?.close()
@@ -356,10 +356,10 @@ export default function App() {
         // child process has already exited, so /combine won't hit "a run is
         // already in progress". Clear the stash first — the combine run emits its
         // own `done`, and a null stash there stops it re-combining itself.
-        const reel = pendingReelRef.current
-        pendingReelRef.current = null
+        const reel = pending成片Ref.current
+        pending成片Ref.current = null
         if (reel && cfgRef.current.combine_reel) {
-          void startReelCombine(reel)
+          void start成片Combine(reel)
         } else {
           setRunning(false)
           setTask("")
@@ -376,13 +376,13 @@ export default function App() {
   }
 
   /** Combine finished highlights into one reel, reusing the event socket. */
-  const startReelCombine = async (files: string[]) => {
+  const start成片Combine = async (files: string[]) => {
     const c = cfgRef.current
     const dir = pathDir(files[0])
     const stem = (outputRef.current || "highlight.mp4").replace(/\.[^.]+$/, "")
     const out = `${dir}${stem}_reel.mp4`
     appendLog(`🎬 Combining ${files.length} highlights into a reel…`, "ok")
-    setTask("Combining reel")
+    setTask("正在合并短片")
     wsRef.current = openEventSocket(handleEvent)
     await new Promise((r) => setTimeout(r, 150))
     const res = await combineVideos({
@@ -397,8 +397,8 @@ export default function App() {
         : {}),
     })
     if (!res.ok) {
-      appendLog(`✖ Reel combine failed: ${res.error ?? "unknown"}`, "err")
-      toast.error(res.error ?? "Reel combine failed")
+      appendLog(`✖ 短片合并失败: ${res.error ?? "unknown"}`, "err")
+      toast.error(res.error ?? "短片合并失败")
       setRunning(false)
       setTask("")
       wsRef.current?.close()
@@ -412,7 +412,7 @@ export default function App() {
     setFrames([])
     setUsedCache(false)
     // Only a highlight run arms the reel; clear it so a download/scan can't chain.
-    pendingReelRef.current = null
+    pending成片Ref.current = null
     setProgress(0)
     setRunning(true)
     // Starting a run is exactly when the output matters.
@@ -429,9 +429,9 @@ export default function App() {
   }
 
   const onRun = async () => {
-    if (!videos.length) return toast.error("Add at least one video")
+    if (!videos.length) return toast.error("请至少添加一个视频")
     if (totalPoints(cfg) === 0 && !cfg.skip_highlights)
-      return toast.error("Set at least one scoring point")
+      return toast.error("请至少设置一个评分项")
 
     // When combining, the reel gets the music once; don't bake it per-clip.
     const willCombine = cfg.combine_reel && videos.length > 1
@@ -446,7 +446,7 @@ export default function App() {
         willCombine,
       }),
     )
-    if (!res.ok) failRun(res.error ?? "Failed to start")
+    if (!res.ok) failRun(res.error ?? "启动失败")
   }
 
   /** Run -> Pause -> Resume, matching the Qt toggle_run tri-state. */
@@ -455,18 +455,18 @@ export default function App() {
     if (paused) {
       await resumeRun()
       setPaused(false)
-      appendLog("▶ Resumed")
+      appendLog("▶ 已继续")
     } else {
       await pauseRun()
       setPaused(true)
-      appendLog("⏸ Pipeline paused")
+      appendLog("⏸ 流程已暂停")
     }
   }
 
   /** urls set = download exactly those (from the picker); otherwise scrape. */
-  const onDownload = async (urls?: string[]) => {
+  const on下载 = async (urls?: string[]) => {
     await beginRun()
-    const res = await startDownload({
+    const res = await start下载({
       url: dl.url,
       save_dir: dl.saveDir,
       download_full: dl.downloadFull,
@@ -475,29 +475,29 @@ export default function App() {
       concurrent: dl.concurrent,
       ...(urls?.length ? { video_urls: urls } : {}),
     })
-    if (!res.ok) failRun(res.error ?? "Failed to start download")
+    if (!res.ok) failRun(res.error ?? "启动失败 download")
   }
 
   const onCancel = async () => {
     await cancelRun()
-    appendLog("⏹ Cancellation requested…", "err")
+    appendLog("⏹ 已请求取消…", "err")
   }
 
   /** Card-to-film in one job. The engine config comes from the other tabs, so
    *  the scoring the user already set up is what the automatic run uses. */
-  const onAutoStart = async (opts: Parameters<typeof startAuto>[0]) => {
-    setAutoStages({})
+  const on自动Start = async (opts: Parameters<typeof start自动>[0]) => {
+    set自动Stages({})
     await beginRun()
     // No video paths yet — the pipeline discovers them by copying the card, and
     // it names the film itself, so only the scoring settings carry over.
     setLastRoot(opts.dest_root)
-    const res = await startAuto({
+    const res = await start自动({
       ...opts,
       config: toGuiConfig(cfgRef.current, opts.output_name ?? "film.mp4", [], {
         avoidIds,
       }),
     })
-    if (!res.ok) failRun(res.error ?? "Failed to start the pipeline")
+    if (!res.ok) failRun(res.error ?? "启动失败 the pipeline")
   }
 
   const addVideos = async () => {
@@ -509,8 +509,8 @@ export default function App() {
     const dir = await pickDirectory()
     if (!dir) return
     const res = await scanFolder(dir, true)
-    if (!res.ok) return toast.error(res.error ?? "Could not scan folder")
-    if (!res.files.length) return toast("No videos found in that folder")
+    if (!res.ok) return toast.error(res.error ?? "无法扫描文件夹")
+    if (!res.files.length) return toast("该文件夹中未找到视频")
     let added = 0
     setVideos((v) => {
       const merged = [...new Set([...v, ...res.files])]
@@ -520,20 +520,20 @@ export default function App() {
     toast.success(`+${added} video${added === 1 ? "" : "s"}`)
   }
 
-  const pickMusic = async () => {
+  const pick音乐 = async () => {
     const path = await pickAudioFile()
     if (path) set("music_path", path)
   }
 
   const launchEditor = async () => {
-    if (!videos.length) return toast.error("Add a video first")
+    if (!videos.length) return toast.error("请先添加视频")
     // The viewer is a separate Qt process and takes ~10s to appear, so say so —
     // otherwise the click looks like it did nothing.
-    toast("Opening Timeline Viewer — it takes a few seconds to appear…")
-    appendLog(`📊 Opening Timeline Viewer for ${basename(videos[0])}…`)
+    toast("正在打开时间线查看器 — 可能需要几秒钟…")
+    appendLog(`📊 Opening 时间线 Viewer for ${basename(videos[0])}…`)
     const res = await openEditor(videos[0])
     if (!res.ok) {
-      toast.error(res.error ?? "Could not open the Timeline Viewer")
+      toast.error(res.error ?? "无法打开时间线查看器")
       appendLog(`✖ ${res.error}`, "err")
     }
   }
@@ -554,7 +554,7 @@ export default function App() {
           </h1>
           <span
             className="flex items-center gap-1.5 text-xs text-muted-foreground"
-            title={online ? "The Python engine is reachable" : "The Python engine is not responding"}
+            title={online ? "Python 引擎连接正常" : "Python 引擎无响应"}
           >
             <span
               className={`size-1.5 rounded-full ${
@@ -565,10 +565,10 @@ export default function App() {
                   : "bg-destructive"
               }`}
             />
-            {online === null ? "connecting" : online ? "engine ready" : "engine offline"}
+            {online === null ? "connecting" : online ? "引擎就绪" : "引擎离线"}
           </span>
         </div>
-        <Button variant="ghost" size="icon" onClick={toggle} title="Toggle theme">
+        <Button variant="ghost" size="icon" onClick={toggle} title="切换主题">
           {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
         </Button>
       </header>
@@ -580,7 +580,7 @@ export default function App() {
       {/* Input videos */}
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-sm font-medium">Input Videos</CardTitle>
+          <CardTitle className="text-sm font-medium">输入视频</CardTitle>
           <div className="flex gap-2">
             {/* Inputs lock during a run, same as the Qt GUI. */}
             <Button size="sm" variant="secondary" onClick={addVideos} disabled={running}>
@@ -618,7 +618,7 @@ export default function App() {
           )}
           <Separator className="my-4" />
           <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
-            <Label className="text-sm text-muted-foreground">Output name</Label>
+            <Label className="text-sm text-muted-foreground">输出名称</Label>
             <Input
               value={output}
               onChange={(e) => setOutput(e.target.value)}
@@ -629,7 +629,7 @@ export default function App() {
 
           <Separator className="my-4" />
 
-          {/* Reel + music: turn many highlights into one soundtracked video. */}
+          {/* 成片 + music: turn many highlights into one soundtracked video. */}
           <div className="space-y-3">
             {videos.length > 1 && (
               <label className="flex items-center gap-2 text-sm">
@@ -642,17 +642,17 @@ export default function App() {
               </label>
             )}
             <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
-              <Label className="text-sm text-muted-foreground">Music</Label>
+              <Label className="text-sm text-muted-foreground">音乐</Label>
               <span
                 className="min-w-0 truncate text-sm"
                 title={cfg.music_path || undefined}
               >
                 {cfg.music_path ? basename(cfg.music_path) : (
-                  <span className="text-muted-foreground">No music</span>
+                  <span className="text-muted-foreground">无音乐</span>
                 )}
               </span>
               <div className="flex gap-1">
-                <Button size="sm" variant="secondary" onClick={pickMusic} disabled={running}>
+                <Button size="sm" variant="secondary" onClick={pick音乐} disabled={running}>
                   Pick
                 </Button>
                 {cfg.music_path && (
@@ -670,14 +670,14 @@ export default function App() {
             {cfg.music_path && (
               <div className="space-y-3">
                 <SelectField
-                  label="Mix"
+                  label="混合"
                   value={cfg.music_mode}
                   onChange={(v) => set("music_mode", v)}
                   options={MUSIC_MODES}
                   disabled={running}
                 />
                 <div className="flex min-w-0 items-center gap-3">
-                  <Label className="text-sm font-normal text-muted-foreground">Volume</Label>
+                  <Label className="text-sm font-normal text-muted-foreground">音量</Label>
                   <Slider
                     min={0}
                     max={100}
@@ -713,7 +713,7 @@ export default function App() {
               // asking for detection to happen.
               if (on && !cfg.force_reprocess) {
                 set("force_reprocess", true)
-                toast("Force reprocess turned on so there are frames to show")
+                toast("已开启强制重新处理，以便显示检测帧")
               }
             }}
           />
@@ -739,52 +739,52 @@ export default function App() {
       {/* Tabs */}
       <Tabs defaultValue="basic" className="min-w-0">
         <TabsList>
-          <TabsTrigger value="auto">Auto</TabsTrigger>
-          <TabsTrigger value="reel">Reel</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
-          <TabsTrigger value="download">Download</TabsTrigger>
-          <TabsTrigger value="basic">Basic</TabsTrigger>
-          <TabsTrigger value="transcript">Transcript</TabsTrigger>
-          <TabsTrigger value="advanced">Advanced</TabsTrigger>
-          <TabsTrigger value="llm">LLM Chat</TabsTrigger>
-          <TabsTrigger value="search">Visual Search</TabsTrigger>
-          <TabsTrigger value="avoid">Avoid</TabsTrigger>
-          <TabsTrigger value="about">About</TabsTrigger>
+          <TabsTrigger value="auto">自动</TabsTrigger>
+          <TabsTrigger value="reel">成片</TabsTrigger>
+          <TabsTrigger value="timeline">时间线</TabsTrigger>
+          <TabsTrigger value="download">下载</TabsTrigger>
+          <TabsTrigger value="basic">基础</TabsTrigger>
+          <TabsTrigger value="transcript">转录</TabsTrigger>
+          <TabsTrigger value="advanced">高级</TabsTrigger>
+          <TabsTrigger value="llm">大模型对话</TabsTrigger>
+          <TabsTrigger value="search">视觉搜索</TabsTrigger>
+          <TabsTrigger value="avoid">排除</TabsTrigger>
+          <TabsTrigger value="about">关于</TabsTrigger>
         </TabsList>
 
         <TabsContent value="auto" className="mt-4">
-          <AutoTab
+          <自动Tab
             running={running}
             stages={autoStages}
-            onStart={(o) => void onAutoStart(o)}
+            onStart={(o) => void on自动Start(o)}
             onCancel={() => void onCancel()}
           />
         </TabsContent>
         <TabsContent value="reel" className="mt-4">
-          <ReelTab
+          <成片Tab
             running={running}
             onCancel={() => void onCancel()}
             suggestedRoot={lastRoot}
           />
         </TabsContent>
         <TabsContent value="timeline" className="mt-4">
-          <TimelineTab
+          <时间线Tab
             running={running}
             onCancel={() => void onCancel()}
             suggestedPath={lastEdl}
           />
         </TabsContent>
         <TabsContent value="download" className="mt-4">
-          <DownloadTab
+          <下载Tab
             settings={dl}
             onChange={setDl}
-            onDownload={() => onDownload()}
-            onDownloadUrls={(urls) => onDownload(urls)}
+            on下载={() => on下载()}
+            on下载Urls={(urls) => on下载(urls)}
             running={running}
           />
         </TabsContent>
         <TabsContent value="basic" className="mt-4">
-          <BasicTab
+          <基础Tab
             cfg={cfg}
             set={set}
             objectLabels={objectLabels}
@@ -792,10 +792,10 @@ export default function App() {
           />
         </TabsContent>
         <TabsContent value="transcript" className="mt-4">
-          <TranscriptTab cfg={cfg} set={set} />
+          <转录Tab cfg={cfg} set={set} />
         </TabsContent>
         <TabsContent value="advanced" className="mt-4">
-          <AdvancedTab cfg={cfg} set={set} />
+          <高级Tab cfg={cfg} set={set} />
         </TabsContent>
         <TabsContent value="llm" className="mt-4">
           <LlmChatTab
@@ -820,19 +820,19 @@ export default function App() {
           />
         </TabsContent>
         <TabsContent value="avoid" className="mt-4">
-          <AvoidTab
+          <排除Tab
             cfg={cfg}
             set={set}
-            onAvoidIdsChange={setAvoidIds}
+            on排除IdsChange={set排除Ids}
             videoPath={videos[0]}
             running={running}
             refreshKey={faceRefresh}
             avoidRanges={avoidRanges}
-            onAvoidRangesChange={refreshAvoidRanges}
+            on排除RangesChange={refresh排除Ranges}
           />
         </TabsContent>
         <TabsContent value="about" className="mt-4">
-          <AboutTab />
+          <关于Tab />
         </TabsContent>
       </Tabs>
 
@@ -870,7 +870,7 @@ export default function App() {
       )}
 
       {/* Action bar — pinned. Everything the Qt bottom bar has: Cancel, keep
-          temp, Timeline Viewer, debug log, the analyzed counter, and Run. */}
+          temp, 时间线 Viewer, debug log, the analyzed counter, and Run. */}
       <footer className="shrink-0 border-t bg-card/60 px-5 py-2.5">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3">
           <Button
@@ -913,7 +913,7 @@ export default function App() {
               run is going, so it gets the space rather than a row of buttons. */}
           <div className="min-w-0 flex-1">
             <div className="mb-1 flex justify-between gap-3 text-[11px] text-muted-foreground">
-              <span className="truncate">{task || (running ? "Working…" : "Idle")}</span>
+              <span className="truncate">{task || (running ? "处理中…" : "空闲")}</span>
               <span className="tabular-nums">{progress}%</span>
             </div>
             <Progress value={progress} className="h-1" />
@@ -922,7 +922,7 @@ export default function App() {
           <div className="flex shrink-0 items-center gap-1">
             <label
               className="flex cursor-pointer items-center gap-1.5 px-1 text-xs text-muted-foreground"
-              title="Keep the intermediate clips instead of deleting them after the merge"
+              title="合并完成后保留中间片段，而不是删除"
             >
               <Checkbox
                 checked={cfg.keep_temp}
@@ -937,12 +937,12 @@ export default function App() {
               disabled={!videos.length}
               title={
                 videos.length
-                  ? "Open the native Timeline Viewer for the first video"
-                  : "Add a video first"
+                  ? "打开第一个视频的原生时间线查看器"
+                  : "请先添加视频"
               }
               className="gap-1.5"
             >
-              <MonitorPlay className="size-3.5" /> Timeline
+              <MonitorPlay className="size-3.5" /> 时间线
             </Button>
             {lastOutput && (
               <Button
@@ -950,7 +950,7 @@ export default function App() {
                 variant="ghost"
                 onClick={async () => {
                   const res = await revealOutput(lastOutput)
-                  if (!res.ok) toast.error(res.error ?? "Could not show output")
+                  if (!res.ok) toast.error(res.error ?? "无法显示输出文件")
                 }}
                 title={`Show ${lastOutput} in the file manager`}
                 className="gap-1.5"
@@ -963,7 +963,7 @@ export default function App() {
               variant="ghost"
               onClick={async () => {
                 const res = await revealLog()
-                if (!res.ok) toast.error(res.error ?? "No log to show")
+                if (!res.ok) toast.error(res.error ?? "暂无日志可显示")
               }}
               title="Show debug.log in the file manager"
               className="gap-1.5"
@@ -977,10 +977,10 @@ export default function App() {
               disabled={!log.length}
               title={
                 !log.length
-                  ? "No output yet"
+                  ? "尚无输出"
                   : logOpen
-                  ? "Hide the output panel"
-                  : "Show the output panel"
+                  ? "隐藏输出面板"
+                  : "显示输出面板"
               }
               className="gap-1.5"
             >
@@ -997,7 +997,7 @@ export default function App() {
             {analyzed !== null && (
               <span
                 className="ml-1 border-l pl-2.5 text-xs tabular-nums text-muted-foreground"
-                title="Videos successfully analyzed. The lifetime total persists across sessions."
+                title="已成功分析的视频。累计总数会跨会话保留。"
               >
                 {analyzed} analyzed
                 {sessionCount > 0 && ` · ${sessionCount} this run`}

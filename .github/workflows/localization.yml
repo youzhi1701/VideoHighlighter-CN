@@ -1,0 +1,54 @@
+name: Localization Layer Validation
+
+on:
+  push:
+    paths:
+      - 'localization/**'
+      - 'tools/apply_zh_cn.py'
+      - 'tools/scan_untranslated.py'
+      - 'tools/verify_localization_replay.py'
+      - '.github/workflows/localization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Recreate clean upstream baseline
+        shell: bash
+        run: |
+          BASE=$(python -c "import json; print(json.load(open('localization/zh_CN/patches.json', encoding='utf-8'))['upstream']['baseline_commit'])")
+          mkdir -p .localization-upstream
+          git archive "$BASE" | tar -x -C .localization-upstream
+          echo "baseline=$BASE"
+
+      - name: Replay Chinese localization
+        run: |
+          python tools/apply_zh_cn.py             --root .localization-upstream             --strict             --report-dir localization/reports/replay-ci
+
+      - name: Verify replay matches checked-in CN source
+        run: |
+          python tools/verify_localization_replay.py             --localized-root .localization-upstream             --reference-root .             --catalog localization/zh_CN/patches.json
+
+      - name: Scan current tree for likely untranslated UI strings
+        run: |
+          python tools/scan_untranslated.py             --root .             --report localization/reports/replay-ci/untranslated.json
+
+      - name: Upload localization reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: localization-validation-report
+          path: localization/reports/replay-ci/
+          retention-days: 14

@@ -21,7 +21,7 @@ const BLANK: CompRule = {
   region: "",
   min_count: 1,
   max_count: 999,
-  relation: "内部",
+  relation: "inside",
   outline: false,
   window_secs: 0.75,
   persist_secs: 0.5,
@@ -53,14 +53,7 @@ export function CompositionRules() {
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-xs text-muted-foreground">
-          Compose higher-level actions from spatial relationships between detected
-          objects — e.g. if object A appears inside region B enough times, fire
-          action X. Rows sharing an Event Name must all be satisfied together (AND).
-          Relation: inside (its centre is in the region), overlaps (most of it
-          is), touches (they meet). Outline decides on the real shapes inside the
-          boxes; a source like person.hand uses the body part. Window smooths over
-          flicker; Persist keeps an object alive through occlusion. Saved to
-          composition_rules.yaml.
+          通过检测物体之间的空间关系组合出更高层级的动作。例如，当物体 A 多次出现在区域 B 内时触发动作 X。同一“事件名称”的多行条件必须同时满足（AND）。关系：内部（中心位于区域内）、重叠（大部分位于区域内）、接触（边界相交）。轮廓选项会根据框内真实形状判断；person.hand 之类的来源可使用身体部位。时间窗口可平滑短暂抖动；持续时间可让物体在短暂遮挡时继续有效。规则保存在 composition_rules.yaml。
         </p>
 
         <div className="overflow-x-auto rounded-md border">
@@ -122,16 +115,16 @@ export function CompositionRules() {
                     ))}
                     <TableCell className="p-1">
                       <select
-                        value={r.relation ?? "内部"}
+                        value={r.relation ?? "inside"}
                         onChange={(e) =>
                           upd(i, { relation: e.target.value as CompRule["relation"] })
                         }
                         className="h-7 w-full rounded-md border bg-transparent px-1 text-sm"
                         title="内部：中心位于区域内 · 重叠：大部分位于区域内 · 接触：边界相交"
                       >
-                        <option value="内部">内部</option>
-                        <option value="重叠">重叠</option>
-                        <option value="接触">接触</option>
+                        <option value="inside">内部</option>
+                        <option value="overlaps">重叠</option>
+                        <option value="touches">接触</option>
                       </select>
                     </TableCell>
                     <TableCell className="p-1 text-center">
@@ -139,7 +132,7 @@ export function CompositionRules() {
                         type="checkbox"
                         checked={Boolean(r.outline)}
                         onChange={(e) => upd(i, { outline: e.target.checked })}
-                        title="根据框内实际轮廓判断真实形状"
+                        title="根据检测框内的真实轮廓判断形状"
                       />
                     </TableCell>
                     <TableCell className="p-1">

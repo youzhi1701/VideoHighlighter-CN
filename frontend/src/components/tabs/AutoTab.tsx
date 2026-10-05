@@ -51,11 +51,11 @@ import {
 import { basename, pickAudioFile, pickDirectory, pickScriptFile, pickVideos } from "@/lib/files"
 
 const STAGE_LABELS: Record<AutoStageName, string> = {
-  ingest: "从存储卡复制",
-  music: "分析音乐",
-  highlight: "查找高光",
-  combine: "生成成片",
-  music_mix: "铺设音乐",
+  ingest: "Copy from card",
+  music: "Analyse music",
+  highlight: "Find highlights",
+  combine: "Build the reel",
+  music_mix: "Lay the music",
 }
 
 const STAGE_ORDER: AutoStageName[] = [
@@ -123,7 +123,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
   const [destRoot, setDestRoot] = useState("")
   const [folderName, setFolderName] = useState("")
   const [outputName, setOutputName] = useState("film.mp4")
-  const [resume, set继续] = useState(true)
+  const [resume, setResume] = useState(true)
 
   const [scriptPath, setScriptPath] = useState("")
   const [scriptText, setScriptText] = useState("")
@@ -393,7 +393,7 @@ export function AutoTab({ running, stages, onStart, onCancel }: AutoTabProps) {
                 checked={resume}
                 onCheckedChange={(v) => setResume(Boolean(v))}
               />
-              <span className="text-xs">继续 — skip work already done here</span>
+              <span className="text-xs">继续 — 跳过这里已经完成的处理</span>
             </label>
 
             {prior && (

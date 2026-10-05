@@ -1,4 +1,5 @@
 name: Windows CN Validation
+# validation revision: 2
 
 on:
   push:

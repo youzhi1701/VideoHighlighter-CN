@@ -1675,7 +1675,7 @@ class SignalTimelineWindow(QMainWindow):
                         counts[n] = counts.get(n, 0) + 1
 
         for name in classes:
-            checkbox = QCheckBox(f"{name.replace('_', ' ')} ({counts.get(name, 0)}s)")
+            checkbox = QCheckBox(f"{name.replace('_', ' ')}（{counts.get(name, 0)} 秒）")
             checkbox.setChecked(scene.visible_objects.get(name, True))
             checkbox.setToolTip(f"显示“{name}”轨道，并允许 ◀ ▶ 在其位置停靠")
             # setChecked runs before this connect, so it can't fire the toggle.
@@ -5092,7 +5092,7 @@ class SignalTimelineWindow(QMainWindow):
                 except Exception as e:
                     last_err = str(e)
 
-            self.render_finished.emit(False, f"FFmpeg error:\n{last_err}")
+            self.render_finished.emit(False, f"FFmpeg 错误：\n{last_err}")
 
         threading.Thread(target=render, daemon=True).start()
 

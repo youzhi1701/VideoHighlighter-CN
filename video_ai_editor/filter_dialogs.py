@@ -105,7 +105,7 @@ class FilterDialog(QDialog):
             events_layout.addWidget(events_header)
 
             events_note = QLabel(
-                "Derived from your composition rules, not detected directly.")
+                "这些事件来自构图规则推导，并非直接检测得到。")
             events_note.setStyleSheet("color: #888888; font-size: 11px;")
             events_note.setWordWrap(True)
             events_layout.addWidget(events_note)
@@ -137,6 +137,9 @@ class FilterDialog(QDialog):
         buttons = QDialogButtonBox(
             QDialogButtonBox.Ok | QDialogButtonBox.Apply | QDialogButtonBox.Cancel
         )
+        buttons.button(QDialogButtonBox.Ok).setText("确定")
+        buttons.button(QDialogButtonBox.Apply).setText("应用")
+        buttons.button(QDialogButtonBox.Cancel).setText("取消")
         buttons.accepted.connect(self.apply_and_close)
         buttons.button(QDialogButtonBox.Apply).clicked.connect(self.apply_filters)
         buttons.rejected.connect(self.reject)
@@ -371,6 +374,8 @@ class ConfidenceFilterDialog(QDialog):
 
         # ── Buttons ──
         buttons = QDialogButtonBox(QDialogButtonBox.Apply | QDialogButtonBox.Close)
+        buttons.button(QDialogButtonBox.Apply).setText("应用")
+        buttons.button(QDialogButtonBox.Close).setText("关闭")
         buttons.button(QDialogButtonBox.Apply).clicked.connect(self.apply_filters)
         buttons.button(QDialogButtonBox.Close).clicked.connect(self.close)
         layout.addWidget(buttons)
@@ -433,8 +438,8 @@ class ConfidenceFilterDialog(QDialog):
                 visible_objects += 1
 
         self.stats_label.setText(
-            f"Actions: {visible_actions}/{total_actions} visible (≥{action_min:.0%})\n"
-            f"Objects: {visible_objects}/{total_objects} visible (≥{object_min:.0%})"
+            f"动作：{visible_actions}/{total_actions} 个可见（≥{action_min:.0%}）\n"
+            f"物体：{visible_objects}/{total_objects} 个可见（≥{object_min:.0%}）"
         )
 
     def apply_filters(self):

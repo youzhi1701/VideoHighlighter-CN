@@ -2132,11 +2132,11 @@ class VideoHighlighterGUI(QWidget):
                 self.yolo_model_combo.addItem("(custom model — size N/A)", "n")
                 self.yolo_model_combo.setEnabled(False)
             else:
-                self.yolo_model_combo.addItem("Nano (fastest, lowest accuracy)", "n")
-                self.yolo_model_combo.addItem("Small (fast, good balance)", "s")
-                self.yolo_model_combo.addItem("Medium (balanced)", "m")
-                self.yolo_model_combo.addItem("Large (accurate, slower)", "l")
-                self.yolo_model_combo.addItem("Extra-Large (most accurate, slowest)", "x")
+                self.yolo_model_combo.addItem("Nano（最快，精度最低）", "n")
+                self.yolo_model_combo.addItem("Small（较快，平衡良好）", "s")
+                self.yolo_model_combo.addItem("Medium（均衡）", "m")
+                self.yolo_model_combo.addItem("Large（更准确，较慢）", "l")
+                self.yolo_model_combo.addItem("Extra-Large（最准确，最慢）", "x")
                 self.yolo_model_combo.setEnabled(True)
 
             restore_idx = self.yolo_model_combo.findData(prev_size)
@@ -2183,15 +2183,15 @@ class VideoHighlighterGUI(QWidget):
         # "Auto" has picked DirectML since R3D learned to run through ONNX
         # Runtime; the old label predated that and named three of the four.
         self.action_backend_combo.addItem(
-            "Auto (your action head if installed, else the old models)", "auto")
+            "自动（优先使用已训练动作头，否则使用旧模型）", "auto")
         self.action_backend_combo.addItem(
-            "SigLIP2 + your trained action head", "siglip2")
+            "SigLIP2 + 你训练的动作头", "siglip2")
         # The Intel and R3D paths are being retired in favour of SigLIP2.
         self.action_backend_combo.addItem(
-            "OpenVINO, Intel model (deprecated)", "openvino")
-        self.action_backend_combo.addItem("R3D + CUDA (deprecated)", "r3d_cuda")
-        self.action_backend_combo.addItem("R3D + DirectML (deprecated)", "r3d_dml")
-        self.action_backend_combo.addItem("R3D + CPU (deprecated)", "r3d_cpu")
+            "OpenVINO Intel 模型（已弃用）", "openvino")
+        self.action_backend_combo.addItem("R3D + CUDA（已弃用）", "r3d_cuda")
+        self.action_backend_combo.addItem("R3D + DirectML（已弃用）", "r3d_dml")
+        self.action_backend_combo.addItem("R3D + CPU（已弃用）", "r3d_cpu")
         current_backend = advanced_cfg.get("action_backend", "auto")
         idx_ab = self.action_backend_combo.findData(current_backend)
         self.action_backend_combo.setCurrentIndex(idx_ab if idx_ab >= 0 else 0)
@@ -2204,11 +2204,10 @@ class VideoHighlighterGUI(QWidget):
 
         import_action_btn = QPushButton("导入模型…")
         import_action_btn.setToolTip(
-            "Copy a trained custom action model into the app's custom-model slot:\n"
-            "  • OpenVINO decoder (.xml + .bin)\n"
-            "  • R3D fine-tuned weights (.pth)\n"
-            "A same-named .json (labels / mapping) next to it is picked up "
-            "automatically, or you'll be asked to pick one.")
+            "将训练好的自定义动作模型复制到应用的自定义模型位置：\n"
+            "  • OpenVINO 解码器（.xml + .bin）\n"
+            "  • R3D 微调权重（.pth）\n"
+            "如果旁边存在同名 .json（标签 / 映射）会自动读取；否则会提示你选择。")
         action_model_row = QHBoxLayout()
         action_model_row.addWidget(self.action_models_combo, 1)
         action_model_row.addWidget(import_action_btn)
@@ -2217,18 +2216,18 @@ class VideoHighlighterGUI(QWidget):
 
         def _import_action_model():
             src, _ = QFileDialog.getOpenFileName(
-                self, "Import custom action model", "",
-                "Action models (*.xml *.pth);;OpenVINO IR (*.xml);;"
-                "R3D weights (*.pth);;All files (*)")
+                self, "导入自定义动作模型", "",
+                "动作模型 (*.xml *.pth);;OpenVINO IR (*.xml);;"
+                "R3D 权重 (*.pth);;所有文件 (*)")
             if not src:
                 return
             is_r3d = src.lower().endswith(".pth")
             labels_src = ""
             if not os.path.exists(os.path.splitext(src)[0] + ".json"):
-                prompt = ("R3D mapping file (idx_to_label + metadata JSON)" if is_r3d
-                          else "Labels file for this decoder (idx_to_label JSON)")
+                prompt = ("R3D 映射文件（idx_to_label + 元数据 JSON）" if is_r3d
+                          else "该解码器的标签文件（idx_to_label JSON）")
                 labels_src, _ = QFileDialog.getOpenFileName(
-                    self, prompt, "", "JSON (*.json);;All files (*)")
+                    self, prompt, "", "JSON (*.json);;所有文件 (*)")
             try:
                 # Fresh re-resolution (not the frozen *_LABELS_FILE constants) so
                 # the newly imported model's class count shows up immediately,
@@ -2295,9 +2294,9 @@ class VideoHighlighterGUI(QWidget):
         import_action_btn.clicked.connect(_import_action_model)
 
         self.r3d_model_combo = QComboBox()
-        self.r3d_model_combo.addItem("R3D-18 (fastest)", "r3d_18")
-        self.r3d_model_combo.addItem("MC3-18 (mixed convolution)", "mc3_18")
-        self.r3d_model_combo.addItem("R(2+1)D-18 (most accurate)", "r2plus1d_18")
+        self.r3d_model_combo.addItem("R3D-18（最快）", "r3d_18")
+        self.r3d_model_combo.addItem("MC3-18（混合卷积）", "mc3_18")
+        self.r3d_model_combo.addItem("R(2+1)D-18（最准确）", "r2plus1d_18")
         current_r3d = advanced_cfg.get("r3d_model", "r3d_18")
         idx_r3d = self.r3d_model_combo.findData(current_r3d)
         self.r3d_model_combo.setCurrentIndex(idx_r3d if idx_r3d >= 0 else 0)
@@ -2315,24 +2314,24 @@ class VideoHighlighterGUI(QWidget):
                 from modules.vision import action_siglip
                 head = action_siglip.installed_head_classes()
                 self.action_models_combo.addItem(
-                    f"Action head: {head[0]} ({len(head[1])} classes)" if head
-                    else "No action head installed - train one first", "siglip2")
+                    f"动作头：{head[0]}（{len(head[1])} 个类别）" if head
+                    else "未安装动作头——请先训练一个", "siglip2")
             elif backend in ("openvino",):
                 if self._intel_count:
-                    self.action_models_combo.addItem(f"Intel Kinetics-400 ({self._intel_count} classes)", "intel_only")
+                    self.action_models_combo.addItem(f"Intel Kinetics-400（{self._intel_count} 个类别）", "intel_only")
                 if self._custom_ov_count:
-                    self.action_models_combo.addItem(f"Custom OpenVINO ({self._custom_ov_count} classes)", "custom_only")
+                    self.action_models_combo.addItem(f"自定义 OpenVINO（{self._custom_ov_count} 个类别）", "custom_only")
                 if self._intel_count and self._custom_ov_count:
                     total = self._intel_count + self._custom_ov_count
-                    self.action_models_combo.addItem(f"Mixed — both decoders ({total} classes)", "mixed")
+                    self.action_models_combo.addItem(f"混合——两个解码器（{total} 个类别）", "mixed")
             elif backend in ("r3d_cuda", "r3d_cpu"):
                 if self._intel_count:
-                    self.action_models_combo.addItem(f"R3D Kinetics-400 pretrained ({self._intel_count} classes)", "intel_only")
+                    self.action_models_combo.addItem(f"R3D Kinetics-400 预训练（{self._intel_count} 个类别）", "intel_only")
                 if self._r3d_custom_count:
-                    self.action_models_combo.addItem(f"R3D fine-tuned ({self._r3d_custom_count} classes)", "r3d_custom_only")
+                    self.action_models_combo.addItem(f"R3D 微调模型（{self._r3d_custom_count} 个类别）", "r3d_custom_only")
                 if self._intel_count and self._r3d_custom_count:
                     total = self._intel_count + self._r3d_custom_count
-                    self.action_models_combo.addItem(f"Mixed — both R3D ({total} classes)", "mixed")
+                    self.action_models_combo.addItem(f"混合——两个 R3D 模型（{total} 个类别）", "mixed")
             else:
                 if self._intel_count:
                     self.action_models_combo.addItem(f"Intel Kinetics-400 ({self._intel_count} classes)", "intel_only")
@@ -2343,7 +2342,7 @@ class VideoHighlighterGUI(QWidget):
                 available = sum(1 for c in [self._intel_count, self._custom_ov_count, self._r3d_custom_count] if c > 0)
                 if available >= 2:
                     total = self._intel_count + self._custom_ov_count + self._r3d_custom_count
-                    self.action_models_combo.addItem(f"Mixed — all models ({total} classes)", "mixed")
+                    self.action_models_combo.addItem(f"混合——全部模型（{total} 个类别）", "mixed")
 
             restore_idx = self.action_models_combo.findData(prev_data)
             if restore_idx >= 0:
@@ -5085,25 +5084,25 @@ class VideoHighlighterGUI(QWidget):
                 except Exception:
                     labels = []
             if not labels:
-                self.append_log("⚠️ No custom class names found (choose a model / check labels).")
+                self.append_log("⚠️ 未找到自定义类别名称（请选择模型或检查标签文件）。")
 
         if yolo_type != "custom":  # standard or mixed -> include COCO objects
             if os.path.exists(YOLO_OBJECTS_LABELS_FILE):
                 labels = labels + self.load_labels_from_json(YOLO_OBJECTS_LABELS_FILE)
 
         if not labels:
-            self.append_log("⚠️ No labels available for the selected model.")
+            self.append_log("⚠️ 所选模型没有可用标签。")
             return
 
         current = [s.strip() for s in self.objects_input.text().split(",") if s.strip()]
-        title = ("Select Object Labels (custom + YOLO)" if yolo_type == "custom_mixed"
-                 else "Select Labels (custom model)" if yolo_type == "custom"
-                 else "Select Object Labels (YOLO)")
+        title = ("选择物体标签（自定义 + YOLO）" if yolo_type == "custom_mixed"
+                 else "选择标签（自定义模型）" if yolo_type == "custom"
+                 else "选择物体标签（YOLO）")
         dlg = LabelSelectorDialog(title, labels, current, self)
         if dlg.exec() == QDialog.Accepted:
             selected = dlg.get_selected_labels()
             self.objects_input.setText(", ".join(selected))
-            self.append_log(f"✅ Loaded {len(selected)} object labels")
+            self.append_log(f"✅ 已加载 {len(selected)} 个物体标签")
 
     def _siglip_action_labels(self):
         """``(head name, classes)`` when the action backend resolves to SigLIP2
@@ -5124,12 +5123,12 @@ class VideoHighlighterGUI(QWidget):
             name, labels = siglip
             current = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
             dlg = LabelSelectorDialog(
-                f"Select Action Labels (action head {name} — {len(labels)} classes)",
+                f"选择动作标签（动作头 {name}——{len(labels)} 个类别）",
                 sorted(labels), current, self)
             if dlg.exec() == QDialog.Accepted:
                 selected = dlg.get_selected_labels()
                 self.actions_input.setText(", ".join(selected))
-                self.append_log(f"✅ Loaded {len(selected)} action labels from {name}")
+                self.append_log(f"✅ 已从 {name} 加载 {len(selected)} 个动作标签")
             return
         backend = self.action_backend_combo.currentData()
         action_models = self.action_models_combo.currentData()
@@ -5140,13 +5139,13 @@ class VideoHighlighterGUI(QWidget):
 
         if action_models == "custom_only":
             label_file = INTEL_CUSTOM_LABELS_FILE
-            title = f"Select Action Labels (Custom Fine-tuned — {self._custom_ov_count} classes)"
+            title = f"选择动作标签（自定义微调——{self._custom_ov_count} 个类别）"
         elif action_models == "intel_only":
             label_file = KINETICS_400_LABELS_FILE
-            title = "Select Action Labels (Intel Kinetics-400 — 400 classes)"
+            title = "选择动作标签（Intel Kinetics-400——400 个类别）"
         elif action_models == "r3d_custom_only":
             label_file = R3D_CUSTOM_LABELS_FILE
-            title = "Select Action Labels (R3D Fine-tuned)"
+            title = "选择动作标签（R3D 微调模型）"
         elif action_models == "mixed":
             # Show labels tagged with source model
             custom_labels = []
@@ -5175,29 +5174,29 @@ class VideoHighlighterGUI(QWidget):
             tagged.sort()
 
             if not tagged:
-                self.append_log("⚠️ No label files found")
+                self.append_log("⚠️ 未找到标签文件")
                 return
             current = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
             overlap_count = len(overlap)
             dlg = LabelSelectorDialog(
-                f"Select Action Labels (Mixed — {len(tagged)} labels, {overlap_count} shared)",
+                f"选择动作标签（混合——{len(tagged)} 个标签，{overlap_count} 个重复标签）",
                 tagged, current, self)
             if dlg.exec() == QDialog.Accepted:
                 selected = dlg.get_selected_labels()
                 self.actions_input.setText(", ".join(selected))
-                self.append_log(f"✅ Loaded {len(selected)} action labels (mixed)")
+                self.append_log(f"✅ 已加载 {len(selected)} 个动作标签（混合）")
             return
         else:
             label_file = KINETICS_400_LABELS_FILE
-            title = "Select Action Labels"
+            title = "选择动作标签"
 
         if not os.path.exists(label_file):
-            self.append_log(f"⚠️ Label file not found: {label_file}")
+            self.append_log(f"⚠️ 找不到标签文件：{label_file}")
             return
 
         labels = self.load_labels_from_json(label_file)
         if not labels:
-            self.append_log(f"⚠️ No labels found in {label_file}")
+            self.append_log(f"⚠️ {label_file} 中没有找到标签")
             return
 
         current = [s.strip() for s in self.actions_input.text().split(",") if s.strip()]
@@ -5205,7 +5204,7 @@ class VideoHighlighterGUI(QWidget):
         if dlg.exec() == QDialog.Accepted:
             selected = dlg.get_selected_labels()
             self.actions_input.setText(", ".join(selected))
-            self.append_log(f"✅ Loaded {len(selected)} action labels from {os.path.basename(label_file)}")
+            self.append_log(f"✅ 已从 {os.path.basename(label_file)} 加载 {len(selected)} 个动作标签")
 
     def setup_label_completers(self):
         if os.path.exists(YOLO_OBJECTS_LABELS_FILE):

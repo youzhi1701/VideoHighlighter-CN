@@ -48,11 +48,11 @@ function preset(kind: string, duration: number): [number, number] | null {
 }
 
 const PRESETS = [
-  { key: "first_5", label: "First 5min" },
-  { key: "last_5", label: "Last 5min" },
-  { key: "last_10", label: "Last 10min" },
+  { key: "first_5", label: "前 5 分钟" },
+  { key: "last_5", label: "后 5 分钟" },
+  { key: "last_10", label: "后 10 分钟" },
   { key: "middle", label: "Middle" },
-  { key: "full", label: "Full video" },
+  { key: "full", label: "完整视频" },
 ]
 
 export function TimeRange({ state, onChange, duration }: Props) {
@@ -79,8 +79,8 @@ export function TimeRange({ state, onChange, duration }: Props) {
 
         <p className="text-xs italic text-muted-foreground">
           {duration > 0
-            ? `Video duration: ${fmtTime(duration)} (${Math.round(duration)}s)`
-            : "Set range in percentages — real times load once a video is added."}
+            ? `视频时长：${fmtTime(duration)} (${Math.round(duration)}s)`
+            : "按百分比设置范围 — 添加视频后会自动加载实际时间。"}
         </p>
 
         <Slider
@@ -107,13 +107,13 @@ export function TimeRange({ state, onChange, duration }: Props) {
         <p className="text-xs font-semibold text-[color:var(--success)]">
           {state.enabled
             ? duration > 0
-              ? `Selection: ${fmtTime(endS - startS)} (${selPct}% of video)`
-              : `Selection: ${selPct}% of video`
-            : "Selection: Full video"}
+              ? `已选择：${fmtTime(endS - startS)} (${selPct}%（占视频 )`
+              : `已选择：${selPct}%（占视频 `
+            : "已选择：完整视频"}
         </p>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">Quick presets:</span>
+          <span className="text-xs text-muted-foreground">快速预设：</span>
           {PRESETS.map((p) => (
             <Button
               key={p.key}

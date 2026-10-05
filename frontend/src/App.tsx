@@ -39,7 +39,7 @@ import {
 import type { HighlighterConfig } from "@/lib/config"
 import {
   startRun,
-  start下载,
+  startDownload,
   cancelRun,
   pauseRun,
   resumeRun,
@@ -51,15 +51,15 @@ import {
   getConfigFile,
   saveConfigFile,
   getVideoInfo,
-  get排除Ranges,
+  getAvoidRanges,
   openEditor,
   revealLog,
   revealOutput,
   scanFolder,
   combineVideos,
-  start自动,
-  type 自动StageName,
-  type 自动StageStatus,
+  startAuto,
+  type AutoStageName,
+  type AutoStageStatus,
   type RunEvent,
 } from "@/lib/api"
 import { VideoCard } from "@/components/VideoCard"
@@ -72,21 +72,21 @@ import {
   type PreviewFrame,
 } from "@/components/DetectionPreview"
 import { setPreview } from "@/lib/api"
-import { 自动Tab } from "@/components/tabs/自动Tab"
-import { 成片Tab } from "@/components/tabs/成片Tab"
-import { 时间线Tab } from "@/components/tabs/时间线Tab"
-import { 基础Tab } from "@/components/tabs/基础Tab"
-import { 转录Tab } from "@/components/tabs/转录Tab"
-import { 高级Tab } from "@/components/tabs/高级Tab"
-import { 排除Tab } from "@/components/tabs/排除Tab"
+import { AutoTab } from "@/components/tabs/自动Tab"
+import { ReelTab } from "@/components/tabs/成片Tab"
+import { TimelineTab } from "@/components/tabs/时间线Tab"
+import { BasicTab } from "@/components/tabs/基础Tab"
+import { TranscriptTab } from "@/components/tabs/转录Tab"
+import { AdvancedTab } from "@/components/tabs/高级Tab"
+import { AvoidTab } from "@/components/tabs/排除Tab"
 import { LlmChatTab } from "@/components/tabs/LlmChatTab"
 import { VisionSearchTab } from "@/components/tabs/VisionSearchTab"
-import { 关于Tab } from "@/components/tabs/关于Tab"
+import { AboutTab } from "@/components/tabs/关于Tab"
 import type { VisionResult } from "@/lib/api"
 import {
-  下载Tab,
+  DownloadTab,
   DEFAULT_DOWNLOAD,
-  type 下载Settings,
+  type DownloadSettings,
 } from "@/components/tabs/下载Tab"
 
 type LogLine = { text: string; kind: "info" | "err" | "ok" }
@@ -96,7 +96,7 @@ export default function App() {
   const [videos, setVideos] = useState<string[]>([])
   const [output, setOutput] = useState("highlight.mp4")
   const [cfg, setCfg] = useState<HighlighterConfig>(DEFAULT_CONFIG)
-  const [dl, setDl] = useState<下载Settings>(DEFAULT_DOWNLOAD)
+  const [dl, setDl] = useState<DownloadSettings>(DEFAULT_DOWNLOAD)
   const [avoidIds, set排除Ids] = useState<string[]>([])
   const [avoidRanges, set排除Ranges] = useState<[number, number][]>([])
   const [objectLabels, setObjectLabels] = useState<string[]>([])
@@ -131,7 +131,7 @@ export default function App() {
   const [lastEdl, setLastEdl] = useState("")
   const [lastRoot, setLastRoot] = useState("")
   const [autoStages, set自动Stages] = useState<
-    Partial<Record<自动StageName, { status: 自动StageStatus; detail: string }>>
+    Partial<Record<AutoStageName, { status: AutoStageStatus; detail: string }>>
   >({})
   const wsRef = useRef<WebSocket | null>(null)
   const logEndRef = useRef<HTMLDivElement | null>(null)
@@ -248,23 +248,23 @@ export default function App() {
     )
   }, [videos])
 
-  /** Ranges the user marked in the native 时间线 Viewer, via the shared store.
+  /** Ranges the user marked in the native Timeline Viewer, via the shared store.
    *  Refreshed on video change and whenever the window regains focus, so ranges
    *  marked in the viewer land here without a manual reload. */
-  const refresh排除Ranges = () => {
+  const refreshAvoidRanges = () => {
     if (!videos.length) {
-      set排除Ranges([])
+      setAvoidRanges([])
       return
     }
-    void get排除Ranges(videos[0]).then((r) =>
-      set排除Ranges(r.ok ? r.ranges : []),
+    void getAvoidRanges(videos[0]).then((r) =>
+      setAvoidRanges(r.ok ? r.ranges : []),
     )
   }
 
   useEffect(() => {
-    refresh排除Ranges()
-    window.addEventListener("focus", refresh排除Ranges)
-    return () => window.removeEventListener("focus", refresh排除Ranges)
+    refreshAvoidRanges()
+    window.addEventListener("focus", refreshAvoidRanges)
+    return () => window.removeEventListener("focus", refreshAvoidRanges)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videos])
 
@@ -323,7 +323,7 @@ export default function App() {
         setVisionResults(e.results)
         break
       case "stage":
-        set自动Stages((s) => ({
+        setAutoStages((s) => ({
           ...s,
           [e.stage]: { status: e.status, detail: e.detail },
         }))
@@ -331,7 +331,7 @@ export default function App() {
       case "finished":
         appendLog(`✔ Finished: ${e.output || "(no output)"}`, "ok")
         setSessionCount((n) => n + 1)
-        // 下载s and face scans reuse this event for a summary ("3 file(s)"),
+        // Downloads and face scans reuse this event for a summary ("3 file(s)"),
         // so only keep an output that's actually a file we can reveal.
         if (/\.[a-z0-9]{2,4}$/i.test(e.output)) setLastOutput(e.output)
         // Stash produced highlights so `done` can combine them into a reel.
@@ -412,7 +412,7 @@ export default function App() {
     setFrames([])
     setUsedCache(false)
     // Only a highlight run arms the reel; clear it so a download/scan can't chain.
-    pending成片Ref.current = null
+    pendingReelRef.current = null
     setProgress(0)
     setRunning(true)
     // Starting a run is exactly when the output matters.
@@ -629,7 +629,7 @@ export default function App() {
 
           <Separator className="my-4" />
 
-          {/* 成片 + music: turn many highlights into one soundtracked video. */}
+          {/* Reel + music: turn many highlights into one soundtracked video. */}
           <div className="space-y-3">
             {videos.length > 1 && (
               <label className="flex items-center gap-2 text-sm">
@@ -652,7 +652,7 @@ export default function App() {
                 )}
               </span>
               <div className="flex gap-1">
-                <Button size="sm" variant="secondary" onClick={pick音乐} disabled={running}>
+                <Button size="sm" variant="secondary" onClick={pickMusic} disabled={running}>
                   Pick
                 </Button>
                 {cfg.music_path && (
@@ -753,38 +753,38 @@ export default function App() {
         </TabsList>
 
         <TabsContent value="auto" className="mt-4">
-          <自动Tab
+          <AutoTab
             running={running}
             stages={autoStages}
-            onStart={(o) => void on自动Start(o)}
+            onStart={(o) => void onAutoStart(o)}
             onCancel={() => void onCancel()}
           />
         </TabsContent>
         <TabsContent value="reel" className="mt-4">
-          <成片Tab
+          <ReelTab
             running={running}
             onCancel={() => void onCancel()}
             suggestedRoot={lastRoot}
           />
         </TabsContent>
         <TabsContent value="timeline" className="mt-4">
-          <时间线Tab
+          <TimelineTab
             running={running}
             onCancel={() => void onCancel()}
             suggestedPath={lastEdl}
           />
         </TabsContent>
         <TabsContent value="download" className="mt-4">
-          <下载Tab
+          <DownloadTab
             settings={dl}
             onChange={setDl}
-            on下载={() => on下载()}
-            on下载Urls={(urls) => on下载(urls)}
+            onDownload={() => onDownload()}
+            onDownloadUrls={(urls) => onDownload(urls)}
             running={running}
           />
         </TabsContent>
         <TabsContent value="basic" className="mt-4">
-          <基础Tab
+          <BasicTab
             cfg={cfg}
             set={set}
             objectLabels={objectLabels}
@@ -792,10 +792,10 @@ export default function App() {
           />
         </TabsContent>
         <TabsContent value="transcript" className="mt-4">
-          <转录Tab cfg={cfg} set={set} />
+          <TranscriptTab cfg={cfg} set={set} />
         </TabsContent>
         <TabsContent value="advanced" className="mt-4">
-          <高级Tab cfg={cfg} set={set} />
+          <AdvancedTab cfg={cfg} set={set} />
         </TabsContent>
         <TabsContent value="llm" className="mt-4">
           <LlmChatTab
@@ -820,19 +820,19 @@ export default function App() {
           />
         </TabsContent>
         <TabsContent value="avoid" className="mt-4">
-          <排除Tab
+          <AvoidTab
             cfg={cfg}
             set={set}
-            on排除IdsChange={set排除Ids}
+            onAvoidIdsChange={setAvoidIds}
             videoPath={videos[0]}
             running={running}
             refreshKey={faceRefresh}
             avoidRanges={avoidRanges}
-            on排除RangesChange={refresh排除Ranges}
+            onAvoidRangesChange={refreshAvoidRanges}
           />
         </TabsContent>
         <TabsContent value="about" className="mt-4">
-          <关于Tab />
+          <AboutTab />
         </TabsContent>
       </Tabs>
 
@@ -870,7 +870,7 @@ export default function App() {
       )}
 
       {/* Action bar — pinned. Everything the Qt bottom bar has: Cancel, keep
-          temp, 时间线 Viewer, debug log, the analyzed counter, and Run. */}
+          temp, Timeline Viewer, debug log, the analyzed counter, and Run. */}
       <footer className="shrink-0 border-t bg-card/60 px-5 py-2.5">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3">
           <Button

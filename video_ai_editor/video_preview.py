@@ -158,7 +158,7 @@ class AnalysisOverlayWidget(QWidget):
                     objects.append(obj_name)
         
         if objects:
-            text = "物体： " + ", ".join(objects[:6])
+            text = "Objects: " + ", ".join(objects[:6])
             painter.fillRect(8, h - 38, len(text) * 9 + 16, 30, QColor(0, 0, 0, 150))
             painter.setFont(QFont("Arial", 10, QFont.Bold))
             painter.setPen(QColor(0, 255, 0, 220))
@@ -168,7 +168,7 @@ class AnalysisOverlayWidget(QWidget):
         if not actions and not objects:
             painter.setFont(QFont("Arial", 9))
             painter.setPen(QColor(255, 255, 100, 150))
-            painter.drawText(10, h - 10, f"该时间点没有检测结果：{self.current_time:.1f}s")
+            painter.drawText(10, h - 10, f"No detections at {self.current_time:.1f}s")
         
         # ── Timestamp (top-right) ──
         mins, secs = divmod(int(self.current_time), 60)
@@ -341,14 +341,14 @@ class VideoPreviewWindow(QMainWindow):
         """Load a video file"""
         if os.path.exists(path):
             self.player.setSource(QUrl.fromLocalFile(path))
-            self.status_bar.showMessage(f"已加载：{os.path.basename(path)}", 3000)
+            self.status_bar.showMessage(f"Loaded: {os.path.basename(path)}", 3000)
         else:
-            self.status_bar.showMessage(f"文件不存在：{path}", 5000)
+            self.status_bar.showMessage(f"File not found: {path}", 5000)
 
     def show_frame_analysis_status(self, timestamp: float, contains_target: bool):
         """Show a temporary overlay indicating frame analysis result"""
         # Update status bar
-        status = f"时间点 {int(timestamp)//60}:{int(timestamp)%60:02d} - {'✅ TARGET FOUND' if contains_target else '❌ No target'}"
+        status = f"Frame at {int(timestamp)//60}:{int(timestamp)%60:02d} - {'✅ TARGET FOUND' if contains_target else '❌ No target'}"
         self.status_bar.showMessage(status, 1000)  # Show for 1 second
         
         # Optional: Change border color briefly to indicate analysis

@@ -79,7 +79,7 @@ export function TimeRange({ state, onChange, duration }: Props) {
 
         <p className="text-xs italic text-muted-foreground">
           {duration > 0
-            ? `视频时长：${fmtTime(duration)} (${Math.round(duration)}s)`
+            ? `Video duration: ${fmtTime(duration)} (${Math.round(duration)}s)`
             : "按百分比设置范围 — 添加视频后会自动加载实际时间。"}
         </p>
 
@@ -107,9 +107,9 @@ export function TimeRange({ state, onChange, duration }: Props) {
         <p className="text-xs font-semibold text-[color:var(--success)]">
           {state.enabled
             ? duration > 0
-              ? `已选择：${fmtTime(endS - startS)} (${selPct}%（占视频 )`
-              : `已选择：${selPct}%（占视频 `
-            : "已选择：完整视频"}
+              ? `Selection: ${fmtTime(endS - startS)} (${selPct}% of video)`
+              : `Selection: ${selPct}% of video`
+            : "选择：完整视频"}
         </p>
 
         <div className="flex flex-wrap items-center gap-2">

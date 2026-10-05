@@ -408,7 +408,7 @@ class SimpleStartPage(QWidget):
         gui = self._gui
         self.analyze_btn.setEnabled(gui.run_btn.isEnabled())
         text = gui.run_btn.text()
-        if text == "运行高光提取":
+        if text in {"运行高光分析", "运行高光提取", "Run Highlighter"}:
             self.analyze_btn.setText("开始分析")
         else:
             self.analyze_btn.setText(text)

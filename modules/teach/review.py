@@ -198,7 +198,7 @@ def render_sheet(tiles: Sequence, captions: Sequence[str], columns: int, path: s
     from PIL import Image, ImageDraw
 
     if not tiles:
-        raise ValueError("nothing to draw")
+        raise ValueError("没有可绘制的内容")
     cell_w = max(t.width for t in tiles)
     cell_h = max(t.height for t in tiles) + CAPTION_HEIGHT
     rows = (len(tiles) + columns - 1) // columns
@@ -255,8 +255,9 @@ def next_sheet(project: Project, size: int = DEFAULT_BATCH,
                       "caption": captions[-1]})
     image = os.path.join(review_dir, f"sheet-{number:04d}.jpg")
     columns = 2 if frames_per_tile > 1 else 4
-    header = (f"sheet {number}: {project.name} ({project.task}) - classes: "
-              + ", ".join(project.class_names()))
+    task_name = "动作" if project.task == "actions" else "物体" if project.task == "objects" else project.task
+    header = (f"检查批次 {number}：{project.name}（{task_name}）——类别："
+              + "，".join(project.class_names()))
     renderer(tiles, captions, columns, image, header)
     record = {"sheet": number, "image": image, "created": time.time(),
               "items": items, "applied": False}
@@ -312,10 +313,10 @@ def apply_verdicts(project: Project, number: int, *, accept: str = "",
 
     def mark(n, verdict, label=""):
         if n not in by_n:
-            errors.append(f"sheet {number} has no tile {n}")
+            errors.append(f"检查批次 {number} 中没有编号 {n} 的项目")
             return
         if n in decided:
-            errors.append(f"tile {n} was given two verdicts")
+            errors.append(f"编号 {n} 被重复设置了两个判断结果")
             return
         decided[n] = (verdict, label)
 
@@ -333,7 +334,7 @@ def apply_verdicts(project: Project, number: int, *, accept: str = "",
         left, _, name = str(entry).partition("=")
         name = name.strip()
         if not name:
-            errors.append(f"relabel {entry!r}: say which class, like 8=<class>")
+            errors.append(f"重新标记 {entry!r}：请指定类别，例如 8=<类别>")
             continue
         for n in parse_numbers(left):
             mark(n, ACCEPTED, name)
@@ -353,17 +354,17 @@ def apply_verdicts(project: Project, number: int, *, accept: str = "",
     for n, (verdict, label) in sorted(decided.items()):
         sample = project.get_sample(by_n[n]["sample"])
         if sample is None:
-            errors.append(f"tile {n}: sample {by_n[n]['sample']} is gone")
+            errors.append(f"编号 {n}：样本 {by_n[n]['sample']} 已不存在")
             continue
         label = label or (by_n[n]["proposed"] if verdict == ACCEPTED else "")
         if verdict == ACCEPTED and label not in names:
-            errors.append(f"tile {n} was a guess of {sample.proposed!r}; "
-                          "say which class it is (relabel) instead of accepting")
+            errors.append(f"编号 {n} 原判断为 {sample.proposed!r}；请使用重新标记指定真实类别，"
+                          "不要直接接受")
             continue
         try:
             project.decide(sample, verdict, label, by=f"{by}:{number}")
         except ValueError as exc:
-            errors.append(f"tile {n}: {exc}")
+            errors.append(f"编号 {n}：{exc}")
     if errors:
         return {"applied": 0, "errors": errors}
 

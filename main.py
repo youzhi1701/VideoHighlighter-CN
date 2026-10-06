@@ -5153,7 +5153,7 @@ class VideoHighlighterGUI(QWidget):
                     tagged.append(label)
             for label in sorted(intel_labels):
                 if label.lower() in overlap:
-                    tagged.append(f"{label} [intel]")
+                    tagged.append(f"{label} [Intel]")
                 else:
                     if label.lower() not in custom_set:  # avoid duplicates for non-overlap
                         tagged.append(label)
@@ -5226,19 +5226,19 @@ class VideoHighlighterGUI(QWidget):
 
         if siglip is not None:
             action_labels = sorted(siglip[1])
-            source = f"action head {siglip[0]} ({len(action_labels)} classes)"
+            source = f"动作头 {siglip[0]}（{len(action_labels)} 个类别）"
         elif action_models == "custom_only":
             if os.path.exists(INTEL_CUSTOM_LABELS_FILE):
                 action_labels = self.load_labels_from_json(INTEL_CUSTOM_LABELS_FILE)
-                source = f"Custom fine-tuned ({self._custom_ov_count} classes)"
+                source = f"自定义微调模型（{self._custom_ov_count} 个类别）"
         elif action_models == "intel_only":
             if os.path.exists(KINETICS_400_LABELS_FILE):
                 action_labels = self.load_labels_from_json(KINETICS_400_LABELS_FILE)
-                source = "Intel Kinetics-400 (400 classes)"
+                source = "Intel Kinetics-400（400 个类别）"
         elif action_models == "r3d_custom_only":
             if os.path.exists(R3D_CUSTOM_LABELS_FILE):
                 action_labels = self.load_labels_from_json(R3D_CUSTOM_LABELS_FILE)
-                source = f"R3D fine-tuned ({len(action_labels)} classes)"
+                source = f"R3D 微调模型（{len(action_labels)} 个类别）"
         elif action_models == "mixed":
             custom_labels = []
             intel_labels = []
@@ -5252,14 +5252,14 @@ class VideoHighlighterGUI(QWidget):
             overlap = custom_set & intel_set
             tagged = []
             for label in custom_labels:
-                tagged.append(f"{label} [custom]" if label.lower() in overlap else label)
+                tagged.append(f"{label} [自定义]" if label.lower() in overlap else label)
             for label in intel_labels:
                 if label.lower() in overlap:
-                    tagged.append(f"{label} [intel]")
+                    tagged.append(f"{label} [Intel]")
                 elif label.lower() not in custom_set:
                     tagged.append(label)
             action_labels = sorted(set(tagged))
-            source = f"Mixed ({len(custom_labels)} custom + {len(intel_labels)} Kinetics-400, {len(overlap)} shared, {len(action_labels)} total)"
+            source = f"混合（{len(custom_labels)} 个自定义 + {len(intel_labels)} 个 Kinetics-400，{len(overlap)} 个重叠，共 {len(action_labels)} 个）"
 
         if action_labels:
             completer = MultiCompleter(action_labels, self)

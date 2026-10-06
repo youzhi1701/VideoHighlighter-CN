@@ -205,7 +205,7 @@ def save_state(state: dict) -> None:
         with open(state_path(), "w", encoding="utf-8") as handle:
             json.dump(state, handle, indent=2)
     except OSError as exc:
-        print(f"update_check: could not save state: {exc}")
+        print(f"更新检查：无法保存状态：{exc}")
 
 
 def is_enabled() -> bool:
@@ -364,11 +364,11 @@ def check_for_update(
                 answer = fetch(url)
             except Exception as exc:
                 # Offline is the common case, not an error worth showing anyone.
-                print(f"update_check: no manifest at {url} "
-                      f"({type(exc).__name__}: {exc})")
+                print(f"更新检查：{url} 没有可用的 manifest "
+                      f"（{type(exc).__name__}：{exc}）")
                 continue
             if not isinstance(answer, dict):
-                print(f"update_check: {url} is not a JSON object; ignoring")
+                print(f"更新检查：{url} 返回的不是 JSON 对象，已忽略")
                 continue
             if manifest is None or is_newer(str(answer.get("version", "")),
                                             str(manifest.get("version", ""))):

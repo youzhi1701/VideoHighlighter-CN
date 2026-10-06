@@ -626,15 +626,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
                     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
                     cap.release()
-                    log(f"📊 Trimmed video: {video_duration:.2f}s, FPS: {fps}, frames: {total_frames}")
+                    log(f"📊 裁剪后视频：{video_duration:.2f} 秒，FPS：{fps}，帧数：{total_frames}")
                 except Exception as e2:
                     log(f"❌ 视频裁剪失败：{e2}")
                     return None
             except (FileNotFoundError, OSError) as e:
                 # ffmpeg missing/unresolvable — would otherwise crash the pipeline
                 # thread uncaught (silent failure in the windowed exe -> empty timeline)
-                log(f"❌ ffmpeg not found for trimming ({e}). It comes with the app's "
-                    f"requirements (imageio-ffmpeg) — reinstall them. Cannot process time range.")
+                log(f"❌ 找不到用于裁剪的 ffmpeg（{e}）。它随应用依赖 imageio-ffmpeg 提供，"
+                    f"请重新安装相关依赖；当前无法处理所选时间范围。")
                 return None
             except RuntimeError as e:
                 # A cancel has already said so (check_cancellation); anything
@@ -767,14 +767,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
                             # Mark that we're using cached data
                             using_cache = True
-                            cache_status = "full" if not cache_keyword_filtered else f"keyword-filtered ({len(cache_search_keywords or [])} keywords)"
-                            log(f"✅ Loaded from cache: {len(transcript_segments)} transcript segments ({cache_status}), "
-                                f"{len(object_detections)} object seconds, {len(action_detections)} actions, "
-                                f"{len(scenes)} scenes, {len(motion_events)} motion events, {len(motion_peaks)} motion peaks, "
-                                f"{len(audio_peaks)} audio peaks")
+                            cache_status = "完整" if not cache_keyword_filtered else f"关键词筛选（{len(cache_search_keywords or [])} 个关键词）"
+                            log(f"✅ 已从缓存加载：{len(transcript_segments)} 个转录片段（{cache_status}），"
+                                f"{len(object_detections)} 秒含物体，{len(action_detections)} 个动作，"
+                                f"{len(scenes)} 个场景，{len(motion_events)} 个运动事件，{len(motion_peaks)} 个运动峰值，"
+                                f"{len(audio_peaks)} 个音频峰值")
                         else:
-                            log(f"⚠️ Cache incompatible: cached with {'keyword-filtered' if cache_keyword_filtered else 'full'} transcript, "
-                                f"need {'keyword-filtered' if current_keywords else 'full'} transcript")
+                            log(f"⚠️ 缓存不兼容：缓存转录类型为"
+                                f"{'关键词筛选' if cache_keyword_filtered else '完整'}，"
+                                f"当前需要{'关键词筛选' if current_keywords else '完整'}转录")
                             cached_data = None
                     else:
                         log(f"⚠️ 缓存时长不匹配：{cache_video_duration} 秒 vs {video_duration} 秒")
@@ -848,12 +849,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             start_sec = int(main_seg["start"])
                             end_sec = int(main_seg["end"])
                             text = main_seg.get("text", "")[:50]  # First 50 chars
-                            log(f"   Match {i+1}: '{keyword}' at {start_sec}-{end_sec}s")
-                            log(f"            Text: \"{text}...\"")
+                            log(f"   匹配 {i+1}：“{keyword}”，位于 {start_sec}-{end_sec} 秒")
+                            log(f"            文本：“{text}...”")
                     else:
                         log("⚠️ 未找到关键词匹配！")
                         log(f"   搜索关键词：{SEARCH_KEYWORDS}")
-                        log(f"   In {len(transcript_segments)} transcript segments")
+                        log(f"   共检查 {len(transcript_segments)} 个转录片段")
                 else:
                     keyword_matches = []
 
@@ -865,7 +866,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             if SEARCH_KEYWORDS and transcript_segments:
                 log(f"🔹 正在缓存转录中搜索关键词：{SEARCH_KEYWORDS}")
                 keyword_matches = search_transcript_for_keywords(transcript_segments, SEARCH_KEYWORDS, context_seconds=CLIP_TIME//2)
-                log(f"✅ Found {len(keyword_matches)} keyword matches")
+                log(f"✅ 找到 {len(keyword_matches)} 个关键词匹配")
             else:
                 keyword_matches = []
 
@@ -958,7 +959,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 except Exception as e:
                     log(f"❌ 运动检测失败：{e}")
                     import traceback
-                    log(f"Full error: {traceback.format_exc()}")
+                    log(f"完整错误信息：{traceback.format_exc()}")
 
                 # Add progress update after motion detection
                 progress.update_progress(25, 100, "Pipeline", f"Motion detection complete: {len(scenes)} scenes, {len(motion_events)} events, {len(motion_peaks)} peaks")
@@ -1091,11 +1092,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     loudness_levels = _audio_blob.get("loudness_levels") or []
             if _cached_bursts:
                 loudness_bursts = _cached_bursts
-                log(f"ℹ️ Using cached loudness bursts "
-                    f"({len(loudness_bursts)} event(s))")
+                log(f"ℹ️ 正在使用缓存的响度突增 "
+                    f"（{len(loudness_bursts)} 个事件）")
             else:
-                progress.update_progress(31, 100, "Pipeline",
-                                         "Finding loudness bursts...")
+                progress.update_progress(31, 100, "处理流水线",
+                                         "正在查找响度突增…")
                 log("🔹 步骤 3b：正在查找响度突增…")
                 try:
                     check_cancellation(cancel_flag, log, "loudness burst detection")
@@ -1114,8 +1115,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         cancel=cancel_flag)
                     loudness_bursts = _lb_result["events"]
                     loudness_levels = _lb_result.get("levels") or []
-                    log(f"✅ Loudness bursts: {len(loudness_bursts)} event(s) "
-                        f"({_lb_result['events_per_hour']}/hour)")
+                    log(f"✅ 响度突增：{len(loudness_bursts)} 个事件 "
+                        f"（每小时 {_lb_result['events_per_hour']} 个）")
                 except RuntimeError as e:
                     # No audio track is a fact about the file, not a failure of
                     # the run -- every other signal is still worth having.
@@ -1169,8 +1170,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         custom_model_path = gui_config.get("yolo_custom_model_path") or ""
         object_mode = ("custom" if yolo_type == "custom"
                        else "mixed" if "custom" in yolo_type else "coco")
-        log(f"🎯 Object detector: {object_mode}, size {yolo_model_size}"
-            + (f" (+ {os.path.basename(custom_model_path)})"
+        log(f"🎯 物体检测器：{object_mode}，尺寸 {yolo_model_size}"
+            + (f"（+ {os.path.basename(custom_model_path)}）"
                if custom_model_path and object_mode != "coco" else ""))
 
         # Check OpenVINO devices (best-effort)
@@ -1193,12 +1194,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             from modules.vision.detection_backend import build_object_detector
 
             if "yolo_world" in yolo_type:
-                log("⚠️ Open-vocabulary detection is no longer part of this "
-                    "detector — using the standard one")
+                log("⚠️ 当前检测器已不再包含开放词汇检测，将改用标准检测器")
             if object_mode != "coco" and custom_model_path.lower().endswith(".pt"):
-                log(f"⚠️ {os.path.basename(custom_model_path)} is a .pt model, "
-                    "which this detector cannot load. Export it to ONNX, or "
-                    "train a model of your own in the app.")
+                log(f"⚠️ {os.path.basename(custom_model_path)} 是 .pt 模型，当前检测器无法加载。"
+                    "请导出为 ONNX，或直接在应用中训练自己的模型。")
             prefer = "small" if yolo_model_size in ("n", "nano", "tiny") else "large"
             if object_mode == "coco":
                 # AMD / NVIDIA: OpenVINO would run this on the processor, while
@@ -1217,11 +1216,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     log=log, auto_install=True,
                 )
             if yolo_model is None:
-                log("⚠️ Object detection unavailable — no usable model "
-                    "(run tools/get_yolox_model.py, or import a custom model)")
+                log("⚠️ 物体检测不可用——没有可用模型"
+                    "（可运行 tools/get_yolox_model.py，或导入自定义模型）")
             else:
-                log(f"✅ Object detector: {type(yolo_model).__name__}, "
-                    f"{len(object_class_names)} classes")
+                log(f"✅ 物体检测器：{type(yolo_model).__name__}，"
+                    f"{len(object_class_names)} 个类别")
         except RuntimeError:
             return None
         except Exception as e:
@@ -1245,8 +1244,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             object_bboxes_cache = list(
                 (cached_data or {}).get("object_bboxes") or [])
             if object_bboxes_cache:
-                log(f"ℹ Reusing {len(object_bboxes_cache)} cached detection "
-                    "frame(s) for the report")
+                log(f"ℹ 正在为报告复用 {len(object_bboxes_cache)} 个缓存检测帧")
         if not using_cache:
             if not highlight_objects:
                 log("ℹ 已跳过物体检测（未配置需要关注的物体）")
@@ -1465,8 +1463,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     if draw_action_labels:
                         log("ℹ️ SigLIP2 动作后端目前尚不支持在视频上绘制标签")
                 else:
-                    log("⚠️ Intel / R3D action recognition is deprecated and will be removed; "
-                        "train an action head (SigLIP2) to replace it")
+                    log("⚠️ Intel / R3D 动作识别已弃用并将在后续移除；"
+                        "请训练 SigLIP2 动作头作为替代")
                     _explicit = ACTION_BACKEND_SETTINGS.get(action_backend)
                     if _explicit is not None:
                         (enable_r3d, r3d_half, r3d_device,
@@ -1536,7 +1534,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             r3d_half = False
                             print(f"🎯 Auto backend → no CUDA, using OpenVINO on {_dev.backend_name}")
 
-                    log("🎯 Action recognition: " + action_backend_summary(
+                    log("🎯 动作识别：" + action_backend_summary(
                         enable_r3d, r3d_model, r3d_device, r3d_onnx_dml,
                         openvino_device, auto=_explicit is None))
                     print(f"   action backend setting: {action_backend} | R3D model: {r3d_model} | "
@@ -1574,7 +1572,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     # DEBUG: Print format of returned data
                     if len(all_action_detections) > 0:
                         first_detection = all_action_detections[0]
-                        log(f"DEBUG: Detection format - {len(first_detection)} elements: {first_detection}")
+                        log(f"调试：检测格式 - {len(first_detection)} 个元素：{first_detection}")
                     
                     # NORMALIZE: Ensure all detections are 5-element tuples
                     normalized_detections = []
@@ -1612,7 +1610,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             max_gap=1.3, 
                             jump_threshold=0.01
                         )
-                        log(f"DEBUG: {action_name}: {len(action_list)} detections → {len(grouped_by_action[action_name])} sequences")
+                        log(f"调试：{action_name}：{len(action_list)} 个检测 → {len(grouped_by_action[action_name])} 个序列")
 
                     # 2️⃣ Select best sequences FROM EACH action with per-action quota
                     MAX_ACTION_DURATION = target_duration * 3
@@ -1622,7 +1620,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     num_actions = len(grouped_by_action)
                     quota_per_action = MAX_ACTION_DURATION / num_actions if num_actions > 0 else 0
 
-                    log(f"DEBUG: Allocating {quota_per_action:.1f}s per action type ({num_actions} types)")
+                    log(f"调试：每种动作分配 {quota_per_action:.1f} 秒（共 {num_actions} 种）")
 
                     # Select best sequences from EACH action independently
                     for action_name, action_sequences in grouped_by_action.items():
@@ -1640,10 +1638,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             selected_sequences.append(sequence)
                             action_duration += duration
                             
-                            log(f"DEBUG: Selected {action_name} at {seconds_to_mmss(start_time)}-{seconds_to_mmss(end_time)} "
-                                f"({duration:.1f}s, conf: {confidence:.3f}) - Action total: {action_duration:.1f}s/{quota_per_action:.1f}s")
+                            log(f"调试：已选择 {action_name}，{seconds_to_mmss(start_time)}-{seconds_to_mmss(end_time)} "
+                                f"（{duration:.1f} 秒，置信度：{confidence:.3f}）- 该动作累计：{action_duration:.1f}/{quota_per_action:.1f} 秒")
 
-                    log(f"\nDEBUG: Selected {len(selected_sequences)} sequences from {num_actions} action types")
+                    log(f"\n调试：从 {num_actions} 种动作中选择了 {len(selected_sequences)} 个序列")
 
                     # 3️⃣ Convert back to individual action format for pipeline compatibility
                     action_detections = []
@@ -1724,9 +1722,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 cache.save(processed_video_path, analysis_data, params=analysis_params)
                 
                 if keyword_segments_only:
-                    log(f"✅ Analysis results cached (keyword-filtered: {len(analysis_data['transcript']['segments'])} segments, language: {TRANSCRIPT_SOURCE_LANG})")
+                    log(f"✅ 分析结果已缓存（关键词筛选：{len(analysis_data['transcript']['segments'])} 个片段，语言：{TRANSCRIPT_SOURCE_LANG}）")
                 else:
-                    log(f"✅ Analysis results cached (full transcript: {len(analysis_data['transcript']['segments'])} segments, language: {TRANSCRIPT_SOURCE_LANG})")
+                    log(f"✅ 分析结果已缓存（完整转录：{len(analysis_data['transcript']['segments'])} 个片段，语言：{TRANSCRIPT_SOURCE_LANG}）")
                 
             except Exception as e:
                 log(f"⚠️ 缓存保存失败：{e}")
@@ -1761,12 +1759,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             manual_avoid = []
         if manual_avoid:
             forbidden_ranges = combine(forbidden_ranges, manual_avoid)
-            log(f"🚫 Avoid: +{len(manual_avoid)} manual range(s) → "
-                f"{len(forbidden_ranges)} forbidden range(s) total")
+            log(f"🚫 排除：增加 {len(manual_avoid)} 个手动区间 → "
+                f"总计 {len(forbidden_ranges)} 个禁用区间")
 
         # 6 Compute scores per second
-        progress.update_progress(80, 100, "Pipeline", "Computing scores...")
-        check_cancellation(cancel_flag, log, "score computation")
+        progress.update_progress(80, 100, "处理流水线", "正在计算评分…")
+        check_cancellation(cancel_flag, log, "计算评分")
         
         score = np.zeros(int(video_duration) + 1)
         scene_score = np.zeros_like(score)
@@ -1817,25 +1815,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
         # ── Scoring sanity warnings ──────────────────────────────────────────────────
         if OBJECT_POINTS > 0 and highlight_objects and not object_detections:
-            log("⚠️ WARNING: object_points > 0 and objects were configured, "
-                "but no objects were detected in the video. Object scoring will contribute nothing.")
+            log("⚠️ 警告：object_points > 0 且已配置物体，但视频中未检测到这些物体；物体评分不会产生贡献。")
 
         if ACTION_POINTS > 0 and not interesting_actions:
-            log("⚠️ WARNING: action_points > 0 but no interesting actions are configured. "
-                "Action scoring will contribute nothing — set action_points to 0 or add actions to detect.")
+            log("⚠️ 警告：action_points > 0，但未配置关注动作；动作评分不会产生贡献。请将 action_points 设为 0，或添加需要检测的动作。")
 
         if KEYWORD_POINTS > 0 and not SEARCH_KEYWORDS:
-            log("⚠️ WARNING: keyword_points > 0 but no search keywords are configured. "
-                "Keyword scoring will contribute nothing.")
+            log("⚠️ 警告：keyword_points > 0，但未配置搜索关键词；关键词评分不会产生贡献。")
 
         if KEYWORD_POINTS > 0 and SEARCH_KEYWORDS and not keyword_matches:
-            log("⚠️ WARNING: keyword_points > 0 and keywords were configured, "
-                "but no keyword matches were found in the transcript.")
+            log("⚠️ 警告：keyword_points > 0 且已配置关键词，但转录文本中未找到匹配项。")
 
         if actions_require_objects and not highlight_objects:
-            log("⚠️ WARNING: 'Score actions only if objects detected' is enabled, "
-                "but no objects are configured to detect. Actions will NEVER be scored. "
-                "Either add objects to detect, or uncheck 'Score actions only if objects detected'.")
+            log("⚠️ 警告：已启用“仅在检测到物体时为动作评分”，但未配置要检测的物体。"
+                "动作将无法获得评分；请添加物体类别，或关闭该选项。")
 
         # Check if total possible score is zero (highlight will be empty in MAX mode)
         total_possible = (SCENE_POINTS + MOTION_PEAK_POINTS + MOTION_EVENT_POINTS +
@@ -1843,8 +1836,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         KEYWORD_POINTS + BEGINNING_POINTS +
                         ENDING_POINTS + OBJECT_POINTS + ACTION_POINTS)
         if total_possible == 0:
-            log("⚠️ WARNING: All scoring signals are set to 0. No moments will be scored and "
-                "no highlight will be generated in MAX mode. Enable at least one scoring signal.")
+            log("⚠️ 警告：所有评分信号都设为 0。不会有任何时刻获得评分，MAX 模式下也不会生成高光。"
+                "请至少启用一种评分信号。")
 
         # Fill scores using the detected signals
         for start, end in scenes:
@@ -1909,11 +1902,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     '50th': np.percentile(confidences, 50),
                     '90th': np.percentile(confidences, 90)
                 }
-                log(f"📊 {action_name} confidence stats: 50th={action_type_percentiles[action_name]['50th']:.2f}, 90th={action_type_percentiles[action_name]['90th']:.2f}")
+                log(f"📊 {action_name} 置信度统计：50 分位={action_type_percentiles[action_name]['50th']:.2f}，90 分位={action_type_percentiles[action_name]['90th']:.2f}")
 
         # Now score each second with action-type-specific percentiles
         if actions_require_objects and not highlight_objects:
-            log("⚠️ Skipping action scoring — 'require objects' is ON but no objects configured.")
+            log("⚠️ 已跳过动作评分——已开启“需要物体”，但没有配置物体。")
         else:
             for sec, actions in detections_by_sec.items():
                 if sec < len(action_score):
@@ -2078,8 +2071,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 grouped_by_action[action_name] = group_consecutive_adaptive(
                     action_list, max_gap=1.3, jump_threshold=0.01
                 )
-                log(f"   {action_name}: {len(action_list)} detections → "
-                    f"{len(grouped_by_action[action_name])} sequences")
+                log(f"   {action_name}：{len(action_list)} 个检测 → "
+                    f"{len(grouped_by_action[action_name])} 个序列")
 
             # Select best sequences per action (same quota logic as fresh run)
             num_actions = len(grouped_by_action)
@@ -2097,8 +2090,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     selected_sequences.append(seq)
                     action_duration += duration_seq
 
-            log(f"✅ Rebuilt {len(selected_sequences)} action sequences from "
-                f"{len(action_detections)} cached detections")
+            log(f"✅ 已根据 {len(action_detections)} 个缓存检测结果重建 "
+                f"{len(selected_sequences)} 个动作序列")
 
         if CLIP_TIME == 0:
             # ========== AUTO-SEGMENTATION MODE ==========
@@ -2161,8 +2154,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         hi = min(len(score), int(seg_end))
                         if hi > lo:
                             score[lo:hi] = score[lo:hi] * 0.3
-                log(f"🩹 Quality gate: {penalized} of {len(segments)} clips "
-                    f"penalized as blurry")
+                log(f"🩹 画质门控：{len(segments)} 个片段中有 {penalized} 个因模糊被降权")
             except Exception as e:
                 log(f"⚠️ 已跳过画质门控：{e}")
 
@@ -2170,7 +2162,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         if forbidden_ranges and (manual_avoid or (AVOID_ENABLED and AVOID_METHOD in ("skip", "crop_then_skip"))):
             before_n = len(segments)
             segments = subtract_forbidden(segments, forbidden_ranges)
-            log(f"🚫 Avoid(skip): {before_n} → {len(segments)} segment(s) after removing forbidden ranges")
+            log(f"🚫 排除（跳过）：移除禁用区间后，片段数 {before_n} → {len(segments)}")
 
         print("\n🔍 FINAL HIGHLIGHT BREAKDOWN:")
         print(f"Total segments: {len(segments)}")
@@ -2567,7 +2559,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
         # Log final segments exactly once, even if target not reached
         if not globals()['segments_logged']:
-            log(f"\n🎯 Final segments selected: {len(segments)}, total {total_duration:.1f}s (target {target_duration}s)")
+            log(f"\n🎯 最终选择 {len(segments)} 个片段，总时长 {total_duration:.1f} 秒（目标 {target_duration} 秒）")
             globals()['segments_logged'] = True
 
         print(f"\n=== DETAILED DEBUG FOR TOP MOMENTS ===")

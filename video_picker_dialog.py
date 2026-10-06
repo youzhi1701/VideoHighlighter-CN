@@ -266,7 +266,7 @@ class VideoPickerDialog(QDialog):
 
 def _standalone():
     import argparse
-    ap = argparse.ArgumentParser(description="Preview the video picker dialog")
+    ap = argparse.ArgumentParser(description="预览视频选择器对话框")
     ap.add_argument("--url", required=True)
     ap.add_argument("--pattern", default="/video/")
     ap.add_argument("--browser", default="auto", choices=["auto", "never", "always"])
@@ -276,11 +276,11 @@ def _standalone():
     dlg = VideoPickerDialog(args.url, pattern=args.pattern, use_browser=args.browser)
     if dlg.exec():
         sel = dlg.selected_entries()
-        print(f"\nSelected {len(sel)} video(s):")
+        print(f"\n已选择 {len(sel)} 个视频：")
         for e in sel:
             print(f"  {e['title']}  →  {e['url']}")
     else:
-        print("Cancelled.")
+        print("已取消。")
 
 
 if __name__ == "__main__":

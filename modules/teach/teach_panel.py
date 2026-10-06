@@ -51,7 +51,7 @@ def describe(result: dict) -> str:
             if not c["ok"] and c.get("fix"):
                 line += f"  -> {c['fix']}"
             lines.append(line)
-        lines.append("Ready." if result.get("ready") else "尚未就绪：请先处理缺失项目。")
+        lines.append("就绪。" if result.get("ready") else "尚未就绪：请先处理缺失项目。")
         return "\n".join(lines)
     for step in result.get("ran") or []:
         lines.append("完成：" + " ".join(step.get("args") or []))

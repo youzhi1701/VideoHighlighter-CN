@@ -139,9 +139,8 @@ def apply_rules(object_detections: Optional[Mapping],
     signals = dict(signals or {})
     if engine is None or (not boxes and not signals):
         if previous:
-            log_fn("ℹ️ Composition engine: no rules in force; "
-                   f"{len(previous)} event type(s) from the previous pass "
-                   "removed.")
+            log_fn("ℹ️ 构图引擎：当前没有生效的规则；"
+                   f"已移除上一轮的 {len(previous)} 种事件类型。")
         return detections, boxes, names, 0
 
     # Outlines for the rules that asked (``outline: true``), traced from the
@@ -172,16 +171,15 @@ def apply_rules(object_detections: Optional[Mapping],
         gone = sorted(previous - set(names))
         parts = []
         if added:
-            parts.append(f"added {', '.join(added)}")
+            parts.append(f"新增 {', '.join(added)}")
         if gone:
-            parts.append(f"removed {', '.join(gone)}")
-        note = f" (rules changed since the cached pass: {'; '.join(parts)})"
+            parts.append(f"移除 {', '.join(gone)}")
+        note = f"（规则自缓存轮次后已变化：{'; '.join(parts)}）"
     if hits:
-        log_fn(f"✅ 构图引擎：命中 {hits} 个事件) over "
-               f"{len(composed)} second(s) from {len(names)} rule(s){note}")
+        log_fn(f"✅ 构图引擎：{len(names)} 条规则在 {len(composed)} 秒内命中 "
+               f"{hits} 个事件{note}")
     else:
-        log_fn(f"ℹ️ 构图引擎：{len(names)} rule(s), nothing "
-               f"matched{note}")
+        log_fn(f"ℹ️ 构图引擎：{len(names)} 条规则均未命中{note}")
     return detections, boxes, names, hits
 
 

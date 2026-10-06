@@ -20,6 +20,18 @@ from PySide6.QtWidgets import (
     QPlainTextEdit, QPushButton, QVBoxLayout, QWidget,
 )
 
+# 仅用于界面显示；doctor 返回的 JSON 检查名保持原值，避免破坏 CLI/自动化。
+CHECK_NAMES_ZH = {
+    "opencv": "OpenCV",
+    "ffmpeg": "FFmpeg",
+    "clip": "CLIP",
+    "training device": "训练设备",
+    "object detector": "对象检测器",
+    "pose model": "姿态模型",
+    "review window": "审核窗口",
+    "disk space": "磁盘空间",
+}
+
 
 class _Job(QObject):
     done = Signal(object)
@@ -47,7 +59,8 @@ def describe(result: dict) -> str:
     if "checks" in result:
         for c in result["checks"]:
             mark = "正常 " if c["ok"] else ("缺失 " if c["level"] == "required" else "提示 ")
-            line = f"{mark}{c['name']}: {c['detail']}"
+            display_name = CHECK_NAMES_ZH.get(c["name"], c["name"])
+            line = f"{mark}{display_name}：{c['detail']}"
             if not c["ok"] and c.get("fix"):
                 line += f"  -> {c['fix']}"
             lines.append(line)

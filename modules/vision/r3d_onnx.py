@@ -115,7 +115,7 @@ def ensure_export(torch_model, model_name, num_classes, custom_weights=None,
     try:
         import torch
 
-        log(f"⏳ Exporting {model_name} to ONNX for the GPU (one-off)…")
+        log(f"⏳ 正在将 {model_name} 一次性导出为 GPU 使用的 ONNX…")
         dummy = torch.zeros(1, 3, CLIP_LENGTH, INPUT_SIZE, INPUT_SIZE)
         with torch.no_grad():
             torch.onnx.export(
@@ -128,8 +128,7 @@ def ensure_export(torch_model, model_name, num_classes, custom_weights=None,
                 do_constant_folding=True,
             )
     except Exception as e:  # noqa: BLE001 - a failed export falls back, not crashes
-        log(f"⚠️ R3D ONNX export failed ({type(e).__name__}: {e}) — "
-            f"action recognition stays on the CPU")
+        log(f"⚠️ R3D ONNX 导出失败（{type(e).__name__}：{e}），动作识别将继续使用 CPU")
         # A half-written file would be loaded as valid next time.
         try:
             if os.path.exists(path):
@@ -210,16 +209,14 @@ def load(torch_model, model_name, num_classes, custom_weights=None,
         runner.predict(np.zeros((1, 3, CLIP_LENGTH, INPUT_SIZE, INPUT_SIZE),
                                 dtype=np.float32))
     except Exception as e:  # noqa: BLE001 - an unusable session is a fallback
-        log(f"⚠️ R3D on ONNX Runtime failed to start "
-            f"({type(e).__name__}: {e}) — staying on the CPU")
+        log(f"⚠️ R3D 的 ONNX Runtime 启动失败（{type(e).__name__}：{e}），将继续使用 CPU")
         return None
 
     if not runner.on_gpu:
         # ORT took the session but put it on the CPU provider. That is not an
         # error and not a win either, and the torch model is the better-tested
         # of the two CPU paths.
-        log("ℹ️ R3D: ONNX Runtime fell back to the processor — "
-            "keeping torch")
+        log("ℹ️ R3D：ONNX Runtime 已回退到处理器，继续使用 torch")
         runner.close()
         return None
 

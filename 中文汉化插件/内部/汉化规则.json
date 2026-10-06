@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "71b3c060cf304cdc686075ef968fb7f1ca410081"
+    "head_commit": "10658fafe3f4f4b5b149f8e11db249d1f1d92e90"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -24554,6 +24554,24 @@
       "hunk": "@@ -304,7 +304,7 @@ def _create_window():"
     },
     {
+      "id": "modules/system/debug_console.py#5",
+      "file": "modules/system/debug_console.py",
+      "source": "    win.append_chunk(f\"(full log: {log_file_path()})\\n\"\n                     f\"--- replaying last {len(_backlog)} output chunks ---\\n\")",
+      "target": "    win.append_chunk(f\"（完整日志：{log_file_path()}）\\n\"\n                     f\"--- 正在回放最近 {len(_backlog)} 个输出片段 ---\\n\")",
+      "before": "    win = _LogWindow()",
+      "after": "    with _lock:",
+      "hunk": "@@ -331,15 +331,15 @@ def _create_window():"
+    },
+    {
+      "id": "modules/system/debug_console.py#6",
+      "file": "modules/system/debug_console.py",
+      "source": "    win.append_chunk(\"--- live output from here on ---\\n\")",
+      "target": "    win.append_chunk(\"--- 以下为实时输出 ---\\n\")",
+      "before": "        _gui_sink = bridge.chunk.emit",
+      "after": "    return win",
+      "hunk": "@@ -331,15 +331,15 @@ def _create_window():"
+    },
+    {
       "id": "modules/system/device_utils.py#1",
       "file": "modules/system/device_utils.py",
       "source": "            log_fn(f\"⚠️ Not using the NVIDIA GPU: {reason}\")",
@@ -35870,6 +35888,15 @@
     {
       "id": "signal_timeline_viewer.py#358",
       "file": "signal_timeline_viewer.py",
+      "source": "            last_err = \"Unknown error\"",
+      "target": "            last_err = \"未知错误\"",
+      "before": "",
+      "after": "            for enc, vargs in attempts:",
+      "hunk": "@@ -5046,7 +5053,7 @@ class SignalTimelineWindow(QMainWindow):"
+    },
+    {
+      "id": "signal_timeline_viewer.py#359",
+      "file": "signal_timeline_viewer.py",
       "source": "                            msg = (f\"✅ Highlight video rendered!\\n\\n\"\n                                   f\"File: {os.path.basename(output_path)}\\n\"\n                                   f\"Clips: {len(clips)}\\n\"\n                                   f\"Duration: {total_dur:.1f}s\\n\"\n                                   f\"Size: {size_mb:.1f} MB\\n\"\n                                   f\"Encoder: {enc}\")",
       "target": "                            msg = (f\"✅ 高光视频渲染完成！\\n\\n\"\n                                   f\"文件：{os.path.basename(output_path)}\\n\"\n                                   f\"片段数：{len(clips)}\\n\"\n                                   f\"时长：{total_dur:.1f} 秒\\n\"\n                                   f\"大小：{size_mb:.1f} MB\\n\"\n                                   f\"编码器：{enc}\")",
       "before": "                            size_mb = os.path.getsize(output_path) / (1024 * 1024)",
@@ -35877,7 +35904,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#359",
+      "id": "signal_timeline_viewer.py#360",
       "file": "signal_timeline_viewer.py",
       "source": "                        last_err = (errf.read() or \"\").strip()[-2000:] or \"Unknown error\"\n                        print(f\"⚠️ Render with {enc} failed (rc={proc.returncode}); \"\n                              + (\"falling back to next encoder…\"\n                                 if (enc, vargs) != attempts[-1] else \"no fallback left\"))\n                        print(\"   cmd: \" + \" \".join(str(c) for c in cmd))\n                        print(\"   ffmpeg stderr tail:\\n\" + last_err[-1200:])",
       "target": "                        last_err = (errf.read() or \"\").strip()[-2000:] or \"未知错误\"\n                        print(f\"⚠️ 使用 {enc} 渲染失败（返回码={proc.returncode}）；\" + (\"正在回退到下一个编码器…\" if (enc, vargs) != attempts[-1] else \"没有可用回退方案\"))\n                        print(\"   命令：\" + \" \".join(str(c) for c in cmd))\n                        print(\"   ffmpeg 错误输出末尾：\\n\" + last_err[-1200:])",
@@ -35886,7 +35913,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#360",
+      "id": "signal_timeline_viewer.py#361",
       "file": "signal_timeline_viewer.py",
       "source": "            self.render_finished.emit(False, f\"FFmpeg error:\\n{last_err}\")",
       "target": "            self.render_finished.emit(False, f\"FFmpeg 错误：\\n{last_err}\")",
@@ -35895,7 +35922,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#361",
+      "id": "signal_timeline_viewer.py#362",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ [timeline] could not persist render_mode: {e}\")",
       "target": "            print(f\"⚠️ [时间线] 无法保存 render_mode：{e}\")",
@@ -35904,7 +35931,7 @@
       "hunk": "@@ -5128,7 +5133,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#362",
+      "id": "signal_timeline_viewer.py#363",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(f\"⏳ Rendering… {pct}%\")\n        self.statusBar().showMessage(f\"🎬 Rendering highlight video… {pct}%\")",
       "target": "        self.render_highlight_btn.setText(f\"⏳ 正在渲染… {pct}%\")\n        self.statusBar().showMessage(f\"🎬 正在渲染高光视频… {pct}%\")",
@@ -35913,7 +35940,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#363",
+      "id": "signal_timeline_viewer.py#364",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(\"🎬 Render Highlight Video\")",
       "target": "        self.render_highlight_btn.setText(\"🎬 渲染高光视频\")",
@@ -35922,7 +35949,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#364",
+      "id": "signal_timeline_viewer.py#365",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"✅ Highlight rendered!\", 5000)\n            QMessageBox.information(self, \"Render Complete\", message)",
       "target": "            self.statusBar().showMessage(\"✅ 高光视频渲染完成！\", 5000)\n            QMessageBox.information(self, \"渲染完成\", message)",
@@ -35931,7 +35958,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#365",
+      "id": "signal_timeline_viewer.py#366",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"❌ Render failed\", 5000)\n            QMessageBox.critical(self, \"Render Failed\", message)",
       "target": "            self.statusBar().showMessage(\"❌ 渲染失败\", 5000)\n            QMessageBox.critical(self, \"渲染失败\", message)",
@@ -35940,7 +35967,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#366",
+      "id": "signal_timeline_viewer.py#367",
       "file": "signal_timeline_viewer.py",
       "source": "debug_log(\"🚀 TIMELINE VIEWER STARTING\")",
       "target": "debug_log(\"🚀 时间线查看器正在启动\")",
@@ -35949,7 +35976,7 @@
       "hunk": "@@ -5254,11 +5259,11 @@ original_print = print"
     },
     {
-      "id": "signal_timeline_viewer.py#367",
+      "id": "signal_timeline_viewer.py#368",
       "file": "signal_timeline_viewer.py",
       "source": "debug_log(f\"Python version: {sys.version}\")\ndebug_log(f\"Current working directory: {os.getcwd()}\")\ndebug_log(f\"Script location: {__file__}\")",
       "target": "debug_log(f\"Python 版本：{sys.version}\")\ndebug_log(f\"当前工作目录：{os.getcwd()}\")\ndebug_log(f\"脚本位置：{__file__}\")",
@@ -35958,7 +35985,7 @@
       "hunk": "@@ -5254,11 +5259,11 @@ original_print = print"
     },
     {
-      "id": "signal_timeline_viewer.py#368",
+      "id": "signal_timeline_viewer.py#369",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(f\"🩺 Repaint trace → {_repaint_trace.default_path()}\")",
       "target": "        debug_log(f\"🩺 重绘追踪 → {_repaint_trace.default_path()}\")",
@@ -35967,7 +35994,7 @@
       "hunk": "@@ -5268,9 +5273,9 @@ debug_log(f\"Script location: {__file__}\")"
     },
     {
-      "id": "signal_timeline_viewer.py#369",
+      "id": "signal_timeline_viewer.py#370",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"⚠️ Repaint trace unavailable: {_e}\")",
       "target": "    debug_log(f\"⚠️ 重绘追踪不可用：{_e}\")",
@@ -35976,7 +36003,7 @@
       "hunk": "@@ -5268,9 +5273,9 @@ debug_log(f\"Script location: {__file__}\")"
     },
     {
-      "id": "signal_timeline_viewer.py#370",
+      "id": "signal_timeline_viewer.py#371",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"🎬 show_timeline_viewer called\")",
       "target": "    debug_log(\"🎬 已调用 show_timeline_viewer\")",
@@ -35985,7 +36012,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#371",
+      "id": "signal_timeline_viewer.py#372",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"  - cache_data provided: {cache_data is not None}\")\n    debug_log(f\"  - video_path exists: {os.path.exists(video_path)}\")",
       "target": "    debug_log(f\"  - 是否提供 cache_data：{cache_data is not None}\")\n    debug_log(f\"  - 视频路径是否存在：{os.path.exists(video_path)}\")",
@@ -35994,7 +36021,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#372",
+      "id": "signal_timeline_viewer.py#373",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  - Creating new QApplication\")",
       "target": "        debug_log(\"  - 正在创建新的 QApplication\")",
@@ -36003,7 +36030,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#373",
+      "id": "signal_timeline_viewer.py#374",
       "file": "signal_timeline_viewer.py",
       "source": "            debug_log(f\"  ⚠️ Theme apply failed: {e}\")",
       "target": "            debug_log(f\"  ⚠️ 应用主题失败：{e}\")",
@@ -36012,7 +36039,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#374",
+      "id": "signal_timeline_viewer.py#375",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  - Using existing QApplication\")",
       "target": "        debug_log(\"  - 使用现有 QApplication\")",
@@ -36021,7 +36048,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#375",
+      "id": "signal_timeline_viewer.py#376",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  🔵 ABOUT TO CREATE SignalTimelineWindow...\")",
       "target": "    debug_log(\"  🔵 即将创建 SignalTimelineWindow…\")",
@@ -36030,7 +36057,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#376",
+      "id": "signal_timeline_viewer.py#377",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  🟢 SignalTimelineWindow CREATED successfully\")",
       "target": "        debug_log(\"  🟢 SignalTimelineWindow 创建成功\")",
@@ -36039,7 +36066,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#377",
+      "id": "signal_timeline_viewer.py#378",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(f\"  ❌ ERROR creating SignalTimelineWindow: {e}\")",
       "target": "        debug_log(f\"  ❌ 创建 SignalTimelineWindow 时出错：{e}\")",
@@ -36048,7 +36075,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#378",
+      "id": "signal_timeline_viewer.py#379",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  - Showing window...\")",
       "target": "    debug_log(\"  - 正在显示窗口…\")",
@@ -36057,7 +36084,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#379",
+      "id": "signal_timeline_viewer.py#380",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  - Entering event loop...\")",
       "target": "    debug_log(\"  - 正在进入事件循环…\")",
@@ -36066,7 +36093,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#380",
+      "id": "signal_timeline_viewer.py#381",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"  - Event loop exited with code: {result}\")",
       "target": "    debug_log(f\"  - 事件循环已退出，代码：{result}\")",
@@ -36075,7 +36102,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#381",
+      "id": "signal_timeline_viewer.py#382",
       "file": "signal_timeline_viewer.py",
       "source": "        print(\"Usage: python signal_timeline_viewer.py <video_path>\")",
       "target": "        print(\"用法：python signal_timeline_viewer.py <视频路径>\")",
@@ -39279,7 +39306,7 @@
       "id": "training/export_yolox.py#8",
       "file": "training/export_yolox.py",
       "source": "                        help=\"delete the intermediate ONNX once converted\")",
-      "target": "                        help=\"转换完成后删除中间 ONNX 文件\"",
+      "target": "                        help=\"转换完成后删除中间 ONNX 文件\")",
       "before": "    parser.add_argument(\"--no-onnx\", action=\"store_true\",",
       "after": "    args = parser.parse_args(argv)",
       "hunk": "@@ -241,20 +241,20 @@ def main(argv=None) -> int:"

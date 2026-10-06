@@ -199,6 +199,13 @@
       ]
     },
     {
+      "source": "(full log: {log_file_path()})\\n",
+      "target": "（完整日志：{log_file_path()}）\\n",
+      "files": [
+        "modules/system/debug_console.py"
+      ]
+    },
+    {
       "source": "(GGUF image decoding cannot be interrupted mid-frame)",
       "target": "（GGUF 图像解码无法在单帧处理中途停止）",
       "files": [
@@ -1367,6 +1374,20 @@
       "target": "- 波形已加载：{self.waveform is not None}，长度：{len(self.waveform) if self.waveform else 0}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "--- live output from here on ---\\n",
+      "target": "--- 以下为实时输出 ---\\n",
+      "files": [
+        "modules/system/debug_console.py"
+      ]
+    },
+    {
+      "source": "--- replaying last {len(_backlog)} output chunks ---\\n",
+      "target": "--- 正在回放最近 {len(_backlog)} 个输出片段 ---\\n",
+      "files": [
+        "modules/system/debug_console.py"
       ]
     },
     {
@@ -21267,6 +21288,13 @@
       "files": [
         "modules/media/combine_videos.py",
         "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "Unknown error",
+      "target": "未知错误",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {

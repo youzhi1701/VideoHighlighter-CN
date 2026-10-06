@@ -337,8 +337,8 @@ if __name__ == "__main__":
     def run(name, keep, forb):
         win, status, side = choose_avoid_window(W, H, keep, forb)
         clamped = clamp_out_of_forbidden(win, forb, W) if win else None
-        print(f"{name:28s} -> status={status:10s} side={side} "
-              f"window={win} clamped={clamped}")
+        print(f"{name:28s} → 状态={status:10s} 方向={side} "
+              f"窗口={win} 校正后={clamped}")
 
     # avoided at the left edge: should crop the big right band
     run("avoided-left-edge", keep=[(700, 100, 850, 450)], forb=[(0, 100, 200, 450)])
@@ -352,5 +352,5 @@ if __name__ == "__main__":
     # nobody to avoid: frames the keepers
     run("no-forbidden", keep=[(300, 100, 700, 450)], forb=[])
     # exclusion guarantee: a window overlapping the slab gets clamped back out
-    print("clamp check        ->",
+    print("边界校正检查       →",
           clamp_out_of_forbidden((0, 0, 700, 500), [(450, 0, 600, 500)], W))

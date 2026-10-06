@@ -398,13 +398,15 @@ def next_sheet(project: Project, size: int = 20, *, read_at: Optional[Callable] 
         frame = read_at(box.video, box.time)
         drawn = [_draw(frame, box.box, box.class_name)] if frame is not None else []
         tiles.append(review._tile(drawn, 220))
-        captions.append(f"{box.class_name} ({box.source} {box.confidence:.2f})")
+        source_name = {"hand": "手动", "prompt": "提示匹配", "model": "模型", "seed": "示教"}.get(
+            box.source, box.source)
+        captions.append(f"{box.class_name}（{source_name} {box.confidence:.2f}）")
         items.append({"n": n, "video": box.video, "time": box.time,
                       "class_name": box.class_name, "box": list(box.box),
                       "caption": captions[-1]})
     image = os.path.join(review_dir, f"{BOX_REVIEW_PREFIX}-{number:04d}.jpg")
     renderer(tiles, captions, 4, image,
-             f"boxes {number}: is the yellow box around the named thing, and tight?")
+             f"检测框批次 {number}：黄色框是否准确且紧密地包围了目标？")
     record = {"sheet": number, "image": image, "created": time.time(), "items": items}
     with open(os.path.join(review_dir, f"{BOX_REVIEW_PREFIX}-{number:04d}.json"), "w",
               encoding="utf-8") as handle:

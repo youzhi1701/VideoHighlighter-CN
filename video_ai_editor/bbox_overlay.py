@@ -269,25 +269,25 @@ class AnnotatedVideoManager(QObject):
     def _on_combo_changed(self, text: str):
         if not text or text == self._current_source:
             return
-        print(f"🔀 Dropdown changed to: {text}")
+        print(f"🔀 下拉选项已切换为：{text}")
         self._switch_to(text)
 
     def _switch_to(self, label: str):
         if label not in self._sources:
-            print(f"⚠️ Unknown source: {label}")
+            print(f"⚠️ 未知来源：{label}")
             return
 
         path = self._sources[label]
         if not os.path.isfile(path):
-            print(f"⚠️ File missing: {path}")
+            print(f"⚠️ 文件不存在：{path}")
             return
 
         if not self._player:
-            print("⚠️ No player bound!")
+            print("⚠️ 尚未绑定播放器！")
             return
 
-        print(f"🔀 Switching to: {label}")
-        print(f"   File: {os.path.basename(path)} ({os.path.getsize(path) / 1024 / 1024:.1f} MB)")
+        print(f"🔀 正在切换到：{label}")
+        print(f"   文件：{os.path.basename(path)}（{os.path.getsize(path) / 1024 / 1024:.1f} MB）")
 
         # Capture current state
         pos_ms = self._player.position()
@@ -298,14 +298,14 @@ class AnnotatedVideoManager(QObject):
         except Exception:
             pass
 
-        print(f"   Position: {pos_ms}ms, was_playing: {was_playing}")
+        print(f"   位置：{pos_ms}ms，切换前是否播放：{was_playing}")
 
         # CRITICAL: Stop first, then clear source, then set new source
         self._player.stop()
         self._player.setSource(QUrl())  # Clear source first
 
         new_url = QUrl.fromLocalFile(path)
-        print(f"   Setting source: {new_url.toLocalFile()}")
+        print(f"   正在设置来源：{new_url.toLocalFile()}")
 
         # Use a short delay after clearing to let Qt release the old source
         def _set_new_source():
@@ -320,10 +320,10 @@ class AnnotatedVideoManager(QObject):
                     duration = self._player.duration()
                     if duration > 0 and pos_ms < duration:
                         self._player.setPosition(pos_ms)
-                        print(f"   ✅ Position restored to {pos_ms}ms")
+                        print(f"   ✅ 已恢复到 {pos_ms}ms")
                     if was_playing:
                         self._player.play()
-                    print(f"   ✅ Source swap complete: {label}")
+                    print(f"   ✅ 来源切换完成：{label}")
 
             QTimer.singleShot(500, _restore_position)
 
@@ -335,9 +335,9 @@ class AnnotatedVideoManager(QObject):
         if self._generating_actions:
             return
 
-        print("🎬 Generate Actions button clicked")
+        print("🎬 已点击“生成动作标注”")
         self.set_generating(True, "actions")
-        self._set_status("🎬 Running action detection with bounding boxes…")
+        self._set_status("🎬 正在运行带边界框的动作检测…")
 
         def _run():
             try:
@@ -349,9 +349,9 @@ class AnnotatedVideoManager(QObject):
                 # Pull interesting_actions from cache if available
                 actions_list = self.cache_data.get('interesting_actions', None)
 
-                print(f"🎬 Starting action detection → {os.path.basename(output)}")
+                print(f"🎬 开始动作检测 → {os.path.basename(output)}")
                 if actions_list:
-                    print(f"   Tracking actions: {actions_list}")
+                    print(f"   跟踪动作：{actions_list}")
 
                 all_actions, action_bboxes = run_action_detection(
                     video_path=self.video_path,
@@ -375,9 +375,9 @@ class AnnotatedVideoManager(QObject):
                 if action_bboxes:
                     self.cache_data['action_bboxes'] = action_bboxes
                     self._save_cache_to_disk()
-                    print(f"💾 Saved {len(action_bboxes)} action bboxes to cache")
+                    print(f"💾 已将 {len(action_bboxes)} 个动作边界框保存到缓存")
 
-                print(f"✅ Action bbox video saved: {output}")
+                print(f"✅ 动作边界框视频已保存：{output}")
                 QTimer.singleShot(0, lambda: self._on_generate_done(True, output, "actions"))
 
             except Exception as e:
@@ -395,9 +395,9 @@ class AnnotatedVideoManager(QObject):
         if self._generating_objects:
             return
 
-        print("📦 Generate Objects button clicked")
+        print("📦 已点击“生成物体标注”")
         self.set_generating(True, "objects")
-        self._set_status("📦 Running object detection with bounding boxes…")
+        self._set_status("📦 正在运行带边界框的物体检测…")
 
         def _run():
             try:
@@ -420,8 +420,8 @@ class AnnotatedVideoManager(QObject):
                         "skateboard", "surfboard", "frisbee",
                     ]
 
-                print(f"📦 Starting object detection → {os.path.basename(output)}")
-                print(f"   Looking for: {highlight_objects[:5]}...")
+                print(f"📦 开始物体检测 → {os.path.basename(output)}")
+                print(f"   正在查找：{highlight_objects[:5]}…")
 
                 final_objects, object_bboxes = run_object_detection(
                     video_path=self.video_path,
@@ -437,9 +437,9 @@ class AnnotatedVideoManager(QObject):
                 if object_bboxes:
                     self.cache_data['object_bboxes'] = object_bboxes
                     self._save_cache_to_disk()
-                    print(f"💾 Saved {len(object_bboxes)} object bbox entries to cache")
+                    print(f"💾 已将 {len(object_bboxes)} 条物体边界框记录保存到缓存")
 
-                print(f"✅ Object bbox video saved: {output}")
+                print(f"✅ 物体边界框视频已保存：{output}")
                 QTimer.singleShot(0, lambda: self._on_generate_done(True, output, "objects"))
 
             except Exception as e:
@@ -463,7 +463,7 @@ class AnnotatedVideoManager(QObject):
             size_mb = os.path.getsize(result) / (1024 * 1024) if os.path.isfile(result) else 0
             which_zh = {"actions": "动作", "objects": "物体"}.get(which, which)
             self._set_status(f"✅ {which_zh}标注视频已生成（{size_mb:.1f} MB）")
-            print(f"✅ {which.title()} bbox video ready: {result}")
+            print(f"✅ {which_zh}边界框视频已就绪：{result}")
 
             # Show a message box
             if self._widget:
@@ -476,7 +476,7 @@ class AnnotatedVideoManager(QObject):
         else:
             which_zh = {"actions": "动作", "objects": "物体"}.get(which, which)
             self._set_status(f"❌ {which_zh}标注生成失败：{result[:60]}")
-            print(f"❌ {which.title()} generation failed: {result}")
+            print(f"❌ {which_zh}标注生成失败：{result}")
 
     # ---- helpers ----------------------------------------------------------
 
@@ -523,7 +523,7 @@ class AnnotatedVideoManager(QObject):
             matching_files = list(cache_dir.glob(f"{video_hash}*.cache.json"))
             
             if not matching_files:
-                print(f"⚠️ No cache file found for {video_hash} — creating new one")
+                print(f"⚠️ 未找到 {video_hash} 的缓存文件，将新建一个")
                 cache_path = cache_dir / f"{video_hash}_bbox.cache.json"
             else:
                 # Use the most recent one
@@ -544,15 +544,15 @@ class AnnotatedVideoManager(QObject):
             with open(cache_path, 'w', encoding='utf-8') as f:
                 json.dump(self.cache_data, f, indent=2, ensure_ascii=False)
             
-            print(f"💾 Cache written to: {cache_path.name}")
+            print(f"💾 缓存已写入：{cache_path.name}")
             
         except ImportError:
-            print("⚠️ VideoAnalysisCache not available — saving to fallback path")
+            print("⚠️ VideoAnalysisCache 不可用，将保存到备用路径")
             cache_path = Path(self.video_path).with_suffix('.bbox_cache.json')
             with open(cache_path, 'w', encoding='utf-8') as f:
                 json.dump(self.cache_data, f, indent=2, ensure_ascii=False)
-            print(f"💾 Cache written to: {cache_path.name}")
+            print(f"💾 缓存已写入：{cache_path.name}")
         except Exception as e:
-            print(f"⚠️ Failed to write cache: {e}")
+            print(f"⚠️ 写入缓存失败：{e}")
             import traceback; traceback.print_exc()
 

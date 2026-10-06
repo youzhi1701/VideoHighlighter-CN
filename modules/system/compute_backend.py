@@ -46,12 +46,12 @@ CPU = "cpu"
 # own machine — "OpenVINO" is an implementation detail of the Intel path, and
 # which of the two Intel paths answers depends on how torch was built.
 CHOICES = (
-    (AUTO, "Automatic — the fastest backend this machine has"),
-    (CUDA, "NVIDIA (CUDA)"),
-    (INTEL, "Intel (OpenVINO)"),
-    (DIRECTML, "AMD / any DX12 card (DirectML)"),
-    (APPLE, "Apple GPU (Core ML)"),
-    (CPU, "Processor only"),
+    (AUTO, "自动——使用此电脑可用的最快后端"),
+    (CUDA, "NVIDIA（CUDA）"),
+    (INTEL, "Intel（OpenVINO）"),
+    (DIRECTML, "AMD / 任意 DX12 显卡（DirectML）"),
+    (APPLE, "Apple GPU（Core ML）"),
+    (CPU, "仅处理器"),
 )
 
 # What people write when they mean one of these. Vendor names included: the

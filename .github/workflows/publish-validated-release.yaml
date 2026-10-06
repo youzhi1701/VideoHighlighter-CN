@@ -1,0 +1,78 @@
+name: Publish validated release
+
+on:
+  push:
+    paths:
+      - ".github/publish-validated-release.trigger"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download validated artifacts
+        uses: actions/download-artifact@v4
+        with:
+          repository: ${{ github.repository }}
+          run-id: 37486848427
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write release notes
+        env:
+          SLUG: 0.13.1-cn.1
+          REPO: ${{ github.repository }}
+        run: |
+          python3 tools/release_notes.py --out release-notes.md
+          dl="https://github.com/$REPO/releases/download/$SLUG"
+          setup="00-VideoHighlighter-CN-v$SLUG-Windows-Setup.exe"
+          portable=""
+          for f in windows-build/*.7z.*; do
+            n=$(basename "$f")
+            portable="$portable [.7z.${n##*.7z.}]($dl/$n)"
+          done
+          {
+            echo ""
+            echo "## 下载"
+            echo ""
+            echo "### [Windows 正式安装版 EXE]($dl/$setup)"
+            echo ""
+            echo "| 平台 | 正式安装版 | 便携版 |"
+            echo "|---|---|---|"
+            echo "| Windows 中文版 | [安装包 .exe]($dl/$setup) |$portable |"
+            echo "| macOS 中文版 | — | [.dmg]($dl/VideoHighlighter-CN-v$SLUG-macOS.dmg) |"
+            echo ""
+            echo "Windows 正式版请直接运行 EXE 安装包；CMD/BAT/脚本安装包不作为本次公开发行入口。"
+            echo ""
+            echo "Windows 安装包已通过 CPU/NVIDIA PyTorch 双资源包烟雾测试，并完成安装后启动验证。"
+            echo ""
+            echo "当前 Windows 安装包尚未做商业代码签名，首次运行可能触发 SmartScreen 提示。"
+          } >> release-notes.md
+          cat release-notes.md
+
+      - name: Publish GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: 0.13.1-cn.1
+          name: VideoHighlighter-CN 中文版 v0.13.1-cn.1
+          draft: false
+          prerelease: false
+          allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: true
+          bodyFile: release-notes.md
+          artifacts: "windows-installer/*,windows-build/*,mac-build/*"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify release is public
+        run: |
+          test "$(gh api repos/${{ github.repository }}/releases/tags/0.13.1-cn.1 --jq .draft)" = "false"
+          gh api repos/${{ github.repository }}/releases/tags/0.13.1-cn.1 --jq '.assets[].name'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

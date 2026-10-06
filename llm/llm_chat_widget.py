@@ -1255,7 +1255,7 @@ class LLMChatWidget(QWidget):
                 except (RuntimeError, TypeError):
                     pass
             self._append_system(
-                "⏹ Cancelling previous search (will finish current frame in background)..."
+                "⏹ 正在取消上一次搜索（当前帧会在后台处理完成）…"
             )
 
         interval = self.search_interval.value()
@@ -1264,7 +1264,7 @@ class LLMChatWidget(QWidget):
         max_seeks = int(remaining / interval) + 1
         stop_on_match = self.stop_on_match_cb.isChecked()
         
-        mode_str = "stop on first match" if stop_on_match else "scan entire video"
+        mode_str = "找到第一个匹配后停止" if stop_on_match else "扫描完整视频"
         start_str = f"{int(start_from)//60}:{int(start_from)%60:02d}"
 
         # Reset match navigation for this fresh search.
@@ -1325,8 +1325,8 @@ class LLMChatWidget(QWidget):
         if self._search_thread_running():
             self._search_worker.cancel()
             self._append_system(
-                "⏹ Stop requested — will stop after current frame finishes.\n"
-                "   (GGUF image decoding cannot be interrupted mid-frame)"
+                "⏹ 已请求停止，将在当前帧处理完成后结束。\n"
+                "   （GGUF 图像解码无法在单帧处理中途停止）"
             )
             self.search_progress.setText("当前帧结束后停止…")
             self.search_btn.setEnabled(True)
@@ -1574,7 +1574,7 @@ class LLMChatWidget(QWidget):
         if not cache_dir.exists():
             self._append_system(
                 f"缓存目录不存在：‘{self._cache_dir}’。"
-                "Run pipeline first or use 'Load Cache'."
+                "请先运行处理流水线，或使用“加载缓存”。"
             )
             return
 

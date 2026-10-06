@@ -464,7 +464,7 @@ def run_job(conn, job: dict, cancel_evt, pause_evt, preview_flag) -> None:
 
             spec = job["edl"]
             cut_list = Edl(
-                title=spec.get("title", "Untitled"),
+                title=spec.get("title", "未命名"),
                 music=spec.get("music", ""),
                 music_mode=spec.get("music_mode", "replace"),
                 music_volume=float(spec.get("music_volume", 0.8)),

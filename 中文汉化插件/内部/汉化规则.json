@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "9a27ae0142a1a4234fa309d15c64f78cdd8893a6"
+    "head_commit": "581ae315648d5d6dc880ac0125583d118d8a07b8"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -20124,8 +20124,8 @@
       "file": "modules/crop/zones.py",
       "source": "",
       "target": "# 仅用于日志显示；内部区域键始终保持 left/center/right。\nZONE_NAMES_ZH = {\"left\": \"左侧\", \"center\": \"中间\", \"right\": \"右侧\"}\n",
-      "before": "",
-      "after": "",
+      "before": ")\n",
+      "after": "\ndef analyze_region_activity(video_path, yolo_model, pose_model, sample_frames=20):",
       "hunk": "@@ -26,6 +26,9 @@ from modules.crop.config import ("
     },
     {
@@ -24061,8 +24061,8 @@
       "file": "modules/system/smoke_test.py",
       "source": "",
       "target": "# 仅用于控制台显示；JSON 报告中的检查键保持英文原值，兼容 CI/自动化。\nSMOKE_CHECK_NAMES_ZH = {\n    \"pipeline imports\": \"pipeline 导入\",\n    \"spawned child does not load the app\": \"派生子进程不会加载完整应用\",\n    \"object detection ran its workers\": \"对象检测工作进程正常运行\",\n    \"GPU detector answers\": \"GPU 检测器能够返回结果\",\n    \"thumbnail decoder answers\": \"缩略图解码器能够返回结果\",\n    \"memory stayed under the ceiling\": \"内存保持在上限以内\",\n    \"debug.log survived the children\": \"debug.log 未被子进程破坏\",\n}\n",
-      "before": "",
-      "after": "",
+      "before": "DEFAULT_TIMEOUT_S = 900\n",
+      "after": "\ndef _probe_child() -> list:",
       "hunk": "@@ -45,6 +45,17 @@ DEFAULT_MAX_TREE_MB = 5000       # macos-latest runners have 7 GB"
     },
     {
@@ -25779,8 +25779,8 @@
       "file": "modules/teach/teach_panel.py",
       "source": "",
       "target": "# 仅用于界面显示；doctor 返回的 JSON 检查名保持原值，避免破坏 CLI/自动化。\nCHECK_NAMES_ZH = {\n    \"opencv\": \"OpenCV\",\n    \"ffmpeg\": \"FFmpeg\",\n    \"clip\": \"CLIP\",\n    \"training device\": \"训练设备\",\n    \"object detector\": \"对象检测器\",\n    \"pose model\": \"姿态模型\",\n    \"review window\": \"审核窗口\",\n    \"disk space\": \"磁盘空间\",\n}\n",
-      "before": "",
-      "after": "",
+      "before": ")\n",
+      "after": "\nclass _Job(QObject):",
       "hunk": "@@ -20,6 +20,18 @@ from PySide6.QtWidgets import ("
     },
     {

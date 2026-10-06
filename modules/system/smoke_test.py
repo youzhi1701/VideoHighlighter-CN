@@ -45,6 +45,17 @@ DEFAULT_MAX_TREE_MB = 5000       # macos-latest runners have 7 GB
 DEFAULT_MAX_CHILDREN = 12        # 4 workers + Manager + resource tracker ≈ 6
 DEFAULT_TIMEOUT_S = 900
 
+# 仅用于控制台显示；JSON 报告中的检查键保持英文原值，兼容 CI/自动化。
+SMOKE_CHECK_NAMES_ZH = {
+    "pipeline imports": "pipeline 导入",
+    "spawned child does not load the app": "派生子进程不会加载完整应用",
+    "object detection ran its workers": "对象检测工作进程正常运行",
+    "GPU detector answers": "GPU 检测器能够返回结果",
+    "thumbnail decoder answers": "缩略图解码器能够返回结果",
+    "memory stayed under the ceiling": "内存保持在上限以内",
+    "debug.log survived the children": "debug.log 未被子进程破坏",
+}
+
 
 def _probe_child() -> list:
     """Runs in a spawned child: which app-only modules got loaded here."""
@@ -138,7 +149,8 @@ def main(argv) -> int:
 
     def check(name, ok, detail=""):
         checks[name] = {"ok": bool(ok), "detail": detail}
-        print(f"{'✅' if ok else '❌'} 冒烟测试：{name}" + (f"——{detail}" if detail else ""))
+        display_name = SMOKE_CHECK_NAMES_ZH.get(name, name)
+        print(f"{'✅' if ok else '❌'} 冒烟测试：{display_name}" + (f"——{detail}" if detail else ""))
 
     def finish() -> int:
         report["ok"] = bool(checks) and all(c["ok"] for c in checks.values())

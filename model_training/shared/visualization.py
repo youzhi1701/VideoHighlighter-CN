@@ -35,15 +35,15 @@ def visualize_training_sample(video_path, label, pose_extractor,
                                adaptive_detector, output_path="training_sample.mp4",
                                sample_rate=5, debug=False, visualize_skeletons=False):
     """Create annotated video showing detection pipeline for a training sample."""
-    print(f"\n🎬 Visualization: {video_path}")
-    print(f"   Label: {label} | sample_rate: {sample_rate}")
+    print(f"\n🎬 可视化：{video_path}")
+    print(f"   标签：{label} | 采样率：{sample_rate}")
 
     adaptive_detector.debug = debug
     yolox_people = get_yolox_people_model()
 
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        print(f"❌ Could not open: {video_path}")
+        print(f"❌ 无法打开：{video_path}")
         return False
 
     fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30
@@ -67,7 +67,7 @@ def visualize_training_sample(video_path, label, pose_extractor,
             continue
 
     if video_writer is None:
-        print("❌ Could not init video writer")
+        print("❌ 无法初始化视频写入器")
         cap.release()
         return False
 
@@ -85,7 +85,7 @@ def visualize_training_sample(video_path, label, pose_extractor,
     frame_count = 0
     ok_frames = 0
 
-    pbar = tqdm(total=total_frames, desc="Visualizing")
+    pbar = tqdm(total=total_frames, desc="正在生成可视化")
 
     while True:
         ret, frame = cap.read()
@@ -171,7 +171,7 @@ def visualize_training_sample(video_path, label, pose_extractor,
             ok_frames += 1
 
         except Exception as e:
-            print(f"⚠️  Frame {frame_count}: {e}")
+            print(f"⚠️ 第 {frame_count} 帧：{e}")
 
         frame_count += 1
         pbar.update(1)
@@ -181,7 +181,7 @@ def visualize_training_sample(video_path, label, pose_extractor,
     pbar.close()
 
     pct = (ok_frames / frame_count * 100) if frame_count else 0
-    print(f"✅ {ok_frames}/{frame_count} frames ({pct:.1f}%) → {output_path}")
+    print(f"✅ {ok_frames}/{frame_count} 帧（{pct:.1f}%）→ {output_path}")
     return ok_frames > 0
 
 
@@ -189,7 +189,7 @@ def create_sample_visualizations(dataset, pose_extractor, num_samples=2,
                                   sample_rate=5, visualize_skeletons=False):
     """Create visualisation videos for random training samples."""
     if not dataset.samples:
-        print("❌ No samples")
+        print("❌ 没有可用样本")
         return
 
     indices = random.sample(

@@ -357,7 +357,7 @@ class SignalTimelineScene(QGraphicsScene):
             return [
                 {
                     'timestamp': b.get('timestamp', 0),
-                    'action_name': b.get('action_name') or b.get('action') or 'action',
+                    'action_name': b.get('action_name') or b.get('action') or '动作',
                     'confidence': b.get('confidence', 0.5),
                 }
                 for b in bboxes
@@ -381,10 +381,10 @@ class SignalTimelineScene(QGraphicsScene):
         """Extract unique action names from cache data"""
         actions = set()
         for item in self._actions_list():
-            name = item.get('action_name') or item.get('action') or item.get('class') or 'unknown'
+            name = item.get('action_name') or item.get('action') or item.get('class') or '未知'
             if isinstance(name, str):
                 actions.add(name.strip().title())
-        return sorted(list(actions)) if actions else ['Unknown']
+        return sorted(list(actions)) if actions else ['未知']
     
     def _composed_names_normalised(self) -> set:
         """Composition-rule event names from the cache, normalised the same way
@@ -409,7 +409,7 @@ class SignalTimelineScene(QGraphicsScene):
                     name = obj.strip().title()
                     if name not in composed:
                         objs.add(name)
-        return sorted(list(objs)) if objs else ['Unknown']
+        return sorted(list(objs)) if objs else ['未知']
 
     def _extract_event_types(self):
         """Composed event names that actually occur in the cache.
@@ -1261,7 +1261,7 @@ class SignalTimelineScene(QGraphicsScene):
             if not self.should_show_action(action):
                 continue
                 
-            action_name = action.get('action_name') or action.get('action') or 'Unknown'
+            action_name = action.get('action_name') or action.get('action') or '未知'
             action_name = action_name.strip().title()
             if action_name in self.visible_actions and self.visible_actions[action_name]:
                 action_groups[action_name].append(action)
@@ -2194,7 +2194,7 @@ class SignalTimelineScene(QGraphicsScene):
             print(f"⚠️ Could not load timeline filters: {e}")
     
     def should_show_action(self, action_data):
-        action_name = action_data.get('action_name') or action_data.get('action') or 'Unknown'
+        action_name = action_data.get('action_name') or action_data.get('action') or '未知'
         action_name = action_name.strip().title()
         if not self.visible_actions.get(action_name, True):
             return False

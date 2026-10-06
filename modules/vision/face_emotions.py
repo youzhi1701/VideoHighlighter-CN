@@ -162,9 +162,8 @@ class EmotionClassifier:
         if self._compiled is not None:
             return True
         if not self.available():
-            print(f"ℹ Expression classifier not installed ({self.model_path}); "
-                  "built-in expression classes are unavailable. Taught face "
-                  "categories are unaffected.")
+            print(f"ℹ 未安装表情分类器（{self.model_path}）；"
+                  "内置表情类别暂不可用。已示教的人脸类别不受影响。")
             return False
         try:
             from openvino import Core, PartialShape
@@ -182,18 +181,18 @@ class EmotionClassifier:
                 self._batch = 1
             self._compiled = core.compile_model(model, self.device)
             self._output = self._compiled.output(0)
-            print(f"✅ Expression classifier loaded ({self.device}"
-                  f"{', batch of 1' if self._batch == 1 else ''})")
+            print(f"✅ 表情分类器已加载（{self.device}"
+                  f"{'，批大小为 1' if self._batch == 1 else ''}）")
             return True
         except Exception as exc:
-            print(f"⚠️ Expression classifier failed to load: {exc}")
+            print(f"⚠️ 表情分类器加载失败：{exc}")
             self._compiled = None
             return False
 
     def infer(self, batch: np.ndarray) -> np.ndarray:
         """Raw network call on an ``(n, 3, 64, 64)`` batch."""
         if self._compiled is None:
-            raise RuntimeError("call load() before infer()")
+            raise RuntimeError("调用 infer() 前请先执行 load()")
         return self._compiled(batch)[self._output]
 
     def classify(self, crops: Sequence[np.ndarray]) -> np.ndarray:

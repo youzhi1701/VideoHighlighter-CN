@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "10bf3bfc2aafa2990a513c10c8bb5fddf8ade582"
+    "head_commit": "77fdc94c2b3e2e5e5bd8aeece19a4a992189f50e"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -16685,7 +16685,8 @@
       "target": "    print(f\"\\n🏗️  正在构建解码器：'{decoder_type}' | 特征维度={feature_dim}\")",
       "before": "    decoder_type = CONFIG.get(\"decoder_type\", \"mlp\")",
       "after": "",
-      "hunk": "@@ -237,7 +237,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -237,7 +237,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#4",
@@ -16694,7 +16695,8 @@
       "target": "    print(f\"{'🔄 继续训练' if is_resuming else '🆕 全新训练'} 学习率：{lr}\")",
       "before": "    lr = CONFIG[\"finetune_learning_rate\"] if is_resuming else CONFIG[\"base_learning_rate\"]",
       "after": "",
-      "hunk": "@@ -259,7 +259,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -259,7 +259,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#5",
@@ -16703,7 +16705,8 @@
       "target": "            print(\"✅ 已应用 IPEX 优化（bfloat16）\")",
       "before": "            use_amp = True",
       "after": "        except Exception as e:",
-      "hunk": "@@ -269,9 +269,9 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -269,9 +269,9 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#6",
@@ -16712,7 +16715,8 @@
       "target": "            print(f\"⚠️  IPEX 优化失败：{e}\")",
       "before": "        except Exception as e:",
       "after": "",
-      "hunk": "@@ -269,9 +269,9 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -269,9 +269,9 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#7",
@@ -16730,7 +16734,8 @@
       "target": "        print(f\"\\n  训练损失：{t_loss:.4f} | 准确率：{t_acc:.4f} | 学习率：{optimizer.param_groups[0]['lr']:.6f}\")",
       "before": "        t_acc = correct / total if total else 0",
       "after": "",
-      "hunk": "@@ -329,14 +329,14 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -329,14 +329,14 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#9",
@@ -16739,7 +16744,8 @@
       "target": "            print(f\"  验证损失：{v_loss:.4f} | 准确率：{v_acc:.4f}\")",
       "before": "            )",
       "after": "            for li in sorted(pc_acc):",
-      "hunk": "@@ -329,14 +329,14 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -329,14 +329,14 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#10",
@@ -16748,7 +16754,8 @@
       "target": "                print(\"   ⭐ 指标已提升！\")",
       "before": "                patience_ctr = 0",
       "after": "            else:",
-      "hunk": "@@ -344,12 +344,12 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -344,12 +344,12 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#11",
@@ -16757,7 +16764,8 @@
       "target": "                print(f\"   暂无提升（{patience_ctr}/{CONFIG['early_stopping_patience']}）\")",
       "before": "                patience_ctr += 1",
       "after": "                if patience_ctr >= CONFIG[\"early_stopping_patience\"]:",
-      "hunk": "@@ -344,12 +344,12 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -344,12 +344,12 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#12",
@@ -16766,7 +16774,8 @@
       "target": "                    print(\"\\n🛑 已提前停止训练\")",
       "before": "                if patience_ctr >= CONFIG[\"early_stopping_patience\"]:",
       "after": "                    break",
-      "hunk": "@@ -344,12 +344,12 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -344,12 +344,12 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "model_training/intel/train.py#13",
@@ -16775,7 +16784,8 @@
       "target": "        print(f\"\\n✅ 已加载最佳模型（损失={best_loss:.4f}，准确率={best_acc:.4f}）\")",
       "before": "        model.load_state_dict(best_state)",
       "after": "",
-      "hunk": "@@ -369,7 +369,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,"
+      "hunk": "@@ -369,7 +369,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,",
+      "safe_duplicate": true
     },
     {
       "id": "modules/audio/music_analysis.py#1",
@@ -34498,6 +34508,510 @@
       "before": "        self.download_btn.setEnabled(n > 0)",
       "after": "",
       "hunk": "@@ -236,7 +236,7 @@ class VideoPickerDialog(QDialog):"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        raise RuntimeError(\"no object detector installed\")",
+      "target": "        raise RuntimeError(\"未安装物体检测器\")",
+      "before": "    if detector is None:",
+      "after": "    return detector",
+      "hunk": "@@ -37,7 +37,7 @@ def make_detector():",
+      "id": "modules/teach/cli.py#1"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        print(f\"teach: round {found['round']} detector unusable: {exc}\", file=sys.stderr)",
+      "target": "        print(f\"训练：第 {found['round']} 轮检测器不可用：{exc}\", file=sys.stderr)",
+      "before": "    except Exception as exc:        # fall back to the stock detector alone",
+      "after": "        return None",
+      "hunk": "@@ -52,7 +52,7 @@ def round_detector(project):",
+      "id": "modules/teach/cli.py#2"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "            raise KeyError(f\"no sample {sid}\")",
+      "target": "            raise KeyError(f\"找不到样本 {sid}\")",
+      "before": "        if sample is None:",
+      "after": "        samples.append(sample)",
+      "hunk": "@@ -118,12 +118,12 @@ def _vectors_for(project, embedder, clips=(), sample_ids=(), class_name=\"\"):",
+      "id": "modules/teach/cli.py#3"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "            raise KeyError(f\"no class {class_name!r}\")",
+      "target": "            raise KeyError(f\"找不到类别 {class_name!r}\")",
+      "before": "        if spec is None:",
+      "after": "        ids = list(dict.fromkeys(spec.examples + [s.id for s in project.accepted(class_name)]))",
+      "hunk": "@@ -118,12 +118,12 @@ def _vectors_for(project, embedder, clips=(), sample_ids=(), class_name=\"\"):",
+      "id": "modules/teach/cli.py#4"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        raise ValueError(\"give example clips (--clip), samples (--sample) or a class \"\n                         \"with accepted samples (--class)\")",
+      "target": "        raise ValueError(\"请提供示例片段（--clip）、样本（--sample），或包含已接受样本的类别（--class）\")",
+      "before": "    if not vectors:",
+      "after": "    labels = naming.load_vocabulary(project.task)",
+      "hunk": "@@ -144,16 +144,14 @@ def cmd_suggest_names(args, project):",
+      "id": "modules/teach/cli.py#5"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        \"A 'good' fit can be reused as the name. Otherwise name it yourself, in the \"\n        \"style of the stock labels, and add a description. A low consistency or a \"\n        \"split means the examples may be two different things.\")",
+      "target": "        \"如果匹配结果为“good”，可直接复用该名称；否则请参考内置标签风格自行命名并补充描述。\"\n        \"一致性较低或结果出现分裂，通常表示这些示例可能属于不同内容。\")",
+      "before": "    result[\"advice\"] = (",
+      "after": "    return result",
+      "hunk": "@@ -144,16 +144,14 @@ def cmd_suggest_names(args, project):",
+      "id": "modules/teach/cli.py#6"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                raise RuntimeError(f\"could not download {item}\")",
+      "target": "                raise RuntimeError(f\"无法下载 {item}\")",
+      "before": "            if not ok or not path:",
+      "after": "            source = project.add_source(path, url=item)",
+      "hunk": "@@ -165,7 +163,7 @@ def cmd_add_video(args, project):",
+      "id": "modules/teach/cli.py#7"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        raise KeyError(f\"no class {args.cls!r}\")",
+      "target": "        raise KeyError(f\"找不到类别 {args.cls!r}\")",
+      "before": "    if spec is None:",
+      "after": "    ids = []",
+      "hunk": "@@ -189,12 +187,12 @@ def cmd_add_example(args, project):",
+      "id": "modules/teach/cli.py#8"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                               progress=lambda i, n: print(f\"embedded {i}/{n}\",",
+      "target": "                               progress=lambda i, n: print(f\"已生成嵌入 {i}/{n}\",",
+      "before": "    result = sort.sort_project(project, make_embedder(), model_classifier=classifier,",
+      "after": "                                                           file=sys.stderr)",
+      "hunk": "@@ -239,7 +237,7 @@ def cmd_sort(args, project):",
+      "id": "modules/teach/cli.py#9"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        return {\"sheet\": None, \"message\": \"nothing waiting for review\"}\n    record[\"how\"] = (f\"Look at {record['image']}. Then: verdict --sheet {record['sheet']} \"\n                     \"--accept 1-5,7 --reject 6 --negative 9 --relabel 8=<class>, \"\n                     \"or --accept-rest to take every unmentioned guess as right.\")",
+      "target": "        return {\"sheet\": None, \"message\": \"没有等待审核的内容\"}\n    record[\"how\"] = (f\"请查看 {record['image']}。然后运行：verdict --sheet {record['sheet']} \"\n                     \"--accept 1-5,7 --reject 6 --negative 9 --relabel 8=<类别>；\"\n                     \"也可以使用 --accept-rest，将未特别标记的其余结果全部视为正确。\")",
+      "before": "    if not record:",
+      "after": "    return record",
+      "hunk": "@@ -262,10 +260,10 @@ def cmd_review(args, project):",
+      "id": "modules/teach/cli.py#10"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "            record[\"how\"] = (f\"Look at {record['image']}. Then: boxes verdict --sheet \"\n                             f\"{record['sheet']} --accept 1-4 --reject 5, or --accept-rest.\")\n        return record or {\"sheet\": None, \"message\": \"no boxes waiting\"}",
+      "target": "            record[\"how\"] = (f\"请查看 {record['image']}。然后运行：boxes verdict --sheet \"\n                             f\"{record['sheet']} --accept 1-4 --reject 5；也可以使用 --accept-rest。\")\n        return record or {\"sheet\": None, \"message\": \"没有等待审核的检测框\"}",
+      "before": "        if record:",
+      "after": "    if args.action == \"verdict\":",
+      "hunk": "@@ -290,17 +288,17 @@ def cmd_boxes(args, project):",
+      "id": "modules/teach/cli.py#11"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                \"how\": \"Open each path in `python tools/labeler.py`, mark the thing, \"\n                       \"export, then: boxes import <export.json> ...\"}",
+      "target": "                \"how\": \"依次用 `python tools/labeler.py` 打开每个路径，标注目标并导出，\"\n                       \"然后运行：boxes import <导出文件.json> ...\"}",
+      "before": "        return {\"to_label\": items,",
+      "after": "    if args.action == \"import\":",
+      "hunk": "@@ -290,17 +288,17 @@ def cmd_boxes(args, project):",
+      "id": "modules/teach/cli.py#12"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                    \"message\": \"Ready to train. Run `train`, or `auto --train` to \"\n                               \"include it (GPU minutes to hours).\"}",
+      "target": "                    \"message\": \"已准备好训练。可运行 `train`，或使用 `auto --train` 将训练包含在自动流程中（GPU 训练可能需要几分钟到数小时）。\"}",
+      "before": "            return {\"ran\": done, \"stopped_at\": step,",
+      "after": "        if done and done[-1][\"args\"] == args:",
+      "hunk": "@@ -334,12 +332,11 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:",
+      "id": "modules/teach/cli.py#13"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        print(f\"auto: {' '.join(args)}\", file=sys.stderr)",
+      "target": "        print(f\"自动流程：{' '.join(args)}\", file=sys.stderr)",
+      "before": "                    \"error\": f\"`{' '.join(args)}` ran but is still the next step\"}",
+      "after": "        code, result = run([\"--project\", root, *args])",
+      "hunk": "@@ -334,12 +332,11 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:",
+      "id": "modules/teach/cli.py#14"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "            \"message\": f\"stopped after {max_steps} steps\"}",
+      "target": "            \"message\": f\"已在执行 {max_steps} 个步骤后停止\"",
+      "before": "    return {\"ran\": done, \"stopped_at\": next_step(Project.load(root)),",
+      "after": "",
+      "hunk": "@@ -350,7 +347,7 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:",
+      "id": "modules/teach/cli.py#15"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "            raise ValueError(\"a new project needs --task actions or --task objects\")",
+      "target": "            raise ValueError(\"新项目必须指定 --task actions 或 --task objects\")",
+      "before": "        if not args.task:",
+      "after": "        project = Project.create(root, args.task)",
+      "hunk": "@@ -378,7 +375,7 @@ def cmd_quick(args, root):",
+      "id": "modules/teach/cli.py#16"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        raise ValueError(\"rename these example folders: \" + \" | \".join(problems))",
+      "target": "        raise ValueError(\"请重命名以下示例文件夹：\" + \" | \".join(problems))",
+      "before": "    if problems:",
+      "after": "    if not project.classes:",
+      "hunk": "@@ -401,9 +398,9 @@ def cmd_quick(args, root):",
+      "id": "modules/teach/cli.py#17"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        raise ValueError(\"no classes: give --examples <folder with one subfolder per class>\")",
+      "target": "        raise ValueError(\"没有类别：请使用 --examples <每个类别一个子文件夹的目录>\")",
+      "before": "    if not project.classes:",
+      "after": "    project.save()",
+      "hunk": "@@ -401,9 +398,9 @@ def cmd_quick(args, root):",
+      "id": "modules/teach/cli.py#18"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "            \"how\": \"Training -> From videos -> Share... opens the publish wizard with \"",
+      "target": "            \"how\": \"在“训练 → 从视频学习 → 分享…”中可打开发布向导，并自动带入 \"",
+      "before": "    return {\"model\": onnx, \"draft\": asdict(draft),",
+      "after": "                   \"this filled in; name, description, category and the checklist \"",
+      "hunk": "@@ -429,7 +426,7 @@ def cmd_share(args, project):",
+      "id": "modules/teach/cli.py#19"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        raise ValueError(\"a dataset of clips teaches actions; use an actions project\")",
+      "target": "        raise ValueError(\"片段数据集用于训练动作识别，请使用 actions 项目\")",
+      "before": "    if project.task != project_mod.ACTIONS:",
+      "after": "    if args.prototypes:",
+      "hunk": "@@ -509,7 +506,7 @@ def say(message):",
+      "id": "modules/teach/cli.py#20"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "            raise KeyError(f\"no setting {key!r}; settings: {sorted(known)}\")",
+      "target": "            raise KeyError(f\"不存在设置项 {key!r}；可用设置：{sorted(known)}\")",
+      "before": "        if key not in known:",
+      "after": "        current = getattr(settings, key)",
+      "hunk": "@@ -570,7 +567,7 @@ def parse_settings(pairs, settings=None) -> dict:",
+      "id": "modules/teach/cli.py#21"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"project folder, or a name under the app's user data\")",
+      "target": "                   help=\"项目文件夹，或应用用户数据目录下的项目名称\")",
+      "before": "    p.add_argument(\"--project\", required=True,",
+      "after": "    sub = p.add_subparsers(dest=\"command\", required=True)",
+      "hunk": "@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#22"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"init\", help=\"start a project\")",
+      "target": "    s = sub.add_parser(\"init\", help=\"创建项目\")",
+      "before": "",
+      "after": "    s.add_argument(\"--task\", required=True, choices=project_mod.TASKS)",
+      "hunk": "@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#23"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"actions: crop samples to the people in them (modules/crop)\")",
+      "target": "                   help=\"动作项目：按样本中的人物裁剪（modules/crop）\")",
+      "before": "    s.add_argument(\"--focus\", action=\"store_true\",",
+      "after": "",
+      "hunk": "@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#24"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"seed\", help=\"objects: start from one box drawn around the thing\")",
+      "target": "    s = sub.add_parser(\"seed\", help=\"物体项目：从手动画出的一个目标框开始\")",
+      "before": "",
+      "after": "    s.add_argument(\"--video\", required=True)",
+      "hunk": "@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#25"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s.add_argument(\"--time\", type=float, required=True, help=\"seconds into the video\")\n    s.add_argument(\"--box\", required=True, help=\"x,y,w,h as fractions of the frame\")",
+      "target": "    s.add_argument(\"--time\", type=float, required=True, help=\"视频中的时间点（秒）\")\n    s.add_argument(\"--box\", required=True, help=\"检测框 x,y,w,h，占画面尺寸的比例\")",
+      "before": "    s.add_argument(\"--video\", required=True)",
+      "after": "    s.add_argument(\"--class\", dest=\"cls\", required=True)",
+      "hunk": "@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#26"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    sub.add_parser(\"find\", help=\"objects: look for seeded things in every sample\")",
+      "target": "    sub.add_parser(\"find\", help=\"物体项目：在所有样本中查找已播种的目标\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#27"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"add-class\", help=\"something to find\")",
+      "target": "    s = sub.add_parser(\"add-class\", help=\"添加需要识别的类别\")",
+      "before": "",
+      "after": "    s.add_argument(\"name\")",
+      "hunk": "@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#28"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"check-name\", help=\"is this a good class name?\")",
+      "target": "    s = sub.add_parser(\"check-name\", help=\"检查类别名称是否合适\")",
+      "before": "",
+      "after": "    s.add_argument(\"name\")",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#29"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"suggest-names\", help=\"stock labels that describe some examples\")",
+      "target": "    s = sub.add_parser(\"suggest-names\", help=\"根据示例推荐内置标签名称\")",
+      "before": "",
+      "after": "    s.add_argument(\"--clip\", action=\"append\")",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#30"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"add-video\", help=\"footage: files, folders or URLs\")",
+      "target": "    s = sub.add_parser(\"add-video\", help=\"添加素材：文件、文件夹或网址\")",
+      "before": "",
+      "after": "    s.add_argument(\"items\", nargs=\"+\")",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#31"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"add-example\", help=\"clips or samples that show a class\")",
+      "target": "    s = sub.add_parser(\"add-example\", help=\"添加能体现某类别的片段或样本\")",
+      "before": "",
+      "after": "    s.add_argument(\"--class\", dest=\"cls\", required=True)",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#32"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    sub.add_parser(\"cut\", help=\"cut footage into samples\")\n    sub.add_parser(\"focus\", help=\"actions: person-focused crops of each sample\")",
+      "target": "    sub.add_parser(\"cut\", help=\"将素材切分为样本\")\n    sub.add_parser(\"focus\", help=\"动作项目：为每个样本生成以人物为中心的裁剪\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#33"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"sort\", help=\"score and propose a class for every sample\")\n    s.add_argument(\"--folders\", action=\"store_true\", help=\"also lay out sorted/ folders\")",
+      "target": "    s = sub.add_parser(\"sort\", help=\"为每个样本评分并建议类别\")\n    s.add_argument(\"--folders\", action=\"store_true\", help=\"同时生成 sorted/ 分类文件夹\")",
+      "before": "",
+      "after": "    s.add_argument(\"--model-xml\", dest=\"model_xml\",",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#34"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"an Intel-encoder decoder IR for sorter.py to propose with\")",
+      "target": "                   help=\"供 sorter.py 使用的 Intel 编码器解码 IR 模型\")",
+      "before": "    s.add_argument(\"--model-xml\", dest=\"model_xml\",",
+      "after": "    s.add_argument(\"--model-mapping\", dest=\"model_mapping\")",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#35"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"do not use the project's trained model as a second opinion\")",
+      "target": "                   help=\"不使用项目已训练模型作为第二判断来源\")",
+      "before": "    s.add_argument(\"--no-model\", action=\"store_true\", dest=\"no_model\",",
+      "after": "",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#36"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"folders\", help=\"lay out sorted/ folders, or --read them back\")",
+      "target": "    s = sub.add_parser(\"folders\", help=\"生成 sorted/ 文件夹，或使用 --read 重新读取\")",
+      "before": "",
+      "after": "    s.add_argument(\"--read\", action=\"store_true\")",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#37"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"class folders whose unmoved files are confirmed; 'all' for every one\")",
+      "target": "                   help=\"确认未移动文件所属的类别文件夹；使用 all 表示全部类别\")",
+      "before": "    s.add_argument(\"--confirm\", action=\"append\",",
+      "after": "",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#38"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"review\", help=\"draw the next contact sheet\")",
+      "target": "    s = sub.add_parser(\"review\", help=\"生成下一张审核联系表\")",
+      "before": "",
+      "after": "    s.add_argument(\"--size\", type=int, default=24)",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#39"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"review by clicking, in a window, instead of a sheet image\")",
+      "target": "                   help=\"在窗口中点击审核，而不是生成联系表图片\")",
+      "before": "    s.add_argument(\"--window\", action=\"store_true\",",
+      "after": "    s.add_argument(\"--class\", dest=\"cls\")",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#40"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"verdict\", help=\"record what a contact sheet shows\")",
+      "target": "    s = sub.add_parser(\"verdict\", help=\"记录联系表审核结果\")",
+      "before": "",
+      "after": "    s.add_argument(\"--sheet\", type=int, required=True)",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#41"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s.add_argument(\"--relabel\", action=\"append\", help=\"N=<class>, repeatable\")",
+      "target": "    s.add_argument(\"--relabel\", action=\"append\", help=\"格式 N=<类别>，可重复指定\")",
+      "before": "    s.add_argument(\"--negative\")",
+      "after": "    s.add_argument(\"--accept-rest\", action=\"store_true\", dest=\"accept_rest\")",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#42"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"boxes\", help=\"object projects: boxes on accepted samples\")",
+      "target": "    s = sub.add_parser(\"boxes\", help=\"物体项目：审核已接受样本上的检测框\")",
+      "before": "",
+      "after": "    s.add_argument(\"action\", choices=[\"propose\", \"review\", \"verdict\", \"worklist\", \"import\"])",
+      "hunk": "@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#43"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"import: the labeller's points are already checked\")",
+      "target": "                   help=\"导入时：标注器中的点位已人工确认\")",
+      "before": "    s.add_argument(\"--accept-all\", action=\"store_true\", dest=\"accept_all\",",
+      "after": "    s.add_argument(\"--window\", action=\"store_true\",",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#44"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"review: by clicking, in a window, instead of a sheet image\")",
+      "target": "                   help=\"审核时：在窗口中点击，而不是生成联系表图片\")",
+      "before": "    s.add_argument(\"--window\", action=\"store_true\",",
+      "after": "",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#45"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    sub.add_parser(\"build\", help=\"write the dataset\")",
+      "target": "    sub.add_parser(\"build\", help=\"生成训练数据集\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#46"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"train\", help=\"train a round\")",
+      "target": "    s = sub.add_parser(\"train\", help=\"训练一轮模型\")",
+      "before": "",
+      "after": "    s.add_argument(\"--epochs\", type=int)",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#47"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    sub.add_parser(\"status\", help=\"where it stands, and the next command\")",
+      "target": "    sub.add_parser(\"status\", help=\"查看当前进度和下一步命令\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#48"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"auto\", help=\"run every unattended step until one needs a look\")\n    s.add_argument(\"--train\", action=\"store_true\", help=\"include training\")",
+      "target": "    s = sub.add_parser(\"auto\", help=\"自动执行所有无需人工参与的步骤，直到需要审核\")\n    s.add_argument(\"--train\", action=\"store_true\", help=\"自动流程中包含训练\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#49"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"quick\", help=\"examples folder + videos -> as far as it can go alone\")",
+      "target": "    s = sub.add_parser(\"quick\", help=\"从示例文件夹和视频开始，自动执行到需要人工介入为止\")",
+      "before": "",
+      "after": "    s.add_argument(\"--task\", choices=project_mod.TASKS,",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#50"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"needed when the project does not exist yet\")\n    s.add_argument(\"--examples\", help=\"folder with one subfolder of clips per class\")\n    s.add_argument(\"--videos\", nargs=\"+\", default=[], help=\"files, folders or URLs\")",
+      "target": "                   help=\"项目尚不存在时必须指定\")\n    s.add_argument(\"--examples\", help=\"每个类别一个片段子文件夹的目录\")\n    s.add_argument(\"--videos\", nargs=\"+\", default=[], help=\"文件、文件夹或网址\")",
+      "before": "    s.add_argument(\"--task\", choices=project_mod.TASKS,",
+      "after": "    s.add_argument(\"--focus\", action=\"store_true\")",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#51"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "                   help=\"do not run `doctor` first\")",
+      "target": "                   help=\"启动前不运行 `doctor` 环境检查\")",
+      "before": "    s.add_argument(\"--skip-checks\", action=\"store_true\", dest=\"skip_checks\",",
+      "after": "",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#52"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    sub.add_parser(\"doctor\", help=\"is this machine ready? (seconds; nothing is loaded)\")\n    sub.add_parser(\"share\", help=\"the installed detector, drafted for the model hub\")",
+      "target": "    sub.add_parser(\"doctor\", help=\"检查当前电脑是否满足训练要求（数秒完成，不加载模型）\")\n    sub.add_parser(\"share\", help=\"将已安装检测器整理为可发布到模型中心的草稿\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#53"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s.add_argument(\"--videos\", nargs=\"+\", default=[], help=\"files, folders or URLs\")",
+      "target": "    s.add_argument(\"--videos\", nargs=\"+\", default=[], help=\"文件、文件夹或网址\")",
+      "before": "    s.add_argument(\"dataset\", help=\"folder holding train/ (and val/)\")",
+      "after": "    s.add_argument(\"--aliases\", help=\"JSON {name: name or \\\"\\\"} to rename or leave out\")",
+      "hunk": "@@ -748,7 +745,7 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#54"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "    s = sub.add_parser(\"set\", help=\"change settings: key=value ...\")",
+      "target": "    s = sub.add_parser(\"set\", help=\"修改设置：key=value ...\")",
+      "before": "",
+      "after": "    s.add_argument(\"pairs\", nargs=\"+\")",
+      "hunk": "@@ -768,13 +765,13 @@ def parser() -> argparse.ArgumentParser:",
+      "id": "modules/teach/cli.py#55"
+    },
+    {
+      "file": "modules/teach/cli.py",
+      "source": "        f\"cut {s}: {i}/{n}\", file=sys.stderr) if i == n or i % 20 == 0 else None)",
+      "target": "        f\"切分 {s}：{i}/{n}\", file=sys.stderr) if i == n or i % 20 == 0 else None)",
+      "before": "    return cut_project(project, progress=lambda s, i, n: print(",
+      "after": "",
+      "hunk": "@@ -217,7 +217,7 @@ def cmd_add_example(args, project):",
+      "id": "modules/teach/cli.py#56"
     }
   ]
 }

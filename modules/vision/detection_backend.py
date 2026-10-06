@@ -387,29 +387,29 @@ def build_object_detector(mode: str = "coco", custom_model_xml: str = "",
             if not getattr(sys, "frozen", False):
                 try:
                     from modules.vision import yolox_models
-                    log("⬇️ First run: fetching the YOLOX object detector (Apache-2.0)…")
+                    log("⬇️ 首次运行：正在获取 YOLOX 对象检测器（Apache-2.0）…")
                     yolox_models.install(log=log)
                     xml = find_default_yolox_ir(prefer=default_prefer)
                 except Exception as e:
-                    log(f"⚠️ Could not fetch the YOLOX detector: {e}")
+                    log(f"⚠️ 无法获取 YOLOX 检测器：{e}")
         if not xml:
-            log("⚠️ No default YOLOX IR under models/yolox/ (run tools/get_yolox_model.py)")
+            log("⚠️ models/yolox/ 下没有默认 YOLOX IR（请运行 tools/get_yolox_model.py）")
             return None, []
         names = load_class_names(coco_labels_file)
         if not names:
-            log(f"⚠️ COCO labels not found: {coco_labels_file}")
+            log(f"⚠️ 未找到 COCO 标签：{coco_labels_file}")
             return None, []
         return create_detector(xml, names, device=device,
                                score_thr=score_thr, nms_thr=nms_thr), names
 
     def _custom():
         if not custom_model_xml or not os.path.exists(custom_model_xml):
-            log(f"⚠️ Custom object model not found: {custom_model_xml or '(none)'}")
+            log(f"⚠️ 未找到自定义对象模型：{custom_model_xml or '（未设置）'}")
             return None, []
         names = names_from_model(custom_model_xml) or load_class_names(
             os.path.join(os.path.dirname(custom_model_xml), "labels.json"))
         if not names:
-            log(f"⚠️ No class names for custom model: {custom_model_xml}")
+            log(f"⚠️ 自定义模型缺少类别名称：{custom_model_xml}")
             return None, []
         return create_detector(custom_model_xml, names, device=device,
                                score_thr=score_thr, nms_thr=nms_thr), names
@@ -417,7 +417,7 @@ def build_object_detector(mode: str = "coco", custom_model_xml: str = "",
     if mode == "custom":
         det, names = _custom()
         if det is None:
-            log("↩️ Falling back to COCO object detector")
+            log("↩️ 正在回退到 COCO 对象检测器")
             return _coco()
         return det, names
 

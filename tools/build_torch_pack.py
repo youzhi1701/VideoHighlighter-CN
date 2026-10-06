@@ -81,14 +81,14 @@ def build(variant: str, out: str) -> dict:
     }
     with open(os.path.join(out, "pack.json"), "w", encoding="utf-8") as fh:
         json.dump(info, fh, indent=2)
-    print(f"pack {info['name']}: pip {raw / 2**30:.2f} GB -> "
-          f"kept {info['bytes_installed'] / 2**30:.2f} GB")
+    print(f"资源包 {info['name']}：pip 原始大小 {raw / 2**30:.2f} GB → "
+          f"保留 {info['bytes_installed'] / 2**30:.2f} GB")
     return info
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--variant", required=True, help="cu128, cpu, ...")
+    ap.add_argument("--variant", required=True, help="变体名称，例如 cu128、cpu 等")
     ap.add_argument("--out", required=True)
     args = ap.parse_args(argv)
     build(args.variant, args.out)

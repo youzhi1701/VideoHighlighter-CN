@@ -217,7 +217,7 @@ def cmd_add_example(args, project):
 def cmd_cut(args, project):
     from modules.teach.cut import cut_project
     return cut_project(project, progress=lambda s, i, n: print(
-        f"cut {s}: {i}/{n}", file=sys.stderr) if i == n or i % 20 == 0 else None)
+        f"切分 {s}：{i}/{n}", file=sys.stderr) if i == n or i % 20 == 0 else None)
 
 
 def cmd_focus(args, project):

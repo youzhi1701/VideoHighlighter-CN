@@ -474,7 +474,7 @@ def tell(report: Mapping,
     previous = None
     for position, entry in enumerate(segments, start=1):
         if cancel_fn is not None and cancel_fn():
-            log_fn(f"⏹️ 已停止：完成 {position - 1}/{len(segments)} clips.")
+            log_fn(f"⏹️ 已停止：完成 {position - 1}/{len(segments)} 个片段。")
             break
         log_fn(f"🖼️ 正在读取片段 {position}/{len(segments)}"
                f" ({entry.get('range', '')})…")

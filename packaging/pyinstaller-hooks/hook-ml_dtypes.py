@@ -56,6 +56,6 @@ _wanted = {n for n in _available if os.path.dirname(_available[n]).endswith("num
 _wanted |= _vendored_imports(os.path.join(_site_packages, "ml_dtypes"))
 
 for _name in sorted(_wanted - _available.keys()):
-    print(f"hook-ml_dtypes: {_name} is imported by ml_dtypes but no *.libs has it")
+    print(f"hook-ml_dtypes：ml_dtypes 导入了 {_name}，但 *.libs 中未找到该文件")
 
 binaries = [(_available[n], "numpy.libs") for n in sorted(_wanted & _available.keys())]

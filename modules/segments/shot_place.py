@@ -294,12 +294,12 @@ def read_track(path: str, *, log_fn=print) -> Track:
         points.sort(key=lambda p: p[0])
         track.points = points
         if points:
-            log_fn(f"🗺️ Track: {len(points)} points, "
+            log_fn(f"🗺️ 轨迹：{len(points)} points, "
                    f"{points[0][0]:%H:%M} to {points[-1][0]:%H:%M} UTC")
         else:
             log_fn(f"⚠️ {os.path.basename(path)} has no timed track points")
     except Exception as exc:
-        log_fn(f"⚠️ Could not read the GPS track ({exc}); "
+        log_fn(f"⚠️ 无法读取 GPS 轨迹（{exc}); "
                f"clips will be placed by what they carry themselves")
     return track
 
@@ -411,13 +411,13 @@ def locate(paths, *, track: Track = None, log_fn=print) -> dict:
                 place.source = "track"
                 filled += 1
         if filled:
-            log_fn(f"🗺️ Placed {filled} clip(s) on the track that carried no "
+            log_fn(f"🗺️ 已定位 {filled} 个片段) on the track that carried no "
                    f"GPS of their own")
 
     located = sum(1 for p in places.values() if p.located)
     timed = sum(1 for p in places.values() if p.when is not None)
     if places:
-        log_fn(f"📍 {located} of {len(places)} clip(s) have a position, "
+        log_fn(f"📍 已定位 {located}/{len(places)} clip(s) have a position, "
                f"{timed} have a time")
     return places
 

@@ -117,7 +117,7 @@ def existing_rules(rules_path: Optional[str]) -> list:
         with open(rules_path, encoding="utf-8") as fh:
             loaded = yaml.safe_load(fh) or {}
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Could not read composition rules: {exc}")
+        print(f"⚠️ 无法读取组合规则：{exc}")
         return []
     return list(loaded.get("events") or [])
 
@@ -168,21 +168,21 @@ def parse(reply: str,
     """
     raw = _json_object(reply)
     if raw is None:
-        print("⚠️ Rule proposal: no JSON object in the reply")
+        print("⚠️ 规则建议：回复中没有 JSON 对象")
         return None
     if not raw.get("name"):
         # The model's own refusal. Passed back as a reason rather than an error:
         # "this cannot be expressed with these classes" is the correct answer to
         # many claims, and hiding it would send the user looking for a bug.
-        print(f"ℹ️ Rule proposal declined: {raw.get('why') or 'no reason given'}")
+        print(f"ℹ️ 规则建议未采用：{raw.get('why') or '未提供原因'}")
         return None
 
     name = str(raw.get("name") or "").strip().lower()
     if not NAME_RE.match(name):
-        print(f"⚠️ Rule proposal: '{name}' is not a usable rule name")
+        print(f"⚠️ 规则建议：'{name}' 不是可用的规则名称")
         return None
     if name in {str(e.get("name") or "").lower() for e in (existing or [])}:
-        print(f"⚠️ Rule proposal: '{name}' already exists")
+        print(f"⚠️ 规则建议：'{name}' 已存在")
         return None
 
     known = {str(c) for c in classes}
@@ -193,22 +193,22 @@ def parse(reply: str,
         # The check this module exists for. A rule naming a class the detector
         # never emitted parses, loads, and fires on nothing.
         if source not in known or region not in known:
-            print(f"⚠️ Rule proposal names a class this video has no "
-                  f"detections for: {source!r}/{region!r}")
+            print(f"⚠️ 规则建议引用了当前视频中未检测到的类别："
+                  f"{source!r}/{region!r}")
             return None
         try:
             low = max(1, int(rule.get("min_count", 1)))
             high = int(rule.get("max_count", UNBOUNDED))
         except (TypeError, ValueError):
-            print("⚠️ Rule proposal: counts are not whole numbers")
+            print("⚠️ 规则建议：计数必须为整数")
             return None
         if high < low:
-            print("⚠️ Rule proposal: max_count below min_count")
+            print("⚠️ 规则建议：max_count 小于 min_count")
             return None
         conditions.append({"source": source, "region": region,
                            "min_count": low, "max_count": high})
     if not conditions:
-        print("⚠️ Rule proposal: no conditions")
+        print("⚠️ 规则建议：没有设置条件")
         return None
 
     return Proposal(name=name,
@@ -266,7 +266,7 @@ def propose(claim: str,
     try:
         reply = _generate(llm, prompt, PROPOSAL_SYSTEM_PROMPT, max_tokens, 0.2)
     except Exception as exc:
-        print(f"⚠️ Rule proposal failed: {exc}")
+        print(f"⚠️ 规则建议生成失败：{exc}")
         return None
     proposal = parse(reply, classes, existing)
     if proposal is not None:

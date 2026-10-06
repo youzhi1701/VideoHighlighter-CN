@@ -3602,13 +3602,13 @@ class SignalTimelineWindow(QMainWindow):
 
         # Avoid ranges — exclude a dragged-selection range from highlight selection
         avoid_group = CollapsibleSection(
-            "Avoid in Highlights", expanded=False, settings_key="controls/avoid")
+            "高光排除", expanded=False, settings_key="controls/avoid")
         avoid_layout = QHBoxLayout()
         self.avoid_range_btn = QPushButton("排除所选区间")
         self.avoid_range_btn.setIcon(ui_icons.ban())
         self.avoid_range_btn.setToolTip(
-            "Drag-select a range on the timeline, then click to exclude it from "
-            "highlight selection on the next run."
+            "先在时间线上拖拽选择一个区间，再点击此按钮；"
+            "下次生成高光时将排除该区间。"
         )
         self.avoid_range_btn.clicked.connect(self._avoid_selected_range)
         avoid_layout.addWidget(self.avoid_range_btn)
@@ -3621,7 +3621,7 @@ class SignalTimelineWindow(QMainWindow):
 
         # Merge threshold controls
         merge_group = CollapsibleSection(
-            "Merge Signals", expanded=False, settings_key="controls/merge")
+            "合并信号", expanded=False, settings_key="controls/merge")
         merge_layout = QVBoxLayout()
 
         merge_row = QHBoxLayout()
@@ -4012,7 +4012,7 @@ class SignalTimelineWindow(QMainWindow):
         if seconds == 0:
             self.merge_value_label.setText("关闭")
         else:
-            self.merge_value_label.setText(f"{seconds:.1f}s")
+            self.merge_value_label.setText(f"{seconds:.1f} 秒")
         
         # Debounce: only rebuild after user stops dragging
         if not hasattr(self, '_merge_timer'):

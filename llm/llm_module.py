@@ -36,7 +36,7 @@ try:
     HAS_CV2 = True
 except ImportError:
     HAS_CV2 = False
-    print("⚠️ OpenCV not installed. VideoSeekAnalyzer will not work. Install with: pip install opencv-python")
+    print("⚠️ 未安装 OpenCV，VideoSeekAnalyzer 无法工作。请运行：pip install opencv-python")
 
 # Which Ollama server to talk to is decided in one place, so the chat panel, the
 # report and the advisor cannot end up pointed at two different machines. The
@@ -263,7 +263,7 @@ class _OllamaBackend(_LLMBackend):
                 if shown.ok:
                     capabilities = shown.json().get("capabilities") or []
             except Exception as exc:
-                print(f"   (could not read capabilities for {self.model}: {exc})")
+                print(f"   （无法读取 {self.model} 的能力信息：{exc}）")
 
             if capabilities is not None:
                 self._thinks = "thinking" in capabilities
@@ -654,7 +654,7 @@ class _LlamaCppBackend(_LLMBackend):
         from llama_cpp import Llama
         
         if self.mmproj_path and os.path.exists(self.mmproj_path):
-            print(f"📷 Loading vision model with mmproj: {self.mmproj_path}")
+            print(f"📷 正在加载视觉模型，mmproj：{self.mmproj_path}")
             
             try:
                 from llama_cpp.llama_chat_format import Llava15ChatHandler
@@ -664,7 +664,7 @@ class _LlamaCppBackend(_LLMBackend):
                     verbose=False
                 )
                 
-                print(f"✅ Created Llava15ChatHandler for vision support")
+                print("✅ 已创建 Llava15ChatHandler 以支持视觉输入")
                 
                 self._model = Llama(
                     model_path=self.model_path,
@@ -675,7 +675,7 @@ class _LlamaCppBackend(_LLMBackend):
                     n_threads=None,
                 )
             except ImportError:
-                print("⚠️ Llava15ChatHandler not available, falling back to basic vision")
+                print("⚠️ Llava15ChatHandler 不可用，正在回退到基础视觉模式")
                 self._model = Llama(
                     model_path=self.model_path,
                     clip_model_path=self.mmproj_path,
@@ -776,7 +776,7 @@ class _LlamaCppBackend(_LLMBackend):
             
             messages.append({"role": "user", "content": user_content})
             
-            print(f"📤 Sending vision request with {len(images)} images")
+            print(f"📤 正在发送视觉请求，共 {len(images)} 张图片")
 
             gen_kwargs = {
                 "messages": messages,
@@ -804,7 +804,7 @@ class _LlamaCppBackend(_LLMBackend):
                             stream_callback(token)
             raw = "".join(full_text)
             result = sanitize_response(raw)
-            print(f"✅ Vision generation complete: {len(result)} chars")
+            print(f"✅ 视觉生成完成：{len(result)} 个字符")
             return result
                     
         except GenerationCancelled:
@@ -812,11 +812,11 @@ class _LlamaCppBackend(_LLMBackend):
             raw = "".join(full_text) if 'full_text' in dir() else ""
             return sanitize_response(raw)
         except Exception as e:
-            print(f"❌ Vision generation error: {e}")
+            print(f"❌ 视觉生成出错：{e}")
             import traceback
             traceback.print_exc()
             
-            print("⚠️ Falling back to raw prompt format...")
+            print("⚠️ 正在回退到原始提示词格式…")
             return self._generate_vision_fallback(prompt, system, images, max_tokens, 
                                                   temperature, stream_callback,
                                                   cancellation_token)
@@ -842,7 +842,7 @@ class _LlamaCppBackend(_LLMBackend):
             
             full_prompt = "\n".join(prompt_parts)
             
-            print(f"📤 Using fallback prompt format with {len(images)} images")
+            print(f"📤 正在使用备用提示词格式，共 {len(images)} 张图片")
             
             image_bytes = []
             for img_b64 in images:
@@ -878,8 +878,8 @@ class _LlamaCppBackend(_LLMBackend):
             raw = "".join(full_text) if 'full_text' in dir() else ""
             return sanitize_response(raw)
         except Exception as e:
-            print(f"❌ Fallback also failed: {e}")
-            return f"Error processing image: {e}"
+            print(f"❌ 备用方案同样失败：{e}")
+            return f"处理图片时出错：{e}"
 
     def unload(self):
         self._model = None
@@ -1220,10 +1220,10 @@ class LLMModule:
         if not self._backend.is_loaded():
             raise RuntimeError("LLM not loaded. Call load() first.")
         
-        print(f"🔍 query() called:")
-        print(f"   frame_base64: {'YES (' + str(len(frame_base64)) + ' chars)' if frame_base64 else 'NONE'}")
-        print(f"   timeline_context: {'YES' if timeline_context else 'NONE'}")
-        print(f"   analysis_data: {'YES' if analysis_data else 'NONE'}")
+        print("🔍 已调用 query()：")
+        print(f"   frame_base64：{'有（' + str(len(frame_base64)) + ' 个字符）' if frame_base64 else '无'}")
+        print(f"   timeline_context：{'有' if timeline_context else '无'}")
+        print(f"   analysis_data：{'有' if analysis_data else '无'}")
 
         # ===== VISION MODE =====
         if frame_base64:
@@ -1446,10 +1446,10 @@ class VideoSeekAnalyzer:
         self.running = False
         self.analysis_cache = []
         
-        print(f"📹 Video loaded: {os.path.basename(video_path)}")
-        print(f"   Duration: {int(self.duration)//60}m{int(self.duration)%60:02d}s")
-        print(f"   Resolution: {self.width}x{self.height}")
-        print(f"   FPS: {self.fps:.2f}")
+        print(f"📹 视频已加载：{os.path.basename(video_path)}")
+        print(f"   时长：{int(self.duration)//60}分{int(self.duration)%60:02d}秒")
+        print(f"   分辨率：{self.width}x{self.height}")
+        print(f"   FPS：{self.fps:.2f}")
     
     def seek_to_time(self, timestamp_seconds: float):
         timestamp_seconds = max(0, min(timestamp_seconds, self.duration))
@@ -1518,15 +1518,15 @@ class VideoSeekAnalyzer:
         num_analyses = int(self.duration / interval) + 1
         timestamps = [i * interval for i in range(num_analyses)]
         
-        print(f"\n📊 Seeking analysis every {interval}s ({len(timestamps)} frames)")
-        print(f"   Video duration: {int(self.duration)//60}m{int(self.duration)%60:02d}s")
+        print(f"\n📊 每隔 {interval} 秒进行一次定位分析（共 {len(timestamps)} 帧）")
+        print(f"   视频时长：{int(self.duration)//60}分{int(self.duration)%60:02d}秒")
         
         progress_interval = max(1, len(timestamps) // 10)
         
         for i, timestamp in enumerate(timestamps):
             # Check cancellation between frames
             if cancellation_token and cancellation_token.is_cancelled:
-                print(f"\n⏹ Analysis cancelled at {timestamp:.1f}s")
+                print(f"\n⏹ 分析已在 {timestamp:.1f} 秒处取消")
                 break
 
             if timestamp > self.duration + 0.1:
@@ -1537,7 +1537,7 @@ class VideoSeekAnalyzer:
             
             if frame is None:
                 if i % progress_interval == 0:
-                    print(f"⚠️ Could not read frame at {timestamp:.1f}s")
+                    print(f"⚠️ 无法读取 {timestamp:.1f} 秒处的视频帧")
                 continue
             
             frame_b64 = self.frame_to_base64(frame)
@@ -1565,18 +1565,18 @@ class VideoSeekAnalyzer:
                     callback(result)
                 
                 if i % progress_interval == 0 or i == len(timestamps) - 1:
-                    print(f"  [{i+1}/{len(timestamps)}] {timestamp:.1f}s: Analyzed")
+                    print(f"  [{i+1}/{len(timestamps)}] {timestamp:.1f} 秒：已分析")
                     
                 if self.verbose and len(response) > 0 and i % progress_interval == 0:
                     preview = response[:50] + "..." if len(response) > 50 else response
                     print(f"     ↪ {preview}")
                 
             except GenerationCancelled:
-                print(f"\n⏹ Generation cancelled at {timestamp:.1f}s")
+                print(f"\n⏹ 生成已在 {timestamp:.1f} 秒处取消")
                 break
             except Exception as e:
                 if i % progress_interval == 0:
-                    print(f"❌ Error at {timestamp:.1f}s: {e}")
+                    print(f"❌ {timestamp:.1f} 秒处出错：{e}")
                 results.append({
                     "timestamp": timestamp,
                     "timestamp_str": f"{int(timestamp)//60}:{int(timestamp)%60:02d}",
@@ -1584,7 +1584,7 @@ class VideoSeekAnalyzer:
                     "frame_number": i
                 })
         
-        print(f"\n✅ Done. {len(results)} frames analyzed successfully")
+        print(f"\n✅ 完成，成功分析 {len(results)} 帧")
         
         if save_to_file:
             self.save_results(results, save_to_file)
@@ -1598,25 +1598,25 @@ class VideoSeekAnalyzer:
         start_time = 0.0
         current_time = start_time
         
-        print(f"\n🔍 Seeking every {interval}s looking for: {target_description}")
+        print(f"\n🔍 每隔 {interval} 秒搜索一次：{target_description}")
         print("=" * 60)
         
         for seek_num in range(max_seeks):
             if cancellation_token and cancellation_token.is_cancelled:
-                print(f"\n⏹ Search cancelled at seek #{seek_num}")
+                print(f"\n⏹ 搜索已在第 {seek_num} 次定位时取消")
                 break
 
             timestamp = current_time + (seek_num * interval)
             
             if timestamp >= self.duration:
-                print(f"\n🏁 Reached end of video at {timestamp:.1f}s")
+                print(f"\n🏁 已在 {timestamp:.1f} 秒处到达视频末尾")
                 break
             
-            print(f"\n⏩ Seeking to {timestamp:.1f}s ({int(timestamp)//60}:{int(timestamp)%60:02d})")
+            print(f"\n⏩ 正在定位到 {timestamp:.1f} 秒（{int(timestamp)//60}:{int(timestamp)%60:02d}）")
             frame = self.seek_to_time(timestamp)
             
             if frame is None:
-                print(f"⚠️ Could not read frame at {timestamp:.1f}s")
+                print(f"⚠️ 无法读取 {timestamp:.1f} 秒处的视频帧")
                 continue
             
             frame_b64 = self.frame_to_base64(frame)
@@ -1639,22 +1639,22 @@ class VideoSeekAnalyzer:
                 }
                 
                 results.append(result)
-                print(f"📝 Analysis: {response[:100]}...")
+                print(f"📝 分析：{response[:100]}…")
                 
                 if result["contains_target"]:
-                    print(f"\n🎯 FOUND {target_description.upper()} at {timestamp:.1f}s!")
-                    print(f"Full analysis: {response}")
+                    print(f"\n🎯 在 {timestamp:.1f} 秒处找到 {target_description.upper()}！")
+                    print(f"完整分析：{response}")
                     break
                 
             except GenerationCancelled:
-                print(f"\n⏹ Search cancelled at {timestamp:.1f}s")
+                print(f"\n⏹ 搜索已在 {timestamp:.1f} 秒处取消")
                 break
             except Exception as e:
-                print(f"❌ Error at {timestamp:.1f}s: {e}")
+                print(f"❌ {timestamp:.1f} 秒处出错：{e}")
             
             time.sleep(0.5)
         
-        print(f"\n✅ Seeking complete. Analyzed {len(results)} frames")
+        print(f"\n✅ 定位分析完成，共分析 {len(results)} 帧")
         return results
 
     def save_results(self, results: list, filepath: str):
@@ -1675,7 +1675,7 @@ class VideoSeekAnalyzer:
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(output, f, indent=1, ensure_ascii=False)
         
-        print(f"💾 Results saved to: {filepath}")
+        print(f"💾 结果已保存到：{filepath}")
     
     def search_analyses(self, query: str, results: list = None) -> list:
         search_results = []
@@ -1707,14 +1707,14 @@ class VideoSeekAnalyzer:
                     if "error" in result:
                         consecutive_errors += 1
                         if consecutive_errors > 3:
-                            print("\n❌ Too many errors, stopping analysis")
+                            print("\n❌ 错误过多，已停止分析")
                             break
                     else:
                         consecutive_errors = 0
                         self.analysis_cache.append(result)
                         
                         print(f"\n{'='*60}")
-                        print(f"📹 [{result['timestamp_str']}] Analysis:")
+                        print(f"📹 [{result['timestamp_str']}] 分析：")
                         print(f"{'='*60}")
                         analysis = result['analysis']
                         if len(analysis) > 300:
@@ -1725,7 +1725,7 @@ class VideoSeekAnalyzer:
                     time.sleep(interval)
                     
                 except Exception as e:
-                    print(f"\n⚠️ Analysis error: {e}")
+                    print(f"\n⚠️ 分析出错：{e}")
                     time.sleep(interval)
         
         thread = threading.Thread(target=analysis_loop, daemon=True)
@@ -1743,7 +1743,7 @@ class VideoSeekAnalyzer:
                 if parts[0] == 's' and len(parts) > 1:
                     self._handle_seek_command(parts[1])
                 elif parts[0] == 'p':
-                    print(f"📌 Current position: {int(self.current_time)//60}:{int(self.current_time)%60:02d}")
+                    print(f"📌 当前位置：{int(self.current_time)//60}:{int(self.current_time)%60:02d}")
                 elif parts[0] == 'f' and len(parts) > 1:
                     self._handle_forward_command(parts[1])
                 elif parts[0] == 'b' and len(parts) > 1:
@@ -1751,31 +1751,31 @@ class VideoSeekAnalyzer:
                 elif parts[0] == 'h':
                     self._show_help()
                 elif parts[0] == 'q':
-                    print("\n👋 Stopping analysis...")
+                    print("\n👋 正在停止分析…")
                     self.running = False
                     break
                 else:
-                    print("❌ Unknown command. Type 'h' for help.")
+                    print("❌ 未知命令。输入 'h' 查看帮助。")
                     
             except KeyboardInterrupt:
-                print("\n\n👋 Interrupted, stopping...")
+                print("\n\n👋 已中断，正在停止…")
                 self.running = False
                 break
             except Exception as e:
-                print(f"❌ Command error: {e}")
+                print(f"❌ 命令执行出错：{e}")
     
     def _show_help(self):
         print("\n" + "="*50)
-        print("🎬 Interactive Video Analysis Mode")
+        print("🎬 交互式视频分析模式")
         print("="*50)
-        print("Commands:")
-        print("  s <seconds>   - Seek to timestamp (e.g., 's 30')")
-        print("  s <mm:ss>     - Seek to timestamp (e.g., 's 1:30')")
-        print("  p             - Show current position")
-        print("  f <sec>       - Move forward N seconds")
-        print("  b <sec>       - Move backward N seconds")
-        print("  h             - Show this help")
-        print("  q             - Quit")
+        print("命令：")
+        print("  s <秒数>      - 定位到指定时间（例如：'s 30'）")
+        print("  s <mm:ss>     - 定位到指定时间（例如：'s 1:30'）")
+        print("  p             - 显示当前位置")
+        print("  f <秒数>      - 向前移动 N 秒")
+        print("  b <秒数>      - 向后移动 N 秒")
+        print("  h             - 显示此帮助")
+        print("  q             - 退出")
         print("="*50)
     
     def _handle_seek_command(self, arg: str):
@@ -1791,45 +1791,45 @@ class VideoSeekAnalyzer:
                 self.current_time = seek_to
             
             if self.verbose:
-                print(f"⏩ Seeking to {self.current_time//60}:{self.current_time%60:02d}")
+                print(f"⏩ 正在定位到 {self.current_time//60}:{self.current_time%60:02d}")
         except ValueError:
-            print("❌ Invalid time format. Use seconds or mm:ss")
+            print("❌ 时间格式无效，请使用秒数或 mm:ss")
     
     def _handle_forward_command(self, arg: str):
         try:
             forward = int(arg)
             with self.lock:
                 self.current_time = min(self.current_time + forward, self.duration)
-            print(f"⏩ Forward {forward}s to {int(self.current_time)//60}:{int(self.current_time)%60:02d}")
+            print(f"⏩ 向前 {forward} 秒，到 {int(self.current_time)//60}:{int(self.current_time)%60:02d}")
         except ValueError:
-            print("❌ Invalid forward value")
+            print("❌ 向前移动的数值无效")
     
     def _handle_backward_command(self, arg: str):
         try:
             backward = int(arg)
             with self.lock:
                 self.current_time = max(self.current_time - backward, 0)
-            print(f"⏪ Back {backward}s to {int(self.current_time)//60}:{int(self.current_time)%60:02d}")
+            print(f"⏪ 向后 {backward} 秒，到 {int(self.current_time)//60}:{int(self.current_time)%60:02d}")
         except ValueError:
-            print("❌ Invalid backward value")
+            print("❌ 向后移动的数值无效")
     
     def close(self):
         self.running = False
         if hasattr(self, 'cap') and self.cap:
             self.cap.release()
-        print("📹 Video capture released")
+        print("📹 视频捕获资源已释放")
 
 
 # ---------------------------------------------------------------------------
 # Example usage when run directly
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    print("🔍 LLM Module with Video Seek Analyzer")
+    print("🔍 带视频定位分析器的 LLM 模块")
     print("=" * 50)
-    print("This module provides:")
-    print("  - LLMModule: Interface to local LLMs")
-    print("  - VideoSeekAnalyzer: Analyze video frames every 1 second")
-    print("\nExample usage:")
+    print("本模块提供：")
+    print("  - LLMModule：本地 LLM 接口")
+    print("  - VideoSeekAnalyzer：按时间间隔分析视频帧")
+    print("\n示例用法：")
     print("  from llm_module import LLMModule, VideoSeekAnalyzer")
     print("  llm = LLMModule(backend='ollama', model='llava')")
     print("  llm.load()")

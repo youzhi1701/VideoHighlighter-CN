@@ -621,11 +621,9 @@ def _main(argv=None) -> int:
     # as involving two, spending its length on flooring and furniture; and it
     # took 296 s against 212 s. See docs/advisor/models.md.
     parser.add_argument("--model", default="qwen2.5vl:7b",
-                        help="a model that can see, current-generation; "
-                             "a .gguf path for llama-cpp")
+                        help="支持视觉输入的当前代模型；使用 llama-cpp 时也可填写 .gguf 模型路径")
     parser.add_argument("--mmproj", default=None,
-                        help="vision projector, for llama-cpp models that need "
-                             "one beside the weights")
+                        help="视觉投影器；用于需要在权重旁提供该文件的 llama-cpp 模型")
     args = parser.parse_args(argv)
 
     from modules.report.advisor import load_llm

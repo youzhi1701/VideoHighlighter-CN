@@ -3358,8 +3358,7 @@ def extract_video_source_via_browser(
                     context.close()
 
             log_fn("  ✗ 使用所有 User-Agent 均未找到视频源")
-            log_fn("  💡 The player may need a real click or a login; try opening it "
-                   "in a visible browser and copying the .m3u8 from DevTools → Network.")
+            log_fn("  💡 播放器可能需要真实点击或登录；可在可见浏览器中打开，并从开发者工具 → 网络中复制 .m3u8。")
             return None
 
     except ImportError:

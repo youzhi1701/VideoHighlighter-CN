@@ -90,7 +90,7 @@ except Exception:
 
 from modules.system.app_paths import resource_path as _resource_path, data_file as _data_file, config_path
 from modules.system.app_paths import action_model_file as _action_model_file
-from version import __version__, __edition__
+from version import __version__, __edition__, __cn_version__, __product_name__
 EDITION_DISPLAY = "免费版" if __edition__ == "Free" else __edition__
 
 # --- Contact / support details shown in the About tab ---
@@ -1028,7 +1028,7 @@ class VideoHighlighterGUI(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Video Highlighter v{__version__} {EDITION_DISPLAY}")
+        self.setWindowTitle(f"{__product_name__} v{__cn_version__} · {EDITION_DISPLAY}")
         screen = QApplication.primaryScreen().availableGeometry()
         w = min(1000, screen.width() - 20)
         # Open as tall as the screen comfortably allows. The fixed sections
@@ -3712,11 +3712,11 @@ class VideoHighlighterGUI(QWidget):
         scroll.setWidget(content)
 
         # Header
-        title = QLabel(f"🎬 Video Highlighter（{EDITION_DISPLAY}）")
+        title = QLabel(f"🎬 {__product_name__}（{EDITION_DISPLAY}）")
         title.setStyleSheet("font-size: 16pt; font-weight: bold;")
         layout.addWidget(title)
 
-        subtitle = QLabel(f"版本 {__version__} — 免费开源（AGPLv3）")
+        subtitle = QLabel(f"中文版版本 v{__cn_version__} · 核心版本 {__version__} — 免费开源（AGPLv3）")
         subtitle.setStyleSheet("color: #888;")
         subtitle.setTextInteractionFlags(Qt.TextSelectableByMouse)
         layout.addWidget(subtitle)
@@ -7342,8 +7342,8 @@ if __name__ == "__main__":
     # Hand over from the bootloader's splash to the Qt one, which can keep
     # reporting through the window build (the remaining seconds) and follows
     # the app's theme. begin() closes the native splash once this is painted.
-    startup_splash.begin(f"VideoHighlighter {EDITION_DISPLAY}",
-                         f"版本 {__version__}", steps=2)
+    startup_splash.begin(f"{__product_name__} {EDITION_DISPLAY}",
+                         f"中文版 v{__cn_version__} · 核心 {__version__}", steps=2)
 
     # Reopen the live debug-log window if it was on last session (needs the
     # QApplication, hence here and not earlier).

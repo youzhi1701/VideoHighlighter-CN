@@ -493,10 +493,9 @@ class AnnotatedVideoManager(QObject):
             if path and os.path.isfile(path):
                 size_mb = os.path.getsize(path) / (1024 * 1024)
                 self._set_status(
-                    f"{n} source{'s' if n > 1 else ''} · "
-                    f"Current: {os.path.basename(path)} ({size_mb:.1f} MB)")
+                    f"{n} 个来源 · 当前：{os.path.basename(path)}（{size_mb:.1f} MB）")
             else:
-                self._set_status(f"{n} source{'s' if n > 1 else ''} available")
+                self._set_status(f"{n} 个来源可用")
 
     def _update_button_labels(self):
         has_actions = "🎬 动作" in self._sources

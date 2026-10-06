@@ -73,9 +73,9 @@ def compute_units() -> str:
         return DEFAULT_UNITS
     units = UNITS.get(raw)
     if units is None:
-        print(f"⚠️ {UNITS_ENV}={raw!r} is not one of "
-              f"{', '.join(sorted(set(UNITS) - {'auto', 'metal', 'npu', 'neural'}))}"
-              f" — using {DEFAULT_UNITS}")
+        print(f"⚠️ {UNITS_ENV}={raw!r} 不在允许值 "
+              f"{', '.join(sorted(set(UNITS) - {'auto', 'metal', 'npu', 'neural'}))} 中，"
+              f"将使用 {DEFAULT_UNITS}")
         return DEFAULT_UNITS
     return units
 

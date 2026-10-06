@@ -85,7 +85,7 @@ def load_checkpoint(checkpoint_path: str) -> dict:
     data = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
     if "model" not in data:
         raise ValueError(
-            f"{checkpoint_path} has no 'model' key — is it a training checkpoint?")
+            f"{checkpoint_path} 中没有 'model' 键；这是否是训练检查点？")
     return data
 
 
@@ -105,7 +105,7 @@ def export_onnx(checkpoint_path: str, onnx_path: str,
     checkpoint = load_checkpoint(checkpoint_path)
     class_names = list(class_names or checkpoint.get("class_names") or [])
     if not class_names:
-        raise ValueError("No class names in the checkpoint; pass class_names=")
+        raise ValueError("检查点中没有类别名称；请传入 class_names=")
     size = size or checkpoint.get("size") or "tiny"
     input_size = tuple(input_size or checkpoint.get("image_size") or (416, 416))
 
@@ -145,18 +145,18 @@ def _check_raw_grid(output, num_classes: int, input_size: tuple) -> None:
     a decoded export would quietly break.
     """
     if output.ndim != 3:
-        raise ValueError(f"expected [1, anchors, 5+C], got shape {tuple(output.shape)}")
+        raise ValueError(f"预期形状 [1, anchors, 5+C]，实际为 {tuple(output.shape)}")
     width = int(output.shape[2])
     if width != 5 + num_classes:
         raise ValueError(
-            f"output width {width} does not match {num_classes} classes "
-            f"(expected {5 + num_classes}: cx, cy, w, h, obj, *classes)")
+            f"输出宽度 {width} 与 {num_classes} 个类别不匹配"
+            f"（预期 {5 + num_classes}：cx, cy, w, h, obj, *classes）")
     h, w = input_size
     expected = sum((h // s) * (w // s) for s in (8, 16, 32))
     if int(output.shape[1]) != expected:
         raise ValueError(
-            f"{output.shape[1]} anchors, expected {expected} for a {w}x{h} input "
-            f"at strides (8, 16, 32) — the decoder's grid would not line up")
+            f"锚点数量为 {output.shape[1]}，{w}x{h} 输入在步长 (8, 16, 32) 下预期为 {expected}；"
+            f"否则解码器网格无法对齐")
 
 
 def convert_to_ir(onnx_path: str, xml_path: str) -> str:
@@ -241,20 +241,20 @@ def main(argv=None) -> int:
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Export a trained YOLOX checkpoint for the app")
-    parser.add_argument("checkpoint", help="the .pth written by the training run")
+        description="为应用导出已训练的 YOLOX 检查点")
+    parser.add_argument("checkpoint", help="训练过程生成的 .pth 文件")
     parser.add_argument("--dest", default=DEFAULT_DEST,
-                        help=f"where to install (default: {DEFAULT_DEST})")
-    parser.add_argument("--name", default=None, help="base name for the files")
+                        help=f"安装位置（默认：{DEFAULT_DEST}）")
+    parser.add_argument("--name", default=None, help="输出文件基础名称")
     parser.add_argument("--no-onnx", action="store_true",
-                        help="delete the intermediate ONNX once converted")
+                        help="转换完成后删除中间 ONNX 文件"
     args = parser.parse_args(argv)
 
     result = install(args.checkpoint, dest_dir=args.dest, name=args.name,
                      keep_onnx=not args.no_onnx)
-    print(f"  IR     : {result.xml_path}")
-    print(f"  labels : {result.labels_path}")
-    print(f"  classes: {result.class_names}")
+    print(f"  IR：{result.xml_path}")
+    print(f"  标签：{result.labels_path}")
+    print(f"  类别：{result.class_names}")
     return 0
 
 

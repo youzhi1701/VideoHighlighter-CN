@@ -548,7 +548,7 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,
         for frame in frames(scene, elements, fps):
             if cancel_check is not None and cancel_check():
                 process.kill()
-                raise RuntimeError("cancelled")
+                raise RuntimeError("已取消")
             process.stdin.write(frame)
         process.stdin.close()
     except (BrokenPipeError, OSError):

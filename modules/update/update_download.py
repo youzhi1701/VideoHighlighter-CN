@@ -135,7 +135,7 @@ def download_plan(
     worker has news, so a caller never sees two at once.
     """
     if compression not in COMPRESSIONS:
-        raise ValueError(f"unsupported blob compression {compression!r}")
+        raise ValueError(f"不支持的 blob 压缩格式：{compression!r}")
     result = DownloadResult()
     total = plan.download_bytes
     fetch = opener or _default_opener
@@ -164,7 +164,7 @@ def download_plan(
     def one(entry: dict) -> None:
         relative = entry.get("path")
         if not is_safe_relpath(relative):
-            fail(str(relative), "unsafe path")
+            fail(str(relative), "路径不安全")
             return
         if cancelled():
             return
@@ -205,7 +205,7 @@ def download_plan(
                                 if inflate is not None:
                                     block = inflate.flush()
                                     if not inflate.eof:
-                                        raise EOFError("compressed blob ended early")
+                                        raise EOFError("压缩 blob 提前结束")
                                     inflate = None
                                     if block:
                                         handle.write(block)
@@ -230,8 +230,8 @@ def download_plan(
                 if attempt >= len(RETRY_DELAYS) or _is_permanent(exc) or cancelled():
                     fail(relative, f"{type(exc).__name__}: {exc}")
                     return
-                print(f"update_download: {relative}: {type(exc).__name__}: "
-                      f"{exc}; retrying")
+                print(f"更新下载：{relative}：{type(exc).__name__}："
+                      f"{exc}；正在重试")
                 time.sleep(RETRY_DELAYS[attempt])
 
         # The check that makes everything above safe to have done.
@@ -239,19 +239,19 @@ def download_plan(
             actual = hash_file(partial)
         except OSError as exc:
             _remove(partial)
-            fail(relative, f"unreadable after download: {exc}")
+            fail(relative, f"下载后无法读取：{exc}")
             return
 
         if actual != expected:
             _remove(partial)
-            fail(relative, "hash mismatch")
+            fail(relative, "哈希校验不一致")
             return
 
         try:
             os.replace(partial, target)
         except OSError as exc:
             _remove(partial)
-            fail(relative, f"could not stage: {exc}")
+            fail(relative, f"无法暂存：{exc}")
             return
 
         with lock:

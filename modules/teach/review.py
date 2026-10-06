@@ -149,16 +149,16 @@ def guess_of(sample) -> str:
 
 def caption(sample) -> str:
     if sample.is_auto:
-        return f"auto: {guess_of(sample)} (spot check)"
+        return f"自动：{guess_of(sample)}（抽查）"
     if sample.proposed == UNSURE:
         name, score = _top(sample)
-        text = f"{name}? ({score:.2f})" if name else "unsure"
+        text = f"{name}? ({score:.2f})" if name else "不确定"
     elif sample.proposed == NONE:
-        text = "none of these"
+        text = "以上都不是"
     else:
         text = f"{sample.proposed} ({sample.scores.get(sample.proposed, 0):.2f})"
     if sample.model_proposed and sample.model_proposed != sample.proposed:
-        text += f" | model: {sample.model_proposed}"
+        text += f" | 模型：{sample.model_proposed}"
     return text
 
 

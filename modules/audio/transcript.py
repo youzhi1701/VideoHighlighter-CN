@@ -301,7 +301,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
             # Warn if language mismatch
             if detected_lang != language and language != "auto":
                 log_fn(f"⚠️ 警告：预期语言为“{language}”，但 Whisper 检测为“{detected_lang}”")
-                log_fn(f"   This may indicate unclear audio or incorrect language setting")
+                log_fn("   这可能表示音频不清晰，或语言设置不正确")
 
             # Offset for proper timestamps
             offset = idx * chunk_length
@@ -328,7 +328,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
     if progress_fn:
         progress_fn(95, 100, "转录", "完成")
 
-    log_fn(f"✅ 转录完成：{len(all_segments)} segments (from {len(chunks)} chunks)")
+    log_fn(f"✅ 转录完成：共 {len(all_segments)} 个片段（来自 {len(chunks)} 个分块）")
 
     # Before diarization, which is a second pass over the audio and would
     # otherwise run in full after the user asked for none of it. (Checked here
@@ -360,8 +360,8 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
 
         except ImportError as e:
             log_fn(f"⚠️ 说话人识别模块不可用：{e}")
-            log_fn("   Install: pip install speechbrain torchaudio librosa scikit-learn")
-            log_fn("   Proceeding without speaker identification")
+            log_fn("   可安装：pip install speechbrain torchaudio librosa scikit-learn")
+            log_fn("   将在不进行说话人识别的情况下继续")
         except Exception as e:
             log_fn(f"⚠️ 说话人识别失败：{e}")
             log_fn("   Proceeding without speaker identification")

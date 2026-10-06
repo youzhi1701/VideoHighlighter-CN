@@ -62,7 +62,7 @@ def find_onnx(prefer: str = "large") -> str | None:
 def _download(url: str, dest: Path, log: Callable[[str], None]) -> None:
     if dest.exists() and dest.stat().st_size > 0:
         return
-    log(f"⬇️ Downloading {dest.name}…")
+    log(f"⬇️ 正在下载 {dest.name}…")
 
     def _hook(blocks: int, block_size: int, total: int) -> None:
         if total > 0:
@@ -82,7 +82,7 @@ def _download(url: str, dest: Path, log: Callable[[str], None]) -> None:
 def _convert(onnx_path: Path, xml_path: Path, log: Callable[[str], None]) -> None:
     import openvino as ov  # lazy
 
-    log(f"⚙️ Converting {onnx_path.name} → {xml_path.name}")
+    log(f"⚙️ 正在转换 {onnx_path.name} → {xml_path.name}")
     model = ov.convert_model(str(onnx_path))
     ov.save_model(model, str(xml_path), compress_to_fp16=True)
 

@@ -379,15 +379,25 @@ def main() -> int:
     problems = [item for item in report.get("details", [])
                 if item.get("status") in {"changed", "conflict", "missing", "missing_file"}]
     if problems:
+        try:
+            catalog_data = json.loads(args.catalog.read_text(encoding="utf-8"))
+            rules_by_id = {rule.get("id"): rule for rule in catalog_data.get("rules", [])}
+        except Exception:
+            rules_by_id = {}
         print("localization problems:")
         for item in problems[:40]:
+            rule = rules_by_id.get(item.get("id"), {})
             extra = ""
             if item.get("occurrences") is not None:
                 extra = f" occurrences={item['occurrences']}"
             print(
-                f"  {item.get('status')}: {item.get('file')} "
-                f"source={item.get('source', '')[:160]!r}{extra}"
+                f"  {item.get('status')}: {item.get('file')} id={item.get('id')} "
+                f"source={str(rule.get('source', ''))[:180]!r} "
+                f"target={str(rule.get('target', ''))[:180]!r}{extra}"
             )
+            if item.get("status") == "conflict":
+                print(f"    before={str(rule.get('before', ''))[:180]!r}")
+                print(f"    after={str(rule.get('after', ''))[:180]!r}")
         if len(problems) > 40:
             print(f"  ... 另外还有 {len(problems) - 40} 条，请查看报告。")
     bad = sum(s.get(k, 0) for k in ("changed", "conflict", "missing", "missing_file"))

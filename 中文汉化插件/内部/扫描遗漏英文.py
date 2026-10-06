@@ -41,6 +41,14 @@ UI_CALLS = {
     "setHorizontalHeaderLabels", "setVerticalHeaderLabels", "setTitle",
     "setLabelText", "setCancelButtonText", "setOkButtonText",
 }
+
+# Backend callbacks that feed the desktop UI's log/progress panes.  These used
+# to be invisible to the audit, which is how whole runtime paths such as object
+# detection, transcription, diarization and auto-segmentation could stay
+# English even after every static button/label looked translated.
+USER_TEXT_CALLBACKS = {
+    "log_fn", "progress_fn", "status_fn", "message_fn", "detail_fn",
+}
 UI_NAME_RE = re.compile(
     r"(?:text|title|label|button|btn|tooltip|tip|status|message|msg|caption|"
     r"description|desc|placeholder|prompt|heading|header|menu|action|empty|"
@@ -163,6 +171,16 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 for kw in node.keywords:
                     if kw.arg and UI_KEY_RE.search(kw.arg):
                         add(hits, rel, kw.value, "python-ui-keyword", "high", string_value(kw.value), allow)
+            elif name in USER_TEXT_CALLBACKS:
+                # These callbacks are wired into the visible task/log panels.
+                # Scan every string argument because progress_fn commonly uses
+                # (current, total, task_name, detail), not text as arg 0.
+                for arg in node.args:
+                    add(hits, rel, arg, "python-user-runtime-callback", "high",
+                        string_value(arg), allow)
+                for kw in node.keywords:
+                    add(hits, rel, kw.value, "python-user-runtime-callback",
+                        "high", string_value(kw.value), allow)
 
         elif isinstance(node, (ast.Assign, ast.AnnAssign)):
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]

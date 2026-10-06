@@ -25,10 +25,10 @@ def parse_box(text) -> tuple:
     """``"x,y,w,h"`` (fractions of the frame) -> a checked tuple."""
     values = [float(v) for v in (text.split(",") if isinstance(text, str) else text)]
     if len(values) != 4:
-        raise ValueError("a box is x,y,w,h as fractions of the frame, e.g. 0.4,0.3,0.2,0.25")
+        raise ValueError("检测框应为 x,y,w,h，数值使用画面比例，例如 0.4,0.3,0.2,0.25")
     x, y, w, h = values
     if w <= 0 or h <= 0 or x < 0 or y < 0 or x + w > 1.0001 or y + h > 1.0001:
-        raise ValueError(f"box {text!r} is not inside the frame (x,y,w,h as fractions)")
+        raise ValueError(f"检测框 {text!r} 超出画面范围（x,y,w,h 均应使用画面比例）")
     return (x, y, w, h)
 
 
@@ -43,7 +43,7 @@ def seed(root: str, video: str, moment: float, box, name: str,
     else:
         project = Project.create(root, OBJECTS)
     if project.task != OBJECTS:
-        raise ValueError("a box shows an object: seed an object project")
+        raise ValueError("检测框用于示教物体，请对物体项目使用 seed")
     created = project.get_class(name) is None
     if created:
         project.add_class(name, description)

@@ -517,15 +517,15 @@ def _main(argv=None) -> int:
 
     parser = argparse.ArgumentParser(
         prog="python -m modules.report.advisor",
-        description="Say why a highlight came out the way it did.")
-    parser.add_argument("report", help="the *_why.json written beside a cut")
+        description="说明高光成片为何会得到当前结果。")
+    parser.add_argument("report", help="剪辑文件旁生成的 *_why.json 报告")
     parser.add_argument("--llm", action="store_true",
-                        help="also phrase the findings with a local model")
+                        help="同时使用本地模型整理这些发现")
     parser.add_argument("--backend", default="ollama",
                         choices=("ollama", "llama-cpp"))
     parser.add_argument("--model", default="llama3")
     parser.add_argument("--ask", metavar="QUESTION",
-                        help="ask something specific instead of the summary")
+                        help="提出具体问题，而不是生成摘要")
     args = parser.parse_args(argv)
 
     with open(args.report, encoding="utf-8") as fh:

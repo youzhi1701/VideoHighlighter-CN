@@ -37,7 +37,7 @@ def make_detector():
     detector, _ = build_object_detector("coco", default_prefer="large",
                                         log=lambda *a: print(*a, file=sys.stderr))
     if detector is None:
-        raise RuntimeError("no object detector installed")
+        raise RuntimeError("未安装物体检测器")
     return detector
 
 
@@ -52,7 +52,7 @@ def round_detector(project):
         from modules.vision.detection_backend import create_detector
         return create_detector(found["xml"], found["classes"])
     except Exception as exc:        # fall back to the stock detector alone
-        print(f"teach: round {found['round']} detector unusable: {exc}", file=sys.stderr)
+        print(f"训练：第 {found['round']} 轮检测器不可用：{exc}", file=sys.stderr)
         return None
 
 
@@ -118,12 +118,12 @@ def _vectors_for(project, embedder, clips=(), sample_ids=(), class_name=""):
     for sid in sample_ids:
         sample = project.get_sample(sid)
         if sample is None:
-            raise KeyError(f"no sample {sid}")
+            raise KeyError(f"找不到样本 {sid}")
         samples.append(sample)
     if class_name:
         spec = project.get_class(class_name)
         if spec is None:
-            raise KeyError(f"no class {class_name!r}")
+            raise KeyError(f"找不到类别 {class_name!r}")
         ids = list(dict.fromkeys(spec.examples + [s.id for s in project.accepted(class_name)]))
         samples += [project.get_sample(i) for i in ids if project.get_sample(i)]
     for i, clip in enumerate(clips):
@@ -144,16 +144,14 @@ def cmd_suggest_names(args, project):
     vectors = _vectors_for(project, embedder, args.clip or (), args.sample or (),
                            args.cls or "")
     if not vectors:
-        raise ValueError("give example clips (--clip), samples (--sample) or a class "
-                         "with accepted samples (--class)")
+        raise ValueError("请提供示例片段（--clip）、样本（--sample），或包含已接受样本的类别（--class）")
     labels = naming.load_vocabulary(project.task)
     label_vectors = embedder.texts([naming.PROMPTS[project.task].format(x) for x in labels])
     result = naming.suggest_names(np.stack(vectors), labels, label_vectors, args.top)
     result["examples"] = len(vectors)
     result["advice"] = (
-        "A 'good' fit can be reused as the name. Otherwise name it yourself, in the "
-        "style of the stock labels, and add a description. A low consistency or a "
-        "split means the examples may be two different things.")
+        "如果匹配结果为“good”，可直接复用该名称；否则请参考内置标签风格自行命名并补充描述。"
+        "一致性较低或结果出现分裂，通常表示这些示例可能属于不同内容。")
     return result
 
 
@@ -165,7 +163,7 @@ def cmd_add_video(args, project):
             ok, path, meta = download_video(item, project.path("videos"),
                                             log_fn=lambda *a: print(*a, file=sys.stderr))
             if not ok or not path:
-                raise RuntimeError(f"could not download {item}")
+                raise RuntimeError(f"无法下载 {item}")
             source = project.add_source(path, url=item)
         else:
             if not os.path.exists(item):
@@ -189,12 +187,12 @@ def cmd_add_example(args, project):
 
     spec = project.get_class(args.cls)
     if spec is None:
-        raise KeyError(f"no class {args.cls!r}")
+        raise KeyError(f"找不到类别 {args.cls!r}")
     ids = []
     for sid in args.sample or ():
         sample = project.get_sample(sid)
         if sample is None:
-            raise KeyError(f"no sample {sid}")
+            raise KeyError(f"找不到样本 {sid}")
         project.decide(sample, ACCEPTED, spec.name, by="example")
         ids.append(sid)
     for clip in args.clip or ():
@@ -239,7 +237,7 @@ def cmd_sort(args, project):
         # first about where it and CLIP disagree.
         classifier = sort.round_classifier(project)
     result = sort.sort_project(project, make_embedder(), model_classifier=classifier,
-                               progress=lambda i, n: print(f"embedded {i}/{n}",
+                               progress=lambda i, n: print(f"已生成嵌入 {i}/{n}",
                                                            file=sys.stderr)
                                if i == n or i % 50 == 0 else None)
     if args.folders:
@@ -262,10 +260,10 @@ def cmd_review(args, project):
         return {"window": "closed", "counts": Project.load(project.root).counts()}
     record = review.next_sheet(project, size=args.size, class_name=args.cls or None)
     if not record:
-        return {"sheet": None, "message": "nothing waiting for review"}
-    record["how"] = (f"Look at {record['image']}. Then: verdict --sheet {record['sheet']} "
-                     "--accept 1-5,7 --reject 6 --negative 9 --relabel 8=<class>, "
-                     "or --accept-rest to take every unmentioned guess as right.")
+        return {"sheet": None, "message": "没有等待审核的内容"}
+    record["how"] = (f"请查看 {record['image']}。然后运行：verdict --sheet {record['sheet']} "
+                     "--accept 1-5,7 --reject 6 --negative 9 --relabel 8=<类别>；"
+                     "也可以使用 --accept-rest，将未特别标记的其余结果全部视为正确。")
     return record
 
 
@@ -290,17 +288,17 @@ def cmd_boxes(args, project):
                     "pending": len(labels.pending())}
         record = boxes.next_sheet(project, size=args.size)
         if record:
-            record["how"] = (f"Look at {record['image']}. Then: boxes verdict --sheet "
-                             f"{record['sheet']} --accept 1-4 --reject 5, or --accept-rest.")
-        return record or {"sheet": None, "message": "no boxes waiting"}
+            record["how"] = (f"请查看 {record['image']}。然后运行：boxes verdict --sheet "
+                             f"{record['sheet']} --accept 1-4 --reject 5；也可以使用 --accept-rest。")
+        return record or {"sheet": None, "message": "没有等待审核的检测框"}
     if args.action == "verdict":
         return boxes.apply_verdicts(project, args.sheet, accept=args.accept or "",
                                     reject=args.reject or "", accept_rest=args.accept_rest)
     if args.action == "worklist":
         items = boxes.labeler_worklist(project)
         return {"to_label": items,
-                "how": "Open each path in `python tools/labeler.py`, mark the thing, "
-                       "export, then: boxes import <export.json> ..."}
+                "how": "依次用 `python tools/labeler.py` 打开每个路径，标注目标并导出，"
+                       "然后运行：boxes import <导出文件.json> ..."}
     if args.action == "import":
         return boxes.import_labeler(project, args.files, accept=args.accept_all)
     raise ValueError(args.action)
@@ -334,12 +332,11 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:
             return {"ran": done, "stopped_at": step}
         if args[0] == "train" and not train:
             return {"ran": done, "stopped_at": step,
-                    "message": "Ready to train. Run `train`, or `auto --train` to "
-                               "include it (GPU minutes to hours)."}
+                    "message": "已准备好训练。可运行 `train`，或使用 `auto --train` 将训练包含在自动流程中（GPU 训练可能需要几分钟到数小时）。"}
         if done and done[-1]["args"] == args:
             return {"ran": done, "stopped_at": step,
                     "error": f"`{' '.join(args)}` ran but is still the next step"}
-        print(f"auto: {' '.join(args)}", file=sys.stderr)
+        print(f"自动流程：{' '.join(args)}", file=sys.stderr)
         code, result = run(["--project", root, *args])
         result = dict(result or {})
         result.pop("next", None)
@@ -350,7 +347,7 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:
             return {"ran": done, "stopped_at": step,
                     "error": result.get("error") or result.get("errors")}
     return {"ran": done, "stopped_at": next_step(Project.load(root)),
-            "message": f"stopped after {max_steps} steps"}
+            "message": f"已在执行 {max_steps} 个步骤后停止"
 
 
 def cmd_auto(args, project):
@@ -378,7 +375,7 @@ def cmd_quick(args, root):
         project = Project.load(root)
     else:
         if not args.task:
-            raise ValueError("a new project needs --task actions or --task objects")
+            raise ValueError("新项目必须指定 --task actions 或 --task objects")
         project = Project.create(root, args.task)
     if args.focus:
         project.settings.focus = True
@@ -401,9 +398,9 @@ def cmd_quick(args, root):
                 project.add_class(name)
             classes[name] = clips
     if problems:
-        raise ValueError("rename these example folders: " + " | ".join(problems))
+        raise ValueError("请重命名以下示例文件夹：" + " | ".join(problems))
     if not project.classes:
-        raise ValueError("no classes: give --examples <folder with one subfolder per class>")
+        raise ValueError("没有类别：请使用 --examples <每个类别一个子文件夹的目录>")
     project.save()
 
     from types import SimpleNamespace
@@ -429,7 +426,7 @@ def cmd_share(args, project):
     except NotShareable as exc:
         raise ValueError(str(exc)) from None
     return {"model": onnx, "draft": asdict(draft),
-            "how": "Training -> From videos -> Share... opens the publish wizard with "
+            "how": "在“训练 → 从视频学习 → 分享…”中可打开发布向导，并自动带入 "
                    "this filled in; name, description, category and the checklist "
                    "are yours to complete."}
 
@@ -509,7 +506,7 @@ def cmd_from_dataset(args, root):
         for key, value in dataset_sort.FROM_DATASET_SETTINGS.items():
             setattr(project.settings, key, value)
     if project.task != project_mod.ACTIONS:
-        raise ValueError("a dataset of clips teaches actions; use an actions project")
+        raise ValueError("片段数据集用于训练动作识别，请使用 actions 项目")
     if args.prototypes:
         project.settings.prototypes_per_class = args.prototypes
     if args.scorer:
@@ -570,7 +567,7 @@ def parse_settings(pairs, settings=None) -> dict:
     for pair in pairs or ():
         key, _, value = pair.partition("=")
         if key not in known:
-            raise KeyError(f"no setting {key!r}; settings: {sorted(known)}")
+            raise KeyError(f"不存在设置项 {key!r}；可用设置：{sorted(known)}")
         current = getattr(settings, key)
         if isinstance(current, bool):
             changed[key] = value.lower() in ("1", "true", "yes", "on")
@@ -593,26 +590,26 @@ def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="python -m modules.teach",
                                 description=__doc__.split("\n\n")[0])
     p.add_argument("--project", required=True,
-                   help="project folder, or a name under the app's user data")
+                   help="项目文件夹，或应用用户数据目录下的项目名称")
     sub = p.add_subparsers(dest="command", required=True)
 
-    s = sub.add_parser("init", help="start a project")
+    s = sub.add_parser("init", help="创建项目")
     s.add_argument("--task", required=True, choices=project_mod.TASKS)
     s.add_argument("--name")
     s.add_argument("--clip-seconds", type=float, dest="clip_seconds")
     s.add_argument("--focus", action="store_true",
-                   help="actions: crop samples to the people in them (modules/crop)")
+                   help="动作项目：按样本中的人物裁剪（modules/crop）")
 
-    s = sub.add_parser("seed", help="objects: start from one box drawn around the thing")
+    s = sub.add_parser("seed", help="物体项目：从手动画出的一个目标框开始")
     s.add_argument("--video", required=True)
-    s.add_argument("--time", type=float, required=True, help="seconds into the video")
-    s.add_argument("--box", required=True, help="x,y,w,h as fractions of the frame")
+    s.add_argument("--time", type=float, required=True, help="视频中的时间点（秒）")
+    s.add_argument("--box", required=True, help="检测框 x,y,w,h，占画面尺寸的比例")
     s.add_argument("--class", dest="cls", required=True)
     s.add_argument("--description")
 
-    sub.add_parser("find", help="objects: look for seeded things in every sample")
+    sub.add_parser("find", help="物体项目：在所有样本中查找已播种的目标")
 
-    s = sub.add_parser("add-class", help="something to find")
+    s = sub.add_parser("add-class", help="添加需要识别的类别")
     s.add_argument("name")
     s.add_argument("--description")
     s.add_argument("--target", type=int)
@@ -621,54 +618,54 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("old")
     s.add_argument("new")
 
-    s = sub.add_parser("check-name", help="is this a good class name?")
+    s = sub.add_parser("check-name", help="检查类别名称是否合适")
     s.add_argument("name")
 
-    s = sub.add_parser("suggest-names", help="stock labels that describe some examples")
+    s = sub.add_parser("suggest-names", help="根据示例推荐内置标签名称")
     s.add_argument("--clip", action="append")
     s.add_argument("--sample", action="append")
     s.add_argument("--class", dest="cls")
     s.add_argument("--top", type=int, default=5)
 
-    s = sub.add_parser("add-video", help="footage: files, folders or URLs")
+    s = sub.add_parser("add-video", help="添加素材：文件、文件夹或网址")
     s.add_argument("items", nargs="+")
 
-    s = sub.add_parser("add-example", help="clips or samples that show a class")
+    s = sub.add_parser("add-example", help="添加能体现某类别的片段或样本")
     s.add_argument("--class", dest="cls", required=True)
     s.add_argument("--clip", action="append")
     s.add_argument("--sample", action="append")
 
-    sub.add_parser("cut", help="cut footage into samples")
-    sub.add_parser("focus", help="actions: person-focused crops of each sample")
+    sub.add_parser("cut", help="将素材切分为样本")
+    sub.add_parser("focus", help="动作项目：为每个样本生成以人物为中心的裁剪")
 
-    s = sub.add_parser("sort", help="score and propose a class for every sample")
-    s.add_argument("--folders", action="store_true", help="also lay out sorted/ folders")
+    s = sub.add_parser("sort", help="为每个样本评分并建议类别")
+    s.add_argument("--folders", action="store_true", help="同时生成 sorted/ 分类文件夹")
     s.add_argument("--model-xml", dest="model_xml",
-                   help="an Intel-encoder decoder IR for sorter.py to propose with")
+                   help="供 sorter.py 使用的 Intel 编码器解码 IR 模型")
     s.add_argument("--model-mapping", dest="model_mapping")
     s.add_argument("--no-model", action="store_true", dest="no_model",
-                   help="do not use the project's trained model as a second opinion")
+                   help="不使用项目已训练模型作为第二判断来源")
 
-    s = sub.add_parser("folders", help="lay out sorted/ folders, or --read them back")
+    s = sub.add_parser("folders", help="生成 sorted/ 文件夹，或使用 --read 重新读取")
     s.add_argument("--read", action="store_true")
     s.add_argument("--confirm", action="append",
-                   help="class folders whose unmoved files are confirmed; 'all' for every one")
+                   help="确认未移动文件所属的类别文件夹；使用 all 表示全部类别")
 
-    s = sub.add_parser("review", help="draw the next contact sheet")
+    s = sub.add_parser("review", help="生成下一张审核联系表")
     s.add_argument("--size", type=int, default=24)
     s.add_argument("--window", action="store_true",
-                   help="review by clicking, in a window, instead of a sheet image")
+                   help="在窗口中点击审核，而不是生成联系表图片")
     s.add_argument("--class", dest="cls")
 
-    s = sub.add_parser("verdict", help="record what a contact sheet shows")
+    s = sub.add_parser("verdict", help="记录联系表审核结果")
     s.add_argument("--sheet", type=int, required=True)
     s.add_argument("--accept")
     s.add_argument("--reject")
     s.add_argument("--negative")
-    s.add_argument("--relabel", action="append", help="N=<class>, repeatable")
+    s.add_argument("--relabel", action="append", help="格式 N=<类别>，可重复指定")
     s.add_argument("--accept-rest", action="store_true", dest="accept_rest")
 
-    s = sub.add_parser("boxes", help="object projects: boxes on accepted samples")
+    s = sub.add_parser("boxes", help="物体项目：审核已接受样本上的检测框")
     s.add_argument("action", choices=["propose", "review", "verdict", "worklist", "import"])
     s.add_argument("files", nargs="*")
     s.add_argument("--sheet", type=int)
@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--reject")
     s.add_argument("--accept-rest", action="store_true", dest="accept_rest")
     s.add_argument("--accept-all", action="store_true", dest="accept_all",
-                   help="import: the labeller's points are already checked")
+                   help="导入时：标注器中的点位已人工确认")
     s.add_argument("--window", action="store_true",
-                   help="review: by clicking, in a window, instead of a sheet image")
+                   help="审核时：在窗口中点击，而不是生成联系表图片")
 
-    sub.add_parser("build", help="write the dataset")
+    sub.add_parser("build", help="生成训练数据集")
 
-    s = sub.add_parser("train", help="train a round")
+    s = sub.add_parser("train", help="训练一轮模型")
     s.add_argument("--epochs", type=int)
     s.add_argument("--install", choices=["if-better", "always", "never"],
                    default="if-better")
 
-    sub.add_parser("status", help="where it stands, and the next command")
+    sub.add_parser("status", help="查看当前进度和下一步命令")
 
-    s = sub.add_parser("auto", help="run every unattended step until one needs a look")
-    s.add_argument("--train", action="store_true", help="include training")
+    s = sub.add_parser("auto", help="自动执行所有无需人工参与的步骤，直到需要审核")
+    s.add_argument("--train", action="store_true", help="自动流程中包含训练")
 
-    s = sub.add_parser("quick", help="examples folder + videos -> as far as it can go alone")
+    s = sub.add_parser("quick", help="从示例文件夹和视频开始，自动执行到需要人工介入为止")
     s.add_argument("--task", choices=project_mod.TASKS,
-                   help="needed when the project does not exist yet")
-    s.add_argument("--examples", help="folder with one subfolder of clips per class")
-    s.add_argument("--videos", nargs="+", default=[], help="files, folders or URLs")
+                   help="项目尚不存在时必须指定")
+    s.add_argument("--examples", help="每个类别一个片段子文件夹的目录")
+    s.add_argument("--videos", nargs="+", default=[], help="文件、文件夹或网址")
     s.add_argument("--focus", action="store_true")
     s.add_argument("--train", action="store_true")
     s.add_argument("--skip-checks", action="store_true", dest="skip_checks",
-                   help="do not run `doctor` first")
+                   help="启动前不运行 `doctor` 环境检查")
 
-    sub.add_parser("doctor", help="is this machine ready? (seconds; nothing is loaded)")
-    sub.add_parser("share", help="the installed detector, drafted for the model hub")
+    sub.add_parser("doctor", help="检查当前电脑是否满足训练要求（数秒完成，不加载模型）")
+    sub.add_parser("share", help="将已安装检测器整理为可发布到模型中心的草稿")
 
     s = sub.add_parser("import", help="read a hand-sorted train/val/test dataset: "
                                       "what it holds (reads only)")
@@ -748,7 +745,7 @@ def parser() -> argparse.ArgumentParser:
     s = sub.add_parser("from-dataset", help="a hand-sorted dataset as the examples; "
                                             "new videos cut and sorted by it")
     s.add_argument("dataset", help="folder holding train/ (and val/)")
-    s.add_argument("--videos", nargs="+", default=[], help="files, folders or URLs")
+    s.add_argument("--videos", nargs="+", default=[], help="文件、文件夹或网址")
     s.add_argument("--aliases", help="JSON {name: name or \"\"} to rename or leave out")
     s.add_argument("--group", default=DEFAULT_GROUP,
                    help="regex for the video a clip came from, in its file name")
@@ -768,13 +765,13 @@ def parser() -> argparse.ArgumentParser:
                    dest="min_examples",
                    help="leave out classes with fewer clips than this (0 keeps all)")
     s.add_argument("--skip-checks", action="store_true", dest="skip_checks",
-                   help="do not run `doctor` first")
+                   help="启动前不运行 `doctor` 环境检查")
 
     s = sub.add_parser("by-class", help="rebuild by-class/<video>/<class>/ folders "
                                         "and timeline.csv from the verdicts")
     s.add_argument("sources", nargs="*", help="source ids (default: every video)")
 
-    s = sub.add_parser("set", help="change settings: key=value ...")
+    s = sub.add_parser("set", help="修改设置：key=value ...")
     s.add_argument("pairs", nargs="+")
     return p
 

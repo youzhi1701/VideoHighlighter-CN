@@ -99,8 +99,8 @@ def _serve(conn, video_path: str) -> None:
                 # and fails on the first frame instead — ProRes on a Mac whose
                 # VideoToolbox has no ProRes decoder. Drop to software for good
                 # rather than failing every thumbnail of this video.
-                print(f"⚠️ Thumbnail decoder: {decoder} could not decode "
-                      f"({type(e).__name__}: {e}) — switching to software")
+                print(f"⚠️ 缩略图解码器：{decoder} 无法解码"
+                      f"（{type(e).__name__}：{e}）——将切换到软件解码")
                 try:
                     container.close()
                 except Exception:
@@ -258,7 +258,7 @@ class PersistentDecoder:
             if status == "ok":
                 if self.decoder != detail:
                     self.decoder = detail
-                    print(f"🎞 Thumbnail decoder: {detail}")
+                    print(f"🎞 缩略图解码器：{detail}")
                     _note("thumb.decoder", using=detail, video=self.video_path)
                 return True
             if status == "fatal":
@@ -267,7 +267,7 @@ class PersistentDecoder:
                 # The child is fine, this frame was not. Said here because the
                 # caller only sees False, and a video whose every thumbnail
                 # fails this way otherwise leaves nothing in the log at all.
-                print(f"⚠️ Thumbnail decoder: frame at {int(time_ms)}ms failed — {detail}")
+                print(f"⚠️ 缩略图解码器：{int(time_ms)}ms 处的帧解码失败——{detail}")
             return False
 
     def stop(self) -> None:
@@ -308,7 +308,7 @@ class PersistentDecoder:
             self._process, self._conn = process, parent_conn
             return True
         except Exception as e:
-            print(f"⚠️ Thumbnail decoder would not start: {e}")
+            print(f"⚠️ 缩略图解码器无法启动：{e}")
             _note("thumb.decoder_unavailable", error=f"{type(e).__name__}: {e}")
             self.available = False
             return False
@@ -316,8 +316,8 @@ class PersistentDecoder:
     def _died(self, reason: str, permanent: bool = False) -> None:
         """Account for one death, however it was noticed."""
         self.restarts += 1
-        print(f"⚠️ Thumbnail decoder stopped ({reason}) — "
-              f"{'giving up on it' if permanent else 'starting another'}")
+        print(f"⚠️ 缩略图解码器已停止（{reason}）——"
+              f"{'将不再重试' if permanent else '正在启动新的解码器'}")
         _note("thumb.decoder_died", reason=reason, restarts=self.restarts,
               video=self.video_path)
 

@@ -149,7 +149,7 @@ class TimelineBridge:
         This gets injected into the LLM prompt so it knows what's on the timeline.
         """
         if not self._window:
-            return "Timeline: NOT CONNECTED"
+            return "时间线：未连接"
 
         parts = ["## Current Timeline State"]
 
@@ -285,16 +285,16 @@ Example:
     def _execute_command(self, cmd: str, params: dict) -> str:
         """Execute a single command. Returns result message."""
         if not self._window:
-            return f"⚠️ Timeline not connected — cannot execute {cmd}"
+            return f"⚠️ 时间线未连接，无法执行 {cmd}"
 
         try:
             handler = getattr(self, f'_cmd_{cmd}', None)
             if handler:
                 return handler(params)
             else:
-                return f"⚠️ Unknown command: {cmd}"
+                return f"⚠️ 未知命令：{cmd}"
         except Exception as e:
-            return f"❌ Error executing {cmd}: {e}"
+            return f"❌ 执行 {cmd} 时出错：{e}"
 
     # ----------------------------------------------------------------
     # Command handlers — all use _parse_float/_parse_int for robustness
@@ -307,19 +307,19 @@ Example:
             end = start + 3
         self._window.edit_scene.add_clip(start, end)
         self._window.update_edit_duration()
-        return f"✅ Added clip: {start:.1f}s - {end:.1f}s"
+        return f"✅ 已添加片段：{start:.1f}s - {end:.1f}s"
 
     def _cmd_remove_clip(self, p: dict) -> str:
         idx_str = p.get('index', '').strip()
         if not idx_str:
-            return "⚠️ Missing clip index"
+            return "⚠️ 缺少片段索引"
         if idx_str.lower() == 'all':
             return self._cmd_clear_clips(p)
 
         try:
             idx = _parse_int(idx_str) - 1  # Convert 1-based to 0-based
         except (ValueError, TypeError):
-            return f"⚠️ Invalid clip index: '{idx_str}'"
+            return f"⚠️ 无效的片段索引：'{idx_str}'"
 
         clips = self._window.edit_scene.clips
         if 0 <= idx < len(clips):
@@ -327,22 +327,22 @@ Example:
             clips.pop(idx)
             self._window.edit_scene.build_timeline()
             self._window.update_edit_duration()
-            return f"✅ Removed clip {idx+1} ({removed[0]:.1f}s - {removed[1]:.1f}s)"
+            return f"✅ 已移除片段 {idx+1}（{removed[0]:.1f}s - {removed[1]:.1f}s）"
         else:
-            return f"⚠️ Invalid clip index {idx+1} (have {len(clips)} clips)"
+            return f"⚠️ 无效的片段索引 {idx+1}（当前共 {len(clips)} 个片段）"
 
     def _cmd_clear_clips(self, p: dict) -> str:
         count = len(self._window.edit_scene.clips)
         self._window.edit_scene.clips.clear()
         self._window.edit_scene.build_timeline()
         self._window.update_edit_duration()
-        return f"✅ Cleared all {count} clips"
+        return f"✅ 已清空全部 {count} 个片段"
 
     def _cmd_seek(self, p: dict) -> str:
         t = _parse_float(p.get('time', '0'))
         t = max(0, min(t, self._window.video_duration))
         self._window.on_time_clicked(t)
-        return f"✅ Seeked to {t:.1f}s"
+        return f"✅ 已定位到 {t:.1f}s"
 
     def _cmd_play(self, p: dict) -> str:
         start = p.get('start')
@@ -355,22 +355,22 @@ Example:
                 self._window.video_player.setPosition(int(current * 1000))
                 self._window.video_player.play()
                 if hasattr(self._window, 'play_btn'):
-                    self._window.play_btn.setText("⏸ Pause")
-                return f"✅ Playing from {current:.1f}s"
-            return "⚠️ No video player available"
+                    self._window.play_btn.setText("⏸ 暂停")
+                return f"✅ 正在从 {current:.1f}s 开始播放"
+            return "⚠️ 没有可用的视频播放器"
 
         start = _parse_float(start)
         end = _parse_float(end, start + 5)
         self._window.play_video_clip(start, end)
-        return f"✅ Playing {start:.1f}s - {end:.1f}s"
+        return f"✅ 正在播放 {start:.1f}s - {end:.1f}s"
 
     def _cmd_pause(self, p: dict) -> str:
         if hasattr(self._window, 'video_player'):
             self._window.video_player.pause()
             if hasattr(self._window, 'play_btn'):
-                self._window.play_btn.setText("▶ Play")
-            return "✅ Paused"
-        return "⚠️ No video player available"
+                self._window.play_btn.setText("▶ 播放")
+            return "✅ 已暂停"
+        return "⚠️ 没有可用的视频播放器"
 
     def _cmd_resume(self, p: dict) -> str:
         return self._cmd_play({})
@@ -385,7 +385,7 @@ Example:
             return f"✅ Action '{name}' {action}"
         else:
             available = ', '.join(scene.visible_actions.keys())
-            return f"⚠️ Action '{name}' not found. Available: {available}"
+            return f"⚠️ 未找到动作 '{name}'。可用项：{available}"
 
     def _cmd_filter_object(self, p: dict) -> str:
         name = p.get('name', '').replace('_', ' ').strip().title()
@@ -397,11 +397,11 @@ Example:
             return f"✅ Object '{name}' {action}"
         else:
             available = ', '.join(scene.visible_objects.keys())
-            return f"⚠️ Object '{name}' not found. Available: {available}"
+            return f"⚠️ 未找到对象 '{name}'。可用项：{available}"
 
     def _cmd_show_all_filters(self, p: dict) -> str:
         self._window.show_all_filters()
-        return "✅ All filters reset — showing everything"
+        return "✅ 已重置全部筛选，当前显示所有内容"
 
     def _cmd_confidence(self, p: dict) -> str:
         min_c = _parse_float(p.get('min', '0.0'))
@@ -416,19 +416,19 @@ Example:
             scene.set_object_confidence_filter(min_c, max_c)
             applied.append('objects')
         if not applied:
-            return f"⚠️ Unknown confidence type '{target}'. Use action, object, or both."
-        return f"✅ Confidence filter set ({', '.join(applied)}): {min_c:.2f} - {max_c:.2f}"
+            return f"⚠️ 未知的置信度类型 '{target}'。请使用 action、object 或 both。"
+        return f"✅ 已设置置信度筛选（{', '.join(applied)}）：{min_c:.2f} - {max_c:.2f}"
 
     def _cmd_zoom(self, p: dict) -> str:
         level = _parse_int(p.get('level', '50'))
         level = max(10, min(200, level))
         self._window.signal_scene.set_zoom(level)
-        return f"✅ Zoom set to {level}"
+        return f"✅ 缩放已设为 {level}"
 
     def _cmd_list_clips(self, p: dict) -> str:
         clips = self._window.edit_scene.clips
         if not clips:
-            return "ℹ️ Edit timeline is empty"
+            return "ℹ️ 编辑时间线为空"
         lines = [f"ℹ️ {len(clips)} clips on edit timeline:"]
         for i, (s, e) in enumerate(clips):
             lines.append(f"  {i+1}. {s:.1f}s - {e:.1f}s ({e-s:.1f}s)")
@@ -439,8 +439,8 @@ Example:
     def _cmd_save(self, p: dict) -> str:
         if hasattr(self._window.edit_scene, 'save_clips_to_cache'):
             ok = self._window.edit_scene.save_clips_to_cache()
-            return "✅ Timeline saved to cache" if ok else "⚠️ Save failed"
-        return "⚠️ Cache saving not available"
+            return "✅ 时间线已保存到缓存" if ok else "⚠️ 保存失败"
+        return "⚠️ 当前无法保存缓存"
 
     def _cmd_export(self, p: dict) -> str:
         """Write every edit-timeline clip beside the source. No dialog.
@@ -463,20 +463,20 @@ Example:
         fmt = p.get('format', 'edl').lower()
         clips = self._window.edit_scene.clips
         if not clips:
-            return "⚠️ No clips to export"
+            return "⚠️ 没有可导出的片段"
 
         if fmt == 'edl':
             pattern, label, writer = '*.edl', 'EDL', TimelineExporter.to_edl
         elif fmt in ('xml', 'fcpxml'):
             pattern, label, writer = '*.fcpxml', 'FCPXML', TimelineExporter.to_fcp_xml
         else:
-            return f"⚠️ Unknown format: {fmt}. Use 'edl', 'fcpxml', or 'xml'"
+            return f"⚠️ 未知格式：{fmt}。请使用 'edl'、'fcpxml' 或 'xml'"
 
         start = p.get('start', RECORD_START_ZERO)
         try:
             record_start_seconds(start)
         except ExportError as exc:
-            return f"❌ Export failed: {exc}"
+            return f"❌ 导出失败：{exc}"
 
         video_path = self._window.video_path
         try:
@@ -487,9 +487,9 @@ Example:
                 clips, video_path, output_path,
                 source=source, record_start=start, spans=spans,
             )
-            return f"✅ {label} exported: {result}{skipped_note(result.skipped)}"
+            return f"✅ {label} 已导出：{result}{skipped_note(result.skipped)}"
         except Exception as exc:
-            return f"❌ Export failed: {exc}"
+            return f"❌ 导出失败：{exc}"
 
     def _cmd_visual_scan(self, p: dict) -> str:
         """
@@ -500,7 +500,7 @@ Example:
         target = p.get('target', '').replace('_', ' ').strip()
         
         if not target:
-            return "⚠️ Missing target description. Usage: [CMD:visual_scan interval=60 target=description]"
+            return "⚠️ 缺少目标描述。用法：[CMD:visual_scan interval=60 target=description]"
         
         if interval < 0.5:
             interval = 0.5
@@ -510,7 +510,7 @@ Example:
         # Delegate to the scan callback (set by LLMChatWidget)
         if self._scan_callback:
             self._scan_callback(target, interval)
-            return f"🔍 Starting visual scan every {interval:.0f}s looking for: {target}"
+            return f"🔍 开始视觉扫描：每 {interval:.0f}s 查找一次：{target}"
         else:
             return (
                 f"⚠️ Visual scan not available. Use the Visual Search panel instead:\n"
@@ -525,7 +525,7 @@ Example:
         findings = scene.get_visual_findings(query)
         if not findings:
             suffix = f" for '{query}'" if query else ""
-            return f"ℹ️ No visual findings{suffix}"
+            return f"ℹ️ 没有视觉查找结果{suffix}"
 
         lines = [f"ℹ️ {len(findings)} visual finding(s):"]
         for f in findings[:30]:
@@ -546,5 +546,5 @@ Example:
             self._window.save_visual_findings_to_cache()
         after = len(scene.visual_findings)
         if query:
-            return f"✅ Cleared {before - after} finding(s) for '{query}'"
-        return f"✅ Cleared all {before} visual finding(s)"
+            return f"✅ 已清除 '{query}' 的 {before - after} 条查找结果"
+        return f"✅ 已清除全部 {before} 条视觉查找结果"

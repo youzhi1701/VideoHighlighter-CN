@@ -260,7 +260,7 @@ def begin(title: str, subtitle: str = "", steps: int = 6, parent=None):
         # actually painted, so the logo never blinks out mid-launch.
         close_native_splash()
     except Exception as e:
-        print(f"⚠️ Startup splash unavailable: {e}")
+        print(f"⚠️ 启动画面不可用：{e}")
         _current = None
     _started_at = time.perf_counter()
     return _current

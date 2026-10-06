@@ -100,7 +100,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non
     with zipfile.ZipFile(zip_path) as z:
         member = next((n for n in z.namelist() if n.endswith("end2end.onnx")), None)
         if member is None:
-            raise ValueError(f"{zip_path.name} contains no end2end.onnx — layout changed?")
+            raise ValueError(f"{zip_path.name} 中没有 end2end.onnx——模型包结构可能已变化")
         log(f"📦 正在解压 {member.rsplit('/', 1)[-1]} → {dest.name}")
         dest.parent.mkdir(parents=True, exist_ok=True)
         with z.open(member) as src, open(dest, "wb") as out:
@@ -126,7 +126,7 @@ def install(sizes: Iterable[str] = DEFAULT_SIZES,
     sizes = [s.lower() for s in sizes]
     unknown = [s for s in sizes if s not in SIZES]
     if unknown:
-        raise ValueError(f"Unknown RTMPose size(s): {unknown}. Choose from: {', '.join(SIZES)}")
+        raise ValueError(f"未知 RTMPose 尺寸：{unknown}。可选值：{', '.join(SIZES)}")
     out = []
     for size in sizes:
         xml = ir_path(size)

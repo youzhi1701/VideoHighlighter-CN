@@ -72,7 +72,7 @@ class AdaptiveActionDetector:
         
         if len(current_poses) == 0:
             if self.debug:
-                print("   ⚠️  No poses detected -> defaulting to LOWER BODY (hip-based)")
+                print("   ⚠️  未检测到姿态 → 默认按下半身区域处理（基于髋部）")
             # When no poses detected, assume lower body action
             return self._merge_boxes(person_boxes), 'lower_body'
         
@@ -146,15 +146,15 @@ class AdaptiveActionDetector:
                         motion_regions['lower_body'] += 2.0
                         motion_regions['feet'] += 1.5
                         if self.debug:
-                            print("   🎬 FIRST FRAME: Lower body visible, mild LOWER BODY bias")
+                            print("   🎬 首帧：下半身可见，轻度偏向下半身区域")
                     elif body_visibility.get('has_hips', False):
                         motion_regions['lower_body'] += 1.5
                         if self.debug:
-                            print("   🎬 FIRST FRAME: Hips visible, mild LOWER BODY bias")
+                            print("   🎬 首帧：髋部可见，轻度偏向下半身区域")
                     else:
                         motion_regions['upper_body'] += 2.0
                         if self.debug:
-                            print("   🎬 FIRST FRAME: Upper body dominant")
+                            print("   🎬 首帧：上半身占主导")
 
             return motion_regions
         
@@ -219,18 +219,18 @@ class AdaptiveActionDetector:
         
         if is_first_frame_bias:
             if self.debug:
-                print("   🎬 FIRST FRAME DECISION based on visibility")
+                print("   🎬 根据可见性进行首帧判断")
             # First frame: decide purely on visibility
             if lower_body_motion > upper_body_motion:
                 if self.debug:
-                    print("   🦵 First frame: Lower body visibility bias -> LOWER BODY")
+                    print("   🦵 首帧：下半身可见性占优 → 下半身")
                 return 'lower_body'
             elif body_visibility.get('has_hips', False):
                 if self.debug:
-                    print("   🦴 First frame: Hips visible -> LOWER BODY")
+                    print("   🦴 首帧：髋部可见 → 下半身")
             elif body_visibility.get('has_feet', False):
                 if self.debug:
-                    print("   🦶 First frame: Feet visible -> LOWER BODY")
+                    print("   🦶 首帧：脚部可见 → 下半身")
                 return 'lower_body'
         
         # NO MOTION DETECTED
@@ -238,11 +238,11 @@ class AdaptiveActionDetector:
             # If no motion but we can see body parts, decide based on visibility
             if body_visibility['has_hips'] or body_visibility['has_feet']:
                 if self.debug:
-                    print("   🦴 Hips/feet visible, no motion -> LOWER BODY default")
+                    print("   🦴 髋部/脚部可见但无明显运动 → 默认下半身")
                 return 'lower_body'
             elif body_visibility['has_upper']:
                 if self.debug:
-                    print("   🦴 Upper body visible, no motion -> UPPER BODY default")
+                    print("   🦴 上半身可见但无明显运动 → 默认上半身")
                 return 'upper_body'
             return 'full_body'
         
@@ -253,7 +253,7 @@ class AdaptiveActionDetector:
         if self.debug:
             debug_info = {k: f"{v:.2f}" for k, v in motion_regions.items()}
             visibility_info = ', '.join([k.replace('has_', '') for k, v in body_visibility.items() if v])
-            print(f"   Motion: {debug_info}, Visible: {visibility_info}, Threshold: {base_threshold:.2f}")
+            print(f"   运动量：{debug_info}，可见部位：{visibility_info}，阈值：{base_threshold:.2f}")
         
         # ============================================
         # FULL BODY DETECTION
@@ -273,19 +273,19 @@ class AdaptiveActionDetector:
             # If motion is relatively balanced (within 2x), it's a full body action
             if motion_ratio > 0.5:
                 if self.debug:
-                    print(f"   🧍 FULL BODY detected - balanced motion (upper={total_upper:.2f}, lower={total_lower:.2f}, ratio={motion_ratio:.2f})")
+                    print(f"   🧍 检测到全身动作——运动较均衡（上半身={total_upper:.2f}，下半身={total_lower:.2f}，比例={motion_ratio:.2f}）")
                 return 'full_body'
             elif total_upper > total_lower * 1.3:
                 if self.debug:
-                    print(f"   💪 Both moving but UPPER dominant (upper={total_upper:.2f}, lower={total_lower:.2f})")
+                    print(f"   💪 上下半身均在运动，但上半身占主导（上={total_upper:.2f}，下={total_lower:.2f}）")
                 return 'upper_body'
             elif total_lower > total_upper * 1.3:
                 if self.debug:
-                    print(f"   🦵 Both moving but LOWER dominant (upper={total_upper:.2f}, lower={total_lower:.2f})")
+                    print(f"   🦵 上下半身均在运动，但下半身占主导（上={total_upper:.2f}，下={total_lower:.2f}）")
                 return 'lower_body'
             else:
                 if self.debug:
-                    print(f"   🧍 FULL BODY detected - both regions active (upper={total_upper:.2f}, lower={total_lower:.2f})")
+                    print(f"   🧍 检测到全身动作——上下区域均活跃（上={total_upper:.2f}，下={total_lower:.2f}）")
                 return 'full_body'
         
         # Check visibility for full body actions
@@ -295,7 +295,7 @@ class AdaptiveActionDetector:
         if has_full_body_visible and total_motion > base_threshold:
             # If we can see both upper and lower body, and there's general motion
             if total_upper > 0 and total_lower > 0:
-                print(f"   🧍 FULL BODY detected - visibility + distributed motion")
+                print("   🧍 检测到全身动作——身体可见且运动分布在多个区域")
                 return 'full_body'
         
         # ============================================
@@ -304,58 +304,58 @@ class AdaptiveActionDetector:
         # SPECIAL CASE: If hips are visible but upper body isn't, favor lower body
         if body_visibility['has_hips'] and not body_visibility['has_upper']:
             if self.debug:
-                print("   🦴 Hips visible, no upper body -> LOWER BODY bias")
+                print("   🦴 髋部可见、上半身不可见 → 偏向下半身")
             if lower_body_motion > 0 or feet_motion > 0:
                 if self.debug:
-                    print("   🦵 ANY lower motion with hip visibility -> LOWER BODY")
+                    print("   🦵 髋部可见且存在任意下半身运动 → 下半身")
                 return 'lower_body'
         
         # EVEN MORE AGGRESSIVE: If lower body visible at all, lower the threshold further
         if body_visibility.get('has_hips', False) or body_visibility.get('has_feet', False):
             lower_body_threshold = base_threshold * 0.6
             if self.debug:
-                print(f"   🦴 Lower body parts visible, using moderate threshold: {lower_body_threshold:.2f}")
+                print(f"   🦴 下半身部位可见，使用中等阈值：{lower_body_threshold:.2f}")
             
             if lower_body_motion > lower_body_threshold or feet_motion > lower_body_threshold * 0.7:
                 if self.debug:
-                    print("   🦵 LOWER BODY detected with hip/feet visibility")
+                    print("   🦵 髋部/脚部可见，检测为下半身动作")
                 return 'lower_body'
 
         # PRIORITY ORDER with LOWER thresholds for lower body
         # 1. Hands (clear hand actions)
         if hands_motion > base_threshold * 1.5:
             if self.debug:
-                print("   👐 Hand motion detected -> UPPER BODY")
+                print("   👐 检测到手部运动 → 上半身")
             return 'upper_body'
         
         # 2. Feet (explicit foot motion)
         if feet_motion > base_threshold * 0.6:
             if self.debug:
-                print("   🦶 Foot motion detected -> LOWER BODY")
+                print("   🦶 检测到脚部运动 → 下半身")
             return 'lower_body'
         
         # 3. Lower body region (leg movement)
         if lower_body_motion > base_threshold * 0.6:
             if self.debug:
-                print("   🦵 Lower body motion detected -> LOWER BODY")
+                print("   🦵 检测到下半身运动 → 下半身")
             return 'lower_body'
         
         # 4. Head motion
         if head_motion > base_threshold * 1.0:
             if self.debug:
-                print("   👤 Head motion detected -> UPPER BODY")
+                print("   👤 检测到头部运动 → 上半身")
             return 'upper_body'
         
         # 5. Upper body (torso, arms)
         if upper_body_motion > base_threshold * 0.7:
             if self.debug:
-                print("   💪 Upper body motion detected -> UPPER BODY")
+                print("   💪 检测到上半身运动 → 上半身")
             return 'upper_body'
         
         # 6. ANY lower body hint + hip visibility
         if (lower_body_motion > 0 or feet_motion > 0) and body_visibility['has_hips']:
             if self.debug:
-                print(f"   🦴 Lower motion with visible hips -> LOWER BODY")
+                print("   🦴 髋部可见且存在下半身运动 → 下半身")
             return 'lower_body'
         
         # 7. ANY lower body motion (even tiny)
@@ -365,17 +365,17 @@ class AdaptiveActionDetector:
             
             if total_lower > 0 and total_lower >= total_upper * 0.3:
                 if self.debug:
-                    print(f"   🦵 Subtle lower motion (lower={total_lower:.2f}, upper={total_upper:.2f}) -> LOWER BODY")
+                    print(f"   🦵 检测到轻微下半身运动（下={total_lower:.2f}，上={total_upper:.2f}）→ 下半身")
                 return 'lower_body'
         
         # 8. Final fallback based on visibility
         if body_visibility['has_hips'] or body_visibility['has_feet']:
             if self.debug:
-                print("   🦴 Defaulting to LOWER BODY (hips/feet visible)")
+                print("   🦴 默认使用下半身区域（髋部/脚部可见）")
             return 'lower_body'
         
         if self.debug:
-            print("   🔄 No clear focus -> FULL BODY")
+            print("   🔄 无明确聚焦区域 → 全身")
         return 'full_body'
     
     def _adaptive_crop(self, focus_region, poses, frame_width, frame_height):
@@ -455,15 +455,15 @@ class AdaptiveActionDetector:
         current_poses = self._get_matched_poses(frame, person_boxes, pose_extractor, 2)
         
         if len(current_poses) == 0:
-            print("   ❌ No poses detected -> Will default to LOWER BODY")
+            print("   ❌ 未检测到姿态 → 将默认使用下半身区域")
             return
         
         body_visibility = self._check_body_visibility(current_poses)
         motion_regions = self._analyze_motion_regions(current_poses)
         focus_region = self._determine_focus_region(current_poses, motion_regions, person_boxes, body_visibility)
         
-        print(f"   🔍 DEBUG: {len(current_poses)} poses, Focus: {focus_region}")
-        print(f"   📊 Motion: {motion_regions}")
+        print(f"   🔍 调试：{len(current_poses)} 个姿态，聚焦区域：{focus_region}")
+        print(f"   📊 运动区域：{motion_regions}")
         
         upper_body_kpts = 0
         lower_body_kpts = 0
@@ -479,8 +479,8 @@ class AdaptiveActionDetector:
                 if pose[idx, 2] > 0.15:
                     hip_kpts += 1
         
-        print(f"   👤 Keypoints: upper={upper_body_kpts}, lower={lower_body_kpts}, hips={hip_kpts}")
-        print(f"   🦴 Visibility: {body_visibility}")
+        print(f"   👤 关键点：上半身={upper_body_kpts}，下半身={lower_body_kpts}，髋部={hip_kpts}")
+        print(f"   🦴 可见性：{body_visibility}")
 
 
 
@@ -769,14 +769,14 @@ class SmartActionDetector:
                 
                 if is_new_pair:
                     if best_pair_score > 0.9:
-                        print(f"   🔄 Switching to new pair (score: {best_pair_score:.2f})")
+                        print(f"   🔄 切换到新的目标组合（评分：{best_pair_score:.2f}）")
                         self.locked_pair = selected_boxes
                         self.lock_strength = 1
                     else:
                         if self.locked_pair is not None and len(self.selection_history) > 0:
                             self.lock_strength = max(self.lock_strength - 1, 0)
                             if self.lock_strength > 0:
-                                print(f"   🔒 Keeping locked pair (new score: {best_pair_score:.2f} < 0.9)")
+                                print(f"   🔒 保持当前锁定组合（新评分：{best_pair_score:.2f} < 0.9）")
                                 return self.selection_history[-1][:2]
                         self.locked_pair = selected_boxes
                         self.lock_strength = 1
@@ -937,7 +937,7 @@ class SmoothedROIDetector:
             
             if self.debug:
                 avg_alpha = sum(self.alpha_history) / len(self.alpha_history)
-                print(f"   🎚️  Adaptive alpha: {self.alpha:.2f} (avg: {avg_alpha:.2f})")
+                print(f"   🎚️  自适应 alpha：{self.alpha:.2f}（平均：{avg_alpha:.2f}）")
         else:
             self.alpha = self.base_alpha
             
@@ -1010,7 +1010,7 @@ class SmoothedROIDetector:
             alpha = 0.70  # Maximum responsiveness
         
         if self.debug:
-            print(f"   📊 Motion score: {motion_score:.4f} (disp={normalized_displacement:.4f}, size={size_change:.4f}) → alpha={alpha:.2f}")
+            print(f"   📊 运动评分：{motion_score:.4f}（位移={normalized_displacement:.4f}，尺寸变化={size_change:.4f}）→ alpha={alpha:.2f}")
         
         return alpha
     
@@ -1042,7 +1042,7 @@ class PoseExtractor:
     """Pose-guided cropping unavailable (YOLOX is detection-only)."""
 
     def __init__(self, model_name=None, conf_threshold=0.3):
-        print("⚠️ Pose model disabled — ROI will use YOLOX person boxes only.")
+        print("⚠️ 姿态模型已禁用——ROI 将仅使用 YOLOX 人物检测框。")
         self.model = None
         self.conf_threshold = conf_threshold
         self.num_keypoints = 17
@@ -1191,16 +1191,16 @@ def crop_roi(frame, roi, output_size):
 def visualize_training_sample(video_path, label, pose_extractor, adaptive_detector, 
                              output_path="training_sample.mp4", sample_rate=5, debug=False):
     """Creates a video sample visualization showing action detection"""
-    print(f"\n🎬 Creating training sample visualization for: {video_path}")
-    print(f"   Action label: {label}")
-    print(f"   Detection sample rate: every {sample_rate} frame(s)")
+    print(f"\n🎬 正在创建训练样本可视化：{video_path}")
+    print(f"   动作标签：{label}")
+    print(f"   检测采样率：每 {sample_rate} 帧一次")
     
     # Set debug mode for the detector if passed
     adaptive_detector.debug = debug
 
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        print(f"❌ Could not open video: {video_path}")
+        print(f"❌ 无法打开视频：{video_path}")
         return False
     
     fps = int(cap.get(cv2.CAP_PROP_FPS))
@@ -1211,7 +1211,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
     if fps == 0:
         fps = 30
     
-    print(f"   Video properties: {width}x{height}, {fps} FPS, {total_frames} frames")
+    print(f"   视频属性：{width}x{height}，{fps} FPS，{total_frames} 帧")
     
     # Try codecs
     codecs = [('mp4v', '.mp4'), ('avc1', '.mp4'), ('XVID', '.avi'), ('MJPG', '.avi')]
@@ -1224,7 +1224,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
             video_writer = cv2.VideoWriter(output_path_with_ext, fourcc, fps, (width, height + 100))
             if video_writer.isOpened():
                 output_path = output_path_with_ext
-                print(f"   Using codec: {codec}")
+                print(f"   使用编码器：{codec}")
                 break
             else:
                 video_writer = None
@@ -1232,7 +1232,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
             continue
     
     if video_writer is None:
-        print("❌ Could not initialize video writer")
+        print("❌ 无法初始化视频写入器")
         cap.release()
         return False
     
@@ -1295,7 +1295,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
                         frame_rgb, boxes_only, pose_extractor, max_poses=2
                     )
                     
-                    print(f"   Frame {frame_count}: Focus region = {focus_region}")
+                    print(f"   第 {frame_count} 帧：聚焦区域 = {focus_region}")
                     
                     # Debug motion analysis
                     adaptive_detector.debug_motion_analysis(frame_rgb, boxes_only, pose_extractor)
@@ -1336,7 +1336,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
                     action_roi = merge_boxes(boxes_only)
                     last_poses = []
                     focus_region = "full_body"
-                    print(f"   Frame {frame_count}: No pose detection, using FULL BODY")
+                    print(f"   第 {frame_count} 帧：未检测到姿态，使用全身区域")
                 
                 last_action_roi = roi_smoother.update(action_roi)
 
@@ -1349,7 +1349,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
                         frame_rgb, boxes_only, pose_extractor, max_poses=2
                     )
                     if not debug:  # Only print summary if not in debug mode
-                        print(f"   Frame {frame_count}: Focus region = {focus_region}")   
+                        print(f"   第 {frame_count} 帧：聚焦区域 = {focus_region}")   
             
             # Draw tracked person boxes with ACTION SCORE indicators
             for i, item in enumerate(last_tracked_people):
@@ -1424,7 +1424,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
             successful_frames += 1
             
         except Exception as e:
-            print(f"⚠️  Error processing frame {frame_count}: {e}")
+            print(f"⚠️  处理第 {frame_count} 帧时出错：{e}")
         
         frame_count += 1
         pbar.update(1)
@@ -1434,17 +1434,17 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
     pbar.close()
     
     success_rate = (successful_frames / frame_count) * 100 if frame_count > 0 else 0
-    print(f"✅ Visualization: {successful_frames}/{frame_count} frames ({success_rate:.1f}%)")
-    print(f"✅ Output: {output_path}")
+    print(f"✅ 可视化完成：{successful_frames}/{frame_count} 帧（{success_rate:.1f}%）")
+    print(f"✅ 输出：{output_path}")
     
     return successful_frames > 0
 
 def create_sample_visualizations(dataset, pose_extractor, num_samples=2):
     """Create visualizations for random samples"""
-    print(f"\n📹 Creating {num_samples} sample visualizations...")
+    print(f"\n📹 正在创建 {num_samples} 个样本可视化…")
     
     if len(dataset.samples) == 0:
-        print("❌ No samples found")
+        print("❌ 未找到样本")
         return
     
     selected_indices = random.sample(range(len(dataset.samples)), min(num_samples, len(dataset.samples)))
@@ -1672,7 +1672,7 @@ class VideoDataset(Dataset):
         self.is_training = is_training
 
         if not os.path.exists(root):
-            print(f"Warning: Dataset path {root} does not exist")
+            print(f"警告：数据集路径不存在：{root}")
             self.labels = []
             self.label_to_idx = {}
             self.idx_to_label = {}
@@ -1683,7 +1683,7 @@ class VideoDataset(Dataset):
         self.idx_to_label = {idx: label for label, idx in self.label_to_idx.items()}
         self.labels = class_folders
         
-        print(f"📊 Detected {len(self.labels)} action classes:")
+        print(f"📊 检测到 {len(self.labels)} 个动作类别：")
         for label, idx in self.label_to_idx.items():
             print(f"  {idx}: {label}")
 
@@ -1697,7 +1697,7 @@ class VideoDataset(Dataset):
                 self.samples.append((video_path, self.label_to_idx[label]))
                 video_count += 1
 
-        print(f"✅ Found {video_count} videos")
+        print(f"✅ 找到 {video_count} 个视频")
 
     def __len__(self):
         return len(self.samples)
@@ -1731,9 +1731,9 @@ def validate_and_split_dataset(train_dataset, val_dataset):
     min_train = CONFIG['min_train_per_action']
     min_val = CONFIG['min_val_per_action']
     
-    print(f"\n📊 Validating dataset size...")
-    print(f"  Minimum training videos per action: {min_train}")
-    print(f"  Minimum validation videos per action: {min_val}")
+    print("\n📊 正在验证数据集规模…")
+    print(f"  每个动作最少训练视频数：{min_train}")
+    print(f"  每个动作最少验证视频数：{min_val}")
     
     # Count videos per action in BOTH sets
     train_counts = {}
@@ -1770,18 +1770,18 @@ def validate_and_split_dataset(train_dataset, val_dataset):
         
         # Check if action has enough TOTAL samples
         if train_count < min_train:
-            print(f"  ❌ Action '{action}': Only {train_count} train videos (need {min_train}) - SKIPPED")
+            print(f"  ❌ 动作“{action}”：仅有 {train_count} 个训练视频（至少需要 {min_train}）——已跳过")
             continue
         
         # Check if we need to split for validation
         if val_count < min_val:
             # Check if we have enough TOTAL samples to split
             if total_count < min_train + min_val:
-                print(f"  ⚠️  Action '{action}': {total_count} total videos (need {min_train + min_val}) - SKIPPED")
+                print(f"  ⚠️  动作“{action}”：共 {total_count} 个视频（至少需要 {min_train + min_val}）——已跳过")
                 continue
             
             # AUTO-SPLIT: We have enough total, but validation is insufficient
-            print(f"  🔄 Action '{action}': {train_count} train, {val_count} val → AUTO-SPLITTING")
+            print(f"  🔄 动作“{action}”：训练 {train_count}，验证 {val_count} → 自动拆分")
             
             all_videos = train_vids + val_vids
             
@@ -1799,28 +1799,28 @@ def validate_and_split_dataset(train_dataset, val_dataset):
             new_val_samples.extend(new_val)
             valid_actions.append(action)
             
-            print(f"     ✓ Split into: {len(new_train)} train, {len(new_val)} val")
+            print(f"     ✓ 已拆分为：训练 {len(new_train)}，验证 {len(new_val)}")
         else:
             # Action already has enough samples in both sets
-            print(f"  ✅ Action '{action}': {train_count} train, {val_count} val - OK")
+            print(f"  ✅ 动作“{action}”：训练 {train_count}，验证 {val_count}——可用")
             new_train_samples.extend(train_vids)
             new_val_samples.extend(val_vids)
             valid_actions.append(action)
     
     # Check if we have any valid actions
     if len(valid_actions) == 0:
-        print("\n❌ No actions meet minimum requirements. Please collect more videos.")
+        print("\n❌ 没有任何动作类别满足最低要求，请补充更多视频。")
         return False, [], [], []
     
     # Summary
-    print(f"\n✅ Dataset validation complete!")
-    print(f"  Valid actions: {len(valid_actions)}/{len(train_dataset.labels)}")
-    print(f"  Final training samples: {len(new_train_samples)}")
-    print(f"  Final validation samples: {len(new_val_samples)}")
+    print("\n✅ 数据集验证完成！")
+    print(f"  有效动作：{len(valid_actions)}/{len(train_dataset.labels)}")
+    print(f"  最终训练样本：{len(new_train_samples)}")
+    print(f"  最终验证样本：{len(new_val_samples)}")
     
     if len(new_val_samples) == 0:
-        print(f"\n⚠️  WARNING: No validation samples after filtering!")
-        print(f"   Training will proceed but validation metrics will be unreliable.")
+        print("\n⚠️  警告：筛选后没有验证样本！")
+        print("   训练仍会继续，但验证指标将不可靠。")
     
     return True, valid_actions, new_train_samples, new_val_samples
 
@@ -1845,9 +1845,9 @@ def compute_class_weights(train_dataset):
         weight = total_samples / (num_classes * count)
         weights.append(weight)
     
-    print(f"\n⚖️  Class weights computed (inverse frequency):")
-    print(f"   Total samples: {total_samples}")
-    print(f"   Number of classes: {num_classes}")
+    print("\n⚖️  已计算类别权重（频率倒数）：")
+    print(f"   样本总数：{total_samples}")
+    print(f"   类别数量：{num_classes}")
     
     for idx, weight in enumerate(weights):
         # Safely get class name
@@ -1856,12 +1856,12 @@ def compute_class_weights(train_dataset):
         else:
             class_name = f"Class_{idx}"
         count = label_counts.get(idx, 0)
-        print(f"   {class_name}: {count} samples, weight: {weight:.4f}")
+        print(f"   {class_name}：{count} 个样本，权重：{weight:.4f}")
     
     # Verify we have the right number of weights
     if len(weights) != num_classes:
-        print(f"⚠️  WARNING: Expected {num_classes} weights, got {len(weights)}")
-        print(f"   Truncating to {num_classes} weights...")
+        print(f"⚠️  警告：预期 {num_classes} 个权重，实际得到 {len(weights)} 个")
+        print(f"   正在截取为 {num_classes} 个权重…")
         weights = weights[:num_classes]
     
     return torch.FloatTensor(weights)
@@ -1872,13 +1872,13 @@ def print_class_distribution(dataset, dataset_name="Dataset"):
     for _, label in dataset.video_samples:
         label_counts[label] = label_counts.get(label, 0) + 1
     
-    print(f"\n📊 {dataset_name} class distribution:")
+    print(f"\n📊 {dataset_name} 类别分布：")
     total = sum(label_counts.values())
     for label_idx in sorted(label_counts.keys()):
         count = label_counts[label_idx]
         percentage = (count / total) * 100
         class_name = dataset.idx_to_label[label_idx]
-        print(f"   {class_name}: {count} videos ({percentage:.1f}%)")
+        print(f"   {class_name}：{count} 个视频（{percentage:.1f}%）")
     
     counts = list(label_counts.values())
     if len(counts) > 1:
@@ -1886,10 +1886,10 @@ def print_class_distribution(dataset, dataset_name="Dataset"):
         min_count = min(counts)
         imbalance_ratio = max_count / min_count
         if imbalance_ratio > 2.0:
-            print(f"   ⚠️  Class imbalance detected! Ratio: {imbalance_ratio:.2f}x")
-            print(f"   💡 Class weighting is ENABLED to handle this")
+            print(f"   ⚠️  检测到类别不平衡！比例：{imbalance_ratio:.2f}x")
+            print("   💡 已启用类别权重以处理不平衡")
         else:
-            print(f"   ✅ Classes are relatively balanced (ratio: {imbalance_ratio:.2f}x)")
+            print(f"   ✅ 类别相对均衡（比例：{imbalance_ratio:.2f}x）")
 
 # =============================
 # Intel Feature Extractor
@@ -1903,7 +1903,7 @@ class IntelFeatureExtractor:
         input_tensor = self.encoder.inputs[0]
         self.input_name = input_tensor.get_any_name()
         self.input_shape = list(input_tensor.get_shape())
-        print(f"Encoder input: {self.input_name}, shape: {self.input_shape}")
+        print(f"编码器输入：{self.input_name}，形状：{self.input_shape}")
 
     def encode(self, frames_batch):
         """
@@ -2077,15 +2077,15 @@ def save_checkpoint(model, optimizer, epoch, best_val_acc, label_to_idx, idx_to_
     }
     
     torch.save(checkpoint, checkpoint_path)
-    print(f"💾 Checkpoint saved: {checkpoint_path} (epoch {epoch+1})")
+    print(f"💾 检查点已保存：{checkpoint_path}（第 {epoch+1} 轮）")
 
 def load_checkpoint(checkpoint_path, model, optimizer=None, strict=True):
     """Load training checkpoint"""
     if not os.path.exists(checkpoint_path):
-        print(f"❌ Checkpoint not found: {checkpoint_path}")
+        print(f"❌ 找不到检查点：{checkpoint_path}")
         return None
     
-    print(f"📂 Loading checkpoint: {checkpoint_path}")
+    print(f"📂 正在加载检查点：{checkpoint_path}")
     checkpoint = torch.load(checkpoint_path, map_location=CONFIG['device'], weights_only=False)
     
     # Check if number of classes matches
@@ -2093,10 +2093,10 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, strict=True):
     current_num_classes = model.fc.out_features
     
     if saved_num_classes != current_num_classes:
-        print(f"⚠️  Class mismatch detected:")
-        print(f"   Checkpoint: {saved_num_classes} classes")
-        print(f"   Current model: {current_num_classes} classes")
-        print(f"   Loading shared weights only (transfer learning mode)")
+        print("⚠️  检测到类别不匹配：")
+        print(f"   检查点：{saved_num_classes} 个类别")
+        print(f"   当前模型：{current_num_classes} 个类别")
+        print("   仅加载共享权重（迁移学习模式）")
         
         # Load everything except the final classification layer
         state_dict = checkpoint['model_state_dict']
@@ -2110,8 +2110,8 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, strict=True):
         model_dict.update(pretrained_dict)
         model.load_state_dict(model_dict)
         
-        print(f"   ✅ Loaded {len(pretrained_dict)} shared layers")
-        print(f"   🆕 Final classification layer randomly initialized for {current_num_classes} classes")
+        print(f"   ✅ 已加载 {len(pretrained_dict)} 个共享层")
+        print(f"   🆕 最终分类层已为 {current_num_classes} 个类别随机初始化")
         
         # Don't load optimizer state when doing transfer learning
         return {
@@ -2130,11 +2130,11 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, strict=True):
         try:
             optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         except Exception as e:
-            print(f"⚠️  Could not load optimizer state: {e}")
+            print(f"⚠️  无法加载优化器状态：{e}")
     
-    print(f"✅ Checkpoint loaded successfully!")
-    print(f"   Resuming from epoch {checkpoint['epoch'] + 1}")
-    print(f"   Best validation accuracy: {checkpoint.get('best_val_acc', 0):.4f}")
+    print("✅ 检查点加载成功！")
+    print(f"   从第 {checkpoint['epoch'] + 1} 轮继续训练")
+    print(f"   最佳验证准确率：{checkpoint.get('best_val_acc', 0):.4f}")
     
     return checkpoint
 
@@ -2195,7 +2195,7 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
         dummy_feats = encoder.encode(sample_frames[0:1].cpu())
         feature_dim = dummy_feats.shape[-1]
     
-    print(f"Feature dimension: {feature_dim}")
+    print(f"特征维度：{feature_dim}")
     
     model = EncoderLSTM(
         feature_dim=feature_dim, 
@@ -2208,12 +2208,12 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
     # Print model summary
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f"\n📊 Enhanced Model Architecture:")
-    print(f"  - Input: (B, {CONFIG['sequence_length']}, {feature_dim})")
-    print(f"  - 2-layer BiLSTM: {256} hidden units, bidirectional")
-    print(f"  - Attention: Tanh-based")
-    print(f"  - Parameters: {total_params:,} total, {trainable_params:,} trainable")
-    print(f"  - Estimated size: ~{total_params * 4 / 1e6:.1f} MB")
+    print("\n📊 增强模型结构：")
+    print(f"  - 输入：(B, {CONFIG['sequence_length']}, {feature_dim})")
+    print(f"  - 2 层 BiLSTM：{256} 个隐藏单元，双向")
+    print("  - 注意力：基于 Tanh")
+    print(f"  - 参数：共 {total_params:,} 个，其中 {trainable_params:,} 个可训练")
+    print(f"  - 预计大小：约 {total_params * 4 / 1e6:.1f} MB")
     
     # Class weights and criterion
     if CONFIG.get('use_class_weights', True):
@@ -2221,17 +2221,17 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
         criterion = nn.CrossEntropyLoss(weight=class_weights, label_smoothing=0.1)
     else:
         criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
-        print("\n⚠️  Training without class weights")
+        print("\n⚠️  未使用类别权重进行训练")
     
     is_resuming = CONFIG.get('checkpoint_path') and os.path.exists(CONFIG['checkpoint_path'])
     
     if is_resuming:
         lr = CONFIG['finetune_learning_rate']
-        print(f"🔄 Resume detected: using finetune LR {lr}")
+        print(f"🔄 检测到续训：使用微调学习率 {lr}")
 
     else:
         lr = CONFIG['base_learning_rate']
-        print(f"🆕 Training from scratch: using base LR {lr}")
+        print(f"🆕 从头训练：使用基础学习率 {lr}")
     
     # Optimizer with gradient clipping
     optimizer = torch.optim.AdamW(
@@ -2260,22 +2260,22 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
                 start_epoch = 0
                 best_val_acc = 0.0
                 best_val_loss = float('inf')
-                print("   🔄 Transfer learning: using pretrained features, training new classifier")
+                print("   🔄 迁移学习：使用预训练特征，训练新的分类器")
             else:
                 # Normal resume
                 start_epoch = checkpoint.get('epoch', 0) + 1
                 best_val_acc = checkpoint.get('best_val_acc', 0.0)
                 best_val_loss = checkpoint.get('best_val_loss', float('inf'))
         else:
-            print("⚠️  Failed to load checkpoint — starting from scratch")
+            print("⚠️  检查点加载失败——将从头开始训练")
 
     
     if is_resuming:
         max_epochs = start_epoch + CONFIG.get('max_finetune_epochs', 15)
-        print(f"   Fine-tuning mode: starting at epoch {start_epoch}, will run up to epoch {max_epochs}")
+        print(f"   微调模式：从第 {start_epoch} 轮开始，最多运行到第 {max_epochs} 轮")
     else:
         max_epochs = CONFIG.get('base_epochs', 25)
-        print(f"   Fresh training mode: will run up to epoch {max_epochs}")
+        print(f"   全新训练模式：最多运行 {max_epochs} 轮")
     
     patience_counter = 0
 
@@ -2321,9 +2321,9 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
         train_loss = running_loss / total_samples if total_samples > 0 else float('inf')
         train_acc = total_correct / total_samples if total_samples > 0 else 0.0
 
-        print(f"\nEpoch {epoch+1}/{max_epochs}")
-        print(f"  Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f}")
-        print(f"  Learning Rate: {optimizer.param_groups[0]['lr']:.6f}")
+        print(f"\n训练轮次 {epoch+1}/{max_epochs}")
+        print(f"  训练损失：{train_loss:.4f} | 训练准确率：{train_acc:.4f}")
+        print(f"  学习率：{optimizer.param_groups[0]['lr']:.6f}")
 
         val_loss = float('inf')
         val_acc = 0.0
@@ -2333,10 +2333,10 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
             val_loss, val_acc, per_class_acc = validate_classifier(
                 encoder, model, val_loader, device, criterion
             )
-            print(f"  Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.4f}")
+            print(f"  验证损失：{val_loss:.4f} | 验证准确率：{val_acc:.4f}")
             
             if per_class_acc:
-                print(f"  Per-class validation accuracy:")
+                print("  各类别验证准确率：")
                 for label_idx in sorted(per_class_acc.keys()):
                     class_name = idx_to_label[label_idx]
                     acc = per_class_acc[label_idx]
@@ -2349,12 +2349,12 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
             best_val_acc = val_acc
             best_model_state = model.state_dict().copy()
             patience_counter = 0
-            print("   ⭐ Validation loss improved — saving best model state and resetting patience.")
+            print("   ⭐ 验证损失已改善——保存最佳模型状态并重置耐心计数。")
         else:
             patience_counter += 1
-            print(f"   No improvement ({patience_counter}/{CONFIG['early_stopping_patience']})")
+            print(f"   暂无提升（{patience_counter}/{CONFIG['early_stopping_patience']}）")
             if patience_counter >= CONFIG['early_stopping_patience']:
-                print("\n🛑 Early stopping triggered")
+                print("\n🛑 已触发提前停止")
                 break
 
         if CONFIG.get('save_checkpoint_every') and (epoch + 1) % CONFIG['save_checkpoint_every'] == 0:
@@ -2365,7 +2365,7 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
     
     if best_model_state:
         model.load_state_dict(best_model_state)
-        print(f"\n✅ Loaded best model (val_loss={best_val_loss:.4f}, val_acc={best_val_acc:.4f})")
+        print(f"\n✅ 已加载最佳模型（验证损失={best_val_loss:.4f}，验证准确率={best_val_acc:.4f}）")
 
     # Create wrapped model
     wrapped_model = ActionRecognitionModel(
@@ -2408,8 +2408,8 @@ class ActionRecognitionModel:
         }
         with open(mapping_path, 'w') as f:
             json.dump(mapping_data, f, indent=2)
-        print(f"✅ Model saved: {path}")
-        print(f"✅ Mapping saved: {mapping_path}")
+        print(f"✅ 模型已保存：{path}")
+        print(f"✅ 标签映射已保存：{mapping_path}")
     
     @classmethod
     def load(cls, path, device='cpu'):
@@ -2454,8 +2454,8 @@ def create_production_model(encoder, trained_model, train_loader, val_loader,
         Filtered ActionRecognitionModel with only reliable classes
     """
     
-    print(f"\n🔍 CREATING PRODUCTION MODEL")
-    print(f"   Minimum required validation accuracy: {min_val_accuracy:.1%}")
+    print("\n🔍 正在创建生产模型")
+    print(f"   最低验证准确率要求：{min_val_accuracy:.1%}")
     print("=" * 80)
     
     # Evaluate per-class accuracy
@@ -2494,8 +2494,8 @@ def create_production_model(encoder, trained_model, train_loader, val_loader,
     classes_to_keep = []
     classes_to_remove = []
     
-    print(f"\n📊 Per-Class Validation Analysis:")
-    print(f"{'Action':<30} {'Accuracy':<12} {'Samples':<10} {'Decision'}")
+    print("\n📊 各类别验证分析：")
+    print(f"{'动作':<30} {'准确率':<12} {'样本数':<10} {'决定'}")
     print("-" * 80)
     
     for class_idx in sorted(class_total.keys()):
@@ -2526,24 +2526,24 @@ def create_production_model(encoder, trained_model, train_loader, val_loader,
     
     # Summary
     print("\n" + "=" * 80)
-    print(f"📊 SUMMARY:")
-    print(f"   Total classes: {len(class_total)}")
-    print(f"   Classes meeting threshold: {len(classes_to_keep)} ✅")
-    print(f"   Classes below threshold: {len(classes_to_remove)} ❌")
+    print("📊 汇总：")
+    print(f"   类别总数：{len(class_total)}")
+    print(f"   达到阈值的类别：{len(classes_to_keep)} ✅")
+    print(f"   低于阈值的类别：{len(classes_to_remove)} ❌")
     
     if len(classes_to_remove) > 0:
-        print(f"\n🗑️  Classes to be removed from production model:")
+        print("\n🗑️  将从生产模型中移除的类别：")
         for idx in classes_to_remove:
             name = trained_model.idx_to_label[idx]
             acc = class_correct.get(idx, 0) / class_total[idx] if class_total.get(idx, 0) > 0 else 0
-            print(f"      • {name} ({acc:.1%} accuracy)")
+            print(f"      • {name}（准确率 {acc:.1%}）")
     
     # Create new model with only reliable classes
     if len(classes_to_remove) == 0:
-        print(f"\n✅ All classes meet minimum accuracy! No filtering needed.")
+        print("\n✅ 所有类别都达到最低准确率，无需筛选。")
         return trained_model
     
-    print(f"\n🔨 Creating filtered production model...")
+    print("\n🔨 正在创建筛选后的生产模型…")
     
     # Create new label mappings
     new_label_to_idx = {}
@@ -2605,9 +2605,9 @@ def create_production_model(encoder, trained_model, train_loader, val_loader,
         sequence_length=trained_model.sequence_length
     )
     
-    print(f"\n✅ Production model created!")
-    print(f"   Classes: {len(new_label_to_idx)} (removed {len(classes_to_remove)})")
-    print(f"   Labels: {list(new_label_to_idx.keys())}")
+    print("\n✅ 生产模型创建完成！")
+    print(f"   类别数：{len(new_label_to_idx)}（已移除 {len(classes_to_remove)} 个）")
+    print(f"   标签：{list(new_label_to_idx.keys())}")
     
     return production_model
 
@@ -2617,27 +2617,27 @@ def create_production_model(encoder, trained_model, train_loader, val_loader,
 if __name__ == "__main__":
     # Set random seed for reproducibility
     set_seed(42)
-    print("✓ Random seed set to 42 for reproducibility\n")
+    print("✓ 随机种子已设为 42，以确保结果可复现\n")
     
     # Check if model files exist
     if not os.path.exists(ENCODER_XML) or not os.path.exists(ENCODER_BIN):
-        print(f"Error: Intel model files not found at:")
+        print("错误：未在以下位置找到 Intel 模型文件：")
         print(f"  XML: {ENCODER_XML}")
         print(f"  BIN: {ENCODER_BIN}")
-        print("Please download the model using the OpenVINO Model Downloader")
+        print("请使用 OpenVINO Model Downloader 下载模型")
         exit(1)
 
     train_dataset = VideoDataset(os.path.join(CONFIG['data_path'], "train"))
     val_dataset = VideoDataset(os.path.join(CONFIG['data_path'], "val"))
     
     if len(train_dataset) == 0:
-        print("No training samples found! Please check your dataset structure.")
+        print("未找到训练样本！请检查数据集目录结构。")
         exit(1)
         
-    print(f"\n📁 Initial Dataset Information:")
-    print(f"  Training samples:   {len(train_dataset)}")
-    print(f"  Validation samples: {len(val_dataset)}")
-    print(f"  Classes detected: {train_dataset.labels}")
+    print("\n📁 初始数据集信息：")
+    print(f"  训练样本：{len(train_dataset)}")
+    print(f"  验证样本：{len(val_dataset)}")
+    print(f"  检测到的类别：{train_dataset.labels}")
     
     # 🔧 VALIDATE AND AUTO-SPLIT
     is_valid, valid_actions, new_train_samples, new_val_samples = validate_and_split_dataset(
@@ -2646,11 +2646,11 @@ if __name__ == "__main__":
     )
     
     if not is_valid:
-        print("\n❌ Training aborted due to insufficient data.")
+        print("\n❌ 数据不足，训练已中止。")
         exit(1)
     
     # 🔧 UPDATE DATASETS WITH FILTERED/SPLIT SAMPLES
-    print(f"\n🔄 Updating datasets with validated data...")
+    print("\n🔄 正在用验证后的数据更新数据集…")
     
     # Create new label mapping for filtered actions
     new_label_to_idx = {action: idx for idx, action in enumerate(valid_actions)}
@@ -2683,23 +2683,23 @@ if __name__ == "__main__":
     val_dataset.label_to_idx = new_label_to_idx.copy()
     val_dataset.idx_to_label = new_idx_to_label.copy()
     
-    print(f"\n✅ Final dataset after filtering and splitting:")
-    print(f"  Training samples: {len(train_dataset.samples)}")
-    print(f"  Validation samples: {len(val_dataset.samples)}")
-    print(f"  Classes: {valid_actions}")
+    print("\n✅ 筛选和拆分后的最终数据集：")
+    print(f"  训练样本：{len(train_dataset.samples)}")
+    print(f"  验证样本：{len(val_dataset.samples)}")
+    print(f"  类别：{valid_actions}")
     
     # Print detailed breakdown - SAFE VERSION
-    print(f"\n📊 Per-class breakdown:")
+    print("\n📊 各类别明细：")
     for action in valid_actions:
         if action in new_label_to_idx:
             label_idx = new_label_to_idx[action]
             train_count = sum(1 for _, label in train_dataset.samples if label == label_idx)
             val_count = sum(1 for _, label in val_dataset.samples if label == label_idx)
-            print(f"  {action}: {train_count} train, {val_count} val")
+            print(f"  {action}：训练 {train_count}，验证 {val_count}")
     
     # Get label mappings
     label_to_idx, idx_to_label = train_dataset.get_label_mapping()
-    print(f"\n📝 Final label mapping:")
+    print("\n📝 最终标签映射：")
     for label, idx in sorted(label_to_idx.items(), key=lambda x: x[1]):
         print(f"  {idx}: {label}")
     print()
@@ -2714,7 +2714,7 @@ if __name__ == "__main__":
     # Initialize pose extractor if visualization is enabled
     pose_extractor = None
     if CONFIG.get('create_visualizations', False):
-        print("\n🦴 Initializing pose extractor for visualizations...")
+        print("\n🦴 正在初始化用于可视化的姿态提取器…")
         pose_extractor = PoseExtractor(
             model_name=CONFIG.get('pose_model'),
             conf_threshold=CONFIG.get('pose_conf_threshold', 0.3)
@@ -2729,7 +2729,7 @@ if __name__ == "__main__":
         )
 
     # Train
-    print(f"\n🚀 Starting training...\n")
+    print("\n🚀 开始训练…\n")
     action_model = train_classifier(
         encoder, 
         train_loader, 
@@ -2741,7 +2741,7 @@ if __name__ == "__main__":
     
     # Final validation
     if len(val_loader) > 0:
-        print(f"\n📊 Final Validation:")
+        print("\n📊 最终验证：")
         device = torch.device("cpu")
         
         # Create criterion for final validation
@@ -2755,11 +2755,11 @@ if __name__ == "__main__":
             encoder, action_model.model, val_loader, device, criterion
         )
         
-        print(f"  Final Validation Loss: {final_val_loss:.4f}")
-        print(f"  Final Validation Accuracy: {final_val_acc:.4f}")
+        print(f"  最终验证损失：{final_val_loss:.4f}")
+        print(f"  最终验证准确率：{final_val_acc:.4f}")
         
         if final_per_class_acc:
-            print(f"\n  Final per-class validation accuracy:")
+            print("\n  最终各类别验证准确率：")
             for label_idx in sorted(final_per_class_acc.keys()):
                 class_name = idx_to_label[label_idx]
                 acc = final_per_class_acc[label_idx]
@@ -2775,9 +2775,9 @@ if __name__ == "__main__":
         
         if zero_acc_classes:
             zero_names = [idx_to_label[idx] for idx in zero_acc_classes]
-            print(f"\n🗑️  Removing {len(zero_acc_classes)} zero-accuracy classes from BASE model:")
+            print(f"\n🗑️  正在从基础模型中移除 {len(zero_acc_classes)} 个准确率为 0 的类别：")
             for name in zero_names:
-                print(f"      • {name} (0% validation accuracy — undetectable)")
+                print(f"      • {name}（验证准确率 0%——无法检测）")
             
             # Filter via create_production_model with a tiny threshold
             # This keeps anything with >0% accuracy, removing only truly dead classes
@@ -2793,9 +2793,9 @@ if __name__ == "__main__":
             label_to_idx = action_model.label_to_idx
             idx_to_label = action_model.idx_to_label
             
-            print(f"   ✅ Base model updated: {len(label_to_idx)} classes remaining")
+            print(f"   ✅ 基础模型已更新：剩余 {len(label_to_idx)} 个类别")
         else:
-            print(f"\n   ✅ All classes have >0% accuracy — no filtering needed for base model")
+            print("\n   ✅ 所有类别准确率均大于 0%，基础模型无需筛选")
 
     # 🔧 CREATE PRODUCTION MODEL (stricter filtering on top of base)
     production_model = create_production_model(
@@ -2811,13 +2811,13 @@ if __name__ == "__main__":
     production_path = CONFIG['model_save_path'].replace('.pth', '_production.pth')
     production_model.save(production_path)
    
-    print(f"\n✅ Training completed! Model and labels saved.")
-    print(f"✓ Base model: {CONFIG['model_save_path']} ({len(action_model.label_to_idx)} classes)")
-    print(f"✓ Production model: {production_path} ({len(production_model.label_to_idx)} classes)")
-    print(f"\n💡 Summary:")
-    print(f"  - Trained on {len(valid_actions)} actions")
-    print(f"  - Used {len(train_dataset.samples)} training videos")
-    print(f"  - Used {len(val_dataset.samples)} validation videos")
-    print(f"  - Auto-split was applied where validation was insufficient")
-    print(f"  - Base model: removed classes with 0% val accuracy")
-    print(f"  - Production model: removed classes below {CONFIG.get('min_production_accuracy', 0.3):.0%} val accuracy")
+    print("\n✅ 训练完成！模型和标签已保存。")
+    print(f"✓ 基础模型：{CONFIG['model_save_path']}（{len(action_model.label_to_idx)} 个类别）")
+    print(f"✓ 生产模型：{production_path}（{len(production_model.label_to_idx)} 个类别）")
+    print("\n💡 总结：")
+    print(f"  - 已训练 {len(valid_actions)} 个动作类别")
+    print(f"  - 使用了 {len(train_dataset.samples)} 个训练视频")
+    print(f"  - 使用了 {len(val_dataset.samples)} 个验证视频")
+    print("  - 对验证数据不足的类别已自动拆分")
+    print("  - 基础模型：已移除验证准确率为 0% 的类别")
+    print(f"  - 生产模型：已移除验证准确率低于 {CONFIG.get('min_production_accuracy', 0.3):.0%} 的类别")

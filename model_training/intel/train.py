@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
 # =============================
 
 def main():
-    parser = argparse.ArgumentParser(description="Intel OpenVINO encoder → decoder training")
+    parser = argparse.ArgumentParser(description="Intel OpenVINO 编码器 → 解码器训练")
     parser.add_argument("--data-path", type=str, default=None)
     parser.add_argument("--resume", type=str, default=None)
     parser.add_argument("--epochs", type=int, default=None)
     parser.add_argument("--batch-size", type=int, default=None)
     parser.add_argument("--lr", type=float, default=None)
     parser.add_argument("--decoder", type=str, default=None, choices=["mlp", "lstm"],
-                        help="Decoder type: mlp (default, GPU-compatible) or lstm (CPU-only at inference)")
+                        help="解码器类型：mlp（默认，兼容 GPU）或 lstm（推理时仅 CPU）")
     parser.add_argument("--no-viz", action="store_true",
-                        help="Skip sample visualizations before training")
+                        help="训练前跳过样本可视化")
     parser.add_argument("--viz", action="store_true",
-                        help="Create sample visualizations before training")
+                        help="训练前创建样本可视化")
     parser.add_argument("--no-cache", action="store_true",
-                        help="Disable ROI cache (slow — runs the person detector every epoch)")
+                        help="禁用 ROI 缓存（较慢——每个训练轮次都会运行人物检测器）")
     parser.add_argument("--rebuild-cache", action="store_true",
-                        help="Force rebuild ROI cache even if one exists")
+                        help="即使已有 ROI 缓存也强制重建")
     parser.add_argument("--no-feature-cache", action="store_true",
-                        help="Disable feature caching (encode every epoch)")
+                        help="禁用特征缓存（每个训练轮次都重新编码）")
     parser.add_argument("--rebuild-feature-cache", action="store_true",
-                        help="Force rebuild feature cache")
+                        help="强制重建特征缓存")
     parser.add_argument("--num-workers", type=int, default=None,
-                        help="DataLoader workers (default: 4, 0 = single-process)")
+                        help="DataLoader 工作进程数（默认：4，0 = 单进程）")
     parser.add_argument("--force-cpu", action="store_true",
-                        help="Force CPU training (skip Intel GPU)")
+                        help="强制使用 CPU 训练（跳过 Intel GPU）")
     args = parser.parse_args()
 
     # Override config from CLI

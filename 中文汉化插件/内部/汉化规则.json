@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "55b52ee4acb13e048a92239f6c8cffbe66eac97e"
+    "head_commit": "ef2e828cc6dd5dd69e2eb975dee48321cb30dd24"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -30316,6 +30316,213 @@
       "after": null,
       "hunk": "@@ -5337,4 +5335,4 @@ def show_timeline_viewer(video_path, cache_data=None):",
       "id": "signal_timeline_viewer.py#374"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "    print(\"⚠ Warning: Transcript modules not available. Transcript features disabled.\")",
+      "target": "    print(\"⚠ 警告：转录模块不可用，转录相关功能已禁用。\")",
+      "before": "    TRANSCRIPT_AVAILABLE = False",
+      "after": "",
+      "hunk": "@@ -54,7 +54,7 @@ def update_progress(self, current, total, task_name, details=\"\"):",
+      "id": "pipeline.py#187"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "        print(\"Detections per second:\", len(object_detections))",
+      "target": "        print(\"每秒检测结果数：\", len(object_detections))",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -1336,7 +1336,7 @@ def _get_cached_audio_peaks(cached):",
+      "id": "pipeline.py#188"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                            print(\"🎯 Action backend → R3D on DirectML through \"\n                                \"ONNX Runtime; it stays on the CPU if the export or \"\n                                \"the provider will not run\")",
+      "target": "                            print(\"🎯 动作后端 → 通过 ONNX Runtime 在 DirectML 上运行 R3D；\"\n                                \"如果导出或执行提供程序无法运行，将回退到 CPU\")",
+      "before": "                        if r3d_onnx_dml:",
+      "after": "                    else:  # \"auto\"",
+      "hunk": "@@ -1470,9 +1470,8 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#189"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                            print(f\"🎯 Auto backend → CUDA detected, using R3D ({_dev.backend_name})\")",
+      "target": "                            print(f\"🎯 自动后端 → 检测到 CUDA，使用 R3D（{_dev.backend_name}）\")",
+      "before": "                            r3d_device = _dev.pytorch_device",
+      "after": "                        elif _dev.dml_device:",
+      "hunk": "@@ -1491,7 +1490,7 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#190"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                            print(f\"🎯 Auto backend → DirectML detected, using R3D on \"\n                                f\"{_dev.dml_device} ({_dev.backend_name}); if that \"\n                                f\"backend cannot run it, ONNX Runtime is tried on \"\n                                f\"the same card before the CPU\")",
+      "target": "                            print(f\"🎯 自动后端 → 检测到 DirectML，在 \"\n                                f\"{_dev.dml_device}（{_dev.backend_name}）上使用 R3D；如果该后端\"\n                                f\"无法运行，将先尝试在同一显卡上使用 ONNX Runtime，\"\n                                f\"最后才回退到 CPU\")",
+      "before": "                            r3d_onnx_dml = True",
+      "after": "                        elif getattr(_dev, \"onnx_dml_torch\", False):",
+      "hunk": "@@ -1509,10 +1508,10 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#191"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                            print(f\"🎯 Auto backend → ONNX Runtime on the GPU, using \"\n                                f\"R3D ({_dev.backend_name}); it stays on the CPU if \"\n                                f\"the export or the provider will not run\")",
+      "target": "                            print(f\"🎯 自动后端 → 在 GPU 上使用 ONNX Runtime，运行 \"\n                                f\"R3D（{_dev.backend_name}）；如果导出或执行提供程序无法运行，\"\n                                f\"将回退到 CPU\")",
+      "before": "                            r3d_onnx_dml = True",
+      "after": "                        else:",
+      "hunk": "@@ -1526,20 +1525,20 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#192"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                            print(f\"🎯 Auto backend → no CUDA, using OpenVINO on {_dev.backend_name}\")",
+      "target": "                            print(f\"🎯 自动后端 → 未检测到 CUDA，在 {_dev.backend_name} 上使用 OpenVINO\")",
+      "before": "                            r3d_half = False",
+      "after": "",
+      "hunk": "@@ -1526,20 +1525,20 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#193"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                    print(f\"   action backend setting: {action_backend} | R3D model: {r3d_model} | \"\n                          f\"enable_r3d: {enable_r3d} | r3d_device: {r3d_device or 'auto'} | \"\n                          f\"onnx_dml: {r3d_onnx_dml} | OpenVINO device: {openvino_device}\")",
+      "target": "                    print(f\"   动作后端设置：{action_backend} | R3D 模型：{r3d_model} | \"\n                          f\"启用 R3D：{enable_r3d} | R3D 设备：{r3d_device or 'auto'} | \"\n                          f\"ONNX DirectML：{r3d_onnx_dml} | OpenVINO 设备：{openvino_device}\")",
+      "before": "                        openvino_device, auto=_explicit is None))",
+      "after": "",
+      "hunk": "@@ -1526,20 +1525,20 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#194"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                    print(f\"ℹ Expression scan reused for the report only \"\n                          f\"({len(_cached)} second(s)); it scored no points.\")",
+      "target": "                    print(f\"ℹ 表情扫描结果仅用于报告复用\"\n                          f\"（{len(_cached)} 秒）；不会计入高光评分。\")",
+      "before": "                    face_seconds = _cached",
+      "after": "            except Exception as _fe:",
+      "hunk": "@@ -1980,10 +1979,10 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#195"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "                print(f\"⚠️ Cached expression scan not loaded: {_fe}\")",
+      "target": "                print(f\"⚠️ 无法加载缓存的表情扫描结果：{_fe}\")",
+      "before": "            except Exception as _fe:",
+      "after": "",
+      "hunk": "@@ -1980,10 +1979,10 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#196"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "        print(f\"\\n=== SCORE DISTRIBUTION ===\")\n        print(f\"Max score: {max_score:.1f}\")\n        print(f\"Min score: {min_score:.1f}\")\n        print(f\"Average score: {avg_score:.1f}\")\n        print(f\"Score range: {max_score - min_score:.1f}\")\n        print(f\"Average ending score: {np.mean(ending_scores) if len(ending_scores) > 0 else 0:.2f}\")",
+      "target": "        print(\"\\n=== 评分分布 ===\")\n        print(f\"最高分：{max_score:.1f}\")\n        print(f\"最低分：{min_score:.1f}\")\n        print(f\"平均分：{avg_score:.1f}\")\n        print(f\"分数跨度：{max_score - min_score:.1f}\")\n        print(f\"结尾平均分：{np.mean(ending_scores) if len(ending_scores) > 0 else 0:.2f}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -2031,19 +2030,19 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#197"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "        print(f\"\\n=== TOP 10 SCORING MOMENTS ===\")",
+      "target": "        print(\"\\n=== 评分最高的 10 个时刻 ===\")",
+      "before": "        top_indices = np.argsort(score)[-10:][::-1]",
+      "after": "        for i, idx in enumerate(top_indices):",
+      "hunk": "@@ -2031,19 +2030,19 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#198"
+    },
+    {
+      "file": "pipeline.py",
+      "source": "            print(f\"{i+1}. Second {idx} ({timestamp}): {score[idx]:.1f} points\")",
+      "target": "            print(f\"{i+1}. 第 {idx} 秒（{timestamp}）：{score[idx]:.1f} 分\")",
+      "before": "            timestamp = f\"{idx//60:02d}:{idx%60:02d}\"",
+      "after": "",
+      "hunk": "@@ -2031,19 +2030,19 @@ def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):",
+      "id": "pipeline.py#199"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "        print(f\"\\n🔧 [DEBUG] VideoAnalysisCache.__init__\")\n        print(f\"  - cache_dir: {cache_dir}\")\n        print(f\"  - enable_highlight_cache: {enable_highlight_cache}\")",
+      "target": "        print(\"\\n🔧 [调试] VideoAnalysisCache.__init__\")\n        print(f\"  - 缓存目录：{cache_dir}\")\n        print(f\"  - 是否启用高光缓存：{enable_highlight_cache}\")",
+      "before": "    ):",
+      "after": "        ",
+      "hunk": "@@ -278,29 +278,29 @@ def __init__(",
+      "id": "modules/media/video_cache.py#1"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "        print(f\"  ✓ Cache directory: {self.cache_dir.absolute()}\")",
+      "target": "        print(f\"  ✓ 缓存目录：{self.cache_dir.absolute()}\")",
+      "before": "        self.cache_dir.mkdir(parents=True, exist_ok=True)",
+      "after": "",
+      "hunk": "@@ -278,29 +278,29 @@ def __init__(",
+      "id": "modules/media/video_cache.py#2"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "        print(f\"  ✓ Initialized base_cache = self\")",
+      "target": "        print(\"  ✓ 已初始化 base_cache = self\")",
+      "before": "        self.base_cache = self",
+      "after": "",
+      "hunk": "@@ -278,29 +278,29 @@ def __init__(",
+      "id": "modules/media/video_cache.py#3"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "        print(f\"  ✓ Created thread lock\")",
+      "target": "        print(\"  ✓ 已创建线程锁\")",
+      "before": "        self._lock = threading.RLock()",
+      "after": "",
+      "hunk": "@@ -278,29 +278,29 @@ def __init__(",
+      "id": "modules/media/video_cache.py#4"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "        print(f\"  ✓ Created subdirectories: highlights/, temp/\")",
+      "target": "        print(\"  ✓ 已创建子目录：highlights/、temp/\")",
+      "before": "        (self.cache_dir / \"temp\").mkdir(exist_ok=True)",
+      "after": "",
+      "hunk": "@@ -278,29 +278,29 @@ def __init__(",
+      "id": "modules/media/video_cache.py#5"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "        print(f\"  ✓ Initialized stats\")\n        print(f\"🔧 [DEBUG] __init__ complete\\n\")",
+      "target": "        print(\"  ✓ 已初始化统计信息\")\n        print(\"🔧 [调试] __init__ 完成\\n\")",
+      "before": "        }",
+      "after": "",
+      "hunk": "@@ -309,15 +309,15 @@ def __init__(",
+      "id": "modules/media/video_cache.py#6"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "            raise FileNotFoundError(f\"Video file not found: {video_path}\")",
+      "target": "            raise FileNotFoundError(f\"找不到视频文件：{video_path}\")",
+      "before": "        if not video_path.exists():",
+      "after": "",
+      "hunk": "@@ -309,15 +309,15 @@ def __init__(",
+      "id": "modules/media/video_cache.py#7"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "            print(f\"✓ Cache saved: {cache_path}\")",
+      "target": "            print(f\"✓ 缓存已保存：{cache_path}\")",
+      "before": "            self.stats[\"saves\"] += 1",
+      "after": "",
+      "hunk": "@@ -387,7 +387,7 @@ def save(self, video_path: str, analysis_data: Dict[str, Any], params: Optional[",
+      "id": "modules/media/video_cache.py#8"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "                    print(\"⚠ Cache is outdated (video file changed), will re-process\")",
+      "target": "                    print(\"⚠ 缓存已过期（视频文件已变化），将重新处理\")",
+      "before": "                if cache_data.get(\"video_hash\") != current_hash:",
+      "after": "                    self.stats[\"misses\"] += 1",
+      "hunk": "@@ -413,12 +413,12 @@ def load(self, video_path: str, params: Optional[Dict[str, Any]] = None) -> Opti",
+      "id": "modules/media/video_cache.py#9"
+    },
+    {
+      "file": "modules/media/video_cache.py",
+      "source": "                    print(\"⚠ Cache incomplete, will re-process\")",
+      "target": "                    print(\"⚠ 缓存不完整，将重新处理\")",
+      "before": "                if cache_data.get(\"cache_complete\") is not True:",
+      "after": "                    self.stats[\"misses\"] += 1",
+      "hunk": "@@ -413,12 +413,12 @@ def load(self, video_path: str, params: Optional[Dict[str, Any]] = None) -> Opti",
+      "id": "modules/media/video_cache.py#10"
     }
   ]
 }

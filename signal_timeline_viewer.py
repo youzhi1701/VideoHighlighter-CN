@@ -647,7 +647,7 @@ class SignalTimelineWindow(QMainWindow):
                         print(f"💾 Auto-saved {len(self.edit_scene.clips)} edit "
                               f"clips on close")
             except Exception as e:
-                print(f"⚠️ Edit autosave on close failed: {e}")
+                print(f"⚠️ 关闭时自动保存编辑失败：{e}")
 
             # Tear down the thumbnail worker + hover popup
             try:
@@ -764,11 +764,11 @@ class SignalTimelineWindow(QMainWindow):
                 cache_data=self.cache_data,
             )
             self.preview_stack.addWidget(self.realtime_preview)  # index 1
-            print(f"✅ Live overlay loaded ({self.realtime_preview.get_detection_count()} detections)")
+            print(f"✅ 实时叠加已加载（{self.realtime_preview.get_detection_count()} 个检测结果）")
         except ImportError as e:
-            print(f"⚠️ realtime_overlay not available: {e}")
+            print(f"⚠️ 实时叠加模块不可用：{e}")
         except Exception as e:
-            print(f"⚠️ realtime_overlay init failed: {e}")
+            print(f"⚠️ 实时叠加初始化失败：{e}")
             import traceback; traceback.print_exc()
 
         self.preview_stack.setCurrentIndex(0)
@@ -914,12 +914,12 @@ class SignalTimelineWindow(QMainWindow):
             # Connect source change signal
             self.bbox_manager.source_changed.connect(self._on_bbox_toggled)
 
-            print(f"✅ Precomp overlay manager ready")
+            print("✅ 预计算叠加管理器已就绪")
         except ImportError as e:
-            print(f"⚠️ bbox_overlay not available: {e}")
+            print(f"⚠️ 检测框叠加模块不可用：{e}")
             self._precomp_widget = None
         except Exception as e:
-            print(f"⚠️ bbox_overlay init failed: {e}")
+            print(f"⚠️ 检测框叠加初始化失败：{e}")
             import traceback; traceback.print_exc()
             self._precomp_widget = None
 
@@ -1166,10 +1166,10 @@ class SignalTimelineWindow(QMainWindow):
             from modules.media.vr_detect import probe
             layout = probe(self.video_path)
         except Exception as e:
-            print(f"⚠️ Could not check the frame layout: {e}")
+            print(f"⚠️ 无法检查画面布局：{e}")
             return
 
-        print(f"🥽 Frame layout: {layout.reason}")
+        print(f"🥽 画面布局：{layout.reason}")
         if not layout.side_by_side:
             return
         checkbox.setChecked(True)          # fires _toggle_vr_mode, as a click would
@@ -1415,7 +1415,7 @@ class SignalTimelineWindow(QMainWindow):
             delattr(self, '_pending_waveform_data')
 
             if not hasattr(self, 'signal_scene') or self.signal_scene is None:
-                print("⚠️ No signal_scene yet, cannot apply waveform")
+                print("⚠️ 信号场景尚未就绪，无法应用波形")
                 return
 
             self.update_waveform_data(data)
@@ -1431,18 +1431,18 @@ class SignalTimelineWindow(QMainWindow):
             if isinstance(audio, dict):
                 waveform_data = audio.get('waveform')
                 if waveform_data and len(waveform_data) > 0:
-                    print(f"✅ Loaded waveform from cache audio key ({len(waveform_data)} points)")
+                    print(f"✅ 已从缓存 audio 字段加载波形（{len(waveform_data)} 个采样点）")
                     return waveform_data
 
             # Fallback: check legacy locations
             waveform_data = self.cache_data.get('waveform_data')
             if waveform_data and len(waveform_data) > 0:
-                print(f"✅ Loaded waveform from cache waveform_data ({len(waveform_data)} points)")
+                print(f"✅ 已从缓存 waveform_data 字段加载波形（{len(waveform_data)} 个采样点）")
                 return waveform_data
 
-            print("⚠️ No waveform found in cache")
+            print("⚠️ 缓存中没有找到波形")
         except Exception as e:
-            print(f"⚠️ Could not load cached waveform: {e}")
+            print(f"⚠️ 无法加载缓存波形：{e}")
 
         return None
 
@@ -1454,27 +1454,27 @@ class SignalTimelineWindow(QMainWindow):
             streams = probe(self.video_path, timeout=8).get("streams") or []
 
             if not any(s.get("codec_type") == "audio" for s in streams):
-                print("⚠️ Video has NO AUDIO STREAM → no waveform possible")
+                print("⚠️ 视频没有音频流 → 无法生成波形")
                 self.statusBar().showMessage("视频没有音轨", 5000)
                 return
             else:
-                print("✓ Video contains audio stream")
+                print("✓ 视频包含音频流")
         except Exception as e:
-            print(f"⚠️ Could not check audio stream: {e}")
+            print(f"⚠️ 无法检查音频流：{e}")
 
         # Start extraction in background
         import threading
 
         def extract_waveform():
-            print("🎵 [thread] Starting waveform extraction...")
+            print("🎵 [线程] 正在开始提取波形…")
             visualizer = WaveformVisualizer(self.video_path)
             data = visualizer.extract_waveform(num_points=2000)
 
             if data is None:
-                print("❌ [thread] extract_waveform() returned None")
+                print("❌ [线程] extract_waveform() 返回空结果")
                 self.waveform_ready.emit(None)
             else:
-                print(f"✅ [thread] extract_waveform() returned list len={len(data)} first={data[0] if data else None}")
+                print(f"✅ [线程] extract_waveform() 返回列表：长度={len(data)}，首项={data[0] if data else None}")
                 self.waveform_ready.emit(data)
             # NOTE: do NOT use QTimer.singleShot here — this runs in a plain
             # Python thread with no Qt event loop, so the timer never fires.
@@ -1485,20 +1485,20 @@ class SignalTimelineWindow(QMainWindow):
 
     def _on_waveform_ready(self, data):
         """GUI-thread slot for waveform_ready (queued from the worker thread)."""
-        print(f"🧵 [ui] waveform_ready received ({len(data) if data else 0} points)")
+        print(f"🧵 [界面] 已收到 waveform_ready（{len(data) if data else 0} 个采样点）")
         if data is None:
             self.statusBar().showMessage("提取波形失败（无数据）", 6000)
         else:
             self.update_waveform_data(data)
 
     def update_waveform_data(self, waveform_data):
-        print(f"🧩 update_waveform_data() called with {len(waveform_data) if waveform_data else 0} points")
+        print(f"🧩 update_waveform_data() 收到 {len(waveform_data) if waveform_data else 0} 个采样点")
         
         if not waveform_data or len(waveform_data) == 0:
-            print("❌ No waveform data received → skipping update")
+            print("❌ 未收到波形数据 → 跳过更新")
             return
         
-        print(f"✅ update_waveform_data received: {len(waveform_data)} points")
+        print(f"✅ update_waveform_data 已接收：{len(waveform_data)} 个采样点")
         
         self.waveform = waveform_data
         self.save_waveform_to_cache(waveform_data)
@@ -1516,7 +1516,7 @@ class SignalTimelineWindow(QMainWindow):
                 f"✅ 波形已加载（{len(waveform_data)} 个采样点）", 5000
             )
         else:
-            print(f"Scene not ready yet, storing waveform data")
+            print("场景尚未就绪，先保存波形数据")
             self._pending_waveform_data = waveform_data
 
     def refresh_visual_query_checkboxes(self):
@@ -1980,7 +1980,7 @@ class SignalTimelineWindow(QMainWindow):
                 self.cache_data['video_hash'] = video_hash
                 return video_hash
         except Exception as e:
-            print(f"⚠️ Could not compute video_hash from file: {e}")
+            print(f"⚠️ 无法从文件计算 video_hash：{e}")
         return None
 
     def save_visual_findings_to_cache(self):
@@ -1999,12 +1999,12 @@ class SignalTimelineWindow(QMainWindow):
 
             cache_dir = Path("./cache")
             if not cache_dir.exists():
-                print("⚠️ Cache directory not found, findings not persisted")
+                print("⚠️ 未找到缓存目录，视觉搜索结果未持久化")
                 return False
 
             video_hash = self._resolve_video_hash()
             if not video_hash:
-                print("⚠️ No video_hash in cache_data, cannot save findings")
+                print("⚠️ cache_data 中没有 video_hash，无法保存视觉搜索结果")
                 return False
 
             matching = list(cache_dir.glob(f"{video_hash}*.cache.json"))
@@ -2016,7 +2016,7 @@ class SignalTimelineWindow(QMainWindow):
                 # No analysis cache exists yet (e.g. visual search run without a
                 # prior full analysis). Seed a legacy <hash>.cache.json so the
                 # findings survive a restart; load_cache_data() will pick it up.
-                print(f"ℹ️ No cache file for hash {video_hash[:16]}..., creating one")
+                print(f"ℹ️ 未找到哈希 {video_hash[:16]}… 对应的缓存文件，正在新建")
                 cache_file = cache_dir / f"{video_hash}.cache.json"
                 disk_data = dict(self.cache_data)
                 disk_data.setdefault('video_path', str(self.video_path))
@@ -2040,10 +2040,10 @@ class SignalTimelineWindow(QMainWindow):
             # sharing the file took hours. Same rule as merge_into_cache().
             atomic_write_json(Path(cache_file), disk_data)
 
-            print(f"💾 Saved {len(findings)} visual findings → {cache_file.name}")
+            print(f"💾 已保存 {len(findings)} 个视觉搜索结果 → {cache_file.name}")
             return True
         except Exception as e:
-            print(f"⚠️ Could not save visual findings: {e}")
+            print(f"⚠️ 无法保存视觉搜索结果：{e}")
             return False
 
     def save_waveform_to_cache(self, waveform_data):
@@ -2064,18 +2064,18 @@ class SignalTimelineWindow(QMainWindow):
 
             cache_dir = Path("./cache")
             if not cache_dir.exists():
-                print("⚠️ Cache directory not found, waveform not persisted")
+                print("⚠️ 未找到缓存目录，波形未持久化")
                 return
 
             video_hash = self._resolve_video_hash()
             if not video_hash:
-                print("⚠️ No video_hash in cache_data, cannot save waveform to disk")
+                print("⚠️ cache_data 中没有 video_hash，无法将波形保存到磁盘")
                 return
 
             # Find the matching cache file
             matching = list(cache_dir.glob(f"{video_hash}*.cache.json"))
             if not matching:
-                print(f"⚠️ No cache file found for hash {video_hash[:16]}...")
+                print(f"⚠️ 未找到哈希 {video_hash[:16]}… 对应的缓存文件")
                 return
 
             cache_file = matching[0]
@@ -2092,10 +2092,10 @@ class SignalTimelineWindow(QMainWindow):
             # rewrites the whole analysis entry to add one key.
             atomic_write_json(Path(cache_file), disk_data)
 
-            print(f"💾 Saved waveform to disk ({len(waveform_data)} points) → {cache_file.name}")
+            print(f"💾 已将波形保存到磁盘（{len(waveform_data)} 个采样点）→ {cache_file.name}")
 
         except Exception as e:
-            print(f"⚠️ Could not save waveform to cache: {e}")
+            print(f"⚠️ 无法将波形保存到缓存：{e}")
 
     def get_cache_instance(self):
         """Get cache instance for highlight loading"""
@@ -2256,7 +2256,7 @@ class SignalTimelineWindow(QMainWindow):
         try:
             fresh = self.load_cache_data()
         except Exception as e:
-            print(f"⚠️ refresh_from_disk: cache reload failed: {e}")
+            print(f"⚠️ 从磁盘刷新：缓存重新加载失败：{e}")
             return
         if not fresh:
             return
@@ -2276,7 +2276,7 @@ class SignalTimelineWindow(QMainWindow):
                 self.waveform = wf
                 self.signal_scene.set_waveform_data(wf)
         except Exception as e:
-            print(f"⚠️ refresh_from_disk: waveform reload failed: {e}")
+            print(f"⚠️ 从磁盘刷新：波形重新加载失败：{e}")
 
         # Layers hidden at open because they had no data (see create_controls)
         # get switched back on now that data exists — mirrors the Analyze panel's
@@ -2303,7 +2303,7 @@ class SignalTimelineWindow(QMainWindow):
             self.label_panel.refresh_labels()
         if hasattr(self, '_update_status'):
             self._update_status()
-        print("🔄 Timeline refreshed from disk")
+        print("🔄 时间线已从磁盘刷新")
 
     def _extract_action_types(self):
         """Extract unique action names for info display"""
@@ -2358,7 +2358,7 @@ class SignalTimelineWindow(QMainWindow):
             if saved:
                 self.signal_scene.avoid_ranges = [tuple(r) for r in saved]
         except Exception as e:
-            print(f"⚠️ could not load manual avoid ranges: {e}")
+            print(f"⚠️ 无法加载手动排除范围：{e}")
         self.signal_view = SignalTimelineView(self.signal_scene)
         # Lower floor so the whole top band (preview + timeline + controls) can
         # compress and leave room for the bottom LLM dock when not maximized.
@@ -2502,7 +2502,7 @@ class SignalTimelineWindow(QMainWindow):
             preview_dock = self.create_video_preview_dock()
             self.addDockWidget(Qt.LeftDockWidgetArea, preview_dock)
         except Exception as e:
-            print(f"⚠️ Could not create preview dock: {e}")
+            print(f"⚠️ 无法创建预览停靠面板：{e}")
             # Continue without preview
 
         # Search + Transcript stack behind Controls as tabs of the same right
@@ -2515,7 +2515,7 @@ class SignalTimelineWindow(QMainWindow):
             self.addDockWidget(Qt.RightDockWidgetArea, search_dock)
             self.tabifyDockWidget(controls_dock, search_dock)
         except Exception as e:
-            print(f"⚠️ Could not create search dock: {e}")
+            print(f"⚠️ 无法创建搜索停靠面板：{e}")
 
         try:
             transcript_dock = self.create_transcript_dock()
@@ -2523,7 +2523,7 @@ class SignalTimelineWindow(QMainWindow):
             self.addDockWidget(Qt.RightDockWidgetArea, transcript_dock)
             self.tabifyDockWidget(controls_dock, transcript_dock)
         except Exception as e:
-            print(f"⚠️ Could not create transcript dock: {e}")
+            print(f"⚠️ 无法创建转录停靠面板：{e}")
 
         # Controls is the working tab; the others wait behind it.
         controls_dock.raise_()
@@ -2615,7 +2615,7 @@ class SignalTimelineWindow(QMainWindow):
             cap.release()
 
             if not ret:
-                print(f"❌ Could not read frame at {self.current_time:.1f}s")
+                print(f"❌ 无法读取 {self.current_time:.1f} 秒处画面")
                 return None
 
             # Resize
@@ -2639,7 +2639,7 @@ class SignalTimelineWindow(QMainWindow):
             return b64
 
         except Exception as e:
-            print(f"❌ Frame capture failed: {e}")
+            print(f"❌ 画面截取失败：{e}")
             return None
 
     def eventFilter(self, obj, event):
@@ -3315,7 +3315,7 @@ class SignalTimelineWindow(QMainWindow):
                 bar.setElideMode(Qt.TextElideMode.ElideNone)
                 bar.setUsesScrollButtons(True)
         except Exception as e:
-            print(f"⚠️ Could not adjust dock tab titles: {e}")
+            print(f"⚠️ 无法调整停靠面板标签标题：{e}")
 
     def create_search_dock(self):
         from PySide6.QtWidgets import QDockWidget
@@ -3386,7 +3386,7 @@ class SignalTimelineWindow(QMainWindow):
             if os.path.exists(srt_path):
                 segments = self._parse_srt(srt_path)
                 if segments:
-                    print(f"✅ Transcript: loaded {len(segments)} segments from {os.path.basename(srt_path)}")
+                    print(f"✅ 转录：已从 {os.path.basename(srt_path)} 加载 {len(segments)} 个片段")
                     return segments
 
         # ── 2. Fallback: _transcript.txt (no timestamps, show as one block) ──
@@ -3394,7 +3394,7 @@ class SignalTimelineWindow(QMainWindow):
         if os.path.exists(txt_path):
             return self._parse_transcript_txt(txt_path)
 
-        print("⚠️ No transcript file found next to video")
+        print("⚠️ 视频旁没有找到转录文件")
         return []
 
     def _parse_srt(self, srt_path: str) -> list:
@@ -3425,7 +3425,7 @@ class SignalTimelineWindow(QMainWindow):
                 if text:
                     segments.append({"start": start, "end": end, "text": text})
         except Exception as e:
-            print(f"⚠️ SRT parse error: {e}")
+            print(f"⚠️ SRT 解析错误：{e}")
         return segments
 
     def _parse_transcript_txt(self, txt_path: str) -> list:
@@ -3458,7 +3458,7 @@ class SignalTimelineWindow(QMainWindow):
                             "text": text
                         })
         except Exception as e:
-            print(f"⚠️ Transcript txt parse error: {e}")
+            print(f"⚠️ 转录 TXT 解析错误：{e}")
         return segments
 
 

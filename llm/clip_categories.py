@@ -85,7 +85,7 @@ def learn_category(index: ClipFrameIndex, name: str,
     """
     idx = list(example_indices)
     if not idx:
-        raise ValueError("Need at least one example frame.")
+        raise ValueError("至少需要一个示例画面。")
     vector = l2_normalize(index.embeddings[idx].mean(axis=0))
     return CustomCategory(
         name=name,

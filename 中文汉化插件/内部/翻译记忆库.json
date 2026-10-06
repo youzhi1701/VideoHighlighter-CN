@@ -669,6 +669,13 @@
       ]
     },
     {
+      "source": "({len(bank)} identities in bank)",
+      "target": "（身份库共 {len(bank)} 个身份）",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
       "source": "({len(bank.avoided_ids())} avoided)",
       "target": "（当前已排除 {len(bank.avoided_ids())} 人）",
       "files": [
@@ -2287,10 +2294,24 @@
       ]
     },
     {
+      "source": "\\nFirst entry preview:",
+      "target": "\\n首条记录预览：",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
       "source": "\\nforbidden_ranges ({len(ranges)}):",
       "target": "\\n排除区间（{len(ranges)}）：",
       "files": [
         "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "\\nFrames with boxes: {len(entries)}",
+      "target": "\\n包含检测框的帧数：{len(entries)}",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
       ]
     },
     {
@@ -7722,6 +7743,13 @@
       ]
     },
     {
+      "source": "Distinct identities seen in video: {len(seen_ids)}",
+      "target": "视频中识别到的不同身份数：{len(seen_ids)}",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
       "source": "do not hide this machine's CUDA/XPU/OpenVINO devices",
       "target": "不要隐藏当前机器的 CUDA/XPU/OpenVINO 设备",
       "files": [
@@ -7740,6 +7768,13 @@
       "target": "不使用项目已训练模型作为第二判断来源",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "does not match the reference (cosine {cos:.4f})",
+      "target": "与参考结果不匹配（余弦相似度 {cos:.4f}）",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -9941,6 +9976,13 @@
       "target": "来源于 {len(bboxes)} 帧",
       "files": [
         "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
+      "source": "from {len(track_votes)} tracks",
+      "target": "来源于 {len(track_votes)} 条轨迹",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
       ]
     },
     {
@@ -13389,6 +13431,13 @@
       ]
     },
     {
+      "source": "no GPU provider",
+      "target": "没有可用的 GPU 提供程序",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
       "source": "no high-confidence actions",
       "target": "无高置信度动作",
       "files": [
@@ -13422,6 +13471,13 @@
       "files": [
         "model_training/intel/train.py",
         "model_training/r3d/train.py"
+      ]
+    },
+    {
+      "source": "no Intel GPU",
+      "target": "未检测到 Intel GPU",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -14623,6 +14679,13 @@
       "target": "ONNX Runtime 或 OpenVINO 运行。是否安装？",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "ONNX Runtime put the model on {got}",
+      "target": "ONNX Runtime 将模型放在了 {got}",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -16969,6 +17032,20 @@
       "target": "从第 {checkpoint['epoch'] + 1} 轮继续训练",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "returned non-finite numbers",
+      "target": "返回结果包含非有限数值",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
+      "source": "returned shape {tuple(out.shape)}, expected (1, {DIMS})",
+      "target": "返回形状为 {tuple(out.shape)}，预期为 (1, {DIMS})",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -20043,6 +20120,13 @@
       ]
     },
     {
+      "source": "threshold={avoid_match_threshold}",
+      "target": "阈值={avoid_match_threshold}",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
       "source": "through ONNX Runtime, and the CPU is the faster of the two here",
       "target": "在当前环境下 CPU 是两种方案中更快的选择",
       "files": [
@@ -20869,6 +20953,13 @@
       ]
     },
     {
+      "source": "unknown route {route!r}",
+      "target": "未知运行路径 {route!r}",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
       "source": "unknown signal kind: {self.kind}",
       "target": "未知信号类型：{self.kind}",
       "files": [
@@ -21191,6 +21282,13 @@
       "target": "用法：python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]",
       "files": [
         "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "Usage: python identity_tagging.py <video> [face_db.json]",
+      "target": "用法：python identity_tagging.py <视频> [face_db.json]",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
       ]
     },
     {
@@ -23043,6 +23141,13 @@
       ]
     },
     {
+      "source": "{ident['id'][:8]}  name={ident['name']}  seen={ident['count']}",
+      "target": "{ident['id'][:8]}  名称={ident['name']}  出现次数={ident['count']}",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
       "source": "{int(size.width() * ratio)}x{int(size.height() * ratio)}",
       "target": "物理尺寸 {int(size.width() * ratio)}x{int(size.height() * ratio)}，",
       "files": [
@@ -23482,6 +23587,27 @@
       "target": "{manifest.get('platform', 'windows')}：签名有效，",
       "files": [
         "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "{META_FILE} does not describe {DIMS}-number vectors",
+      "target": "{META_FILE} 描述的向量维度不是 {DIMS}",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
+      "source": "{META_FILE} format {meta.get('format')} is newer than this app ({FORMAT})",
+      "target": "{META_FILE} 格式版本 {meta.get('format')} 高于当前应用支持的版本（{FORMAT}）",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
+      "source": "{META_FILE} is for {meta.get('id')!r}, this app uses {ENCODER_ID!r}",
+      "target": "{META_FILE} 对应 {meta.get('id')!r}，当前应用使用 {ENCODER_ID!r}",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -24210,6 +24336,13 @@
       "target": "—— 有 {pending} 个示例等待检查。",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "— 🚫 {forced} track(s) forced to avoided identity",
+      "target": "——🚫 其中 {forced} 条轨迹被强制标记为排除身份",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
       ]
     },
     {
@@ -27694,6 +27827,20 @@
       "target": "⚠️ HTML 获取失败：{e}",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "⚠️ Identity tracking skipped — no person tracker available",
+      "target": "⚠️ 已跳过身份追踪——没有可用的人物追踪器",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
+      "source": "⚠️ Identity tracking: unknown tracker model type",
+      "target": "⚠️ 身份追踪：未知的追踪器模型类型",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
       ]
     },
     {
@@ -35892,6 +36039,13 @@
       ]
     },
     {
+      "source": "🚫 Direct avoid-match active for {len(avoid_galleries)} identit(ies),",
+      "target": "🚫 已启用直接排除匹配：{len(avoid_galleries)} 个身份，",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
       "source": "🚫 Mark Occluded (H)",
       "target": "🚫 标记遮挡 (H)",
       "files": [
@@ -36344,6 +36498,13 @@
       "target": "🩺 重绘追踪 → {_repaint_trace.default_path()}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "🪪 Resolved {len(track_identity)} track→identity mappings",
+      "target": "🪪 已解析 {len(track_identity)} 个轨迹→身份映射，",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
       ]
     }
   ]

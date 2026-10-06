@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "1e8c6f98f16f9584421bbd92745c0e5d3a1aaac4"
+    "head_commit": "094be710e889db21b6f9620d525ab72e4ff5bacd"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -28602,6 +28602,96 @@
     {
       "id": "modules/vision/frame_encoder.py#1",
       "file": "modules/vision/frame_encoder.py",
+      "source": "        raise ValueError(f\"{META_FILE} is for {meta.get('id')!r}, this app uses {ENCODER_ID!r}\")",
+      "target": "        raise ValueError(f\"{META_FILE} 对应 {meta.get('id')!r}，当前应用使用 {ENCODER_ID!r}\")",
+      "before": "    if meta.get(\"id\") != ENCODER_ID:",
+      "after": "    if int(meta.get(\"format\", 0)) > FORMAT:",
+      "hunk": "@@ -192,11 +192,11 @@ def read_meta(folder: str) -> dict:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#2",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "        raise ValueError(f\"{META_FILE} format {meta.get('format')} is newer than this app ({FORMAT})\")",
+      "target": "        raise ValueError(f\"{META_FILE} 格式版本 {meta.get('format')} 高于当前应用支持的版本（{FORMAT}）\")",
+      "before": "    if int(meta.get(\"format\", 0)) > FORMAT:",
+      "after": "    if int(meta.get(\"dims\", 0)) != DIMS or len(meta.get(\"probe\", [])) != DIMS:",
+      "hunk": "@@ -192,11 +192,11 @@ def read_meta(folder: str) -> dict:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#3",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "        raise ValueError(f\"{META_FILE} does not describe {DIMS}-number vectors\")",
+      "target": "        raise ValueError(f\"{META_FILE} 描述的向量维度不是 {DIMS}\")",
+      "before": "    if int(meta.get(\"dims\", 0)) != DIMS or len(meta.get(\"probe\", [])) != DIMS:",
+      "after": "    return meta",
+      "hunk": "@@ -192,11 +192,11 @@ def read_meta(folder: str) -> dict:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#4",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "                raise RuntimeError(ort_directml.unavailable_reason() or \"no GPU provider\")",
+      "target": "                raise RuntimeError(ort_directml.unavailable_reason() or \"没有可用的 GPU 提供程序\")",
+      "before": "            if not ort_directml.available():",
+      "after": "            self._session = ort_directml.session(model_path)",
+      "hunk": "@@ -312,11 +312,11 @@ class _OnnxRunner:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#5",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "                raise RuntimeError(f\"ONNX Runtime put the model on {got}\")",
+      "target": "                raise RuntimeError(f\"ONNX Runtime 将模型放在了 {got}\")",
+      "before": "            if not ort_directml.is_gpu_provider(got):",
+      "after": "        else:",
+      "hunk": "@@ -312,11 +312,11 @@ class _OnnxRunner:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#6",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "            raise RuntimeError(\"no Intel GPU\")",
+      "target": "            raise RuntimeError(\"未检测到 Intel GPU\")",
+      "before": "        if not intel_device:",
+      "after": "        return _OpenVINORunner(model_path, intel_device)",
+      "hunk": "@@ -329,7 +329,7 @@ class _OnnxRunner:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#7",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "    raise ValueError(f\"unknown route {route!r}\")",
+      "target": "    raise ValueError(f\"未知运行路径 {route!r}\")",
+      "before": "        return _OnnxRunner(model_path, gpu=False)",
+      "after": "",
+      "hunk": "@@ -337,7 +337,7 @@ def _open_route(route: str, model_path: str, intel_device: Optional[str]):"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#8",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "        raise RuntimeError(f\"returned shape {tuple(out.shape)}, expected (1, {DIMS})\")",
+      "target": "        raise RuntimeError(f\"返回形状为 {tuple(out.shape)}，预期为 (1, {DIMS})\")",
+      "before": "    if out.shape != (1, DIMS):",
+      "after": "    if not np.isfinite(out).all():",
+      "hunk": "@@ -388,12 +388,12 @@ def _check_route(runner, meta: dict) -> None:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#9",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "        raise RuntimeError(\"returned non-finite numbers\")",
+      "target": "        raise RuntimeError(\"返回结果包含非有限数值\")",
+      "before": "    if not np.isfinite(out).all():",
+      "after": "    cos = _cosine(out[0], meta[\"probe\"])",
+      "hunk": "@@ -388,12 +388,12 @@ def _check_route(runner, meta: dict) -> None:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#10",
+      "file": "modules/vision/frame_encoder.py",
+      "source": "        raise RuntimeError(f\"does not match the reference (cosine {cos:.4f})\")",
+      "target": "        raise RuntimeError(f\"与参考结果不匹配（余弦相似度 {cos:.4f}）\")",
+      "before": "    if cos < PROBE_MIN_COSINE:",
+      "after": "",
+      "hunk": "@@ -388,12 +388,12 @@ def _check_route(runner, meta: dict) -> None:"
+    },
+    {
+      "id": "modules/vision/frame_encoder.py#11",
+      "file": "modules/vision/frame_encoder.py",
       "source": "        log(f\"⚠️ Frame encoder {ENCODER_ID} is not installed \"\n            f\"(looked in: {'; '.join(model_dir_candidates())})\")",
       "target": "        log(f\"⚠️ 帧编码器 {ENCODER_ID} 未安装\"\n            f\"（已检查：{'; '.join(model_dir_candidates())}）\")",
       "before": "    if folder is None:",
@@ -28609,7 +28699,7 @@
       "hunk": "@@ -404,13 +404,13 @@ def load(backend: Optional[str] = None, log: LogFn = print,"
     },
     {
-      "id": "modules/vision/frame_encoder.py#2",
+      "id": "modules/vision/frame_encoder.py#12",
       "file": "modules/vision/frame_encoder.py",
       "source": "        log(f\"⚠️ Frame encoder in {folder} is unusable: {e}\")",
       "target": "        log(f\"⚠️ {folder} 中的帧编码器不可用：{e}\")",
@@ -28618,7 +28708,7 @@
       "hunk": "@@ -404,13 +404,13 @@ def load(backend: Optional[str] = None, log: LogFn = print,"
     },
     {
-      "id": "modules/vision/frame_encoder.py#3",
+      "id": "modules/vision/frame_encoder.py#13",
       "file": "modules/vision/frame_encoder.py",
       "source": "            print(f\"ℹ️ Frame encoder: {route_label(route)} skipped ({type(e).__name__}: {e})\")",
       "target": "            print(f\"ℹ️ 帧编码器：已跳过 {route_label(route)}（{type(e).__name__}：{e}）\")",
@@ -28627,7 +28717,7 @@
       "hunk": "@@ -428,11 +428,11 @@ def load(backend: Optional[str] = None, log: LogFn = print,"
     },
     {
-      "id": "modules/vision/frame_encoder.py#4",
+      "id": "modules/vision/frame_encoder.py#14",
       "file": "modules/vision/frame_encoder.py",
       "source": "        log(f\"✅ Frame encoder: {ENCODER_ID} on {encoder.label}\")",
       "target": "        log(f\"✅ 帧编码器：{ENCODER_ID}，运行于 {encoder.label}\")",
@@ -28636,7 +28726,7 @@
       "hunk": "@@ -428,11 +428,11 @@ def load(backend: Optional[str] = None, log: LogFn = print,"
     },
     {
-      "id": "modules/vision/frame_encoder.py#5",
+      "id": "modules/vision/frame_encoder.py#15",
       "file": "modules/vision/frame_encoder.py",
       "source": "    log(f\"⚠️ Frame encoder: no route could run {ENCODER_ID} here \"\n        f\"(tried {', '.join(route_label(r) for r in order)})\")",
       "target": "    log(f\"⚠️ 帧编码器：当前没有可运行 {ENCODER_ID} 的计算路线\"\n        f\"（已尝试：{', '.join(route_label(r) for r in order)}）\")",
@@ -41177,11 +41267,83 @@
     {
       "id": "video_ai_editor/identity_tagging.py#1",
       "file": "video_ai_editor/identity_tagging.py",
+      "source": "        print(\"⚠️ Identity tracking skipped — no person tracker available\")",
+      "target": "        print(\"⚠️ 已跳过身份追踪——没有可用的人物追踪器\")",
+      "before": "    if model is None:",
+      "after": "        if save_bank:",
+      "hunk": "@@ -84,7 +84,7 @@ def tag_video_with_identities("
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#2",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "        print(f\"🚫 Direct avoid-match active for {len(avoid_galleries)} identit(ies), \"\n              f\"threshold={avoid_match_threshold}\")",
+      "target": "        print(f\"🚫 已启用直接排除匹配：{len(avoid_galleries)} 个身份，\"\n              f\"阈值={avoid_match_threshold}\")",
+      "before": "    if avoid_galleries:",
+      "after": "",
+      "hunk": "@@ -99,8 +99,8 @@ def tag_video_with_identities("
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#3",
+      "file": "video_ai_editor/identity_tagging.py",
       "source": "                progress_cb(processed, f\"Tracking + identity… frame {real_frame}\")",
       "target": "                progress_cb(processed, f\"正在追踪并识别身份… 第 {real_frame} 帧\")",
       "before": "            if progress_cb and processed % 30 == 0:",
       "after": "    else:",
-      "hunk": "@@ -136,7 +136,7 @@ def tag_video_with_identities("
+      "hunk": "@@ -136,9 +136,9 @@ def tag_video_with_identities("
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#4",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "        print(\"⚠️ Identity tracking: unknown tracker model type\")",
+      "target": "        print(\"⚠️ 身份追踪：未知的追踪器模型类型\")",
+      "before": "    else:",
+      "after": "        if save_bank:",
+      "hunk": "@@ -136,9 +136,9 @@ def tag_video_with_identities("
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#5",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "    print(f\"🪪 Resolved {len(track_identity)} track→identity mappings \"\n          f\"from {len(track_votes)} tracks \"\n          f\"({len(bank)} identities in bank)\"\n          + (f\" — 🚫 {forced} track(s) forced to avoided identity\" if forced else \"\"))",
+      "target": "    print(f\"🪪 已解析 {len(track_identity)} 个轨迹→身份映射，\"\n          f\"来源于 {len(track_votes)} 条轨迹\"\n          f\"（身份库共 {len(bank)} 个身份）\"\n          + (f\"——🚫 其中 {forced} 条轨迹被强制标记为排除身份\" if forced else \"\"))",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -159,10 +159,10 @@ def tag_video_with_identities("
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#6",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "        print(\"Usage: python identity_tagging.py <video> [face_db.json]\")",
+      "target": "        print(\"用法：python identity_tagging.py <视频> [face_db.json]\")",
+      "before": "    if len(sys.argv) < 2:",
+      "after": "        sys.exit(1)",
+      "hunk": "@@ -247,7 +247,7 @@ if __name__ == \"__main__\":"
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#7",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "    print(f\"\\nFrames with boxes: {len(entries)}\")\n    print(f\"Distinct identities seen in video: {len(seen_ids)}\")",
+      "target": "    print(f\"\\n包含检测框的帧数：{len(entries)}\")\n    print(f\"视频中识别到的不同身份数：{len(seen_ids)}\")",
+      "before": "                seen_ids.add(iid)",
+      "after": "    for ident in bank.all_identities():",
+      "hunk": "@@ -268,14 +268,14 @@ if __name__ == \"__main__\":"
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#8",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "        print(f\"  {ident['id'][:8]}  name={ident['name']}  seen={ident['count']}\")",
+      "target": "        print(f\"  {ident['id'][:8]}  名称={ident['name']}  出现次数={ident['count']}\")",
+      "before": "    for ident in bank.all_identities():",
+      "after": "",
+      "hunk": "@@ -268,14 +268,14 @@ if __name__ == \"__main__\":"
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#9",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "        print(\"\\nFirst entry preview:\")",
+      "target": "        print(\"\\n首条记录预览：\")",
+      "before": "    if entries:",
+      "after": "        print(json.dumps(entries[0], indent=2)[:600])",
+      "hunk": "@@ -268,14 +268,14 @@ if __name__ == \"__main__\":"
     },
     {
       "id": "video_ai_editor/live_face.py#1",

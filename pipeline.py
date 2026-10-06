@@ -70,7 +70,7 @@ def get_video_duration(video_path, log_fn=print):
         if d > 0:
             return d
     except Exception as e:
-        log_fn(f"⚠️ Duration probe failed ({e}); using cv2 fallback")
+        log_fn(f"⚠️ 获取视频时长失败（{e}），改用 cv2 兜底")
     cap = cv2.VideoCapture(video_path)
     fps_ = cap.get(cv2.CAP_PROP_FPS) or 25.0
     n = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
@@ -116,8 +116,8 @@ def subtract_forbidden(segments, forbidden_ranges, min_keep=0.5):
 def check_cancellation(cancel_flag, log_fn, step_name="operation"):
     """Check if cancellation was requested and raise exception if so"""
     if cancel_flag and cancel_flag.is_set():
-        log_fn(f"⏹️ Cancelled during {step_name}")
-        raise RuntimeError(f"Operation cancelled during {step_name}")
+        log_fn(f"⏹️ 已在“{step_name}”阶段取消")
+        raise RuntimeError(f"已在“{step_name}”阶段取消操作")
 
 def _face_label_counts(face_seconds):
     """How many readable seconds each expression accounted for."""
@@ -432,19 +432,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         cfg_path = config_path("config.yaml")
         if os.path.exists(cfg_path):
             try:
-                check_cancellation(cancel_flag, log, "config loading")
+                check_cancellation(cancel_flag, log, "加载配置")
                 with open(cfg_path, "r") as f:
                     config = yaml.safe_load(f) or {}
-                log("✅ Loaded config.yaml")
+                log("✅ 已加载 config.yaml")
             except RuntimeError:
                 return None
             except Exception as e:
-                log(f"⚠ Failed to read config.yaml: {e}")
+                log(f"⚠ 无法读取 config.yaml：{e}")
         else:
-            log("⚠ config.yaml not found — using defaults and GUI overrides")
+            log("⚠ 未找到 config.yaml，将使用默认值和界面设置")
 
         # Check cancellation after config load
-        check_cancellation(cancel_flag, log, "initialization")
+        check_cancellation(cancel_flag, log, "初始化")
 
         # Merge CLI/gui-style values with defaults
         OUTPUT_FILE = gui_config.get("output_file") or config.get("video", {}).get("output", "highlight.mp4")
@@ -502,8 +502,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         keyword_matches = []
 
         target_duration = EXACT_DURATION if EXACT_DURATION else MAX_DURATION
-        duration_mode = "EXACT" if EXACT_DURATION else "MAX"
-        log(f"🎯 Mode: {duration_mode} duration of {target_duration} seconds ({target_duration/60:.1f} minutes)")
+        duration_mode = "精确" if EXACT_DURATION else "最长"
+        log(f"🎯 时长模式：{duration_mode}，目标 {target_duration} 秒（{target_duration/60:.1f} 分钟）")
 
         # ── Hard gate: actions require objects but no objects configured ─────────────
         actions_require_objects = gui_config.get("actions_require_objects", False)
@@ -555,34 +555,34 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             
             # Validate range
             if RANGE_START >= RANGE_END:
-                log(f"⚠️ Invalid time range: start ({RANGE_START}s) >= end ({RANGE_END}s)")
+                log(f"⚠️ 时间范围无效：起点（{RANGE_START} 秒）>= 终点（{RANGE_END} 秒）")
                 return None
             
             if RANGE_START >= video_duration:
-                log(f"⚠️ Start time ({RANGE_START}s) exceeds video duration ({video_duration:.1f}s)")
+                log(f"⚠️ 起始时间（{RANGE_START} 秒）超过视频时长（{video_duration:.1f} 秒）")
                 return None
             
             # Clamp end time to video duration
             RANGE_END = int(min(RANGE_END, video_duration))
             range_duration = RANGE_END - RANGE_START
             
-            log(f"🎯 Processing time range: {RANGE_START//60}:{RANGE_START%60:02d} to {RANGE_END//60}:{RANGE_END%60:02d}")
-            log(f"   Range duration: {range_duration//60}:{int(range_duration%60):02d} ({range_duration:.1f}s)")
-            log(f"   Skipping: {RANGE_START:.1f}s at start, {video_duration - RANGE_END:.1f}s at end")
+            log(f"🎯 处理时间范围：{RANGE_START//60}:{RANGE_START%60:02d} 至 {RANGE_END//60}:{RANGE_END%60:02d}")
+            log(f"   范围时长：{range_duration//60}:{int(range_duration%60):02d}（{range_duration:.1f} 秒）")
+            log(f"   跳过：开头 {RANGE_START:.1f} 秒，结尾 {video_duration - RANGE_END:.1f} 秒")
             
             # Create temporary trimmed video
-            progress.update_progress(5, 100, "Pipeline", "Trimming video to selected range...")
+            progress.update_progress(5, 100, "处理流水线", "正在按所选范围裁剪视频…")
             
             video_base_name = os.path.splitext(os.path.basename(video_path))[0]
             temp_folder = os.path.dirname(video_path) or "."
             temp_trimmed_video = os.path.join(temp_folder, f"{video_base_name}_temp_trimmed.mp4")
             
             try:
-                check_cancellation(cancel_flag, log, "video trimming")
+                check_cancellation(cancel_flag, log, "裁剪视频")
                 
                 # Use FFmpeg to trim the video (fast, no re-encoding)
                 ffmpeg = ffmpeg_exe()
-                log(f"   Using FFmpeg to extract range...")
+                log("   正在使用 FFmpeg 提取所选范围…")
                 subprocess.run([
                     ffmpeg, "-y", "-v", "error",
                     "-ss", str(RANGE_START),
@@ -592,7 +592,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     temp_trimmed_video
                 ], check=True)
 
-                log(f"✅ Video trimmed to: {temp_trimmed_video}")
+                log(f"✅ 视频已裁剪到：{temp_trimmed_video}")
                 processed_video_path = temp_trimmed_video
                 
                 # Update video_duration for the rest of the pipeline
@@ -603,10 +603,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
                 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
                 cap.release()
-                log(f"📊 Trimmed video: {video_duration:.2f}s, FPS: {fps}, frames: {total_frames}")
+                log(f"📊 裁剪后视频：{video_duration:.2f} 秒，FPS：{fps}，帧数：{total_frames}")
                 
             except subprocess.CalledProcessError as e:
-                log(f"⚠️ FFmpeg trimming with copy failed, trying with re-encoding...")
+                log("⚠️ FFmpeg 直接复制裁剪失败，正在尝试重新编码…")
                 try:
                     # Fallback: re-encode if copy fails
                     subprocess.run([
@@ -616,7 +616,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         "-i", video_path,
                         temp_trimmed_video
                     ], check=True)
-                    log(f"✅ Video trimmed (re-encoded) to: {temp_trimmed_video}")
+                    log(f"✅ 视频已重新编码并裁剪到：{temp_trimmed_video}")
                     processed_video_path = temp_trimmed_video
                     video_duration = range_duration
 
@@ -627,7 +627,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     cap.release()
                     log(f"📊 Trimmed video: {video_duration:.2f}s, FPS: {fps}, frames: {total_frames}")
                 except Exception as e2:
-                    log(f"❌ Failed to trim video: {e2}")
+                    log(f"❌ 视频裁剪失败：{e2}")
                     return None
             except (FileNotFoundError, OSError) as e:
                 # ffmpeg missing/unresolvable — would otherwise crash the pipeline
@@ -639,10 +639,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 # A cancel has already said so (check_cancellation); anything
                 # else would end the run with no reason given.
                 if not (cancel_flag and cancel_flag.is_set()):
-                    log(f"❌ Failed to trim video: {e}")
+                    log(f"❌ 视频裁剪失败：{e}")
                 return None
         else:
-            log("ℹ️ Processing full video")
+            log("ℹ️ 正在处理完整视频")
 
         # ========== CACHE CHECK ==========
         # Goal:
@@ -706,7 +706,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             if cache_language == TRANSCRIPT_SOURCE_LANG:
                                 cache_compatible = True
                             else:
-                                log(f"⚠️ Cache language mismatch: cached '{cache_language}' vs requested '{TRANSCRIPT_SOURCE_LANG}'")
+                                log(f"⚠️ 缓存语言不匹配：缓存为“{cache_language}”，当前请求为“{TRANSCRIPT_SOURCE_LANG}”")
                         elif cache_keyword_filtered and current_keywords:
                             # Check if cache has the keywords we need and language matches
                             cached_keywords_set = set([kw.lower() for kw in (cache_search_keywords or [])])
@@ -714,10 +714,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             if cached_keywords_set.issuperset(current_keywords_set) and cache_language == TRANSCRIPT_SOURCE_LANG:
                                 cache_compatible = True
                             else:
-                                log(f"⚠️ Cache incompatible: language mismatch or keywords not matching")
+                                log("⚠️ 缓存不兼容：语言或关键词不匹配")
                         
                         if cache_compatible:
-                            log(f"✅ Loaded from cache ({load_time:.2f}s) [signature match]")
+                            log(f"✅ 已从缓存加载（{load_time:.2f} 秒）[签名匹配]")
                             
                             # Extract data from cache - Ensure all data is loaded
                             transcript_segments = cached_data.get("transcript", {}).get("segments", [])
@@ -776,13 +776,13 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                                 f"need {'keyword-filtered' if current_keywords else 'full'} transcript")
                             cached_data = None
                     else:
-                        log(f"⚠️ Cache duration mismatch: {cache_video_duration}s vs {video_duration}s")
+                        log(f"⚠️ 缓存时长不匹配：{cache_video_duration} 秒 vs {video_duration} 秒")
                         cached_data = None
             except Exception as e:
-                log(f"⚠️ Cache load error: {e}")
+                log(f"⚠️ 缓存加载错误：{e}")
                 cached_data = None
         else:
-            log("ℹ️ Cache disabled or forced reprocess")
+            log("ℹ️ 缓存已禁用，或已强制重新处理")
 
         # Ensure using_cache is properly set
         using_cache = 'cached_data' in locals() and cached_data is not None
@@ -792,10 +792,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         if not using_cache:
             # Original transcript processing code
             if USE_TRANSCRIPT:
-                progress.update_progress(5, 100, "Pipeline", "Processing transcript...")
-                log("🔹 Step 0.5: Processing transcript...")
+                progress.update_progress(5, 100, "处理流水线", "正在处理转录文本…")
+                log("🔹 步骤 0.5：正在处理转录文本…")
                 try:
-                    check_cancellation(cancel_flag, log, "transcript processing")
+                    check_cancellation(cancel_flag, log, "处理转录文本")
                     transcript_segments = get_transcript_segments(
                         processed_video_path,
                         model_name=TRANSCRIPT_MODEL,
@@ -819,28 +819,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     transcript_text = create_enhanced_transcript(transcript_segments)
                     with open(transcript_file, "w", encoding="utf-8") as f:
                         f.write(transcript_text)
-                    log(f"✅ Transcript saved: {transcript_file}")
+                    log(f"✅ 转录文本已保存：{transcript_file}")
                 except RuntimeError as e:
                     # Cancellation arrives as a RuntimeError and stops the run.
                     # So did every Whisper and torch failure, unlogged — a video
                     # then ended as "Failed" with no reason anywhere.
                     if cancel_flag and cancel_flag.is_set():
                         return None
-                    log(f"⚠ Transcript processing failed: {e}")
+                    log(f"⚠ 转录处理失败：{e}")
                     transcript_segments = []
                 except Exception as e:
                     log(f"⚠ Transcript processing failed: {e}")
                     transcript_segments = []
 
                 if SEARCH_KEYWORDS and transcript_segments:
-                    check_cancellation(cancel_flag, log, "keyword search")
-                    log(f"🔹 Searching transcript for keywords: {SEARCH_KEYWORDS}")
+                    check_cancellation(cancel_flag, log, "关键词搜索")
+                    log(f"🔹 正在转录文本中搜索关键词：{SEARCH_KEYWORDS}")
                     keyword_matches = search_transcript_for_keywords(transcript_segments, SEARCH_KEYWORDS, context_seconds=CLIP_TIME//2)
-                    log(f"✅ Found {len(keyword_matches)} keyword matches")
+                    log(f"✅ 找到 {len(keyword_matches)} 个关键词匹配")
                     
                     # 🆕 ADD THIS DEBUG BLOCK:
                     if keyword_matches:
-                        log(f"\n📊 KEYWORD MATCH DETAILS:")
+                        log("\n📊 关键词匹配详情：")
                         for i, match in enumerate(keyword_matches[:10]):  # Show first 10
                             main_seg = match["main_segment"]
                             keyword = match.get("keyword", "unknown")
@@ -850,19 +850,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             log(f"   Match {i+1}: '{keyword}' at {start_sec}-{end_sec}s")
                             log(f"            Text: \"{text}...\"")
                     else:
-                        log(f"⚠️ No keyword matches found!")
-                        log(f"   Searched for: {SEARCH_KEYWORDS}")
+                        log("⚠️ 未找到关键词匹配！")
+                        log(f"   搜索关键词：{SEARCH_KEYWORDS}")
                         log(f"   In {len(transcript_segments)} transcript segments")
                 else:
                     keyword_matches = []
 
         else:
-            log("ℹ️ Using cached transcript")
+            log("ℹ️ 正在使用缓存的转录文本")
             # transcript_segments already loaded from cache
             
             # 🆕 ADD THIS BLOCK - Re-run keyword search on cached transcript
             if SEARCH_KEYWORDS and transcript_segments:
-                log(f"🔹 Searching cached transcript for keywords: {SEARCH_KEYWORDS}")
+                log(f"🔹 正在缓存转录中搜索关键词：{SEARCH_KEYWORDS}")
                 keyword_matches = search_transcript_for_keywords(transcript_segments, SEARCH_KEYWORDS, context_seconds=CLIP_TIME//2)
                 log(f"✅ Found {len(keyword_matches)} keyword matches")
             else:
@@ -916,11 +916,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
             # Skip motion detection if all motion-related points are 0
             if not motion_wanted:
-                log("ℹ️ Skipping motion detection (all scene/motion points set to 0)")
+                log("ℹ️ 已跳过运动检测（场景/运动评分均为 0）")
                 scenes, motion_events, motion_peaks = [], [], []
                 progress.update_progress(25, 100, "Pipeline", "Motion detection skipped - no motion scoring enabled")
             else:
-                log("🔹 Step 1+2: Detecting scenes, motion events, and motion peaks (this may take time)...")
+                log("🔹 步骤 1+2：正在检测场景、运动事件和运动峰值（可能需要一些时间）…")
 
                 scenes, motion_events, motion_peaks = [], [], []
 
@@ -948,21 +948,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     # Unpack the results
                     if result and len(result) == 3:
                         scenes, motion_events, motion_peaks = result
-                        log(f"✅ Motion detection results: {len(scenes)} scenes, {len(motion_events)} motion events, {len(motion_peaks)} motion peaks")
+                        log(f"✅ 运动检测结果：{len(scenes)} 个场景，{len(motion_events)} 个运动事件，{len(motion_peaks)} 个运动峰值")
                     else:
-                        log(f"⚠️ Unexpected motion detection result format: {result}")
+                        log(f"⚠️ 运动检测结果格式异常：{result}")
                         
                 except RuntimeError:
                     return None
                 except Exception as e:
-                    log(f"❌ Motion detection failed: {e}")
+                    log(f"❌ 运动检测失败：{e}")
                     import traceback
                     log(f"Full error: {traceback.format_exc()}")
 
                 # Add progress update after motion detection
                 progress.update_progress(25, 100, "Pipeline", f"Motion detection complete: {len(scenes)} scenes, {len(motion_events)} events, {len(motion_peaks)} peaks")
         else:
-            log("ℹ️ Using cached motion analysis")
+            log("ℹ️ 正在使用缓存的运动分析")
             progress.update_progress(25, 100, "Pipeline", "Loaded cached motion analysis")
 
         check_cancellation(cancel_flag, log, "motion detection completion")
@@ -996,7 +996,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             return cached.get("audio_peaks") or []
 
         if using_cache:
-            log("ℹ️ Using cached audio data")
+            log("ℹ️ 正在使用缓存的音频数据")
             audio_peaks = _get_cached_audio_peaks(cached_data)
             waveform_data = _get_cached_waveform(cached_data)
 
@@ -1012,11 +1012,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     check_cancellation(cancel_flag, log, "audio peak detection")
                     audio_peaks = extract_audio_peaks(processed_video_path,
                                                       cancel_flag=cancel_flag)
-                    log(f"✅ Audio peak detection done: {len(audio_peaks)} peaks")
+                    log(f"✅ 音频峰值检测完成：{len(audio_peaks)} 个峰值")
                 except RuntimeError:
                     return None
                 except Exception as e:
-                    log(f"⚠️ Audio peak detection failed: {e}")
+                    log(f"⚠️ 音频峰值检测失败：{e}")
                     audio_peaks = []
 
             # If waveform wasn't cached in older runs, compute it now (cheap) so timeline works
@@ -1028,9 +1028,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     # that become ~1.4s bins on long videos. Capped for draw perf.
                     _wf_points = min(12000, max(2000, int(video_duration * 4)))
                     waveform_data = extract_waveform_data(processed_video_path, num_points=_wf_points)
-                    log("✅ Waveform computed (was missing in cache)")
+                    log("✅ 已计算音频波形（缓存中原本缺失）")
                 except Exception as e:
-                    log(f"⚠️ Failed to compute waveform: {e}")
+                    log(f"⚠️ 无法计算音频波形：{e}")
 
         else:
             # Check if we should skip audio detection based on GUI config
@@ -1045,11 +1045,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 _wf_points = min(12000, max(2000, int(video_duration * 4)))
                 waveform_data = extract_waveform_data(processed_video_path, num_points=_wf_points)
             except Exception as e:
-                log(f"⚠️ Waveform extraction failed: {e}")
+                log(f"⚠️ 音频波形提取失败：{e}")
                 waveform_data = None
 
             if audio_peak_points == 0:
-                log("ℹ️ Skipping audio peak detection (audio_peak_points set to 0)")
+                log("ℹ️ 已跳过音频峰值检测（audio_peak_points 为 0）")
                 audio_peaks = []
                 progress.update_progress(
                     30, 100, "Pipeline",
@@ -1057,7 +1057,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 )
             else:
                 progress.update_progress(30, 100, "Pipeline", "Analyzing audio...")
-                log("🔹 Step 3: Detecting audio peaks...")
+                log("🔹 步骤 3：正在检测音频峰值…")
                 try:
                     check_cancellation(cancel_flag, log, "audio peak detection")
                     audio_peaks = extract_audio_peaks(processed_video_path, cancel_flag=cancel_flag)
@@ -1095,7 +1095,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             else:
                 progress.update_progress(31, 100, "Pipeline",
                                          "Finding loudness bursts...")
-                log("🔹 Step 3b: Finding loudness bursts...")
+                log("🔹 步骤 3b：正在查找响度突增…")
                 try:
                     check_cancellation(cancel_flag, log, "loudness burst detection")
                     from modules.audio import loudness_bursts as _lb
@@ -1118,10 +1118,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 except RuntimeError as e:
                     # No audio track is a fact about the file, not a failure of
                     # the run -- every other signal is still worth having.
-                    log(f"⚠️ Loudness burst detection skipped: {e}")
+                    log(f"⚠️ 已跳过响度突增检测：{e}")
                     loudness_bursts = []
                 except Exception as e:
-                    log(f"⚠️ Loudness burst detection failed: {e}")
+                    log(f"⚠️ 响度突增检测失败：{e}")
                     loudness_bursts = []
 
         # Keep what the backfills just cost, so this is a one-off rather than a
@@ -1149,9 +1149,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 filled = ", ".join(n for n, on in (("motion", motion_backfill),
                                                    ("audio peaks", audio_backfill))
                                    if on)
-                log(f"💾 Cached the {filled} data - the next run reuses it.")
+                log(f"💾 已缓存 {filled} 数据，下次运行将直接复用。")
             except Exception as e:
-                log(f"⚠️ Could not cache the backfilled data: {e}")
+                log(f"⚠️ 无法缓存补全数据：{e}")
 
         # 4 Object detection setup
         progress.update_progress(40, 100, "Pipeline", "Setting up object detection...")
@@ -1179,11 +1179,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             except ImportError:
                 from openvino.runtime import Core
             ie = Core()
-            log(f"🔹 OpenVINO available devices: {ie.available_devices}")
+            log(f"🔹 OpenVINO 可用设备：{ie.available_devices}")
         except ImportError:
-            log("ℹ️ OpenVINO not available")
+            log("ℹ️ OpenVINO 不可用")
         except Exception as e:
-            log(f"⚠️ OpenVINO device check failed: {e}")
+            log(f"⚠️ OpenVINO 设备检查失败：{e}")
 
         yolo_model = None  # legacy variable name; holds a Detector backend
         object_class_names = []
@@ -1224,7 +1224,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         except RuntimeError:
             return None
         except Exception as e:
-            log(f"❌ Failed to load object detector: {e}")
+            log(f"❌ 物体检测器加载失败：{e}")
             yolo_model = None
 
         # --- Object detection ---
@@ -1248,7 +1248,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     "frame(s) for the report")
         if not using_cache:
             if not highlight_objects:
-                log("ℹ Skipping object detection (no objects to highlight)")
+                log("ℹ 已跳过物体检测（未配置需要关注的物体）")
                 object_detections = {}
             else:
                 frame_skip_for_obj = gui_config.get("object_frame_skip", CLIP_TIME if CLIP_TIME > 0 else 5)
@@ -1261,7 +1261,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         video_basename = os.path.splitext(os.path.basename(video_path))[0]
                         temp_folder = os.path.dirname(video_path) or "."
                         object_annotated_path = os.path.join(temp_folder, f"{video_basename}_objects_annotated.mp4")
-                        log(f"🎨 Object bounding boxes enabled, output: {object_annotated_path}")
+                        log(f"🎨 已启用物体检测框，输出：{object_annotated_path}")
 
                     std_det, std_bb = run_object_detection_single(
                         processed_video_path,
@@ -1282,7 +1282,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         object_detections[sec] = sorted(set(object_detections[sec]) | set(names))
                     object_bboxes_cache += std_bb
 
-                log(f"✅ Object detection complete: {len(object_detections)} seconds with objects")
+                log(f"✅ 物体检测完成：{len(object_detections)} 秒包含检测到的物体")
 
         else:
             log(CACHE_HIT_LOG.format(kind="object"))
@@ -1416,7 +1416,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     video_basename = os.path.splitext(os.path.basename(video_path))[0]
                     temp_folder = os.path.dirname(video_path) or "."
                     action_annotated_path = os.path.join(temp_folder, f"{video_basename}_actions_annotated.mp4")
-                    log(f"🎨 Action labels enabled, output: {action_annotated_path}")
+                    log(f"🎨 已启用动作标签，输出：{action_annotated_path}")
                 
                 # Determine action backend from GUI config
                 action_backend = gui_config.get("action_backend", "auto")
@@ -1462,7 +1462,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             log=log,
                         ))
                     if draw_action_labels:
-                        log("ℹ️ The SigLIP2 action backend does not draw labels on the video yet")
+                        log("ℹ️ SigLIP2 动作后端目前尚不支持在视频上绘制标签")
                 else:
                     log("⚠️ Intel / R3D action recognition is deprecated and will be removed; "
                         "train an action head (SigLIP2) to replace it")
@@ -1568,7 +1568,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 check_cancellation(cancel_flag, log, "action recognition processing")
 
                 if all_action_detections:
-                    log(f"✅ Action detection complete: {len(all_action_detections)} detections")
+                    log(f"✅ 动作检测完成：{len(all_action_detections)} 个检测结果")
                     
                     # DEBUG: Print format of returned data
                     if len(all_action_detections) > 0:
@@ -1590,11 +1590,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             timestamp, frame_id, action_id, score, action_name, model_type = detection
                             normalized_detections.append((timestamp, frame_id, action_id, score, action_name))
                         else:
-                            log(f"⚠️ Unexpected detection format with {len(detection)} elements: {detection}")
+                            log(f"⚠️ 检测结果格式异常，共 {len(detection)} 个元素：{detection}")
                             continue
                     
                     all_action_detections = normalized_detections
-                    log(f"✅ Normalized {len(all_action_detections)} detections to 5-element format")
+                    log(f"✅ 已将 {len(all_action_detections)} 个检测结果标准化为 5 元素格式")
 
                     # 1️⃣ Group consecutive actions chronologically - GROUP EACH ACTION TYPE SEPARATELY
                     sequences_by_action = defaultdict(list)
@@ -1661,10 +1661,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
                     # Sort chronologically for pipeline
                     action_detections = sorted(action_detections, key=lambda x: x[0])
-                    log(f"✅ Action recognition: {len(action_detections)} action sequences selected (total duration: {total_duration:.1f}s)")
+                    log(f"✅ 动作识别：已选择 {len(action_detections)} 个动作序列（总时长：{total_duration:.1f} 秒）")
 
             except Exception as e:
-                log(f"⚠ Action recognition failed: {e}")
+                log(f"⚠ 动作识别失败：{e}")
                 import traceback
                 log(f"Full error: {traceback.format_exc()}")
                 action_detections = []
@@ -1681,7 +1681,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     ]
                     log(f"✅ Converted cached detections from 6-element to 5-element format")
         elif not interesting_actions:
-            log("ℹ️ No interesting actions specified, skipping action recognition")
+            log("ℹ️ 未指定关注动作，已跳过动作识别")
             action_detections = []
 
         # ========== SAVE TO CACHE IF NOT USING CACHE ==========
@@ -1728,7 +1728,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     log(f"✅ Analysis results cached (full transcript: {len(analysis_data['transcript']['segments'])} segments, language: {TRANSCRIPT_SOURCE_LANG})")
                 
             except Exception as e:
-                log(f"⚠️ Failed to save cache: {e}")
+                log(f"⚠️ 缓存保存失败：{e}")
                 import traceback
                 log(f"Full error: {traceback.format_exc()}")
         # ========== END CACHE SAVE ==========
@@ -1939,7 +1939,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             else:
                                 action_score[sec] += ACTION_POINTS * 0.5
 
-        log(f"✅ Object detection summary: {total_detections} detections")
+        log(f"✅ 物体检测汇总：{total_detections} 个检测结果")
 
         # Beginning & ending boost
         for i in range(min(int(video_duration), BEGINNING_SECONDS)):
@@ -2023,7 +2023,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             for sec in forbidden_seconds:
                 if 0 <= sec < len(score):
                     score[sec] = 0.0
-            log(f"🚫 Avoid(skip): zeroed score on {len(forbidden_seconds)} second(s)")
+            log(f"🚫 排除（跳过）：已将 {len(forbidden_seconds)} 秒的评分归零")
 
         progress.update_progress(80, 100, "Score Calculation", "Score computation complete")
         check_cancellation(cancel_flag, log, "score computation completion")
@@ -2060,7 +2060,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         # populated when using cache. Auto-segmentation needs it, so rebuild
         # from action_detections using the same grouping logic.
         if not selected_sequences and action_detections:
-            log("🔄 Rebuilding action sequences from cached detections...")
+            log("🔄 正在根据缓存检测结果重建动作序列…")
             
             # Group by action type
             sequences_by_action = defaultdict(list)
@@ -2101,7 +2101,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
         if CLIP_TIME == 0:
             # ========== AUTO-SEGMENTATION MODE ==========
-            log("🔧 CLIP_TIME=0 → using auto-segmentation (variable-length clips)")
+            log("🔧 CLIP_TIME=0 → 使用自动分段（可变长度片段）")
             
             segments, auto_regions = build_auto_segments(
                 video_duration=video_duration,
@@ -2133,7 +2133,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 coverage=COVERAGE,
             )
             if COVERAGE > 0:
-                log(f"🎞️ Coverage {COVERAGE:.0%} → spreading clips across the video")
+                log(f"🎞️ 覆盖率 {COVERAGE:.0%} → 将片段分散到整个视频")
 
         # Sort segments by start time (both modes)
         segments.sort(key=lambda x: x[0])
@@ -2163,7 +2163,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 log(f"🩹 Quality gate: {penalized} of {len(segments)} clips "
                     f"penalized as blurry")
             except Exception as e:
-                log(f"⚠️ Quality gate skipped: {e}")
+                log(f"⚠️ 已跳过画质门控：{e}")
 
         # AVOID(skip, hard): guarantee no forbidden time survives into the cut
         if forbidden_ranges and (manual_avoid or (AVOID_ENABLED and AVOID_METHOD in ("skip", "crop_then_skip"))):
@@ -2340,8 +2340,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     from modules.report.highlight_advice import attach_advice
                     attach_advice(report)
                     if report.get("advice"):
-                        log(f"💡 {len(report['advice'])} suggestion(s) in the "
-                            "highlight report")
+                        log(f"💡 高光报告中有 {len(report['advice'])} 条建议")
                 except Exception as _ae:
                     print(f"⚠️ Advisor skipped: {_ae}")
 
@@ -2351,7 +2350,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 write_report(report, html_path, json_path=f"{base}_why.json",
                              serve_base=gui_config.get("report_serve_base"),
                              media_base=gui_config.get("report_media_base"))
-                log(f"📄 Why-these-moments report: {os.path.basename(html_path)}")
+                log(f"📄 高光入选原因报告：{os.path.basename(html_path)}")
                 # The same breakdown into the debug log, from the same dict, so
                 # the two can never disagree about what happened.
                 from modules.report.highlight_report import render_text
@@ -2453,12 +2452,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 )
                 
                 if success:
-                    log(f"✅ Saved {len(segments)} highlight segments to cache")
+                    log(f"✅ 已将 {len(segments)} 个高光片段保存到缓存")
                 else:
-                    log("⚠️ Failed to save highlight segments to cache")
+                    log("⚠️ 高光片段保存到缓存失败")
                     
             except Exception as e:
-                log(f"⚠️ Error saving highlight cache: {e}")
+                log(f"⚠️ 保存高光缓存时出错：{e}")
                 import traceback
                 log(f"Full error: {traceback.format_exc()}")
         # ========== END HIGHLIGHT CACHE SAVE ==========
@@ -2656,16 +2655,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         # highlight nobody asked for is the reason tuning weights feels costly
         # when it is not. Stop here so the settings can be tried freely.
         if gui_config.get("report_only"):
-            log(f"📄 Report only — {len(segments)} segment(s) scored, "
-                "no video written.")
-            progress.update_progress(100, 100, "Pipeline", "Report ready")
+            log(f"📄 仅生成报告——已为 {len(segments)} 个片段评分，未写出视频。")
+            progress.update_progress(100, 100, "处理流水线", "报告已就绪")
             return segments
 
         # Cut and concatenate
-        progress.update_progress(90, 100, "Pipeline", "Creating highlight video...")
-        _render_mode_label = {"cpu": "CPU re-encode (libx265/264)",
-                              "gpu": "GPU re-encode"}[RENDER_MODE]
-        log(f"🔹 Step 7: Cutting video segments... [{_render_mode_label}]")
+        progress.update_progress(90, 100, "处理流水线", "正在创建高光视频…")
+        _render_mode_label = {"cpu": "CPU 重新编码（libx265/264）",
+                              "gpu": "GPU 重新编码"}[RENDER_MODE]
+        log(f"🔹 步骤 7：正在剪切视频片段… [{_render_mode_label}]")
         try:
             from modules.media.clip_export import (
                 clips_directory, sanitize_base_name, segment_clip_path,
@@ -2674,7 +2672,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             import shutil
 
             if len(segments) == 0:
-                log("⚠️ No segments selected — nothing to cut.")
+                log("⚠️ 未选中任何片段——没有可剪切内容。")
             elif len(segments) == 1 and not EXPORT_CLIPS:
                 check_cancellation(cancel_flag, log, "video cutting")
                 cut_video(
@@ -2689,7 +2687,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 if EXPORT_CLIPS:
                     clips_dir = clips_directory(OUTPUT_FILE, video_base_name)
                     os.makedirs(clips_dir, exist_ok=True)
-                    log(f"📁 Separate clips → {clips_dir}")
+                    log(f"📁 独立片段 → {clips_dir}")
 
                 for i, (s, e) in enumerate(segments):
                     check_cancellation(cancel_flag, log, f"video cutting clip {i+1}")
@@ -2699,10 +2697,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     else:
                         clip_path = os.path.join(
                             output_dir, f"{video_base_name}_temp_clip_{i}.mp4")
-                    log(f"  Creating clip: {clip_path}")
+                    log(f"  正在创建片段：{clip_path}")
                     cut_video(processed_video_path, s, e, clip_path, mode=RENDER_MODE)
                     if not os.path.exists(clip_path):
-                        raise Exception(f"Failed to create clip: {clip_path}")
+                        raise Exception(f"创建片段失败：{clip_path}")
                     clip_paths.append(clip_path)
                     progress.update_progress(
                         90 + (i + 1) * 5 // len(segments), 100,
@@ -2714,7 +2712,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 else:
                     check_cancellation(cancel_flag, log, "video concatenation")
                     concat_file = os.path.join(output_dir, "concat_list.txt")
-                    log(f"📝 Writing concat file: {concat_file}")
+                    log(f"📝 正在写入拼接列表：{concat_file}")
                     with open(concat_file, "w", encoding="utf-8") as f:
                         for t in clip_paths:
                             abs_path = os.path.abspath(t).replace("\\", "/")
@@ -2727,7 +2725,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         r"[@#$%^&*()]", "_", output_filename_clean)
                     OUTPUT_FILE_CLEAN = os.path.join(output_dir, output_filename_clean)
 
-                    log(f"🎬 Running FFmpeg concatenation to: {OUTPUT_FILE_CLEAN}")
+                    log(f"🎬 正在使用 FFmpeg 拼接到：{OUTPUT_FILE_CLEAN}")
                     subprocess.run([
                         ffmpeg_exe(), "-y", "-v", "error", "-f", "concat",
                         "-safe", "0", "-i", concat_file_normalized,
@@ -2749,13 +2747,13 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             pass
 
                 if EXPORT_CLIPS and clips_dir:
-                    log(f"✅ {len(clip_paths)} separate clip(s) in {clips_dir}")
+                    log(f"✅ 已在 {clips_dir} 生成 {len(clip_paths)} 个独立片段")
             # Nothing was cut when no segment survived selection: neither the
             # success line nor the music bed may fire, or a run that produced
             # no file still reports one (and would mux music onto a stale
             # highlight left over from an earlier run).
             if segments:
-                log(f"✅ Highlight saved: {OUTPUT_FILE}, duration {total_duration:.1f}s")
+                log(f"✅ 高光视频已保存：{OUTPUT_FILE}，时长 {total_duration:.1f} 秒")
 
                 # ── Music bed ────────────────────────────────────────────────────
                 # Mux the chosen track onto the finished highlight. Applied to a
@@ -2802,8 +2800,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                                              100, "Subtitles", details)
 
                 # Always create full subtitles
-                progress.update_progress(95, 100, "Pipeline", "Creating full-video subtitles...")
-                log("Creating subtitles for the full video...")
+                progress.update_progress(95, 100, "处理流水线", "正在创建完整视频字幕…")
+                log("正在为完整视频创建字幕…")
                 full_srt = f"{os.path.splitext(video_path)[0]}_{TARGET_LANG}.srt"
                 if TARGET_LANG and TARGET_LANG != SOURCE_LANG:
                     # Say which language it is translating out of: the default
@@ -2819,12 +2817,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     suffix = "" if SOURCE_LANG == "auto" else f"_{SOURCE_LANG}"
                     full_srt = f"{os.path.splitext(video_path)[0]}{suffix}.srt"
                     create_srt_file(transcript_segments, full_srt)
-                log(f"Full-video subtitles created: {full_srt}")
+                log(f"完整视频字幕已创建：{full_srt}")
 
                 # Create highlight subtitles if we have segments
                 if segments:
-                    progress.update_progress(95, 100, "Pipeline", "Creating highlight subtitles...")
-                    log("Creating subtitles that match highlight timing...")
+                    progress.update_progress(95, 100, "处理流水线", "正在创建高光字幕…")
+                    log("正在创建与高光时间轴匹配的字幕…")
                     if TARGET_LANG and TARGET_LANG != SOURCE_LANG:
                         highlight_srt_file = f"{base_name}_{TARGET_LANG}.srt"
                         create_highlight_subtitles(
@@ -2844,29 +2842,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             source_lang=SOURCE_LANG,
                             target_lang=None
                         )
-                    log(f"Highlight subtitles created: {highlight_srt_file}")
+                    log(f"高光字幕已创建：{highlight_srt_file}")
 
             except Exception as e:
-                log(f"Error creating subtitles: {e}")
+                log(f"创建字幕时出错：{e}")
 
 
         # Final progress
-        progress.update_progress(100, 100, "Pipeline", "Complete!")
+        progress.update_progress(100, 100, "处理流水线", "完成！")
 
         # End timer
         elapsed = time.time() - run_started_at
         minutes = int(elapsed // 60)
         seconds = int(elapsed % 60)
-        log(f"⏱️ Processing time: {minutes}m {seconds}s")
+        log(f"⏱️ 处理用时：{minutes} 分 {seconds} 秒")
 
         # Clean up GPU memory
         try:
             if "cuda" in yolo_device:
                 torch.cuda.empty_cache()
-                log("✅ CUDA memory cleaned up")
+                log("✅ CUDA 显存已清理")
             elif "xpu" in yolo_device:
                 torch.xpu.empty_cache()
-                log("✅ XPU memory cleaned up")
+                log("✅ XPU 显存已清理")
         except Exception:
             pass
 
@@ -2874,14 +2872,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         if temp_trimmed_video and os.path.exists(temp_trimmed_video):
             try:
                 os.remove(temp_trimmed_video)
-                log(f"🧹 Cleaned up temporary trimmed video")
+                log("🧹 临时裁剪视频已清理")
             except Exception as e:
-                log(f"⚠️ Could not remove temporary file: {e}")
+                log(f"⚠️ 无法删除临时文件：{e}")
 
         # ========== TIMELINE VISUALIZATION ==========
         if gui_config.get("create_timeline_viewer", False):
             try:
-                log("🎨 Launching Signal Timeline Viewer...")
+                log("🎨 正在打开信号时间线查看器…")
 
                 # Create analysis_data if not already created for cache
                 if 'analysis_data' not in locals() or analysis_data is None:
@@ -2920,17 +2918,17 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     from signal_timeline_viewer import show_timeline_viewer
                     show_timeline_viewer(processed_video_path, analysis_data)
             except Exception as e:
-                log(f"⚠️ Timeline viewer failed: {e}")
+                log(f"⚠️ 时间线查看器启动失败：{e}")
         # ============================================
 
         return OUTPUT_FILE
 
     except RuntimeError as e:
         # This handles our cancellation exceptions
-        log(f"⏹️ Pipeline cancelled: {e}")
+        log(f"⏹️ 处理流水线已取消：{e}")
         return None
     except Exception as e:
-        log(f"❌ Pipeline failed: {e}")
+        log(f"❌ 处理流水线失败：{e}")
         import traceback
         log(f"Full error: {traceback.format_exc()}")
         return None

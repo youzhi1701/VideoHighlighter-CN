@@ -3,19 +3,9 @@ name: 中文汉化验证
 on:
   push:
     paths:
+      - '**/*.py'
       - '中文汉化插件/**'
-      - 'main.py'
-      - 'signal_timeline_viewer.py'
-      - 'video_picker_dialog.py'
       - 'frontend/src/**'
-      - 'llm/**'
-      - 'model_hub/**'
-      - 'modules/ui/**'
-      - 'modules/update/**'
-      - 'modules/teach/**'
-      - 'modules/packs/**'
-      - 'modules/system/**'
-      - 'video_ai_editor/**'
       - 'packaging/installer/**'
       - '.github/workflows/localization.yml'
   workflow_dispatch:

@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "94c37d9b8e557eaf11bb7cb6af1480978ce202a8"
+    "head_commit": "2b3bb311ebeec652b2ed4b7ac1f59ee26b06a65f"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -10995,11 +10995,11 @@
     {
       "id": "main.py#6",
       "file": "main.py",
-      "source": "",
-      "target": "EDITION_DISPLAY = \"免费版\" if __edition__ == \"Free\" else __edition__",
-      "before": "from version import __version__, __edition__",
+      "source": "from version import __version__, __edition__",
+      "target": "from version import __version__, __edition__, __cn_version__, __product_name__\nEDITION_DISPLAY = \"免费版\" if __edition__ == \"Free\" else __edition__",
+      "before": "from modules.system.app_paths import action_model_file as _action_model_file",
       "after": "",
-      "hunk": "@@ -90,6 +91,7 @@ except Exception:"
+      "hunk": "@@ -89,7 +90,8 @@ except Exception:"
     },
     {
       "id": "main.py#7",
@@ -11464,7 +11464,7 @@
       "id": "main.py#58",
       "file": "main.py",
       "source": "        self.setWindowTitle(f\"Video Highlighter v{__version__} {__edition__}\")",
-      "target": "        self.setWindowTitle(f\"Video Highlighter v{__version__} {EDITION_DISPLAY}\")",
+      "target": "        self.setWindowTitle(f\"{__product_name__} v{__cn_version__} · {EDITION_DISPLAY}\")",
       "before": "        super().__init__()",
       "after": "        screen = QApplication.primaryScreen().availableGeometry()",
       "hunk": "@@ -1024,7 +1028,7 @@ class VideoHighlighterGUI(QWidget):"
@@ -14054,7 +14054,7 @@
       "id": "main.py#344",
       "file": "main.py",
       "source": "        title = QLabel(f\"🎬 Video Highlighter ({__edition__})\")",
-      "target": "        title = QLabel(f\"🎬 Video Highlighter（{EDITION_DISPLAY}）\")",
+      "target": "        title = QLabel(f\"🎬 {__product_name__}（{EDITION_DISPLAY}）\")",
       "before": "        # Header",
       "after": "        title.setStyleSheet(\"font-size: 16pt; font-weight: bold;\")",
       "hunk": "@@ -3745,11 +3712,11 @@ class VideoHighlighterGUI(QWidget):"
@@ -14063,7 +14063,7 @@
       "id": "main.py#345",
       "file": "main.py",
       "source": "        subtitle = QLabel(f\"Version {__version__} — free & open source (AGPLv3)\")",
-      "target": "        subtitle = QLabel(f\"版本 {__version__} — 免费开源（AGPLv3）\")",
+      "target": "        subtitle = QLabel(f\"中文版版本 v{__cn_version__} · 核心版本 {__version__} — 免费开源（AGPLv3）\")",
       "before": "",
       "after": "        subtitle.setStyleSheet(\"color: #888;\")",
       "hunk": "@@ -3745,11 +3712,11 @@ class VideoHighlighterGUI(QWidget):"
@@ -16360,7 +16360,7 @@
       "id": "main.py#598",
       "file": "main.py",
       "source": "    startup_splash.begin(f\"VideoHighlighter {__edition__}\",\n                         f\"Version {__version__}\", steps=2)",
-      "target": "    startup_splash.begin(f\"VideoHighlighter {EDITION_DISPLAY}\",\n                         f\"版本 {__version__}\", steps=2)",
+      "target": "    startup_splash.begin(f\"{__product_name__} {EDITION_DISPLAY}\",\n                         f\"中文版 v{__cn_version__} · 核心 {__version__}\", steps=2)",
       "before": "    # the app's theme. begin() closes the native splash once this is painted.",
       "after": "",
       "hunk": "@@ -7388,14 +7342,14 @@ if __name__ == \"__main__\":"
@@ -42924,10 +42924,10 @@
       "id": "version.py#1",
       "file": "version.py",
       "source": "__version__ = \"0.13.0\"",
-      "target": "__version__ = \"0.13.1\"",
+      "target": "__version__ = \"0.13.1\"\n__cn_revision__ = 1\n__cn_version__ = f\"{__version__}-cn.{__cn_revision__}\"\n__product_name__ = \"VideoHighlighter-CN 中文版\"\n__display_name__ = f\"{__product_name__} v{__cn_version__}\"",
       "before": null,
       "after": "__edition__ = \"Free\"",
-      "hunk": "@@ -1,3 +1,3 @@"
+      "hunk": "@@ -1,3 +1,7 @@"
     },
     {
       "id": "version.py#2",
@@ -42936,7 +42936,7 @@
       "target": "__build_date__ = \"2026-10-06\"",
       "before": "__edition__ = \"Free\"",
       "after": null,
-      "hunk": "@@ -1,3 +1,3 @@"
+      "hunk": "@@ -1,3 +1,7 @@"
     },
     {
       "id": "video_ai_editor/bbox_overlay.py#1",

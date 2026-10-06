@@ -23343,7 +23343,7 @@
     },
     {
       "source": "Version {__version__}",
-      "target": "版本 {__version__}",
+      "target": "中文版 v{__cn_version__} · 核心 {__version__}",
       "files": [
         "main.py"
       ]
@@ -23357,7 +23357,7 @@
     },
     {
       "source": "Version {__version__} — free & open source (AGPLv3)",
-      "target": "版本 {__version__} — 免费开源（AGPLv3）",
+      "target": "中文版版本 v{__cn_version__} · 核心版本 {__version__} — 免费开源（AGPLv3）",
       "files": [
         "main.py"
       ]

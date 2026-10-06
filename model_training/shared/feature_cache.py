@@ -57,16 +57,16 @@ def precompute_feature_cache(dataset, encoder, config,
 
     if os.path.exists(cache_path) and not force_rebuild:
         info = torch.load(cache_path, weights_only=False, map_location='cpu')
-        print(f"✅ Feature cache loaded: {cache_path}")
-        print(f"   {info['num_samples']} samples, feature dim = {info['feature_dim']}")
+        print(f"✅ 特征缓存已加载：{cache_path}")
+        print(f"   {info['num_samples']} 个样本，特征维度 = {info['feature_dim']}")
         return cache_path
 
     if force_rebuild and os.path.exists(cache_path):
         os.remove(cache_path)
-        print(f"🗑️  Deleted old feature cache")
+        print("🗑️ 已删除旧特征缓存")
 
-    print(f"\n🔧 Pre-encoding {len(dataset)} clips with OpenVINO encoder...")
-    print(f"   (One-time cost — all future epochs load from cache)")
+    print(f"\n🔧 正在使用 OpenVINO 编码器预编码 {len(dataset)} 个片段…")
+    print("   （仅首次执行；后续训练轮次将直接从缓存加载）")
 
     # Use batch_size=1, num_workers=0 for safety with OpenVINO
     temp_loader = DataLoader(dataset, batch_size=1, shuffle=False, num_workers=0)
@@ -75,7 +75,7 @@ def precompute_feature_cache(dataset, encoder, config,
     all_labels = []
 
     with torch.no_grad():
-        for frames, labels in tqdm(temp_loader, desc="Encoding features"):
+        for frames, labels in tqdm(temp_loader, desc="正在编码特征"):
             # frames: (1, T, C, H, W) — encoder expects CPU tensors
             feats = encoder.encode(frames.cpu())  # → (1, T, feat_dim)
             all_features.append(feats.squeeze(0).cpu())  # → (T, feat_dim)
@@ -95,10 +95,10 @@ def precompute_feature_cache(dataset, encoder, config,
 
     torch.save(cache_data, cache_path)
     size_mb = os.path.getsize(cache_path) / (1024 * 1024)
-    print(f"✅ Feature cache saved: {cache_path} ({size_mb:.1f} MB)")
-    print(f"   {cache_data['num_samples']} samples, "
-          f"feature dim = {cache_data['feature_dim']}, "
-          f"seq len = {cache_data['sequence_length']}")
+    print(f"✅ 特征缓存已保存：{cache_path}（{size_mb:.1f} MB）")
+    print(f"   {cache_data['num_samples']} 个样本，"
+          f"特征维度 = {cache_data['feature_dim']}，"
+          f"序列长度 = {cache_data['sequence_length']}")
 
     return cache_path
 

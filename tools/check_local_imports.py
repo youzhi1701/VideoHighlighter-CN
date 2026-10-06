@@ -394,7 +394,7 @@ def run_check(repo_root: Path) -> list[Violation]:
 def _resolve_repo_root() -> Path:
     result = _run_git(["rev-parse", "--show-toplevel"])
     if result.returncode != 0:
-        raise GitError(f"not a git repository: {result.stderr.strip()}")
+        raise GitError(f"不是 Git 仓库：{result.stderr.strip()}")
     return Path(result.stdout.strip())
 
 
@@ -403,16 +403,16 @@ def main() -> int:
         repo_root = _resolve_repo_root()
         violations = run_check(repo_root)
     except GitError as exc:
-        print(f"check_local_imports: {exc}")
+        print(f"本地导入检查：{exc}")
         return 1
 
     if not violations:
-        print("check_local_imports: no violations found.")
+        print("本地导入检查：未发现违规项。")
         return 0
 
     for violation in violations:
         print(str(violation))
-    print(f"check_local_imports: {len(violations)} violation(s) found.")
+    print(f"本地导入检查：发现 {len(violations)} 个违规项。")
     return 1
 
 

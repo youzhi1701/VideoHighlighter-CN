@@ -304,8 +304,7 @@ jobs:
         # Core + CPU pack; NVIDIA (ticked when a card is found) and CLIP are
         # downloaded during setup from PACKS_BASE and checked against the
         # SHA-256 pinned here. Fixed filename, no version in it, so
-        # /releases/latest/download/00-VideoHighlighter-Windows-Setup.exe is a
-        # permanent link; the version is compiled into the exe.
+        # 中文版安装包文件名包含独立版本号，避免与原版或旧汉化版混淆。
         shell: pwsh
         run: |
           choco install innosetup -y --no-progress | Out-Null
@@ -863,8 +862,7 @@ jobs:
               echo "hold a 1.7 GB sidecar."
             fi
             echo ""
-            echo "\`00-VideoHighlighter-Windows-Setup.zip\` is the older script-based"
-            echo "installer, kept as a fallback."
+            echo "\`$bootstrap\` 是备用脚本安装包，名称同样带中文版版本标识。"
           } >> release-notes.md
           cat release-notes.md
       - name: Create GitHub Release

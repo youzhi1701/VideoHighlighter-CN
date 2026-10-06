@@ -124,7 +124,7 @@ def vframe_to_bgr(vframe, max_w: int, vr_crop_left_half: bool = False) -> Option
             nv12_small[target_h:] = uv_small.reshape(target_h // 2, target_w)
             return cv2.cvtColor(nv12_small, cv2.COLOR_YUV2BGR_NV12)
         except Exception as e:
-            print(f"⚠️ vframe_to_bgr raw-plane path failed ({e}), falling back to toImage()")
+            print(f"⚠️ vframe_to_bgr 原始平面路径失败（{e}），正在回退到 toImage()")
         finally:
             vframe.unmap()
 
@@ -239,7 +239,7 @@ class LiveFaceWorker(QObject):
                 })
             self.results_ready.emit(results, w, h)
         except Exception as e:
-            print(f"⚠️ LiveFaceWorker error: {e}")
+            print(f"⚠️ 实时人脸处理线程出错：{e}")
         finally:
             self._busy = False
 

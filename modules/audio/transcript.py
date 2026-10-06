@@ -203,9 +203,9 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
       TranscriptionCancelled promptly rather than at the end of the run.
     """
     device = "cuda" if cuda_usable(torch) else "cpu"
-    log_fn(f"Using device for Whisper: {device}")
+    log_fn(f"Whisper 使用设备：{device}")
 
-    log_fn(f"🔤 Language parameter received: {language}")
+    log_fn(f"🔤 已接收语言参数：{language}")
 
     def abort_if_cancelled():
         """Cancel means stop now.
@@ -225,18 +225,18 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
     # chunk loop is everything else. Reported against 100 so a caller that
     # forwards these straight to a progress bar shows one steady climb.
     if progress_fn:
-        progress_fn(1, 100, "Transcription", f"Loading Whisper '{model_name}'...")
+        progress_fn(1, 100, "转录", f"正在加载 Whisper“{model_name}”…")
 
     model = whisper.load_model(model_name, device=device)
-    log_fn("Splitting video into chunks...")
+    log_fn("正在将视频拆分为多个片段…")
     abort_if_cancelled()
 
     if progress_fn:
-        progress_fn(3, 100, "Transcription", "Splitting audio...")
+        progress_fn(3, 100, "转录", "正在拆分音频…")
 
     chunks = split_audio(video_file, chunk_length=chunk_length,
                          should_cancel=should_cancel)
-    log_fn(f"Created {len(chunks)} chunks")
+    log_fn(f"已创建 {len(chunks)} chunks")
 
     CHUNKS_FROM, CHUNKS_TO = 5, 90
 
@@ -251,7 +251,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
         progress_fn(
             int(CHUNKS_FROM + done * (CHUNKS_TO - CHUNKS_FROM)),
             100,
-            "Transcription",
+            "转录",
             detail,
         )
 
@@ -266,7 +266,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
             report(idx, 0.0)
             abort_if_cancelled()
 
-            log_fn(f"➡️ Transcribing chunk {idx+1}/{len(chunks)}: {chunk}")
+            log_fn(f"➡️ 正在转录片段 {idx+1}/{len(chunks)}: {chunk}")
 
             # Prepare transcription parameters
             transcribe_params = {
@@ -300,7 +300,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
 
             # Warn if language mismatch
             if detected_lang != language and language != "auto":
-                log_fn(f"⚠️ WARNING: Expected '{language}' but Whisper detected '{detected_lang}'")
+                log_fn(f"⚠️ 警告：预期语言为“{language}”，但 Whisper 检测为“{detected_lang}”")
                 log_fn(f"   This may indicate unclear audio or incorrect language setting")
 
             # Offset for proper timestamps
@@ -318,7 +318,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
         # Also on cancel: the chunks are a copy of the audio, and leaving
         # gigabytes of .wav next to the video is not what "cancel" should mean.
         if cleanup:
-            log_fn("🧹 Cleaning up chunk files...")
+            log_fn("🧹 正在清理临时片段文件…")
             for f in chunks:
                 try:
                     os.remove(f)
@@ -326,9 +326,9 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
                     pass
 
     if progress_fn:
-        progress_fn(95, 100, "Transcription", "Complete")
+        progress_fn(95, 100, "转录", "完成")
 
-    log_fn(f"✅ Transcript ready: {len(all_segments)} segments (from {len(chunks)} chunks)")
+    log_fn(f"✅ 转录完成：{len(all_segments)} segments (from {len(chunks)} chunks)")
 
     # Before diarization, which is a second pass over the audio and would
     # otherwise run in full after the user asked for none of it. (Checked here
@@ -343,7 +343,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
             from modules.audio.speaker_utils import enrich_segments_with_speakers
 
             if progress_fn:
-                progress_fn(96, 100, "Diarization", "Identifying speakers...")
+                progress_fn(96, 100, "说话人识别", "正在识别说话人…")
 
             all_segments = enrich_segments_with_speakers(
                 video_path=video_file,
@@ -356,14 +356,14 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
             )
 
             if progress_fn:
-                progress_fn(98, 100, "Diarization", "Speaker identification complete")
+                progress_fn(98, 100, "说话人识别", "说话人识别完成")
 
         except ImportError as e:
-            log_fn(f"⚠️ Diarization module not available: {e}")
+            log_fn(f"⚠️ 说话人识别模块不可用：{e}")
             log_fn("   Install: pip install speechbrain torchaudio librosa scikit-learn")
             log_fn("   Proceeding without speaker identification")
         except Exception as e:
-            log_fn(f"⚠️ Diarization failed: {e}")
+            log_fn(f"⚠️ 说话人识别失败：{e}")
             log_fn("   Proceeding without speaker identification")
 
     return all_segments

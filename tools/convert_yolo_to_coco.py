@@ -59,7 +59,7 @@ def convert_split(dataset_dir: Path, split: str, class_names: list[str]) -> dict
     img_dir = dataset_dir / "images" / split
     lbl_dir = dataset_dir / "labels" / split
     if not img_dir.is_dir():
-        raise FileNotFoundError(f"Missing image dir: {img_dir}")
+        raise FileNotFoundError(f"缺少图片目录：{img_dir}")
 
     images = []
     annotations = []
@@ -103,11 +103,11 @@ def convert_split(dataset_dir: Path, split: str, class_names: list[str]) -> dict
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Convert YOLO dataset to COCO JSON")
-    parser.add_argument("dataset_dir", type=Path, help="Root of YOLO dataset")
+    parser = argparse.ArgumentParser(description="将 YOLO 数据集转换为 COCO JSON")
+    parser.add_argument("dataset_dir", type=Path, help="YOLO 数据集根目录")
     parser.add_argument("--split", choices=("train", "val", "both"), default="both")
     parser.add_argument("--out", type=Path, default=None,
-                        help="Output JSON path (split=both -> <dir>/coco_<split>.json)")
+                        help="输出 JSON 路径（split=both 时为 <dir>/coco_<split>.json）")
     args = parser.parse_args(argv)
 
     dataset_dir = args.dataset_dir.resolve()
@@ -122,8 +122,8 @@ def main(argv: list[str] | None = None) -> int:
             out_path = dataset_dir / f"coco_{split}.json"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(coco, indent=2), encoding="utf-8")
-        print(f"Wrote {out_path} — {len(coco['images'])} images, "
-              f"{len(coco['annotations'])} boxes, {len(class_names)} classes")
+        print(f"已写入 {out_path}——{len(coco['images'])} 张图片，"
+              f"{len(coco['annotations'])} 个框，{len(class_names)} 个类别")
     return 0
 
 

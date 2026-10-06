@@ -644,8 +644,7 @@ class SignalTimelineWindow(QMainWindow):
                         and self.edit_scene.clips
                         and self.edit_scene.has_unsaved_edits()):
                     if self.edit_scene.save_clips_to_cache():
-                        print(f"💾 Auto-saved {len(self.edit_scene.clips)} edit "
-                              f"clips on close")
+                        print(f"💾 关闭时已自动保存 {len(self.edit_scene.clips)} 个编辑片段")
             except Exception as e:
                 print(f"⚠️ 关闭时自动保存编辑失败：{e}")
 
@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):
                     try:
                         with open(f, 'r') as fh:
                             data = json.load(fh)
-                            print(f"      Keys: {data.keys()}")
+                            print(f"      键：{data.keys()}")
                             if 'video_path' in data:
-                                print(f"      Video: {data['video_path']}")
+                                print(f"      视频：{data['video_path']}")
                     except:
-                        print(f"      Could not read file")
+                        print("      无法读取文件")
             
             return cache
         except Exception as e:
-            print(f"  ❌ Could not initialize cache: {e}")
+            print(f"  ❌ 无法初始化缓存：{e}")
             return None
 
     def load_cache_data(self):
         """Load cache data for the video with extensive debugging"""
         print(f"\n{'='*60}")
-        print(f"🔍 [TIMELINE] load_cache_data START")
+        print("🔍 [时间线] 开始加载缓存数据")
         print(f"{'='*60}")
-        print(f"  - video_path: {self.video_path}")
+        print(f"  - 视频路径：{self.video_path}")
         
         try:
             from modules.media.video_cache import VideoAnalysisCache
             cache = VideoAnalysisCache()
-            print(f"  ✓ Created VideoAnalysisCache instance")
+            print("  ✓ 已创建 VideoAnalysisCache 实例")
             
             # Get video hash for debugging
             video_hash = cache._get_video_hash(self.video_path)
-            print(f"  - Video hash: {video_hash}")
+            print(f"  - 视频哈希：{video_hash}")
             
             # List all cache files first
             cache_dir = Path("./cache")
             all_cache_files = list(cache_dir.glob("*.cache.json"))
-            print(f"\n  📁 All cache files in directory ({len(all_cache_files)}):")
+            print(f"\n  📁 目录中的全部缓存文件（{len(all_cache_files)} 个）：")
             for f in all_cache_files:
                 size_kb = f.stat().st_size / 1024
                 print(f"    - {f.name} ({size_kb:.1f} KB)")
             
             # Look for any cache file with this video hash (wildcard match)
             matching_files = list(cache_dir.glob(f"{video_hash}*.cache.json"))
-            print(f"\n  🔍 Files matching video hash ({len(matching_files)}):")
+            print(f"\n  🔍 与视频哈希匹配的文件（{len(matching_files)} 个）：")
             
             for cache_file in matching_files:
                 print(f"    - {cache_file.name}")
@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):
                     
                     # Verify it's for this video
                     if cache_data.get("video_hash") == video_hash:
-                        print(f"      ✓ Successfully loaded cache file")
-                        print(f"      ✓ Contains keys: {list(cache_data.keys())}")
+                        print("      ✓ 缓存文件加载成功")
+                        print(f"      ✓ 包含键：{list(cache_data.keys())}")
                         
                         # Check for motion data specifically
-                        print(f"      - motion_events present: {'motion_events' in cache_data}")
-                        print(f"      - motion_peaks present: {'motion_peaks' in cache_data}")
-                        print(f"      - scenes present: {'scenes' in cache_data}")
+                        print(f"      - motion_events 是否存在：{'motion_events' in cache_data}")
+                        print(f"      - motion_peaks 是否存在：{'motion_peaks' in cache_data}")
+                        print(f"      - scenes 是否存在：{'scenes' in cache_data}")
                         
                         if 'motion_events' in cache_data:
-                            print(f"      - motion_events count: {len(cache_data['motion_events'])}")
+                            print(f"      - motion_events 数量：{len(cache_data['motion_events'])}")
                         if 'motion_peaks' in cache_data:
-                            print(f"      - motion_peaks count: {len(cache_data['motion_peaks'])}")
+                            print(f"      - motion_peaks 数量：{len(cache_data['motion_peaks'])}")
                         if 'scenes' in cache_data:
-                            print(f"      - scenes count: {len(cache_data['scenes'])}")
+                            print(f"      - scenes 数量：{len(cache_data['scenes'])}")
                         
-                        print(f"\n  ✅ Successfully loaded cache data from direct file read")
+                        print("\n  ✅ 已通过直接读取文件成功加载缓存数据")
                         print(f"{'='*60}\n")
                         return cache_data
                 except Exception as e:
-                    print(f"      ✗ Failed to load: {e}")
+                    print(f"      ✗ 加载失败：{e}")
                     continue
             
             # If we get here, try with default params as fallback
-            print(f"\n  🔄 Attempting to load with default params...")
+            print("\n  🔄 正在尝试使用默认参数加载…")
             default_params = {
                 "analysis_cache_schema": "analysis_v2",
                 "use_transcript": False,
@@ -2216,23 +2215,23 @@ class SignalTimelineWindow(QMainWindow):
             
             cache_data = cache.load(self.video_path, params=default_params)
             if cache_data:
-                print(f"  ✓ Found param-based cache")
+                print("  ✓ 找到基于参数的缓存")
                 print(f"  ✓ Contains keys: {list(cache_data.keys())}")
                 print(f"\n{'-'*40}")
                 return cache_data
             
             # Try legacy load (no params)
-            print(f"\n  🔄 Attempting legacy load (no params)...")
+            print("\n  🔄 正在尝试旧版缓存加载（无参数）…")
             cache_data = cache.load(self.video_path)
             if cache_data:
-                print(f"  ✓ Found legacy cache")
+                print("  ✓ 找到旧版缓存")
                 print(f"  ✓ Contains keys: {list(cache_data.keys())}")
                 return cache_data
             
-            print(f"\n  ⚠️ No cache found in any format - creating empty dict")
+            print("\n  ⚠️ 未找到任何格式的缓存——将创建空数据")
             
         except Exception as e:
-            print(f"  ❌ Error in load_cache_data: {e}")
+            print(f"  ❌ 加载缓存数据时出错：{e}")
             import traceback
             traceback.print_exc()
         
@@ -2345,10 +2344,10 @@ class SignalTimelineWindow(QMainWindow):
         signal_layout = QVBoxLayout(signal_widget)
         
         # Always pass current waveform data (might be None initially)
-        print(f"🎵 init_ui: Creating scene with waveform data ({len(self.waveform) if self.waveform else 0} points)")
+        print(f"🎵 初始化界面：正在使用波形数据创建场景（{len(self.waveform) if self.waveform else 0} 个采样点）")
         
         # Create scene with current waveform data (may be empty initially)
-        startup_splash.stage("Drawing the signal timeline…")
+        startup_splash.stage("正在绘制信号时间线…")
         self.signal_scene = SignalTimelineScene(self.cache_data, self.video_duration, waveform=self.waveform,
                                                 video_path=self.video_path)
         # Restore ranges marked in an earlier session (see modules.segments.manual_avoid).
@@ -2423,7 +2422,7 @@ class SignalTimelineWindow(QMainWindow):
         edit_layout = QVBoxLayout(edit_widget)
         
         # Edit timeline
-        startup_splash.stage("Building the edit timeline…")
+        startup_splash.stage("正在构建编辑时间线…")
         self.edit_scene = EditTimelineScene(self.video_path, self.video_duration, cache=self.cache, cache_data=self.cache_data)
         self.edit_view = QGraphicsView(self.edit_scene)
         self.edit_view.setRenderHint(QPainter.RenderHint.Antialiasing)
@@ -2441,7 +2440,7 @@ class SignalTimelineWindow(QMainWindow):
         """)
         
         # --- LLM Chat Panel (in timeline) ---
-        startup_splash.stage("Starting the assistant…")
+        startup_splash.stage("正在启动大模型助手…")
         try:
             from llm.llm_chat_widget import LLMChatWidget
             self.llm_chat = LLMChatWidget(parent=self, compact=True, cache_dir="./cache")
@@ -2452,7 +2451,7 @@ class SignalTimelineWindow(QMainWindow):
                 self.llm_chat.set_analysis_data(self.cache_data, self.video_path)
             
             # Add as a dock widget on the bottom
-            llm_dock = QDockWidget("LLM Assistant", self)
+            llm_dock = QDockWidget("大模型助手", self)
             llm_dock.setWidget(self.llm_chat)
             self.addDockWidget(Qt.BottomDockWidgetArea, llm_dock)
             self._llm_dock = llm_dock
@@ -2497,7 +2496,7 @@ class SignalTimelineWindow(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, controls_dock)
 
         # 🎬 ADD VIDEO PREVIEW DOCK
-        startup_splash.stage("Starting the video preview…")
+        startup_splash.stage("正在启动视频预览…")
         try:
             preview_dock = self.create_video_preview_dock()
             self.addDockWidget(Qt.LeftDockWidgetArea, preview_dock)
@@ -2590,9 +2589,8 @@ class SignalTimelineWindow(QMainWindow):
                 and self.preview_stack.currentIndex() == 1):
             b64 = self.realtime_preview.capture_frame_base64()
             if b64:
-                tag = " [live overlay]" if self.realtime_preview._overlay_enabled else ""
-                print(f"📷 Captured frame at {self.current_time:.1f}s "
-                      f"({len(b64) // 1024}KB){tag}")
+                tag = " [实时叠加]" if self.realtime_preview._overlay_enabled else ""
+                print(f"📷 已截取 {self.current_time:.1f} 秒处画面（{len(b64) // 1024} KB）{tag}")
                 return b64
 
         # ── Precomp / Off mode: cv2 capture ──
@@ -2632,10 +2630,9 @@ class SignalTimelineWindow(QMainWindow):
 
             tag = ""
             if source_path != self.video_path:
-                tag = " [precomp annotated]"
+                tag = " [预计算标注]"
 
-            print(f"📷 Captured frame at {self.current_time:.1f}s "
-                  f"({len(b64) // 1024}KB){tag}")
+            print(f"📷 已截取 {self.current_time:.1f} 秒处画面（{len(b64) // 1024} KB）{tag}")
             return b64
 
         except Exception as e:
@@ -3816,13 +3813,11 @@ class SignalTimelineWindow(QMainWindow):
         try:
             session = SwapSession.from_report(path)
         except Exception as exc:
-            print(f"⚠️ Could not read {path}: {exc}")
-            self._swap_message(f"The highlight report could not be read:\n{exc}")
+            print(f"⚠️ 无法读取 {path}：{exc}")
+            self._swap_message(f"无法读取高光报告：\n{exc}")
             return None
         if not session.usable:
-            self._swap_message("This report was written before the score was "
-                               "saved with it. Re-run the highlighter to enable "
-                               "swapping.")
+            self._swap_message("此报告生成时尚未保存评分数据。请重新运行高光处理后再使用替换功能。")
             return None
 
         self._highlight_swap_session = session
@@ -3898,7 +3893,7 @@ class SignalTimelineWindow(QMainWindow):
                             if end > start:
                                 highlights.append((start, end))
         except Exception as e:
-            print(f"⚠️ Error extracting highlights from signal data: {e}")
+            print(f"⚠️ 从信号数据提取高光片段时出错：{e}")
         
         return highlights
 
@@ -4004,7 +3999,7 @@ class SignalTimelineWindow(QMainWindow):
             save_ranges(self.video_path,
                         getattr(self.signal_scene, "avoid_ranges", []))
         except Exception as e:
-            print(f"⚠️ could not save manual avoid ranges: {e}")
+            print(f"⚠️ 无法保存手动排除范围：{e}")
 
     def get_avoid_ranges(self):
         """Used by the main window to feed manual avoid ranges into the pipeline."""
@@ -5082,12 +5077,10 @@ class SignalTimelineWindow(QMainWindow):
                             return
 
                         errf.seek(0)
-                        last_err = (errf.read() or "").strip()[-2000:] or "Unknown error"
-                        print(f"⚠️ Render with {enc} failed (rc={proc.returncode}); "
-                              + ("falling back to next encoder…"
-                                 if (enc, vargs) != attempts[-1] else "no fallback left"))
-                        print("   cmd: " + " ".join(str(c) for c in cmd))
-                        print("   ffmpeg stderr tail:\n" + last_err[-1200:])
+                        last_err = (errf.read() or "").strip()[-2000:] or "未知错误"
+                        print(f"⚠️ 使用 {enc} 渲染失败（返回码={proc.returncode}）；" + ("正在回退到下一个编码器…" if (enc, vargs) != attempts[-1] else "没有可用回退方案"))
+                        print("   命令：" + " ".join(str(c) for c in cmd))
+                        print("   ffmpeg 错误输出末尾：\n" + last_err[-1200:])
                 except Exception as e:
                     last_err = str(e)
 
@@ -5127,7 +5120,7 @@ class SignalTimelineWindow(QMainWindow):
             with open(p, "w", encoding="utf-8") as f:
                 yaml.safe_dump(cfg, f, sort_keys=False, allow_unicode=True)
         except Exception as e:
-            print(f"⚠️ [timeline] could not persist render_mode: {e}")
+            print(f"⚠️ [时间线] 无法保存 render_mode：{e}")
 
     def _encoder_chain(self):
         """Video-encoder fallback chain for the render, delegated to the shared

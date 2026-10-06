@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "e2c72ecac7f8bccd6c1af5b201c30dcb3b41dd24"
+    "head_commit": "a4aedecf7ffdb564fe47b7b7021c1daae2813aee"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -34638,7 +34638,7 @@
     {
       "file": "modules/teach/cli.py",
       "source": "            \"message\": f\"stopped after {max_steps} steps\"}",
-      "target": "            \"message\": f\"已在执行 {max_steps} 个步骤后停止\"",
+      "target": "            \"message\": f\"已在执行 {max_steps} 个步骤后停止\"}",
       "before": "    return {\"ran\": done, \"stopped_at\": next_step(Project.load(root)),",
       "after": "",
       "hunk": "@@ -350,7 +347,7 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:",

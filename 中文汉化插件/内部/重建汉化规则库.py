@@ -48,6 +48,64 @@ def keep_file(path: str) -> bool:
     return Path(path).suffix.lower() in INCLUDE_SUFFIXES
 
 
+def repair_empty_insertion_anchors(rules: list[dict], file: str) -> None:
+    """Give pure insertions a stable nearby non-empty anchor.
+
+    A diff hunk can place an insertion between blank context lines.  The raw
+    parser then records before="" / after="", which makes replay search for a
+    bare newline and inevitably conflict.  Derive the exact adjacent context
+    from the checked-in localized file while keeping enough blank lines to
+    preserve adjacency.  Only repair targets that occur exactly once; ambiguous
+    insertions remain strict rather than being guessed.
+    """
+    path = ROOT / file
+    if not path.exists():
+        return
+    text = path.read_text(encoding="utf-8", errors="ignore")
+
+    for rule in rules:
+        if rule.get("source") or not rule.get("target"):
+            continue
+        before = rule.get("before")
+        after = rule.get("after")
+        if (before or "").strip() or (after or "").strip():
+            continue
+
+        target = rule["target"]
+        if text.count(target) != 1:
+            continue
+        start = text.index(target)
+        end = start + len(target)
+
+        prefix = text[:start]
+        if prefix.endswith("\n"):
+            prefix = prefix[:-1]
+        before_lines = prefix.split("\n") if prefix else []
+        picked_before: list[str] = []
+        for line in reversed(before_lines):
+            picked_before.append(line)
+            if line.strip():
+                break
+            if len(picked_before) >= 6:
+                break
+        if picked_before and any(line.strip() for line in picked_before):
+            rule["before"] = "\n".join(reversed(picked_before))
+
+        suffix = text[end:]
+        if suffix.startswith("\n"):
+            suffix = suffix[1:]
+        after_lines = suffix.split("\n") if suffix else []
+        picked_after: list[str] = []
+        for line in after_lines:
+            picked_after.append(line)
+            if line.strip():
+                break
+            if len(picked_after) >= 6:
+                break
+        if picked_after and any(line.strip() for line in picked_after):
+            rule["after"] = "\n".join(picked_after)
+
+
 def parse_patch(patch: str, file: str) -> list[dict]:
     lines = patch.splitlines()
     rules: list[dict] = []
@@ -147,7 +205,9 @@ def main() -> int:
     rules: list[dict] = []
     for file in files:
         patch = git("diff", "--unified=3", baseline, current, "--", file)
-        rules.extend(parse_patch(patch, file))
+        file_rules = parse_patch(patch, file)
+        repair_empty_insertion_anchors(file_rules, file)
+        rules.extend(file_rules)
 
     # Same source + same target in one file can be consumed deterministically
     # from top to bottom by the replay engine.

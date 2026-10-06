@@ -73,15 +73,15 @@ def _cuda_info(log_fn=print):
             return None
         reason = cuda_check.cuda_unusable_reason(torch)
         if reason:
-            log_fn(f"⚠️ Not using the NVIDIA GPU: {reason}")
+            log_fn(f"⚠️ 未使用 NVIDIA GPU：{reason}")
             return None
         count = torch.cuda.device_count()
-        log_fn(f"✅ CUDA available: {count} device(s)")
+        log_fn(f"✅ CUDA 可用：{count} 个设备")
         for i in range(count):
             try:
                 name = torch.cuda.get_device_name(i)
                 vram = torch.cuda.get_device_properties(i).total_mem / (1024 ** 3)
-                log_fn(f"   Device {i}: {name} ({vram:.1f} GB VRAM)")
+                log_fn(f"   设备 {i}：{name}（{vram:.1f} GB 显存）")
             except Exception:
                 pass
         return DeviceInfo(
@@ -95,7 +95,7 @@ def _cuda_info(log_fn=print):
             backend_name="CUDA",
         )
     except Exception as e:
-        log_fn(f"⚠️ CUDA check failed: {e}")
+        log_fn(f"⚠️ CUDA 检查失败：{e}")
         return None
 
 
@@ -110,10 +110,10 @@ def _xpu_info(log_fn=print):
         if not torch.xpu.is_available():
             return None
         count = torch.xpu.device_count()
-        log_fn(f"✅ Intel XPU available: {count} device(s)")
+        log_fn(f"✅ Intel XPU 可用：{count} 个设备")
         for i in range(count):
             try:
-                log_fn(f"   Device {i}: {torch.xpu.get_device_name(i)}")
+                log_fn(f"   设备 {i}：{torch.xpu.get_device_name(i)}")
             except Exception:
                 pass
         return DeviceInfo(
@@ -127,7 +127,7 @@ def _xpu_info(log_fn=print):
             backend_name="Intel XPU (OpenVINO)",
         )
     except Exception as e:
-        log_fn(f"⚠️ XPU check failed: {e}")
+        log_fn(f"⚠️ XPU 检查失败：{e}")
         return None
 
 
@@ -146,7 +146,7 @@ def _openvino_info(log_fn=print):
         devices = Core().available_devices
         if not any(d == "GPU" or d.startswith("GPU.") for d in devices):
             return None
-        log_fn(f"✅ Intel GPU available via OpenVINO: {devices}")
+        log_fn(f"✅ Intel GPU 可通过 OpenVINO 使用：{devices}")
         return DeviceInfo(
             yolo_pt_device="cpu",
             yolo_ov_device="cpu",
@@ -158,7 +158,7 @@ def _openvino_info(log_fn=print):
             backend_name="Intel GPU (OpenVINO)",
         )
     except Exception as e:
-        log_fn(f"⚠️ OpenVINO GPU probe failed: {e}")
+        log_fn(f"⚠️ OpenVINO GPU 探测失败：{e}")
         return None
 
 
@@ -190,7 +190,7 @@ def _any_directml_info(log_fn=print):
     if _dml is not None:
         reason = _dml.unavailable_reason()
         if reason and _dml.enabled():
-            log_fn(f"ℹ️ DirectML unavailable: {reason}")
+            log_fn(f"ℹ️ DirectML 不可用：{reason}")
     return None
 
 
@@ -239,16 +239,15 @@ def _apple_info(log_fn=print):
     if probe.provider != _ort_dml.COREML_PROVIDER:
         return None
     if not probe.available:
-        log_fn(f"ℹ️ Apple GPU not used: {probe.reason}")
+        log_fn(f"ℹ️ 未使用 Apple GPU：{probe.reason}")
         return None
     from modules.system import ort_coreml
-    log_fn(f"✅ Apple GPU via Core ML (ONNX Runtime {probe.version or '?'}) — "
+    log_fn(f"✅ Apple GPU 已通过 Core ML 启用（ONNX Runtime {probe.version or '?'}）— "
            f"{_apple_chip_name() or 'Apple silicon'}")
-    log_fn(f"   object detection and action recognition on the "
-           f"{ort_coreml.describe_units()} (experimental; {ort_coreml.MODE_ENV}=off "
-           f"turns it off); other models stay on the CPU")
+    log_fn(f"   物体检测和动作识别使用 {ort_coreml.describe_units()}（实验性；"
+           f"设置 {ort_coreml.MODE_ENV}=off 可关闭）；其他模型仍使用 CPU")
     if _mps_available():
-        log_fn("   torch also sees the GPU through Metal (MPS); nothing uses it yet")
+        log_fn("   torch 也可通过 Metal（MPS）识别 GPU，但当前尚无模块使用它")
     return DeviceInfo(
         yolo_pt_device="cpu",
         yolo_ov_device="cpu",
@@ -263,7 +262,7 @@ def _apple_info(log_fn=print):
     )
 
 
-def _cpu_info(log_fn=print, note="ℹ️ No GPU found — using CPU"):
+def _cpu_info(log_fn=print, note="ℹ️ 未找到可用 GPU，使用 CPU"):
     if note:
         log_fn(note)
     return DeviceInfo(
@@ -337,17 +336,15 @@ def detect_best_device(log_fn=print, prefer=None):
     if chosen and chosen != "auto":
         probe = _BACKEND_PROBES.get(chosen)
         if probe is None:
-            log_fn(f"⚠️ Unknown compute backend {chosen!r} — using automatic")
+            log_fn(f"⚠️ 未知计算后端 {chosen!r}，改用自动选择")
         elif not _offered_here(chosen):
-            log_fn(f"⚠️ {probe[1]} does not exist on this platform — "
-                   f"using automatic")
+            log_fn(f"⚠️ 当前平台不支持 {probe[1]}，改用自动选择")
         else:
             run, label = probe
             info = run(log_fn)
             if info is not None:
                 return info
-            log_fn(f"⚠️ {label} was chosen but is not available here — "
-                   f"falling back to automatic")
+            log_fn(f"⚠️ 已选择 {label}，但当前不可用，改用自动选择")
 
     # ---- A Mac: Apple's GPU or the processor, nothing else ---------------------
     # CUDA, Intel's GPU plugin and DirectML do not exist on macOS, so asking
@@ -361,7 +358,7 @@ def detect_best_device(log_fn=print, prefer=None):
         forced = _any_directml_info(log_fn)
         if forced is not None:
             return forced
-        log_fn(f"⚠️ {_dml.MODE_ENV}=force but DirectML is unusable: "
+        log_fn(f"⚠️ 已设置 {_dml.MODE_ENV}=force，但 DirectML 不可用："
                f"{_dml.unavailable_reason()}")
 
     # ---- NVIDIA CUDA -------------------------------------------------------
@@ -421,7 +418,7 @@ def _directml_info(log_fn=print):
         return None
     device = p.device_string()
     log_fn(f"✅ {_dml.describe()}")
-    log_fn(f"   torch device: {device} (experimental — see docs/AMD-GPU.md)")
+    log_fn(f"   torch 设备：{device}（实验性，详见 docs/AMD-GPU.md）")
     return DeviceInfo(
         yolo_pt_device="cpu",
         yolo_ov_device="cpu",
@@ -477,10 +474,9 @@ def _onnx_dml_info(log_fn=print):
         return None
     probe = _ort_dml.probe()
     card = getattr(probe, "adapter_name", None)
-    log_fn(f"✅ DirectML via ONNX Runtime {probe.version or ''}".rstrip()
-           + (f" on {card}" if card else ""))
-    log_fn("   object detection and action recognition on the GPU; other "
-           "torch models stay on the CPU (see docs/AMD-GPU.md)")
+    log_fn(f"✅ 已通过 ONNX Runtime {probe.version or ''} 启用 DirectML".rstrip()
+           + (f"（{card}）" if card else ""))
+    log_fn("   物体检测和动作识别使用 GPU；其他 torch 模型仍使用 CPU（详见 docs/AMD-GPU.md）")
     return DeviceInfo(
         yolo_pt_device="cpu",
         yolo_ov_device="cpu",

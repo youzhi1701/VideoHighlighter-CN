@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "6c48a8deec6b82422c91ba7e941eb60c62a01c71"
+    "head_commit": "952a9ad8f5f107040938ccc8118714eeec874c71"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -34528,14 +34528,13 @@
       "id": "modules/teach/cli.py#2"
     },
     {
+      "id": "modules/teach/cli.py#57",
       "file": "modules/teach/cli.py",
       "source": "            raise KeyError(f\"no sample {sid}\")",
       "target": "            raise KeyError(f\"找不到样本 {sid}\")",
       "before": "        if sample is None:",
-      "after": "        samples.append(sample)",
-      "hunk": "@@ -118,12 +118,12 @@ def _vectors_for(project, embedder, clips=(), sample_ids=(), class_name=\"\"):",
-      "id": "modules/teach/cli.py#3",
-      "safe_duplicate": true
+      "after": "        project.decide(sample, ACCEPTED, spec.name, by=\"example\")",
+      "hunk": "@@ -194,7 +194,7 @@"
     },
     {
       "file": "modules/teach/cli.py",
@@ -34970,14 +34969,13 @@
       "id": "modules/teach/cli.py#51"
     },
     {
+      "id": "modules/teach/cli.py#58",
       "file": "modules/teach/cli.py",
       "source": "                   help=\"do not run `doctor` first\")",
       "target": "                   help=\"启动前不运行 `doctor` 环境检查\")",
       "before": "    s.add_argument(\"--skip-checks\", action=\"store_true\", dest=\"skip_checks\",",
       "after": "",
-      "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
-      "id": "modules/teach/cli.py#52",
-      "safe_duplicate": true
+      "hunk": "@@ -768,7 +768,7 @@ def parser() -> argparse.ArgumentParser:"
     },
     {
       "file": "modules/teach/cli.py",

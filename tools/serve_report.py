@@ -45,7 +45,7 @@ class RangeHandler(SimpleHTTPRequestHandler):
         try:
             fh = open(path, "rb")
         except OSError:
-            self.send_error(404, "File not found")
+            self.send_error(404, "文件未找到")
             return None
 
         size = os.fstat(fh.fileno()).st_size
@@ -100,15 +100,15 @@ def main(argv=None) -> int:
     directory = argv[0] if argv else os.getcwd()
     port = int(argv[1]) if len(argv) > 1 else 8000
     if not os.path.isdir(directory):
-        print(f"not a directory: {directory}")
+        print(f"不是有效目录：{directory}")
         return 2
     handler = partial(RangeHandler, directory=directory)
     server = ThreadingHTTPServer(("0.0.0.0", port), handler)
-    print(f"serving {directory} on port {port} — Ctrl-C to stop")
+    print(f"正在通过端口 {port} 提供目录 {directory}，按 Ctrl-C 停止")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nstopped")
+        print("\n服务已停止")
     return 0
 
 

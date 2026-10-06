@@ -89,7 +89,7 @@ def load_aliases(path: Optional[str]) -> dict:
     with open(path, "r", encoding="utf-8") as handle:
         data = json.load(handle)
     if not isinstance(data, dict) or not all(isinstance(v, str) for v in data.values()):
-        raise ValueError(f"{path}: aliases are one JSON object of name -> name (or \"\")")
+        raise ValueError(f"{path}：aliases 必须是一个“名称 -> 名称（或空字符串）”的 JSON 对象")
     return {str(k).strip(): v.strip() for k, v in data.items()}
 
 
@@ -145,7 +145,7 @@ def read_dataset(root: str, aliases: Optional[dict] = None,
                  group_pattern: str = DEFAULT_GROUP) -> dict:
     """``{"clips": [Clip], "skipped": [...], "splits": [...], "misnamed": [...]}``."""
     if not os.path.isdir(root):
-        raise FileNotFoundError(f"no dataset folder {root}")
+        raise FileNotFoundError(f"未找到数据集文件夹：{root}")
     clips, skipped, splits, misnamed = [], [], [], []
     ungrouped = 0
     for split in SPLITS:
@@ -176,7 +176,7 @@ def read_dataset(root: str, aliases: Optional[dict] = None,
                 ungrouped += group == os.path.splitext(os.path.basename(video))[0]
                 clips.append(Clip(os.path.abspath(video), split, folder, labels, group))
     if not splits:
-        raise FileNotFoundError(f"{root} has none of {', '.join(SPLITS)}")
+        raise FileNotFoundError(f"{root} 中没有 {', '.join(SPLITS)} 中的任何数据划分")
     return {"clips": clips, "skipped": skipped, "splits": splits, "misnamed": misnamed,
             "group_pattern": group_pattern, "ungrouped": ungrouped}
 
@@ -346,11 +346,11 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,
     say = progress or (lambda message: None)
     pool, left_out = big_enough(clips, minimum)
     if not pool:
-        raise ValueError("no single-class clips in train or val to sort")
+        raise ValueError("train 或 val 中没有可用于排序的单类别片段")
     project = _fresh_project(work_dir)
     for key, value in (settings or {}).items():
         if not hasattr(project.settings, key):
-            raise KeyError(f"no setting {key!r}")
+            raise KeyError(f"不存在设置项 {key!r}")
         setattr(project.settings, key, value)
     names = sorted({c.labels[0] for c in pool})
     project.classes = [ClassSpec(name=n) for n in names]
@@ -381,9 +381,9 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,
 
     def embedded(i, n):
         if i == n or i % 200 == 0:
-            say(f"evaluate: CLIP vectors {i}/{n}")
+            say(f"评估：CLIP 向量 {i}/{n}")
 
-    say(f"evaluate: {len(project.samples)} clips, {len(names)} classes; sorting")
+    say(f"评估：{len(project.samples)} 个片段，{len(names)} 个类别；正在排序")
     sort_project(project, embedder, frame_reader=frame_reader, progress=embedded)
     first = _first_sort(project, truth)
 
@@ -415,7 +415,7 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,
             "pending": sum(1 for s in project.samples if s.verdict == PENDING),
         })
         if sheet % 10 == 0:
-            say(f"evaluate: sheet {sheet}: {curve[-1]}")
+            say(f"评估：检查批次 {sheet}：{curve[-1]}")
 
     summary = _summary(project, truth, group, seeded_groups, first, curve,
                        shown, shown_by_class, audits, overturned, sheet, seeds)
@@ -516,8 +516,8 @@ def sort_test(clips: Sequence[Clip], embedder, work_dir: str, *,
     pool, left_out = big_enough(clips, minimum)
     groups = sorted({c.group for c in pool})
     if len(groups) < 2:
-        raise ValueError("clips come from one video: nothing to hold out "
-                         "(is --group finding the video in the file names?)")
+        raise ValueError("这些片段都来自同一个视频，无法留出独立视频进行评估"
+                         "（请检查 --group 是否能从文件名中正确识别源视频）")
     rng = random.Random(rng_seed)
     held = set(rng.sample(groups, max(1, round(len(groups) * holdout))))
     examples = [c for c in pool if c.group not in held]
@@ -526,7 +526,7 @@ def sort_test(clips: Sequence[Clip], embedder, work_dir: str, *,
     project = _fresh_project(work_dir)
     for key, value in {**FROM_DATASET_SETTINGS, **(settings or {})}.items():
         if not hasattr(project.settings, key):
-            raise KeyError(f"no setting {key!r}")
+            raise KeyError(f"不存在设置项 {key!r}")
         setattr(project.settings, key, value)
     add_dataset(project, examples, max_examples=max_examples, rng_seed=rng_seed, minimum=0)
     truth = {}
@@ -541,7 +541,7 @@ def sort_test(clips: Sequence[Clip], embedder, work_dir: str, *,
 
     def embedded(i, n):
         if i == n or i % 200 == 0:
-            say(f"evaluate: CLIP vectors {i}/{n}")
+            say(f"评估：CLIP 向量 {i}/{n}")
 
     say(f"evaluate: sorting {len(truth)} clips of {len(held)} held-out videos "
         f"by {len(examples)} clips of the rest")

@@ -73,10 +73,10 @@ def _parse_time_token(token: str) -> float:
     if isinstance(token, (int, float)):
         return float(token)
     if not isinstance(token, str):
-        raise ValueError(f"expected str or number, got {type(token).__name__}")
+        raise ValueError(f"预期为字符串或数字，实际为 {type(token).__name__}")
     m = _TIME_TOKEN.match(token)
     if not m:
-        raise ValueError(f"unrecognised time token: {token!r}")
+        raise ValueError(f"无法识别的时间值：{token!r}")
     if m.group(4) is not None:
         return float(m.group(4))
     hh = int(m.group(1)) if m.group(1) else 0
@@ -114,7 +114,7 @@ def parse_ranges(raw: Any) -> List[Range]:
             start_raw = item.get("start")
             end_raw = item.get("end")
             if start_raw is None or end_raw is None:
-                raise ValueError(f"range dict missing start/end: {item!r}")
+                raise ValueError(f"区间数据缺少 start/end：{item!r}")
             start = _parse_time_token(start_raw)
             end = _parse_time_token(end_raw)
         elif isinstance(item, str):
@@ -126,12 +126,12 @@ def parse_ranges(raw: Any) -> List[Range]:
                     end = _parse_time_token(b)
                     break
             else:
-                raise ValueError(f"string range missing separator: {item!r}")
+                raise ValueError(f"字符串区间缺少分隔符：{item!r}")
         elif isinstance(item, (tuple, list)) and len(item) == 2:
             start = _parse_time_token(item[0])
             end = _parse_time_token(item[1])
         else:
-            raise ValueError(f"unrecognised range entry: {item!r}")
+            raise ValueError(f"无法识别的区间条目：{item!r}")
 
         start = max(0.0, float(start))
         end = float(end)

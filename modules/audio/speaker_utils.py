@@ -46,7 +46,7 @@ def _vad_webrtc(audio_path: str, min_speech_duration: float,
         import wave
         import struct
     except ImportError:
-        log_fn("  ℹ️ webrtcvad not installed, trying energy-based VAD")
+        log_fn("  ℹ️ 未安装 webrtcvad，改用基于能量的 VAD")
         return None
 
     try:
@@ -100,11 +100,11 @@ def _vad_webrtc(audio_path: str, min_speech_duration: float,
             else:
                 merged.append(seg)
         
-        log_fn(f"  🔊 WebRTC VAD: {len(merged)} speech segments detected")
+        log_fn(f"  🔊 WebRTC VAD：检测到 {len(merged)} 个语音片段")
         return merged
 
     except Exception as e:
-        log_fn(f"  ⚠️ WebRTC VAD failed: {e}")
+        log_fn(f"  ⚠️ WebRTC VAD 失败：{e}")
         return None
 
 
@@ -183,7 +183,7 @@ def extract_speaker_embeddings(audio_path: str,
         from resemblyzer import VoiceEncoder, preprocess_wav
     except ImportError:
         log_fn("⚠️ 未安装 resemblyzer，无法提取说话人嵌入")
-        log_fn("   Install: pip install resemblyzer")
+        log_fn("   可安装：pip install resemblyzer")
         return None
 
     try:
@@ -193,7 +193,7 @@ def extract_speaker_embeddings(audio_path: str,
         return None
 
     try:
-        log_fn("  🧠 Loading speaker embedding model (GE2E)...")
+        log_fn("  🧠 正在加载说话人嵌入模型（GE2E）…")
         encoder = VoiceEncoder(device="cpu")
     except Exception as e:
         log_fn(f"⚠️ 无法加载嵌入模型：{e}")
@@ -208,7 +208,7 @@ def extract_speaker_embeddings(audio_path: str,
 
     # Subsample if too many segments
     if len(speech_segments) > max_segments:
-        log_fn(f"  ℹ️ Subsampling {len(speech_segments)} → {max_segments} segments")
+        log_fn(f"  ℹ️ 语音片段过多：从 {len(speech_segments)} 个下采样到 {max_segments} 个")
         indices = np.linspace(0, len(speech_segments) - 1, max_segments, dtype=int)
         speech_segments = [speech_segments[i] for i in indices]
 
@@ -242,7 +242,7 @@ def extract_speaker_embeddings(audio_path: str,
         log_fn("⚠️ 未提取到有效嵌入")
         return None
 
-    log_fn(f"  ✅ Extracted {len(embeddings)} speaker embeddings")
+    log_fn(f"  ✅ 已提取 {len(embeddings)} 个说话人嵌入")
     return np.array(embeddings), valid_segments
 
 
@@ -271,7 +271,7 @@ def cluster_speakers(embeddings: np.ndarray,
     embeddings_norm = normalize(embeddings)
 
     if num_speakers is not None:
-        log_fn(f"  🔢 Clustering into {num_speakers} speakers (user-specified)")
+        log_fn(f"  🔢 正在聚类为 {num_speakers} 位说话人（用户指定）")
         clustering = AgglomerativeClustering(
             n_clusters=num_speakers,
             metric='cosine',
@@ -281,10 +281,10 @@ def cluster_speakers(embeddings: np.ndarray,
 
     # Auto-detect speaker count
     if len(embeddings) < 3:
-        log_fn("  ℹ️ Too few segments for auto-detection, assuming 1 speaker")
+        log_fn("  ℹ️ 片段过少，无法自动判断说话人数，按 1 位说话人处理")
         return np.zeros(len(embeddings), dtype=int)
 
-    log_fn("  🔍 Auto-detecting number of speakers...")
+    log_fn("  🔍 正在自动检测说话人数…")
     best_score = -1
     best_k = 2
     best_labels = None
@@ -313,10 +313,10 @@ def cluster_speakers(embeddings: np.ndarray,
             continue
 
     if best_score < 0.1:
-        log_fn(f"  ℹ️ Low clustering confidence (score={best_score:.2f}), "
-               f"possibly 1 speaker — using {best_k} anyway")
+        log_fn(f"  ℹ️ 聚类置信度较低（评分={best_score:.2f}），"
+               f"可能只有 1 位说话人；仍按 {best_k} 位处理")
     else:
-        log_fn(f"  ✅ Detected {best_k} speakers (silhouette={best_score:.2f})")
+        log_fn(f"  ✅ 检测到 {best_k} 位说话人（轮廓系数={best_score:.2f}）")
 
     return best_labels if best_labels is not None else np.zeros(len(embeddings), dtype=int)
 
@@ -375,7 +375,7 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],
         import librosa
     except ImportError:
         log_fn("⚠️ 未安装 librosa，跳过性别估计")
-        log_fn("   Install: pip install librosa")
+        log_fn("   可安装：pip install librosa")
         return {}
 
     try:
@@ -438,15 +438,15 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],
                 'confidence': confidence,
                 'median_f0': round(median_f0, 1)
             }
-            log_fn(f"  🎤 {speaker}: median F0={median_f0:.1f}Hz → {gender} "
-                   f"（置信度：{confidence})")
+            log_fn(f"  🎤 {speaker}：F0 中位数={median_f0:.1f}Hz → {gender} "
+                   f"（置信度：{confidence}）")
         else:
             gender_map[speaker] = {
                 'gender': 'unknown',
                 'confidence': 'none',
                 'median_f0': 0.0
             }
-            log_fn(f"  🎤 {speaker}: insufficient voiced audio → unknown")
+            log_fn(f"  🎤 {speaker}：有效语音不足 → 未知")
 
     return gender_map
 
@@ -564,7 +564,7 @@ def enrich_segments_with_speakers(video_path: str,
 
     try:
         # Step 2: Voice Activity Detection
-        log_fn("🎙️ 正在运行说话人分离（Resemblyzer)...")
+        log_fn("🎙️ 正在运行说话人分离（Resemblyzer）…")
         speech_segments = detect_speech_segments(audio_path, log_fn=log_fn)
         if not speech_segments:
             log_fn("⚠️ 未检测到语音片段")
@@ -590,8 +590,8 @@ def enrich_segments_with_speakers(video_path: str,
         # Step 5: Build diarization timeline
         diarization = build_diarization_timeline(valid_segments, labels)
         unique_speakers = set(s['speaker'] for s in diarization)
-        log_fn(f"  📊 Diarization timeline: {len(diarization)} turns, "
-               f"{len(unique_speakers)} speakers")
+        log_fn(f"  📊 说话人时间线：{len(diarization)} 个轮次，"
+               f"{len(unique_speakers)} 位说话人")
 
         # Step 6: Estimate gender
         gender_map = estimate_gender_by_pitch(audio_path, diarization, log_fn=log_fn)
@@ -615,7 +615,7 @@ def enrich_segments_with_speakers(video_path: str,
 
         # Summary
         log_fn(f"\n  {'─' * 45}")
-        log_fn(f"  Speaker Summary:")
+        log_fn("  说话人摘要：")
         log_fn(f"  {'─' * 45}")
         for spk, label in speaker_labels.items():
             info = gender_map.get(spk, {})
@@ -623,16 +623,16 @@ def enrich_segments_with_speakers(video_path: str,
             conf = info.get('confidence', 'none')
             f0 = info.get('median_f0', 0)
             seg_count = sum(1 for s in enriched if s.get('speaker') == spk)
-            log_fn(f"  📋 {label}: {gender} (F0: {f0}Hz, conf: {conf}, segments: {seg_count})")
+            log_fn(f"  📋 {label}：{gender}（F0：{f0}Hz，置信度：{conf}，片段数：{seg_count}）")
         log_fn(f"  {'─' * 45}\n")
 
-        log_fn(f"✅ 说话人信息补充完成：{len(speaker_labels)} speakers identified")
+        log_fn(f"✅ 说话人信息补充完成：已识别 {len(speaker_labels)} 位说话人")
         return enriched
 
     except ImportError as e:
         log_fn(f"⚠️ 缺少依赖：{e}")
-        log_fn("   Install: pip install resemblyzer librosa scikit-learn")
-        log_fn("   Proceeding without speaker identification")
+        log_fn("   可安装：pip install resemblyzer librosa scikit-learn")
+        log_fn("   将在不进行说话人识别的情况下继续")
         return whisper_segments
 
     except Exception as e:

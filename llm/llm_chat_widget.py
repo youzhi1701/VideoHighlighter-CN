@@ -263,17 +263,17 @@ class _VisualSearchWorker(QObject):
         print("\n" + "=" * 70)
         print("性能统计汇总")
         print("=" * 70)
-        print(f"{'stage':<10} {'count':>5} {'mean':>8} {'median':>8} {'min':>8} {'max':>8} {'total':>8}")
+        print(f"{'阶段':<10} {'次数':>5} {'平均':>8} {'中位数':>8} {'最小':>8} {'最大':>8} {'合计':>8}")
         for stage in ('encode', 'llm', 'confirm'):
             vals = stage_totals.get(stage) or []
             if not vals:
                 continue
             vs = sorted(vals)
-            print(f"{stage:<10} {len(vals):>5} {sum(vals)/len(vals)*1000:>7.0f}ms "
+            stage_display = {"encode": "编码", "llm": "大模型", "confirm": "确认"}.get(stage, stage)
+            print(f"{stage_display:<10} {len(vals):>5} {sum(vals)/len(vals)*1000:>7.0f}ms "
                   f"{vs[len(vs)//2]*1000:>7.0f}ms {vs[0]*1000:>7.0f}ms {vs[-1]*1000:>7.0f}ms "
                   f"{sum(vals):>7.1f}s")
-        print(f"\nFrames analyzed: {len(stage_totals['llm'])}   "
-              f"skipped (scene-stable): {n_skipped}")
+        print(f"\n已分析画面：{len(stage_totals['llm'])}   因场景稳定跳过：{n_skipped}")
         print("=" * 70 + "\n")
 
     # ----------------------------------------------------------------- engines
@@ -529,8 +529,7 @@ class _VisualSearchWorker(QObject):
         # the same run, but worth being able to tell apart.
         self.progress.emit(0, max(1, len(candidates)),
                            float(candidates[0][0]) if candidates else 0.0,
-                           f"CLIP ranked {len(scored)} frames → VLM confirms top "
-                           f"{len(candidates)}")
+                           f"CLIP 已排序 {len(scored)} 帧 → 视觉模型确认前 {len(candidates)} 帧")
 
         stage_totals = defaultdict(list)
         results = []

@@ -215,7 +215,7 @@ def _rows(raw):
     if out.ndim == 3:
         out = out[0]
     if out.ndim != 2:
-        raise ValueError(f"unexpected detector output shape {np.asarray(raw).shape}")
+        raise ValueError(f"检测器输出形状异常：{np.asarray(raw).shape}")
     return out.T if out.shape[0] < out.shape[1] else out
 
 
@@ -343,5 +343,5 @@ def load(model_path, **kwargs) -> Optional[OnnxDetector]:
     try:
         return OnnxDetector(model_path, **kwargs)
     except Exception as e:  # noqa: BLE001 - a broken export must not stop a run
-        print(f"⚠️ ONNX detector unavailable: {type(e).__name__}: {e}")
+        print(f"⚠️ ONNX 检测器不可用：{type(e).__name__}：{e}")
         return None

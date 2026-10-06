@@ -4689,9 +4689,9 @@ class SignalTimelineWindow(QMainWindow):
                 
                 if len(visible_objects) < total_objects:
                     if len(visible_objects) <= 3:
-                        filter_details.append(f"Objects: {', '.join(visible_objects)}")
+                        filter_details.append(f"物体：{', '.join(visible_objects)}")
                     else:
-                        filter_details.append(f"Objects: {len(visible_objects)} shown")
+                        filter_details.append(f"物体：显示 {len(visible_objects)} 个")
                 
                 self.current_filters_label.setText(" | ".join(filter_details))
             else:

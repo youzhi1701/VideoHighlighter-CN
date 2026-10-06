@@ -199,12 +199,12 @@ def find(project: Project, detector, embedder, *, read_at: Optional[Callable] = 
          progress: Optional[Callable] = None) -> dict:
     """Search every sample for every seeded class; propose, auto-accept, settle."""
     if project.task != OBJECTS:
-        raise ValueError("find is for object projects")
+        raise ValueError("find 仅适用于物体项目")
     read_at = read_at or _read_at
     labels = store(project)
     drawn = seeded(labels)
     if not drawn:
-        raise ValueError("nothing to look for yet: draw a box around it first (seed)")
+        raise ValueError("目前还没有可查找的目标：请先用 seed 为目标绘制一个检测框")
     crops = crop_vectors(project, labels, embedder, read_at)
     regions = embed_regions(project, detector, embedder, read_at, progress)
     known = {(b.video, round(b.time, 3), b.class_name) for b in labels.boxes

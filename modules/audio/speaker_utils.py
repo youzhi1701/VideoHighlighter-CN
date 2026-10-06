@@ -157,7 +157,7 @@ def _vad_energy(audio_path: str, min_speech_duration: float,
         else:
             merged.append(seg)
 
-    log_fn(f"  🔊 Energy VAD: {len(merged)} speech segments detected")
+    log_fn(f"  🔊 能量 VAD：检测到 {len(merged)} 个语音片段")
     return merged
 
 
@@ -637,7 +637,7 @@ def enrich_segments_with_speakers(video_path: str,
 
     except Exception as e:
         log_fn(f"⚠️ 说话人分离失败：{e}")
-        log_fn("   Proceeding without speaker identification")
+        log_fn("   将在不进行说话人识别的情况下继续")
         return whisper_segments
 
     finally:

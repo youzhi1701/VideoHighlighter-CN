@@ -94,7 +94,7 @@ _MATCH_KEYS = ("objects", "actions", "keywords")
 _ORDERS = ("best_first", "chronological")
 
 _DEFAULT_ORDER = "best_first"
-_DEFAULT_TITLE = "Untitled"
+_DEFAULT_TITLE = "无标题"
 
 
 class ScriptError(ValueError):
@@ -404,12 +404,12 @@ def _reject_unknown(mapping: Mapping, allowed: tuple[str, ...], what: str) -> No
         if name in allowed:
             continue
         if name in _MATCH_KEYS:
-            hint = " — match terms belong under 'match:'"
+            hint = "——匹配条件应写在 'match:' 下"
         else:
             close = get_close_matches(name, allowed, n=1, cutoff=0.6)
-            hint = (f" — did you mean {close[0]!r}?" if close
-                    else f" — known {what} keys: {', '.join(allowed)}")
-        _fail(f"unknown {what} key {name!r}{hint}", mapping, name)
+            hint = (f"——你是否想写 {close[0]!r}？" if close
+                    else f"——已知 {what} 键：{', '.join(allowed)}")
+        _fail(f"未知 {what} 键 {name!r}{hint}", mapping, name)
 
 
 def _durations(value: Any, name: str, mapping: Any) -> tuple[float, float]:

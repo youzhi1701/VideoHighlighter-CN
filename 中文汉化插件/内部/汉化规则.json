@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "21736e1936b933d359c46117e8911c82fb7eb08f"
+    "head_commit": "2b321f590967883b38b4639ee3d271f28922b5b9"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -29299,6 +29299,537 @@
       "before": "        self.download_btn.setEnabled(n > 0)",
       "after": "",
       "hunk": "@@ -236,7 +236,7 @@ class VideoPickerDialog(QDialog):"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "    print(\"⚠️ OpenCV not installed. VideoSeekAnalyzer will not work. Install with: pip install opencv-python\")",
+      "target": "    print(\"⚠️ 未安装 OpenCV，VideoSeekAnalyzer 无法工作。请运行：pip install opencv-python\")",
+      "before": "    HAS_CV2 = False",
+      "after": "",
+      "hunk": "@@ -36,7 +36,7 @@",
+      "id": "llm/llm_module.py#5"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"   (could not read capabilities for {self.model}: {exc})\")",
+      "target": "                print(f\"   （无法读取 {self.model} 的能力信息：{exc}）\")",
+      "before": "            except Exception as exc:",
+      "after": "",
+      "hunk": "@@ -263,7 +263,7 @@ def load(self, **kwargs):",
+      "id": "llm/llm_module.py#6"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"📷 Loading vision model with mmproj: {self.mmproj_path}\")",
+      "target": "            print(f\"📷 正在加载视觉模型，mmproj：{self.mmproj_path}\")",
+      "before": "        if self.mmproj_path and os.path.exists(self.mmproj_path):",
+      "after": "            ",
+      "hunk": "@@ -654,7 +654,7 @@ def load(self, **kwargs):",
+      "id": "llm/llm_module.py#7"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"✅ Created Llava15ChatHandler for vision support\")",
+      "target": "                print(\"✅ 已创建 Llava15ChatHandler 以支持视觉输入\")",
+      "before": "                ",
+      "after": "                ",
+      "hunk": "@@ -664,7 +664,7 @@ def load(self, **kwargs):",
+      "id": "llm/llm_module.py#8"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(\"⚠️ Llava15ChatHandler not available, falling back to basic vision\")",
+      "target": "                print(\"⚠️ Llava15ChatHandler 不可用，正在回退到基础视觉模式\")",
+      "before": "            except ImportError:",
+      "after": "                self._model = Llama(",
+      "hunk": "@@ -675,7 +675,7 @@ def load(self, **kwargs):",
+      "id": "llm/llm_module.py#9"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"📤 Sending vision request with {len(images)} images\")",
+      "target": "            print(f\"📤 正在发送视觉请求，共 {len(images)} 张图片\")",
+      "before": "            ",
+      "after": "",
+      "hunk": "@@ -776,7 +776,7 @@ def _generate_vision(self, prompt: str, system: str = \"\", images: list[str] = No",
+      "id": "llm/llm_module.py#10"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"✅ Vision generation complete: {len(result)} chars\")",
+      "target": "            print(f\"✅ 视觉生成完成：{len(result)} 个字符\")",
+      "before": "            result = sanitize_response(raw)",
+      "after": "            return result",
+      "hunk": "@@ -804,19 +804,19 @@ def _generate_vision(self, prompt: str, system: str = \"\", images: list[str] = No",
+      "id": "llm/llm_module.py#11"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"❌ Vision generation error: {e}\")",
+      "target": "            print(f\"❌ 视觉生成出错：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "            import traceback",
+      "hunk": "@@ -804,19 +804,19 @@ def _generate_vision(self, prompt: str, system: str = \"\", images: list[str] = No",
+      "id": "llm/llm_module.py#12"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(\"⚠️ Falling back to raw prompt format...\")",
+      "target": "            print(\"⚠️ 正在回退到原始提示词格式…\")",
+      "before": "            ",
+      "after": "            return self._generate_vision_fallback(prompt, system, images, max_tokens, ",
+      "hunk": "@@ -804,19 +804,19 @@ def _generate_vision(self, prompt: str, system: str = \"\", images: list[str] = No",
+      "id": "llm/llm_module.py#13"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"📤 Using fallback prompt format with {len(images)} images\")",
+      "target": "            print(f\"📤 正在使用备用提示词格式，共 {len(images)} 张图片\")",
+      "before": "            ",
+      "after": "            ",
+      "hunk": "@@ -842,7 +842,7 @@ def _generate_vision_fallback(self, prompt: str, system: str = \"\", images: list[",
+      "id": "llm/llm_module.py#14"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"❌ Fallback also failed: {e}\")\n            return f\"Error processing image: {e}\"",
+      "target": "            print(f\"❌ 备用方案同样失败：{e}\")\n            return f\"处理图片时出错：{e}\"",
+      "before": "        except Exception as e:",
+      "after": "",
+      "hunk": "@@ -878,8 +878,8 @@ def _generate_vision_fallback(self, prompt: str, system: str = \"\", images: list[",
+      "id": "llm/llm_module.py#15"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(f\"🔍 query() called:\")\n        print(f\"   frame_base64: {'YES (' + str(len(frame_base64)) + ' chars)' if frame_base64 else 'NONE'}\")\n        print(f\"   timeline_context: {'YES' if timeline_context else 'NONE'}\")\n        print(f\"   analysis_data: {'YES' if analysis_data else 'NONE'}\")",
+      "target": "        print(\"🔍 已调用 query()：\")\n        print(f\"   frame_base64：{'有（' + str(len(frame_base64)) + ' 个字符）' if frame_base64 else '无'}\")\n        print(f\"   timeline_context：{'有' if timeline_context else '无'}\")\n        print(f\"   analysis_data：{'有' if analysis_data else '无'}\")",
+      "before": "        ",
+      "after": "",
+      "hunk": "@@ -1220,10 +1220,10 @@ def query(",
+      "id": "llm/llm_module.py#16"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(f\"📹 Video loaded: {os.path.basename(video_path)}\")\n        print(f\"   Duration: {int(self.duration)//60}m{int(self.duration)%60:02d}s\")\n        print(f\"   Resolution: {self.width}x{self.height}\")\n        print(f\"   FPS: {self.fps:.2f}\")",
+      "target": "        print(f\"📹 视频已加载：{os.path.basename(video_path)}\")\n        print(f\"   时长：{int(self.duration)//60}分{int(self.duration)%60:02d}秒\")\n        print(f\"   分辨率：{self.width}x{self.height}\")\n        print(f\"   FPS：{self.fps:.2f}\")",
+      "before": "        ",
+      "after": "    ",
+      "hunk": "@@ -1446,10 +1446,10 @@ def __init__(self, video_path: str, llm: LLMModule, verbose: bool = False):",
+      "id": "llm/llm_module.py#17"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(f\"\\n📊 Seeking analysis every {interval}s ({len(timestamps)} frames)\")\n        print(f\"   Video duration: {int(self.duration)//60}m{int(self.duration)%60:02d}s\")",
+      "target": "        print(f\"\\n📊 每隔 {interval} 秒进行一次定位分析（共 {len(timestamps)} 帧）\")\n        print(f\"   视频时长：{int(self.duration)//60}分{int(self.duration)%60:02d}秒\")",
+      "before": "        ",
+      "after": "        ",
+      "hunk": "@@ -1518,15 +1518,15 @@ def analyze_every_n_seconds(self, interval: float = 1.0, callback=None, save_to_",
+      "id": "llm/llm_module.py#18"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"\\n⏹ Analysis cancelled at {timestamp:.1f}s\")",
+      "target": "                print(f\"\\n⏹ 分析已在 {timestamp:.1f} 秒处取消\")",
+      "before": "            if cancellation_token and cancellation_token.is_cancelled:",
+      "after": "                break",
+      "hunk": "@@ -1518,15 +1518,15 @@ def analyze_every_n_seconds(self, interval: float = 1.0, callback=None, save_to_",
+      "id": "llm/llm_module.py#19"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(f\"⚠️ Could not read frame at {timestamp:.1f}s\")",
+      "target": "                    print(f\"⚠️ 无法读取 {timestamp:.1f} 秒处的视频帧\")",
+      "before": "                if i % progress_interval == 0:",
+      "after": "                continue",
+      "hunk": "@@ -1537,7 +1537,7 @@ def analyze_every_n_seconds(self, interval: float = 1.0, callback=None, save_to_",
+      "id": "llm/llm_module.py#20"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(f\"  [{i+1}/{len(timestamps)}] {timestamp:.1f}s: Analyzed\")",
+      "target": "                    print(f\"  [{i+1}/{len(timestamps)}] {timestamp:.1f} 秒：已分析\")",
+      "before": "                if i % progress_interval == 0 or i == len(timestamps) - 1:",
+      "after": "                    ",
+      "hunk": "@@ -1565,26 +1565,26 @@ def analyze_every_n_seconds(self, interval: float = 1.0, callback=None, save_to_",
+      "id": "llm/llm_module.py#21"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"\\n⏹ Generation cancelled at {timestamp:.1f}s\")",
+      "target": "                print(f\"\\n⏹ 生成已在 {timestamp:.1f} 秒处取消\")",
+      "before": "            except GenerationCancelled:",
+      "after": "                break",
+      "hunk": "@@ -1565,26 +1565,26 @@ def analyze_every_n_seconds(self, interval: float = 1.0, callback=None, save_to_",
+      "id": "llm/llm_module.py#22"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(f\"❌ Error at {timestamp:.1f}s: {e}\")",
+      "target": "                    print(f\"❌ {timestamp:.1f} 秒处出错：{e}\")",
+      "before": "                if i % progress_interval == 0:",
+      "after": "                results.append({",
+      "hunk": "@@ -1565,26 +1565,26 @@ def analyze_every_n_seconds(self, interval: float = 1.0, callback=None, save_to_",
+      "id": "llm/llm_module.py#23"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(f\"\\n✅ Done. {len(results)} frames analyzed successfully\")",
+      "target": "        print(f\"\\n✅ 完成，成功分析 {len(results)} 帧\")",
+      "before": "        ",
+      "after": "        ",
+      "hunk": "@@ -1565,26 +1565,26 @@ def analyze_every_n_seconds(self, interval: float = 1.0, callback=None, save_to_",
+      "id": "llm/llm_module.py#24"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(f\"\\n🔍 Seeking every {interval}s looking for: {target_description}\")",
+      "target": "        print(f\"\\n🔍 每隔 {interval} 秒搜索一次：{target_description}\")",
+      "before": "        ",
+      "after": "        print(\"=\" * 60)",
+      "hunk": "@@ -1598,25 +1598,25 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#25"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"\\n⏹ Search cancelled at seek #{seek_num}\")",
+      "target": "                print(f\"\\n⏹ 搜索已在第 {seek_num} 次定位时取消\")",
+      "before": "            if cancellation_token and cancellation_token.is_cancelled:",
+      "after": "                break",
+      "hunk": "@@ -1598,25 +1598,25 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#26"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"\\n🏁 Reached end of video at {timestamp:.1f}s\")",
+      "target": "                print(f\"\\n🏁 已在 {timestamp:.1f} 秒处到达视频末尾\")",
+      "before": "            if timestamp >= self.duration:",
+      "after": "                break",
+      "hunk": "@@ -1598,25 +1598,25 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#27"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"\\n⏩ Seeking to {timestamp:.1f}s ({int(timestamp)//60}:{int(timestamp)%60:02d})\")",
+      "target": "            print(f\"\\n⏩ 正在定位到 {timestamp:.1f} 秒（{int(timestamp)//60}:{int(timestamp)%60:02d}）\")",
+      "before": "            ",
+      "after": "            frame = self.seek_to_time(timestamp)",
+      "hunk": "@@ -1598,25 +1598,25 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#28"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"⚠️ Could not read frame at {timestamp:.1f}s\")",
+      "target": "                print(f\"⚠️ 无法读取 {timestamp:.1f} 秒处的视频帧\")",
+      "before": "            if frame is None:",
+      "after": "                continue",
+      "hunk": "@@ -1598,25 +1598,25 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#29"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"📝 Analysis: {response[:100]}...\")",
+      "target": "                print(f\"📝 分析：{response[:100]}…\")",
+      "before": "                results.append(result)",
+      "after": "                ",
+      "hunk": "@@ -1639,22 +1639,22 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#30"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(f\"\\n🎯 FOUND {target_description.upper()} at {timestamp:.1f}s!\")\n                    print(f\"Full analysis: {response}\")",
+      "target": "                    print(f\"\\n🎯 在 {timestamp:.1f} 秒处找到 {target_description.upper()}！\")\n                    print(f\"完整分析：{response}\")",
+      "before": "                if result[\"contains_target\"]:",
+      "after": "                    break",
+      "hunk": "@@ -1639,22 +1639,22 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#31"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"\\n⏹ Search cancelled at {timestamp:.1f}s\")",
+      "target": "                print(f\"\\n⏹ 搜索已在 {timestamp:.1f} 秒处取消\")",
+      "before": "            except GenerationCancelled:",
+      "after": "                break",
+      "hunk": "@@ -1639,22 +1639,22 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#32"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"❌ Error at {timestamp:.1f}s: {e}\")",
+      "target": "                print(f\"❌ {timestamp:.1f} 秒处出错：{e}\")",
+      "before": "            except Exception as e:",
+      "after": "            ",
+      "hunk": "@@ -1639,22 +1639,22 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#33"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(f\"\\n✅ Seeking complete. Analyzed {len(results)} frames\")",
+      "target": "        print(f\"\\n✅ 定位分析完成，共分析 {len(results)} 帧\")",
+      "before": "        ",
+      "after": "        return results",
+      "hunk": "@@ -1639,22 +1639,22 @@ def analyze_with_seeking(self, interval: float = 1.0, target_description: str =",
+      "id": "llm/llm_module.py#34"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(f\"💾 Results saved to: {filepath}\")",
+      "target": "        print(f\"💾 结果已保存到：{filepath}\")",
+      "before": "        ",
+      "after": "    ",
+      "hunk": "@@ -1675,7 +1675,7 @@ def save_results(self, results: list, filepath: str):",
+      "id": "llm/llm_module.py#35"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                            print(\"\\n❌ Too many errors, stopping analysis\")",
+      "target": "                            print(\"\\n❌ 错误过多，已停止分析\")",
+      "before": "                        if consecutive_errors > 3:",
+      "after": "                            break",
+      "hunk": "@@ -1707,14 +1707,14 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#36"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                        print(f\"📹 [{result['timestamp_str']}] Analysis:\")",
+      "target": "                        print(f\"📹 [{result['timestamp_str']}] 分析：\")",
+      "before": "                        print(f\"\\n{'='*60}\")",
+      "after": "                        print(f\"{'='*60}\")",
+      "hunk": "@@ -1707,14 +1707,14 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#37"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(f\"\\n⚠️ Analysis error: {e}\")",
+      "target": "                    print(f\"\\n⚠️ 分析出错：{e}\")",
+      "before": "                except Exception as e:",
+      "after": "                    time.sleep(interval)",
+      "hunk": "@@ -1725,7 +1725,7 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#38"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(f\"📌 Current position: {int(self.current_time)//60}:{int(self.current_time)%60:02d}\")",
+      "target": "                    print(f\"📌 当前位置：{int(self.current_time)//60}:{int(self.current_time)%60:02d}\")",
+      "before": "                elif parts[0] == 'p':",
+      "after": "                elif parts[0] == 'f' and len(parts) > 1:",
+      "hunk": "@@ -1743,39 +1743,39 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#39"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(\"\\n👋 Stopping analysis...\")",
+      "target": "                    print(\"\\n👋 正在停止分析…\")",
+      "before": "                elif parts[0] == 'q':",
+      "after": "                    self.running = False",
+      "hunk": "@@ -1743,39 +1743,39 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#40"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                    print(\"❌ Unknown command. Type 'h' for help.\")",
+      "target": "                    print(\"❌ 未知命令。输入 'h' 查看帮助。\")",
+      "before": "                else:",
+      "after": "                    ",
+      "hunk": "@@ -1743,39 +1743,39 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#41"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(\"\\n\\n👋 Interrupted, stopping...\")",
+      "target": "                print(\"\\n\\n👋 已中断，正在停止…\")",
+      "before": "            except KeyboardInterrupt:",
+      "after": "                self.running = False",
+      "hunk": "@@ -1743,39 +1743,39 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#42"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"❌ Command error: {e}\")",
+      "target": "                print(f\"❌ 命令执行出错：{e}\")",
+      "before": "            except Exception as e:",
+      "after": "    ",
+      "hunk": "@@ -1743,39 +1743,39 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#43"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(\"🎬 Interactive Video Analysis Mode\")",
+      "target": "        print(\"🎬 交互式视频分析模式\")",
+      "before": "        print(\"\\n\" + \"=\"*50)",
+      "after": "        print(\"=\"*50)",
+      "hunk": "@@ -1743,39 +1743,39 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#44"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(\"Commands:\")\n        print(\"  s <seconds>   - Seek to timestamp (e.g., 's 30')\")\n        print(\"  s <mm:ss>     - Seek to timestamp (e.g., 's 1:30')\")\n        print(\"  p             - Show current position\")\n        print(\"  f <sec>       - Move forward N seconds\")\n        print(\"  b <sec>       - Move backward N seconds\")\n        print(\"  h             - Show this help\")\n        print(\"  q             - Quit\")",
+      "target": "        print(\"命令：\")\n        print(\"  s <秒数>      - 定位到指定时间（例如：'s 30'）\")\n        print(\"  s <mm:ss>     - 定位到指定时间（例如：'s 1:30'）\")\n        print(\"  p             - 显示当前位置\")\n        print(\"  f <秒数>      - 向前移动 N 秒\")\n        print(\"  b <秒数>      - 向后移动 N 秒\")\n        print(\"  h             - 显示此帮助\")\n        print(\"  q             - 退出\")",
+      "before": "        print(\"=\"*50)",
+      "after": "        print(\"=\"*50)",
+      "hunk": "@@ -1743,39 +1743,39 @@ def analysis_loop():",
+      "id": "llm/llm_module.py#45"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "                print(f\"⏩ Seeking to {self.current_time//60}:{self.current_time%60:02d}\")",
+      "target": "                print(f\"⏩ 正在定位到 {self.current_time//60}:{self.current_time%60:02d}\")",
+      "before": "            if self.verbose:",
+      "after": "        except ValueError:",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#46"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(\"❌ Invalid time format. Use seconds or mm:ss\")",
+      "target": "            print(\"❌ 时间格式无效，请使用秒数或 mm:ss\")",
+      "before": "        except ValueError:",
+      "after": "    ",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#47"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"⏩ Forward {forward}s to {int(self.current_time)//60}:{int(self.current_time)%60:02d}\")",
+      "target": "            print(f\"⏩ 向前 {forward} 秒，到 {int(self.current_time)//60}:{int(self.current_time)%60:02d}\")",
+      "before": "                self.current_time = min(self.current_time + forward, self.duration)",
+      "after": "        except ValueError:",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#48"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(\"❌ Invalid forward value\")",
+      "target": "            print(\"❌ 向前移动的数值无效\")",
+      "before": "        except ValueError:",
+      "after": "    ",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#49"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(f\"⏪ Back {backward}s to {int(self.current_time)//60}:{int(self.current_time)%60:02d}\")",
+      "target": "            print(f\"⏪ 向后 {backward} 秒，到 {int(self.current_time)//60}:{int(self.current_time)%60:02d}\")",
+      "before": "                self.current_time = max(self.current_time - backward, 0)",
+      "after": "        except ValueError:",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#50"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "            print(\"❌ Invalid backward value\")",
+      "target": "            print(\"❌ 向后移动的数值无效\")",
+      "before": "        except ValueError:",
+      "after": "    ",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#51"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "        print(\"📹 Video capture released\")",
+      "target": "        print(\"📹 视频捕获资源已释放\")",
+      "before": "            self.cap.release()",
+      "after": "",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#52"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "    print(\"🔍 LLM Module with Video Seek Analyzer\")",
+      "target": "    print(\"🔍 带视频定位分析器的 LLM 模块\")",
+      "before": "if __name__ == \"__main__\":",
+      "after": "    print(\"=\" * 50)",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#53"
+    },
+    {
+      "file": "llm/llm_module.py",
+      "source": "    print(\"This module provides:\")\n    print(\"  - LLMModule: Interface to local LLMs\")\n    print(\"  - VideoSeekAnalyzer: Analyze video frames every 1 second\")\n    print(\"\\nExample usage:\")",
+      "target": "    print(\"本模块提供：\")\n    print(\"  - LLMModule：本地 LLM 接口\")\n    print(\"  - VideoSeekAnalyzer：按时间间隔分析视频帧\")\n    print(\"\\n示例用法：\")",
+      "before": "    print(\"=\" * 50)",
+      "after": "    print(\"  from llm_module import LLMModule, VideoSeekAnalyzer\")",
+      "hunk": "@@ -1791,45 +1791,45 @@ def _handle_seek_command(self, arg: str):",
+      "id": "llm/llm_module.py#54"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        \"AUDIO WAVEFORM\": lambda scene: scene._nav_timestamps_waveform_peaks(),\n        \"ACTIONS\":        lambda scene: scene._nav_timestamps_actions(),\n        \"OBJECTS\":        lambda scene: scene._nav_timestamps_objects(),\n        \"SCENES\":         lambda scene: scene._nav_timestamps_scenes(),\n        \"MOTION EVENTS\":  lambda scene: scene._nav_timestamps_motion_events(),\n        \"MOTION PEAKS\":   lambda scene: scene._nav_timestamps_motion_peaks(),\n        \"AUDIO PEAKS\":    lambda scene: scene._nav_timestamps_audio_peaks(),\n        \"HIGHLIGHTS\":     lambda scene: scene._nav_timestamps_highlights(),\n        \"TRANSCRIPT\":     lambda scene: scene._nav_timestamps_transcript(),\n        \"VISUAL SEARCH\":  lambda scene: scene._nav_timestamps_visual_search(),\n        \"EVENTS\":         lambda scene: scene._nav_timestamps_events(),",
+      "target": "        \"音频波形\": lambda scene: scene._nav_timestamps_waveform_peaks(),\n        \"动作\":     lambda scene: scene._nav_timestamps_actions(),\n        \"物体\":     lambda scene: scene._nav_timestamps_objects(),\n        \"场景\":     lambda scene: scene._nav_timestamps_scenes(),\n        \"运动事件\": lambda scene: scene._nav_timestamps_motion_events(),\n        \"运动峰值\": lambda scene: scene._nav_timestamps_motion_peaks(),\n        \"音频峰值\": lambda scene: scene._nav_timestamps_audio_peaks(),\n        \"高光\":     lambda scene: scene._nav_timestamps_highlights(),\n        \"转录文本\": lambda scene: scene._nav_timestamps_transcript(),\n        \"视觉搜索\": lambda scene: scene._nav_timestamps_visual_search(),\n        \"事件\":     lambda scene: scene._nav_timestamps_events(),",
+      "before": "    _NAVIGABLE = {",
+      "after": "    }",
+      "hunk": "@@ -87,17 +87,17 @@ class SignalLabelPanel(QWidget):",
+      "id": "signal_timeline_viewer.py#328"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "                    'action_name': b.get('action_name') or b.get('action') or 'action',",
+      "target": "                    'action_name': b.get('action_name') or b.get('action') or '动作',",
+      "before": "                    'timestamp': b.get('timestamp', 0),",
+      "after": "                    'confidence': b.get('confidence', 0.5),",
+      "hunk": "@@ -357,7 +357,7 @@ def _actions_list(self):",
+      "id": "video_ai_editor/signal_timeline.py#39"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "            name = item.get('action_name') or item.get('action') or item.get('class') or 'unknown'",
+      "target": "            name = item.get('action_name') or item.get('action') or item.get('class') or '未知'",
+      "before": "        for item in self._actions_list():",
+      "after": "            if isinstance(name, str):",
+      "hunk": "@@ -381,10 +381,10 @@ def _extract_action_types(self):",
+      "id": "video_ai_editor/signal_timeline.py#40"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "        return sorted(list(actions)) if actions else ['Unknown']",
+      "target": "        return sorted(list(actions)) if actions else ['未知']",
+      "before": "                actions.add(name.strip().title())",
+      "after": "    ",
+      "hunk": "@@ -381,10 +381,10 @@ def _extract_action_types(self):",
+      "id": "video_ai_editor/signal_timeline.py#41"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "        return sorted(list(objs)) if objs else ['Unknown']",
+      "target": "        return sorted(list(objs)) if objs else ['未知']",
+      "before": "                        objs.add(name)",
+      "after": "",
+      "hunk": "@@ -409,7 +409,7 @@ def _extract_object_classes(self):",
+      "id": "video_ai_editor/signal_timeline.py#42"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "            action_name = action.get('action_name') or action.get('action') or 'Unknown'",
+      "target": "            action_name = action.get('action_name') or action.get('action') or '未知'",
+      "before": "                ",
+      "after": "            action_name = action_name.strip().title()",
+      "hunk": "@@ -1261,7 +1261,7 @@ def draw_improved_actions_layer(self, y_pos):",
+      "id": "video_ai_editor/signal_timeline.py#43"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "        action_name = action_data.get('action_name') or action_data.get('action') or 'Unknown'",
+      "target": "        action_name = action_data.get('action_name') or action_data.get('action') or '未知'",
+      "before": "    def should_show_action(self, action_data):",
+      "after": "        action_name = action_name.strip().title()",
+      "hunk": "@@ -2194,7 +2194,7 @@ def load_filters(self):",
+      "id": "video_ai_editor/signal_timeline.py#44"
+    },
+    {
+      "file": "modules/ui/training_panel.py",
+      "source": "        self.pipeline_combo.addItem(\"NVIDIA - 3D CNN\", \"r3d\")",
+      "target": "        self.pipeline_combo.addItem(\"NVIDIA - 3D 卷积网络\", \"r3d\")",
+      "before": "        self.pipeline_combo.addItem(\"Intel - OpenVINO 编码器\", \"intel\")",
+      "after": "        self.pipeline_combo.currentIndexChanged.connect(self._choose_pipeline)",
+      "hunk": "@@ -955,7 +955,7 @@ def _build_ui(self) -> None:",
+      "id": "modules/ui/training_panel.py#108"
+    },
+    {
+      "file": "modules/ui/training_panel.py",
+      "source": "        form.addRow(\"3D CNN 模型：\", self.variant_combo)",
+      "target": "        form.addRow(\"3D 卷积网络模型：\", self.variant_combo)",
+      "before": "            self.variant_combo.addItem(f\"{variant} - {hint}\", variant)",
+      "after": "        # Held so the row can be hidden: it belongs to the 3D CNN only, and a",
+      "hunk": "@@ -964,7 +964,7 @@ def _build_ui(self) -> None:",
+      "id": "modules/ui/training_panel.py#109"
     }
   ]
 }

@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "759d6119ee1352ca2f369591a446b958c860f132"
+    "head_commit": "55b52ee4acb13e048a92239f6c8cffbe66eac97e"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -29911,6 +29911,420 @@
       "after": "              \"AGPL，仅开发环境使用，不随发行版分发。）\")",
       "hunk": "@@ -2354,7 +2354,7 @@ def export_labels(self):",
       "id": "tools/labeler.py#1"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"SignalTimelineWindow.__init__ CALLED with video_path={video_path}\")\n        debug_log(f\"  cache_data provided: {cache_data is not None}\")",
+      "target": "        debug_log(f\"已调用 SignalTimelineWindow.__init__，video_path={video_path}\")\n        debug_log(f\"  是否提供 cache_data：{cache_data is not None}\")",
+      "before": "    def __init__(self, video_path, cache_data=None):",
+      "after": "        debug_log(f\"\\n{'='*60}\")",
+      "hunk": "@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):",
+      "id": "signal_timeline_viewer.py#329"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"🔍 [TIMELINE] SignalTimelineWindow.__init__ START\")",
+      "target": "        debug_log(\"🔍 [时间线] SignalTimelineWindow.__init__ 开始\")",
+      "before": "        debug_log(f\"\\n{'='*60}\")",
+      "after": "        debug_log(f\"{'='*60}\")",
+      "hunk": "@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):",
+      "id": "signal_timeline_viewer.py#330"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"  - video_path: {video_path}\")\n        debug_log(f\"  - cache_data provided: {cache_data is not None}\")\n        debug_log(f\"  - cache_data type: {type(cache_data)}\")",
+      "target": "        debug_log(f\"  - 视频路径：{video_path}\")\n        debug_log(f\"  - 是否提供 cache_data：{cache_data is not None}\")\n        debug_log(f\"  - cache_data 类型：{type(cache_data)}\")",
+      "before": "        debug_log(f\"{'='*60}\")",
+      "after": "        ",
+      "hunk": "@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):",
+      "id": "signal_timeline_viewer.py#331"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"  - cache_data keys: {list(cache_data.keys()) if cache_data else 'None'}\")",
+      "target": "            debug_log(f\"  - cache_data 键：{list(cache_data.keys()) if cache_data else '无'}\")",
+      "before": "        if cache_data is not None:",
+      "after": "        ",
+      "hunk": "@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):",
+      "id": "signal_timeline_viewer.py#332"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"  ✓ Using provided cache_data\")",
+      "target": "            debug_log(\"  ✓ 使用已提供的 cache_data\")",
+      "before": "        if cache_data is not None:",
+      "after": "            self.cache_data = cache_data",
+      "hunk": "@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):",
+      "id": "signal_timeline_viewer.py#333"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"  ⚠️ No cache_data provided, attempting to load...\")",
+      "target": "            debug_log(\"  ⚠️ 未提供 cache_data，正在尝试加载…\")",
+      "before": "        else:",
+      "after": "            self.cache_data = self.load_cache_data()",
+      "hunk": "@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):",
+      "id": "signal_timeline_viewer.py#334"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "                debug_log(f\"  ⚠️ Creating minimal cache data structure\")",
+      "target": "                debug_log(\"  ⚠️ 正在创建最小缓存数据结构\")",
+      "before": "            if not self.cache_data:",
+      "after": "                self.cache_data = {",
+      "hunk": "@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):",
+      "id": "signal_timeline_viewer.py#335"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"\\n  📊 FINAL CACHE DATA STATE:\")\n        debug_log(f\"  - self.cache_data is None? {self.cache_data is None}\")",
+      "target": "        debug_log(\"\\n  📊 最终缓存数据状态：\")\n        debug_log(f\"  - self.cache_data 是否为空：{self.cache_data is None}\")",
+      "before": "        ",
+      "after": "        if self.cache_data:",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#336"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"  - self.cache_data keys: {list(self.cache_data.keys())}\")",
+      "target": "            debug_log(f\"  - self.cache_data 键：{list(self.cache_data.keys())}\")",
+      "before": "        if self.cache_data:",
+      "after": "            # Check for motion data specifically",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#337"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"    - 'motion_events' present: {'motion_events' in self.cache_data}\")\n            debug_log(f\"    - 'motion_peaks' present: {'motion_peaks' in self.cache_data}\")\n            debug_log(f\"    - 'scenes' present: {'scenes' in self.cache_data}\")\n            debug_log(f\"    - 'video_metadata' present: {'video_metadata' in self.cache_data}\")",
+      "target": "            debug_log(f\"    - 是否包含 motion_events：{'motion_events' in self.cache_data}\")\n            debug_log(f\"    - 是否包含 motion_peaks：{'motion_peaks' in self.cache_data}\")\n            debug_log(f\"    - 是否包含 scenes：{'scenes' in self.cache_data}\")\n            debug_log(f\"    - 是否包含 video_metadata：{'video_metadata' in self.cache_data}\")",
+      "before": "            # Check for motion data specifically",
+      "after": "            ",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#338"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "                debug_log(f\"      - duration: {self.cache_data['video_metadata'].get('duration', 'N/A')}\")",
+      "target": "                debug_log(f\"      - 时长：{self.cache_data['video_metadata'].get('duration', 'N/A')}\")",
+      "before": "            if 'video_metadata' in self.cache_data:",
+      "after": "        ",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#339"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"  - video_duration from cache: {self.video_duration}\")",
+      "target": "        debug_log(f\"  - 缓存中的视频时长：{self.video_duration}\")",
+      "before": "        self.video_duration = self.cache_data.get('video_metadata', {}).get('duration', 0) if self.cache_data else 0",
+      "after": "        ",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#340"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "                debug_log(f\"  - Attempting to get duration from video file...\")",
+      "target": "                debug_log(\"  - 正在尝试从视频文件读取时长…\")",
+      "before": "                import cv2",
+      "after": "                cap = cv2.VideoCapture(video_path)",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#341"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "                debug_log(f\"  - Got video duration from file: {self.video_duration:.1f}s\")",
+      "target": "                debug_log(f\"  - 已从视频文件读取时长：{self.video_duration:.1f} 秒\")",
+      "before": "                cap.release()",
+      "after": "            except Exception as e:",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#342"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "                debug_log(f\"  ⚠️ Could not get video duration: {e}\")",
+      "target": "                debug_log(f\"  ⚠️ 无法获取视频时长：{e}\")",
+      "before": "            except Exception as e:",
+      "after": "                self.video_duration = 60  # fallback",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#343"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"  - cache instance: {self.cache is not None}\")",
+      "target": "        debug_log(f\"  - 缓存实例可用：{self.cache is not None}\")",
+      "before": "        self.cache = self.get_cache_instance()",
+      "after": "        ",
+      "hunk": "@@ -485,40 +485,40 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#344"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"\\n  📊 EXTRACTED INFO:\")\n        debug_log(f\"  - action_types: {self.action_types}\")\n        debug_log(f\"  - object_classes: {self.object_classes}\")",
+      "target": "        debug_log(\"\\n  📊 已提取信息：\")\n        debug_log(f\"  - 动作类型：{self.action_types}\")\n        debug_log(f\"  - 物体类别：{self.object_classes}\")",
+      "before": "        ",
+      "after": "        ",
+      "hunk": "@@ -533,9 +533,9 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#345"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"  - waveform loaded: {self.waveform is not None}, length: {len(self.waveform) if self.waveform else 0}\")",
+      "target": "        debug_log(f\"  - 波形已加载：{self.waveform is not None}，长度：{len(self.waveform) if self.waveform else 0}\")",
+      "before": "        self.waveform = self.load_waveform_from_cache()",
+      "after": "        ",
+      "hunk": "@@ -546,10 +546,10 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#346"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"\\n  🎨 Initializing UI...\")",
+      "target": "        debug_log(\"\\n  🎨 正在初始化界面…\")",
+      "before": "        # Initialize UI - PASS waveform to constructor",
+      "after": "        self.init_ui()",
+      "hunk": "@@ -546,10 +546,10 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#347"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"  ⚠️ No cached waveform or empty waveform, starting extraction...\")",
+      "target": "            debug_log(\"  ⚠️ 没有缓存波形或波形为空，开始提取…\")",
+      "before": "        if not self.waveform or len(self.waveform) == 0:",
+      "after": "            self.init_waveform()",
+      "hunk": "@@ -562,13 +562,13 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#348"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"  ✅ Using cached waveform ({len(self.waveform)} points)\")",
+      "target": "            debug_log(f\"  ✅ 使用缓存波形（{len(self.waveform)} 个点）\")",
+      "before": "        else:",
+      "after": "        ",
+      "hunk": "@@ -562,13 +562,13 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#349"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"✅ [TIMELINE] SignalTimelineWindow.__init__ COMPLETE\")",
+      "target": "        debug_log(\"✅ [时间线] SignalTimelineWindow.__init__ 完成\")",
+      "before": "        debug_log(f\"\\n{'='*60}\")",
+      "after": "        debug_log(f\"{'='*60}\\n\")",
+      "hunk": "@@ -562,13 +562,13 @@ def __init__(self, video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#350"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        print(f\"\\n🔍 [TIMELINE] get_cache_instance\")",
+      "target": "        print(\"\\n🔍 [时间线] 获取缓存实例\")",
+      "before": "        \"\"\"Get cache instance for highlight loading\"\"\"",
+      "after": "        try:",
+      "hunk": "@@ -2098,7 +2098,7 @@ def save_waveform_to_cache(self, waveform_data):",
+      "id": "signal_timeline_viewer.py#351"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "                print(f\"  - Cache directory contains {len(cache_files)} cache files:\")",
+      "target": "                print(f\"  - 缓存目录包含 {len(cache_files)} 个缓存文件：\")",
+      "before": "                cache_files = list(cache_dir.glob(\"*.cache.json\"))",
+      "after": "                for f in cache_files:",
+      "hunk": "@@ -2107,7 +2107,7 @@ def get_cache_instance(self):",
+      "id": "signal_timeline_viewer.py#352"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "                print(f\"  ✓ Contains keys: {list(cache_data.keys())}\")",
+      "target": "                print(f\"  ✓ 包含键：{list(cache_data.keys())}\")",
+      "before": "                print(\"  ✓ 找到基于参数的缓存\")",
+      "after": "                print(f\"\\n{'-'*40}\")",
+      "hunk": "@@ -2216,7 +2216,7 @@ def load_cache_data(self):",
+      "id": "signal_timeline_viewer.py#353"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            self._swap_message(\"No highlight report was found next to this video, \"\n                               \"so there is nothing to re-choose from. Run the \"\n                               \"highlighter again to write one.\")",
+      "target": "            self._swap_message(\"在该视频旁未找到高光报告，因此没有可供重新选择的候选片段。\"\n                               \"请重新运行高光处理以生成报告。\")",
+      "before": "        if not path:",
+      "after": "            return None",
+      "hunk": "@@ -3821,9 +3821,8 @@ def _swap_session(self):",
+      "id": "signal_timeline_viewer.py#354"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            self._swap_message(\"There is no other moment left to offer for this \"\n                               \"clip — everything else is either already in the \"\n                               \"highlight or has been turned down.\")",
+      "target": "            self._swap_message(\"没有其他可替换到此片段的候选时刻；其余内容要么已经在高光中，\"\n                               \"要么此前已被排除。\")",
+      "before": "        if not session.swap(index):",
+      "after": "            return",
+      "hunk": "@@ -3862,20 +3861,19 @@ def on_swap_highlight(self, index):",
+      "id": "signal_timeline_viewer.py#355"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        print(f\"🔀 Swapped highlight {index + 1} \"\n              f\"({replaced[0]:.1f}s–{replaced[1]:.1f}s) for another moment\")",
+      "target": "        print(f\"🔀 已替换第 {index + 1} 个高光片段 \"\n              f\"（原片段 {replaced[0]:.1f} 秒–{replaced[1]:.1f} 秒）\")",
+      "before": "        self._apply_swapped_segments(session)",
+      "after": "",
+      "hunk": "@@ -3862,20 +3861,19 @@ def on_swap_highlight(self, index):",
+      "id": "signal_timeline_viewer.py#356"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        print(\"↩ Undid the last highlight swap\")",
+      "target": "        print(\"↩ 已撤销上一次高光片段替换\")",
+      "before": "        self._apply_swapped_segments(session)",
+      "after": "",
+      "hunk": "@@ -3862,20 +3861,19 @@ def on_swap_highlight(self, index):",
+      "id": "signal_timeline_viewer.py#357"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        print(f\"🎵 Waveform clicked at {start_time:.2f}s, amplitude: {amplitude:.2f}\")",
+      "target": "        print(f\"🎵 点击波形位置：{start_time:.2f} 秒，振幅：{amplitude:.2f}\")",
+      "before": "        \"\"\"Handle waveform clicks - auto-create a clip\"\"\"",
+      "after": "        # Option A: Increase threshold so only very loud sections add clips",
+      "hunk": "@@ -4147,7 +4145,7 @@ def on_time_dragged(self, time):",
+      "id": "signal_timeline_viewer.py#358"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "debug_log(\"🚀 TIMELINE VIEWER STARTING\")",
+      "target": "debug_log(\"🚀 时间线查看器正在启动\")",
+      "before": "debug_log(\"=\"*60)",
+      "after": "debug_log(\"=\"*60)",
+      "hunk": "@@ -5261,11 +5259,11 @@ def debug_log(msg):",
+      "id": "signal_timeline_viewer.py#359"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "debug_log(f\"Python version: {sys.version}\")\ndebug_log(f\"Current working directory: {os.getcwd()}\")\ndebug_log(f\"Script location: {__file__}\")",
+      "target": "debug_log(f\"Python 版本：{sys.version}\")\ndebug_log(f\"当前工作目录：{os.getcwd()}\")\ndebug_log(f\"脚本位置：{__file__}\")",
+      "before": "debug_log(\"=\"*60)",
+      "after": "",
+      "hunk": "@@ -5261,11 +5259,11 @@ def debug_log(msg):",
+      "id": "signal_timeline_viewer.py#360"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"🩺 Repaint trace → {_repaint_trace.default_path()}\")",
+      "target": "        debug_log(f\"🩺 重绘追踪 → {_repaint_trace.default_path()}\")",
+      "before": "    if _repaint_trace.arm():",
+      "after": "except Exception as _e:",
+      "hunk": "@@ -5275,9 +5273,9 @@ def debug_log(msg):",
+      "id": "signal_timeline_viewer.py#361"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "    debug_log(f\"⚠️ Repaint trace unavailable: {_e}\")",
+      "target": "    debug_log(f\"⚠️ 重绘追踪不可用：{_e}\")",
+      "before": "except Exception as _e:",
+      "after": "",
+      "hunk": "@@ -5275,9 +5273,9 @@ def debug_log(msg):",
+      "id": "signal_timeline_viewer.py#362"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "    debug_log(f\"🎬 show_timeline_viewer called\")",
+      "target": "    debug_log(\"🎬 已调用 show_timeline_viewer\")",
+      "before": "    debug_log(\"=\"*60)",
+      "after": "    debug_log(f\"  - video_path: {video_path}\")",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#363"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "    debug_log(f\"  - cache_data provided: {cache_data is not None}\")\n    debug_log(f\"  - video_path exists: {os.path.exists(video_path)}\")",
+      "target": "    debug_log(f\"  - 是否提供 cache_data：{cache_data is not None}\")\n    debug_log(f\"  - 视频路径是否存在：{os.path.exists(video_path)}\")",
+      "before": "    debug_log(f\"  - video_path: {video_path}\")",
+      "after": "    ",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#364"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(\"  - Creating new QApplication\")",
+      "target": "        debug_log(\"  - 正在创建新的 QApplication\")",
+      "before": "    if app is None:",
+      "after": "        app = QApplication(sys.argv)",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#365"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "            debug_log(f\"  ⚠️ Theme apply failed: {e}\")",
+      "target": "            debug_log(f\"  ⚠️ 应用主题失败：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "    else:",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#366"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(\"  - Using existing QApplication\")",
+      "target": "        debug_log(\"  - 使用现有 QApplication\")",
+      "before": "    else:",
+      "after": "    ",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#367"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "    debug_log(\"  🔵 ABOUT TO CREATE SignalTimelineWindow...\")",
+      "target": "    debug_log(\"  🔵 即将创建 SignalTimelineWindow…\")",
+      "before": "    ",
+      "after": "    try:",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#368"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(\"  🟢 SignalTimelineWindow CREATED successfully\")",
+      "target": "        debug_log(\"  🟢 SignalTimelineWindow 创建成功\")",
+      "before": "        window = SignalTimelineWindow(video_path, cache_data)",
+      "after": "    except Exception as e:",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#369"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        debug_log(f\"  ❌ ERROR creating SignalTimelineWindow: {e}\")",
+      "target": "        debug_log(f\"  ❌ 创建 SignalTimelineWindow 时出错：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        import traceback",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#370"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "    debug_log(\"  - Showing window...\")",
+      "target": "    debug_log(\"  - 正在显示窗口…\")",
+      "before": "    ",
+      "after": "    window.show()",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#371"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "    debug_log(\"  - Entering event loop...\")",
+      "target": "    debug_log(\"  - 正在进入事件循环…\")",
+      "before": "    ",
+      "after": "    result = app.exec()",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#372"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "    debug_log(f\"  - Event loop exited with code: {result}\")",
+      "target": "    debug_log(f\"  - 事件循环已退出，代码：{result}\")",
+      "before": "    result = app.exec()",
+      "after": "    ",
+      "hunk": "@@ -5293,41 +5291,41 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#373"
+    },
+    {
+      "file": "signal_timeline_viewer.py",
+      "source": "        print(\"Usage: python signal_timeline_viewer.py <video_path>\")",
+      "target": "        print(\"用法：python signal_timeline_viewer.py <视频路径>\")",
+      "before": "    else:",
+      "after": null,
+      "hunk": "@@ -5337,4 +5335,4 @@ def show_timeline_viewer(video_path, cache_data=None):",
+      "id": "signal_timeline_viewer.py#374"
     }
   ]
 }

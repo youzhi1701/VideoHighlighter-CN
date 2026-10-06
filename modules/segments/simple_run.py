@@ -59,10 +59,10 @@ def is_video_path(path: str) -> bool:
 def idle_status_text(n: int) -> str:
     """What the status line says when a run is not in progress."""
     if n <= 0:
-        return "Ready"
+        return "就绪"
     if n == 1:
-        return "1 video ready — press Analyze"
-    return f"{n} videos ready — press Analyze"
+        return "1 个视频已就绪——点击“分析”"
+    return f"{n} 个视频已就绪——点击“分析”"
 
 
 def simple_scoring_total() -> int:

@@ -2163,10 +2163,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             segments = subtract_forbidden(segments, forbidden_ranges)
             log(f"🚫 排除（跳过）：移除禁用区间后，片段数 {before_n} → {len(segments)}")
 
-        print("\n🔍 FINAL HIGHLIGHT BREAKDOWN:")
-        print(f"Total segments: {len(segments)}")
+        print("\n🔍 最终高光明细：")
+        print(f"片段总数：{len(segments)}")
         total_final_duration = sum(e - s for s, e in segments)
-        print(f"Total highlight duration: {total_final_duration:.1f}s")
+        print(f"高光总时长：{total_final_duration:.1f} 秒")
 
         # ========== WHY-THESE-MOMENTS REPORT ==========
         # The justification for every kept segment already exists at this point
@@ -2212,7 +2212,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     chapters = chapters_for_video(video_path, scenes,
                                                   video_duration, log_fn=print)
                 except Exception as _ce:
-                    print(f"⚠️ Chapters skipped: {_ce}")
+                    print(f"⚠️ 已跳过章节分析：{_ce}")
 
                 report = build_report(
                     video_path=video_path,
@@ -2324,7 +2324,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     from modules.report.sequence_findings import attach as _seq_attach
                     _seq_attach(report)
                 except Exception as _fe:
-                    print(f"⚠️ Sequence findings skipped: {_fe}")
+                    print(f"⚠️ 已跳过序列分析：{_fe}")
 
                 # Diagnose the run before writing it out, so the page and the
                 # JSON carry the same findings and neither can drift.
@@ -2334,7 +2334,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     if report.get("advice"):
                         log(f"💡 高光报告中有 {len(report['advice'])} 条建议")
                 except Exception as _ae:
-                    print(f"⚠️ Advisor skipped: {_ae}")
+                    print(f"⚠️ 已跳过分析建议：{_ae}")
 
                 base = os.path.splitext(OUTPUT_FILE)[0] if OUTPUT_FILE else \
                     os.path.splitext(video_path)[0]
@@ -2456,7 +2456,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
 
         # Show the actual selected segments with BETTER confidence information
-        print(f"\nACTUAL SELECTED SEGMENTS (PEAK CONFIDENCE):")
+        print("\n实际选中的片段（峰值置信度）：")
         for i, (seg_start, seg_end) in enumerate(segments):
             seg_duration = seg_end - seg_start
             
@@ -2478,16 +2478,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             high_confidence_moments.sort(reverse=True)
             
             if peak_confidence > 0:
-                confidence_str = f"PEAK: {peak_confidence:.1f}"
+                confidence_str = f"峰值：{peak_confidence:.1f}"
                 if high_confidence_moments:
-                    confidence_str += f" | {len(high_confidence_moments)} high-conf moments"
+                    confidence_str += f" | {len(high_confidence_moments)} 个高置信度时刻"
                     if len(high_confidence_moments) <= 3:  # Show top 3 if not too many
                         for conf, range_str in high_confidence_moments[:3]:
                             confidence_str += f" | {range_str}({conf:.1f})"
             else:
-                confidence_str = "no high-confidence actions"
+                confidence_str = "无高置信度动作"
             
-            print(f"  Segment {i+1}: {seconds_to_mmss(seg_start)}-{seconds_to_mmss(seg_end)} ({seg_duration:.1f}s) - {confidence_str}")
+            print(f"  片段 {i+1}：{seconds_to_mmss(seg_start)}-{seconds_to_mmss(seg_end)}（{seg_duration:.1f} 秒）- {confidence_str}")
 
         # Check which action sequences made it into the final highlight (SIGNIFICANTLY included)
         action_sequences_in_highlight = []
@@ -2512,7 +2512,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     })
                     break
 
-        print(f"\nACTION SEQUENCES INCLUDED IN HIGHLIGHT (≥1s):")
+        print("\n高光中包含的动作序列（≥1 秒）：")
         if action_sequences_in_highlight:
             # Sort by confidence to see what actually made it
             action_sequences_in_highlight.sort(key=lambda x: x['confidence'], reverse=True)
@@ -2520,19 +2520,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             for action in action_sequences_in_highlight:
                 ratio_percent = action['included_ratio'] * 100
                 print(f"  {action['action_name']}: {action['highlight_range']} "
-                    f"({action['duration']:.1f}s, {ratio_percent:.0f}% of original, conf: {action['confidence']:.3f})")
+                    f"（{action['duration']:.1f} 秒，占原序列 {ratio_percent:.0f}%，置信度：{action['confidence']:.3f}）")
         else:
-            print("  No action sequences significantly included in final highlight")
+            print("  最终高光中没有明显包含动作序列")
             
         total_action_duration = sum(a['duration'] for a in action_sequences_in_highlight)
         if total_final_duration > 0:
             action_percentage = (total_action_duration / total_final_duration) * 100
-            print(f"Total action content in highlight: {total_action_duration:.1f}s ({action_percentage:.1f}% of total)")
+            print(f"高光中的动作内容总时长：{total_action_duration:.1f} 秒（占总时长 {action_percentage:.1f}%）")
         else:
-            print(f"Total action content in highlight: {total_action_duration:.1f}s (no highlight segments)")
+            print(f"高光中的动作内容总时长：{total_action_duration:.1f} 秒（没有高光片段）")
 
         # Also show high-confidence sequences that didn't make it
-        print(f"\nTOP 10 HIGH-CONFIDENCE ACTION SEQUENCES EXCLUDED:")
+        print("\n未入选的高置信度动作序列 TOP 10：")
         high_conf_excluded = []
         for action_seq in selected_sequences:
             action_start, action_end, action_duration, action_conf, action_name = action_seq
@@ -2549,7 +2549,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
         # Show top 10 excluded by confidence
         for conf, name, range_str in sorted(high_conf_excluded, reverse=True)[:10]:
-            print(f"  {name}: {range_str} (conf: {conf:.3f})")
+            print(f"  {name}：{range_str}（置信度：{conf:.3f}）")
 
 
 
@@ -2561,7 +2561,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             log(f"\n🎯 最终选择 {len(segments)} 个片段，总时长 {total_duration:.1f} 秒（目标 {target_duration} 秒）")
             globals()['segments_logged'] = True
 
-        print(f"\n=== DETAILED DEBUG FOR TOP MOMENTS ===")
+        print("\n=== 高分时刻详细调试信息 ===")
         for idx in top_indices[:10]:
             minutes = idx // 60
             seconds = idx % 60
@@ -2572,24 +2572,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             motion_peak_score[idx] + audio_score[idx] + 
                             keyword_score[idx] + object_score[idx] + action_score[idx])
             
-            print(f"\nTime {timestamp} ({idx} sec): {score[idx]:.1f} total points")
-            print(f"  Scene: {scene_score[idx]:.1f}")
-            print(f"  Motion events: {motion_event_score[idx]:.1f}")
-            print(f"  Motion peaks: {motion_peak_score[idx]:.1f}")
-            print(f"  Audio: {audio_score[idx]:.1f}")
-            print(f"  Keywords: {keyword_score[idx]:.1f}")
-            print(f"  Objects: {object_score[idx]:.1f}")
-            print(f"  Actions: {action_score[idx]:.1f}")
-            print(f"  Subtotal (before boost): {pre_boost_total:.1f}")
+            print(f"\n时间 {timestamp}（{idx} 秒）：总分 {score[idx]:.1f}")
+            print(f"  场景：{scene_score[idx]:.1f}")
+            print(f"  运动事件：{motion_event_score[idx]:.1f}")
+            print(f"  运动峰值：{motion_peak_score[idx]:.1f}")
+            print(f"  音频：{audio_score[idx]:.1f}")
+            print(f"  关键词：{keyword_score[idx]:.1f}")
+            print(f"  对象：{object_score[idx]:.1f}")
+            print(f"  动作：{action_score[idx]:.1f}")
+            print(f"  加成前小计：{pre_boost_total:.1f}")
 
             # 🔍 Show which objects were detected at this second
             if idx in object_detections:
-                print(f"    Objects detected: {object_detections[idx]}")
+                print(f"    检测到的对象：{object_detections[idx]}")
 
             # 🔍 Show which actions were detected at this second
             if idx in detections_by_sec:
                 detected_actions = [f"{name} ({score:.2f})" for name, score in detections_by_sec[idx]]
-                print(f"    Actions detected: {', '.join(detected_actions)}")
+                print(f"    检测到的动作：{', '.join(detected_actions)}")
                 
                 actions_require_objects = gui_config.get("actions_require_objects", False)
                 if actions_require_objects:
@@ -2599,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         max_confidence = max(conf for _, conf in detections_by_sec[idx])
                         
                         if max_confidence >= confidence_90th:
-                            tier = "BONUS (≥90th percentile)"
+                            tier = "加成（≥第 90 百分位）"
                         elif max_confidence >= confidence_50th:
-                            tier = "NORMAL (≥50th percentile)"
+                            tier = "正常（≥第 50 百分位）"
                         else:
-                            tier = "REDUCED (<50th percentile)"
+                            tier = "降低（<第 50 百分位）"
                         
-                        print(f"    ✓ Action scored (objects present): +{actual_points:.1f} points [{tier}, conf={max_confidence:.2f}]")
+                        print(f"    ✓ 动作已计分（存在对象）：+{actual_points:.1f} 分 [{tier}，置信度={max_confidence:.2f}]")
                     else:
-                        print(f"    ✗ Action NOT scored (no objects detected)")
+                        print("    ✗ 动作未计分（未检测到对象）")
                 else:
                     # Show actual points added (includes confidence multiplier)
                     actual_points = action_score[idx]
                     max_confidence = max(conf for _, conf in detections_by_sec[idx])
                     
                     if max_confidence >= confidence_90th:
-                        tier = "BONUS (≥90th percentile)"
+                        tier = "加成（≥第 90 百分位）"
                     elif max_confidence >= confidence_50th:
-                        tier = "NORMAL (≥50th percentile)"
+                        tier = "正常（≥第 50 百分位）"
                     else:
-                        tier = "REDUCED (<50th percentile)"
+                        tier = "降低（<第 50 百分位）"
                     
-                    print(f"    ➕ Added {actual_points:.1f} action points [{tier}, conf={max_confidence:.2f}]")
+                    print(f"    ➕ 已增加 {actual_points:.1f} 动作分 [{tier}，置信度={max_confidence:.2f}]")
                         
             # Count signals
             signals = sum([
@@ -2635,10 +2635,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             
             if signals >= MIN_SIGNALS_FOR_BOOST:
                 boost_amount = score[idx] - pre_boost_total
-                print(f"  ⚡ Multi-signal boost: {signals} signals detected")
-                print(f"     Multiplier: x{MULTI_SIGNAL_BOOST}")
-                print(f"     Boost added: +{boost_amount:.1f} points")
-                print(f"     Final score: {score[idx]:.1f}")
+                print(f"  ⚡ 多信号加成：检测到 {signals} 个信号")
+                print(f"     倍数：x{MULTI_SIGNAL_BOOST}")
+                print(f"     增加分数：+{boost_amount:.1f}")
+                print(f"     最终得分：{score[idx]:.1f}")
 
         check_cancellation(cancel_flag, log, "segment selection")
 

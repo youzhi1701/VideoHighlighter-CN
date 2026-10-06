@@ -2515,9 +2515,9 @@ if __name__ == "__main__":
     import sys
     import argparse
     
-    parser = argparse.ArgumentParser(description="LLM Chat with Visual Search")
-    parser.add_argument("--video", type=str, help="Path to video file")
-    parser.add_argument("--cache-dir", type=str, default="./cache", help="Cache directory")
+    parser = argparse.ArgumentParser(description="大模型对话与视觉搜索")
+    parser.add_argument("--video", type=str, help="视频文件路径")
+    parser.add_argument("--cache-dir", type=str, default="./cache", help="缓存目录")
     args = parser.parse_args()
     
     app = QApplication(sys.argv)

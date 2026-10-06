@@ -1,4 +1,4 @@
-"""Put a built release on the update host, and sign it.
+"""将已构建的发行版放到更新主机，并对其签名。
 
 The update host is an S3-compatible bucket (Cloudflare R2, ``vh-updates``)
 served over public HTTPS. Its layout::
@@ -501,57 +501,57 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p = sub.add_parser("prepare", help="Lay a built bundle out for the host.")
-    p.add_argument("--root", required=True, help="Built bundle (with manifest.json).")
-    p.add_argument("--out", default="publish", help="Folder to create.")
+    p = sub.add_parser("prepare", help="将已构建的软件包整理到更新主机所需的目录结构中。")
+    p.add_argument("--root", required=True, help="已构建的软件包（包含 manifest.json）。")
+    p.add_argument("--out", default="publish", help="要创建的输出文件夹。")
     p.add_argument("--allow-unsigned", action="store_true",
-                   help="Stage without a signature, to be signed later.")
+                   help="暂不签名，仅暂存，稍后再签名。")
     p.add_argument("--github-output", dest="github_output",
-                   help="Append prefix=<release prefix> here (CI).")
+                   help="将 prefix=<发行版前缀> 追加到此文件（CI）。")
     p.set_defaults(func=prepare)
 
-    p = sub.add_parser("sign", help="Sign a staged release manifest (offline key).")
-    p.add_argument("--version", help="Release to sign, fetched from the host.")
-    p.add_argument("--edition", help="Default: this checkout's version.__edition__.")
+    p = sub.add_parser("sign", help="使用离线密钥为已暂存的发行清单签名。")
+    p.add_argument("--version", help="要签名的发行版本号，将从更新主机获取。")
+    p.add_argument("--edition", help="默认使用当前检出版本的 version.__edition__。")
     p.add_argument("--platform", default="windows")
     p.add_argument("--base-url", dest="base_url",
-                   help=f"Update host (default: ${BASE_URL_ENV}).")
-    p.add_argument("--manifest", help="Sign this local file instead of fetching.")
+                   help=f"更新主机（默认：${BASE_URL_ENV}）。")
+    p.add_argument("--manifest", help="直接签名此本地文件，而不是从主机获取。")
     p.add_argument("--key", default=DEFAULT_KEY_PATH)
     p.add_argument("--out")
     p.set_defaults(func=sign)
 
-    p = sub.add_parser("check", help="Verify a staged release before publishing it.")
+    p = sub.add_parser("check", help="发布前验证已暂存的发行版。")
     p.add_argument("--manifest", required=True)
     p.add_argument("--sig", required=True)
     p.add_argument("--version", required=True)
     p.add_argument("--edition")
     p.add_argument("--base-url", dest="base_url", required=True)
     p.add_argument("--listing", required=True,
-                   help="JSON [[key, size], ...] of the bucket's files/ prefix.")
+                   help="存储桶 files/ 前缀下文件的 JSON：[[key, size], ...]。")
     p.set_defaults(func=check)
 
-    p = sub.add_parser("gc", help="Blobs no kept release refers to (prune-updates.yaml).")
+    p = sub.add_parser("gc", help="找出没有任何保留发行版引用的 blob（供 prune-updates.yaml 使用）。")
     p.add_argument("--listing", required=True,
-                   help="JSON [[key, size, last_modified], ...] of files/")
+                   help="files/ 下文件的 JSON：[[key, size, last_modified], ...]")
     p.add_argument("--root", required=True,
-                   help="Local copy of releases/**/manifest.json and channels/*.json")
+                   help="releases/**/manifest.json 与 channels/*.json 的本地副本")
     p.add_argument("--keep", type=int, default=3,
-                   help="Newest releases kept per edition and platform")
+                   help="每个版本类型和平台保留的最新发行版数量")
     p.add_argument("--out", required=True,
-                   help="Folder for the delete-objects requests (1000 keys each)")
+                   help="delete-objects 请求输出文件夹（每份最多 1000 个键）")
     p.set_defaults(func=gc)
 
-    p = sub.add_parser("prefix", help="Print where a release's manifest lives.")
+    p = sub.add_parser("prefix", help="输出发行清单所在位置。")
     p.add_argument("--version", required=True)
     p.add_argument("--edition", required=True)
     p.add_argument("--platform", default="windows")
     p.set_defaults(func=lambda a: print(release_prefix(
         {"version": a.version, "edition": a.edition, "platform": a.platform})) or 0)
 
-    p = sub.add_parser("channel", help="Write the channel file for a release.")
+    p = sub.add_parser("channel", help="为发行版写入频道文件。")
     p.add_argument("--manifest", required=True)
-    p.add_argument("--previous", help="The channel file currently published.")
+    p.add_argument("--previous", help="当前已发布的频道文件。")
     p.add_argument("--notes")
     p.add_argument("--notes-url", dest="notes_url")
     p.add_argument("--download-url", dest="download_url")

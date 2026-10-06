@@ -138,7 +138,7 @@ def cuda_device() -> Optional[str]:
         if torch.cuda.is_available() and torch.cuda.device_count() > 0:
             return "cuda:0"
     except Exception as e:  # noqa: BLE001 — a probe must never break the caller
-        print(f"⚠️  CLIP: CUDA probe failed ({type(e).__name__}: {e})")
+        print(f"⚠️  CLIP：CUDA 检测失败（{type(e).__name__}：{e}）")
     return None
 
 
@@ -161,7 +161,7 @@ def directml_device() -> Optional[str]:
     try:
         return dml.device_string()
     except Exception as e:  # noqa: BLE001 — a probe must never break the caller
-        print(f"⚠️  CLIP: DirectML probe failed ({type(e).__name__}: {e})")
+        print(f"⚠️  CLIP：DirectML 检测失败（{type(e).__name__}：{e}）")
         return None
 
 
@@ -230,8 +230,7 @@ def resolve_device(requested: str) -> tuple[str, str]:
         dev = directml_device()
         if dev:
             return "torch", dev
-        print(f"⚠️  CLIP: {req!r} requested but DirectML is unavailable; "
-              f"using OpenVINO.")
+        print(f"⚠️  CLIP：请求使用 {req!r}，但 DirectML 不可用；将改用 OpenVINO。")
         return "openvino", "GPU"
 
     if req.lower().startswith("cuda"):
@@ -239,8 +238,7 @@ def resolve_device(requested: str) -> tuple[str, str]:
         if dev:
             # Honour an explicit ordinal ("cuda:1"); bare "cuda" -> cuda:0.
             return "torch", req.lower() if ":" in req else dev
-        print(f"⚠️  CLIP: {req!r} requested but no CUDA device is available; "
-              f"using OpenVINO.")
+        print(f"⚠️  CLIP：请求使用 {req!r}，但没有可用 CUDA 设备；将改用 OpenVINO。")
         return "openvino", "GPU"
 
     return "openvino", req
@@ -306,7 +304,7 @@ class ClipFramePrefilter:
             try:
                 __import__(mod)
             except Exception as e:  # noqa: BLE001 — report anything, not just ImportError
-                return f"{mod} import failed: {type(e).__name__}: {e}"
+                return f"{mod} 导入失败：{type(e).__name__}：{e}"
         return None
 
     @staticmethod
@@ -334,8 +332,8 @@ class ClipFramePrefilter:
         """
         import torch
 
-        print(f"🔧 CLIP source: torch weights {self.model_id} -> "
-              f"{device} ({_device_name(device)})")
+        print(f"🔧 CLIP 来源：torch 权重 {self.model_id} → "
+              f"{device}（{_device_name(device)}）")
         t0 = time.perf_counter()
         try:
             # Imported inside the try with everything else: in a frozen exe an
@@ -364,7 +362,7 @@ class ClipFramePrefilter:
                 # .to() below raises, and the string alone gives no hint why.
                 if not dml.ensure_backend(device):
                     raise RuntimeError(
-                        f"DirectML device {device!r} is no longer available: "
+                        f"DirectML 设备 {device!r} 已不可用："
                         f"{dml.unavailable_reason()}")
                 import torch_directml  # noqa: F401 — imported for the side effect
 
@@ -383,15 +381,14 @@ class ClipFramePrefilter:
             # keep the tokenizer/image config off the network.
             self._processor = CLIPProcessor.from_pretrained(_bundled_ov_dir() or self.model_id)
         except Exception as e:  # noqa: BLE001 — OOM, no driver, no network, bad build
-            print(f"⚠️  CLIP load on {device} failed ({type(e).__name__}: {e}); "
-                  f"trying OpenVINO.")
+            print(f"⚠️  CLIP 在 {device} 上加载失败（{type(e).__name__}：{e}）；正在尝试 OpenVINO。")
             self._model = self._processor = None
             return False
 
         self.backend, self.device, self._dtype = "torch", device, dtype
-        print(f"✅ CLIP prefilter ready on {device} "
-              f"(torch {str(dtype).replace('torch.', '')}, "
-              f"{time.perf_counter() - t0:.1f}s, {self.model_id})")
+        print(f"✅ CLIP 预筛选已就绪：{device} "
+              f"（torch {str(dtype).replace('torch.', '')}，"
+              f"{time.perf_counter() - t0:.1f} 秒，{self.model_id}）")
         return True
 
     def _load_openvino(self, device: str):
@@ -411,13 +408,12 @@ class ClipFramePrefilter:
         # instead of letting the export raise that cryptic error.
         if export and getattr(sys, "frozen", False):
             raise RuntimeError(
-                "Pre-converted CLIP model is missing from this build "
-                f"(looked for models/{BUNDLED_OV_DIRNAME}/openvino_model.xml in: "
-                f"{_ov_dir_candidates()}). Rebuild with the "
-                "'Pre-convert CLIP to OpenVINO IR' step, or drop the exported "
-                f"folder next to the executable as models/{BUNDLED_OV_DIRNAME}."
+                "当前构建缺少预转换的 CLIP 模型。"
+                f"已在以下位置查找 models/{BUNDLED_OV_DIRNAME}/openvino_model.xml："
+                f"{_ov_dir_candidates()}。请在构建时执行“预转换 CLIP 为 OpenVINO IR”步骤，"
+                f"或将导出的文件夹放到可执行文件旁的 models/{BUNDLED_OV_DIRNAME}。"
             )
-        print(f"🔧 CLIP source: {'bundled IR ' + ov_dir if ov_dir else 'runtime export ' + src}")
+        print(f"🔧 CLIP 来源：{'内置 IR ' + ov_dir if ov_dir else '运行时导出 ' + src}")
 
         t0 = time.perf_counter()
         try:
@@ -425,15 +421,15 @@ class ClipFramePrefilter:
                 src, export=export, device=device,
             )
         except Exception as e:
-            print(f"⚠️  CLIP load on device={device} failed ({e}); using CPU.")
+            print(f"⚠️  CLIP 在设备 {device} 上加载失败（{e}）；将改用 CPU。")
             device = "CPU"
             self._model = OVModelForZeroShotImageClassification.from_pretrained(
                 src, export=export, device="CPU",
             )
         self._processor = CLIPProcessor.from_pretrained(src)
         self.backend, self.device = "openvino", device
-        print(f"✅ CLIP prefilter ready on {device} (OpenVINO, "
-              f"{time.perf_counter() - t0:.1f}s, {'bundled IR' if ov_dir else self.model_id})")
+        print(f"✅ CLIP 预筛选已就绪：{device}（OpenVINO，"
+              f"{time.perf_counter() - t0:.1f} 秒，{'内置 IR' if ov_dir else self.model_id}）")
 
     def set_query(self, target: str,
                   positive_template: str = "a photo of {}",
@@ -479,7 +475,7 @@ class ClipFramePrefilter:
         from PIL import Image
 
         if not self.is_ready():
-            raise RuntimeError("Call load() and set_query() before scoring.")
+            raise RuntimeError("评分前请先调用 load() 和 set_query()。")
 
         images = [Image.fromarray(cv2.cvtColor(f, cv2.COLOR_BGR2RGB))
                   for f in frames_bgr]
@@ -506,12 +502,12 @@ def scan_video(video_path: str, query: str, interval: float = 1.0,
     pf = ClipFramePrefilter(device=device)
     pf.load()
     pf.set_query(query, negatives=negatives)
-    print(f"🔍 Query: '{query}'  (positive prompt: '{pf._labels[0]}')")
-    print(f"   negatives: {pf._labels[1:]}")
+    print(f"🔍 查询：'{query}'（正向提示词：'{pf._labels[0]}'）")
+    print(f"   负向提示词：{pf._labels[1:]}")
 
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        print(f"❌ Could not open video: {video_path}")
+        print(f"❌ 无法打开视频：{video_path}")
         return []
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -519,8 +515,8 @@ def scan_video(video_path: str, query: str, interval: float = 1.0,
     step = max(1, int(round(fps * interval)))
     start_frame = int(round(start * fps))
     print(f"📹 {video_path}")
-    print(f"   {duration/60:.1f} min, {fps:.1f} fps, sampling every {interval}s "
-          f"(~{max(0, (total - start_frame)) // step} frames)")
+    print(f"   时长 {duration/60:.1f} 分钟，{fps:.1f} fps，每 {interval} 秒采样一次，"
+          f"约 {max(0, (total - start_frame)) // step} 帧")
 
     results = []          # (timestamp, score)
     buf_frames, buf_ts = [], []
@@ -550,13 +546,13 @@ def scan_video(video_path: str, query: str, interval: float = 1.0,
 
     elapsed = time.perf_counter() - t_scan0
     per = (elapsed / n_scored * 1000) if n_scored else 0
-    print(f"\n⏱  Scanned {n_scored} frames in {elapsed:.1f}s "
-          f"({per:.1f} ms/frame incl. decode) on {pf.device}")
+    print(f"\n⏱  已扫描 {n_scored} 帧，用时 {elapsed:.1f} 秒，"
+          f"平均 {per:.1f} 毫秒/帧（含解码），设备 {pf.device}")
 
     results.sort(key=lambda x: -x[1])
-    print(f"\n--- top {min(topk, len(results))} candidate timestamps ---")
+    print(f"\n--- 分数最高的 {min(topk, len(results))} 个候选时间点 ---")
     for ts, sc in results[:topk]:
-        print(f"   {int(ts)//60:>3d}:{int(ts)%60:02d}  ({ts:7.1f}s)   score={sc:.3f}")
+        print(f"   {int(ts)//60:>3d}:{int(ts)%60:02d}  ({ts:7.1f}秒)   分数={sc:.3f}")
     return results
 
 
@@ -584,9 +580,9 @@ def main():
 
     reason = ClipFramePrefilter.import_error(args.device)
     if reason is not None:
-        print(f"❌ CLIP unavailable — {reason}")
-        print('   pip install "optimum[openvino]" pillow opencv-python  (Intel/CPU)')
-        print("   ...or a CUDA torch build from pytorch.org  (NVIDIA)")
+        print(f"❌ CLIP 不可用——{reason}")
+        print('   Intel/CPU：pip install "optimum[openvino]" pillow opencv-python')
+        print("   NVIDIA：或从 pytorch.org 安装支持 CUDA 的 torch 构建")
         return 1
     scan_video(args.video, args.query, interval=args.interval, topk=args.topk,
                batch=args.batch, device=args.device, start=args.start,

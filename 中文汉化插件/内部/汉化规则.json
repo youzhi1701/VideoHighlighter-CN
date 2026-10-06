@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "b36aeee4229eb93f83616620b729e16c9d763e8c"
+    "head_commit": "8391213d63378bda142f70f97350e070c06ae74b"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -7990,6 +7990,51 @@
       "hunk": "@@ -2505,7 +2503,7 @@ class LLMChatWidget(QWidget):"
     },
     {
+      "id": "llm/llm_chat_widget.py#183",
+      "file": "llm/llm_chat_widget.py",
+      "source": "    parser = argparse.ArgumentParser(description=\"LLM Chat with Visual Search\")\n    parser.add_argument(\"--video\", type=str, help=\"Path to video file\")\n    parser.add_argument(\"--cache-dir\", type=str, default=\"./cache\", help=\"Cache directory\")",
+      "target": "    parser = argparse.ArgumentParser(description=\"大模型对话与视觉搜索\")\n    parser.add_argument(\"--video\", type=str, help=\"视频文件路径\")\n    parser.add_argument(\"--cache-dir\", type=str, default=\"./cache\", help=\"缓存目录\")",
+      "before": "    ",
+      "after": "    args = parser.parse_args()",
+      "hunk": "@@ -2517,9 +2515,9 @@ if __name__ == \"__main__\":"
+    },
+    {
+      "id": "llm/llm_module.py#1",
+      "file": "llm/llm_module.py",
+      "source": "        self.log_fn(f\"🤖 Loading LLM backend: {self.backend_name}\")",
+      "target": "        self.log_fn(f\"🤖 正在加载大模型后端：{self.backend_name}\")",
+      "before": "        \"\"\"Load/verify the model. Raises RuntimeError on failure.\"\"\"",
+      "after": "        start = time.time()",
+      "hunk": "@@ -1183,18 +1183,18 @@ class LLMModule:"
+    },
+    {
+      "id": "llm/llm_module.py#2",
+      "file": "llm/llm_module.py",
+      "source": "        self.log_fn(f\"✅ LLM ready ({elapsed:.1f}s)\")",
+      "target": "        self.log_fn(f\"✅ 大模型已就绪（{elapsed:.1f} 秒)\")",
+      "before": "        elapsed = time.time() - start",
+      "after": "",
+      "hunk": "@@ -1183,18 +1183,18 @@ class LLMModule:"
+    },
+    {
+      "id": "llm/llm_module.py#3",
+      "file": "llm/llm_module.py",
+      "source": "        self.log_fn(\"🤖 LLM unloaded\")",
+      "target": "        self.log_fn(\"🤖 大模型已卸载\")",
+      "before": "        self._backend.unload()",
+      "after": "",
+      "hunk": "@@ -1183,18 +1183,18 @@ class LLMModule:"
+    },
+    {
+      "id": "llm/llm_module.py#4",
+      "file": "llm/llm_module.py",
+      "source": "                    self.log_fn(f\"❌ LLM query error: {e}\")",
+      "target": "                    self.log_fn(f\"❌ 大模型查询出错：{e}\")",
+      "before": "                else:",
+      "after": "",
+      "hunk": "@@ -1362,7 +1362,7 @@ class LLMModule:"
+    },
+    {
       "id": "main.py#1",
       "file": "main.py",
       "source": "",
@@ -14481,6 +14526,485 @@
       "hunk": "@@ -955,12 +955,12 @@ def analyze_music(path: str, *, backend: str = \"auto\", meter: int = 4,"
     },
     {
+      "id": "modules/audio/speaker_utils.py#1",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"  ℹ️ webrtcvad not installed, trying energy-based VAD\")",
+      "target": "        log_fn(\"  ℹ️ 未安装 webrtcvad，改用基于能量的 VAD\")",
+      "before": "    except ImportError:",
+      "after": "        return None",
+      "hunk": "@@ -46,7 +46,7 @@ def _vad_webrtc(audio_path: str, min_speech_duration: float,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#2",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  🔊 WebRTC VAD: {len(merged)} speech segments detected\")",
+      "target": "        log_fn(f\"  🔊 WebRTC VAD：检测到 {len(merged)} 个语音片段\")",
+      "before": "        ",
+      "after": "        return merged",
+      "hunk": "@@ -100,11 +100,11 @@ def _vad_webrtc(audio_path: str, min_speech_duration: float,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#3",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  ⚠️ WebRTC VAD failed: {e}\")",
+      "target": "        log_fn(f\"  ⚠️ WebRTC VAD 失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -100,11 +100,11 @@ def _vad_webrtc(audio_path: str, min_speech_duration: float,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#4",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"⚠️ librosa not installed — cannot run VAD\")",
+      "target": "        log_fn(\"⚠️ 未安装 librosa，无法运行 VAD\")",
+      "before": "    except ImportError:",
+      "after": "        return None",
+      "hunk": "@@ -114,13 +114,13 @@ def _vad_energy(audio_path: str, min_speech_duration: float,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#5",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"⚠️ Could not load audio: {e}\")",
+      "target": "        log_fn(f\"⚠️ 无法加载音频：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -114,13 +114,13 @@ def _vad_energy(audio_path: str, min_speech_duration: float,",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#6",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"⚠️ resemblyzer not installed — cannot extract speaker embeddings\")\n        log_fn(\"   Install: pip install resemblyzer\")",
+      "target": "        log_fn(\"⚠️ 未安装 resemblyzer，无法提取说话人嵌入\")\n        log_fn(\"   可安装：pip install resemblyzer\")",
+      "before": "    except ImportError:",
+      "after": "        return None",
+      "hunk": "@@ -182,33 +182,33 @@ def extract_speaker_embeddings(audio_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#7",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"⚠️ librosa not installed — needed for audio loading\")",
+      "target": "        log_fn(\"⚠️ 未安装 librosa，加载音频需要该组件\")",
+      "before": "    except ImportError:",
+      "after": "        return None",
+      "hunk": "@@ -182,33 +182,33 @@ def extract_speaker_embeddings(audio_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#8",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"  🧠 Loading speaker embedding model (GE2E)...\")",
+      "target": "        log_fn(\"  🧠 正在加载说话人嵌入模型（GE2E）…\")",
+      "before": "    try:",
+      "after": "        encoder = VoiceEncoder(device=\"cpu\")",
+      "hunk": "@@ -182,33 +182,33 @@ def extract_speaker_embeddings(audio_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#9",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"⚠️ Could not load embedding model: {e}\")",
+      "target": "        log_fn(f\"⚠️ 无法加载嵌入模型：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -182,33 +182,33 @@ def extract_speaker_embeddings(audio_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#10",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"⚠️ Could not load audio: {e}\")",
+      "target": "        log_fn(f\"⚠️ 无法加载音频：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -182,33 +182,33 @@ def extract_speaker_embeddings(audio_path: str,",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#11",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  ℹ️ Subsampling {len(speech_segments)} → {max_segments} segments\")",
+      "target": "        log_fn(f\"  ℹ️ 语音片段过多：从 {len(speech_segments)} 个下采样到 {max_segments} 个\")",
+      "before": "    if len(speech_segments) > max_segments:",
+      "after": "        indices = np.linspace(0, len(speech_segments) - 1, max_segments, dtype=int)",
+      "hunk": "@@ -182,33 +182,33 @@ def extract_speaker_embeddings(audio_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#12",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"⚠️ No valid embeddings extracted\")",
+      "target": "        log_fn(\"⚠️ 未提取到有效嵌入\")",
+      "before": "    if not embeddings:",
+      "after": "        return None",
+      "hunk": "@@ -239,10 +239,10 @@ def extract_speaker_embeddings(audio_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#13",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "    log_fn(f\"  ✅ Extracted {len(embeddings)} speaker embeddings\")",
+      "target": "    log_fn(f\"  ✅ 已提取 {len(embeddings)} 个说话人嵌入\")",
+      "before": "",
+      "after": "    return np.array(embeddings), valid_segments",
+      "hunk": "@@ -239,10 +239,10 @@ def extract_speaker_embeddings(audio_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#14",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  🔢 Clustering into {num_speakers} speakers (user-specified)\")",
+      "target": "        log_fn(f\"  🔢 正在聚类为 {num_speakers} 位说话人（用户指定）\")",
+      "before": "    if num_speakers is not None:",
+      "after": "        clustering = AgglomerativeClustering(",
+      "hunk": "@@ -271,7 +271,7 @@ def cluster_speakers(embeddings: np.ndarray,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#15",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"  ℹ️ Too few segments for auto-detection, assuming 1 speaker\")",
+      "target": "        log_fn(\"  ℹ️ 片段过少，无法自动判断说话人数，按 1 位说话人处理\")",
+      "before": "    if len(embeddings) < 3:",
+      "after": "        return np.zeros(len(embeddings), dtype=int)",
+      "hunk": "@@ -281,10 +281,10 @@ def cluster_speakers(embeddings: np.ndarray,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#16",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "    log_fn(\"  🔍 Auto-detecting number of speakers...\")",
+      "target": "    log_fn(\"  🔍 正在自动检测说话人数…\")",
+      "before": "",
+      "after": "    best_score = -1",
+      "hunk": "@@ -281,10 +281,10 @@ def cluster_speakers(embeddings: np.ndarray,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#17",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  ℹ️ Low clustering confidence (score={best_score:.2f}), \"\n               f\"possibly 1 speaker — using {best_k} anyway\")",
+      "target": "        log_fn(f\"  ℹ️ 聚类置信度较低（评分={best_score:.2f}），\"\n               f\"可能只有 1 位说话人；仍按 {best_k} 位处理\")",
+      "before": "    if best_score < 0.1:",
+      "after": "    else:",
+      "hunk": "@@ -313,10 +313,10 @@ def cluster_speakers(embeddings: np.ndarray,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#18",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  ✅ Detected {best_k} speakers (silhouette={best_score:.2f})\")",
+      "target": "        log_fn(f\"  ✅ 检测到 {best_k} 位说话人（轮廓系数={best_score:.2f}）\")",
+      "before": "    else:",
+      "after": "",
+      "hunk": "@@ -313,10 +313,10 @@ def cluster_speakers(embeddings: np.ndarray,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#19",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"⚠️ librosa not installed — skipping gender estimation\")\n        log_fn(\"   Install: pip install librosa\")",
+      "target": "        log_fn(\"⚠️ 未安装 librosa，跳过性别估计\")\n        log_fn(\"   可安装：pip install librosa\")",
+      "before": "    except ImportError:",
+      "after": "        return {}",
+      "hunk": "@@ -374,14 +374,14 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#20",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"⚠️ Could not load audio for gender estimation: {e}\")",
+      "target": "        log_fn(f\"⚠️ 无法加载用于性别估计的音频：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return {}",
+      "hunk": "@@ -374,14 +374,14 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#21",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "            log_fn(f\"  🎤 {speaker}: median F0={median_f0:.1f}Hz → {gender} \"\n                   f\"(confidence: {confidence})\")",
+      "target": "            log_fn(f\"  🎤 {speaker}：F0 中位数={median_f0:.1f}Hz → {gender} \"\n                   f\"（置信度：{confidence}）\")",
+      "before": "            }",
+      "after": "        else:",
+      "hunk": "@@ -438,15 +438,15 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#22",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "            log_fn(f\"  🎤 {speaker}: insufficient voiced audio → unknown\")",
+      "target": "            log_fn(f\"  🎤 {speaker}：有效语音不足 → 未知\")",
+      "before": "            }",
+      "after": "",
+      "hunk": "@@ -438,15 +438,15 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#23",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"🎵 Extracted audio: {audio_path}\")",
+      "target": "        log_fn(f\"🎵 已提取音频：{audio_path}\")",
+      "before": "        ], check=True)",
+      "after": "        return audio_path",
+      "hunk": "@@ -515,10 +515,10 @@ def extract_full_audio(video_path: str, output_dir: Optional[str] = None,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#24",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"⚠️ Audio extraction failed: {e}\")",
+      "target": "        log_fn(f\"⚠️ 音频提取失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -515,10 +515,10 @@ def extract_full_audio(video_path: str, output_dir: Optional[str] = None,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#25",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"ℹ️ Proceeding without speaker identification\")",
+      "target": "        log_fn(\"ℹ️ 将在不进行说话人识别的情况下继续\")",
+      "before": "    if not audio_path:",
+      "after": "        return whisper_segments",
+      "hunk": "@@ -559,21 +559,21 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#26",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(\"🎙️ Running speaker diarization (Resemblyzer)...\")",
+      "target": "        log_fn(\"🎙️ 正在运行说话人分离（Resemblyzer）…\")",
+      "before": "        # Step 2: Voice Activity Detection",
+      "after": "        speech_segments = detect_speech_segments(audio_path, log_fn=log_fn)",
+      "hunk": "@@ -559,21 +559,21 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#27",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "            log_fn(\"⚠️ No speech segments detected\")",
+      "target": "            log_fn(\"⚠️ 未检测到语音片段\")",
+      "before": "        if not speech_segments:",
+      "after": "            return whisper_segments",
+      "hunk": "@@ -559,21 +559,21 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#28",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "            log_fn(\"ℹ️ Proceeding without speaker identification\")",
+      "target": "            log_fn(\"ℹ️ 将在不进行说话人识别的情况下继续\")",
+      "before": "        if result is None:",
+      "after": "            return whisper_segments",
+      "hunk": "@@ -559,21 +559,21 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#29",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  📊 Diarization timeline: {len(diarization)} turns, \"\n               f\"{len(unique_speakers)} speakers\")",
+      "target": "        log_fn(f\"  📊 说话人时间线：{len(diarization)} 个轮次，\"\n               f\"{len(unique_speakers)} 位说话人\")",
+      "before": "        unique_speakers = set(s['speaker'] for s in diarization)",
+      "after": "",
+      "hunk": "@@ -590,8 +590,8 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#30",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"  Speaker Summary:\")",
+      "target": "        log_fn(\"  说话人摘要：\")",
+      "before": "        log_fn(f\"\\n  {'─' * 45}\")",
+      "after": "        log_fn(f\"  {'─' * 45}\")",
+      "hunk": "@@ -615,7 +615,7 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#31",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "            log_fn(f\"  📋 {label}: {gender} (F0: {f0}Hz, conf: {conf}, segments: {seg_count})\")",
+      "target": "            log_fn(f\"  📋 {label}：{gender}（F0：{f0}Hz，置信度：{conf}，片段数：{seg_count}）\")",
+      "before": "            seg_count = sum(1 for s in enriched if s.get('speaker') == spk)",
+      "after": "        log_fn(f\"  {'─' * 45}\\n\")",
+      "hunk": "@@ -623,20 +623,20 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#32",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"✅ Speaker enrichment complete: {len(speaker_labels)} speakers identified\")",
+      "target": "        log_fn(f\"✅ 说话人信息补充完成：已识别 {len(speaker_labels)} 位说话人\")",
+      "before": "",
+      "after": "        return enriched",
+      "hunk": "@@ -623,20 +623,20 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#33",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"⚠️ Missing dependency: {e}\")\n        log_fn(\"   Install: pip install resemblyzer librosa scikit-learn\")\n        log_fn(\"   Proceeding without speaker identification\")",
+      "target": "        log_fn(f\"⚠️ 缺少依赖：{e}\")\n        log_fn(\"   可安装：pip install resemblyzer librosa scikit-learn\")\n        log_fn(\"   将在不进行说话人识别的情况下继续\")",
+      "before": "    except ImportError as e:",
+      "after": "        return whisper_segments",
+      "hunk": "@@ -623,20 +623,20 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#34",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "        log_fn(f\"⚠️ Speaker diarization failed: {e}\")",
+      "target": "        log_fn(f\"⚠️ 说话人分离失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        log_fn(\"   Proceeding without speaker identification\")",
+      "hunk": "@@ -623,20 +623,20 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/speaker_utils.py#35",
+      "file": "modules/audio/speaker_utils.py",
+      "source": "                log_fn(f\"🧹 Cleaned up: {audio_path}\")",
+      "target": "                log_fn(f\"🧹 已清理：{audio_path}\")",
+      "before": "                os.remove(audio_path)",
+      "after": "            except OSError:",
+      "hunk": "@@ -644,6 +644,6 @@ def enrich_segments_with_speakers(video_path: str,"
+    },
+    {
+      "id": "modules/audio/transcript.py#1",
+      "file": "modules/audio/transcript.py",
+      "source": "    log_fn(f\"Using device for Whisper: {device}\")",
+      "target": "    log_fn(f\"Whisper 使用设备：{device}\")",
+      "before": "    device = \"cuda\" if cuda_usable(torch) else \"cpu\"",
+      "after": "",
+      "hunk": "@@ -203,9 +203,9 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#2",
+      "file": "modules/audio/transcript.py",
+      "source": "    log_fn(f\"🔤 Language parameter received: {language}\")",
+      "target": "    log_fn(f\"🔤 已接收语言参数：{language}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -203,9 +203,9 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#3",
+      "file": "modules/audio/transcript.py",
+      "source": "        progress_fn(1, 100, \"Transcription\", f\"Loading Whisper '{model_name}'...\")",
+      "target": "        progress_fn(1, 100, \"转录\", f\"正在加载 Whisper“{model_name}”…\")",
+      "before": "    if progress_fn:",
+      "after": "",
+      "hunk": "@@ -225,18 +225,18 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#4",
+      "file": "modules/audio/transcript.py",
+      "source": "    log_fn(\"Splitting video into chunks...\")",
+      "target": "    log_fn(\"正在将视频拆分为多个片段…\")",
+      "before": "    model = whisper.load_model(model_name, device=device)",
+      "after": "    abort_if_cancelled()",
+      "hunk": "@@ -225,18 +225,18 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#5",
+      "file": "modules/audio/transcript.py",
+      "source": "        progress_fn(3, 100, \"Transcription\", \"Splitting audio...\")",
+      "target": "        progress_fn(3, 100, \"转录\", \"正在拆分音频…\")",
+      "before": "    if progress_fn:",
+      "after": "",
+      "hunk": "@@ -225,18 +225,18 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#6",
+      "file": "modules/audio/transcript.py",
+      "source": "    log_fn(f\"Created {len(chunks)} chunks\")",
+      "target": "    log_fn(f\"已创建 {len(chunks)} 个分块\")",
+      "before": "                         should_cancel=should_cancel)",
+      "after": "",
+      "hunk": "@@ -225,18 +225,18 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#7",
+      "file": "modules/audio/transcript.py",
+      "source": "            \"Transcription\",",
+      "target": "            \"转录\",",
+      "before": "            100,",
+      "after": "            detail,",
+      "hunk": "@@ -251,7 +251,7 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#8",
+      "file": "modules/audio/transcript.py",
+      "source": "            log_fn(f\"➡️ Transcribing chunk {idx+1}/{len(chunks)}: {chunk}\")",
+      "target": "            log_fn(f\"➡️ 正在转录片段 {idx+1}/{len(chunks)}：{chunk}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -266,7 +266,7 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#9",
+      "file": "modules/audio/transcript.py",
+      "source": "                log_fn(f\"⚠️ WARNING: Expected '{language}' but Whisper detected '{detected_lang}'\")\n                log_fn(f\"   This may indicate unclear audio or incorrect language setting\")",
+      "target": "                log_fn(f\"⚠️ 警告：预期语言为“{language}”，但 Whisper 检测为“{detected_lang}”\")\n                log_fn(\"   这可能表示音频不清晰，或语言设置不正确\")",
+      "before": "            if detected_lang != language and language != \"auto\":",
+      "after": "",
+      "hunk": "@@ -300,8 +300,8 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#10",
+      "file": "modules/audio/transcript.py",
+      "source": "            log_fn(\"🧹 Cleaning up chunk files...\")",
+      "target": "            log_fn(\"🧹 正在清理临时片段文件…\")",
+      "before": "        if cleanup:",
+      "after": "            for f in chunks:",
+      "hunk": "@@ -318,7 +318,7 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#11",
+      "file": "modules/audio/transcript.py",
+      "source": "        progress_fn(95, 100, \"Transcription\", \"Complete\")",
+      "target": "        progress_fn(95, 100, \"转录\", \"完成\")",
+      "before": "    if progress_fn:",
+      "after": "",
+      "hunk": "@@ -326,9 +326,9 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#12",
+      "file": "modules/audio/transcript.py",
+      "source": "    log_fn(f\"✅ Transcript ready: {len(all_segments)} segments (from {len(chunks)} chunks)\")",
+      "target": "    log_fn(f\"✅ 转录完成：共 {len(all_segments)} 个片段（来自 {len(chunks)} 个分块）\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -326,9 +326,9 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#13",
+      "file": "modules/audio/transcript.py",
+      "source": "                progress_fn(96, 100, \"Diarization\", \"Identifying speakers...\")",
+      "target": "                progress_fn(96, 100, \"说话人识别\", \"正在识别说话人…\")",
+      "before": "            if progress_fn:",
+      "after": "",
+      "hunk": "@@ -343,7 +343,7 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#14",
+      "file": "modules/audio/transcript.py",
+      "source": "                progress_fn(98, 100, \"Diarization\", \"Speaker identification complete\")",
+      "target": "                progress_fn(98, 100, \"说话人识别\", \"说话人识别完成\")",
+      "before": "            if progress_fn:",
+      "after": "",
+      "hunk": "@@ -356,14 +356,14 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#15",
+      "file": "modules/audio/transcript.py",
+      "source": "            log_fn(f\"⚠️ Diarization module not available: {e}\")\n            log_fn(\"   Install: pip install speechbrain torchaudio librosa scikit-learn\")\n            log_fn(\"   Proceeding without speaker identification\")",
+      "target": "            log_fn(f\"⚠️ 说话人识别模块不可用：{e}\")\n            log_fn(\"   可安装：pip install speechbrain torchaudio librosa scikit-learn\")\n            log_fn(\"   将在不进行说话人识别的情况下继续\")",
+      "before": "        except ImportError as e:",
+      "after": "        except Exception as e:",
+      "hunk": "@@ -356,14 +356,14 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript.py#16",
+      "file": "modules/audio/transcript.py",
+      "source": "            log_fn(f\"⚠️ Diarization failed: {e}\")",
+      "target": "            log_fn(f\"⚠️ 说话人识别失败：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "            log_fn(\"   Proceeding without speaker identification\")",
+      "hunk": "@@ -356,14 +356,14 @@ def get_transcript_segments(video_file, model_name=\"small\", progress_fn=None, lo"
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#1",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "            progress_fn(i, total, \"Translation\",\n                        f\"Batch {batch_num}/{total_batches}\")",
+      "target": "            progress_fn(i, total, \"翻译\",\n                        f\"批次 {batch_num}/{total_batches}\")",
+      "before": "        if progress_fn:",
+      "after": "",
+      "hunk": "@@ -374,8 +374,8 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#2",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        progress_fn(total, total, \"Translation\", f\"{total} segments\")",
+      "target": "        progress_fn(total, total, \"翻译\", f\"{total} 个片段\")",
+      "before": "    if progress_fn:",
+      "after": "    return results",
+      "hunk": "@@ -440,7 +440,7 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
       "id": "modules/media/combine_videos.py#1",
       "file": "modules/media/combine_videos.py",
       "source": "        log_fn(f\"⚠️ Could not detect audio in {os.path.basename(path)}: {e}\")",
@@ -15007,6 +15531,15 @@
       "hunk": "@@ -664,14 +660,14 @@ def render_edl(edl: Edl, output: str, *, mode: str = \"gpu\","
     },
     {
+      "id": "modules/media/ffmpeg_tools.py#1",
+      "file": "modules/media/ffmpeg_tools.py",
+      "source": "        log_fn(\"❌ No ffmpeg found. It normally comes with the app's requirements \"\n               \"(imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.\")",
+      "target": "        log_fn(\"❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装 \"\n               \"（imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.\")",
+      "before": "    if not src:",
+      "after": "        return None",
+      "hunk": "@@ -101,8 +101,8 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:"
+    },
+    {
       "id": "modules/media/gopro_ingest.py#1",
       "file": "modules/media/gopro_ingest.py",
       "source": "            f\"{os.path.basename(src)}: copied {actual} bytes, expected {size}\")",
@@ -15068,6 +15601,357 @@
       "before": "    if data.get(\"version\") != 1:",
       "after": "    return data",
       "hunk": "@@ -527,5 +527,5 @@ def read_manifest(path: str) -> dict:"
+    },
+    {
+      "id": "modules/media/motion.py#1",
+      "file": "modules/media/motion.py",
+      "source": "        log_fn(f\"⚠️ Could not apply the {name} motion ({tail_line[0]}); \"\n               f\"the clip keeps its picture\")",
+      "target": "        log_fn(f\"⚠️ 无法应用“{name}”运动效果（{tail_line[0]}）；\"\n               f\"将保留该片段的原始画面\")",
+      "before": "        tail_line = (result.stderr or \"\").strip().splitlines()[-1:] or [\"unknown error\"]",
+      "after": "        shutil.copy2(src, dst)",
+      "hunk": "@@ -210,7 +210,7 @@ def apply_motion(src: str, dst: str, name: str, *, duration: float,"
+    },
+    {
+      "id": "modules/media/music_track.py#1",
+      "file": "modules/media/music_track.py",
+      "source": "        log_fn(f\"🎵 Video has no audio stream; '{mode}' degrades to 'replace'\")",
+      "target": "        log_fn(f\"🎵 视频没有音频流；“{mode}”将回退为“replace”模式\")",
+      "before": "    if mode in (\"mix\", \"duck\") and not _has_audio_stream(video):",
+      "after": "        effective = \"replace\"",
+      "hunk": "@@ -91,7 +91,7 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+    },
+    {
+      "id": "modules/media/music_track.py#2",
+      "file": "modules/media/music_track.py",
+      "source": "    log_fn(f\"🎵 Applying music ({effective}, volume {vol:.2f}): \"",
+      "target": "    log_fn(f\"🎵 正在应用音乐（{effective}，音量 {vol:.2f}): \"",
+      "before": "           *extra, out]",
+      "after": "           f\"{os.path.basename(str(music))}\")",
+      "hunk": "@@ -127,7 +127,7 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+    },
+    {
+      "id": "modules/media/overlay.py#1",
+      "file": "modules/media/overlay.py",
+      "source": "        log_fn(\"⚠️ Pillow is not available, so the graphics were skipped\")",
+      "target": "        log_fn(\"⚠️ Pillow 不可用，已跳过图形叠加\")",
+      "before": "    except Exception:",
+      "after": "        shutil.copy2(src, dst)",
+      "hunk": "@@ -524,13 +524,12 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,"
+    },
+    {
+      "id": "modules/media/overlay.py#2",
+      "file": "modules/media/overlay.py",
+      "source": "    log_fn(f\"🎨 Drawing {names} over {scene.duration:.0f}s at \"\n           f\"{scene.width}x{scene.height}\")",
+      "target": "    log_fn(f\"🎨 正在以 {scene.width}x{scene.height} 在 {scene.duration:.0f} 秒画面上绘制：{names}\")",
+      "before": "    names = \", \".join(getattr(e, \"label\", type(e).__name__) for e in elements)",
+      "after": "",
+      "hunk": "@@ -524,13 +524,12 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,"
+    },
+    {
+      "id": "modules/media/overlay.py#3",
+      "file": "modules/media/overlay.py",
+      "source": "        log_fn(f\"⚠️ Could not draw the graphics ({detail or 'unknown error'}); \"\n               f\"the reel keeps its picture\")",
+      "target": "        log_fn(f\"⚠️ 无法绘制图形（{detail or '未知错误'}）；\"\n               f\"成片将保留原始画面\")",
+      "before": "        detail = (stderr or b\"\").decode(\"utf-8\", \"replace\").strip()[-300:]",
+      "after": "        shutil.copy2(src, dst)",
+      "hunk": "@@ -559,7 +558,7 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,"
+    },
+    {
+      "id": "modules/media/transitions.py#1",
+      "file": "modules/media/transitions.py",
+      "source": "        log_fn(\"⚠️ No usable font found; on-screen text skipped\")",
+      "target": "        log_fn(\"⚠️ 未找到可用字体，已跳过画面文字\")",
+      "before": "            return dst",
+      "after": "        shutil.copy2(src, dst)",
+      "hunk": "@@ -822,7 +822,7 @@ def burn_text(src: str, dst: str, text: str, *, height: int, width: int = 0,"
+    },
+    {
+      "id": "modules/media/transitions.py#2",
+      "file": "modules/media/transitions.py",
+      "source": "        log_fn(f\"🔤 Caption wrapped to {len(lines)} lines at {size}px to fit \"\n               f\"{width}px\")",
+      "target": "        log_fn(f\"🔤 为适应 {width}px 宽度，字幕已换行为 {len(lines)} 行，字号 {size}px\")",
+      "before": "    if len(lines) > 1:",
+      "after": "",
+      "hunk": "@@ -837,8 +837,7 @@ def burn_text(src: str, dst: str, text: str, *, height: int, width: int = 0,"
+    },
+    {
+      "id": "modules/media/transitions.py#3",
+      "file": "modules/media/transitions.py",
+      "source": "        log_fn(f\"⚠️ Could not draw text ({tail[0]}); the clip keeps its picture\")",
+      "target": "        log_fn(f\"⚠️ 无法绘制文字（{tail[0]}）；片段将保留原始画面\")",
+      "before": "        tail = (result.stderr or \"\").strip().splitlines()[-1:] or [\"unknown error\"]",
+      "after": "        shutil.copy2(src, dst)",
+      "hunk": "@@ -858,7 +857,7 @@ def burn_text(src: str, dst: str, text: str, *, height: int, width: int = 0,"
+    },
+    {
+      "id": "modules/media/transitions.py#4",
+      "file": "modules/media/transitions.py",
+      "source": "            log_fn(f\"⚠️ Skipping missing input: {c}\")",
+      "target": "            log_fn(f\"⚠️ 跳过缺失的输入文件：{c}\")",
+      "before": "        if c and not os.path.exists(c):",
+      "after": "    if not valid:",
+      "hunk": "@@ -934,9 +933,9 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#5",
+      "file": "modules/media/transitions.py",
+      "source": "        raise ValueError(\"No valid input files to build a reel from\")",
+      "target": "        raise ValueError(\"没有可用于生成成片的有效输入文件\")",
+      "before": "    if not valid:",
+      "after": "",
+      "hunk": "@@ -934,9 +933,9 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#6",
+      "file": "modules/media/transitions.py",
+      "source": "        log_fn(\"🎬 Every join is a cut — using the stream-copy combiner\")",
+      "target": "        log_fn(\"🎬 所有连接点均为直接切换，将使用流复制合并器\")",
+      "before": "    if plain and (len(valid) == 1 or all(t.is_cut for t in transitions)):",
+      "after": "        from modules.media.combine_videos import CombineCancelled, combine_videos",
+      "hunk": "@@ -963,7 +962,7 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#7",
+      "file": "modules/media/transitions.py",
+      "source": "            log_fn(\"⚠️ Music could not be applied; rebuilding without it\")",
+      "target": "            log_fn(\"⚠️ 无法应用音乐，将在不加音乐的情况下重新生成\")",
+      "before": "            # never leaves the silent reel where this function can reach it.",
+      "after": "            return combine_videos(valid, output, log_fn=log_fn,",
+      "hunk": "@@ -977,7 +976,7 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#8",
+      "file": "modules/media/transitions.py",
+      "source": "    log_fn(f\"🎬 Building a reel of {len(valid)} clips at {width}x{height} @ {fps}fps \"\n           f\"({named}{f', soft edge {softest:.0%}' if softest else ''})\")",
+      "target": "    log_fn(f\"🎬 正在生成 {len(valid)} 个片段的成片：{width}x{height} @ {fps}fps \"\n           f\"（{named}{f'，柔边 {softest:.0%}' if softest else ''}）\")",
+      "before": "    softest = max((t.feather for t in transitions if not t.is_cut), default=0.0)",
+      "after": "",
+      "hunk": "@@ -995,8 +994,8 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#9",
+      "file": "modules/media/transitions.py",
+      "source": "                    progress_fn(i, len(valid) + 1, \"Reel\",\n                                f\"normalizing {i + 1}/{len(valid)}\")",
+      "target": "                    progress_fn(i, len(valid) + 1, \"成片\",\n                                f\"正在标准化 {i + 1}/{len(valid)}\")",
+      "before": "                try:",
+      "after": "                except Exception:",
+      "hunk": "@@ -1012,11 +1011,11 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#10",
+      "file": "modules/media/transitions.py",
+      "source": "            log_fn(f\"⚙️ Normalizing {i + 1}/{len(valid)}: {os.path.basename(src)}\")",
+      "target": "            log_fn(f\"⚙️ 正在标准化 {i + 1}/{len(valid)}：{os.path.basename(src)}\")",
+      "before": "                    pass",
+      "after": "            dst = os.path.join(temp_dir, f\"n{i:03d}.mp4\")",
+      "hunk": "@@ -1012,11 +1011,11 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#11",
+      "file": "modules/media/transitions.py",
+      "source": "                log_fn(f\"🔤 Text on clip {i + 1}: {caption[:48]}\")",
+      "target": "                log_fn(f\"🔤 片段 {i + 1} 的画面文字：{caption[:48]}\")",
+      "before": "                lettered = os.path.join(temp_dir, f\"t{i:03d}.mp4\")",
+      "after": "                dst = burn_text(dst, lettered, caption, height=height,",
+      "hunk": "@@ -1039,7 +1038,7 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#12",
+      "file": "modules/media/transitions.py",
+      "source": "                log_fn(f\"🔗 Joining {len(group)} clips cut hard together\")",
+      "target": "                log_fn(f\"🔗 正在合并 {len(group)} 个直接切换的片段\")",
+      "before": "            if len(group) > 1:",
+      "after": "            pieces.append(_join_run([normalized[n] for n in group],",
+      "hunk": "@@ -1060,13 +1059,13 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#13",
+      "file": "modules/media/transitions.py",
+      "source": "                progress_fn(len(valid), len(valid) + 1, \"Reel\", \"blending\")",
+      "target": "                progress_fn(len(valid), len(valid) + 1, \"成片\", \"正在混合转场\")",
+      "before": "            try:",
+      "after": "            except Exception:",
+      "hunk": "@@ -1060,13 +1059,13 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#14",
+      "file": "modules/media/transitions.py",
+      "source": "            log_fn(f\"🔗 {len(valid)} clips, all cuts — no blending needed\")",
+      "target": "            log_fn(f\"🔗 共 {len(valid)} 个片段，全部为直接切换，无需混合转场\")",
+      "before": "            # filtergraph with nothing to blend would only re-encode it again.",
+      "after": "            shutil.move(pieces[0], staged)",
+      "hunk": "@@ -1081,12 +1080,12 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#15",
+      "file": "modules/media/transitions.py",
+      "source": "            log_fn(f\"🔗 Blending — {len(blended)} transition(s) across \"\n                   f\"{len(pieces)} run(s), {lost:.1f}s absorbed, ~{sum(run_durations) - lost:.1f}s out\")",
+      "target": "            log_fn(f\"🔗 正在混合：{len(blended)} 个转场，跨 {len(pieces)} 个连续片段组；\"\n                   f\"转场占用 {lost:.1f} 秒，预计输出约 {sum(run_durations) - lost:.1f} 秒\")",
+      "before": "            lost = sum(t.duration for t in blended)",
+      "after": "            graph, _, _ = _filtergraph(blended, run_durations, fps)",
+      "hunk": "@@ -1081,12 +1080,12 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#16",
+      "file": "modules/media/transitions.py",
+      "source": "                err = (result.stderr or \"\").strip()[-800:] or \"unknown error\"\n                raise RuntimeError(f\"Reel build failed: {err}\")",
+      "target": "                err = (result.stderr or \"\").strip()[-800:] or \"未知错误\"\n                raise RuntimeError(f\"成片生成失败：{err}\")",
+      "before": "            if result.returncode != 0:",
+      "after": "",
+      "hunk": "@@ -1104,11 +1103,11 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#17",
+      "file": "modules/media/transitions.py",
+      "source": "            raise RuntimeError(\"Reel build produced no output\")",
+      "target": "            raise RuntimeError(\"成片生成后没有输出文件\")",
+      "before": "        if not os.path.exists(staged) or os.path.getsize(staged) == 0:",
+      "after": "",
+      "hunk": "@@ -1104,11 +1103,11 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#18",
+      "file": "modules/media/transitions.py",
+      "source": "                log_fn(f\"⚠️ Music could not be applied ({exc}); \"\n                       f\"keeping the reel without it\")",
+      "target": "                log_fn(f\"⚠️ 无法应用音乐（{exc}）；\"\n                       f\"将保留无音乐版本的成片\")",
+      "before": "                    raise",
+      "after": "",
+      "hunk": "@@ -1125,14 +1124,14 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/media/transitions.py#19",
+      "file": "modules/media/transitions.py",
+      "source": "        log_fn(f\"✅ Reel saved: {output}\")",
+      "target": "        log_fn(f\"✅ 成片已保存：{output}\")",
+      "before": "        shutil.move(staged, output)",
+      "after": "        return output",
+      "hunk": "@@ -1125,14 +1124,14 @@ def build_reel(clips, output, *, transitions=None, kind: str = \"crossfade\","
+    },
+    {
+      "id": "modules/narration/chapter_story.py#1",
+      "file": "modules/narration/chapter_story.py",
+      "source": "            log_fn(f\"⏹️ Stopped after {index - 1} of {len(chapters)} chapters.\")",
+      "target": "            log_fn(f\"⏹️ 已停止：完成 {index - 1}/{len(chapters)} 个章节。\")",
+      "before": "        if cancel_fn is not None and cancel_fn():",
+      "after": "            break",
+      "hunk": "@@ -515,9 +515,9 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/chapter_story.py#2",
+      "file": "modules/narration/chapter_story.py",
+      "source": "        log_fn(f\"📖 Telling chapter {index} of {len(chapters)}\"",
+      "target": "        log_fn(f\"📖 正在讲述章节 {index}/{len(chapters)}\"",
+      "before": "            break",
+      "after": "               f\" ({ch.get('timestamp', '')})…\")",
+      "hunk": "@@ -515,9 +515,9 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/chapter_story.py#3",
+      "file": "modules/narration/chapter_story.py",
+      "source": "            log_fn(f\"⚠️ Chapter {index} could not be told: {exc}\")",
+      "target": "            log_fn(f\"⚠️ 无法讲述章节 {index}：{exc}\")",
+      "before": "        except Exception as exc:",
+      "after": "            continue",
+      "hunk": "@@ -529,7 +529,7 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/chapter_story.py#4",
+      "file": "modules/narration/chapter_story.py",
+      "source": "            log_fn(f\"✂️ Chapter {index} repeated itself; kept what came before.\")",
+      "target": "            log_fn(f\"✂️ 章节 {index} 出现重复内容，已保留此前结果。\")",
+      "before": "            # material is thin, and one of those is a legitimate paragraph.",
+      "after": "            text = trimmed",
+      "hunk": "@@ -540,7 +540,7 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/chapter_story.py#5",
+      "file": "modules/narration/chapter_story.py",
+      "source": "        print(f\"⚠️ Unmeasured claims backfill skipped: {exc}\")",
+      "target": "        print(f\"⚠️ 未测量内容的回填已跳过：{exc}\")",
+      "before": "    except Exception as exc:                       # pragma: no cover - defensive",
+      "after": "",
+      "hunk": "@@ -588,15 +588,14 @@ def tell_report_file(json_path: str,"
+    },
+    {
+      "id": "modules/narration/chapter_story.py#6",
+      "file": "modules/narration/chapter_story.py",
+      "source": "            log_fn(\"ℹ️ Source video not found beside the report — telling from \"\n                   \"the transcript and the measurements alone.\")",
+      "target": "            log_fn(\"ℹ️ 报告旁未找到源视频，将仅根据转录文本和分析数据生成讲述。\")",
+      "before": "        if frames_fn is None:",
+      "after": "",
+      "hunk": "@@ -588,15 +588,14 @@ def tell_report_file(json_path: str,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#1",
+      "file": "modules/narration/clip_story.py",
+      "source": "            log_fn(f\"⏹️ Stopped after {position - 1} of {len(segments)} clips.\")",
+      "target": "            log_fn(f\"⏹️ 已停止：完成 {position - 1}/{len(segments)} 个片段。\")",
+      "before": "        if cancel_fn is not None and cancel_fn():",
+      "after": "            break",
+      "hunk": "@@ -474,9 +474,9 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#2",
+      "file": "modules/narration/clip_story.py",
+      "source": "        log_fn(f\"🖼️ Reading clip {position} of {len(segments)}\"",
+      "target": "        log_fn(f\"🖼️ 正在读取片段 {position}/{len(segments)}\"",
+      "before": "            break",
+      "after": "               f\" ({entry.get('range', '')})…\")",
+      "hunk": "@@ -474,9 +474,9 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#3",
+      "file": "modules/narration/clip_story.py",
+      "source": "            log_fn(f\"⚠️ Clip {position} has no frames to read; skipped.\")",
+      "target": "            log_fn(f\"⚠️ 片段 {position} 没有可读取的画面，已跳过。\")",
+      "before": "        if not seen:",
+      "after": "            continue",
+      "hunk": "@@ -487,7 +487,7 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#4",
+      "file": "modules/narration/clip_story.py",
+      "source": "            log_fn(f\"⚠️ Clip {position} could not be read: {exc}\")",
+      "target": "            log_fn(f\"⚠️ 无法读取片段 {position}：{exc}\")",
+      "before": "        except Exception as exc:",
+      "after": "            continue",
+      "hunk": "@@ -495,13 +495,13 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#5",
+      "file": "modules/narration/clip_story.py",
+      "source": "            log_fn(f\"✂️ Clip {position} repeated itself; kept what came before.\")",
+      "target": "            log_fn(f\"✂️ 片段 {position} 出现重复内容，已保留此前结果。\")",
+      "before": "        if len(trimmed) < len(text):",
+      "after": "            text = trimmed",
+      "hunk": "@@ -495,13 +495,13 @@ def tell(report: Mapping,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#6",
+      "file": "modules/narration/clip_story.py",
+      "source": "        log_fn(\"⚠️ The source video is not where the report says it is, so \"\n               \"there are no frames to read. Nothing was written — this pass \"\n               \"has nothing to say without the pictures.\")",
+      "target": "        log_fn(\"⚠️ 报告记录的位置找不到源视频，因此没有画面可读取。\"\n               \"本轮未写入任何内容；缺少画面时无法生成可靠描述。\")",
+      "before": "        # exactly like a run that had worked.",
+      "after": "        return 0",
+      "hunk": "@@ -541,9 +541,8 @@ def tell_report_file(json_path: str,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#7",
+      "file": "modules/narration/clip_story.py",
+      "source": "        print(f\"⚠️ Could not re-read {json_path} ({exc}); writing what was read\")",
+      "target": "        print(f\"⚠️ 无法重新读取 {json_path}（{exc}）；将写入已读取的结果\")",
+      "before": "    except Exception as exc:                       # pragma: no cover - defensive",
+      "after": "",
+      "hunk": "@@ -568,7 +567,7 @@ def tell_report_file(json_path: str,"
+    },
+    {
+      "id": "modules/narration/clip_story.py#8",
+      "file": "modules/narration/clip_story.py",
+      "source": "        log_fn(\"⚠️ The report was re-analysed while the clips were being read, \"\n               \"so these readings describe a cut that no longer exists. \"\n               \"Nothing was written.\")",
+      "target": "        log_fn(\"⚠️ 读取片段期间报告被重新分析，当前读取结果对应的剪辑版本已失效。\"\n               \"因此未写入任何内容。\")",
+      "before": "        # describes footage it no longer contains.",
+      "after": "        return 0",
+      "hunk": "@@ -581,9 +580,8 @@ def tell_report_file(json_path: str,"
     },
     {
       "id": "modules/packs/pack_manager.py#1",
@@ -15338,6 +16222,357 @@
       "before": "    except Exception as e:",
       "after": "        return",
       "hunk": "@@ -157,6 +157,6 @@ def _offer_restart(parent, title):"
+    },
+    {
+      "id": "modules/report/detection_routes.py#1",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Compose it from classes this video already produced\",\n        gives=(\"a label per second, exact counts, and the one thing scores \"\n               \"cannot express — that something is not there\"),\n        effort=(\"minutes to write, and one re-run of object detection: a \"\n                \"cached detection pass skips the composition engine, so a new \"\n                \"rule cannot fire until detection runs again\"),",
+      "target": "        name=\"用本视频已经检测出的类别组合规则\",\n        gives=\"按秒生成标签和精确计数，还能表达评分无法表达的情况——某个对象并不存在\",\n        effort=\"编写规则只需几分钟，但需要重新运行一次物体检测；仅复用检测缓存会跳过构图引擎，新规则无法触发\",",
+      "before": "        id=\"compose\",",
+      "after": "        effort_rank=EFFORT_MINUTES,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#2",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"exact where it applies — counting boxes is arithmetic, \"\n                    \"not similarity, so there is no threshold to tune\"),",
+      "target": "        confidence=\"适用时结果精确——检测框计数是确定性计算，不是相似度，因此无需调阈值\",",
+      "before": "        effort_rank=EFFORT_MINUTES,",
+      "after": "        confidence_rank=CONFIDENCE_EXACT,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#3",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"what was said is an arrangement of things this detector \"\n                    \"already finds — one inside another, several at once, none \"\n                    \"of them present\"),\n        fails_when=(\"what was said is a thing in its own right that no class \"\n                    \"covers. No rule can conjure a class; it can only arrange \"\n                    \"the ones that exist\"),\n        repeat=\"instant — rules read detections that are already cached\",",
+      "target": "        holds_when=\"所描述的是检测器已能识别对象之间的组合关系，例如包含、同时出现或全部未出现\",\n        fails_when=\"所描述的是当前类别完全覆盖不到的新对象。规则不能凭空创造类别，只能组合已有类别\",\n        repeat=\"即时——规则直接读取已经缓存的检测结果\",",
+      "before": "        confidence_rank=CONFIDENCE_EXACT,",
+      "after": "        topic=\"composition\",",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#4",
+      "file": "modules/report/detection_routes.py",
+      "source": "        needs=\"at least two classes detected in this video\",",
+      "target": "        needs=\"本视频至少已检测到两个类别\",",
+      "before": "        topic=\"composition\",",
+      "after": "    ),",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#5",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Search the video for the words that were said\",\n        gives=(\"a score per sampled frame — how much it looks like the phrase \"\n               \"you typed. No box, nothing to count\"),\n        effort=(\"minutes, and the words are already in the transcript. One \"\n                \"pass embeds the video; after that a query is arithmetic on a \"\n                \"small array and costs nothing\"),",
+      "target": "        name=\"按说出的文字内容搜索视频\",\n        gives=\"为每个采样帧给出与输入短语的视觉相似度评分；不生成检测框，因此不能直接计数\",\n        effort=\"通常几分钟。文字已在转录中；视频只需建立一次嵌入索引，此后的查询只是小数组运算，几乎没有额外成本\",",
+      "before": "        id=\"clip_search\",",
+      "after": "        effort_rank=EFFORT_MINUTES,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#6",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"uneven, and for a reason worth knowing: it matches the \"\n                    \"wording. A phrase the model has seen described that way \"\n                    \"works well; one it has not is a low score about nothing\"),",
+      "target": "        confidence=\"效果不均匀，因为它依赖文字表达方式。模型熟悉的描述通常效果好，陌生表达可能只得到没有意义的低分\",",
+      "before": "        effort_rank=EFFORT_MINUTES,",
+      "after": "        confidence_rank=CONFIDENCE_UNEVEN,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#7",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"the thing can be put into plain words — and something \"\n                    \"said out loud on camera usually can, which is what makes \"\n                    \"this the first thing to try on a spoken claim\"),\n        fails_when=(\"it is small in the frame, or the wording is unusual. The \"\n                    \"embedding describes the whole picture, and no threshold \"\n                    \"recovers a subject the model has no representation for\"),\n        repeat=\"free — the index is built once and answers any number of queries\",",
+      "target": "        holds_when=\"目标能够用自然语言清楚描述；对于视频里口头提到的内容，这是最值得优先尝试的方法\",\n        fails_when=\"目标在画面中太小，或描述方式很特殊。嵌入描述的是整幅画面，若模型本身无法表示该目标，调阈值也无法补救\",\n        repeat=\"无需额外分析——索引只构建一次，之后可反复查询\",",
+      "before": "        confidence_rank=CONFIDENCE_UNEVEN,",
+      "after": "        topic=\"training\",",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#8",
+      "file": "modules/report/detection_routes.py",
+      "source": "            \"why\": (\"Before spending a session on labels, spend five minutes \"\n                    \"finding out whether you have to. Search the video for the \"\n                    \"words that were said, and for a control phrase describing \"\n                    \"something ordinary you know is in the shot. If the \"\n                    \"control finds its moments and your phrase does not, no \"\n                    \"threshold will fix it and a trained class is the answer. \"\n                    \"If both find theirs, you have just avoided the session.\"),",
+      "target": "            \"why\": (\"在投入时间做标注前，先用几分钟确认是否真的需要训练。\"\n                    \"用视频中说出的文字进行搜索，同时再用一个你确定画面里存在的普通对象作为对照。\"\n                    \"如果对照能找到而目标短语找不到，调阈值通常也无济于事，更适合训练专用类别；\"\n                    \"如果两者都能找到，就可以省掉训练。\"),",
+      "before": "        probe={",
+      "after": "            \"how\": ('python -m llm.clip_index --video \"your.mp4\" --interval 2 '",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#9",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Teach a category from example frames\",\n        gives=(\"a score per sampled second — how much this moment looks like \"\n               \"the frames you pointed at. No box, so nothing to count\"),\n        effort=(\"minutes. Point at a few frames and name them; no dataset, no \"\n                \"labels, no GPU. The first search over a video pays for one \"\n                \"embedding pass, and every later query is free\"),",
+      "target": "        name=\"用示例画面教会一个类别\",\n        gives=\"为每个采样秒给出与示例画面的相似度评分；不生成检测框，因此不能直接计数\",\n        effort=\"通常几分钟。选几帧示例并命名即可，无需完整数据集、逐框标注或 GPU；首次搜索建立嵌入索引，之后查询几乎无额外成本\",",
+      "before": "        id=\"example_category\",",
+      "after": "        effort_rank=EFFORT_MINUTES,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#10",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"good for anything that fills a decent part of the frame, \"\n                    \"and the score is calibrated — a low number means the \"\n                    \"match is weak, not that the scale is off\"),",
+      "target": "        confidence=\"当目标在画面中占比较明显时通常效果较好；评分经过校准，低分表示匹配较弱，而不是量纲偏差\",",
+      "before": "        effort_rank=EFFORT_MINUTES,",
+      "after": "        confidence_rank=CONFIDENCE_GOOD,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#11",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"you can point at frames that show it. This is the only \"\n                    \"route that works when you can recognise something on \"\n                    \"sight but cannot put it into words\"),\n        fails_when=(\"it is small in the frame. The embedding describes the \"\n                    \"scene, so a few percent of the picture is drowned by \"\n                    \"everything around it — that case needs a detector\"),\n        repeat=\"free — the index is built once and answers any number of queries\",",
+      "target": "        holds_when=\"你能指出哪些画面展示了目标。对于“看得出来但很难准确用文字描述”的内容尤其适用\",\n        fails_when=\"目标在画面中占比太小。整图嵌入容易被周围内容淹没，这种情况更适合使用检测器\",\n        repeat=\"无需额外分析——索引只构建一次，之后可反复查询\",",
+      "before": "        confidence_rank=CONFIDENCE_GOOD,",
+      "after": "        topic=\"training\",",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#12",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Type the word into an open-vocabulary detector\",\n        gives=\"real boxes and real counts, with no training at all\",\n        effort=(\"minutes to try on a short window; around 3 seconds per \"\n                \"frame on CPU, so a whole video is hours rather than minutes\"),",
+      "target": "        name=\"把目标名称输入开放词汇检测器\",\n        gives=\"无需训练即可得到真实检测框和可计数结果\",\n        effort=\"短时间窗口测试通常只需几分钟；CPU 上每帧约需数秒，因此扫描完整视频可能需要数小时\",",
+      "before": "        id=\"open_vocabulary\",",
+      "after": "        effort_rank=EFFORT_HOURS,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#13",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"uneven, and measurably so. Excellent on everyday things; \"\n                    \"on specialised subject matter it can be close to blind, \"\n                    \"and no threshold rescues that\"),",
+      "target": "        confidence=\"效果差异较大。常见物体通常表现很好，但对专业或小众对象可能几乎无法识别，调阈值也无法补救\",",
+      "before": "        effort_rank=EFFORT_HOURS,",
+      "after": "        confidence_rank=CONFIDENCE_UNEVEN,",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#14",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"the thing is an ordinary object with edges, and you can \"\n                    \"name it in plain words\"),\n        fails_when=(\"it is specialised, or it is an event rather than a thing. \"\n                    \"This detector finds objects with edges, and an event has \"\n                    \"none\"),\n        repeat=\"a full re-run per query set\",",
+      "target": "        holds_when=\"目标是边界明确的常见物体，并且能够用普通文字直接命名\",\n        fails_when=\"目标过于专业，或本质上是事件而不是物体。此检测器擅长找有边界的对象，而事件没有固定边界\",\n        repeat=\"每组新查询都需要重新完整运行一次\",",
+      "before": "        confidence_rank=CONFIDENCE_UNEVEN,",
+      "after": "        topic=\"training\",",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#15",
+      "file": "modules/report/detection_routes.py",
+      "source": "            \"why\": (\"Before spending a session on labels, spend five minutes \"\n                    \"finding out whether you have to. Run the open-vocabulary \"\n                    \"detector over a short window with your query and a \"\n                    \"control query for something ordinary you know is in the \"\n                    \"shot. If the control scores well and yours does not, no \"\n                    \"threshold will save it and the trained class is the \"\n                    \"answer. If both score, you have just avoided the \"\n                    \"session.\"),",
+      "target": "            \"why\": (\"在投入时间做标注前，先用短时间窗口测试几分钟。\"\n                    \"同时输入目标查询和一个你确定画面里存在的普通对象作为对照。\"\n                    \"如果对照得分正常而目标始终很低，调阈值通常无法解决，更适合训练专用类别；\"\n                    \"如果两者都能检测到，就可以省掉训练。\"),",
+      "before": "        probe={",
+      "after": "            \"how\": ('python -m llm.owl_detect --video \"your.mp4\" '",
+      "hunk": "@@ -100,111 +100,72 @@ class Route:"
+    },
+    {
+      "id": "modules/report/detection_routes.py#16",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Use an action model\",\n        gives=\"a label over a window of time rather than a single frame\",\n        effort=(\"nothing to set up for the 400 everyday actions it already \"\n                \"knows; a session to train a class of your own from folders of \"\n                \"example clips\"),",
+      "target": "        name=\"使用动作识别模型\",\n        gives=\"对一段连续时间给出动作标签，而不是只判断单帧画面\",\n        effort=\"内置已认识的常见动作无需额外设置；如果要训练自定义动作类别，则需要准备示例片段并完成一次训练\",",
+      "before": "        id=\"action_model\",",
+      "after": "        effort_rank=EFFORT_HOURS,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#17",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"good for anything defined by how it moves — this is the \"\n                    \"only engine here that sees time at all\"),",
+      "target": "        confidence=\"对由运动过程定义的内容效果较好——这是这些方案中真正利用时间连续性的引擎\",",
+      "before": "        effort_rank=EFFORT_HOURS,",
+      "after": "        confidence_rank=CONFIDENCE_GOOD,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#18",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"what was said is a movement — something that only \"\n                    \"exists across several seconds and is invisible in any one \"\n                    \"frame\"),\n        fails_when=(\"two things you want to tell apart differ only by where \"\n                    \"they happen. The model is fed a cropped region, so that \"\n                    \"difference is gone before it votes — train one class and \"\n                    \"split it with a composition rule instead\"),\n        repeat=\"a full re-run\",",
+      "target": "        holds_when=\"所描述的是一个动作过程，只有跨越数秒才能成立，单独看任意一帧都无法判断\",\n        fails_when=\"需要区分的两个动作仅发生位置不同。模型输入的是裁剪区域，位置差异在判断前已被弱化；更适合先训练同一类别，再用构图规则拆分\",\n        repeat=\"需要完整重新运行\",",
+      "before": "        confidence_rank=CONFIDENCE_GOOD,",
+      "after": "        topic=\"training\",",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#19",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Teach a face category from example crops\",\n        gives=\"a score per face, for whatever it is about the face you mean\",\n        effort=(\"minutes. Pick a handful of face crops; the faces themselves \"\n                \"are already found by the scan this run did\"),",
+      "target": "        name=\"用示例人脸裁剪教会一个人脸类别\",\n        gives=\"针对每张人脸给出类别评分，可用于你定义的任意人脸特征类别\",\n        effort=\"通常几分钟。选择少量人脸裁剪作为示例即可；人脸本身已由本次扫描定位\",",
+      "before": "        id=\"face_category\",",
+      "after": "        effort_rank=EFFORT_MINUTES,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#20",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"good, and unlike the built-in expression classes it is \"\n                    \"not limited to the seven a classifier was trained on\"),",
+      "target": "        confidence=\"通常表现较好，而且不像内置表情分类器那样受固定七类限制\",",
+      "before": "        effort_rank=EFFORT_MINUTES,",
+      "after": "        confidence_rank=CONFIDENCE_GOOD,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#21",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"what was said is about a face — where someone is looking, \"\n                    \"how they are lit, what they are doing with their features\"),\n        fails_when=(\"nothing about it is on a face, or the faces are too small \"\n                    \"or too turned away for the scan to have found them\"),\n        repeat=\"free once the video has been scanned\",",
+      "target": "        holds_when=\"所描述的内容确实体现在人脸上，例如视线方向、光照状态或面部特征动作\",\n        fails_when=\"目标特征与人脸无关，或人脸太小、偏转过大，以至于前置扫描根本没有找到\",\n        repeat=\"视频完成一次人脸扫描后，可反复使用而无需再次扫描\",",
+      "before": "        confidence_rank=CONFIDENCE_GOOD,",
+      "after": "        topic=\"training\",",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#22",
+      "file": "modules/report/detection_routes.py",
+      "source": "        needs=\"a face scan in this run\",",
+      "target": "        needs=\"本次运行已完成人脸扫描\",",
+      "before": "        topic=\"training\",",
+      "after": "        module=\"modules.vision.face_examples\",",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#23",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Train a class of your own\",\n        gives=(\"boxes at frame rate: countable, usable in composition rules, \"\n               \"usable live, and reusable on every video you analyse after\"),\n        effort=(\"a session, and a GPU. Collect frames from the conditions it \"\n                \"fails in, label them, train, export. A third of the set \"\n                \"should be frames containing whatever it will confuse for the \"\n                \"target, with nothing boxed\"),",
+      "target": "        name=\"训练自己的专用类别\",\n        gives=\"按帧生成可计数检测框，可用于构图规则和实时检测，并能复用于之后分析的所有视频\",\n        effort=\"需要一次完整训练流程并建议使用 GPU：收集容易失败的场景、完成标注、训练并导出。数据集中应包含足够的负样本，尤其是容易与目标混淆但不应框选的画面\",",
+      "before": "        id=\"trained_class\",",
+      "after": "        effort_rank=EFFORT_SESSION,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#24",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"the highest available here, and the only one that stays \"\n                    \"reliable enough to drive a rule\"),",
+      "target": "        confidence=\"这些方案中通常可靠性最高，也是最适合长期稳定驱动规则的一种\",",
+      "before": "        effort_rank=EFFORT_SESSION,",
+      "after": "        confidence_rank=CONFIDENCE_EXACT,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#25",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"it matters enough to justify the labelling, or nothing \"\n                    \"cheaper could see it\"),\n        fails_when=(\"your labels do not contain the conditions it fails in. \"\n                    \"Ten frames of the case that breaks it beat a thousand \"\n                    \"more of what already works\"),\n        repeat=\"none — a trained class runs with every future analysis\",",
+      "target": "        holds_when=\"目标足够重要，值得投入标注成本，或者更轻量的方法都无法可靠识别\",\n        fails_when=\"训练数据没有覆盖模型容易失败的场景。补充少量真正会误判/漏判的样本，往往比继续堆积已经识别正常的样本更有效\",\n        repeat=\"无需重复训练——训练后的类别可用于之后每次分析\",",
+      "before": "        confidence_rank=CONFIDENCE_EXACT,",
+      "after": "        topic=\"training\",",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#26",
+      "file": "modules/report/detection_routes.py",
+      "source": "        name=\"Score the moments where it is talked about\",\n        gives=(\"the seconds the transcript says it, which is not the same \"\n               \"thing and must not be reported as if it were\"),\n        effort=\"instant — a transcript keyword weight and a re-score, no re-analysis\",",
+      "target": "        name=\"给转录中谈到它的时刻加分\",\n        gives=\"找出转录文本谈到该内容的时间点；这只是“谈到它”，不能当成目标本身出现在画面中的证据\",\n        effort=\"即时——调整转录关键词权重并重新评分即可，无需重新分析视频\",",
+      "before": "        id=\"spoken_marker\",",
+      "after": "        effort_rank=EFFORT_INSTANT,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#27",
+      "file": "modules/report/detection_routes.py",
+      "source": "        confidence=(\"a proxy, and a weak one. It measures the talking. A thing \"\n                    \"can be discussed long after it happened, or happen with \"\n                    \"nobody saying a word\"),",
+      "target": "        confidence=\"只是一种较弱的代理信号，测量的是“是否谈到”。内容可能在发生很久后才被提及，也可能发生时无人说话\",",
+      "before": "        effort_rank=EFFORT_INSTANT,",
+      "after": "        confidence_rank=CONFIDENCE_PROXY,",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#28",
+      "file": "modules/report/detection_routes.py",
+      "source": "        holds_when=(\"you want the moments about it now, while deciding \"\n                    \"whether one of the routes above is worth the time\"),\n        fails_when=\"you need to know when the thing itself was on screen\",\n        repeat=\"free\",",
+      "target": "        holds_when=\"你现在只想先找到与它相关的讨论时刻，同时判断是否值得投入时间使用上面的更强方案\",\n        fails_when=\"你需要准确知道目标本身何时真正出现在画面中\",\n        repeat=\"无需额外分析\",",
+      "before": "        confidence_rank=CONFIDENCE_PROXY,",
+      "after": "        topic=\"weights\",",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/report/detection_routes.py#29",
+      "file": "modules/report/detection_routes.py",
+      "source": "        needs=\"a transcript\",",
+      "target": "        needs=\"已有转录文本\",",
+      "before": "        topic=\"weights\",",
+      "after": "    ),",
+      "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
+    },
+    {
+      "id": "modules/rules/compose_events.py#1",
+      "file": "modules/rules/compose_events.py",
+      "source": "            log_fn(f\"⚠️ Composition rules could not be loaded: {exc}\")",
+      "target": "            log_fn(f\"⚠️ 无法加载构图规则：{exc}\")",
+      "before": "            # correspond to a rule set anyone can read.",
+      "after": "            engine, names = None, []",
+      "hunk": "@@ -131,7 +131,7 @@ def apply_rules(object_detections: Optional[Mapping],"
+    },
+    {
+      "id": "modules/rules/compose_events.py#2",
+      "file": "modules/rules/compose_events.py",
+      "source": "            log_fn(\"ℹ️ Composition engine: no rules in force; \"\n                   f\"{len(previous)} event type(s) from the previous pass \"\n                   \"removed.\")",
+      "target": "            log_fn(\"ℹ️ 构图引擎：当前没有生效的规则；\"\n                   f\"已移除上一轮的 {len(previous)} 种事件类型。\")",
+      "before": "        if previous:",
+      "after": "        return detections, boxes, names, 0",
+      "hunk": "@@ -139,9 +139,8 @@ def apply_rules(object_detections: Optional[Mapping],"
+    },
+    {
+      "id": "modules/rules/compose_events.py#3",
+      "file": "modules/rules/compose_events.py",
+      "source": "            parts.append(f\"added {', '.join(added)}\")",
+      "target": "            parts.append(f\"新增 {', '.join(added)}\")",
+      "before": "        if added:",
+      "after": "        if gone:",
+      "hunk": "@@ -172,16 +171,15 @@ def apply_rules(object_detections: Optional[Mapping],"
+    },
+    {
+      "id": "modules/rules/compose_events.py#4",
+      "file": "modules/rules/compose_events.py",
+      "source": "            parts.append(f\"removed {', '.join(gone)}\")\n        note = f\" (rules changed since the cached pass: {'; '.join(parts)})\"",
+      "target": "            parts.append(f\"移除 {', '.join(gone)}\")\n        note = f\"（规则自缓存轮次后已变化：{'; '.join(parts)}）\"",
+      "before": "        if gone:",
+      "after": "    if hits:",
+      "hunk": "@@ -172,16 +171,15 @@ def apply_rules(object_detections: Optional[Mapping],"
+    },
+    {
+      "id": "modules/rules/compose_events.py#5",
+      "file": "modules/rules/compose_events.py",
+      "source": "        log_fn(f\"✅ Composition engine: {hits} event-hit(s) over \"\n               f\"{len(composed)} second(s) from {len(names)} rule(s){note}\")",
+      "target": "        log_fn(f\"✅ 构图引擎：{len(names)} 条规则在 {len(composed)} 秒内命中 \"\n               f\"{hits} 个事件{note}\")",
+      "before": "    if hits:",
+      "after": "    else:",
+      "hunk": "@@ -172,16 +171,15 @@ def apply_rules(object_detections: Optional[Mapping],"
+    },
+    {
+      "id": "modules/rules/compose_events.py#6",
+      "file": "modules/rules/compose_events.py",
+      "source": "        log_fn(f\"ℹ️ Composition engine: {len(names)} rule(s), nothing \"\n               f\"matched{note}\")",
+      "target": "        log_fn(f\"ℹ️ 构图引擎：{len(names)} 条规则均未命中{note}\")",
+      "before": "    else:",
+      "after": "    return detections, boxes, names, hits",
+      "hunk": "@@ -172,16 +171,15 @@ def apply_rules(object_detections: Optional[Mapping],"
+    },
+    {
+      "id": "modules/rules/compose_events.py#7",
+      "file": "modules/rules/compose_events.py",
+      "source": "        log_fn(\"✅ Cached events refreshed — the timeline will show the \"\n               \"current rule set.\")",
+      "target": "        log_fn(\"✅ 已刷新缓存事件，时间线将显示当前规则集。\")",
+      "before": "                   params=dict(params) if params else None)",
+      "after": "        return True",
+      "hunk": "@@ -240,9 +238,8 @@ def write_back(video_path: str,"
+    },
+    {
+      "id": "modules/rules/compose_events.py#8",
+      "file": "modules/rules/compose_events.py",
+      "source": "        log_fn(f\"⚠️ Could not refresh cached events: {exc}\")",
+      "target": "        log_fn(f\"⚠️ 无法刷新缓存事件：{exc}\")",
+      "before": "    except Exception as exc:",
+      "after": "        return False",
+      "hunk": "@@ -240,9 +238,8 @@ def write_back(video_path: str,"
+    },
+    {
+      "id": "modules/rules/composition_signals.py#1",
+      "file": "modules/rules/composition_signals.py",
+      "source": "        log_fn(f\"⚠️ Vocal signals unavailable: {exc}\")",
+      "target": "        log_fn(f\"⚠️ 人声信号不可用：{exc}\")",
+      "before": "    except Exception as exc:",
+      "after": "        return {}",
+      "hunk": "@@ -130,7 +130,7 @@ def vocal_curves(video_path: str,"
+    },
+    {
+      "id": "modules/rules/composition_signals.py#2",
+      "file": "modules/rules/composition_signals.py",
+      "source": "        log_fn(f\"ℹ️ Vocal signals: only {result.get('vocal_seconds', 0)} vocal \"",
+      "target": "        log_fn(f\"ℹ️ 人声信号：仅检测到 {result.get('vocal_seconds', 0)} 秒人声 \"",
+      "before": "        # would trust.",
+      "after": "               \"second(s) — brightness and onset are not normalised, so \"",
+      "hunk": "@@ -139,7 +139,7 @@ def vocal_curves(video_path: str,"
     },
     {
       "id": "modules/segments/auto_pipeline.py#1",
@@ -15619,6 +16854,294 @@
       "hunk": "@@ -581,10 +590,10 @@ def run_auto_pipeline("
     },
     {
+      "id": "modules/segments/auto_segments.py#1",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(\"🔧 Auto-segmentation: building interest regions from signals...\")",
+      "target": "    log_fn(\"🔧 自动分段：正在根据信号构建兴趣区间…\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#2",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Actions  → {len(r)} regions\")",
+      "target": "    log_fn(f\"   动作 → {len(r)} 个区间\")",
+      "before": "    r = _regions_from_actions(action_sequences, score)",
+      "after": "    all_regions.extend(r)",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#3",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Scenes   → {len(r)} regions\")",
+      "target": "    log_fn(f\"   场景 → {len(r)} 个区间\")",
+      "before": "    r = _regions_from_scenes(scenes, score)",
+      "after": "    all_regions.extend(r)",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#4",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Keywords → {len(r)} regions\")",
+      "target": "    log_fn(f\"   关键词 → {len(r)} 个区间\")",
+      "before": "    r = _regions_from_keywords(keyword_matches, score)",
+      "after": "    all_regions.extend(r)",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#5",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Objects  → {len(r)} regions\")",
+      "target": "    log_fn(f\"   物体 → {len(r)} 个区间\")",
+      "before": "    r = _regions_from_objects(object_detections, scenes, score)",
+      "after": "    all_regions.extend(r)",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#6",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Motion events → {len(r)} regions\")",
+      "target": "    log_fn(f\"   运动事件 → {len(r)} 个区间\")",
+      "before": "                                     max_gap=2.0, min_pad=0.5, max_pad=2.0)",
+      "after": "    all_regions.extend(r)",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#7",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Motion peaks  → {len(r)} regions\")",
+      "target": "    log_fn(f\"   运动峰值 → {len(r)} 个区间\")",
+      "before": "                                     max_gap=2.0, min_pad=0.5, max_pad=2.0)",
+      "after": "    all_regions.extend(r)",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#8",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Audio peaks   → {len(r)} regions\")",
+      "target": "    log_fn(f\"   音频峰值 → {len(r)} 个区间\")",
+      "before": "                                     max_gap=2.0, min_pad=1.0, max_pad=3.0)",
+      "after": "    all_regions.extend(r)",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#9",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Total raw regions: {len(all_regions)}\")",
+      "target": "    log_fn(f\"   原始区间总数：{len(all_regions)}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#10",
+      "file": "modules/segments/auto_segments.py",
+      "source": "        log_fn(\"⚠️ No interest regions found — falling back to empty segments\")",
+      "target": "        log_fn(\"⚠️ 未找到兴趣区间，将回退为空分段\")",
+      "before": "    if not all_regions:",
+      "after": "        return [], []",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#11",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   After merge: {len(merged)} regions\")",
+      "target": "    log_fn(f\"   合并后：{len(merged)} 个区间\")",
+      "before": "    merged = merge_regions(all_regions, gap_tolerance=merge_gap)",
+      "after": "",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#12",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   After constrain: {len(constrained)} regions \"\n           f\"(min={min_clip}s, max={max_clip}s)\")",
+      "target": "    log_fn(f\"   约束后：{len(constrained)} 个区间 \"\n           f\"（最短={min_clip} 秒，最长={max_clip} 秒）\")",
+      "before": "                                     min_dur=min_clip, max_dur=max_clip)",
+      "after": "",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#13",
+      "file": "modules/segments/auto_segments.py",
+      "source": "    log_fn(f\"   Selected {len(segments)} segments, total {total_dur:.1f}s \"\n           f\"(target: {target_duration}s, mode: {duration_mode})\")",
+      "target": "    log_fn(f\"   已选择 {len(segments)} 个片段，总时长 {total_dur:.1f} 秒 \"\n           f\"（目标：{target_duration} 秒，模式：{duration_mode}）\")",
+      "before": "    total_dur = sum(e - s for s, e in segments)",
+      "after": "",
+      "hunk": "@@ -407,64 +407,64 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/auto_segments.py#14",
+      "file": "modules/segments/auto_segments.py",
+      "source": "        log_fn(f\"   Segment {i+1}: {s_mm}-{e_mm} ({reg.duration:.1f}s) \"\n               f\"score={reg.score:.1f} sources=[{src}]\")",
+      "target": "        log_fn(f\"   片段 {i+1}：{s_mm}-{e_mm}（{reg.duration:.1f} 秒）\"\n               f\"评分={reg.score:.1f}，来源=[{src}]\")",
+      "before": "        src = \", \".join(f\"{name} ×{n}\" for name, n in Counter(reg.sources).most_common())",
+      "after": "",
+      "hunk": "@@ -472,7 +472,7 @@ def build_auto_segments("
+    },
+    {
+      "id": "modules/segments/chapters.py#1",
+      "file": "modules/segments/chapters.py",
+      "source": "            log_fn(\"📖 Chapters: too few sampled shots for visual structure\")",
+      "target": "            log_fn(\"📖 章节：采样镜头过少，无法分析视觉结构\")",
+      "before": "        if len(sigs) < MIN_SHOTS_FOR_STRUCTURE:",
+      "after": "            starts = np.asarray([s[0] for s in scenes], dtype=np.float64)",
+      "hunk": "@@ -340,7 +340,7 @@ def chapterize(duration: float,"
+    },
+    {
+      "id": "modules/segments/chapters.py#2",
+      "file": "modules/segments/chapters.py",
+      "source": "    log_fn(f\"📖 Chapters: {len(chapters)} over {format_timestamp(duration)} ({method})\")",
+      "target": "    log_fn(f\"📖 章节：在 {format_timestamp(duration)} 视频中生成 {len(chapters)} 个章节（{method}）\")",
+      "before": "",
+      "after": "    return chapters",
+      "hunk": "@@ -363,7 +363,7 @@ def chapterize(duration: float,"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#1",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "            log_fn(\"⬇️ First run: fetching the YOLOX person detector (Apache-2.0)…\")",
+      "target": "            log_fn(\"⬇️ 首次运行：正在获取 YOLOX 人物检测器（Apache-2.0）…\")",
+      "before": "            from modules.vision import yolox_models",
+      "after": "            yolox_models.install(log=log_fn)",
+      "hunk": "@@ -25,20 +25,20 @@ def build_tracking_model(model_size=\"n\", log_fn=print, device=\"GPU\"):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#2",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "            log_fn(f\"⚠️ Could not fetch the YOLOX detector: {exc}\")",
+      "target": "            log_fn(f\"⚠️ 无法获取 YOLOX 检测器：{exc}\")",
+      "before": "        except Exception as exc:",
+      "after": "    if not model_xml:",
+      "hunk": "@@ -25,20 +25,20 @@ def build_tracking_model(model_size=\"n\", log_fn=print, device=\"GPU\"):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#3",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(\"⚠️ No YOLOX IR for tracking — run tools/get_yolox_model.py\")",
+      "target": "        log_fn(\"⚠️ 未找到用于追踪的 YOLOX IR，请运行 tools/get_yolox_model.py\")",
+      "before": "    if not model_xml:",
+      "after": "        return None",
+      "hunk": "@@ -25,20 +25,20 @@ def build_tracking_model(model_size=\"n\", log_fn=print, device=\"GPU\"):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#4",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(f\"✅ Person tracker ready (YOLOX): {model_xml}\")",
+      "target": "        log_fn(f\"✅ 人物追踪器已就绪（YOLOX）：{model_xml}\")",
+      "before": "        tracker = YoloxPersonTracker(model_xml=model_xml, model_size=model_size, device=device)",
+      "after": "        return tracker",
+      "hunk": "@@ -25,20 +25,20 @@ def build_tracking_model(model_size=\"n\", log_fn=print, device=\"GPU\"):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#5",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(f\"⚠️ Person tracker failed to load: {exc}\")",
+      "target": "        log_fn(f\"⚠️ 人物追踪器加载失败：{exc}\")",
+      "before": "    except Exception as exc:",
+      "after": "        return None",
+      "hunk": "@@ -25,20 +25,20 @@ def build_tracking_model(model_size=\"n\", log_fn=print, device=\"GPU\"):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#6",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(f\"🚫 Avoid: reusing cached face-tagging entries ({len(entries)} frame(s)) — \"\n               f\"no re-scan needed\")",
+      "target": "        log_fn(f\"🚫 人物排除：正在复用缓存的人脸标记结果（{len(entries)} 帧），\"\n               f\"无需重新扫描\")",
+      "before": "            entries = json.load(f)",
+      "after": "        return entries",
+      "hunk": "@@ -103,8 +103,8 @@ def _entries_load(path, log_fn):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#7",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(f\"⚠️ Avoid: could not write entries cache: {e}\")",
+      "target": "        log_fn(f\"⚠️ 人物排除：无法写入标记结果缓存：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "",
+      "hunk": "@@ -116,7 +116,7 @@ def _entries_save(path, entries, log_fn):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#8",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(f\"🚫 Avoid: loaded cached tagging ({len(boxes)} frame(s), {len(ranges)} range(s))\")",
+      "target": "        log_fn(f\"🚫 人物排除：已加载缓存标记（{len(boxes)} 帧，{len(ranges)} 个区间）\")",
+      "before": "                 for k, v in data.get(\"forbidden_boxes_by_frame\", {}).items()}",
+      "after": "        return ranges, boxes",
+      "hunk": "@@ -126,7 +126,7 @@ def _cache_load(path, log_fn):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#9",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(f\"⚠️ Avoid: could not write cache: {e}\")",
+      "target": "        log_fn(f\"⚠️ 人物排除：无法写入缓存：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "",
+      "hunk": "@@ -142,7 +142,7 @@ def _cache_save(path, ranges, boxes, log_fn):"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#10",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "            raise RuntimeError(\"cancelled during identity tagging\")",
+      "target": "            raise RuntimeError(\"人物身份标记期间已取消\")",
+      "before": "        if cancel_flag is not None and getattr(cancel_flag, \"is_set\", lambda: False)():",
+      "after": "        if i % 150 == 0:",
+      "hunk": "@@ -171,12 +171,12 @@ def tag_entries(video_path, bank, yolo_model=None, model_size=\"n\","
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#11",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "            log_fn(f\"🚫 Avoid: {msg}\")",
+      "target": "            log_fn(f\"🚫 人物排除：{msg}\")",
+      "before": "        if i % 150 == 0:",
+      "after": "",
+      "hunk": "@@ -171,12 +171,12 @@ def tag_entries(video_path, bank, yolo_model=None, model_size=\"n\","
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#12",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "    log_fn(f\"🚫 Avoid: tracking on device={dev}\")",
+      "target": "    log_fn(f\"🚫 人物排除：正在设备 {dev} 上追踪\")",
+      "before": "    dev = track_device()",
+      "after": "    entries = tag_video_with_identities(",
+      "hunk": "@@ -171,12 +171,12 @@ def tag_entries(video_path, bank, yolo_model=None, model_size=\"n\","
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#13",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        log_fn(\"⚠️ compute_forbidden: could not read frame size — skipping exclusion\")",
+      "target": "        log_fn(\"⚠️ 人物排除：无法读取画面尺寸，已跳过排除处理\")",
+      "before": "    if W == 0 or H == 0:",
+      "after": "        return [], {}",
+      "hunk": "@@ -214,7 +214,7 @@ def compute_forbidden(video_path, bank, avoid_ids, fps,"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#14",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "    log_fn(f\"🚫 Avoid: avoided identity present in {len(forbidden_boxes_by_frame)} frame(s), \"\n           f\"{len(forbidden_ranges)} merged range(s)\")",
+      "target": "    log_fn(f\"🚫 人物排除：需排除的身份出现在 {len(forbidden_boxes_by_frame)} 帧中，\"\n           f\"合并为 {len(forbidden_ranges)} 个区间\")",
+      "before": "    forbidden_ranges = _merge_seconds(forbidden_seconds, merge_gap=merge_gap)",
+      "after": "",
+      "hunk": "@@ -245,8 +245,8 @@ def compute_forbidden(video_path, bank, avoid_ids, fps,"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#15",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "        print(\"Usage: python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]\")",
+      "target": "        print(\"用法：python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]\")",
+      "before": "    if len(sys.argv) < 4:",
+      "after": "        sys.exit(1)",
+      "hunk": "@@ -257,7 +257,7 @@ def compute_forbidden(video_path, bank, avoid_ids, fps,"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#16",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "    print(f\"\\nforbidden_ranges ({len(ranges)}):\")",
+      "target": "    print(f\"\\n排除区间（{len(ranges)}）：\")",
+      "before": "    ranges, boxes = compute_forbidden(video, bank, avoid_ids, fps)",
+      "after": "    for a, b in ranges[:20]:",
+      "hunk": "@@ -267,7 +267,7 @@ if __name__ == \"__main__\":"
+    },
+    {
       "id": "modules/segments/reel_plan.py#1",
       "file": "modules/segments/reel_plan.py",
       "source": "    Pace(\"calm\", \"Calm scenic or emotional\", 3.0, 6.0),\n    Pace(\"vlog\", \"Vlog or recap\", 2.0, 4.0),\n    Pace(\"energetic\", \"Energetic montage\", 1.0, 2.5),\n    Pace(\"intense\", \"Intense, comedy or music-heavy\", 0.5, 1.5),",
@@ -15808,6 +17331,123 @@
       "hunk": "@@ -719,26 +712,27 @@ def describe_plan(edl: Edl) -> str:"
     },
     {
+      "id": "modules/segments/script_plan.py#1",
+      "file": "modules/segments/script_plan.py",
+      "source": "    log_fn(f\"📜 Script {script.title!r}: {len(script.beats)} beat(s), \"",
+      "target": "    log_fn(f\"📜 脚本 {script.title!r}：{len(script.beats)} 个节拍节点，\"",
+      "before": "",
+      "after": "           f\"{script.clip_count} clip(s), target {script.target_duration:.0f}s\")",
+      "hunk": "@@ -615,7 +615,7 @@ def load_script(path: str, log_fn=print) -> Script:"
+    },
+    {
+      "id": "modules/segments/shot_look.py#1",
+      "file": "modules/segments/shot_look.py",
+      "source": "        log_fn(f\"⚠️ Could not measure how {os.path.basename(path)} looks ({exc})\")",
+      "target": "        log_fn(f\"⚠️ 无法测量 {os.path.basename(path)} 的画面特征（{exc}）\")",
+      "before": "    except Exception as exc:",
+      "after": "        return Look(path=path)",
+      "hunk": "@@ -208,7 +208,7 @@ def look(path: str, *, samples: int = SAMPLES, use_cache: bool = True,"
+    },
+    {
+      "id": "modules/segments/shot_look.py#2",
+      "file": "modules/segments/shot_look.py",
+      "source": "        log_fn(f\"👁️ Compared {len(measured)} clip(s)\"\n               + (f\"; {pairs} pair(s) look like the same view\"\n                  if pairs else \"; none look alike\"))",
+      "target": "        log_fn(f\"👁️ 已比较 {len(measured)} 个片段\"\n               + (f\"；其中 {pairs} 对看起来属于相同视角\"\n                  if pairs else \"；没有发现明显相同视角\"))",
+      "before": "                    for b in measured[i + 1:] if same_view(a, b))",
+      "after": "    return out",
+      "hunk": "@@ -254,7 +254,7 @@ def look_all(paths, *, use_cache: bool = True, log_fn=print) -> dict:"
+    },
+    {
+      "id": "modules/segments/shot_place.py#1",
+      "file": "modules/segments/shot_place.py",
+      "source": "            log_fn(f\"🗺️ Track: {len(points)} points, \"\n                   f\"{points[0][0]:%H:%M} to {points[-1][0]:%H:%M} UTC\")",
+      "target": "            log_fn(f\"🗺️ 轨迹：{len(points)} 个点，\"\n                   f\"{points[0][0]:%H:%M} 至 {points[-1][0]:%H:%M} UTC\")",
+      "before": "        if points:",
+      "after": "        else:",
+      "hunk": "@@ -294,13 +294,13 @@ def read_track(path: str, *, log_fn=print) -> Track:"
+    },
+    {
+      "id": "modules/segments/shot_place.py#2",
+      "file": "modules/segments/shot_place.py",
+      "source": "            log_fn(f\"⚠️ {os.path.basename(path)} has no timed track points\")",
+      "target": "            log_fn(f\"⚠️ {os.path.basename(path)} 中没有带时间信息的轨迹点\")",
+      "before": "        else:",
+      "after": "    except Exception as exc:",
+      "hunk": "@@ -294,13 +294,13 @@ def read_track(path: str, *, log_fn=print) -> Track:"
+    },
+    {
+      "id": "modules/segments/shot_place.py#3",
+      "file": "modules/segments/shot_place.py",
+      "source": "        log_fn(f\"⚠️ Could not read the GPS track ({exc}); \"\n               f\"clips will be placed by what they carry themselves\")",
+      "target": "        log_fn(f\"⚠️ 无法读取 GPS 轨迹（{exc}）；\"\n               f\"将改用各片段自身携带的位置/时间信息\")",
+      "before": "    except Exception as exc:",
+      "after": "    return track",
+      "hunk": "@@ -294,13 +294,13 @@ def read_track(path: str, *, log_fn=print) -> Track:"
+    },
+    {
+      "id": "modules/segments/shot_place.py#4",
+      "file": "modules/segments/shot_place.py",
+      "source": "            log_fn(f\"🗺️ Placed {filled} clip(s) on the track that carried no \"\n                   f\"GPS of their own\")",
+      "target": "            log_fn(f\"🗺️ 已通过轨迹为 {filled} 个原本没有 GPS 信息的片段补充位置\")",
+      "before": "        if filled:",
+      "after": "",
+      "hunk": "@@ -411,14 +411,13 @@ def locate(paths, *, track: Track = None, log_fn=print) -> dict:"
+    },
+    {
+      "id": "modules/segments/shot_place.py#5",
+      "file": "modules/segments/shot_place.py",
+      "source": "        log_fn(f\"📍 {located} of {len(places)} clip(s) have a position, \"\n               f\"{timed} have a time\")",
+      "target": "        log_fn(f\"📍 {len(places)} 个片段中，{located} 个有位置信息，\"\n               f\"{timed} 个有时间信息\")",
+      "before": "    if places:",
+      "after": "    return places",
+      "hunk": "@@ -411,14 +411,13 @@ def locate(paths, *, track: Track = None, log_fn=print) -> dict:"
+    },
+    {
+      "id": "modules/segments/shot_window.py#1",
+      "file": "modules/segments/shot_window.py",
+      "source": "        log_fn(f\"⚠️ Could not open {os.path.basename(path)} to measure it\")",
+      "target": "        log_fn(f\"⚠️ 无法打开 {os.path.basename(path)} 进行测量\")",
+      "before": "    if not opened:",
+      "after": "        return clip",
+      "hunk": "@@ -352,7 +352,7 @@ def profile(path: str, *, use_cache: bool = True, log_fn=print) -> ClipWindows:"
+    },
+    {
+      "id": "modules/segments/shot_window.py#2",
+      "file": "modules/segments/shot_window.py",
+      "source": "        log_fn(f\"⚠️ Could not measure {os.path.basename(path)} ({exc}); \"\n               f\"its shots will start at the top of the clip\")",
+      "target": "        log_fn(f\"⚠️ 无法测量 {os.path.basename(path)}（{exc}）；\"\n               f\"该素材的镜头将从片段开头开始\")",
+      "before": "        # point it broke would be ranked against clips measured in full.",
+      "after": "        clip.samples = []",
+      "hunk": "@@ -440,8 +440,8 @@ def profile(path: str, *, use_cache: bool = True, log_fn=print) -> ClipWindows:"
+    },
+    {
+      "id": "modules/segments/shot_window.py#3",
+      "file": "modules/segments/shot_window.py",
+      "source": "        log_fn(f\"🔍 Measured {len(measured)} clip(s) for camera settling\"\n               + (f\"; {len(late)} start on the camera still being placed\"\n                  if late else \"; all of them start clean\"))",
+      "target": "        log_fn(f\"🔍 已测量 {len(measured)} 个片段的相机稳定情况\"\n               + (f\"；其中 {len(late)} 个开头仍处于相机放置过程\"\n                  if late else \"；所有片段开头都稳定\"))",
+      "before": "        late = [c for c in measured if c.settle > 0.4]",
+      "after": "    return out",
+      "hunk": "@@ -470,7 +470,7 @@ def profile_all(paths, *, use_cache: bool = True, log_fn=print) -> dict:"
+    },
+    {
+      "id": "modules/system/compute_backend.py#1",
+      "file": "modules/system/compute_backend.py",
+      "source": "        log(f\"ℹ️ Compute backend {label_for(backend)!r} from the settings does \"",
+      "target": "        log(f\"ℹ️ 计算后端 {label_for(backend)!r} from the settings does \"",
+      "before": "        # would leave a run choosing something the user cannot see.",
+      "after": "            f\"not exist on this platform — using automatic\")",
+      "hunk": "@@ -137,7 +137,7 @@ def apply(config: dict | None, log=print) -> Optional[str]:"
+    },
+    {
+      "id": "modules/system/compute_backend.py#2",
+      "file": "modules/system/compute_backend.py",
+      "source": "        log(f\"🎛️ Compute backend: {label_for(backend)}{note}\")",
+      "target": "        log(f\"🎛️ 计算后端：{label_for(backend)}{note}\")",
+      "before": "    if backend != AUTO:",
+      "after": "    return backend",
+      "hunk": "@@ -173,5 +173,5 @@ def _publish(backend: str, log, note: str) -> str:"
+    },
+    {
       "id": "modules/system/debug_console.py#1",
       "file": "modules/system/debug_console.py",
       "source": "   on Windows and macOS. The GUIs expose it as a \"Debug log\" checkbox; the",
@@ -15824,6 +17464,267 @@
       "before": "            self.setReadOnly(True)",
       "after": "            self.setMaximumBlockCount(10000)  # drop oldest lines, bound memory",
       "hunk": "@@ -304,7 +304,7 @@ def _create_window():"
+    },
+    {
+      "id": "modules/system/device_utils.py#1",
+      "file": "modules/system/device_utils.py",
+      "source": "            log_fn(f\"⚠️ Not using the NVIDIA GPU: {reason}\")",
+      "target": "            log_fn(f\"⚠️ 未使用 NVIDIA GPU：{reason}\")",
+      "before": "        if reason:",
+      "after": "            return None",
+      "hunk": "@@ -73,15 +73,15 @@ def _cuda_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#2",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"✅ CUDA available: {count} device(s)\")",
+      "target": "        log_fn(f\"✅ CUDA 可用：{count} 个设备\")",
+      "before": "        count = torch.cuda.device_count()",
+      "after": "        for i in range(count):",
+      "hunk": "@@ -73,15 +73,15 @@ def _cuda_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#3",
+      "file": "modules/system/device_utils.py",
+      "source": "                log_fn(f\"   Device {i}: {name} ({vram:.1f} GB VRAM)\")",
+      "target": "                log_fn(f\"   设备 {i}：{name}（{vram:.1f} GB 显存）\")",
+      "before": "                vram = torch.cuda.get_device_properties(i).total_mem / (1024 ** 3)",
+      "after": "            except Exception:",
+      "hunk": "@@ -73,15 +73,15 @@ def _cuda_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#4",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"⚠️ CUDA check failed: {e}\")",
+      "target": "        log_fn(f\"⚠️ CUDA 检查失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -95,7 +95,7 @@ def _cuda_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#5",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"✅ Intel XPU available: {count} device(s)\")",
+      "target": "        log_fn(f\"✅ Intel XPU 可用：{count} 个设备\")",
+      "before": "        count = torch.xpu.device_count()",
+      "after": "        for i in range(count):",
+      "hunk": "@@ -110,10 +110,10 @@ def _xpu_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#6",
+      "file": "modules/system/device_utils.py",
+      "source": "                log_fn(f\"   Device {i}: {torch.xpu.get_device_name(i)}\")",
+      "target": "                log_fn(f\"   设备 {i}：{torch.xpu.get_device_name(i)}\")",
+      "before": "            try:",
+      "after": "            except Exception:",
+      "hunk": "@@ -110,10 +110,10 @@ def _xpu_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#7",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"⚠️ XPU check failed: {e}\")",
+      "target": "        log_fn(f\"⚠️ XPU 检查失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -127,7 +127,7 @@ def _xpu_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#8",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"✅ Intel GPU available via OpenVINO: {devices}\")",
+      "target": "        log_fn(f\"✅ Intel GPU 可通过 OpenVINO 使用：{devices}\")",
+      "before": "            return None",
+      "after": "        return DeviceInfo(",
+      "hunk": "@@ -146,7 +146,7 @@ def _openvino_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#9",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"⚠️ OpenVINO GPU probe failed: {e}\")",
+      "target": "        log_fn(f\"⚠️ OpenVINO GPU 探测失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -158,7 +158,7 @@ def _openvino_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#10",
+      "file": "modules/system/device_utils.py",
+      "source": "            log_fn(f\"ℹ️ DirectML unavailable: {reason}\")",
+      "target": "            log_fn(f\"ℹ️ DirectML 不可用：{reason}\")",
+      "before": "        if reason and _dml.enabled():",
+      "after": "    return None",
+      "hunk": "@@ -190,7 +190,7 @@ def _any_directml_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#11",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"ℹ️ Apple GPU not used: {probe.reason}\")",
+      "target": "        log_fn(f\"ℹ️ 未使用 Apple GPU：{probe.reason}\")",
+      "before": "    if not probe.available:",
+      "after": "        return None",
+      "hunk": "@@ -239,16 +239,15 @@ def _apple_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#12",
+      "file": "modules/system/device_utils.py",
+      "source": "    log_fn(f\"✅ Apple GPU via Core ML (ONNX Runtime {probe.version or '?'}) — \"",
+      "target": "    log_fn(f\"✅ Apple GPU 已通过 Core ML 启用（ONNX Runtime {probe.version or '?'}）— \"",
+      "before": "    from modules.system import ort_coreml",
+      "after": "           f\"{_apple_chip_name() or 'Apple silicon'}\")",
+      "hunk": "@@ -239,16 +239,15 @@ def _apple_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#13",
+      "file": "modules/system/device_utils.py",
+      "source": "    log_fn(f\"   object detection and action recognition on the \"\n           f\"{ort_coreml.describe_units()} (experimental; {ort_coreml.MODE_ENV}=off \"\n           f\"turns it off); other models stay on the CPU\")",
+      "target": "    log_fn(f\"   物体检测和动作识别使用 {ort_coreml.describe_units()}（实验性；\"\n           f\"设置 {ort_coreml.MODE_ENV}=off 可关闭）；其他模型仍使用 CPU\")",
+      "before": "           f\"{_apple_chip_name() or 'Apple silicon'}\")",
+      "after": "    if _mps_available():",
+      "hunk": "@@ -239,16 +239,15 @@ def _apple_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#14",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(\"   torch also sees the GPU through Metal (MPS); nothing uses it yet\")",
+      "target": "        log_fn(\"   torch 也可通过 Metal（MPS）识别 GPU，但当前尚无模块使用它\")",
+      "before": "    if _mps_available():",
+      "after": "    return DeviceInfo(",
+      "hunk": "@@ -239,16 +239,15 @@ def _apple_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#15",
+      "file": "modules/system/device_utils.py",
+      "source": "def _cpu_info(log_fn=print, note=\"ℹ️ No GPU found — using CPU\"):",
+      "target": "def _cpu_info(log_fn=print, note=\"ℹ️ 未找到可用 GPU，使用 CPU\"):",
+      "before": "",
+      "after": "    if note:",
+      "hunk": "@@ -263,7 +262,7 @@ def _apple_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#16",
+      "file": "modules/system/device_utils.py",
+      "source": "            log_fn(f\"⚠️ Unknown compute backend {chosen!r} — using automatic\")",
+      "target": "            log_fn(f\"⚠️ 未知计算后端 {chosen!r}，改用自动选择\")",
+      "before": "        if probe is None:",
+      "after": "        elif not _offered_here(chosen):",
+      "hunk": "@@ -337,17 +336,15 @@ def detect_best_device(log_fn=print, prefer=None):"
+    },
+    {
+      "id": "modules/system/device_utils.py#17",
+      "file": "modules/system/device_utils.py",
+      "source": "            log_fn(f\"⚠️ {probe[1]} does not exist on this platform — \"\n                   f\"using automatic\")",
+      "target": "            log_fn(f\"⚠️ 当前平台不支持 {probe[1]}，改用自动选择\")",
+      "before": "        elif not _offered_here(chosen):",
+      "after": "        else:",
+      "hunk": "@@ -337,17 +336,15 @@ def detect_best_device(log_fn=print, prefer=None):"
+    },
+    {
+      "id": "modules/system/device_utils.py#18",
+      "file": "modules/system/device_utils.py",
+      "source": "            log_fn(f\"⚠️ {label} was chosen but is not available here — \"\n                   f\"falling back to automatic\")",
+      "target": "            log_fn(f\"⚠️ 已选择 {label}，但当前不可用，改用自动选择\")",
+      "before": "                return info",
+      "after": "",
+      "hunk": "@@ -337,17 +336,15 @@ def detect_best_device(log_fn=print, prefer=None):"
+    },
+    {
+      "id": "modules/system/device_utils.py#19",
+      "file": "modules/system/device_utils.py",
+      "source": "        log_fn(f\"⚠️ {_dml.MODE_ENV}=force but DirectML is unusable: \"",
+      "target": "        log_fn(f\"⚠️ 已设置 {_dml.MODE_ENV}=force，但 DirectML 不可用：\"",
+      "before": "            return forced",
+      "after": "               f\"{_dml.unavailable_reason()}\")",
+      "hunk": "@@ -361,7 +358,7 @@ def detect_best_device(log_fn=print, prefer=None):"
+    },
+    {
+      "id": "modules/system/device_utils.py#20",
+      "file": "modules/system/device_utils.py",
+      "source": "    log_fn(f\"   torch device: {device} (experimental — see docs/AMD-GPU.md)\")",
+      "target": "    log_fn(f\"   torch 设备：{device}（实验性，详见 docs/AMD-GPU.md）\")",
+      "before": "    log_fn(f\"✅ {_dml.describe()}\")",
+      "after": "    return DeviceInfo(",
+      "hunk": "@@ -421,7 +418,7 @@ def _directml_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#21",
+      "file": "modules/system/device_utils.py",
+      "source": "    log_fn(f\"✅ DirectML via ONNX Runtime {probe.version or ''}\".rstrip()\n           + (f\" on {card}\" if card else \"\"))\n    log_fn(\"   object detection and action recognition on the GPU; other \"\n           \"torch models stay on the CPU (see docs/AMD-GPU.md)\")",
+      "target": "    log_fn(f\"✅ 已通过 ONNX Runtime {probe.version or ''} 启用 DirectML\".rstrip()\n           + (f\"（{card}）\" if card else \"\"))\n    log_fn(\"   物体检测和动作识别使用 GPU；其他 torch 模型仍使用 CPU（详见 docs/AMD-GPU.md）\")",
+      "before": "    card = getattr(probe, \"adapter_name\", None)",
+      "after": "    return DeviceInfo(",
+      "hunk": "@@ -477,10 +474,9 @@ def _onnx_dml_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/display_info.py#1",
+      "file": "modules/system/display_info.py",
+      "source": "    return (f\"   {screen.name() or 'screen'}: \"\n            f\"{geometry.width()}x{geometry.height()} at \"\n            f\"({geometry.x()},{geometry.y()}), \"\n            f\"usable {available.width()}x{available.height()}, \"\n            f\"ratio {screen.devicePixelRatio():g}, \"\n            f\"{screen.logicalDotsPerInch():.0f} logical DPI, \"\n            f\"{screen.physicalDotsPerInch():.0f} physical\")",
+      "target": "    return (f\"   {screen.name() or '屏幕'}: \"\n            f\"{geometry.width()}x{geometry.height()}，位置 \"\n            f\"({geometry.x()},{geometry.y()})，\"\n            f\"可用区域 {available.width()}x{available.height()}，\"\n            f\"像素比 {screen.devicePixelRatio():g}，\"\n            f\"逻辑 DPI {screen.logicalDotsPerInch():.0f}，\"\n            f\"物理 DPI {screen.physicalDotsPerInch():.0f}\")",
+      "before": "    available = screen.availableGeometry()",
+      "after": "",
+      "hunk": "@@ -21,13 +21,13 @@ import sys"
+    },
+    {
+      "id": "modules/system/display_info.py#2",
+      "file": "modules/system/display_info.py",
+      "source": "        return [f\"   (could not read the screens: {type(e).__name__}: {e})\"]",
+      "target": "        return [f\"   （无法读取显示器信息：{type(e).__name__}：{e}）\"]",
+      "before": "    except Exception as e:  # noqa: BLE001 - diagnostics must not raise",
+      "after": "",
+      "hunk": "@@ -37,26 +37,26 @@ def describe(app) -> list:"
+    },
+    {
+      "id": "modules/system/display_info.py#3",
+      "file": "modules/system/display_info.py",
+      "source": "            mark = \" (primary)\" if screen is primary else \"\"",
+      "target": "            mark = \"（主显示器）\" if screen is primary else \"\"",
+      "before": "        try:",
+      "after": "            lines.append(_screen_line(screen) + mark)",
+      "hunk": "@@ -37,26 +37,26 @@ def describe(app) -> list:"
+    },
+    {
+      "id": "modules/system/display_info.py#4",
+      "file": "modules/system/display_info.py",
+      "source": "            lines.append(f\"   (a screen would not describe itself: {e})\")",
+      "target": "            lines.append(f\"   （无法读取此显示器详情：{e}）\")",
+      "before": "        except Exception as e:  # noqa: BLE001",
+      "after": "",
+      "hunk": "@@ -37,26 +37,26 @@ def describe(app) -> list:"
+    },
+    {
+      "id": "modules/system/display_info.py#5",
+      "file": "modules/system/display_info.py",
+      "source": "    lines.append(f\"   QT_SCALE_FACTOR={factor or '(unset)'}, \"\n                 f\"rounding={rounding or '(default)'}, \"",
+      "target": "    lines.append(f\"   QT_SCALE_FACTOR={factor or '（未设置）'}, \"\n                 f\"rounding={rounding or '（默认）'}, \"",
+      "before": "    rounding = os.environ.get(\"QT_SCALE_FACTOR_ROUNDING_POLICY\")",
+      "after": "                 f\"platform={sys.platform}\")",
+      "hunk": "@@ -37,26 +37,26 @@ def describe(app) -> list:"
+    },
+    {
+      "id": "modules/system/display_info.py#6",
+      "file": "modules/system/display_info.py",
+      "source": "    log_fn(\"🖥️ Displays:\")",
+      "target": "    log_fn(\"🖥️ 显示器：\")",
+      "before": "    \"\"\"Report the display setup once, at startup.\"\"\"",
+      "after": "    for line in describe(app):",
+      "hunk": "@@ -37,26 +37,26 @@ def describe(app) -> list:"
+    },
+    {
+      "id": "modules/system/display_info.py#7",
+      "file": "modules/system/display_info.py",
+      "source": "        state = \"maximised\" if window.isMaximized() else (\n            \"fullscreen\" if window.isFullScreen() else \"windowed\")\n        log_fn(f\"🖥️ {label}: {size.width()}x{size.height()} logical, \"\n               f\"{int(size.width() * ratio)}x{int(size.height() * ratio)} \"\n               f\"physical, {state}\")",
+      "target": "        state = \"最大化\" if window.isMaximized() else (\n            \"全屏\" if window.isFullScreen() else \"窗口\")\n        log_fn(f\"🖥️ {label}：逻辑尺寸 {size.width()}x{size.height()}，\"\n               f\"物理尺寸 {int(size.width() * ratio)}x{int(size.height() * ratio)}，\"\n               f\"状态：{state}\")",
+      "before": "        ratio = window.devicePixelRatioF()",
+      "after": "    except Exception as e:  # noqa: BLE001 - diagnostics must not raise",
+      "hunk": "@@ -71,10 +71,10 @@ def log_window_size(window, label: str, log_fn=print) -> None:"
+    },
+    {
+      "id": "modules/system/display_info.py#8",
+      "file": "modules/system/display_info.py",
+      "source": "        log_fn(f\"🖥️ {label}: size unavailable ({type(e).__name__}: {e})\")",
+      "target": "        log_fn(f\"🖥️ {label}：无法读取尺寸（{type(e).__name__}：{e}）\")",
+      "before": "    except Exception as e:  # noqa: BLE001 - diagnostics must not raise",
+      "after": null,
+      "hunk": "@@ -71,10 +71,10 @@ def log_window_size(window, label: str, log_fn=print) -> None:"
     },
     {
       "id": "modules/system/startup_splash.py#1",
@@ -18017,6 +19918,51 @@
       "hunk": "@@ -240,13 +240,13 @@ class UpdatePlan:"
     },
     {
+      "id": "modules/vision/face_scan.py#1",
+      "file": "modules/vision/face_scan.py",
+      "source": "            log_fn(f\"ℹ Using cached face scan ({len(cached)} second(s))\")",
+      "target": "            log_fn(f\"ℹ 正在使用缓存的人脸扫描结果（{len(cached)} second(s))\")",
+      "before": "        if cached is not None:",
+      "after": "            return cached",
+      "hunk": "@@ -266,7 +266,7 @@ def scan_video(video_path: str,"
+    },
+    {
+      "id": "modules/vision/face_scan.py#2",
+      "file": "modules/vision/face_scan.py",
+      "source": "    log_fn(f\"✅ Face scan: {len(seconds)} second(s) with a readable expression \"",
+      "target": "    log_fn(f\"✅ 人脸扫描完成：{len(seconds)} second(s) with a readable expression \"",
+      "before": "                   classify_fn=classifier.classify)",
+      "after": "           f\"in {time.time() - started:.1f}s\")",
+      "hunk": "@@ -283,7 +283,7 @@ def scan_video(video_path: str,"
+    },
+    {
+      "id": "modules/vision/rtmpose_models.py#1",
+      "file": "modules/vision/rtmpose_models.py",
+      "source": "    log(f\"⬇️ Downloading {dest.name}…\")",
+      "target": "    log(f\"⬇️ 正在下载 {dest.name}…\")",
+      "before": "        return",
+      "after": "",
+      "hunk": "@@ -70,7 +70,7 @@ def ir_path(size: str) -> Path:"
+    },
+    {
+      "id": "modules/vision/rtmpose_models.py#2",
+      "file": "modules/vision/rtmpose_models.py",
+      "source": "        log(f\"📦 Extracting {member.rsplit('/', 1)[-1]} → {dest.name}\")",
+      "target": "        log(f\"📦 正在解压 {member.rsplit('/', 1)[-1]} → {dest.name}\")",
+      "before": "            raise ValueError(f\"{zip_path.name} contains no end2end.onnx — layout changed?\")",
+      "after": "        dest.parent.mkdir(parents=True, exist_ok=True)",
+      "hunk": "@@ -101,7 +101,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non"
+    },
+    {
+      "id": "modules/vision/rtmpose_models.py#3",
+      "file": "modules/vision/rtmpose_models.py",
+      "source": "    log(f\"⚙️ Converting {onnx_path.name} → {xml_path.name}\")",
+      "target": "    log(f\"⚙️ 正在转换 {onnx_path.name} → {xml_path.name}\")",
+      "before": "",
+      "after": "    model = ov.convert_model(str(onnx_path))",
+      "hunk": "@@ -110,7 +110,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non"
+    },
+    {
       "id": "modules/vision/training_preview.py#1",
       "file": "modules/vision/training_preview.py",
       "source": "        where = (\"on frames it has not learned from\" if self.held_out\n                 else \"on frames it learned from (no held-out frames yet)\")",
@@ -18065,10 +20011,309 @@
       "id": "modules/vision/training_preview.py#6",
       "file": "modules/vision/training_preview.py",
       "source": "            caption=f\"Round {snap.epoch} of {snap.total_epochs}: found {found} of {expected}\")",
-      "target": "            caption=f\"第 {snap.epoch}/{snap.total_epochs} 轮：识别到 {found}/{expected} 个目标\"",
+      "target": "            caption=f\"第 {snap.epoch}/{snap.total_epochs} 轮：识别到 {found}/{expected} 个目标\"\n        )",
       "before": "            frames, per_frame,",
       "after": "    return snap",
-      "hunk": "@@ -258,5 +258,5 @@ def snapshot(report, frames: Sequence, history: list, draw: bool) -> RoundSnapsh"
+      "hunk": "@@ -258,5 +258,6 @@ def snapshot(report, frames: Sequence, history: list, draw: bool) -> RoundSnapsh"
+    },
+    {
+      "id": "modules/vision/yolox_models.py#1",
+      "file": "modules/vision/yolox_models.py",
+      "source": "    log(f\"⬇️ Downloading {dest.name}…\")",
+      "target": "    log(f\"⬇️ 正在下载 {dest.name}…\")",
+      "before": "        return",
+      "after": "",
+      "hunk": "@@ -62,7 +62,7 @@ def find_onnx(prefer: str = \"large\") -> str | None:"
+    },
+    {
+      "id": "modules/vision/yolox_models.py#2",
+      "file": "modules/vision/yolox_models.py",
+      "source": "    log(f\"⚙️ Converting {onnx_path.name} → {xml_path.name}\")",
+      "target": "    log(f\"⚙️ 正在转换 {onnx_path.name} → {xml_path.name}\")",
+      "before": "",
+      "after": "    model = ov.convert_model(str(onnx_path))",
+      "hunk": "@@ -82,7 +82,7 @@ def _download(url: str, dest: Path, log: Callable[[str], None]) -> None:"
+    },
+    {
+      "id": "object_recognition.py#1",
+      "file": "object_recognition.py",
+      "source": "        progress_fn(progress, f\"Processing frames: {processed_frames}/{total_frames}\")",
+      "target": "        progress_fn(progress, f\"正在处理帧：{processed_frames}/{total_frames}\")",
+      "before": "        # Call the progress function with current progress and status",
+      "after": "",
+      "hunk": "@@ -44,7 +44,7 @@ def progress_monitor(progress_queue, total_frames, progress_fn):"
+    },
+    {
+      "id": "object_recognition.py#2",
+      "file": "object_recognition.py",
+      "source": "        log_fn(\"⚠️ No object detector available, skipping object detection\")",
+      "target": "        log_fn(\"⚠️ 没有可用的物体检测器，跳过物体检测\")",
+      "before": "    if model is None:",
+      "after": "        return {}, []",
+      "hunk": "@@ -298,12 +298,12 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri",
+      "safe_duplicate": true
+    },
+    {
+      "id": "object_recognition.py#3",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"❌ Failed to open video: {video_path}\")",
+      "target": "        log_fn(f\"❌ 无法打开视频：{video_path}\")",
+      "before": "    if not cap.isOpened():",
+      "after": "        return {}, []",
+      "hunk": "@@ -298,12 +298,12 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#4",
+      "file": "object_recognition.py",
+      "source": "        log_fn(\"⚠️ Could not determine video duration\")",
+      "target": "        log_fn(\"⚠️ 无法确定视频时长\")",
+      "before": "    if total_seconds <= 0:",
+      "after": "        cap.release()",
+      "hunk": "@@ -311,7 +311,7 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#5",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"🎨 Creating object detection annotated video: {annotated_output}\")",
+      "target": "        log_fn(f\"🎨 正在创建物体检测标注视频：{annotated_output}\")",
+      "before": "        video_writer = cv2.VideoWriter(annotated_output, fourcc, fps_local, (frame_width, frame_height))",
+      "after": "",
+      "hunk": "@@ -322,11 +322,11 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#6",
+      "file": "object_recognition.py",
+      "source": "        progress_fn(0, total_seconds, \"Object Detection\",\n                     f\"Analyzing {seconds_to_mmss(total_seconds)} of video (conf≥{confidence_threshold})\")",
+      "target": "        progress_fn(0, total_seconds, \"物体检测\",\n                     f\"正在分析 {seconds_to_mmss(total_seconds)} 的视频（置信度≥{confidence_threshold}）\")",
+      "before": "    if progress_fn:",
+      "after": "",
+      "hunk": "@@ -322,11 +322,11 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#7",
+      "file": "object_recognition.py",
+      "source": "                log_fn(\"⏹️ Object detection cancelled\")",
+      "target": "                log_fn(\"⏹️ 物体检测已取消\")",
+      "before": "            if cancel_flag and cancel_flag.is_set():",
+      "after": "                break",
+      "hunk": "@@ -339,7 +339,7 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#8",
+      "file": "object_recognition.py",
+      "source": "                        log_fn(\"⏹️ Object detection cancelled\")",
+      "target": "                        log_fn(\"⏹️ 物体检测已取消\")",
+      "before": "                    if cancel_flag and cancel_flag.is_set():",
+      "after": "                        break",
+      "hunk": "@@ -350,12 +350,12 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#9",
+      "file": "object_recognition.py",
+      "source": "                        progress_fn(sec, total_seconds, \"Object Detection\",\n                                    f\"Found {objects_found} objects so far ({seconds_to_mmss(sec)})\")",
+      "target": "                        progress_fn(sec, total_seconds, \"物体检测\",\n                                    f\"目前已找到 {objects_found} 个物体（{seconds_to_mmss(sec)}）\")",
+      "before": "                    if progress_fn:",
+      "after": "                    current_second = sec",
+      "hunk": "@@ -350,12 +350,12 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#10",
+      "file": "object_recognition.py",
+      "source": "                                        log_fn(f\"⚠️ Live preview frame failed \"\n                                               f\"(reported once per run): {e}\")",
+      "target": "                                        log_fn(f\"⚠️ 实时预览帧处理失败 \"\n                                               f\"（每次运行仅报告一次）: {e}\")",
+      "before": "                                        _preview_failed = True",
+      "after": "",
+      "hunk": "@@ -418,28 +418,28 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#11",
+      "file": "object_recognition.py",
+      "source": "                        log_fn(f\"⚠️ Error in object detection at frame {frame_idx}: {e}\")",
+      "target": "                        log_fn(f\"⚠️ 第 {frame_idx} 帧物体检测出错：{e}\")",
+      "before": "                    except Exception as e:",
+      "after": "",
+      "hunk": "@@ -418,28 +418,28 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#12",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"❌ Object detection error: {e}\")",
+      "target": "        log_fn(f\"❌ 物体检测出错：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "    finally:",
+      "hunk": "@@ -418,28 +418,28 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#13",
+      "file": "object_recognition.py",
+      "source": "                log_fn(f\"✅ Object detection annotated video saved: {annotated_output}\")",
+      "target": "                log_fn(f\"✅ 物体检测标注视频已保存：{annotated_output}\")",
+      "before": "            if draw_boxes:",
+      "after": "",
+      "hunk": "@@ -418,28 +418,28 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#14",
+      "file": "object_recognition.py",
+      "source": "                progress_fn(total_seconds, total_seconds, \"Object Detection\",\n                            f\"Complete - {objects_found} objects found\")\n            log_fn(f\"✅ Object detection complete: {objects_found} total objects detected\")",
+      "target": "                progress_fn(total_seconds, total_seconds, \"物体检测\",\n                            f\"完成 - 共找到 {objects_found} 个物体\")\n            log_fn(f\"✅ 物体检测完成：共检测到 {objects_found} 个物体\")",
+      "before": "            if progress_fn:",
+      "after": "",
+      "hunk": "@@ -418,28 +418,28 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#15",
+      "file": "object_recognition.py",
+      "source": "                log_fn(f\"✅ CSV saved to {csv_output}\")",
+      "target": "                log_fn(f\"✅ CSV 已保存到：{csv_output}\")",
+      "before": "                        writer.writerow([seconds_to_mmss(sec), sec, \";\".join(objs)])",
+      "after": "            except Exception as e:",
+      "hunk": "@@ -449,9 +449,9 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#16",
+      "file": "object_recognition.py",
+      "source": "                log_fn(f\"⚠️ Failed to save CSV: {e}\")",
+      "target": "                log_fn(f\"⚠️ CSV 保存失败：{e}\")",
+      "before": "            except Exception as e:",
+      "after": "",
+      "hunk": "@@ -449,9 +449,9 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri"
+    },
+    {
+      "id": "object_recognition.py#17",
+      "file": "object_recognition.py",
+      "source": "        error_msg = f\"⚠️ Video not found: {video_path}\"",
+      "target": "        error_msg = f\"⚠️ 未找到视频：{video_path}\"",
+      "before": "    if not os.path.exists(video_path):",
+      "after": "        log_fn(error_msg)",
+      "hunk": "@@ -497,14 +497,14 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#18",
+      "file": "object_recognition.py",
+      "source": "        error_msg = \"⚠️ No objects specified in highlight_objects list!\"",
+      "target": "        error_msg = \"⚠️ 未指定需要检测的物体类别！\"",
+      "before": "    if not highlight_objects:",
+      "after": "        log_fn(error_msg)",
+      "hunk": "@@ -497,14 +497,14 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#19",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"🎯 Using custom model: {model_path}\")",
+      "target": "        log_fn(f\"🎯 正在使用自定义模型：{model_path}\")",
+      "before": "    if model_path:",
+      "after": "    else:",
+      "hunk": "@@ -517,16 +517,16 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#20",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"🎯 Using YOLOX detector (size: {yolo_model_size})\")",
+      "target": "        log_fn(f\"🎯 正在使用 YOLOX 检测器（尺寸：{yolo_model_size}）\")",
+      "before": "    else:",
+      "after": "    openvino_folder = None",
+      "hunk": "@@ -517,16 +517,16 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#21",
+      "file": "object_recognition.py",
+      "source": "        log_fn(\"⚠️ No object detector available, skipping object detection\")",
+      "target": "        log_fn(\"⚠️ 没有可用的物体检测器，跳过物体检测\")",
+      "before": "    if load_detector(model_path, yolo_model_size, log=log_fn) is None:",
+      "after": "        return {}, []",
+      "hunk": "@@ -517,16 +517,16 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\"",
+      "safe_duplicate": true
+    },
+    {
+      "id": "object_recognition.py#22",
+      "file": "object_recognition.py",
+      "source": "    log_fn(f\"🔍 Confidence threshold: {confidence_threshold}\")",
+      "target": "    log_fn(f\"🔍 置信度阈值：{confidence_threshold}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -517,16 +517,16 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#23",
+      "file": "object_recognition.py",
+      "source": "    log_fn(f\"🎬 Processing video with {NUM_WORKERS} workers, FPS: {fps:.2f}\")\n    log_fn(f\"🔍 Looking for: {highlight_objects}\")",
+      "target": "    log_fn(f\"🎬 正在使用 {NUM_WORKERS} 个工作线程处理视频，FPS：{fps:.2f}\")\n    log_fn(f\"🔍 正在查找：{highlight_objects}\")",
+      "before": "",
+      "after": "    if draw_boxes:",
+      "hunk": "@@ -535,10 +535,10 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#24",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"🎨 Bounding box visualization enabled\")",
+      "target": "        log_fn(f\"🎨 已启用检测框可视化\")",
+      "before": "    if draw_boxes:",
+      "after": "",
+      "hunk": "@@ -535,10 +535,10 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#25",
+      "file": "object_recognition.py",
+      "source": "        progress_fn(0.0, \"Starting object detection workers...\")",
+      "target": "        progress_fn(0.0, \"正在启动物体检测工作线程…\")",
+      "before": "        progress_process.start()",
+      "after": "",
+      "hunk": "@@ -548,7 +548,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#26",
+      "file": "object_recognition.py",
+      "source": "        progress_fn(0.95, \"Merging detection results...\")",
+      "target": "        progress_fn(0.95, \"正在合并检测结果…\")",
+      "before": "    if progress_fn:",
+      "after": "",
+      "hunk": "@@ -576,7 +576,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#27",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"🎬 Merging {len(worker_videos)} annotated video segments...\")",
+      "target": "        log_fn(f\"🎬 正在合并 {len(worker_videos)} 个标注视频片段…\")",
+      "before": "    if draw_boxes and worker_videos and annotated_output:",
+      "after": "        merge_worker_videos(worker_videos, annotated_output, fps)",
+      "hunk": "@@ -610,7 +610,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#28",
+      "file": "object_recognition.py",
+      "source": "        log_fn(f\"✅ CSV created: {csv_file} with {len(all_frame_objects)} detections\")",
+      "target": "        log_fn(f\"✅ 已创建 CSV：{csv_file}，包含 {len(all_frame_objects)} 个检测结果\")",
+      "before": "            writer.writerows(all_frame_objects)",
+      "after": "    else:",
+      "hunk": "@@ -619,15 +619,15 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#29",
+      "file": "object_recognition.py",
+      "source": "        log_fn(\"❌ No objects detected - CSV file not created\")",
+      "target": "        log_fn(\"❌ 未检测到物体，因此未创建 CSV 文件\")",
+      "before": "    else:",
+      "after": "",
+      "hunk": "@@ -619,15 +619,15 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#30",
+      "file": "object_recognition.py",
+      "source": "    log_fn(f\"✅ Total seconds with objects: {len(final_objects)}, total detections: {total_detections}\")",
+      "target": "    log_fn(f\"✅ 检测到物体的总秒数：{len(final_objects)}，检测结果总数：{total_detections}\")",
+      "before": "    total_detections = sum(len(v) for v in final_objects.values())",
+      "after": "",
+      "hunk": "@@ -619,15 +619,15 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
+    },
+    {
+      "id": "object_recognition.py#31",
+      "file": "object_recognition.py",
+      "source": "        progress_fn(1.0, f\"Completed: {total_detections} detections found\")",
+      "target": "        progress_fn(1.0, f\"已完成：共找到 {total_detections} 个检测结果\")",
+      "before": "    if progress_fn:",
+      "after": "",
+      "hunk": "@@ -619,15 +619,15 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file=\""
     },
     {
       "id": "packaging/installer/videohighlighter-packs.iss#1",
@@ -24190,6 +26435,15 @@
       "before": "            p.setPen(QPen(QColor(145, 145, 145)))",
       "after": "",
       "hunk": "@@ -150,7 +150,7 @@ class HoverPreview(QWidget):"
+    },
+    {
+      "id": "video_ai_editor/identity_tagging.py#1",
+      "file": "video_ai_editor/identity_tagging.py",
+      "source": "                progress_cb(processed, f\"Tracking + identity… frame {real_frame}\")",
+      "target": "                progress_cb(processed, f\"正在追踪并识别身份… 第 {real_frame} 帧\")",
+      "before": "            if progress_cb and processed % 30 == 0:",
+      "after": "    else:",
+      "hunk": "@@ -136,7 +136,7 @@ def tag_video_with_identities("
     },
     {
       "id": "video_ai_editor/realtime_overlay.py#1",

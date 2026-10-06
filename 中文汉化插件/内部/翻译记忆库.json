@@ -59,6 +59,13 @@
       ]
     },
     {
+      "source": "(a screen would not describe itself: {e})",
+      "target": "（无法读取此显示器详情：{e}）",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
       "source": "(all words)",
       "target": "（所有词）",
       "files": [
@@ -73,10 +80,24 @@
       ]
     },
     {
+      "source": "(confidence: {confidence})",
+      "target": "（置信度：{confidence}）",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "(Could not determine duration: {e})",
       "target": "（无法确定时长：{e}）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "(could not read the screens: {type(e).__name__}: {e})",
+      "target": "（无法读取显示器信息：{type(e).__name__}：{e}）",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -147,6 +168,13 @@
       "target": "（越低越严格）",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx"
+      ]
+    },
+    {
+      "source": "(min={min_clip}s, max={max_clip}s)",
+      "target": "（最短={min_clip} 秒，最长={max_clip} 秒）",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -227,6 +255,13 @@
       ]
     },
     {
+      "source": "(primary)",
+      "target": "（主显示器）",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
       "source": "(recent output is replayed, so it works after an error too).\\n",
       "target": "近期输出也会重新显示，因此发生错误后再打开也能查看。\\n",
       "files": [
@@ -234,10 +269,24 @@
       ]
     },
     {
+      "source": "(reported once per run): {e}",
+      "target": "（每次运行仅报告一次）: {e}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "(round {first[0]}: {first[1]} of {first[2]})",
       "target": "（第 {first[0]} 轮：{first[1]}/{first[2]}）",
       "files": [
         "modules/vision/training_preview.py"
+      ]
+    },
+    {
+      "source": "(rules changed since the cached pass: {'; '.join(parts)})",
+      "target": "（规则自缓存轮次后已变化：{'; '.join(parts)}）",
+      "files": [
+        "modules/rules/compose_events.py"
       ]
     },
     {
@@ -274,6 +323,13 @@
       "target": "（该地址可能绑定浏览器 IP 或会话）。",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "(target: {target_duration}s, mode: {duration_mode})",
+      "target": "（目标：{target_duration} 秒，模式：{duration_mode}）",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -414,6 +470,13 @@
       "target": "（{manifest.category}，{manifest.license}）可以分享。",
       "files": [
         "model_hub/hub.py"
+      ]
+    },
+    {
+      "source": "({named}{f', soft edge {softest:.0%}' if softest else ''})",
+      "target": "（{named}{f'，柔边 {softest:.0%}' if softest else ''}）",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -666,6 +729,34 @@
       "target": "：下载失败：",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": "; all of them start clean",
+      "target": "；所有片段开头都稳定",
+      "files": [
+        "modules/segments/shot_window.py"
+      ]
+    },
+    {
+      "source": "; none look alike",
+      "target": "；没有发现明显相同视角",
+      "files": [
+        "modules/segments/shot_look.py"
+      ]
+    },
+    {
+      "source": "; {len(late)} start on the camera still being placed",
+      "target": "；其中 {len(late)} 个开头仍处于相机放置过程",
+      "files": [
+        "modules/segments/shot_window.py"
+      ]
+    },
+    {
+      "source": "; {pairs} pair(s) look like the same view",
+      "target": "；其中 {pairs} 对看起来属于相同视角",
+      "files": [
+        "modules/segments/shot_look.py"
       ]
     },
     {
@@ -1047,6 +1138,13 @@
       ]
     },
     {
+      "source": "\\nforbidden_ranges ({len(ranges)}):",
+      "target": "\\n排除区间（{len(ranges)}）：",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
       "source": "\\nMost common actions:",
       "target": "\\n最常见动作：",
       "files": [
@@ -1180,6 +1278,13 @@
       ]
     },
     {
+      "source": "a face scan in this run",
+      "target": "本次运行已完成人脸扫描",
+      "files": [
+        "modules/report/detection_routes.py"
+      ]
+    },
+    {
       "source": "A few degrees of tilt into the cut and out of it.",
       "target": "在切点前后加入几度旋转倾斜。",
       "files": [
@@ -1261,6 +1366,13 @@
       "target": "选择更小的模型也会更快。",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "a transcript",
+      "target": "已有转录文本",
+      "files": [
+        "modules/report/detection_routes.py"
       ]
     },
     {
@@ -1385,6 +1497,13 @@
       "target": "动作",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Actions  → {len(r)} regions",
+      "target": "动作 → {len(r)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -1551,6 +1670,13 @@
       ]
     },
     {
+      "source": "added {', '.join(added)}",
+      "target": "新增 {', '.join(added)}",
+      "files": [
+        "modules/rules/compose_events.py"
+      ]
+    },
+    {
       "source": "Added {added} clip{plural} to edit timeline",
       "target": "已向剪辑时间线添加 {added} 个片段",
       "files": [
@@ -1595,6 +1721,13 @@
       ]
     },
     {
+      "source": "After constrain: {len(constrained)} regions",
+      "target": "约束后：{len(constrained)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
+      ]
+    },
+    {
       "source": "After download:",
       "target": "下载后：",
       "files": [
@@ -1613,6 +1746,13 @@
       "target": "过滤后剩余 {len(filtered_urls)} 个真实视频 URL",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "After merge: {len(merged)} regions",
+      "target": "合并后：{len(merged)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -1719,6 +1859,13 @@
       "target": "正在分析 {timestamp_str} 的画面…",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Analyzing {seconds_to_mmss(total_seconds)} of video (conf≥{confidence_threshold})",
+      "target": "正在分析 {seconds_to_mmss(total_seconds)} 的视频（置信度≥{confidence_threshold}）",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -1869,6 +2016,13 @@
       ]
     },
     {
+      "source": "at least two classes detected in this video",
+      "target": "本视频至少已检测到两个类别",
+      "files": [
+        "modules/report/detection_routes.py"
+      ]
+    },
+    {
       "source": "at {asked}",
       "target": "（地址：{asked}）",
       "files": [
@@ -1910,6 +2064,13 @@
       "target": "音频峰值",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Audio peaks   → {len(r)} regions",
+      "target": "音频峰值 → {len(r)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -2119,6 +2280,13 @@
       ]
     },
     {
+      "source": "Batch {batch_num}/{total_batches}",
+      "target": "批次 {batch_num}/{total_batches}",
+      "files": [
+        "modules/audio/transcript_srt.py"
+      ]
+    },
+    {
       "source": "Beat grid — tall ticks are downbeats",
       "target": "节拍网格 — 较高刻度表示强拍",
       "files": [
@@ -2151,6 +2319,13 @@
       "target": "最佳时刻 ↔ 完整叙事：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "blending",
+      "target": "正在混合转场",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -2222,6 +2397,13 @@
       "target": "（运动峰值和响度）寻找精彩片段，并生成高光成片",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "Cache directory",
+      "target": "缓存目录",
+      "files": [
+        "llm/llm_chat_widget.py"
       ]
     },
     {
@@ -2298,6 +2480,13 @@
         "modules/media/edl.py",
         "modules/segments/auto_pipeline.py",
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "cancelled during identity tagging",
+      "target": "人物身份标记期间已取消",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -2849,6 +3038,13 @@
       ]
     },
     {
+      "source": "clips will be placed by what they carry themselves",
+      "target": "将改用各片段自身携带的位置/时间信息",
+      "files": [
+        "modules/segments/shot_place.py"
+      ]
+    },
+    {
       "source": "Collecting frames",
       "target": "收集帧",
       "files": [
@@ -2950,7 +3146,15 @@
       "source": "Complete",
       "target": "完成",
       "files": [
+        "modules/audio/transcript.py",
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "Complete - {objects_found} objects found",
+      "target": "完成 - 共找到 {objects_found} 个物体",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -2965,6 +3169,13 @@
       "target": "已完成：{successful}/{total_videos} 个成功",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "Completed: {total_detections} detections found",
+      "target": "已完成：共找到 {total_detections} 个检测结果",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -3466,6 +3677,13 @@
       ]
     },
     {
+      "source": "Created {len(chunks)} chunks",
+      "target": "已创建 {len(chunks)} 个分块",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "Creating clip: {clip_path}",
       "target": "正在创建片段：{clip_path}",
       "files": [
@@ -3951,6 +4169,27 @@
       "target": "此设置仅作用于本次运行，并覆盖主窗口保存的语言设置。",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Device {i}: {name} ({vram:.1f} GB VRAM)",
+      "target": "设备 {i}：{name}（{vram:.1f} GB 显存）",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "Device {i}: {torch.xpu.get_device_name(i)}",
+      "target": "设备 {i}：{torch.xpu.get_device_name(i)}",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "Diarization",
+      "target": "说话人识别",
+      "files": [
+        "modules/audio/transcript.py"
       ]
     },
     {
@@ -5214,6 +5453,13 @@
       ]
     },
     {
+      "source": "Found {objects_found} objects so far ({seconds_to_mmss(sec)})",
+      "target": "目前已找到 {objects_found} 个物体（{seconds_to_mmss(sec)}）",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "Frame at {int(timestamp)//60}:{int(timestamp)%60:02d} - {'✅ TARGET FOUND' if contains_target else '❌ No target'}",
       "target": "{int(timestamp)//60}:{int(timestamp)%60:02d} 画面 - {'✅ 已找到目标' if contains_target else '❌ 未找到目标'}",
       "files": [
@@ -5359,6 +5605,13 @@
       "target": "完整视频字幕已创建：{full_srt}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "fullscreen",
+      "target": "全屏",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -5825,6 +6078,13 @@
       ]
     },
     {
+      "source": "Identifying speakers...",
+      "target": "正在识别说话人…",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "identity not found",
       "target": "未找到该人物",
       "files": [
@@ -6008,6 +6268,34 @@
       ]
     },
     {
+      "source": "Install: pip install librosa",
+      "target": "可安装：pip install librosa",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "Install: pip install resemblyzer",
+      "target": "可安装：pip install resemblyzer",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "Install: pip install resemblyzer librosa scikit-learn",
+      "target": "可安装：pip install resemblyzer librosa scikit-learn",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "Install: pip install speechbrain torchaudio librosa scikit-learn",
+      "target": "可安装：pip install speechbrain torchaudio librosa scikit-learn",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "installed",
       "target": "已安装",
       "files": [
@@ -6155,6 +6443,13 @@
       ]
     },
     {
+      "source": "its shots will start at the top of the clip",
+      "target": "该素材的镜头将从片段开头开始",
+      "files": [
+        "modules/segments/shot_window.py"
+      ]
+    },
+    {
       "source": "Join the server",
       "target": "加入社区",
       "files": [
@@ -6218,6 +6513,13 @@
       ]
     },
     {
+      "source": "keeping the reel without it",
+      "target": "将保留无音乐版本的成片",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
       "source": "Keeps the whole frame, with bars where it does not fit.",
       "target": "保留完整画面——无法填满的位置会使用留边。",
       "files": [
@@ -6257,6 +6559,13 @@
       "target": "关键词筛选（{len(cache_search_keywords or [])} 个关键词）",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "Keywords → {len(r)} regions",
+      "target": "关键词 → {len(r)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -6526,6 +6835,13 @@
       ]
     },
     {
+      "source": "LLM Chat with Visual Search",
+      "target": "大模型对话与视觉搜索",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "LLM Context Debug - What the LLM sees",
       "target": "大模型上下文调试 - 查看模型实际输入",
       "files": [
@@ -6716,6 +7032,13 @@
       ]
     },
     {
+      "source": "Loading Whisper '{model_name}'...",
+      "target": "正在加载 Whisper“{model_name}”…",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "Loading {model_name}...",
       "target": "正在加载 {model_name}…",
       "files": [
@@ -6880,6 +7203,13 @@
       ]
     },
     {
+      "source": "maximised",
+      "target": "最大化",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
       "source": "may not play in VR players like HereSphere.",
       "target": "可能无法在 HereSphere 等部分 VR 播放器中播放。",
       "files": [
@@ -6970,6 +7300,13 @@
       "target": "已合并到现有人物",
       "files": [
         "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Merging detection results...",
+      "target": "正在合并检测结果…",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -7277,6 +7614,13 @@
       ]
     },
     {
+      "source": "Motion events → {len(r)} regions",
+      "target": "运动事件 → {len(r)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
+      ]
+    },
+    {
       "source": "Motion peak",
       "target": "运动峰值",
       "files": [
@@ -7295,6 +7639,13 @@
       "target": "运动峰值",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Motion peaks  → {len(r)} regions",
+      "target": "运动峰值 → {len(r)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -7807,6 +8158,13 @@
       ]
     },
     {
+      "source": "no re-scan needed",
+      "target": "无需重新扫描",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
       "source": "No results yet.",
       "target": "暂无搜索结果。",
       "files": [
@@ -7867,6 +8225,13 @@
       "target": "没有可用于生成成片的有效片段",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "No valid input files to build a reel from",
+      "target": "没有可用于生成成片的有效输入文件",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -7967,6 +8332,13 @@
       "target": "{os.path.basename(src)} 标准化失败：{err}",
       "files": [
         "modules/media/combine_videos.py"
+      ]
+    },
+    {
+      "source": "normalizing {i + 1}/{len(valid)}",
+      "target": "正在标准化 {i + 1}/{len(valid)}",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -8139,6 +8511,13 @@
       ]
     },
     {
+      "source": "Object Detection",
+      "target": "物体检测",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "Object detection must re-run before this can fire.</small>",
       "target": "添加后必须重新运行物体检测，这条规则才能生效。</small>",
       "files": [
@@ -8196,6 +8575,13 @@
       "target": "物体",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Objects  → {len(r)} regions",
+      "target": "物体 → {len(r)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -8797,6 +9183,13 @@
       ]
     },
     {
+      "source": "Path to video file",
+      "target": "视频文件路径",
+      "files": [
+        "llm/llm_chat_widget.py"
+      ]
+    },
+    {
       "source": "Pause",
       "target": "暂停",
       "files": [
@@ -8871,6 +9264,13 @@
       "target": "人物,玻璃杯,酒杯,球类",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "physical, {state}",
+      "target": "状态：{state}",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -9028,6 +9428,13 @@
       ]
     },
     {
+      "source": "possibly 1 speaker — using {best_k} anyway",
+      "target": "可能只有 1 位说话人；仍按 {best_k} 位处理",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "Precomp",
       "target": "预渲染",
       "files": [
@@ -9141,6 +9548,14 @@
       ]
     },
     {
+      "source": "Proceeding without speaker identification",
+      "target": "将在不进行说话人识别的情况下继续",
+      "files": [
+        "modules/audio/speaker_utils.py",
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "Process all after downloads finish",
       "target": "全部下载完成后统一处理",
       "files": [
@@ -9187,6 +9602,13 @@
       "target": "已处理：{processed}",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "Processing frames: {processed_frames}/{total_frames}",
+      "target": "正在处理帧：{processed_frames}/{total_frames}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -9285,6 +9707,13 @@
       "target": "未找到 Qt 应用程序可执行文件",
       "files": [
         "sidecar/server.py"
+      ]
+    },
+    {
+      "source": "QT_SCALE_FACTOR={factor or '(unset)'},",
+      "target": "QT_SCALE_FACTOR={factor or '（未设置）'},",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -9428,6 +9857,13 @@
       "target": "而不是只识别单帧中可见的物体。\\n",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "ratio {screen.devicePixelRatio():g},",
+      "target": "像素比 {screen.devicePixelRatio():g}，",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -9590,6 +10026,7 @@
       "target": "成片",
       "files": [
         "frontend/src/App.tsx",
+        "modules/media/transitions.py",
         "sidecar/server.py"
       ]
     },
@@ -9598,6 +10035,20 @@
       "target": "短片",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "Reel build failed: {err}",
+      "target": "成片生成失败：{err}",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "Reel build produced no output",
+      "target": "成片生成后没有输出文件",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -9787,6 +10238,13 @@
       ]
     },
     {
+      "source": "removed {', '.join(gone)}",
+      "target": "移除 {', '.join(gone)}",
+      "files": [
+        "modules/rules/compose_events.py"
+      ]
+    },
+    {
       "source": "Removed {count} clips",
       "target": "已移除 {count} 个片段",
       "files": [
@@ -9920,17 +10378,17 @@
       ]
     },
     {
-      "source": "Round {snap.epoch} of {snap.total_epochs}: found {found} of {expected}",
-      "target": "第 {snap.epoch}/{snap.total_epochs} 轮：识别到 {found}/{expected} 个目标",
-      "files": [
-        "modules/vision/training_preview.py"
-      ]
-    },
-    {
       "source": "Rounded every clip to the ${bar.toFixed(2)}s bar",
       "target": "已将所有片段对齐到 ${bar.toFixed(2)} 秒的小节",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "rounding={rounding or '(default)'},",
+      "target": "rounding={rounding or '（默认）'},",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -10308,6 +10766,13 @@
       ]
     },
     {
+      "source": "Scenes   → {len(r)} regions",
+      "target": "场景 → {len(r)} 个区间",
+      "files": [
+        "modules/segments/auto_segments.py"
+      ]
+    },
+    {
       "source": "Score Calculation",
       "target": "评分计算",
       "files": [
@@ -10347,6 +10812,13 @@
       "target": "分数阈值",
       "files": [
         "frontend/src/components/tabs/VisionSearchTab.tsx"
+      ]
+    },
+    {
+      "source": "score={reg.score:.1f} sources=[{src}]",
+      "target": "评分={reg.score:.1f}，来源=[{src}]",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -10504,6 +10976,13 @@
       "target": "查看大模型实际接收到的完整文本",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Segment {i+1}: {s_mm}-{e_mm} ({reg.duration:.1f}s)",
+      "target": "片段 {i+1}：{s_mm}-{e_mm}（{reg.duration:.1f} 秒）",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -10715,6 +11194,13 @@
       "target": "已选择 {duration:.2f} 秒",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Selected {len(segments)} segments, total {total_dur:.1f}s",
+      "target": "已选择 {len(segments)} 个片段，总时长 {total_dur:.1f} 秒",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -11339,6 +11825,20 @@
       ]
     },
     {
+      "source": "Speaker identification complete",
+      "target": "说话人识别完成",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
+      "source": "Speaker Summary:",
+      "target": "说话人摘要：",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "Specific range (seconds)",
       "target": "指定范围（秒）",
       "files": [
@@ -11364,6 +11864,20 @@
       "target": "速度：",
       "files": [
         "video_ai_editor/video_preview.py"
+      ]
+    },
+    {
+      "source": "Splitting audio...",
+      "target": "正在拆分音频…",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
+      "source": "Splitting video into chunks...",
+      "target": "正在将视频拆分为多个片段…",
+      "files": [
+        "modules/audio/transcript.py"
       ]
     },
     {
@@ -11463,6 +11977,13 @@
       "target": "正在启动",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Starting object detection workers...",
+      "target": "正在启动物体检测工作线程…",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -11839,6 +12360,13 @@
       ]
     },
     {
+      "source": "the clip keeps its picture",
+      "target": "将保留该片段的原始画面",
+      "files": [
+        "modules/media/motion.py"
+      ]
+    },
+    {
       "source": "The download failed: {e}",
       "target": "下载失败：{e}",
       "files": [
@@ -11973,6 +12501,13 @@
       ]
     },
     {
+      "source": "the reel keeps its picture",
+      "target": "成片将保留原始画面",
+      "files": [
+        "modules/media/overlay.py"
+      ]
+    },
+    {
       "source": "The report can be written with any of these. The one selected is",
       "target": "报告可以使用以下任一模型生成。当前选中的模型",
       "files": [
@@ -12096,6 +12631,13 @@
       "target": "这会导致大模型缺少依据并产生幻觉。\\n",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "This may indicate unclear audio or incorrect language setting",
+      "target": "这可能表示音频不清晰，或语言设置不正确",
+      "files": [
+        "modules/audio/transcript.py"
       ]
     },
     {
@@ -12239,10 +12781,31 @@
       ]
     },
     {
+      "source": "torch also sees the GPU through Metal (MPS); nothing uses it yet",
+      "target": "torch 也可通过 Metal（MPS）识别 GPU，但当前尚无模块使用它",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "torch device: {device} (experimental — see docs/AMD-GPU.md)",
+      "target": "torch 设备：{device}（实验性，详见 docs/AMD-GPU.md）",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
       "source": "Total duration: {int(duration//60)}:{int(duration%60):02d} ({duration:.1f}s)",
       "target": "总时长：{int(duration//60)}:{int(duration%60):02d}（{duration:.1f} 秒）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Total raw regions: {len(all_regions)}",
+      "target": "原始区间总数：{len(all_regions)}",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -12285,6 +12848,13 @@
       "target": "音乐轨道",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Tracking + identity… frame {real_frame}",
+      "target": "正在追踪并识别身份… 第 {real_frame} 帧",
+      "files": [
+        "video_ai_editor/identity_tagging.py"
       ]
     },
     {
@@ -12445,6 +13015,13 @@
       ]
     },
     {
+      "source": "Transcription",
+      "target": "转录",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "Transition",
       "target": "转场",
       "files": [
@@ -12456,6 +13033,13 @@
       "target": "转场时长（秒）",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Translation",
+      "target": "翻译",
+      "files": [
+        "modules/audio/transcript_srt.py"
       ]
     },
     {
@@ -12540,7 +13124,8 @@
       "source": "unknown error",
       "target": "未知错误",
       "files": [
-        "modules/media/combine_videos.py"
+        "modules/media/combine_videos.py",
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -12722,6 +13307,20 @@
       ]
     },
     {
+      "source": "usable {available.width()}x{available.height()},",
+      "target": "可用区域 {available.width()}x{available.height()}，",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "Usage: python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]",
+      "target": "用法：python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
       "source": "Usage: python realtime_overlay.py <video_path> [cache.json]",
       "target": "用法：python realtime_overlay.py <视频路径> [cache.json]",
       "files": [
@@ -12796,6 +13395,13 @@
       "target": "直接使用缓存中的检测数据，不会额外占用 GPU。\\n",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "Using device for Whisper: {device}",
+      "target": "Whisper 使用设备：{device}",
+      "files": [
+        "modules/audio/transcript.py"
       ]
     },
     {
@@ -13474,6 +14080,13 @@
       ]
     },
     {
+      "source": "windowed",
+      "target": "窗口",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
       "source": "with thumbnails, scores and the moments that nearly made it",
       "target": "包含缩略图、评分以及差一点被选中的时刻。",
       "files": [
@@ -13804,6 +14417,13 @@
       ]
     },
     {
+      "source": "{geometry.width()}x{geometry.height()} at",
+      "target": "{geometry.width()}x{geometry.height()}，位置",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
       "source": "{group}\\Uninstall {#AppName}",
       "target": "{group}\\卸载 {#AppName}",
       "files": [
@@ -13815,6 +14435,13 @@
       "target": "{hours:.1f} 小时",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "{int(size.width() * ratio)}x{int(size.height() * ratio)}",
+      "target": "物理尺寸 {int(size.width() * ratio)}x{int(size.height() * ratio)}，",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -13902,6 +14529,13 @@
       ]
     },
     {
+      "source": "{len(composed)} second(s) from {len(names)} rule(s){note}",
+      "target": "{hits} 个事件{note}",
+      "files": [
+        "modules/rules/compose_events.py"
+      ]
+    },
+    {
       "source": "{len(cut_list.cuts)} cuts, {cut_list.duration:.0f}s",
       "target": "{len(cut_list.cuts)} 个剪切，{cut_list.duration:.0f} 秒",
       "files": [
@@ -13941,6 +14575,13 @@
       "target": "总计 {len(forbidden_ranges)} 个禁用区间",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "{len(forbidden_ranges)} merged range(s)",
+      "target": "合并为 {len(forbidden_ranges)} 个区间",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -13997,6 +14638,13 @@
       "target": "{len(paths)} 个文件",
       "files": [
         "sidecar/worker.py"
+      ]
+    },
+    {
+      "source": "{len(pieces)} run(s), {lost:.1f}s absorbed, ~{sum(run_durations) - lost:.1f}s out",
+      "target": "转场占用 {lost:.1f} 秒，预计输出约 {sum(run_durations) - lost:.1f} 秒",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -14088,6 +14736,13 @@
       "target": "{len(self.segments)} 个片段",
       "files": [
         "video_ai_editor/transcript_panel.py"
+      ]
+    },
+    {
+      "source": "{len(unique_speakers)} speakers",
+      "target": "{len(unique_speakers)} 位说话人",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -14273,6 +14928,13 @@
       ]
     },
     {
+      "source": "{points[0][0]:%H:%M} to {points[-1][0]:%H:%M} UTC",
+      "target": "{points[0][0]:%H:%M} 至 {points[-1][0]:%H:%M} UTC",
+      "files": [
+        "modules/segments/shot_place.py"
+      ]
+    },
+    {
       "source": "{prefix}: {len(seconds)} second(s) with a readable face",
       "target": "{prefix}：{len(seconds)} 秒画面中检测到可识别人脸",
       "files": [
@@ -14312,6 +14974,27 @@
       "target": "验证速度 {result.val_images_per_second:.1f} 张/秒，设备 {result.device}",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "{screen.logicalDotsPerInch():.0f} logical DPI,",
+      "target": "逻辑 DPI {screen.logicalDotsPerInch():.0f}，",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "{screen.name() or 'screen'}:",
+      "target": "{screen.name() or '屏幕'}:",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "{screen.physicalDotsPerInch():.0f} physical",
+      "target": "物理 DPI {screen.physicalDotsPerInch():.0f}",
+      "files": [
+        "modules/system/display_info.py"
       ]
     },
     {
@@ -14392,10 +15075,24 @@
       ]
     },
     {
+      "source": "{timed} have a time",
+      "target": "{timed} 个有时间信息",
+      "files": [
+        "modules/segments/shot_place.py"
+      ]
+    },
+    {
       "source": "{title} is installed and takes effect after a restart. Restart now?",
       "target": "{title} 已安装，重启后生效。现在重启吗？",
       "files": [
         "modules/packs/pack_ui.py"
+      ]
+    },
+    {
+      "source": "{total} segments",
+      "target": "{total} 个片段",
+      "files": [
+        "modules/audio/transcript_srt.py"
       ]
     },
     {
@@ -15170,6 +15867,20 @@
       ]
     },
     {
+      "source": "ℹ Using cached face scan ({len(cached)} second(s))",
+      "target": "ℹ 正在使用缓存的人脸扫描结果（{len(cached)} second(s))",
+      "files": [
+        "modules/vision/face_scan.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Apple GPU not used: {probe.reason}",
+      "target": "ℹ️ 未使用 Apple GPU：{probe.reason}",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
       "source": "ℹ️ Cache disabled or forced reprocess",
       "target": "ℹ️ 缓存已禁用，或已强制重新处理",
       "files": [
@@ -15181,6 +15892,20 @@
       "target": "ℹ️ 正在结合画面分析与时间线上下文…",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Compute backend {label_for(backend)!r} from the settings does",
+      "target": "ℹ️ 计算后端 {label_for(backend)!r} from the settings does",
+      "files": [
+        "modules/system/compute_backend.py"
+      ]
+    },
+    {
+      "source": "ℹ️ DirectML unavailable: {reason}",
+      "target": "ℹ️ DirectML 不可用：{reason}",
+      "files": [
+        "modules/system/device_utils.py"
       ]
     },
     {
@@ -15198,6 +15923,13 @@
       ]
     },
     {
+      "source": "ℹ️ Low clustering confidence (score={best_score:.2f}),",
+      "target": "ℹ️ 聚类置信度较低（评分={best_score:.2f}），",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "ℹ️ No annotated videos found yet — use Generate buttons",
       "target": "ℹ️ 尚未找到已标注视频 — 请使用生成按钮",
       "files": [
@@ -15209,6 +15941,13 @@
       "target": "ℹ️ 未找到哈希 {video_hash[:16]}… 对应的缓存文件，正在新建",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "ℹ️ No GPU found — using CPU",
+      "target": "ℹ️ 未找到可用 GPU，使用 CPU",
+      "files": [
+        "modules/system/device_utils.py"
       ]
     },
     {
@@ -15237,6 +15976,13 @@
       "target": "ℹ️ OpenVINO 不可用",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Proceeding without speaker identification",
+      "target": "ℹ️ 将在不进行说话人识别的情况下继续",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -15275,6 +16021,13 @@
       ]
     },
     {
+      "source": "ℹ️ Subsampling {len(speech_segments)} → {max_segments} segments",
+      "target": "ℹ️ 语音片段过多：从 {len(speech_segments)} 个下采样到 {max_segments} 个",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "ℹ️ Text mode active: using analysis data only, ignoring vision",
       "target": "ℹ️ 文本模式已启用：仅使用分析数据，不读取画面",
       "files": [
@@ -15286,6 +16039,13 @@
       "target": "ℹ️ SigLIP2 动作后端目前尚不支持在视频上绘制标签",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Too few segments for auto-detection, assuming 1 speaker",
+      "target": "ℹ️ 片段过少，无法自动判断说话人数，按 1 位说话人处理",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -15314,6 +16074,20 @@
       "target": "ℹ️ 正在使用缓存的转录文本",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Vocal signals: only {result.get('vocal_seconds', 0)} vocal",
+      "target": "ℹ️ 人声信号：仅检测到 {result.get('vocal_seconds', 0)} 秒人声",
+      "files": [
+        "modules/rules/composition_signals.py"
+      ]
+    },
+    {
+      "source": "ℹ️ webrtcvad not installed, trying energy-based VAD",
+      "target": "ℹ️ 未安装 webrtcvad，改用基于能量的 VAD",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -15712,6 +16486,13 @@
       ]
     },
     {
+      "source": "⏹️ Object detection cancelled",
+      "target": "⏹️ 物体检测已取消",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "⏹️ On-demand run cancelled",
       "target": "⏹️ 按需分析已取消",
       "files": [
@@ -15730,6 +16511,20 @@
       "target": "⏹️ 处理流程已取消",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⏹️ Stopped after {index - 1} of {len(chapters)} chapters.",
+      "target": "⏹️ 已停止：完成 {index - 1}/{len(chapters)} 个章节。",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
+      "source": "⏹️ Stopped after {position - 1} of {len(segments)} clips.",
+      "target": "⏹️ 已停止：完成 {position - 1}/{len(segments)} 个片段。",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -15822,6 +16617,21 @@
       "files": [
         "frontend/src/App.tsx",
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚙️ Converting {onnx_path.name} → {xml_path.name}",
+      "target": "⚙️ 正在转换 {onnx_path.name} → {xml_path.name}",
+      "files": [
+        "modules/vision/rtmpose_models.py",
+        "modules/vision/yolox_models.py"
+      ]
+    },
+    {
+      "source": "⚙️ Normalizing {i + 1}/{len(valid)}: {os.path.basename(src)}",
+      "target": "⚙️ 正在标准化 {i + 1}/{len(valid)}：{os.path.basename(src)}",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -16070,6 +16880,13 @@
       ]
     },
     {
+      "source": "⚠️ Audio extraction failed: {e}",
+      "target": "⚠️ 音频提取失败：{e}",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "⚠️ Audio peak detection failed: {e}",
       "target": "⚠️ 音频峰值检测失败：{e}",
       "files": [
@@ -16081,6 +16898,20 @@
       "target": "⚠️ 排除解析器不可用，将不应用人物排除：{e}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Avoid: could not write cache: {e}",
+      "target": "⚠️ 人物排除：无法写入缓存：{e}",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "⚠️ Avoid: could not write entries cache: {e}",
+      "target": "⚠️ 人物排除：无法写入标记结果缓存：{e}",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -16203,6 +17034,27 @@
       ]
     },
     {
+      "source": "⚠️ Chapter {index} could not be told: {exc}",
+      "target": "⚠️ 无法讲述章节 {index}：{exc}",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
+      "source": "⚠️ Clip {position} could not be read: {exc}",
+      "target": "⚠️ 无法读取片段 {position}：{exc}",
+      "files": [
+        "modules/narration/clip_story.py"
+      ]
+    },
+    {
+      "source": "⚠️ Clip {position} has no frames to read; skipped.",
+      "target": "⚠️ 片段 {position} 没有可读取的画面，已跳过。",
+      "files": [
+        "modules/narration/clip_story.py"
+      ]
+    },
+    {
       "source": "⚠️ Community models unavailable: {e}",
       "target": "⚠️ 社区模型不可用：{e}",
       "files": [
@@ -16214,6 +17066,20 @@
       "target": "⚠️ 已跳过构图引擎：{_ce}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Composition rules could not be loaded: {exc}",
+      "target": "⚠️ 无法加载构图规则：{exc}",
+      "files": [
+        "modules/rules/compose_events.py"
+      ]
+    },
+    {
+      "source": "⚠️ compute_forbidden: could not read frame size — skipping exclusion",
+      "target": "⚠️ 人物排除：无法读取画面尺寸，已跳过排除处理",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -16235,6 +17101,13 @@
       "target": "⚠️ 无法应用音乐，已保留原高光视频：{e}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not apply the {name} motion ({tail_line[0]});",
+      "target": "⚠️ 无法应用“{name}”运动效果（{tail_line[0]}）；",
+      "files": [
+        "modules/media/motion.py"
       ]
     },
     {
@@ -16315,10 +17188,38 @@
       ]
     },
     {
+      "source": "⚠️ Could not determine video duration",
+      "target": "⚠️ 无法确定视频时长",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not draw text ({tail[0]}); the clip keeps its picture",
+      "target": "⚠️ 无法绘制文字（{tail[0]}）；片段将保留原始画面",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not draw the graphics ({detail or 'unknown error'});",
+      "target": "⚠️ 无法绘制图形（{detail or '未知错误'}）；",
+      "files": [
+        "modules/media/overlay.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not draw the graphics ({exc});",
       "target": "⚠️ 无法绘制图形（{exc}）；",
       "files": [
         "modules/media/edl.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not fetch the YOLOX detector: {exc}",
+      "target": "⚠️ 无法获取 YOLOX 检测器：{exc}",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -16350,10 +17251,31 @@
       ]
     },
     {
+      "source": "⚠️ Could not load audio for gender estimation: {e}",
+      "target": "⚠️ 无法加载用于性别估计的音频：{e}",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not load audio: {e}",
+      "target": "⚠️ 无法加载音频：{e}",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not load cached waveform: {e}",
       "target": "⚠️ 无法加载缓存波形：{e}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not load embedding model: {e}",
+      "target": "⚠️ 无法加载嵌入模型：{e}",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -16371,10 +17293,31 @@
       ]
     },
     {
+      "source": "⚠️ Could not measure how {os.path.basename(path)} looks ({exc})",
+      "target": "⚠️ 无法测量 {os.path.basename(path)} 的画面特征（{exc}）",
+      "files": [
+        "modules/segments/shot_look.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not measure {os.path.basename(path)} ({exc});",
+      "target": "⚠️ 无法测量 {os.path.basename(path)}（{exc}）；",
+      "files": [
+        "modules/segments/shot_window.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not open a browser. The report is at: {newest}",
       "target": "⚠️ 无法打开浏览器。报告位于：{newest}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not open {os.path.basename(path)} to measure it",
+      "target": "⚠️ 无法打开 {os.path.basename(path)} 进行测量",
+      "files": [
+        "modules/segments/shot_window.py"
       ]
     },
     {
@@ -16389,6 +17332,13 @@
       "target": "⚠️ 无法重新读取报告：{exc}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not re-read {json_path} ({exc}); writing what was read",
+      "target": "⚠️ 无法重新读取 {json_path}（{exc}）；将写入已读取的结果",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -16413,6 +17363,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not read the GPS track ({exc});",
+      "target": "⚠️ 无法读取 GPS 轨迹（{exc}）；",
+      "files": [
+        "modules/segments/shot_place.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not read the report: {exc}",
       "target": "⚠️ 无法读取报告：{exc}",
       "files": [
@@ -16424,6 +17381,13 @@
       "target": "⚠️ 无法读取 {path}：{exc}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not refresh cached events: {exc}",
+      "target": "⚠️ 无法刷新缓存事件：{exc}",
+      "files": [
+        "modules/rules/compose_events.py"
       ]
     },
     {
@@ -16525,6 +17489,27 @@
       ]
     },
     {
+      "source": "⚠️ CUDA check failed: {e}",
+      "target": "⚠️ CUDA 检查失败：{e}",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Diarization failed: {e}",
+      "target": "⚠️ 说话人识别失败：{e}",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
+      "source": "⚠️ Diarization module not available: {e}",
+      "target": "⚠️ 说话人识别模块不可用：{e}",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "⚠️ Download already in progress!",
       "target": "⚠️ 下载任务正在进行中！",
       "files": [
@@ -16571,6 +17556,13 @@
       "target": "⚠️ 从信号数据提取高光片段时出错：{e}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Error in object detection at frame {frame_idx}: {e}",
+      "target": "⚠️ 第 {frame_idx} 帧物体检测出错：{e}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -16627,6 +17619,13 @@
       "target": "⚠️ 缓存保存失败：{e}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Failed to save CSV: {e}",
+      "target": "⚠️ CSV 保存失败：{e}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -16763,10 +17762,38 @@
       ]
     },
     {
+      "source": "⚠️ librosa not installed — cannot run VAD",
+      "target": "⚠️ 未安装 librosa，无法运行 VAD",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ librosa not installed — needed for audio loading",
+      "target": "⚠️ 未安装 librosa，加载音频需要该组件",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ librosa not installed — skipping gender estimation",
+      "target": "⚠️ 未安装 librosa，跳过性别估计",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "⚠️ Live overlay not available — module not loaded",
       "target": "⚠️ 实时叠加层不可用——相关模块未加载",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Live preview frame failed",
+      "target": "⚠️ 实时预览帧处理失败",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -16802,6 +17829,27 @@
       "target": "⚠️ 手动排除区间解析失败，将忽略这些区间：{e}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Missing dependency: {e}",
+      "target": "⚠️ 缺少依赖：{e}",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Music could not be applied ({exc});",
+      "target": "⚠️ 无法应用音乐（{exc}）；",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "⚠️ Music could not be applied; rebuilding without it",
+      "target": "⚠️ 无法应用音乐，将在不加音乐的情况下重新生成",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -16854,6 +17902,13 @@
       ]
     },
     {
+      "source": "⚠️ No interest regions found — falling back to empty segments",
+      "target": "⚠️ 未找到兴趣区间，将回退为空分段",
+      "files": [
+        "modules/segments/auto_segments.py"
+      ]
+    },
+    {
       "source": "⚠️ No keyword matches found!",
       "target": "⚠️ 未找到关键词匹配！",
       "files": [
@@ -16879,6 +17934,20 @@
       "target": "⚠️ {label_file} 中没有找到标签",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No object detector available, skipping object detection",
+      "target": "⚠️ 没有可用的物体检测器，跳过物体检测",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️ No objects specified in highlight_objects list!",
+      "target": "⚠️ 未指定需要检测的物体类别！",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -16910,6 +17979,13 @@
       ]
     },
     {
+      "source": "⚠️ No speech segments detected",
+      "target": "⚠️ 未检测到语音片段",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "⚠️ No tempo available — cuts left where they were",
       "target": "⚠️ 没有可用的节拍信息——保留原始剪切位置",
       "files": [
@@ -16921,6 +17997,20 @@
       "target": "⚠️ 视频旁没有找到转录文件",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ No usable font found; on-screen text skipped",
+      "target": "⚠️ 未找到可用字体，已跳过画面文字",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "⚠️ No valid embeddings extracted",
+      "target": "⚠️ 未提取到有效嵌入",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -16987,10 +18077,24 @@
       ]
     },
     {
+      "source": "⚠️ No YOLOX IR for tracking — run tools/get_yolox_model.py",
+      "target": "⚠️ 未找到用于追踪的 YOLOX IR，请运行 tools/get_yolox_model.py",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
       "source": "⚠️ None of the graphics could be drawn from this footage",
       "target": "⚠️ 当前素材无法绘制所选图形",
       "files": [
         "modules/media/edl.py"
+      ]
+    },
+    {
+      "source": "⚠️ Not using the NVIDIA GPU: {reason}",
+      "target": "⚠️ 未使用 NVIDIA GPU：{reason}",
+      "files": [
+        "modules/system/device_utils.py"
       ]
     },
     {
@@ -17033,6 +18137,27 @@
       "target": "⚠️ OpenVINO 设备检查失败：{e}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ OpenVINO GPU probe failed: {e}",
+      "target": "⚠️ OpenVINO GPU 探测失败：{e}",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Person tracker failed to load: {exc}",
+      "target": "⚠️ 人物追踪器加载失败：{exc}",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "⚠️ Pillow is not available, so the graphics were skipped",
+      "target": "⚠️ Pillow 不可用，已跳过图形叠加",
+      "files": [
+        "modules/media/overlay.py"
       ]
     },
     {
@@ -17162,6 +18287,13 @@
       ]
     },
     {
+      "source": "⚠️ resemblyzer not installed — cannot extract speaker embeddings",
+      "target": "⚠️ 未安装 resemblyzer，无法提取说话人嵌入",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "⚠️ Result is only {fb_secs:.0f}s — this is almost",
       "target": "⚠️ 下载结果只有 {fb_secs:.0f} 秒——这很可能是",
       "files": [
@@ -17225,10 +18357,24 @@
       ]
     },
     {
+      "source": "⚠️ Skipping missing input: {c}",
+      "target": "⚠️ 跳过缺失的输入文件：{c}",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
       "source": "⚠️ Skipping missing input: {f}",
       "target": "⚠️ 跳过缺失的输入文件：{f}",
       "files": [
         "modules/media/combine_videos.py"
+      ]
+    },
+    {
+      "source": "⚠️ Speaker diarization failed: {e}",
+      "target": "⚠️ 说话人分离失败：{e}",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -17344,6 +18490,20 @@
       ]
     },
     {
+      "source": "⚠️ Unknown compute backend {chosen!r} — using automatic",
+      "target": "⚠️ 未知计算后端 {chosen!r}，改用自动选择",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Unmeasured claims backfill skipped: {exc}",
+      "target": "⚠️ 未测量内容的回填已跳过：{exc}",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
       "source": "⚠️ Update: {result.message}",
       "target": "⚠️ 更新：{result.message}",
       "files": [
@@ -17386,6 +18546,13 @@
       ]
     },
     {
+      "source": "⚠️ Video not found: {video_path}",
+      "target": "⚠️ 未找到视频：{video_path}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "⚠️ Video not found: {video}",
       "target": "⚠️ 找不到视频：{video}",
       "files": [
@@ -17400,10 +18567,24 @@
       ]
     },
     {
+      "source": "⚠️ Vocal signals unavailable: {exc}",
+      "target": "⚠️ 人声信号不可用：{exc}",
+      "files": [
+        "modules/rules/composition_signals.py"
+      ]
+    },
+    {
       "source": "⚠️ WARNING: All scoring signals are set to 0. No moments will be scored and",
       "target": "⚠️ 警告：所有评分信号都设为 0。不会有任何时刻获得评分，MAX 模式下也不会生成高光。",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ WARNING: Expected '{language}' but Whisper detected '{detected_lang}'",
+      "target": "⚠️ 警告：预期语言为“{language}”，但 Whisper 检测为“{detected_lang}”",
+      "files": [
+        "modules/audio/transcript.py"
       ]
     },
     {
@@ -17421,10 +18602,31 @@
       ]
     },
     {
+      "source": "⚠️ WebRTC VAD failed: {e}",
+      "target": "⚠️ WebRTC VAD 失败：{e}",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ XPU check failed: {e}",
+      "target": "⚠️ XPU 检查失败：{e}",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
       "source": "⚠️ yt-dlp duration extraction failed: {e}",
       "target": "⚠️ yt-dlp 时长提取失败：{e}",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "⚠️ {_dml.MODE_ENV}=force but DirectML is unusable:",
+      "target": "⚠️ 已设置 {_dml.MODE_ENV}=force，但 DirectML 不可用：",
+      "files": [
+        "modules/system/device_utils.py"
       ]
     },
     {
@@ -17439,6 +18641,13 @@
       "target": "⚠️ {filename} 已下载，但处理失败",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ {os.path.basename(path)} has no timed track points",
+      "target": "⚠️ {os.path.basename(path)} 中没有带时间信息的轨迹点",
+      "files": [
+        "modules/segments/shot_place.py"
       ]
     },
     {
@@ -17474,6 +18683,20 @@
       "target": "✂️ 切割模式：开——左键点击片段切割｜按 C 在光标处切割｜右键打开修剪菜单",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✂️ Chapter {index} repeated itself; kept what came before.",
+      "target": "✂️ 章节 {index} 出现重复内容，已保留此前结果。",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
+      "source": "✂️ Clip {position} repeated itself; kept what came before.",
+      "target": "✂️ 片段 {position} 出现重复内容，已保留此前结果。",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -17540,6 +18763,13 @@
       ]
     },
     {
+      "source": "✅ Apple GPU via Core ML (ONNX Runtime {probe.version or '?'}) —",
+      "target": "✅ Apple GPU 已通过 Core ML 启用（ONNX Runtime {probe.version or '?'}）—",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
       "source": "✅ Audio peak detection done: {len(audio_peaks)} peaks",
       "target": "✅ 音频峰值检测完成：{len(audio_peaks)} 个峰值",
       "files": [
@@ -17575,6 +18805,13 @@
       ]
     },
     {
+      "source": "✅ Composition engine: {hits} event-hit(s) over",
+      "target": "✅ 构图引擎：{len(names)} 条规则在 {len(composed)} 秒内命中",
+      "files": [
+        "modules/rules/compose_events.py"
+      ]
+    },
+    {
       "source": "✅ Composition rules saved → {save_path}",
       "target": "✅ 构图规则已保存 → {save_path}",
       "files": [
@@ -17589,10 +18826,38 @@
       ]
     },
     {
+      "source": "✅ CSV created: {csv_file} with {len(all_frame_objects)} detections",
+      "target": "✅ 已创建 CSV：{csv_file}，包含 {len(all_frame_objects)} 个检测结果",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "✅ CSV saved to {csv_output}",
+      "target": "✅ CSV 已保存到：{csv_output}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "✅ CUDA available: {count} device(s)",
+      "target": "✅ CUDA 可用：{count} 个设备",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
       "source": "✅ CUDA memory cleaned up",
       "target": "✅ CUDA 显存已清理",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "✅ Detected {best_k} speakers (silhouette={best_score:.2f})",
+      "target": "✅ 检测到 {best_k} 位说话人（轮廓系数={best_score:.2f}）",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -17631,10 +18896,24 @@
       ]
     },
     {
+      "source": "✅ Extracted {len(embeddings)} speaker embeddings",
+      "target": "✅ 已提取 {len(embeddings)} 个说话人嵌入",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "✅ Face scan complete — {n} identities in the bank",
       "target": "✅ 人脸扫描完成——人脸库中共有 {n} 个身份",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "✅ Face scan: {len(seconds)} second(s) with a readable expression",
+      "target": "✅ 人脸扫描完成：{len(seconds)} second(s) with a readable expression",
+      "files": [
+        "modules/vision/face_scan.py"
       ]
     },
     {
@@ -17729,10 +19008,31 @@
       ]
     },
     {
+      "source": "✅ Intel GPU available via OpenVINO: {devices}",
+      "target": "✅ Intel GPU 可通过 OpenVINO 使用：{devices}",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "✅ Intel XPU available: {count} device(s)",
+      "target": "✅ Intel XPU 可用：{count} 个设备",
+      "files": [
+        "modules/system/device_utils.py"
+      ]
+    },
+    {
       "source": "✅ Live overlay loaded ({self.realtime_preview.get_detection_count()} detections)",
       "target": "✅ 实时叠加已加载（{self.realtime_preview.get_detection_count()} 个检测结果）",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✅ LLM ready ({elapsed:.1f}s)",
+      "target": "✅ 大模型已就绪（{elapsed:.1f} 秒)",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -17834,10 +19134,24 @@
       ]
     },
     {
+      "source": "✅ Object detection annotated video saved: {annotated_output}",
+      "target": "✅ 物体检测标注视频已保存：{annotated_output}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "✅ Object detection complete: {len(object_detections)} seconds with objects",
       "target": "✅ 物体检测完成：{len(object_detections)} 秒包含检测到的物体",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "✅ Object detection complete: {objects_found} total objects detected",
+      "target": "✅ 物体检测完成：共检测到 {objects_found} 个物体",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -17852,6 +19166,13 @@
       "target": "✅ 物体检测器：{type(yolo_model).__name__}，",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "✅ Person tracker ready (YOLOX): {model_xml}",
+      "target": "✅ 人物追踪器已就绪（YOLOX）：{model_xml}",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -17883,6 +19204,13 @@
       ]
     },
     {
+      "source": "✅ Reel saved: {output}",
+      "target": "✅ 成片已保存：{output}",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
       "source": "✅ Replaced the advert with the real video",
       "target": "✅ 已用真实视频替换广告",
       "files": [
@@ -17904,10 +19232,31 @@
       ]
     },
     {
+      "source": "✅ Speaker enrichment complete: {len(speaker_labels)} speakers identified",
+      "target": "✅ 说话人信息补充完成：已识别 {len(speaker_labels)} 位说话人",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "✅ Timeline exported successfully!\\n\\n{msg}",
       "target": "✅ 时间线导出成功！\\n\\n{msg}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✅ Total seconds with objects: {len(final_objects)}, total detections: {total_detections}",
+      "target": "✅ 检测到物体的总秒数：{len(final_objects)}，检测结果总数：{total_detections}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "✅ Transcript ready: {len(all_segments)} segments (from {len(chunks)} chunks)",
+      "target": "✅ 转录完成：共 {len(all_segments)} 个片段（来自 {len(chunks)} 个分块）",
+      "files": [
+        "modules/audio/transcript.py"
       ]
     },
     {
@@ -18590,6 +19939,13 @@
       ]
     },
     {
+      "source": "❌ Failed to open video: {video_path}",
+      "target": "❌ 无法打开视频：{video_path}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "❌ Failed to process",
       "target": "❌ 处理失败",
       "files": [
@@ -18653,10 +20009,31 @@
       ]
     },
     {
+      "source": "❌ LLM query error: {e}",
+      "target": "❌ 大模型查询出错：{e}",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "❌ Motion detection failed: {e}",
       "target": "❌ 运动检测失败：{e}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "❌ No ffmpeg found. It normally comes with the app's requirements",
+      "target": "❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装",
+      "files": [
+        "modules/media/ffmpeg_tools.py"
+      ]
+    },
+    {
+      "source": "❌ No objects detected - CSV file not created",
+      "target": "❌ 未检测到物体，因此未创建 CSV 文件",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -18671,6 +20048,13 @@
       "target": "❌ 未收到波形数据 → 跳过更新",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "❌ Object detection error: {e}",
+      "target": "❌ 物体检测出错：{e}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -18808,6 +20192,13 @@
       ]
     },
     {
+      "source": "➡️ Transcribing chunk {idx+1}/{len(chunks)}: {chunk}",
+      "target": "➡️ 正在转录片段 {idx+1}/{len(chunks)}：{chunk}",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
       "source": "⟳ Auto-scroll OFF",
       "target": "⟳ 自动滚动：关",
       "files": [
@@ -18829,10 +20220,25 @@
       ]
     },
     {
+      "source": "⬇️ Downloading {dest.name}…",
+      "target": "⬇️ 正在下载 {dest.name}…",
+      "files": [
+        "modules/vision/rtmpose_models.py",
+        "modules/vision/yolox_models.py"
+      ]
+    },
+    {
       "source": "⬇️ Downloading: {url}",
       "target": "⬇️ 正在下载：{url}",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "⬇️ First run: fetching the YOLOX person detector (Apache-2.0)…",
+      "target": "⬇️ 首次运行：正在获取 YOLOX 人物检测器（Apache-2.0）…",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -18927,10 +20333,38 @@
       ]
     },
     {
+      "source": "🎙️ Running speaker diarization (Resemblyzer)...",
+      "target": "🎙️ 正在运行说话人分离（Resemblyzer）…",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "🎛️ Compute backend: {label_for(backend)}{note}",
+      "target": "🎛️ 计算后端：{label_for(backend)}{note}",
+      "files": [
+        "modules/system/compute_backend.py"
+      ]
+    },
+    {
       "source": "🎞️ Coverage {COVERAGE:.0%} → spreading clips across the video",
       "target": "🎞️ 覆盖率 {COVERAGE:.0%} → 将片段分散到整个视频",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "🎤 {speaker}: insufficient voiced audio → unknown",
+      "target": "🎤 {speaker}：有效语音不足 → 未知",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "🎤 {speaker}: median F0={median_f0:.1f}Hz → {gender}",
+      "target": "🎤 {speaker}：F0 中位数={median_f0:.1f}Hz → {gender}",
+      "files": [
+        "modules/audio/speaker_utils.py"
       ]
     },
     {
@@ -18949,10 +20383,24 @@
       ]
     },
     {
+      "source": "🎨 Bounding box visualization enabled",
+      "target": "🎨 已启用检测框可视化",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "🎨 Bounding box visualization enabled for temp files",
       "target": "🎨 已为临时文件启用检测框可视化",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "🎨 Creating object detection annotated video: {annotated_output}",
+      "target": "🎨 正在创建物体检测标注视频：{annotated_output}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -18991,6 +20439,13 @@
       ]
     },
     {
+      "source": "🎬 Building a reel of {len(valid)} clips at {width}x{height} @ {fps}fps",
+      "target": "🎬 正在生成 {len(valid)} 个片段的成片：{width}x{height} @ {fps}fps",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
       "source": "🎬 Combining ${files.length} highlights into a reel…",
       "target": "🎬 正在将 ${files.length} 个高光合并为短片…",
       "files": [
@@ -19002,6 +20457,13 @@
       "target": "🎬 正在合并 {len(valid)} 个视频…",
       "files": [
         "modules/media/combine_videos.py"
+      ]
+    },
+    {
+      "source": "🎬 Every join is a cut — using the stream-copy combiner",
+      "target": "🎬 所有连接点均为直接切换，将使用流复制合并器",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -19023,6 +20485,13 @@
       "target": "🎬 立即处理：{filename}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "🎬 Merging {len(worker_videos)} annotated video segments...",
+      "target": "🎬 正在合并 {len(worker_videos)} 个标注视频片段…",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -19058,6 +20527,13 @@
       "target": "🎬 已处理 {len(output_file)} 个视频：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "🎬 Processing video with {NUM_WORKERS} workers, FPS: {fps:.2f}",
+      "target": "🎬 正在使用 {NUM_WORKERS} 个工作线程处理视频，FPS：{fps:.2f}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -19208,6 +20684,20 @@
       ]
     },
     {
+      "source": "🎯 Using custom model: {model_path}",
+      "target": "🎯 正在使用自定义模型：{model_path}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "🎯 Using YOLOX detector (size: {yolo_model_size})",
+      "target": "🎯 正在使用 YOLOX 检测器（尺寸：{yolo_model_size}）",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "🎯 Video Source",
       "target": "🎯 视频来源",
       "files": [
@@ -19226,6 +20716,13 @@
       "target": "🎵 [线程] 正在开始提取波形…",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "🎵 Applying music ({effective}, volume {vol:.2f}):",
+      "target": "🎵 正在应用音乐（{effective}，音量 {vol:.2f}):",
+      "files": [
+        "modules/media/music_track.py"
       ]
     },
     {
@@ -19250,6 +20747,13 @@
       ]
     },
     {
+      "source": "🎵 Extracted audio: {audio_path}",
+      "target": "🎵 已提取音频：{audio_path}",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "🎵 init_ui: Creating scene with waveform data ({len(self.waveform) if self.waveform else 0} points)",
       "target": "🎵 初始化界面：正在使用波形数据创建场景（{len(self.waveform) if self.waveform else 0} 个采样点）",
       "files": [
@@ -19261,6 +20765,13 @@
       "target": "🎵 音乐已应用到高光视频",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "🎵 Video has no audio stream; '{mode}' degrades to 'replace'",
+      "target": "🎵 视频没有音频流；“{mode}”将回退为“replace”模式",
+      "files": [
+        "modules/media/music_track.py"
       ]
     },
     {
@@ -19283,6 +20794,13 @@
       "files": [
         "modules/ui/training_panel.py",
         "modules/ui/training_preview.py"
+      ]
+    },
+    {
+      "source": "👁️ Compared {len(measured)} clip(s)",
+      "target": "👁️ 已比较 {len(measured)} 个片段",
+      "files": [
+        "modules/segments/shot_look.py"
       ]
     },
     {
@@ -19511,6 +21029,13 @@
       ]
     },
     {
+      "source": "📊 Diarization timeline: {len(diarization)} turns,",
+      "target": "📊 说话人时间线：{len(diarization)} 个轮次，",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "📊 Download Summary:",
       "target": "📊 下载汇总：",
       "files": [
@@ -19588,10 +21113,24 @@
       ]
     },
     {
+      "source": "📋 {label}: {gender} (F0: {f0}Hz, conf: {conf}, segments: {seg_count})",
+      "target": "📋 {label}：{gender}（F0：{f0}Hz，置信度：{conf}，片段数：{seg_count}）",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "📍 Every shot is from a different spot",
       "target": "📍 每个镜头都来自不同的拍摄位置",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "📍 {located} of {len(places)} clip(s) have a position,",
+      "target": "📍 {len(places)} 个片段中，{located} 个有位置信息，",
+      "files": [
+        "modules/segments/shot_place.py"
       ]
     },
     {
@@ -19602,10 +21141,38 @@
       ]
     },
     {
+      "source": "📖 Chapters: too few sampled shots for visual structure",
+      "target": "📖 章节：采样镜头过少，无法分析视觉结构",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
+      "source": "📖 Chapters: {len(chapters)} over {format_timestamp(duration)} ({method})",
+      "target": "📖 章节：在 {format_timestamp(duration)} 视频中生成 {len(chapters)} 个章节（{method}）",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
+      "source": "📖 Telling chapter {index} of {len(chapters)}",
+      "target": "📖 正在讲述章节 {index}/{len(chapters)}",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
       "source": "📖 Told {told} of {len(chapters)} chapters.",
       "target": "📖 已完成 {told}/{len(chapters)} 个章节的讲述。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "📜 Script {script.title!r}: {len(script.beats)} beat(s),",
+      "target": "📜 脚本 {script.title!r}：{len(script.beats)} 个节拍节点，",
+      "files": [
+        "modules/segments/script_plan.py"
       ]
     },
     {
@@ -19725,6 +21292,13 @@
       "target": "📦 在 {time_seconds:.1f} 秒处新增 {len(new_items)} 个检测框项目",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "📦 Extracting {member.rsplit('/', 1)[-1]} → {dest.name}",
+      "target": "📦 正在解压 {member.rsplit('/', 1)[-1]} → {dest.name}",
+      "files": [
+        "modules/vision/rtmpose_models.py"
       ]
     },
     {
@@ -19868,6 +21442,13 @@
       ]
     },
     {
+      "source": "🔊 WebRTC VAD: {len(merged)} speech segments detected",
+      "target": "🔊 WebRTC VAD：检测到 {len(merged)} 个语音片段",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "🔍 [TIMELINE] load_cache_data START",
       "target": "🔍 [时间线] 开始加载缓存数据",
       "files": [
@@ -19896,6 +21477,13 @@
       ]
     },
     {
+      "source": "🔍 Auto-detecting number of speakers...",
+      "target": "🔍 正在自动检测说话人数…",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "🔍 Checking if video already exists...",
       "target": "🔍 正在检查视频是否已经存在…",
       "files": [
@@ -19907,6 +21495,13 @@
       "target": "🔍 正在使用 {device} 进行 CLIP 搜索“{query}”（每 {interval} 秒采样一次）",
       "files": [
         "sidecar/worker.py"
+      ]
+    },
+    {
+      "source": "🔍 Confidence threshold: {confidence_threshold}",
+      "target": "🔍 置信度阈值：{confidence_threshold}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -19942,6 +21537,20 @@
       "target": "🔍 实时检测预览",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "🔍 Looking for: {highlight_objects}",
+      "target": "🔍 正在查找：{highlight_objects}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "🔍 Measured {len(measured)} clip(s) for camera settling",
+      "target": "🔍 已测量 {len(measured)} 个片段的相机稳定情况",
+      "files": [
+        "modules/segments/shot_window.py"
       ]
     },
     {
@@ -20064,6 +21673,13 @@
       ]
     },
     {
+      "source": "🔗 Blending — {len(blended)} transition(s) across",
+      "target": "🔗 正在混合：{len(blended)} 个转场，跨 {len(pieces)} 个连续片段组；",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
       "source": "🔗 Concatenating normalized videos...",
       "target": "🔗 正在拼接标准化后的视频…",
       "files": [
@@ -20078,6 +21694,13 @@
       ]
     },
     {
+      "source": "🔗 Joining {len(group)} clips cut hard together",
+      "target": "🔗 正在合并 {len(group)} 个直接切换的片段",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
       "source": "🔗 Source used: {extracted_url}",
       "target": "🔗 使用的视频源：{extracted_url}",
       "files": [
@@ -20085,10 +21708,45 @@
       ]
     },
     {
+      "source": "🔗 {len(valid)} clips, all cuts — no blending needed",
+      "target": "🔗 共 {len(valid)} 个片段，全部为直接切换，无需混合转场",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "🔢 Clustering into {num_speakers} speakers (user-specified)",
+      "target": "🔢 正在聚类为 {num_speakers} 位说话人（用户指定）",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "🔤 Actions auto-complete: {source}",
       "target": "🔤 动作自动补全：{source}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "🔤 Language parameter received: {language}",
+      "target": "🔤 已接收语言参数：{language}",
+      "files": [
+        "modules/audio/transcript.py"
+      ]
+    },
+    {
+      "source": "🔤 Text on clip {i + 1}: {caption[:48]}",
+      "target": "🔤 片段 {i + 1} 的画面文字：{caption[:48]}",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "🔧 Auto-segmentation: building interest regions from signals...",
+      "target": "🔧 自动分段：正在根据信号构建兴趣区间…",
+      "files": [
+        "modules/segments/auto_segments.py"
       ]
     },
     {
@@ -20183,6 +21841,34 @@
       ]
     },
     {
+      "source": "🖥️ Displays:",
+      "target": "🖥️ 显示器：",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "🖥️ {label}: size unavailable ({type(e).__name__}: {e})",
+      "target": "🖥️ {label}：无法读取尺寸（{type(e).__name__}：{e}）",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "🖥️ {label}: {size.width()}x{size.height()} logical,",
+      "target": "🖥️ {label}：逻辑尺寸 {size.width()}x{size.height()}，",
+      "files": [
+        "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "🖼️ Reading clip {position} of {len(segments)}",
+      "target": "🖼️ 正在读取片段 {position}/{len(segments)}",
+      "files": [
+        "modules/narration/clip_story.py"
+      ]
+    },
+    {
       "source": "🗂 Selected {len(urls)} video(s) from picker",
       "target": "🗂 已从选择器中选择 {len(urls)} 个视频",
       "files": [
@@ -20229,6 +21915,13 @@
       "target": "🗑️   删除片段",
       "files": [
         "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "🗺️ Track: {len(points)} points,",
+      "target": "🗺️ 轨迹：{len(points)} 个点，",
+      "files": [
+        "modules/segments/shot_place.py"
       ]
     },
     {
@@ -20330,10 +22023,45 @@
       ]
     },
     {
+      "source": "🚫 Avoid: avoided identity present in {len(forbidden_boxes_by_frame)} frame(s),",
+      "target": "🚫 人物排除：需排除的身份出现在 {len(forbidden_boxes_by_frame)} 帧中，",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "🚫 Avoid: loaded cached tagging ({len(boxes)} frame(s), {len(ranges)} range(s))",
+      "target": "🚫 人物排除：已加载缓存标记（{len(boxes)} 帧，{len(ranges)} 个区间）",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
       "source": "🚫 Avoid: located {len(forbidden_ranges)} forbidden range(s)",
       "target": "🚫 排除：已定位 {len(forbidden_ranges)} 个禁用区间",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "🚫 Avoid: reusing cached face-tagging entries ({len(entries)} frame(s)) —",
+      "target": "🚫 人物排除：正在复用缓存的人脸标记结果（{len(entries)} 帧），",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "🚫 Avoid: tracking on device={dev}",
+      "target": "🚫 人物排除：正在设备 {dev} 上追踪",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "🚫 Avoid: {msg}",
+      "target": "🚫 人物排除：{msg}",
+      "files": [
+        "modules/segments/compute_forbidden.py"
       ]
     },
     {
@@ -20393,6 +22121,20 @@
       ]
     },
     {
+      "source": "🤖 LLM unloaded",
+      "target": "🤖 大模型已卸载",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "🤖 Loading LLM backend: {self.backend_name}",
+      "target": "🤖 正在加载大模型后端：{self.backend_name}",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "🤖 No model configured for the report.",
       "target": "🤖 尚未为报告配置模型。",
       "files": [
@@ -20442,6 +22184,13 @@
       ]
     },
     {
+      "source": "🧠 Loading speaker embedding model (GE2E)...",
+      "target": "🧠 正在加载说话人嵌入模型（GE2E）…",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "🧠 Reasoning engine initialized with {stats['total_actions']} actions analyzed",
       "target": "🧠 推理引擎已初始化，共分析 {stats['total_actions']} 个动作",
       "files": [
@@ -20481,6 +22230,20 @@
       "target": "🧹 临时裁剪视频已清理",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "🧹 Cleaned up: {audio_path}",
+      "target": "🧹 已清理：{audio_path}",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "🧹 Cleaning up chunk files...",
+      "target": "🧹 正在清理临时片段文件…",
+      "files": [
+        "modules/audio/transcript.py"
       ]
     },
     {

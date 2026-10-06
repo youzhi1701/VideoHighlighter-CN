@@ -26,9 +26,9 @@ def main(argv: list[str]) -> int:
     except ValueError as e:
         print(e)
         return 1
-    print(f"\nDone. IR files in: {yolox_models.MODEL_DIR}")
-    print("The app discovers these automatically "
-          "(modules.vision.detection_backend.find_default_yolox_ir).")
+    print(f"\n完成。IR 文件位于：{yolox_models.MODEL_DIR}")
+    print("应用会自动发现这些模型"
+          "（modules.vision.detection_backend.find_default_yolox_ir）。")
     return 0
 
 

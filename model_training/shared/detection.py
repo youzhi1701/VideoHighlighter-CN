@@ -22,7 +22,7 @@ def get_yolox_people_model(model_xml: str | None = None, device: str = "GPU"):
     if _yolox_people_model is None:
         from modules.vision.detection_backend import YoloxPeopleDetector
         _yolox_people_model = YoloxPeopleDetector(model_xml=model_xml, device=device)
-        print(f"🧍 YOLOX people model loaded: {_yolox_people_model.model_xml}")
+        print(f"🧍 YOLOX 人物模型已加载：{_yolox_people_model.model_xml}")
     return _yolox_people_model
 
 

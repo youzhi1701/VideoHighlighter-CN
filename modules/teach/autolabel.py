@@ -77,14 +77,14 @@ def state(project: Project, name: str) -> dict:
     done, wrong = spot_checks(project, name)
     rate = (wrong / done) if done else 0.0
     if not settings.auto_accept:
-        return {"on": False, "why": "auto_accept is off", "checks": done, "overturned": wrong}
+        return {"on": False, "why": "自动接受已关闭", "checks": done, "overturned": wrong}
     if done >= MIN_CHECKS_TO_JUDGE and rate > settings.auto_max_error:
-        return {"on": False, "why": f"spot checks overturned {wrong} of {done}",
+        return {"on": False, "why": f"抽查的 {done} 个样本中有 {wrong} 个被推翻",
                 "checks": done, "overturned": wrong, "tripped": True}
     have = checked(project, name)
     if have < settings.auto_min_checked:
-        return {"on": False, "why": f"{have} of {settings.auto_min_checked} checked "
-                                    "samples so far", "checks": done, "overturned": wrong}
+        return {"on": False, "why": f"目前已检查 {have}/{settings.auto_min_checked} 个样本",
+                "checks": done, "overturned": wrong}
     return {"on": True, "why": "", "checks": done, "overturned": wrong}
 
 

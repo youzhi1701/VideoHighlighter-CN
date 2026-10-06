@@ -6,6 +6,7 @@ on:
       - '.github/workflows/rebuild-localization-catalog.yml'
   workflow_dispatch:
 
+  # 深度汉化阶段：源码变化后重新生成完整规则，确保 strict 回放一致。
 permissions:
   # 中文源码发生变化后，由此工作流统一同步规则库、翻译记忆以及安装器汉化。
   contents: write

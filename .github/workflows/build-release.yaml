@@ -799,7 +799,7 @@ jobs:
     # that does not depend on it, which would publish an untagged release.
     # build-web-windows is opt-in: a skipped web build must not skip the
     # release, a failed one must stop it.
-    needs: [version, build-windows, build-web-windows, build-mac, bootstrap]
+    needs: [version, build-windows, build-web-windows, build-mac]
     if: ${{ !inputs.dry_run && !cancelled() && !contains(needs.*.result, 'failure') }}
     runs-on: ubuntu-latest
     steps:
@@ -824,7 +824,6 @@ jobs:
           cat release-notes.md >> "$GITHUB_STEP_SUMMARY"
           dl="https://github.com/$REPO/releases/download/$SLUG"
           setup="00-VideoHighlighter-CN-v$SLUG-Windows-Setup.exe"
-          bootstrap="00-VideoHighlighter-CN-v$SLUG-Windows-Setup.zip"
           portable=""
           for f in windows-build/*.7z.*; do
             n=$(basename "$f"); portable="$portable [.7z.${n##*.7z.}]($dl/$n)"
@@ -867,7 +866,6 @@ jobs:
               echo "hold a 1.7 GB sidecar."
             fi
             echo ""
-            echo "\`$bootstrap\` 是备用脚本安装包，名称同样带中文版版本标识。"
           } >> release-notes.md
           cat release-notes.md
       - name: Create GitHub Release
@@ -875,47 +873,27 @@ jobs:
         with:
           tag: ${{ needs.version.outputs.cn_version }}
           name: VideoHighlighter-CN 中文版 v${{ needs.version.outputs.cn_version }}
-          draft: true
+          draft: false
           allowUpdates: true
           removeArtifacts: true
           replacesArtifacts: true
           bodyFile: release-notes.md
-          artifacts: "windows-installer/*,windows-build/*,web-windows-build/*,mac-build/*,bootstrap-zip/*"
+          artifacts: "windows-installer/*,windows-build/*,web-windows-build/*,mac-build/*"
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Say what still has to happen
-        # A green run reads as "shipped", and it is not: the release is a draft,
-        # which GitHub hides from `releases/latest` and gives no git tag until
-        # somebody presses Publish. A build sat unpublished once while the
-        # bootstrap installer went on handing out the previous version, and
-        # nothing in the run said so. Now it does.
+      - name: Confirm published release
         env:
           SLUG: ${{ needs.version.outputs.cn_version }}
           UPDATE_BASE_URL: ${{ vars.UPDATE_BASE_URL }}
         run: |
           {
-            echo "### $SLUG is a DRAFT — nobody can get it yet"
+            echo "### VideoHighlighter-CN v$SLUG 已正式发布"
             echo ""
-            echo "Until you press **Publish** on the release page:"
-            echo ""
-            echo "* \`releases/latest\` keeps returning the previous version, so the"
-            echo "  bootstrap installer downloads the old build;"
-            echo "* no git tag \`$SLUG\` exists, so the re-release guard cannot"
-            echo "  protect this version number yet."
-            echo ""
-            echo "### Then, to offer it as an in-place update"
+            echo "GitHub Release 已公开，Windows 主下载入口为正式 .exe 安装包；"
+            echo "备用脚本安装 ZIP 不作为 Release 成品发布。"
             echo ""
             if [ -z "$UPDATE_BASE_URL" ]; then
-              echo "The update host is not configured (\`UPDATE_BASE_URL\`), so this"
-              echo "release was not staged. See docs/UPDATES.md."
+              echo "应用内增量更新源尚未配置；这不影响 GitHub Release 和 .exe 安装包下载。"
             else
-              echo "The files are staged on the update host, unsigned. On the machine"
-              echo "with the release key:"
-              echo ""
-              echo "\`\`\`"
-              echo "python tools/publish_release.py sign --version $SLUG --base-url $UPDATE_BASE_URL"
-              echo "\`\`\`"
-              echo ""
-              echo "and run the command it prints (the **Publish update** workflow)."
-              echo "Installed copies see the release only after that."
+              echo "更新文件已暂存到更新主机；应用内增量更新仍需按 docs/UPDATES.md 完成签名发布。"
             fi
           } >> "$GITHUB_STEP_SUMMARY"

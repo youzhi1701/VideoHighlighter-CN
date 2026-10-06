@@ -224,8 +224,8 @@ def main(argv=None) -> int:
     groups = np.array([c.group for c in clips])
     g_extra = np.array([c.group for c in extra])
     n_videos = len(set(groups.tolist()))
-    log(f"\n{len(clips)} clips ({int((targets.sum(1) > 1).sum())} with two or more actions), "
-        f"{len(classes)} classes, {n_videos} source videos")
+    log(f"\n{len(clips)} 个片段（{int((targets.sum(1) > 1).sum())} 个包含两个或更多动作），"
+        f"{len(classes)} 个类别，{n_videos} 个源视频")
 
     folds = group_folds(strat, groups, args.folds, args.seed)
     log(f"正在未见过的源视频上评分（{len(folds)} 折）")

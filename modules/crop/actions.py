@@ -119,7 +119,7 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
 
     position_text = f"{crop_count}-crop ({' & '.join(positions)})"
 
-    print(f"\n🎬 Processing {position_text} (ROI-based action detection): {os.path.basename(input_path)}")
+    print(f"\n🎬 正在处理 {position_text}（基于 ROI 的动作检测）：{os.path.basename(input_path)}")
 
     # Load pose model if ROI detection with pose is enabled
     pose_model = None
@@ -130,7 +130,7 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
             # Still a supported state: every pose check tolerates None and
             # falls back to person boxes. Say so rather than failing, because
             # the IR is an optional download (tools/get_rtmpose_model.py).
-            print("ℹ️ Pose-based ROI detection unavailable — using person boxes")
+            print("ℹ️ 基于姿态的 ROI 检测不可用——改用人物检测框")
 
     base_name = os.path.splitext(os.path.basename(input_path))[0]
     
@@ -139,18 +139,18 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
     if DEBUG_MODE:
         debug_video_folder = os.path.join(DEBUG_OUTPUT_FOLDER, base_name)
         os.makedirs(debug_video_folder, exist_ok=True)
-        print(f"📊 Debug visualization enabled: {debug_video_folder}")
+        print(f"📊 已启用调试可视化：{debug_video_folder}")
 
     # Fix the slots from the whole clip before writing anything. A slot with no
     # person behind it is dropped; with fewer than two left there is nothing
     # to split, and the clip is kept whole.
     plan = plan_slots(input_path, yolo_model, pose_model, positions)
-    print(f"🧭 Slot plan: " + ", ".join(
+    print(f"🧭 槽位规划：" + ", ".join(
         f"{p}={'-' if b is None else f'x{(b[0] + b[2]) // 2}'}" for p, b in plan.items()))
     positions = [p for p in positions if plan[p] is not None]
     crop_count = len(positions)
     if crop_count < MIN_PEOPLE_REQUIRED:
-        print(f"   📋 Only {crop_count} slot(s) have a person - keeping the clip whole")
+        print(f"   📋 仅 {crop_count} 个槽位检测到人物——保留完整片段，不执行拆分")
         copied = copy_video_to_output(input_path, output_folder)
         return [copied] if copied else []
     position_text = f"{crop_count}-crop ({' & '.join(positions)})"
@@ -161,10 +161,10 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
         output_path = os.path.join(output_folder, output_name)
         output_files.append(output_path)
 
-    print(f"🔍 Getting calibration for {crop_count} actions...")
+    print(f"🔍 正在为 {crop_count} 个动作区域获取校准参数…")
     TARGET_SIZE = get_multi_calibration(input_path, yolo_model, CALIBRATION_FRAMES, crop_count,
                                         planned_boxes=[plan[p] for p in positions])
-    print(f"✅ Target size: {TARGET_SIZE[0]}x{TARGET_SIZE[1]}")
+    print(f"✅ 目标尺寸：{TARGET_SIZE[0]}x{TARGET_SIZE[1]}")
 
     cap = cv2.VideoCapture(input_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -192,7 +192,7 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
 
     frame_count = 0
     debug_sample_count = 0
-    print(f"📹 Processing with synchronized {position_text} (ROI detection: {'ON' if USE_ROI_DETECTION else 'OFF'})...")
+    print(f"📹 正在使用同步 {position_text} 处理（ROI 检测：{'开启' if USE_ROI_DETECTION else '关闭'}）…")
 
     while True:
         ret, frame = cap.read()
@@ -206,7 +206,7 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
             debug_writer, debug_path = create_debug_video_writer(
                 input_path, DEBUG_VIDEO_FOLDER, fps, (h, w)
             )
-            print(f"📹 Creating debug video: {os.path.basename(debug_path)}")
+            print(f"📹 正在创建调试视频：{os.path.basename(debug_path)}")
 
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
@@ -378,7 +378,7 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
             debug_path = os.path.join(debug_video_folder, debug_filename)
             cv2.imwrite(debug_path, vis_frame)
             
-            print(f"📸 Saved debug visualization: {debug_filename}")
+            print(f"📸 已保存调试可视化：{debug_filename}")
             debug_sample_count += 1
             
             # Also save individual crops for reference
@@ -398,7 +398,7 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
                 
                 # ✅ ADDED: Check if crop is valid before processing
                 if crop is None or crop.size == 0:
-                    print(f"⚠️ Frame {frame_count}: Empty crop for idx={action_idx}")
+                    print(f"⚠️ 第 {frame_count} 帧：idx={action_idx} 的裁剪区域为空")
                     padded = np.zeros((TARGET_SIZE[1], TARGET_SIZE[0], 3), dtype=np.uint8)
                 else:
                     padded = pad_to_size(crop, TARGET_SIZE, PADDING_COLOR)
@@ -407,13 +407,13 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
             else:
                 # No crop available - write black frame with warning
                 if frame_count % 60 == 0:
-                    print(f"⚠️ Frame {frame_count}: No smoothed action for crop {i}")
+                    print(f"⚠️ 第 {frame_count} 帧：裁剪区域 {i} 没有平滑后的动作框")
                 padded = np.zeros((TARGET_SIZE[1], TARGET_SIZE[0], 3), dtype=np.uint8)
                 writers[i].write(padded)
         
         frame_count += 1
         if frame_count % 50 == 0:
-            print(f" Frame {frame_count}/{total_frames}")
+            print(f" 帧进度 {frame_count}/{total_frames}")
     
     cap.release()
     for writer in writers:

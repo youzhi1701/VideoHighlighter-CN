@@ -48,10 +48,10 @@ def _ensure_coco(dataset_dir: Path) -> tuple[Path, Path]:
         return train_json, val_json
 
     convert_tool = REPO_ROOT / "tools" / "convert_yolo_to_coco.py"
-    print("COCO annotations missing — running convert_yolo_to_coco.py …")
+    print("缺少 COCO 标注，正在运行 convert_yolo_to_coco.py…")
     subprocess.check_call([sys.executable, str(convert_tool), str(dataset_dir)])
     if not train_json.is_file():
-        raise FileNotFoundError(f"Expected {train_json} after conversion")
+        raise FileNotFoundError(f"转换后仍未找到预期文件：{train_json}")
     return train_json, val_json
 
 
@@ -231,7 +231,7 @@ def main(argv: list[str] | None = None) -> int:
           f"导出的 .onnx/.xml 本身不包含类别名称：")
     print(f"  复制 IR   → {REPO_ROOT / 'models' / 'custom' / f'yolox_{args.size}.xml'}")
     print(f"  复制名称   → {REPO_ROOT / 'models' / 'custom' / 'labels.json'}  "
-          f"(from {labels_path})\n")
+          f"（来自 {labels_path}）\n")
     return 0
 
 

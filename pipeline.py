@@ -301,20 +301,20 @@ def action_backend_summary(enable_r3d, r3d_model, r3d_device, r3d_onnx_dml,
             # The same flag means Core ML on a Mac (modules/system/ort_coreml.py).
             import sys
             api = "Core ML" if sys.platform == "darwin" else "DirectML"
-            where = f"{api} (ONNX Runtime; the processor if that cannot run it)"
+            where = f"{api}（ONNX Runtime；若无法运行则退回处理器）"
         elif device.startswith("cuda"):
             where = "CUDA"
         elif device.startswith("privateuseone") or "dml" in device:
             where = "DirectML"
         else:
-            where = "CPU (PyTorch)"
-        text = f"{name} on {where}"
+            where = "CPU（PyTorch）"
+        text = f"{name}，运行设备：{where}"
     else:
         device = str(openvino_device or "AUTO").upper()
-        where = {"CPU": "CPU", "AUTO": "the device OpenVINO picks"}.get(
+        where = {"CPU": "CPU", "AUTO": "OpenVINO 自动选择的设备"}.get(
             device, "Intel GPU" if device.startswith("GPU") else device)
-        text = f"OpenVINO on {where}"
-    return text + (" (chosen automatically)" if auto else "")
+        text = f"OpenVINO，运行设备：{where}"
+    return text + ("（自动选择）" if auto else "")
 
 
 def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,

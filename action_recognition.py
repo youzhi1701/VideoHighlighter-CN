@@ -2484,43 +2484,43 @@ def print_action_sequences(all_actions):
 # =============================
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Action Recognition — OPTIMIZED with R3D/CUDA support")
-    parser.add_argument("--input", type=str, required=True, help="Input video path")
-    parser.add_argument("--device", type=str, default="AUTO", help="OpenVINO device (AUTO, CPU, GPU)")
-    parser.add_argument("--sample-rate", type=int, default=5, help="Frame sampling rate")
-    parser.add_argument("--log-file", type=str, default="action_log.csv", help="CSV log output")
-    parser.add_argument("--debug", action="store_true", help="Enable debug output")
-    parser.add_argument("--show-video", action="store_true", help="Show video preview")
-    parser.add_argument("--top-k", type=int, default=10, help="Top K actions to consider")
-    parser.add_argument("--confidence", type=float, default=0.01, help="Confidence threshold")
+        description="动作识别 — 优化版，支持 R3D/CUDA")
+    parser.add_argument("--input", type=str, required=True, help="输入视频路径")
+    parser.add_argument("--device", type=str, default="AUTO", help="OpenVINO 设备（AUTO、CPU、GPU）")
+    parser.add_argument("--sample-rate", type=int, default=5, help="视频帧采样间隔")
+    parser.add_argument("--log-file", type=str, default="action_log.csv", help="CSV 日志输出路径")
+    parser.add_argument("--debug", action="store_true", help="启用调试输出")
+    parser.add_argument("--show-video", action="store_true", help="显示视频预览")
+    parser.add_argument("--top-k", type=int, default=10, help="参与判断的 Top-K 动作数量")
+    parser.add_argument("--confidence", type=float, default=0.01, help="置信度阈值")
     parser.add_argument("--draw-bboxes", action="store_true",
-                        help="Draw bounding boxes on frames")
+                        help="在视频帧上绘制检测框")
     parser.add_argument("--annotated-output", type=str,
-                        help="Output path for annotated video")
+                        help="标注视频输出路径")
     parser.add_argument("--use-person-detection", action="store_true",
-                        help="Enable person detection")
+                        help="启用人体检测")
     parser.add_argument("--max-people", type=int, default=2,
-                        help="Maximum number of people to track")
+                        help="最多跟踪的人数")
     parser.add_argument("--interesting-actions", type=str, nargs="+",
-                        help="Specific actions to detect")
+                        help="指定需要检测的动作")
     parser.add_argument("--yolo-workers", type=int, default=2,
-                        help="Number of parallel YOLO workers")
+                        help="并行 YOLO 工作线程数量")
     parser.add_argument("--yolo-skip", type=int, default=4,
-                        help="Skip YOLO detection every N frames")
+                        help="YOLO 每隔 N 帧执行一次检测")
     parser.add_argument("--downscale-factor", type=float, default=0.5,
-                        help="Downscale factor for high-res videos (0.1-1.0)")
+                        help="高分辨率视频缩放系数（0.1-1.0）")
     parser.add_argument("--openvino-threads", type=int, default=None,
-                        help="OpenVINO inference threads (default: half of CPU cores)")
+                        help="OpenVINO 推理线程数（默认：CPU 核心数的一半）")
     parser.add_argument("--preprocess-workers", type=int, default=2,
-                        help="Preprocessing thread pool size")
+                        help="预处理线程池大小")
     # ---- R3D / CUDA options ----
     parser.add_argument("--enable-r3d", action="store_true",
-                        help="Enable R3D model on CUDA (or CPU fallback)")
+                        help="在 CUDA 上启用 R3D 模型（不可用时回退到 CPU）")
     parser.add_argument("--r3d-model", type=str, default="r3d_18",
                         choices=["r3d_18", "mc3_18", "r2plus1d_18"],
-                        help="R3D model variant (default: r3d_18)")
+                        help="R3D 模型变体（默认：r3d_18）")
     parser.add_argument("--r3d-no-half", action="store_true",
-                        help="Disable FP16 for R3D on CUDA (use FP32)")
+                        help="在 CUDA 上禁用 R3D 的 FP16，改用 FP32")
 
     args = parser.parse_args()
 

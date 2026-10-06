@@ -48,6 +48,7 @@ UI_CALLS = {
 # English even after every static button/label looked translated.
 USER_TEXT_CALLBACKS = {
     "log_fn", "progress_fn", "status_fn", "message_fn", "detail_fn",
+    "log", "progress_cb", "status_cb", "message_cb", "detail_cb",
 }
 UI_NAME_RE = re.compile(
     r"(?:text|title|label|button|btn|tooltip|tip|status|message|msg|caption|"

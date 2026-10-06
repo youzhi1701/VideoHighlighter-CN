@@ -541,9 +541,8 @@ def tell_report_file(json_path: str,
         # frames, so a run without them would spend the model time to produce
         # nothing the card does not already say — and would look, on the page,
         # exactly like a run that had worked.
-        log_fn("⚠️ The source video is not where the report says it is, so "
-               "there are no frames to read. Nothing was written — this pass "
-               "has nothing to say without the pictures.")
+        log_fn("⚠️ 报告记录的位置找不到源视频，因此没有画面可读取。"
+               "本轮未写入任何内容；缺少画面时无法生成可靠描述。")
         return 0
 
     segments = tell(report, llm=llm, frames_fn=frames_fn,
@@ -568,7 +567,7 @@ def tell_report_file(json_path: str,
         with open(json_path, encoding="utf-8") as fh:
             latest = json.load(fh)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Could not re-read {json_path} ({exc}); writing what was read")
+        print(f"⚠️ 无法重新读取 {json_path}（{exc}）；将写入已读取的结果")
 
     stories = {e.get("index"): e["story"] for e in read}
     written = 0
@@ -581,9 +580,8 @@ def tell_report_file(json_path: str,
         # The clips on disk are not the clips that were read — a re-analysis
         # landed while this ran. Its report is the current one and this one
         # describes footage it no longer contains.
-        log_fn("⚠️ The report was re-analysed while the clips were being read, "
-               "so these readings describe a cut that no longer exists. "
-               "Nothing was written.")
+        log_fn("⚠️ 读取片段期间报告被重新分析，当前读取结果对应的剪辑版本已失效。"
+               "因此未写入任何内容。")
         return 0
 
     latest["clip_story"] = {

@@ -98,7 +98,7 @@ def install(sizes: Iterable[str] = DEFAULT_SIZES,
     sizes = [s.lower() for s in sizes]
     unknown = [s for s in sizes if s not in SIZES]
     if unknown:
-        raise ValueError(f"Unknown YOLOX size(s): {unknown}. Choose from: {', '.join(SIZES)}")
+        raise ValueError(f"未知 YOLOX 尺寸：{unknown}。可选值：{', '.join(SIZES)}")
     out = []
     for size in sizes:
         xml = ir_path(size)

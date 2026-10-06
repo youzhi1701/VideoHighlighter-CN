@@ -588,15 +588,14 @@ def tell_report_file(json_path: str,
         from modules.report.uncovered_claims import ensure
         ensure(report)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Unmeasured claims backfill skipped: {exc}")
+        print(f"⚠️ 未测量内容的回填已跳过：{exc}")
 
     frames_fn = None
     if use_frames:
         frames_fn = frames_from_video(str((report.get("video") or {}).get("path")
                                           or ""))
         if frames_fn is None:
-            log_fn("ℹ️ Source video not found beside the report — telling from "
-                   "the transcript and the measurements alone.")
+            log_fn("ℹ️ 报告旁未找到源视频，将仅根据转录文本和分析数据生成讲述。")
 
     chapters = tell(report, llm=llm, frames_fn=frames_fn,
                     model_name=model_name, log_fn=log_fn, cancel_fn=cancel_fn)

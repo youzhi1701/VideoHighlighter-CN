@@ -162,7 +162,7 @@ def sort_project(project: Project, embedder, *,
     (``sorter_classifier``), when there is one.
     """
     if not project.classes:
-        raise ValueError("add a class first")
+        raise ValueError("请先添加一个类别")
     cache = embed_mod.VectorCache(project.root, getattr(embedder, "model_id", ""))
     vectors = embed_mod.sample_vectors(
         project.samples, embedder, cache, project.settings.frames_per_sample,
@@ -194,7 +194,7 @@ def sort_project(project: Project, embedder, *,
                 label, confidence = model_classifier(sample.focus_paths[0]
                                                      if sample.focus_paths else sample.path)
             except Exception as exc:        # a broken clip must not stop the sort
-                print(f"teach.sort: model could not read {sample.id}: {exc}")
+                print(f"教学排序：模型无法读取 {sample.id}：{exc}")
                 label, confidence = "", 0.0
             sample.model_proposed = label or ""
             sample.model_confidence = float(confidence or 0.0)
@@ -349,7 +349,7 @@ def round_classifier(project) -> Optional[Callable]:
                 try:
                     return r3d_classifier(metrics["weights"], metrics["mapping"])
                 except Exception as exc:        # a broken model must not stop the sort
-                    print(f"teach.sort: round {record.get('round')} model unusable: {exc}")
+                    print(f"教学排序：第 {record.get('round')} 轮模型不可用：{exc}")
                     return None
     return None
 

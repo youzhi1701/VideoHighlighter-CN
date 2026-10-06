@@ -266,7 +266,7 @@ def scan_video(video_path: str,
     if use_cache:
         cached = load(path)
         if cached is not None:
-            log_fn(f"ℹ Using cached face scan ({len(cached)} second(s))")
+            log_fn(f"ℹ 正在使用缓存的人脸扫描结果（{len(cached)} second(s))")
             return cached
 
     from video_ai_editor.face_identity import FaceIdentityBank
@@ -283,7 +283,7 @@ def scan_video(video_path: str,
                                progress_fn=progress_fn)
     seconds = scan(frames, detect_fn=detector.detect_faces,
                    classify_fn=classifier.classify)
-    log_fn(f"✅ Face scan: {len(seconds)} second(s) with a readable expression "
+    log_fn(f"✅ 人脸扫描完成：{len(seconds)} second(s) with a readable expression "
            f"in {time.time() - started:.1f}s")
     save(seconds, path, video_path=video_path, interval=interval)
     return seconds

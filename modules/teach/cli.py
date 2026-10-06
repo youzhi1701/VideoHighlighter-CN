@@ -335,7 +335,7 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:
                     "message": "已准备好训练。可运行 `train`，或使用 `auto --train` 将训练包含在自动流程中（GPU 训练可能需要几分钟到数小时）。"}
         if done and done[-1]["args"] == args:
             return {"ran": done, "stopped_at": step,
-                    "error": f"`{' '.join(args)}` ran but is still the next step"}
+                    "error": f"`{' '.join(args)}` 已执行，但仍然是下一步"}
         print(f"自动流程：{' '.join(args)}", file=sys.stderr)
         code, result = run(["--project", root, *args])
         result = dict(result or {})
@@ -426,9 +426,8 @@ def cmd_share(args, project):
     except NotShareable as exc:
         raise ValueError(str(exc)) from None
     return {"model": onnx, "draft": asdict(draft),
-            "how": "在“训练 → 从视频学习 → 分享…”中可打开发布向导，并自动带入 "
-                   "this filled in; name, description, category and the checklist "
-                   "are yours to complete."}
+            "how": "在“训练 → 从视频学习 → 分享…”中可打开发布向导并自动填入这些内容；"
+                   "名称、描述、类别和检查清单仍需你确认完成。"}
 
 
 def cmd_doctor(args, root):
@@ -703,73 +702,65 @@ def parser() -> argparse.ArgumentParser:
     sub.add_parser("doctor", help="检查当前电脑是否满足训练要求（数秒完成，不加载模型）")
     sub.add_parser("share", help="将已安装检测器整理为可发布到模型中心的草稿")
 
-    s = sub.add_parser("import", help="read a hand-sorted train/val/test dataset: "
-                                      "what it holds (reads only)")
-    s.add_argument("dataset", help="folder holding train/, val/ and test/")
-    s.add_argument("--aliases", help="JSON {name: name or \"\"} to rename or leave out")
+    s = sub.add_parser("import", help="读取人工分类的 train/val/test 数据集并查看其内容（只读）")
+    s.add_argument("dataset", help="包含 train/、val/ 和 test/ 的文件夹")
+    s.add_argument("--aliases", help="JSON {名称: 新名称或 \"\"}，用于重命名或排除类别")
     s.add_argument("--group", default=DEFAULT_GROUP,
-                   help="regex for the video a clip came from, in its file name")
+                   help="根据片段文件名识别其源视频的正则表达式")
     s.add_argument("--min-train", type=int, default=project_mod.MIN_TO_TRAIN,
                    dest="min_train")
 
-    s = sub.add_parser("evaluate", help="measure the loop (and a model) against a "
-                                        "hand-sorted dataset")
-    s.add_argument("dataset", help="folder holding train/, val/ and test/")
-    s.add_argument("--aliases", help="JSON {name: name or \"\"} to rename or leave out")
+    s = sub.add_parser("evaluate", help="使用人工分类数据集评估整个流程（以及模型）")
+    s.add_argument("dataset", help="包含 train/、val/ 和 test/ 的文件夹")
+    s.add_argument("--aliases", help="JSON {名称: 新名称或 \"\"}，用于重命名或排除类别")
     s.add_argument("--group", default=DEFAULT_GROUP,
-                   help="regex for the video a clip came from, in its file name")
-    s.add_argument("--seeds", type=int, default=5, help="examples each class starts with")
+                   help="根据片段文件名识别其源视频的正则表达式")
+    s.add_argument("--seeds", type=int, default=5, help="每个类别开始时使用的示例数量")
     s.add_argument("--sheet-size", type=int, default=24, dest="sheet_size")
     s.add_argument("--max-sheets", type=int, dest="max_sheets")
-    s.add_argument("--rng", type=int, default=0, help="which examples are picked")
+    s.add_argument("--rng", type=int, default=0, help="选择哪些示例的随机种子")
     s.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
-                   help="a project setting for the simulation, e.g. "
-                        "prototypes_per_class=4; repeatable")
+                   help="用于模拟的项目设置，例如 prototypes_per_class=4；可重复指定")
     s.add_argument("--no-simulate", action="store_true", dest="no_simulate",
-                   help="skip replaying the review loop")
+                   help="跳过审核流程回放")
     s.add_argument("--no-sort-test", action="store_true", dest="no_sort_test",
-                   help="skip sorting held-out videos by the rest")
+                   help="跳过使用其余数据对留出视频进行分类")
     s.add_argument("--holdout", type=float, default=0.2,
-                   help="share of videos held out as new footage")
+                   help="作为新素材留出的源视频比例")
     s.add_argument("--max-examples", type=int, default=200, dest="max_examples",
-                   help="examples per class when sorting held-out videos")
+                   help="分类留出视频时每个类别使用的示例数")
     s.add_argument("--min-examples", type=int, default=project_mod.MIN_TO_TRAIN,
                    dest="min_examples",
-                   help="leave out classes with fewer clips than this (0 keeps all)")
+                   help="排除片段数少于此值的类别（0 表示全部保留）")
     s.add_argument("--embedder", choices=("clip", "frame-encoder"), default="clip",
-                   help="what turns samples into vectors (frame-encoder: SigLIP2, "
-                        "examples only)")
-    s.add_argument("--weights", help="a trained R3D .pth to test on val and test")
-    s.add_argument("--mapping", help="its mapping (default: <weights>_mapping.json)")
+                   help="将样本转换为向量的编码器（frame-encoder：SigLIP2，仅用于示例）")
+    s.add_argument("--weights", help="用于在 val 和 test 上测试的已训练 R3D .pth 文件")
+    s.add_argument("--mapping", help="对应的映射文件（默认：<weights>_mapping.json）")
 
-    s = sub.add_parser("from-dataset", help="a hand-sorted dataset as the examples; "
-                                            "new videos cut and sorted by it")
-    s.add_argument("dataset", help="folder holding train/ (and val/)")
+    s = sub.add_parser("from-dataset", help="将人工分类数据集作为示例，并据此切分和分类新视频")
+    s.add_argument("dataset", help="包含 train/（以及 val/）的文件夹")
     s.add_argument("--videos", nargs="+", default=[], help="文件、文件夹或网址")
-    s.add_argument("--aliases", help="JSON {name: name or \"\"} to rename or leave out")
+    s.add_argument("--aliases", help="JSON {名称: 新名称或 \"\"}，用于重命名或排除类别")
     s.add_argument("--group", default=DEFAULT_GROUP,
-                   help="regex for the video a clip came from, in its file name")
+                   help="根据片段文件名识别其源视频的正则表达式")
     s.add_argument("--max-examples", type=int, default=200, dest="max_examples",
-                   help="examples per class (a prototype averages at most 200)")
+                   help="每个类别的示例数（一个原型最多平均 200 个示例）")
     s.add_argument("--embedder", choices=("clip", "frame-encoder"), default="clip",
-                   help="what turns samples into vectors (frame-encoder: SigLIP2, "
-                        "examples only)")
-    s.add_argument("--weights", help="a trained R3D .pth as a second opinion")
-    s.add_argument("--mapping", help="its mapping (default: <weights>_mapping.json)")
+                   help="将样本转换为向量的编码器（frame-encoder：SigLIP2，仅用于示例）")
+    s.add_argument("--weights", help="作为第二判断来源的已训练 R3D .pth 文件")
+    s.add_argument("--mapping", help="对应的映射文件（默认：<weights>_mapping.json）")
     s.add_argument("--prototypes", type=int,
-                   help="centres per class (a new project gets 3; 1 = the mean)")
+                   help="每个类别的中心数（新项目默认 3；1 表示取平均值）")
     s.add_argument("--scorer", choices=("linear", "prototypes"),
-                   help="how samples are scored (a new project: linear, trained on the "
-                        "dataset; prototypes: the nearest class centre)")
+                   help="样本评分方式（新项目：linear，在数据集上训练；prototypes：使用最近的类别中心）")
     s.add_argument("--min-examples", type=int, default=project_mod.MIN_TO_TRAIN,
                    dest="min_examples",
-                   help="leave out classes with fewer clips than this (0 keeps all)")
+                   help="排除片段数少于此值的类别（0 表示全部保留）")
     s.add_argument("--skip-checks", action="store_true", dest="skip_checks",
                    help="启动前不运行 `doctor` 环境检查")
 
-    s = sub.add_parser("by-class", help="rebuild by-class/<video>/<class>/ folders "
-                                        "and timeline.csv from the verdicts")
-    s.add_argument("sources", nargs="*", help="source ids (default: every video)")
+    s = sub.add_parser("by-class", help="根据审核结果重建 by-class/<video>/<class>/ 文件夹和 timeline.csv")
+    s.add_argument("sources", nargs="*", help="源视频 ID（默认：所有视频）")
 
     s = sub.add_parser("set", help="修改设置：key=value ...")
     s.add_argument("pairs", nargs="+")
@@ -803,7 +794,7 @@ def run(argv=None) -> tuple:
         # and ``auto`` (which call this in-process) get told instead of dying.
         lines = [ln for ln in complaint.getvalue().splitlines() if ln.strip()]
         return 2, {"error": (lines[-1].split(" error: ", 1)[-1] if lines
-                            else "bad arguments"),
+                            else "参数错误"),
                    "usage": "\n".join(lines[:-1])}
     root = resolve_root(args.project)
     try:
@@ -827,7 +818,7 @@ def run(argv=None) -> tuple:
                 result.setdefault("next", result.get("stopped_at"))
             else:
                 if not os.path.exists(os.path.join(root, project_mod.PROJECT_FILE)):
-                    raise FileNotFoundError(f"no project at {root}; run init first")
+                    raise FileNotFoundError(f"{root} 中没有项目，请先运行 init")
                 project = Project.load(root)
                 result = COMMANDS[args.command](args, project)
                 if args.command not in ("status", "auto"):

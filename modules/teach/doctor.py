@@ -66,7 +66,7 @@ def _clip() -> Check:
         return Check("clip", False, REQUIRED, problem,
                      "请在应用内安装 CLIP 组件包（视觉搜索），或运行 "
                      "pip install transformers torch")
-    return Check("clip", True, REQUIRED, "CLIP stack imports")
+    return Check("clip", True, REQUIRED, "CLIP 组件导入正常")
 
 
 def _torch_device() -> Check:

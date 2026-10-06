@@ -76,14 +76,14 @@ def report_env() -> None:
 def report_resolution(requested: str) -> tuple[str, str]:
     _hr("后端解析")
     probe = cp.cuda_device()
-    print(f"cuda_device() -> {probe!r}")
+    print(f"CUDA 设备探测结果 → {probe!r}")
     for req in ("AUTO", "GPU", "CUDA", "CPU"):
         print(f"  {req:<5} -> {cp.resolve_device(req)}")
 
     backend, device = cp.resolve_device(requested)
     print(f"\n请求 {requested!r} -> 后端={backend!r} 设备={device!r}")
     err = cp.ClipFramePrefilter.import_error(requested)
-    print(f"import_error({requested!r}) -> {err or '无（依赖栈导入正常）'}")
+    print(f"依赖导入检查（{requested!r}）→ {err or '无（依赖栈导入正常）'}")
     return backend, device
 
 

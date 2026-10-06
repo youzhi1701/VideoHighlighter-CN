@@ -242,7 +242,7 @@ def per_second_features(wav_path: str,
 
     with wave.open(wav_path, "rb") as wf:
         if wf.getnchannels() != 1 or wf.getsampwidth() != 2:
-            raise RuntimeError("expected 16-bit mono PCM from ffmpeg")
+            raise RuntimeError("预期从 ffmpeg 获得 16 位单声道 PCM 音频")
         total = max(1, wf.getnframes())
         done = 0
         lo_frac, hi_frac = progress_span
@@ -516,7 +516,7 @@ def analyse(video_path: str,
         raw = per_second_features(wav_path, progress=progress, cancel=cancel,
                                   progress_span=(0.15, 0.95))
         if not len(raw["level"]):
-            raise RuntimeError("no audio track found in this video")
+            raise RuntimeError("该视频中未找到音轨")
 
         onset = onset_curve(raw["level"])
         vocal = vocal_mask(raw)

@@ -100,11 +100,11 @@ class _TreeWatch:
             self.peak_tree_mb = max(self.peak_tree_mb, total)
             self.peak_children = max(self.peak_children, len(children))
             if total > self.max_tree_mb:
-                self._trip(f"process tree reached {total:.0f} MB "
-                           f"(ceiling {self.max_tree_mb:.0f} MB)", children)
+                self._trip(f"进程树内存达到 {total:.0f} MB "
+                           f"（上限 {self.max_tree_mb:.0f} MB）", children)
             elif len(children) > self.max_children:
-                self._trip(f"{len(children)} child processes "
-                           f"(ceiling {self.max_children})", children)
+                self._trip(f"子进程数量达到 {len(children)} 个 "
+                           f"（上限 {self.max_children} 个）", children)
 
     def _rss_mb(self, proc) -> float:
         try:
@@ -116,7 +116,7 @@ class _TreeWatch:
         if self.tripped:
             return
         self.tripped = reason
-        print(f"🛑 smoke: {reason} — killing the children")
+        print(f"🛑 冒烟测试：{reason}——正在终止子进程")
         for child in children:
             try:
                 child.kill()
@@ -138,7 +138,7 @@ def main(argv) -> int:
 
     def check(name, ok, detail=""):
         checks[name] = {"ok": bool(ok), "detail": detail}
-        print(f"{'✅' if ok else '❌'} smoke: {name}" + (f" — {detail}" if detail else ""))
+        print(f"{'✅' if ok else '❌'} 冒烟测试：{name}" + (f"——{detail}" if detail else ""))
 
     def finish() -> int:
         report["ok"] = bool(checks) and all(c["ok"] for c in checks.values())
@@ -148,16 +148,16 @@ def main(argv) -> int:
                 with open(report_path, "w", encoding="utf-8") as fh:
                     json.dump(report, fh, indent=2)
             except Exception as e:
-                print(f"⚠️ smoke: could not write the report: {e}")
-        print(f"{'✅ smoke test passed' if report['ok'] else '❌ smoke test FAILED'}"
-              f" in {report['seconds']}s")
+                print(f"⚠️ 冒烟测试：无法写入报告：{e}")
+        print(f"{'✅ 冒烟测试通过' if report['ok'] else '❌ 冒烟测试失败'}"
+              f"，耗时 {report['seconds']} 秒")
         return 0 if report["ok"] else 1
 
     # A hang is a failure too, and one that would otherwise last until the
     # runner's own six-hour limit.
     def _deadline():
-        checks["finished in time"] = {"ok": False, "detail": f"over {timeout_s:.0f}s"}
-        print(f"❌ smoke: still running after {timeout_s:.0f}s")
+        checks["finished in time"] = {"ok": False, "detail": f"超过 {timeout_s:.0f} 秒"}
+        print(f"❌ 冒烟测试：运行超过 {timeout_s:.0f} 秒仍未结束")
         code = finish()
         os._exit(code or 1)
     watchdog = threading.Timer(timeout_s, _deadline)
@@ -165,7 +165,7 @@ def main(argv) -> int:
     watchdog.start()
 
     if not video or not os.path.exists(video):
-        check("video exists", False, repr(video))
+        check("视频存在", False, repr(video))
         return finish()
 
     from modules.system import debug_console
@@ -175,7 +175,7 @@ def main(argv) -> int:
     try:
         import psutil  # noqa: F401
     except Exception as e:
-        check("psutil available", False, f"{type(e).__name__}: {e}")
+        check("psutil 可用", False, f"{type(e).__name__}: {e}")
         return finish()
 
     try:

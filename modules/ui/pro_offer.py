@@ -94,7 +94,7 @@ def save_state(state: dict) -> None:
         with open(state_path(), "w", encoding="utf-8") as handle:
             json.dump(state, handle, indent=2)
     except OSError as exc:
-        print(f"pro_offer: could not save state: {exc}")
+        print(f"Pro 推荐：无法保存状态：{exc}")
 
 
 def is_enabled() -> bool:
@@ -218,7 +218,7 @@ def for_report(report: Mapping,
             return None
         missing = pro_only_routes(report, installed)
     except Exception as exc:                        # pragma: no cover - defensive
-        print(f"pro_offer: report check skipped: {exc}")
+        print(f"Pro 推荐：报告检查已跳过：{exc}")
         return None
     if not missing:
         return None

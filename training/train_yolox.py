@@ -152,20 +152,20 @@ class Exp(MyExp):
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Prepare + print YOLOX training commands")
+    parser = argparse.ArgumentParser(description="准备并输出 YOLOX 训练命令")
     parser.add_argument("--dataset", type=Path, default=REPO_ROOT / "yolox_dataset")
     parser.add_argument("--yolox-dir", type=Path,
-                        help="Path to cloned Megvii-BaseDetection/YOLOX repo "
-                             "(not needed with --write-labels-only)")
+                        help="已克隆的 Megvii-BaseDetection/YOLOX 仓库路径"
+                             "（使用 --write-labels-only 时不需要）")
     parser.add_argument("--size", choices=("nano", "tiny", "s", "m", "l", "x"), default="s")
     parser.add_argument("--epochs", type=int, default=80)
     parser.add_argument("--batch-size", type=int, default=8)
-    parser.add_argument("--dry-run", action="store_true", help="Only write exp file, don't print train cmd")
+    parser.add_argument("--dry-run", action="store_true", help="只写入 exp 文件，不输出训练命令")
     parser.add_argument("--write-labels-only", type=Path, metavar="OUT_PATH",
-                        help="Backfill labels.json for an ALREADY-exported model — "
-                             "e.g. --write-labels-only models/custom/labels.json. "
-                             "Reads class names from --dataset's coco_train.json; "
-                             "does not need --yolox-dir or touch training at all.")
+                        help="为已经导出的模型补写 labels.json，例如 "
+                             "--write-labels-only models/custom/labels.json。"
+                             "类别名称从 --dataset 的 coco_train.json 读取；"
+                             "不需要 --yolox-dir，也不会启动训练。")
     args = parser.parse_args(argv)
 
     dataset_dir = args.dataset.resolve()
@@ -174,28 +174,28 @@ def main(argv: list[str] | None = None) -> int:
         train_json, _ = _ensure_coco(dataset_dir)
         names = class_names_from_coco(train_json)
         if not names:
-            print(f"No categories in {train_json} — check dataset labels.")
+            print(f"{train_json} 中没有类别，请检查数据集标注。")
             return 1
         out = write_labels_json(names, args.write_labels_only.resolve())
-        print(f"✅ Wrote {len(names)} class name(s) → {out}")
+        print(f"✅ 已写入 {len(names)} 个类别名称 → {out}")
         print(f"   {names}")
         return 0
 
     if not args.yolox_dir:
-        print("--yolox-dir is required unless --write-labels-only is given.")
+        print("除非使用 --write-labels-only，否则必须提供 --yolox-dir。")
         return 1
 
     yolox_dir = args.yolox_dir.resolve()
     if not yolox_dir.is_dir():
-        print(f"YOLOX repo not found: {yolox_dir}")
-        print("Clone: git clone https://github.com/Megvii-BaseDetection/YOLOX.git")
+        print(f"未找到 YOLOX 仓库：{yolox_dir}")
+        print("请克隆：git clone https://github.com/Megvii-BaseDetection/YOLOX.git")
         return 1
 
     train_json, _ = _ensure_coco(dataset_dir)
     names = class_names_from_coco(train_json)
     num_classes = len(names)
     if num_classes == 0:
-        print("No categories in COCO JSON — check dataset labels.")
+        print("COCO JSON 中没有类别，请检查数据集标注。")
         return 1
 
     size_table = {
@@ -215,22 +215,22 @@ def main(argv: list[str] | None = None) -> int:
     # training even starts means there is nothing left to remember afterwards.
     labels_path = write_labels_json(names, dataset_dir / "labels.json")
 
-    print(f"\n✅ Wrote YOLOX experiment: {exp_path}")
-    print(f"   Classes: {num_classes}  Size: YOLOX-{args.size}  Input: {input_size}\n")
-    print(f"✅ Wrote class names: {labels_path}")
+    print(f"\n✅ 已写入 YOLOX 实验配置：{exp_path}")
+    print(f"   类别数：{num_classes}  大小：YOLOX-{args.size}  输入：{input_size}\n")
+    print(f"✅ 已写入类别名称：{labels_path}")
     print(f"   {names}\n")
-    print("Run training from the YOLOX repo root:\n")
+    print("请在 YOLOX 仓库根目录运行训练：\n")
     print(f"  cd {yolox_dir}")
     print(f"  python tools/train.py -f {exp_module} -d 1 -b {args.batch_size} "
           f"--fp16 -o -c path/to/yolox_{args.size}.pth")
-    print("\nAfter training, export ONNX (no decode_in_inference) and convert:\n")
+    print("\n训练完成后，导出 ONNX（不使用 decode_in_inference）并进行转换：\n")
     print(f"  python tools/export_onnx.py --output-name yolox_{args.size}.onnx "
           f"-f {exp_module} -c YOLOX_outputs/.../best_ckpt.pth")
-    print(f"  python {REPO_ROOT / 'tools' / 'get_yolox_model.py'}  # or openvino.convert_model on the ONNX")
-    print(f"\nThe app reads class names from a labels.json sitting NEXT TO the "
-          f"model file — the exported .onnx/.xml carries no names of its own:")
-    print(f"  Copy IR   → {REPO_ROOT / 'models' / 'custom' / f'yolox_{args.size}.xml'}")
-    print(f"  Copy names → {REPO_ROOT / 'models' / 'custom' / 'labels.json'}  "
+    print(f"  python {REPO_ROOT / 'tools' / 'get_yolox_model.py'}  # 或对 ONNX 使用 openvino.convert_model")
+    print(f"\n应用会从模型文件旁边的 labels.json 读取类别名称——"
+          f"导出的 .onnx/.xml 本身不包含类别名称：")
+    print(f"  复制 IR   → {REPO_ROOT / 'models' / 'custom' / f'yolox_{args.size}.xml'}")
+    print(f"  复制名称   → {REPO_ROOT / 'models' / 'custom' / 'labels.json'}  "
           f"(from {labels_path})\n")
     return 0
 

@@ -130,9 +130,9 @@ if hasattr(torch, 'xpu'):
             if _mp.current_process().name == "MainProcess":
                 _gpu_name = (torch.xpu.get_device_name(0)
                              if hasattr(torch.xpu, 'get_device_name') else 'Intel GPU')
-                print(f"✅ Intel GPU detected: {_gpu_name}")
+                print(f"✅ 检测到 Intel GPU：{_gpu_name}")
     except Exception as _e:
-        print(f"⚠️  Intel GPU check failed: {_e}")
+        print(f"⚠️  Intel GPU 检查失败：{_e}")
 
 try:
     import intel_extension_for_pytorch as ipex
@@ -237,7 +237,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,
     use_intel_gpu = device.type == 'xpu' and HAS_INTEL_GPU
 
     decoder_type = CONFIG.get("decoder_type", "mlp")
-    print(f"\n🏗️  Building decoder: '{decoder_type}' | feature_dim={feature_dim}")
+    print(f"\n🏗️  正在构建解码器：'{decoder_type}' | 特征维度={feature_dim}")
 
     model = build_decoder(
         decoder_type=decoder_type,
@@ -259,7 +259,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,
     # LR
     is_resuming = CONFIG.get("checkpoint_path") and os.path.exists(CONFIG["checkpoint_path"])
     lr = CONFIG["finetune_learning_rate"] if is_resuming else CONFIG["base_learning_rate"]
-    print(f"{'🔄 Resume' if is_resuming else '🆕 Fresh'} LR: {lr}")
+    print(f"{'🔄 继续训练' if is_resuming else '🆕 全新训练'} 学习率：{lr}")
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
 
@@ -269,9 +269,9 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,
         try:
             model, optimizer = ipex.optimize(model, optimizer=optimizer, dtype=torch.bfloat16)
             use_amp = True
-            print("✅ IPEX optimizations applied (bfloat16)")
+            print("✅ 已应用 IPEX 优化（bfloat16）")
         except Exception as e:
-            print(f"⚠️  IPEX optimize failed: {e}")
+            print(f"⚠️  IPEX 优化失败：{e}")
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=CONFIG.get("base_epochs", 25), eta_min=1e-6
@@ -300,7 +300,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,
         model.train()
         run_loss, correct, total = 0.0, 0, 0
 
-        pbar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{max_epochs}")
+        pbar = tqdm(train_loader, desc=f"训练轮次 {epoch + 1}/{max_epochs}")
         for feats, labels in pbar:
             feats = feats.to(device)
             labels = labels.to(device)
@@ -329,14 +329,14 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,
         scheduler.step()
         t_loss = run_loss / total if total else float("inf")
         t_acc = correct / total if total else 0
-        print(f"\n  Train Loss: {t_loss:.4f} | Acc: {t_acc:.4f} | LR: {optimizer.param_groups[0]['lr']:.6f}")
+        print(f"\n  训练损失：{t_loss:.4f} | 准确率：{t_acc:.4f} | 学习率：{optimizer.param_groups[0]['lr']:.6f}")
 
         # Validation
         if len(val_loader) > 0:
             v_loss, v_acc, pc_acc, _ = validate_cached(
                 model, val_loader, device, criterion, use_amp=use_amp
             )
-            print(f"  Val   Loss: {v_loss:.4f} | Acc: {v_acc:.4f}")
+            print(f"  验证损失：{v_loss:.4f} | 准确率：{v_acc:.4f}")
             for li in sorted(pc_acc):
                 print(f"    {'✓' if pc_acc[li] > 0 else '⚠️'} {idx_to_label[li]}: {pc_acc[li]:.4f}")
 
@@ -344,12 +344,12 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,
                 best_loss, best_acc = v_loss, v_acc
                 best_state = model.state_dict().copy()
                 patience_ctr = 0
-                print("   ⭐ Improved!")
+                print("   ⭐ 指标已提升！")
             else:
                 patience_ctr += 1
-                print(f"   No improvement ({patience_ctr}/{CONFIG['early_stopping_patience']})")
+                print(f"   暂无提升（{patience_ctr}/{CONFIG['early_stopping_patience']}）")
                 if patience_ctr >= CONFIG["early_stopping_patience"]:
-                    print("\n🛑 Early stopping")
+                    print("\n🛑 已提前停止训练")
                     break
 
         # Checkpoint
@@ -369,7 +369,7 @@ def train_classifier_cached(train_loader, val_loader, feature_dim, num_classes,
 
     if best_state:
         model.load_state_dict(best_state)
-        print(f"\n✅ Best model loaded (loss={best_loss:.4f}, acc={best_acc:.4f})")
+        print(f"\n✅ 已加载最佳模型（损失={best_loss:.4f}，准确率={best_acc:.4f}）")
 
     wrapped = ActionRecognitionModel(
         model=model, label_to_idx=label_to_idx, idx_to_label=idx_to_label,

@@ -374,8 +374,8 @@ def translate_batch_with_llm(texts, source_lang="en", target_lang="pl",
         total_batches = (total + batch_size - 1) // batch_size
         print(f"  🦙 Batch {batch_num}/{total_batches} ({len(batch)} segments)...")
         if progress_fn:
-            progress_fn(i, total, "Translation",
-                        f"Batch {batch_num}/{total_batches}")
+            progress_fn(i, total, "翻译",
+                        f"批次 {batch_num}/{total_batches}")
 
         # Build numbered lines with gender hints per segment
         numbered_lines = []
@@ -440,7 +440,7 @@ def translate_batch_with_llm(texts, source_lang="en", target_lang="pl",
                 results.append(text)
 
     if progress_fn:
-        progress_fn(total, total, "Translation", f"{total} segments")
+        progress_fn(total, total, "翻译", f"{total} 个片段")
     return results
 
 def translate_segments(segments, source_lang="en", target_lang="pl",

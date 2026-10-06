@@ -96,16 +96,15 @@ def select_clips(clips, min_clips: int, splits=POOL_SPLITS):
     known = set(classes)
     small = sorted(k for k, v in counts.items() if v < min_clips)
     if small:
-        notes.append(f"{len(small)} classes have fewer than {min_clips} single-action clips "
-                     f"and are left out: " + ", ".join(f"{k} ({counts[k]})" for k in small))
+        notes.append(f"{len(small)} 个类别的单动作片段少于 {min_clips} 个，已排除："
+                     + ", ".join(f"{k} ({counts[k]})" for k in small))
     kept = [c for c in pool if c.labels and set(c.labels) <= known]
     multi = sum(len(c.labels) > 1 for c in kept)
     if multi:
-        notes.append(f"{multi} clips show two or more actions and teach them together")
+        notes.append(f"{multi} 个片段包含两个或更多动作，将一起用于示教")
     unknown = [c for c in pool if not set(c.labels) <= known]
     if unknown:
-        notes.append(f"{len(unknown)} clips name an action that is not a class here "
-                     f"and are left out")
+        notes.append(f"{len(unknown)} 个片段包含当前类别列表中不存在的动作，已排除")
     return kept, classes, notes
 
 
@@ -138,7 +137,7 @@ def out_of_fold(x, targets, groups, splits, steps, seed, log,
                 extra_n[unseen] += 1
         one = targets[te].sum(1) == 1
         acc = np.mean(scores[te][one].argmax(1) == targets[te][one].argmax(1)) if one.any() else 0.0
-        log(f"    fold {i}/{len(splits)}: {acc:.3f} on {int(one.sum())} single-action clips")
+        log(f"    折 {i}/{len(splits)}：单动作片段 {int(one.sum())} 个，准确率 {acc:.3f}")
     extra = extra_sum / np.maximum(extra_n, 1)[:, None]
     extra[extra_n == 0] = np.nan
     return scores, extra
@@ -147,42 +146,40 @@ def out_of_fold(x, targets, groups, splits, steps, seed, log,
 def _log_scores(log, title: str, s: dict) -> None:
     if "single" in s:
         t = s["single"]
-        log(f"{title}, single action ({t['clips']} clips): accuracy {t['accuracy']:.3f}, "
-            f"balanced {t['balanced_accuracy']:.3f}, top-3 {t['top3']:.3f}")
+        log(f"{title}，单动作（{t['clips']} 个片段）：准确率 {t['accuracy']:.3f}，"
+            f"平衡准确率 {t['balanced_accuracy']:.3f}，Top-3 {t['top3']:.3f}")
         if t["trusted_precision"] is not None:
-            log(f"  trusted: {t['trusted_share']:.0%} sorted, {t['trusted_precision']:.0%} "
-                f"of those correctly")
+            log(f"  可信结果：覆盖 {t['trusted_share']:.0%}，其中正确率 {t['trusted_precision']:.0%}")
     if "two_actions" in s:
         t = s["two_actions"]
-        log(f"{title}, two actions ({t['clips']} clips): both in the top 2 "
-            f"{t['both_in_top2']:.0%}, both in the top 5 {t['both_in_top5']:.0%}, "
-            f"top one of them {t['top1_is_one_of_them']:.0%}")
-        log(f"  trusted: both detected {t['both_detected']:.0%}, one {t['one_detected']:.0%}, "
-            f"something else detected too {t['wrong_detected']:.0%}")
+        log(f"{title}，双动作（{t['clips']} 个片段）：两个都进入 Top 2 {t['both_in_top2']:.0%}，"
+            f"两个都进入 Top 5 {t['both_in_top5']:.0%}，首位命中其中一个 {t['top1_is_one_of_them']:.0%}")
+        log(f"  可信结果：两个均检测 {t['both_detected']:.0%}，仅一个 {t['one_detected']:.0%}，"
+            f"同时误检其他动作 {t['wrong_detected']:.0%}")
 
 
 def main(argv=None) -> int:
     _utf8_stdout()
-    ap = argparse.ArgumentParser(description="Train a taught-action head on the frame encoder")
+    ap = argparse.ArgumentParser(description="使用帧编码器训练已示教的动作分类头")
     ap.add_argument("--data-path", required=True)
-    ap.add_argument("--out", default=None, help="output folder (default: models/actions/<name>)")
+    ap.add_argument("--out", default=None, help="输出文件夹（默认：models/actions/<name>）")
     ap.add_argument("--name", default=DEFAULT_NAME)
     ap.add_argument("--frames", type=int, default=4)
     ap.add_argument("--folds", type=int, default=5)
     ap.add_argument("--steps", default="750,1500,3000",
-                    help="training lengths to compare on held-out videos")
+                    help="在留出视频上比较的训练步数")
     ap.add_argument("--min-clips", type=int, default=5)
     ap.add_argument("--precision", type=float, default=0.7,
-                    help="held-out precision an action must reach to be trusted")
+                    help="动作被视为可信所需达到的留出集精确率")
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--backend", default=None, help="encoder route (compute.backend value)")
-    ap.add_argument("--cache", default=None, help="feature cache file (.npz)")
+    ap.add_argument("--backend", default=None, help="编码器计算路线（compute.backend 的值）")
+    ap.add_argument("--cache", default=None, help="特征缓存文件（.npz）")
     ap.add_argument("--aliases", default=None,
-                    help='JSON of folder or class name -> class name ("" leaves it out), as teach uses')
+                    help='文件夹或类别名 -> 类别名的 JSON 映射（"" 表示排除），与示教模块一致')
     ap.add_argument("--min-videos", type=int, default=3,
-                    help="source videos a trusted action's held-out hits must come from")
+                    help="可信动作在留出集中的命中至少需要来自多少个源视频")
     ap.add_argument("--teach-test", action="store_true",
-                    help="also learn from test/ (still scored only by heads that never saw each video)")
+                    help="同时从 test/ 学习（评分仍只使用从未见过对应视频的分类头）")
     args = ap.parse_args(argv)
     log = print
 
@@ -199,7 +196,7 @@ def main(argv=None) -> int:
     for note in notes:
         log(f"ℹ️ {note}")
     if not classes:
-        log("❌ No class has enough single-action clips to train on")
+        log("❌ 没有任何类别拥有足够的单动作片段可用于训练")
         return 1
     known = set(classes)
     extra = ([] if args.teach_test else
@@ -207,7 +204,7 @@ def main(argv=None) -> int:
 
     encoder = frame_encoder.load(args.backend, log=log)
     if encoder is None:
-        log("❌ The frame encoder is not available; see the lines above")
+        log("❌ 帧编码器不可用，请查看上方日志")
         return 1
     cache = Fx.FeatureCache(args.cache or default_cache(args.data_path, encoder.encoder_id, args.frames),
                             encoder.encoder_id, args.frames, encoder.dims)
@@ -231,16 +228,16 @@ def main(argv=None) -> int:
         f"{len(classes)} classes, {n_videos} source videos")
 
     folds = group_folds(strat, groups, args.folds, args.seed)
-    log(f"Scoring on unseen source videos ({len(folds)} folds)")
+    log(f"正在未见过的源视频上评分（{len(folds)} 折）")
     single = targets.sum(1) == 1
     best = None
     for steps in [int(s) for s in str(args.steps).split(",") if s.strip()]:
-        log(f"  {steps} steps")
+        log(f"  {steps} 步")
         scores, scores_extra = out_of_fold(x, targets, groups, folds, steps, args.seed, log,
                                            x_extra=x_extra if extra else None,
                                            groups_extra=g_extra)
         acc = float(np.mean(scores[single].argmax(1) == targets[single].argmax(1)))
-        log(f"  {steps} steps: held-out single-action accuracy {acc:.3f}")
+        log(f"  {steps} 步：留出集单动作准确率 {acc:.3f}")
         if best is None or acc > best[1] + 1e-9:
             best = (steps, acc, scores, scores_extra)
     steps, acc, scores, scores_extra = best
@@ -290,7 +287,7 @@ def main(argv=None) -> int:
     check = H.onnx_proba(H.load_onnx_session(head_path), x[:64])
     drift = float(np.abs(check - H.predict_proba(model, x[:64])).max())
     if drift > 1e-4:
-        log(f"❌ The exported head disagrees with the trained one (max {drift:.2e})")
+        log(f"❌ 导出的分类头与训练结果不一致（最大偏差 {drift:.2e}）")
         return 1
 
     found = trust.detected(scores, thresholds, pairs, pair_th)
@@ -337,24 +334,23 @@ def main(argv=None) -> int:
         json.dump(meta, fh, indent=1, ensure_ascii=False)
 
     log("")
-    _log_scores(log, "Held out (whole source videos never seen)", heldout)
+    _log_scores(log, "留出集（完整源视频从未参与训练）", heldout)
     if val_scores:
-        log(f"val/ as the dataset defines it (trained on train/ only): accuracy "
-            f"{val_scores['accuracy']:.3f} on {val_scores['clips']} clips, "
-            f"{val_scores['clips_sharing_a_video_with_train']} of which share a source video "
-            f"with train/")
+        log(f"按数据集定义的 val/（仅使用 train/ 训练）：准确率 {val_scores['accuracy']:.3f}，"
+            f"共 {val_scores['clips']} 个片段，其中 {val_scores['clips_sharing_a_video_with_train']} 个"
+            f"与 train/ 共享源视频")
     if test_scores:
-        _log_scores(log, "test/" + (" (taught, scored by heads that never saw each video)"
-                                    if args.teach_test else " (not taught)"), test_scores)
-    log(f"Trusted actions: {sum(t is not None for t in thresholds)} of {len(classes)}; "
-        f"trusted pairs: {sum(t is not None for t in pair_th)} of {len(pairs)} taught")
+        _log_scores(log, "test/" + ("（参与示教；由从未见过对应视频的分类头评分）"
+                                    if args.teach_test else "（未参与示教）"), test_scores)
+    log(f"可信动作：{sum(t is not None for t in thresholds)}/{len(classes)}；"
+        f"可信动作对：{sum(t is not None for t in pair_th)}/{len(pairs)} 个已示教动作对")
     width = max(len(c) for c in classes)
     log(f"\n{'class':{width}}  clips +pair videos recall precision   threshold")
     for name, row in sorted(per_class.items(), key=lambda kv: -kv[1]["clips"]):
         rec = "-" if row["heldout_recall"] is None else f"{row['heldout_recall']:.2f}"
         prec = ("-" if row["heldout_detected_precision"] is None
                 else f"{row['heldout_detected_precision']:.2f}")
-        th = "not trusted" if row["trust_threshold"] is None else f"{row['trust_threshold']:.2f}"
+        th = "不可信" if row["trust_threshold"] is None else f"{row['trust_threshold']:.2f}"
         log(f"{name:{width}}  {row['clips']:5} {row['clips_with_another_action']:5} "
             f"{row['videos']:6} {rec:>6} {prec:>9} {th:>11}")
     log(f"\n✅ Saved {head_path} and {META_FILE} ({time.time() - started:.0f} s)")

@@ -987,7 +987,7 @@ def snap_to_beat(t: float, analysis: MusicAnalysis, *, mode: str = "nearest",
     genuine snap and rejects only the two runaway cases.
     """
     if mode not in SNAP_MODES:
-        raise ValueError(f"unknown snap mode: {mode!r} (expected one of {SNAP_MODES})")
+        raise ValueError(f"未知节拍吸附模式：{mode!r}（应为 {SNAP_MODES} 之一）")
     beats = analysis.beats
     if not beats:
         return float(t)
@@ -1038,7 +1038,7 @@ def snap_segments(segments: Sequence, analysis: MusicAnalysis, *,
     belongs to whoever chose them.
     """
     if mode not in SNAP_MODES:
-        raise ValueError(f"unknown snap mode: {mode!r} (expected one of {SNAP_MODES})")
+        raise ValueError(f"未知节拍吸附模式：{mode!r}（应为 {SNAP_MODES} 之一）")
 
     grid = np.asarray(analysis.beats, dtype=np.float64)
     floor = max(0.0, float(min_duration))
@@ -1128,19 +1128,19 @@ def load_analysis(path: str) -> MusicAnalysis:
         with open(str(path), "r", encoding="utf-8") as handle:
             data = json.load(handle)
     except (OSError, json.JSONDecodeError) as exc:
-        raise ValueError(f"could not read music analysis {path!r}: {exc}") from exc
+        raise ValueError(f"无法读取音乐分析 {path!r}：{exc}") from exc
     if not isinstance(data, dict):
-        raise ValueError(f"music analysis {path!r} is not a JSON object")
+        raise ValueError(f"音乐分析 {path!r} 不是 JSON 对象")
     if int(data.get("schema", 0)) != SCHEMA_VERSION:
-        raise ValueError(f"music analysis {path!r} has schema "
-                         f"{data.get('schema')!r}, expected {SCHEMA_VERSION}")
+        raise ValueError(f"音乐分析 {path!r} 的 schema 为 "
+                         f"{data.get('schema')!r}，预期为 {SCHEMA_VERSION}")
 
     required = ("path", "duration", "sample_rate", "bpm", "beats", "downbeats",
                 "beat_interval", "meter", "onset_envelope", "onset_times",
                 "sections", "backend")
     missing = [key for key in required if key not in data]
     if missing:
-        raise ValueError(f"music analysis {path!r} is missing {', '.join(missing)}")
+        raise ValueError(f"音乐分析 {path!r} 缺少字段：{', '.join(missing)}")
 
     try:
         sections = [
@@ -1163,4 +1163,4 @@ def load_analysis(path: str) -> MusicAnalysis:
             backend=str(data["backend"]),
         )
     except (TypeError, ValueError, KeyError) as exc:
-        raise ValueError(f"music analysis {path!r} is malformed: {exc}") from exc
+        raise ValueError(f"音乐分析 {path!r} 格式错误：{exc}") from exc

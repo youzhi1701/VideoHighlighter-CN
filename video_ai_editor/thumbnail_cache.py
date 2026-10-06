@@ -427,7 +427,7 @@ class ThumbnailCache(QObject):
                 try:
                     cap = self._extract_one(key, cap, priority)
                 except Exception as e:
-                    print(f"⚠️ ThumbnailCache extract failed: {e}")
+                    print(f"⚠️ 缩略图缓存提取失败：{e}")
                 finally:
                     with self._lock:
                         self._active.discard(key)
@@ -524,7 +524,7 @@ class ThumbnailCache(QObject):
         try:
             cv2.imwrite(str(out_path), frame, [cv2.IMWRITE_JPEG_QUALITY, 60])
         except Exception as e:
-            print(f"⚠️ ThumbnailCache disk write failed: {e}")
+            print(f"⚠️ 缩略图缓存写入磁盘失败：{e}")
 
     def _ensure_decoder(self):
         """The persistent decoder for this video, started on first need."""
@@ -536,7 +536,7 @@ class ThumbnailCache(QObject):
                     from . import thumbnail_decoder
                     self._decoder = thumbnail_decoder.acquire(self.video_path)
                 except Exception as e:      # pragma: no cover - defensive
-                    print(f"⚠️ No persistent thumbnail decoder: {e}")
+                    print(f"⚠️ 没有可用的持久缩略图解码器：{e}")
         return self._decoder
 
     def _extract_via_decoder(self, time_ms: int, height: int, out_path: Path,

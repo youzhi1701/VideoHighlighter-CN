@@ -366,6 +366,23 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 parent = parent_of.get(id(node))
                 if isinstance(parent, (ast.Dict, ast.Compare, ast.Subscript)):
                     continue
+
+                # Prompt/instruction/task templates are model-control text, not
+                # application UI. Translating them would change model behaviour,
+                # which is explicitly outside localization scope. Direct UI
+                # setters/calls are already captured before this broad pass.
+                assign_parent = parent
+                while isinstance(assign_parent, (ast.JoinedStr, ast.List, ast.Tuple, ast.Set)):
+                    assign_parent = parent_of.get(id(assign_parent))
+                prompt_names = []
+                if isinstance(assign_parent, ast.Assign):
+                    prompt_names = [n for t in assign_parent.targets for n in assignment_names(t)]
+                elif isinstance(assign_parent, ast.AnnAssign):
+                    prompt_names = assignment_names(assign_parent.target)
+                if any(re.search(r"(?:prompt|system|instruction|template|task)$", n, re.I)
+                       for n in prompt_names):
+                    continue
+
                 if isinstance(parent, (ast.List, ast.Tuple, ast.Set)):
                     grand = parent_of.get(id(parent))
                     targets = []
@@ -375,6 +392,12 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                         targets = assignment_names(grand.target)
                     if targets and not any(UI_NAME_RE.search(n) for n in targets):
                         continue
+
+                # File globs/cache names and generated output filenames are
+                # implementation data, not labels. They may contain English
+                # suffixes but translating them would break file discovery.
+                if re.search(r"(?:\*\.|\.(?:json|txt|srt|onnx|pth|gguf|xml|yaml|yml))(?:$|\W)", cleaned, re.I):
+                    continue
 
                 hits.append(Hit(rel, getattr(node, "lineno", 0),
                                 "python-gui-string", "medium", cleaned))

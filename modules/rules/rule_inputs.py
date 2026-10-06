@@ -35,8 +35,8 @@ def trace_for_rules(video_path: str, boxes: list, engine, *,
                              cancel=cancel)
         report["outlines"] = stats
         if stats["frames"]:
-            log(f"✏️ Outlines ({stats['outliner']}): {stats['traced']} traced on "
-                f"{stats['frames']} frame(s), {stats['no_outline']} left as boxes")
+            log(f"✏️ 轮廓（{stats['outliner']}）：在 {stats['frames']} 帧中描绘 {stats['traced']} 个，"
+                f"{stats['no_outline']} 个保留为边界框")
     if engine.keypoint_pairs and not (cancel is not None and cancel.is_set()):
         from modules.vision.keypoints import add_keypoints
         from modules.vision.outlines import wanted
@@ -44,13 +44,13 @@ def trace_for_rules(video_path: str, boxes: list, engine, *,
         if any(wanted(entry, engine.keypoint_pairs) for entry in boxes):
             estimator = (pose_factory or default_pose_estimator)()
             if estimator is None:
-                log("⚠️ Rules name body parts, but no pose model is available; "
-                    "those rules cannot fire.")
+                log("⚠️ 规则引用了身体部位，但当前没有可用的姿态模型；"
+                    "这些规则无法触发。")
             else:
                 stats = add_keypoints(video_path, boxes, engine.keypoint_pairs,
                                       estimator, cancel=cancel)
                 report["keypoints"] = stats
                 if stats["frames"]:
-                    log(f"🦴 Pose: {stats['people']} people on {stats['frames']} "
-                        f"frame(s) for body-part rules")
+                    log(f"🦴 姿态：为身体部位规则在 {stats['frames']} 帧中检测到 "
+                        f"{stats['people']} 人")
     return report

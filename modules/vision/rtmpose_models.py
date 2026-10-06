@@ -70,7 +70,7 @@ def ir_path(size: str) -> Path:
 def _download(url: str, dest: Path, log: Callable[[str], None]) -> None:
     if dest.exists() and dest.stat().st_size > 0:
         return
-    log(f"⬇️ Downloading {dest.name}…")
+    log(f"⬇️ 正在下载 {dest.name}…")
 
     def _hook(blocks: int, block_size: int, total: int) -> None:
         if total > 0:
@@ -101,7 +101,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non
         member = next((n for n in z.namelist() if n.endswith("end2end.onnx")), None)
         if member is None:
             raise ValueError(f"{zip_path.name} contains no end2end.onnx — layout changed?")
-        log(f"📦 Extracting {member.rsplit('/', 1)[-1]} → {dest.name}")
+        log(f"📦 正在解压 {member.rsplit('/', 1)[-1]} → {dest.name}")
         dest.parent.mkdir(parents=True, exist_ok=True)
         with z.open(member) as src, open(dest, "wb") as out:
             shutil.copyfileobj(src, out)
@@ -110,7 +110,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non
 def _convert(onnx_path: Path, xml_path: Path, log: Callable[[str], None]) -> None:
     import openvino as ov  # lazy
 
-    log(f"⚙️ Converting {onnx_path.name} → {xml_path.name}")
+    log(f"⚙️ 正在转换 {onnx_path.name} → {xml_path.name}")
     model = ov.convert_model(str(onnx_path))
     ov.save_model(model, str(xml_path), compress_to_fp16=True)
 

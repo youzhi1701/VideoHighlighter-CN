@@ -157,6 +157,13 @@
       ]
     },
     {
+      "source": "(expected {5 + num_classes}: cx, cy, w, h, obj, *classes)",
+      "target": "（预期 {5 + num_classes}：cx, cy, w, h, obj, *classes）",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "(filtered: confidence {self.min_action_confidence:.0%}-{self.max_action_confidence:.0%})",
       "target": "（已筛选：置信度 {self.min_action_confidence:.0%}-{self.max_action_confidence:.0%}）",
       "files": [
@@ -430,6 +437,13 @@
       ]
     },
     {
+      "source": "(run tools/get_yolox_model.py, or import a custom model).",
+      "target": "（请运行 tools/get_yolox_model.py，或导入自定义模型）。",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "(s)",
       "target": "（秒）",
       "files": [
@@ -491,6 +505,13 @@
       "target": "（只分享模型，不会上传你的素材）",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "(the rules match against its boxes).",
+      "target": "（规则会根据这些检测框进行匹配）。",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -666,6 +687,13 @@
       "target": "（{len(_cached)} 秒）；不会计入高光评分。",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "({len(alive)} player(s) re-pointed)",
+      "target": "（已重新指向 {len(alive)} 个播放器）",
+      "files": [
+        "modules/media/audio_device.py"
       ]
     },
     {
@@ -1741,6 +1769,13 @@
       ]
     },
     {
+      "source": "=== HYBRID OPTIMIZED VIDEO PROCESSING ===",
+      "target": "=== 混合优化视频处理 ===",
+      "files": [
+        "modules/segments/motion_scene_detect_optimized.py"
+      ]
+    },
+    {
       "source": "=== Started ===",
       "target": "=== 已开始 ===",
       "files": [
@@ -1773,6 +1808,20 @@
       "target": "[动作训练] {line}",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "[audio] cannot track default output device: {e}",
+      "target": "[音频] 无法跟随系统默认输出设备：{e}",
+      "files": [
+        "modules/media/audio_device.py"
+      ]
+    },
+    {
+      "source": "[audio] default output is now {device.description()!r}",
+      "target": "[音频] 默认输出已切换为 {device.description()!r}",
+      "files": [
+        "modules/media/audio_device.py"
       ]
     },
     {
@@ -2000,6 +2049,13 @@
       ]
     },
     {
+      "source": "\\n   🔎 Top-5 → {top5_str}",
+      "target": "\\n   🔎 前 5 项 → {top5_str}",
+      "files": [
+        "sorter.py"
+      ]
+    },
+    {
       "source": "\\n  -- real tensors on the simulated device --",
       "target": "\\n  -- 在模拟设备上运行真实张量 --",
       "files": [
@@ -2221,6 +2277,13 @@
       "target": "\\n[已停止]",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "\\n\\n✅ Done",
+      "target": "\\n\\n✅ 完成",
+      "files": [
+        "sorter.py"
       ]
     },
     {
@@ -3168,6 +3231,13 @@
       "target": "\\n🔍 每隔 {interval} 秒搜索一次：{target_description}",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "\\n🔍 Sorting {len(videos)} clips\\n",
+      "target": "\\n🔍 正在整理 {len(videos)} 个片段\\n",
+      "files": [
+        "sorter.py"
       ]
     },
     {
@@ -4423,6 +4493,13 @@
       ]
     },
     {
+      "source": "at strides (8, 16, 32) — the decoder's grid would not line up",
+      "target": "否则解码器网格无法对齐",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "at {asked}",
       "target": "（地址：{asked}）",
       "files": [
@@ -4874,6 +4951,13 @@
       ]
     },
     {
+      "source": "base name for the files",
+      "target": "输出文件基础名称",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "Basic",
       "target": "基础",
       "files": [
@@ -5115,6 +5199,13 @@
     {
       "source": "Building the edit timeline…",
       "target": "正在构建编辑时间线…",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Building the side panels…",
+      "target": "正在构建侧边面板…",
       "files": [
         "signal_timeline_viewer.py"
       ]
@@ -5428,6 +5519,13 @@
       ]
     },
     {
+      "source": "Chapter {number}",
+      "target": "章节 {number}",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "Chat cleared. Ready for new questions.",
       "target": "对话已清空，可以开始新的问题。",
       "files": [
@@ -5509,6 +5607,13 @@
       "target": "检查 {len(labels.pending())} 个候选检测框。",
       "files": [
         "modules/teach/status.py"
+      ]
+    },
+    {
+      "source": "Checking how the frames are packed…",
+      "target": "正在检查画面排布方式…",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -5685,6 +5790,13 @@
       "target": "类别数：{num_classes}  大小：YOLOX-{args.size}  输入：{input_size}\\n",
       "files": [
         "training/train_yolox.py"
+      ]
+    },
+    {
+      "source": "classes: {result.class_names}",
+      "target": "类别：{result.class_names}",
+      "files": [
+        "training/export_yolox.py"
       ]
     },
     {
@@ -6704,6 +6816,20 @@
       ]
     },
     {
+      "source": "Could not read image: {src}",
+      "target": "无法读取图片：{src}",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
+      "source": "could not read music analysis {path!r}: {exc}",
+      "target": "无法读取音乐分析 {path!r}：{exc}",
+      "files": [
+        "modules/audio/music_analysis.py"
+      ]
+    },
+    {
       "source": "Could not read that cut list",
       "target": "无法读取该剪辑列表",
       "files": [
@@ -7445,6 +7571,13 @@
       ]
     },
     {
+      "source": "delete the intermediate ONNX once converted",
+      "target": "转换完成后删除中间 ONNX 文件",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "Delete the selected clips from the edit timeline",
       "target": "从剪辑时间线删除所选片段",
       "files": [
@@ -7636,10 +7769,24 @@
       ]
     },
     {
+      "source": "Device: {device}, min_area: {min_area}",
+      "target": "设备：{device}，最小区域：{min_area}",
+      "files": [
+        "modules/segments/motion_scene_detect_optimized.py"
+      ]
+    },
+    {
       "source": "Diarization",
       "target": "说话人识别",
       "files": [
         "modules/audio/transcript.py"
+      ]
+    },
+    {
+      "source": "different face model and were cleared — re-enroll those faces.",
+      "target": "已清空；请重新录入这些人脸。",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -8779,6 +8926,13 @@
       ]
     },
     {
+      "source": "expected [1, anchors, 5+C], got shape {tuple(output.shape)}",
+      "target": "预期形状 [1, anchors, 5+C]，实际为 {tuple(output.shape)}",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "expected a timestamp, got {value!r}",
       "target": "需要时间戳，实际得到 {value!r}",
       "files": [
@@ -8825,6 +8979,13 @@
       "target": "导出",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Export a trained YOLOX checkpoint for the app",
+      "target": "为应用导出已训练的 YOLOX 检查点",
+      "files": [
+        "training/export_yolox.py"
       ]
     },
     {
@@ -9242,6 +9403,13 @@
       ]
     },
     {
+      "source": "FC head: {in_features} → Dropout({dropout}) → {num_classes}",
+      "target": "全连接头：{in_features} → Dropout({dropout}) → {num_classes}",
+      "files": [
+        "model_training/r3d/model.py"
+      ]
+    },
+    {
       "source": "FCPXML exported to: {os.path.basename(result)}",
       "target": "FCPXML 已导出到：{os.path.basename(result)}",
       "files": [
@@ -9253,6 +9421,20 @@
       "target": "FCPXML 会保留每一帧。",
       "files": [
         "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
+      "source": "feather must be a number between 0 and 1, got",
+      "target": "羽化值必须是 0 到 1 之间的数字，实际为",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "feather must be between 0 and {MAX_FEATHER:g}, got",
+      "target": "羽化值必须位于 0 到 {MAX_FEATHER:g} 之间，实际为",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -11117,6 +11299,13 @@
       ]
     },
     {
+      "source": "joining a run of cuts failed: {err}",
+      "target": "合并连续硬切片段失败：{err}",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
       "source": "JSON (*.json);;All files (*)",
       "target": "JSON (*.json);;所有文件 (*)",
       "files": [
@@ -11320,6 +11509,13 @@
       ]
     },
     {
+      "source": "Label mapping not found: {CUSTOM_MAPPING_PATH}",
+      "target": "未找到标签映射：{CUSTOM_MAPPING_PATH}",
+      "files": [
+        "sorter.py"
+      ]
+    },
+    {
       "source": "Label: {bar.label}",
       "target": "标签：{bar.label}",
       "files": [
@@ -11338,6 +11534,13 @@
       "target": "标签（逗号分隔）",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "labels : {result.labels_path}",
+      "target": "标签：{result.labels_path}",
+      "files": [
+        "training/export_yolox.py"
       ]
     },
     {
@@ -12731,6 +12934,13 @@
       ]
     },
     {
+      "source": "Motion detection cancelled - partial results: Scenes: {len(scenes)}, Motion events: {len(motion_events)}, Peaks: {len(motion_peaks)}",
+      "target": "运动检测已取消——部分结果：场景 {len(scenes)}，运动事件 {len(motion_events)}，峰值 {len(motion_peaks)}",
+      "files": [
+        "modules/segments/motion_scene_detect_optimized.py"
+      ]
+    },
+    {
       "source": "Motion event",
       "target": "运动事件",
       "files": [
@@ -12811,6 +13021,13 @@
       ]
     },
     {
+      "source": "Motion threshold: {motion_threshold}, Scene threshold: {scene_threshold}",
+      "target": "运动阈值：{motion_threshold}，场景阈值：{scene_threshold}",
+      "files": [
+        "modules/segments/motion_scene_detect_optimized.py"
+      ]
+    },
+    {
       "source": "Motion x{count} ({avg_conf:.0%})",
       "target": "运动 x{count}（{avg_conf:.0%}）",
       "files": [
@@ -12886,6 +13103,34 @@
       "files": [
         "frontend/src/App.tsx",
         "sidecar/server.py"
+      ]
+    },
+    {
+      "source": "music analysis {path!r} has schema",
+      "target": "音乐分析 {path!r} 的 schema 为",
+      "files": [
+        "modules/audio/music_analysis.py"
+      ]
+    },
+    {
+      "source": "music analysis {path!r} is malformed: {exc}",
+      "target": "音乐分析 {path!r} 格式错误：{exc}",
+      "files": [
+        "modules/audio/music_analysis.py"
+      ]
+    },
+    {
+      "source": "music analysis {path!r} is missing {', '.join(missing)}",
+      "target": "音乐分析 {path!r} 缺少字段：{', '.join(missing)}",
+      "files": [
+        "modules/audio/music_analysis.py"
+      ]
+    },
+    {
+      "source": "music analysis {path!r} is not a JSON object",
+      "target": "音乐分析 {path!r} 不是 JSON 对象",
+      "files": [
+        "modules/audio/music_analysis.py"
       ]
     },
     {
@@ -13249,6 +13494,13 @@
       ]
     },
     {
+      "source": "No class names in the checkpoint; pass class_names=",
+      "target": "检查点中没有类别名称；请传入 class_names=",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "no class {args.cls!r}",
       "target": "找不到类别 {args.cls!r}",
       "files": [
@@ -13288,6 +13540,13 @@
       "target": "暂无剪辑片段——可从上方信号时间线拖入片段，",
       "files": [
         "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "No composition_rules.yaml found — add rules in the Advanced tab first.",
+      "target": "未找到 composition_rules.yaml——请先在“高级”选项卡中添加规则。",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -13365,6 +13624,13 @@
       "target": "没有可测试的设备——已跳过",
       "files": [
         "tools/simulate_directml.py"
+      ]
+    },
+    {
+      "source": "No events defined in {rules_path}.",
+      "target": "{rules_path} 中没有定义事件。",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -13551,6 +13817,20 @@
       ]
     },
     {
+      "source": "No object boxes in the cache — run object detection first",
+      "target": "缓存中没有物体检测框——请先运行物体检测",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
+      "source": "No object classes given — type at least one (e.g. person, car).",
+      "target": "未提供物体类别——请至少输入一个，例如 person、car。",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "no object detector installed",
       "target": "未安装物体检测器",
       "files": [
@@ -13682,6 +13962,13 @@
       "target": "不存在设置项 {key!r}；可用设置：{sorted(known)}",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "No shots detected; nothing to chapterize.",
+      "target": "未检测到镜头，无法生成章节。",
+      "files": [
+        "modules/segments/chapters.py"
       ]
     },
     {
@@ -13956,7 +14243,8 @@
       "source": "Normalization failed for {os.path.basename(src)}: {err}",
       "target": "{os.path.basename(src)} 标准化失败：{err}",
       "files": [
-        "modules/media/combine_videos.py"
+        "modules/media/combine_videos.py",
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -14277,6 +14565,13 @@
       ]
     },
     {
+      "source": "Object detector unavailable — no usable model",
+      "target": "物体检测器不可用——没有可用模型",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "Object model:",
       "target": "物体模型：",
       "files": [
@@ -14366,8 +14661,22 @@
       ]
     },
     {
+      "source": "Objects: {', '.join(visible_objects)}",
+      "target": "物体：{', '.join(visible_objects)}",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Objects: {len(self.object_classes)} | Edit: {edit_len:.1f}s",
       "target": "物体：{len(self.object_classes)} | 编辑长度：{edit_len:.1f} 秒",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Objects: {len(visible_objects)} shown",
+      "target": "物体：显示 {len(visible_objects)} 个",
       "files": [
         "signal_timeline_viewer.py"
       ]
@@ -14908,6 +15217,13 @@
       ]
     },
     {
+      "source": "Optimizer groups: backbone LR={base_lr * backbone_factor:.6f}, head LR={base_lr:.6f}",
+      "target": "优化器参数组：主干学习率={base_lr * backbone_factor:.6f}，头部学习率={base_lr:.6f}",
+      "files": [
+        "model_training/r3d/model.py"
+      ]
+    },
+    {
       "source": "optional — shots snap to its beat",
       "target": "可选——镜头会自动对齐节拍",
       "files": [
@@ -15105,6 +15421,13 @@
       ]
     },
     {
+      "source": "output width {width} does not match {num_classes} classes",
+      "target": "输出宽度 {width} 与 {num_classes} 个类别不匹配",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "Output {list(out.shape)} does not match {n} labels (expected [1, {n}]).",
       "target": "输出 {list(out.shape)} 与 {n} 个标签不匹配（预期为 [1, {n}]）。",
       "files": [
@@ -15221,6 +15544,13 @@
       "target": "页面网址：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Params: {total:,} total, {trainable:,} trainable",
+      "target": "参数量：总计 {total:,}，可训练 {trainable:,}",
+      "files": [
+        "model_training/r3d/model.py"
       ]
     },
     {
@@ -15361,6 +15691,13 @@
       "target": "人物 {ident['id'][:8]}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Person {identity_id[:8]}",
+      "target": "人物 {identity_id[:8]}",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -17613,6 +17950,13 @@
       ]
     },
     {
+      "source": "Scenes: {len(scenes)}, Motion events: {len(motion_events)}, Peaks: {len(motion_peaks)}",
+      "target": "场景：{len(scenes)}，运动事件：{len(motion_events)}，峰值：{len(motion_peaks)}",
+      "files": [
+        "modules/segments/motion_scene_detect_optimized.py"
+      ]
+    },
+    {
       "source": "score and propose a class for every sample",
       "target": "为每个样本评分并建议类别",
       "files": [
@@ -17879,6 +18223,13 @@
       "target": "查看大模型实际接收到的完整文本",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "seen={ident['count']}  gallery={ident['gallery_size']}",
+      "target": "出现次数={ident['count']}  图库数量={ident['gallery_size']}",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -19657,6 +20008,13 @@
       ]
     },
     {
+      "source": "the .pth written by the training run",
+      "target": "训练过程生成的 .pth 文件",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "the advisor documentation, not from the video itself.",
       "target": "顾问文档，而不是直接读取视频本身。",
       "files": [
@@ -20871,6 +21229,7 @@
       "source": "unknown",
       "target": "未知",
       "files": [
+        "video_ai_editor/face_identity.py",
         "video_ai_editor/signal_timeline.py"
       ]
     },
@@ -20893,6 +21252,13 @@
       "target": "未知的大模型后端：{backend}。请使用 'ollama'、'llama-cpp' 或 'openvino'。",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "unknown easing {easing!r} — expected one of",
+      "target": "未知缓动方式 {easing!r}——应为以下之一：",
+      "files": [
+        "modules/media/transitions.py"
       ]
     },
     {
@@ -20964,6 +21330,27 @@
       "target": "未知信号类型：{self.kind}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "unknown snap mode: {mode!r} (expected one of {SNAP_MODES})",
+      "target": "未知节拍吸附模式：{mode!r}（应为 {SNAP_MODES} 之一）",
+      "files": [
+        "modules/audio/music_analysis.py"
+      ]
+    },
+    {
+      "source": "unknown transition {kind!r} — expected one of",
+      "target": "未知转场类型 {kind!r}——应为以下之一：",
+      "files": [
+        "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "Unknown variant: {variant}. Use r3d_18 / mc3_18 / r2plus1d_18",
+      "target": "未知模型变体：{variant}。请使用 r3d_18 / mc3_18 / r2plus1d_18",
+      "files": [
+        "model_training/r3d/model.py"
       ]
     },
     {
@@ -21282,6 +21669,13 @@
       "target": "用法：python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]",
       "files": [
         "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "Usage: python face_identity.py <image_or_video> [face_db.json]",
+      "target": "用法：python face_identity.py <图片或视频> [face_db.json]",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -22264,6 +22658,13 @@
       ]
     },
     {
+      "source": "where to install (default: {DEFAULT_DEST})",
+      "target": "安装位置（默认：{DEFAULT_DEST}）",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "Where, what, what is at stake. Keep it to a few words.",
       "target": "说明地点、发生了什么以及关键背景，尽量控制在几个词内。",
       "files": [
@@ -22909,6 +23310,13 @@
       ]
     },
     {
+      "source": "{checkpoint_path} has no 'model' key — is it a training checkpoint?",
+      "target": "{checkpoint_path} 中没有 'model' 键；这是否是训练检查点？",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "{class_name}: {count} samples, weight: {weight:.4f}",
       "target": "{class_name}：{count} 个样本，权重：{weight:.4f}",
       "files": [
@@ -22962,6 +23370,13 @@
       "target": "{c} [自定义]",
       "files": [
         "sidecar/server.py"
+      ]
+    },
+    {
+      "source": "{data.get('schema')!r}, expected {SCHEMA_VERSION}",
+      "target": "{data.get('schema')!r}，预期为 {SCHEMA_VERSION}",
+      "files": [
+        "modules/audio/music_analysis.py"
       ]
     },
     {
@@ -23138,6 +23553,13 @@
       "target": "{i+1}. 第 {idx} 秒（{timestamp}）：{score[idx]:.1f} 分",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "{ident['id'][:8]}  name={ident['name']}",
+      "target": "{ident['id'][:8]}  名称={ident['name']}",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -23821,6 +24243,13 @@
       ]
     },
     {
+      "source": "{output.shape[1]} anchors, expected {expected} for a {w}x{h} input",
+      "target": "锚点数量为 {output.shape[1]}，{w}x{h} 输入在步长 (8, 16, 32) 下预期为 {expected}；",
+      "files": [
+        "training/export_yolox.py"
+      ]
+    },
+    {
       "source": "{out} is not empty; choose an empty folder.",
       "target": "{out} 不是空文件夹；请选择一个空文件夹。",
       "files": [
@@ -24091,6 +24520,13 @@
       "target": "{sum(1 for i in bank.all_identities() if i['name'])} 个已命名 ·",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{tag} face det={f['det_score']:.2f} -> {bank.name_for(ident_id)}",
+      "target": "{tag} 人脸检测分数={f['det_score']:.2f} → {bank.name_for(ident_id)}",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -26295,6 +26731,13 @@
       ]
     },
     {
+      "source": "⚠️  Chapters: unreadable visual index ({exc}); using shot structure",
+      "target": "⚠️  章节：视觉索引无法读取（{exc}）；将使用镜头结构",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "⚠️  Class imbalance detected! Ratio: {imbalance_ratio:.2f}x",
       "target": "⚠️  检测到类别不平衡！比例：{imbalance_ratio:.2f}x",
       "files": [
@@ -26433,6 +26876,13 @@
       "target": "⚠️  未检测到姿态 → 默认按下半身区域处理（基于髋部）",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️  No visual signatures ({e}); falling back to shot structure",
+      "target": "⚠️  没有可用的视觉特征（{e}）；将退回镜头结构划分",
+      "files": [
+        "modules/segments/chapters.py"
       ]
     },
     {
@@ -26765,6 +27215,27 @@
       ]
     },
     {
+      "source": "⚠️ Chapter facts skipped: {exc}",
+      "target": "⚠️ 已跳过章节事实信息：{exc}",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
+      "source": "⚠️ Chapter frames not used ({exc}); telling from text alone",
+      "target": "⚠️ 章节画面未使用（{exc}）；将仅依据文本生成讲述",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
+      "source": "⚠️ Chapter frames skipped: {exc}",
+      "target": "⚠️ 已跳过章节画面：{exc}",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
       "source": "⚠️ Chapter {index} could not be told: {exc}",
       "target": "⚠️ 无法讲述章节 {index}：{exc}",
       "files": [
@@ -27067,6 +27538,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not list Ollama models: {exc}",
+      "target": "⚠️ 无法列出 Ollama 模型：{exc}",
+      "files": [
+        "modules/narration/llm_discovery.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not list recent models: {exc}",
       "target": "⚠️ 无法列出最近使用的模型：{exc}",
       "files": [
@@ -27302,6 +27780,13 @@
       "target": "⚠️ 无法刷新转录面板：{e}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not remember the GGUF path: {exc}",
+      "target": "⚠️ 无法保存 GGUF 路径记录：{exc}",
+      "files": [
+        "modules/narration/llm_discovery.py"
       ]
     },
     {
@@ -27578,6 +28063,34 @@
       ]
     },
     {
+      "source": "⚠️ FaceIdentityBank.load failed: {e}",
+      "target": "⚠️ 人脸身份库加载失败：{e}",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
+      "source": "⚠️ FaceIdentityBank.save failed: {e}",
+      "target": "⚠️ 人脸身份库保存失败：{e}",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
+      "source": "⚠️ FaceIdentityBank.save: no db_path set",
+      "target": "⚠️ 人脸身份库保存失败：未设置 db_path",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
+      "source": "⚠️ FaceIdentityBank: {dropped} identity gallery(ies) came from a",
+      "target": "⚠️ 人脸身份库：有 {dropped} 个身份图库来自不同的人脸模型，",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
       "source": "⚠️ Failed to compute waveform: {e}",
       "target": "⚠️ 无法计算音频波形：{e}",
       "files": [
@@ -27753,6 +28266,13 @@
       ]
     },
     {
+      "source": "⚠️ Frame loader did not stop; leaking VideoCapture to avoid a crash",
+      "target": "⚠️ 帧加载线程未停止；为避免崩溃，将暂不释放 VideoCapture",
+      "files": [
+        "modules/segments/motion_scene_detect_optimized.py"
+      ]
+    },
+    {
       "source": "⚠️ Frame {frame_count}: Empty crop for idx={action_idx}",
       "target": "⚠️ 第 {frame_count} 帧：idx={action_idx} 的裁剪区域为空",
       "files": [
@@ -27771,6 +28291,13 @@
       "target": "⚠️ 第 {ts:.1f} 秒画面：{exc}",
       "files": [
         "sidecar/worker.py"
+      ]
+    },
+    {
+      "source": "⚠️ Frames for chapter {index} failed: {exc}",
+      "target": "⚠️ 章节 {index} 的画面读取失败：{exc}",
+      "files": [
+        "modules/narration/chapter_story.py"
       ]
     },
     {
@@ -28052,6 +28579,13 @@
       "target": "⚠️ 缺少目标描述。用法：[CMD:visual_scan interval=60 target=description]",
       "files": [
         "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "⚠️ Motion detection error: {e}",
+      "target": "⚠️ 运动检测错误：{e}",
+      "files": [
+        "modules/segments/motion_scene_detect_optimized.py"
       ]
     },
     {
@@ -28951,6 +29485,13 @@
       ]
     },
     {
+      "source": "⚠️ Spoken evidence backfill skipped: {exc}",
+      "target": "⚠️ 已跳过语音证据回填：{exc}",
+      "files": [
+        "modules/narration/chapter_story.py"
+      ]
+    },
+    {
       "source": "⚠️ Spoken evidence skipped: {exc}",
       "target": "⚠️ 已跳过口述证据分析：{exc}",
       "files": [
@@ -29665,6 +30206,13 @@
       ]
     },
     {
+      "source": "✅ Avoid crop done: {os.path.basename(out_path)}",
+      "target": "✅ 排除裁剪完成：{os.path.basename(out_path)}",
+      "files": [
+        "modules/crop/avoid.py"
+      ]
+    },
+    {
       "source": "✅ Base model updated: {len(label_to_idx)} classes remaining",
       "target": "✅ 基础模型已更新：剩余 {len(label_to_idx)} 个类别",
       "files": [
@@ -29947,6 +30495,13 @@
     {
       "source": "✅ FaceIdentityBank: loaded YuNet + SFace (CPU, OpenCV DNN)",
       "target": "✅ 人脸身份库：已加载 YuNet + SFace（CPU，OpenCV DNN）",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
+      "source": "✅ FaceIdentityBank: loaded {len(self.identities)} identities ← {path}",
+      "target": "✅ 人脸身份库：已加载 {len(self.identities)} 个身份 ← {path}",
       "files": [
         "video_ai_editor/face_identity.py"
       ]
@@ -30399,6 +30954,13 @@
       "target": "✅ 物体检测器：{type(yolo_model).__name__}，",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "✅ ONNX saved: {output_path}",
+      "target": "✅ ONNX 已保存：{output_path}",
+      "files": [
+        "model_training/r3d/model.py"
       ]
     },
     {
@@ -31333,6 +31895,13 @@
       ]
     },
     {
+      "source": "✓ Loaded {len(idx_to_label)} action labels",
+      "target": "✓ 已加载 {len(idx_to_label)} 个动作标签",
+      "files": [
+        "sorter.py"
+      ]
+    },
+    {
       "source": "✓ Loading custom fine-tuned decoder model",
       "target": "✓ 正在加载自定义微调解码器模型",
       "files": [
@@ -31673,6 +32242,13 @@
       "target": "✨ 已对 {smoothed_count} 个点应用平滑处理。",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "❄️  Backbone frozen — only FC head is trainable",
+      "target": "❄️  主干网络已冻结——仅训练全连接头",
+      "files": [
+        "model_training/r3d/model.py"
       ]
     },
     {
@@ -32926,6 +33502,13 @@
       ]
     },
     {
+      "source": "🎬 Detecting shots in {os.path.basename(args.video)} ...",
+      "target": "🎬 正在检测 {os.path.basename(args.video)} 的镜头…",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "🎬 End of video reached",
       "target": "🎬 已到达视频末尾",
       "files": [
@@ -33154,6 +33737,13 @@
       "target": "🎬 视频标注器 - {os.path.basename(self.video_path)}",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "🎬 {len(scenes)} shots over {format_timestamp(duration)}",
+      "target": "🎬 共 {len(scenes)} 个镜头，总时长 {format_timestamp(duration)}",
+      "files": [
+        "modules/segments/chapters.py"
       ]
     },
     {
@@ -33729,6 +34319,13 @@
       "target": "💾 导出标签",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "💾 FaceIdentityBank: saved {len(self.identities)} identities → {path}",
+      "target": "💾 人脸身份库：已保存 {len(self.identities)} 个身份 → {path}",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -34393,6 +34990,27 @@
       ]
     },
     {
+      "source": "📖 Chapters: no cached visual index; using shot structure",
+      "target": "📖 章节：没有缓存的视觉索引；将使用镜头结构",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
+      "source": "📖 Chapters: no CLIP stack ({exc}); using shot structure",
+      "target": "📖 章节：CLIP 环境不可用（{exc}）；将使用镜头结构",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
+      "source": "📖 Chapters: reusing {len(index)} cached frame signatures",
+      "target": "📖 章节：复用 {len(index)} 个缓存画面特征",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "📖 Chapters: too few sampled shots for visual structure",
       "target": "📖 章节：采样镜头过少，无法分析视觉结构",
       "files": [
@@ -34446,6 +35064,13 @@
       "target": "📝 分析：{response[:100]}…",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "📝 Confidence log: {csv_path}",
+      "target": "📝 置信度日志：{csv_path}",
+      "files": [
+        "sorter.py"
       ]
     },
     {
@@ -34600,6 +35225,13 @@
       "target": "📦 在 {time_seconds:.1f} 秒处新增 {len(new_items)} 个检测框项目",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "📦 Exporting ONNX: {output_path}",
+      "target": "📦 正在导出 ONNX：{output_path}",
+      "files": [
+        "model_training/r3d/model.py"
       ]
     },
     {
@@ -35450,6 +36082,13 @@
       ]
     },
     {
+      "source": "🔓 Backbone unfrozen — all layers trainable",
+      "target": "🔓 主干网络已解冻——所有层均可训练",
+      "files": [
+        "model_training/r3d/model.py"
+      ]
+    },
+    {
       "source": "🔗 Blending — {len(blended)} transition(s) across",
       "target": "🔗 正在混合：{len(blended)} 个转场，跨 {len(pieces)} 个连续片段组；",
       "files": [
@@ -35587,6 +36226,13 @@
       "target": "🔧 视频解析失败。可尝试更新 yt-dlp：pip install --upgrade yt-dlp",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "🔧 Loading models...",
+      "target": "🔧 正在加载模型…",
+      "files": [
+        "sorter.py"
       ]
     },
     {
@@ -35864,6 +36510,13 @@
       ]
     },
     {
+      "source": "🚀 Loading {variant} (pretrained={pretrained})...",
+      "target": "🚀 正在加载 {variant}（预训练={pretrained}）…",
+      "files": [
+        "model_training/r3d/model.py"
+      ]
+    },
+    {
       "source": "🚀 Starting batch processing of {len(self.video_path)} videos...",
       "target": "🚀 开始批量处理 {len(self.video_path)} 个视频…",
       "files": [
@@ -35952,6 +36605,13 @@
       "target": "🚫  从高光中排除此区间",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "🚫 Avoid crop target size: {target[0]}x{target[1]}",
+      "target": "🚫 排除裁剪目标尺寸：{target[0]}x{target[1]}",
+      "files": [
+        "modules/crop/avoid.py"
       ]
     },
     {

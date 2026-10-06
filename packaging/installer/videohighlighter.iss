@@ -106,6 +106,9 @@ SolidCompression=yes
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 
+[Languages]
+Name: "chinesesimplified"; MessagesFile: "ChineseSimplified.isl"
+
 [Files]
 ; Unpacks the payload; extracted to {tmp} during install only. Carried rather
 ; than looked for because a machine with no 7-Zip is the machine this is for.
@@ -117,15 +120,15 @@ Source: "{#EmbeddedArchive}"; DestDir: "{tmp}"; Flags: nocompression deleteafter
 #endif
 
 [Tasks]
-Name: "desktopicon"; Description: "Create a &desktop shortcut"
+Name: "desktopicon"; Description: "创建桌面快捷方式(&D)"
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExe}"
-Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
+Name: "{group}\卸载 {#AppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#AppExe}"; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#AppExe}"; Description: "启动 {#AppName}"; Flags: nowait postinstall skipifsilent
 
 ; Nothing under {app} is tracked by the installer -- 7-Zip wrote it -- so the
 ; uninstaller has to be told to take the folder. That includes what the app
@@ -144,15 +147,15 @@ function OnDownloadProgress(const Url, FileName: String; const Progress, Progres
 begin
   if ProgressMax > 0 then
     DownloadPage.SetText(FileName,
-      IntToStr(Progress div 1048576) + ' of ' + IntToStr(ProgressMax div 1048576) + ' MB');
+      IntToStr(Progress div 1048576) + ' / ' + IntToStr(ProgressMax div 1048576) + ' MB');
   Result := True;
 end;
 
 procedure InitializeWizard;
 begin
   DownloadPage := CreateDownloadPage(
-    'Downloading {#AppName}',
-    'The application files are fetched from GitHub. This is a large download.',
+    '正在下载 {#AppName}',
+    '正在从 GitHub 获取应用程序文件，下载体积较大，请保持网络连接。',
     @OnDownloadProgress);
 end;
 
@@ -183,10 +186,10 @@ function ShortOfSpace(const Drive, What: String; Need, Free: Int64): Boolean;
 begin
   Result := (Free >= 0) and (Free < Need);
   if Result then
-    MsgBox('Not enough free space on ' + Drive + ' ' + What + '.' + #13#10#13#10
-      + 'Needed: about ' + IntToStr(Need) + ' MB' + #13#10
-      + 'Available: ' + IntToStr(Free) + ' MB' + #13#10#13#10
-      + 'Free up space, or go Back and choose a folder on another drive.',
+    MsgBox('磁盘 ' + Drive + ' 可用空间不足（' + What + '）。' + #13#10#13#10
+      + '需要：约 ' + IntToStr(Need) + ' MB' + #13#10
+      + '可用：' + IntToStr(Free) + ' MB' + #13#10#13#10
+      + '请释放磁盘空间，或返回上一步选择其他磁盘上的安装目录。',
       mbError, MB_OK);
 end;
 
@@ -207,11 +210,11 @@ begin
   if SameText(ExtractFileDrive(AppDir), ExtractFileDrive(TmpDir)) then
   begin
     Result := not ShortOfSpace(ExtractFileDrive(AppDir),
-      'for the install', NeedApp + NeedTmp, FreeSpaceMB(AppDir));
+      '用于安装', NeedApp + NeedTmp, FreeSpaceMB(AppDir));
     Exit;
   end;
 
-  if ShortOfSpace(ExtractFileDrive(AppDir), 'for the install',
+  if ShortOfSpace(ExtractFileDrive(AppDir), '用于安装',
                   NeedApp, FreeSpaceMB(AppDir)) then
   begin
     Result := False;
@@ -220,7 +223,7 @@ begin
 
   // The temporary folder holds the payload until it is unpacked, so its drive
   // needs room for it even when the app is being installed elsewhere.
-  if ShortOfSpace(ExtractFileDrive(TmpDir), 'for the temporary files',
+  if ShortOfSpace(ExtractFileDrive(TmpDir), '用于临时文件',
                   NeedTmp, FreeSpaceMB(TmpDir)) then
     Result := False;
 end;
@@ -318,7 +321,7 @@ begin
   SevenZip := ExpandConstant('{tmp}\7zr.exe');
   Payload := ExpandConstant('{tmp}\{#PayloadName}');
 
-  WizardForm.StatusLabel.Caption := 'Unpacking the application files (this takes a few minutes)...';
+  WizardForm.StatusLabel.Caption := '正在解压应用程序文件（可能需要几分钟）…';
   WizardForm.Refresh;
 
   // A split payload is entered through its .001 and 7-Zip finds the rest next
@@ -327,9 +330,9 @@ begin
   if not Exec(SevenZip, Format('x -y "%s" -o"%s"', [Payload, ExpandConstant('{app}')]),
               '', SW_HIDE, ewWaitUntilTerminated, ResultCode) or (ResultCode <> 0) then
   begin
-    MsgBox('Could not unpack the application files (7-Zip exit code '
-      + IntToStr(ResultCode) + ').'#13#10#13#10
-      + 'The install is incomplete. Run Setup again.', mbCriticalError, MB_OK);
+    MsgBox('无法解压应用程序文件（7-Zip 退出代码：'
+      + IntToStr(ResultCode) + '）。'#13#10#13#10
+      + '安装未完成，请重新运行安装程序。', mbCriticalError, MB_OK);
     Exit;
   end;
 

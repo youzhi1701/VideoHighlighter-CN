@@ -22,7 +22,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
           <CardHeader className="flex-row items-center justify-between space-y-0">
             <CardTitle className="text-sm font-medium">评分项</CardTitle>
             <Badge variant={totalPoints(cfg) ? "default" : "secondary"}>
-              total {totalPoints(cfg)}
+              总分 {totalPoints(cfg)}
             </Badge>
           </CardHeader>
           <CardContent className="space-y-2.5">
@@ -44,7 +44,7 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
             <CardTitle className="text-sm font-medium">时长与剪切</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2.5">
-            <NumberField label="高光片段最长时长" hint="(s)" value={cfg.max_duration} onChange={(v) => set("max_duration", v)} />
+            <NumberField label="高光片段最长时长" hint="（秒）" value={cfg.max_duration} onChange={(v) => set("max_duration", v)} />
             <NumberField label="固定时长" hint="（0=关闭）" value={cfg.exact_duration} onChange={(v) => set("exact_duration", v)} />
             <NumberField label="片段时长" hint="（0=自动）" value={cfg.clip_time} onChange={(v) => set("clip_time", v)} />
             <Separator className="my-1" />
@@ -53,9 +53,9 @@ export function BasicTab({ cfg, set, objectLabels, actionLabels }: Props) {
                 ? "自动模式：片段边界根据动作、场景切换和峰值等信号结构确定。"
                 : `固定模式：每个片段时长均为 ${cfg.clip_time} 秒。`}
             </p>
-            <NumberField label="自动片段最短时长" hint="(s)" value={cfg.auto_min_clip} step={0.5} onChange={(v) => set("auto_min_clip", v)} />
-            <NumberField label="自动片段最长时长" hint="(s)" value={cfg.auto_max_clip} step={0.5} onChange={(v) => set("auto_max_clip", v)} />
-            <NumberField label="合并间隔" hint="(s)" value={cfg.auto_merge_gap} step={0.5} onChange={(v) => set("auto_merge_gap", v)} />
+            <NumberField label="自动片段最短时长" hint="（秒）" value={cfg.auto_min_clip} step={0.5} onChange={(v) => set("auto_min_clip", v)} />
+            <NumberField label="自动片段最长时长" hint="（秒）" value={cfg.auto_max_clip} step={0.5} onChange={(v) => set("auto_max_clip", v)} />
+            <NumberField label="合并间隔" hint="（秒）" value={cfg.auto_merge_gap} step={0.5} onChange={(v) => set("auto_merge_gap", v)} />
           </CardContent>
         </Card>
       </div>

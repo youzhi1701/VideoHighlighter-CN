@@ -1,71 +1,80 @@
 <p align="center">
-  <img src="assets/icon.png" alt="VideoHighlighter-CN" width="150">
+  <img src="assets/icon.png" alt="VideoHighlighter-CN" width="128">
 </p>
 
 # VideoHighlighter-CN
 
-VideoHighlighter 的简体中文维护版。
+> VideoHighlighter 的简体中文维护版，面向 Windows 中文用户提供可直接安装、运行和持续更新的正式桌面版本。
 
-本仓库基于上游 **Aseiel/VideoHighlighter** 持续维护，目标是让 Windows 中文用户可以直接安装、运行和使用，而不需要另外给英文版打补丁。
-
-中文维护原则：**完整处理用户可见界面，同时保留内部枚举、API、配置键、模型字段和协议标识，避免汉化破坏程序逻辑。**
-
-<p align="center">
-  <a href="https://github.com/youzhi1701/VideoHighlighter-CN/archive/refs/heads/main.zip">
-    <img src="https://img.shields.io/badge/下载-当前中文版源码_ZIP-brightgreen?style=for-the-badge" alt="下载中文版">
-  </a>
-</p>
+| 项目 | 信息 |
+| --- | --- |
+| 当前版本 | **v0.13.1-cn.2** |
+| 项目类型 | 视频高光分析 / 桌面应用 |
+| 主要平台 | Windows |
+| 当前状态 | 正式发布 / 持续维护 |
 
 ---
 
-## 项目能力
+## 项目概览
 
-VideoHighlighter 本身是一套视频高光分析与辅助处理工具。当前中文版保留上游完整项目结构，并持续维护以下用户可见模块：
+本仓库基于上游 **Aseiel/VideoHighlighter** 持续维护。
+
+中文维护原则是：**完整处理用户可见界面，同时保留内部枚举、API、配置键、模型字段和协议标识，避免为了汉化破坏程序逻辑。**
+
+正式版以封装后的 Windows EXE 为主要用户入口，不要求普通用户下载源码、打开 CMD 或手动创建 Python 环境。
+
+---
+
+## 核心能力
+
+VideoHighlighter-CN 保留上游完整的视频分析能力，并持续维护以下用户可见模块：
 
 - 视频导入与预览
 - 时间线
 - 高光分析
 - 信号时间线
-- 字幕相关界面
-- 下载相关界面
+- 字幕
+- 下载
 - 设置
 - 模型中心
 - 训练
 - LLM
 - 视觉搜索
-- React / TypeScript 前端
-- Windows 安装与运行流程
+- Windows 安装与更新
 
-中文维护还覆盖：
-- 主程序界面
-- 二级页面
-- 弹窗
-- 菜单
-- 状态栏
-- 工具提示
-- 错误提示
-- 动态生成文案
-- 安装程序
+中文维护覆盖：
+- 主界面与二级页面
+- 弹窗、菜单、状态栏和工具提示
+- 动态生成文案与错误信息
+- Windows 安装程序
+- 用户可见英文残留扫描
+- 本地化重建验证
 
 ---
 
-## Windows 最简单的安装方式
+## 快速开始
 
-普通用户请直接进入 **GitHub Releases**，下载最新版：
+普通用户请直接进入 GitHub Releases 下载最新版：
 
-`00-VideoHighlighter-CN-v<版本号>-Windows-Setup.exe`
+```text
+00-VideoHighlighter-CN-v0.13.1-cn.2-Windows-Setup.exe
+```
 
-双击 EXE 安装即可。正式发布版已经封装运行环境与所需组件，普通用户不需要下载源码 ZIP、不需要打开 CMD，也不需要手动创建 Python 虚拟环境。
+双击 EXE 安装即可。
 
-> 根目录的 `一键安装运行.cmd` 仅保留给源码开发、调试和维护场景，不作为正式发行版安装入口。
+正式发布版封装运行环境与所需组件，普通用户不需要：
+- 下载源码 ZIP
+- 打开 CMD
+- 手动创建 Python 虚拟环境
+- 额外安装“中文汉化补丁”
 
-中文版无需额外运行“中文汉化插件”，也不需要再给英文版打汉化补丁；发布的 EXE 本身就是中文版。
+> 根目录 `一键安装运行.cmd` 仅用于源码开发、调试与维护，不作为正式发行入口。
 
 ---
 
 ## 从源码运行
 
-项目包含：
+仓库包含：
 
 ```text
 requirements.txt
@@ -73,19 +82,17 @@ requirements.txt
 
 建议在独立虚拟环境中安装依赖后运行主程序。
 
-仓库同时保留上游的测试、训练、模型、前端和打包结构，方便后续继续与官方版本同步。
+仓库同时保留上游测试、训练、模型、前端和打包结构，方便后续继续同步。
 
 ---
 
-## 中文汉化维护工具
+## 中文维护工具
 
 根目录：
 
 ```text
 中文汉化插件/
 ```
-
-该目录主要面向维护者，不是普通用户运行软件所必需。
 
 主要入口：
 
@@ -96,58 +103,48 @@ requirements.txt
 └─ 内部/
 ```
 
-当上游更新后，需要重新套用本地化规则时：
+重新套用本地化规则：
 
 ```powershell
 python "中文汉化插件/一键汉化.py" --root . --strict
 ```
 
-维护工具会结合：
-- 翻译规则
-- 翻译记忆
-- 残留英文扫描
-- 保留英文白名单
-- 重建验证
-
-尽量减少人工重复查漏。
+维护工具结合翻译规则、翻译记忆、英文残留扫描、保留英文白名单和重建验证，减少重复查漏。
 
 ---
 
-## 自动验证
+## 构建与发布
 
-仓库 GitHub Actions 中包含多类构建与验证流程，例如：
-
+GitHub Actions 已包含：
 - 中文汉化验证
-- 测试
+- 自动测试
 - 安装程序检查
-- 构建 Release
-- 发布更新包
+- Build & Release
+- 更新包发布
 - 本地化目录重建
 
-汉化验证重点检查：
+发布流程以 `version.py` 为版本单一来源，当前：
 
-- 能否从官方基线重新应用中文化
-- 是否出现翻译冲突或规则失效
-- 重建后的中文版是否与当前源码一致
-- 是否仍存在可能遗漏的用户可见英文
-- 是否误翻译内部技术字段
+```text
+0.13.1-cn.2
+```
+
+正式发布会构建并验证 Windows 安装版；Release 中的 EXE 才是普通用户的正式安装入口。
 
 ---
 
 ## 项目结构
 
-仓库保留上游完整的大型项目结构，核心目录与文件包括：
-
 ```text
 VideoHighlighter-CN/
-├─ assets/                 # 图标与静态资源
-├─ docs/                   # 项目文档
-├─ tests/                  # 测试
-├─ tools/                  # 工具
-├─ training/               # 训练相关
-├─ video_ai_editor/        # 视频 AI 编辑相关
-├─ sidecar/                # Sidecar 相关
-├─ 中文汉化插件/           # 中文维护工具
+├─ assets/
+├─ docs/
+├─ tests/
+├─ tools/
+├─ training/
+├─ video_ai_editor/
+├─ sidecar/
+├─ 中文汉化插件/
 ├─ signal_timeline_viewer.py
 ├─ video_picker_dialog.py
 ├─ requirements.txt
@@ -160,20 +157,9 @@ VideoHighlighter-CN/
 
 ---
 
-## 与官方项目的关系
-
-- 官方上游：`Aseiel/VideoHighlighter`
-- 中文维护：`youzhi1701/VideoHighlighter-CN`
-- 核心算法与主体架构来自上游
-- 中文版重点维护中文界面、Windows 使用体验、安装流程和本地化验证
-- 上游更新后继续通过自动化本地化工具跟进
-
----
-
 ## 汉化边界
 
 以下内容不以“全部翻成中文”为目标：
-
 - Python / TypeScript 内部变量
 - 配置键
 - 模型名
@@ -183,23 +169,33 @@ VideoHighlighter-CN/
 - 技术格式名
 - 为兼容第三方依赖必须保留的英文
 
-判断标准不是“源码里还能不能搜到英文”，而是 **用户实际使用时不应该被无意义的英文界面打断，同时程序内部结构必须保持稳定。**
+判断标准不是“源码里还能不能搜到英文”，而是 **用户实际使用时不应被无意义的英文界面打断，同时内部结构必须保持稳定。**
 
 ---
 
-## 原项目文档
+## 上游与许可证
 
-上游 README、docs、测试、打包和模型工具继续保留，以便后续同步与维护。
+- 上游项目：`Aseiel/VideoHighlighter`
+- 中文维护：`youzhi1701/VideoHighlighter-CN`
+- 核心算法与主体架构来自上游
+- 中文版重点维护界面、Windows 使用体验、安装流程和本地化验证
 
----
-
-## 许可证
-
-本仓库继续遵循上游项目原有许可证和版权声明。
-
-请保留仓库中的：
+本仓库继续遵循上游项目原有许可证和版权声明，请保留：
 
 ```text
 LICENSE
 COPYRIGHT
 ```
+
+---
+
+## 发布与维护
+
+当前正式版本：**v0.13.1-cn.2**
+
+后续正式版本必须保持：
+- 应用内版本与 Release 版本一致
+- 安装包可直接运行
+- Windows 安装后烟雾测试通过
+- 中文用户可见界面完成验证
+- 不以 CMD/BAT 作为正式发行入口

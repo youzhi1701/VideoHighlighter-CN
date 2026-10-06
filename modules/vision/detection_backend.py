@@ -588,7 +588,7 @@ class YoloxPeopleDetector:
     model_xml = model_xml or find_default_yolox_ir(prefer="small")
     if not model_xml:
       raise FileNotFoundError(
-        "No YOLOX IR found. Run: python tools/get_yolox_model.py"
+        "未找到 YOLOX IR 模型。请运行：python tools/get_yolox_model.py"
       )
     self.model_xml = model_xml
     self.device = device

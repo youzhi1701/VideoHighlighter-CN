@@ -86,7 +86,7 @@ def narrate_report_file(json_path: str,
         llm = advisor.load_llm(backend, name, mmproj=entry.get("mmproj"),
                                vision=True)
     except Exception as exc:
-        log_fn(f"⚠️ Narration skipped — {label} could not be loaded: {exc}")
+        log_fn(f"⚠️ 已跳过旁白：无法加载 {label}：{exc}")
         return done
     if llm is None:
         log_fn(f"⚠️ Narration skipped — could not reach {label}. The report "
@@ -124,10 +124,10 @@ def _pass(which: str, json_path: str, *, llm, label, log_fn, cancel_fn) -> int:
     """
     if which == "chapters":
         from modules.narration.chapter_story import tell_report_file
-        noun = "chapter"
+        noun = "章节"
     else:
         from modules.narration.clip_story import tell_report_file
-        noun = "clip"
+        noun = "片段"
 
     log_fn(f"📖 Narrating {noun}s with {label} — one call each, so this takes "
            "minutes rather than seconds.")
@@ -135,5 +135,5 @@ def _pass(which: str, json_path: str, *, llm, label, log_fn, cancel_fn) -> int:
         return tell_report_file(json_path, llm=llm, model_name=label,
                                 log_fn=log_fn, cancel_fn=cancel_fn) or 0
     except Exception as exc:
-        log_fn(f"⚠️ The {noun} narration failed: {exc}")
+        log_fn(f"⚠️ {noun}旁白生成失败：{exc}")
         return 0

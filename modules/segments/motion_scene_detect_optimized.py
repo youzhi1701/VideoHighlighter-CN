@@ -87,9 +87,9 @@ def detect_scenes_motion_optimized(video_path,
     stop_loading = threading.Event()
 
     if debug:
-        print(f"=== HYBRID OPTIMIZED VIDEO PROCESSING ===")
-        print(f"Device: {device}, min_area: {min_area}")
-        print(f"Motion threshold: {motion_threshold}, Scene threshold: {scene_threshold}")
+        print("=== 混合优化视频处理 ===")
+        print(f"设备：{device}，最小区域：{min_area}")
+        print(f"运动阈值：{motion_threshold}，场景阈值：{scene_threshold}")
 
     def frame_loader():
         """Async frame loading with CPU downscaling and cancellation support"""
@@ -400,13 +400,11 @@ def detect_scenes_motion_optimized(video_path,
             if debug or recalibrated:
                 rate = (len(scenes) / minutes) if minutes else 0.0
                 if recalibrated:
-                    print(f"🎬 Scene threshold {scene_threshold:.0f} found nothing "
-                          f"in {minutes:.0f} min; recalibrated to "
-                          f"{used_threshold:.1f} from this video's own frame "
-                          f"differences -> {len(scenes)} scenes ({rate:.1f}/min)")
+                    print(f"🎬 场景阈值 {scene_threshold:.0f} 在 {minutes:.0f} 分钟内未检测到场景；"
+                          f"已根据本视频帧差重新校准为 {used_threshold:.1f} → "
+                          f"{len(scenes)} 个场景（{rate:.1f}/分钟）")
                 else:
-                    print(f"🎬 Scenes: {len(scenes)} at threshold "
-                          f"{used_threshold:.0f} ({rate:.1f}/min)")
+                    print(f"🎬 场景：{len(scenes)} 个，阈值 {used_threshold:.0f}（{rate:.1f}/分钟）")
 
         pbar.close()
         
@@ -458,14 +456,14 @@ def detect_scenes_motion_optimized(video_path,
                                 motion_peaks.append(timestamp)
 
         if debug and not (cancel_flag and cancel_flag.is_set()):
-            print(f"Scenes: {len(scenes)}, Motion events: {len(motion_events)}, Peaks: {len(motion_peaks)}")
+            print(f"场景：{len(scenes)}，运动事件：{len(motion_events)}，峰值：{len(motion_peaks)}")
         elif debug and cancel_flag and cancel_flag.is_set():
-            print(f"Motion detection cancelled - partial results: Scenes: {len(scenes)}, Motion events: {len(motion_events)}, Peaks: {len(motion_peaks)}")
+            print(f"运动检测已取消——部分结果：场景 {len(scenes)}，运动事件 {len(motion_events)}，峰值 {len(motion_peaks)}")
 
     except Exception as e:
         # Always said: whatever was collected before the failure is returned,
         # and the run carries on as though the rest of the video had no motion.
-        print(f"⚠️ Motion detection error: {e}")
+        print(f"⚠️ 运动检测错误：{e}")
     finally:
         # Cleanup
         try:
@@ -488,7 +486,7 @@ def detect_scenes_motion_optimized(video_path,
                     loader_thread.join(timeout=0.1)
                 if loader_thread.is_alive():
                     # Never release a capture a live thread may still read from.
-                    print("⚠️ Frame loader did not stop; leaking VideoCapture to avoid a crash")
+                    print("⚠️ 帧加载线程未停止；为避免崩溃，将暂不释放 VideoCapture")
                     cap = None
             if cap is not None:
                 cap.release()

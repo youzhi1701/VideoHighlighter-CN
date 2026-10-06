@@ -816,6 +816,13 @@
       ]
     },
     {
+      "source": "({type(e).__name__}: {e}) — switching to software",
+      "target": "（{type(e).__name__}：{e}）——将切换到软件解码",
+      "files": [
+        "video_ai_editor/thumbnail_decoder.py"
+      ]
+    },
+    {
       "source": "({type(e).__name__}: {e}); using CPU",
       "target": "（{type(e).__name__}：{e}），改用 CPU",
       "files": [
@@ -1871,6 +1878,27 @@
       "target": "[导出] 已保存 → {export_path}",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "[export_clip_ov] Done: {args.out}",
+      "target": "[CLIP 导出] 完成：{args.out}",
+      "files": [
+        "tools/export_clip_ov.py"
+      ]
+    },
+    {
+      "source": "[export_clip_ov] Exporting {args.model_id} -> {args.out} (OpenVINO IR)...",
+      "target": "[CLIP 导出] 正在导出 {args.model_id} → {args.out}（OpenVINO IR）…",
+      "files": [
+        "tools/export_clip_ov.py"
+      ]
+    },
+    {
+      "source": "[export_clip_ov] IR already present, skipping: {xml}",
+      "target": "[CLIP 导出] IR 已存在，跳过：{xml}",
+      "files": [
+        "tools/export_clip_ov.py"
       ]
     },
     {
@@ -6737,6 +6765,13 @@
       ]
     },
     {
+      "source": "Convert YOLO dataset to COCO JSON",
+      "target": "将 YOLO 数据集转换为 COCO JSON",
+      "files": [
+        "tools/convert_yolo_to_coco.py"
+      ]
+    },
+    {
       "source": "Copy a trained model (.onnx / OpenVINO .xml) into models/custom/",
       "target": "将训练好的模型（.onnx / OpenVINO .xml）复制到 models/custom/",
       "files": [
@@ -9122,6 +9157,13 @@
       ]
     },
     {
+      "source": "Export CLIP to OpenVINO IR for bundling",
+      "target": "导出 CLIP 为 OpenVINO IR 以便打包",
+      "files": [
+        "tools/export_clip_ov.py"
+      ]
+    },
+    {
       "source": "Export clips: OFF",
       "target": "单独导出片段：关",
       "files": [
@@ -9624,6 +9666,13 @@
       "target": "FFmpeg 错误：\\n{last_err}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "ffmpeg music mux failed:\\n",
+      "target": "ffmpeg 音乐混流失败：\\n",
+      "files": [
+        "modules/media/music_track.py"
       ]
     },
     {
@@ -12849,6 +12898,13 @@
       ]
     },
     {
+      "source": "Missing image dir: {img_dir}",
+      "target": "缺少图片目录：{img_dir}",
+      "files": [
+        "tools/convert_yolo_to_coco.py"
+      ]
+    },
+    {
       "source": "missing: {source.path}",
       "target": "缺少文件：{source.path}",
       "files": [
@@ -13355,6 +13411,13 @@
       "target": "磁盘上找不到音乐文件：{edl.music}",
       "files": [
         "modules/media/edl.py"
+      ]
+    },
+    {
+      "source": "music file not found: {music!r}",
+      "target": "未找到音乐文件：{music!r}",
+      "files": [
+        "modules/media/music_track.py"
       ]
     },
     {
@@ -15638,6 +15701,20 @@
       ]
     },
     {
+      "source": "Output JSON path (split=both -> <dir>/coco_<split>.json)",
+      "target": "输出 JSON 路径（split=both 时为 <dir>/coco_<split>.json）",
+      "files": [
+        "tools/convert_yolo_to_coco.py"
+      ]
+    },
+    {
+      "source": "output must not overwrite the input video",
+      "target": "输出文件不能覆盖输入视频",
+      "files": [
+        "modules/media/music_track.py"
+      ]
+    },
+    {
       "source": "Output name",
       "target": "输出名称",
       "files": [
@@ -16973,6 +17050,13 @@
       ]
     },
     {
+      "source": "re-export even if IR exists",
+      "target": "即使 IR 已存在也重新导出",
+      "files": [
+        "tools/export_clip_ov.py"
+      ]
+    },
+    {
       "source": "Re-export from the updated labeler or labels will be misaligned.",
       "target": "请使用更新后的标注工具重新导出，否则标注会发生错位。",
       "files": [
@@ -17719,6 +17803,13 @@
       "target": "ROI：{roi}，焦点区域：{focus_region}，姿态数：{len(current_poses)}",
       "files": [
         "modules/crop/track.py"
+      ]
+    },
+    {
+      "source": "Root of YOLO dataset",
+      "target": "YOLO 数据集根目录",
+      "files": [
+        "tools/convert_yolo_to_coco.py"
       ]
     },
     {
@@ -21669,6 +21760,13 @@
       ]
     },
     {
+      "source": "unknown music mode: {mode!r} (expected one of {_MODES})",
+      "target": "未知音乐模式：{mode!r}（应为 {_MODES} 之一）",
+      "files": [
+        "modules/media/music_track.py"
+      ]
+    },
+    {
       "source": "unknown music mode: {mode!r} (expected one of {modes})",
       "target": "未知音乐模式：{mode!r}（应为 {modes} 之一）",
       "files": [
@@ -22514,6 +22612,13 @@
       ]
     },
     {
+      "source": "video not found: {video!r}",
+      "target": "未找到视频：{video!r}",
+      "files": [
+        "modules/media/music_track.py"
+      ]
+    },
+    {
       "source": "Video Output",
       "target": "视频输出",
       "files": [
@@ -23345,6 +23450,13 @@
       ]
     },
     {
+      "source": "Wrote {out_path} — {len(coco['images'])} images,",
+      "target": "已写入 {out_path}——{len(coco['images'])} 张图片，",
+      "files": [
+        "tools/convert_yolo_to_coco.py"
+      ]
+    },
+    {
       "source": "x,y,w,h as fractions of the frame",
       "target": "检测框 x,y,w,h，占画面尺寸的比例",
       "files": [
@@ -23538,6 +23650,13 @@
       "target": "{'动作':<30} {'准确率':<12} {'样本数':<10} {'决定'}",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "{'giving up on it' if permanent else 'starting another'}",
+      "target": "{'将不再重试' if permanent else '正在启动新的解码器'}",
+      "files": [
+        "video_ai_editor/thumbnail_decoder.py"
       ]
     },
     {
@@ -24135,6 +24254,13 @@
       "target": "{len(classes)} 个类别，{n_videos} 个源视频",
       "files": [
         "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "{len(coco['annotations'])} boxes, {len(class_names)} classes",
+      "target": "{len(coco['annotations'])} 个框，{len(class_names)} 个类别",
+      "files": [
+        "tools/convert_yolo_to_coco.py"
       ]
     },
     {
@@ -30101,6 +30227,34 @@
       ]
     },
     {
+      "source": "⚠️ Thumbnail decoder stopped ({reason}) —",
+      "target": "⚠️ 缩略图解码器已停止（{reason}）——",
+      "files": [
+        "video_ai_editor/thumbnail_decoder.py"
+      ]
+    },
+    {
+      "source": "⚠️ Thumbnail decoder would not start: {e}",
+      "target": "⚠️ 缩略图解码器无法启动：{e}",
+      "files": [
+        "video_ai_editor/thumbnail_decoder.py"
+      ]
+    },
+    {
+      "source": "⚠️ Thumbnail decoder: frame at {int(time_ms)}ms failed — {detail}",
+      "target": "⚠️ 缩略图解码器：{int(time_ms)}ms 处的帧解码失败——{detail}",
+      "files": [
+        "video_ai_editor/thumbnail_decoder.py"
+      ]
+    },
+    {
+      "source": "⚠️ Thumbnail decoder: {decoder} could not decode",
+      "target": "⚠️ 缩略图解码器：{decoder} 无法解码",
+      "files": [
+        "video_ai_editor/thumbnail_decoder.py"
+      ]
+    },
+    {
       "source": "⚠️ ThumbnailCache disk write failed: {e}",
       "target": "⚠️ 缩略图缓存写入磁盘失败：{e}",
       "files": [
@@ -33918,6 +34072,13 @@
       "target": "🎛️ 计算后端：{label_for(backend)}{note}",
       "files": [
         "modules/system/compute_backend.py"
+      ]
+    },
+    {
+      "source": "🎞 Thumbnail decoder: {detail}",
+      "target": "🎞 缩略图解码器：{detail}",
+      "files": [
+        "video_ai_editor/thumbnail_decoder.py"
       ]
     },
     {

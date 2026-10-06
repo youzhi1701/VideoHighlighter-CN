@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "16712e0ae1db6715146632cfcdd4af55cbcc19a7"
+    "head_commit": "6b4636da545d9f67fa9263c5cd13d3cd4426ee56"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -21568,20 +21568,65 @@
     {
       "id": "modules/media/music_track.py#1",
       "file": "modules/media/music_track.py",
+      "source": "        raise ValueError(f\"unknown music mode: {mode!r} (expected one of {_MODES})\")",
+      "target": "        raise ValueError(f\"未知音乐模式：{mode!r}（应为 {_MODES} 之一）\")",
+      "before": "    if mode not in _MODES:",
+      "after": "    if not video or not os.path.exists(video):",
+      "hunk": "@@ -79,19 +79,19 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+    },
+    {
+      "id": "modules/media/music_track.py#2",
+      "file": "modules/media/music_track.py",
+      "source": "        raise ValueError(f\"video not found: {video!r}\")",
+      "target": "        raise ValueError(f\"未找到视频：{video!r}\")",
+      "before": "    if not video or not os.path.exists(video):",
+      "after": "    if not music or not os.path.exists(music):",
+      "hunk": "@@ -79,19 +79,19 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+    },
+    {
+      "id": "modules/media/music_track.py#3",
+      "file": "modules/media/music_track.py",
+      "source": "        raise ValueError(f\"music file not found: {music!r}\")",
+      "target": "        raise ValueError(f\"未找到音乐文件：{music!r}\")",
+      "before": "    if not music or not os.path.exists(music):",
+      "after": "    if os.path.abspath(out) == os.path.abspath(video):",
+      "hunk": "@@ -79,19 +79,19 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+    },
+    {
+      "id": "modules/media/music_track.py#4",
+      "file": "modules/media/music_track.py",
+      "source": "        raise ValueError(\"output must not overwrite the input video\")",
+      "target": "        raise ValueError(\"输出文件不能覆盖输入视频\")",
+      "before": "    if os.path.abspath(out) == os.path.abspath(video):",
+      "after": "",
+      "hunk": "@@ -79,19 +79,19 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+    },
+    {
+      "id": "modules/media/music_track.py#5",
+      "file": "modules/media/music_track.py",
       "source": "        log_fn(f\"🎵 Video has no audio stream; '{mode}' degrades to 'replace'\")",
       "target": "        log_fn(f\"🎵 视频没有音频流；“{mode}”将回退为“replace”模式\")",
       "before": "    if mode in (\"mix\", \"duck\") and not _has_audio_stream(video):",
       "after": "        effective = \"replace\"",
-      "hunk": "@@ -91,7 +91,7 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+      "hunk": "@@ -79,19 +79,19 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
     },
     {
-      "id": "modules/media/music_track.py#2",
+      "id": "modules/media/music_track.py#6",
       "file": "modules/media/music_track.py",
       "source": "    log_fn(f\"🎵 Applying music ({effective}, volume {vol:.2f}): \"",
       "target": "    log_fn(f\"🎵 正在应用音乐（{effective}，音量 {vol:.2f}): \"",
       "before": "           *extra, out]",
       "after": "           f\"{os.path.basename(str(music))}\")",
-      "hunk": "@@ -127,7 +127,7 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+      "hunk": "@@ -127,10 +127,10 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
+    },
+    {
+      "id": "modules/media/music_track.py#7",
+      "file": "modules/media/music_track.py",
+      "source": "        raise RuntimeError(\"ffmpeg music mux failed:\\n\" + \"\\n\".join(tail))",
+      "target": "        raise RuntimeError(\"ffmpeg 音乐混流失败：\\n\" + \"\\n\".join(tail))",
+      "before": "        tail = (proc.stderr or \"\").strip().splitlines()[-8:]",
+      "after": "    return out",
+      "hunk": "@@ -127,10 +127,10 @@ def apply_music(video, music, out, mode=\"replace\", music_volume=0.8,"
     },
     {
       "id": "modules/media/overlay.py#1",
@@ -37569,6 +37614,87 @@
       "hunk": "@@ -238,8 +236,8 @@ def main(argv=None) -> int:"
     },
     {
+      "id": "tools/convert_yolo_to_coco.py#1",
+      "file": "tools/convert_yolo_to_coco.py",
+      "source": "        raise FileNotFoundError(f\"Missing image dir: {img_dir}\")",
+      "target": "        raise FileNotFoundError(f\"缺少图片目录：{img_dir}\")",
+      "before": "    if not img_dir.is_dir():",
+      "after": "",
+      "hunk": "@@ -59,7 +59,7 @@ def convert_split(dataset_dir: Path, split: str, class_names: list[str]) -> dict"
+    },
+    {
+      "id": "tools/convert_yolo_to_coco.py#2",
+      "file": "tools/convert_yolo_to_coco.py",
+      "source": "    parser = argparse.ArgumentParser(description=\"Convert YOLO dataset to COCO JSON\")\n    parser.add_argument(\"dataset_dir\", type=Path, help=\"Root of YOLO dataset\")",
+      "target": "    parser = argparse.ArgumentParser(description=\"将 YOLO 数据集转换为 COCO JSON\")\n    parser.add_argument(\"dataset_dir\", type=Path, help=\"YOLO 数据集根目录\")",
+      "before": "def main(argv: list[str] | None = None) -> int:",
+      "after": "    parser.add_argument(\"--split\", choices=(\"train\", \"val\", \"both\"), default=\"both\")",
+      "hunk": "@@ -103,11 +103,11 @@ def convert_split(dataset_dir: Path, split: str, class_names: list[str]) -> dict"
+    },
+    {
+      "id": "tools/convert_yolo_to_coco.py#3",
+      "file": "tools/convert_yolo_to_coco.py",
+      "source": "                        help=\"Output JSON path (split=both -> <dir>/coco_<split>.json)\")",
+      "target": "                        help=\"输出 JSON 路径（split=both 时为 <dir>/coco_<split>.json）\")",
+      "before": "    parser.add_argument(\"--out\", type=Path, default=None,",
+      "after": "    args = parser.parse_args(argv)",
+      "hunk": "@@ -103,11 +103,11 @@ def convert_split(dataset_dir: Path, split: str, class_names: list[str]) -> dict"
+    },
+    {
+      "id": "tools/convert_yolo_to_coco.py#4",
+      "file": "tools/convert_yolo_to_coco.py",
+      "source": "        print(f\"Wrote {out_path} — {len(coco['images'])} images, \"\n              f\"{len(coco['annotations'])} boxes, {len(class_names)} classes\")",
+      "target": "        print(f\"已写入 {out_path}——{len(coco['images'])} 张图片，\"\n              f\"{len(coco['annotations'])} 个框，{len(class_names)} 个类别\")",
+      "before": "        out_path.write_text(json.dumps(coco, indent=2), encoding=\"utf-8\")",
+      "after": "    return 0",
+      "hunk": "@@ -122,8 +122,8 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "tools/export_clip_ov.py#1",
+      "file": "tools/export_clip_ov.py",
+      "source": "    ap = argparse.ArgumentParser(description=\"Export CLIP to OpenVINO IR for bundling\")",
+      "target": "    ap = argparse.ArgumentParser(description=\"导出 CLIP 为 OpenVINO IR 以便打包\")",
+      "before": "def main() -> int:",
+      "after": "    ap.add_argument(\"--model-id\", default=MODEL_ID)",
+      "hunk": "@@ -23,21 +23,21 @@ from llm.clip_prefilter import MODEL_ID, BUNDLED_OV_DIRNAME  # noqa: E402"
+    },
+    {
+      "id": "tools/export_clip_ov.py#2",
+      "file": "tools/export_clip_ov.py",
+      "source": "    ap.add_argument(\"--force\", action=\"store_true\", help=\"re-export even if IR exists\")",
+      "target": "    ap.add_argument(\"--force\", action=\"store_true\", help=\"即使 IR 已存在也重新导出\")",
+      "before": "    ap.add_argument(\"--out\", default=os.path.join(\"models\", BUNDLED_OV_DIRNAME))",
+      "after": "    args = ap.parse_args()",
+      "hunk": "@@ -23,21 +23,21 @@ from llm.clip_prefilter import MODEL_ID, BUNDLED_OV_DIRNAME  # noqa: E402"
+    },
+    {
+      "id": "tools/export_clip_ov.py#3",
+      "file": "tools/export_clip_ov.py",
+      "source": "        print(f\"[export_clip_ov] IR already present, skipping: {xml}\")",
+      "target": "        print(f\"[CLIP 导出] IR 已存在，跳过：{xml}\")",
+      "before": "    if os.path.isfile(xml) and not args.force:",
+      "after": "        return 0",
+      "hunk": "@@ -23,21 +23,21 @@ from llm.clip_prefilter import MODEL_ID, BUNDLED_OV_DIRNAME  # noqa: E402"
+    },
+    {
+      "id": "tools/export_clip_ov.py#4",
+      "file": "tools/export_clip_ov.py",
+      "source": "    print(f\"[export_clip_ov] Exporting {args.model_id} -> {args.out} (OpenVINO IR)...\")",
+      "target": "    print(f\"[CLIP 导出] 正在导出 {args.model_id} → {args.out}（OpenVINO IR）…\")",
+      "before": "",
+      "after": "    os.makedirs(args.out, exist_ok=True)",
+      "hunk": "@@ -23,21 +23,21 @@ from llm.clip_prefilter import MODEL_ID, BUNDLED_OV_DIRNAME  # noqa: E402"
+    },
+    {
+      "id": "tools/export_clip_ov.py#5",
+      "file": "tools/export_clip_ov.py",
+      "source": "    print(f\"[export_clip_ov] Done: {args.out}\")",
+      "target": "    print(f\"[CLIP 导出] 完成：{args.out}\")",
+      "before": "        os.replace(tmp[:-4] + ext, xml[:-4] + ext)",
+      "after": "    return 0",
+      "hunk": "@@ -61,7 +61,7 @@ def main() -> int:"
+    },
+    {
       "id": "tools/labeler.py#1",
       "file": "tools/labeler.py",
       "source": "        self.root.title(\"🎬 Video Labeler - AI-Powered Tracking\")",
@@ -44100,6 +44226,51 @@
       "before": "        via = hw or \"software\"",
       "after": "        if repaint_trace is not None:",
       "hunk": "@@ -654,7 +654,9 @@ class ThumbnailCache(QObject):"
+    },
+    {
+      "id": "video_ai_editor/thumbnail_decoder.py#1",
+      "file": "video_ai_editor/thumbnail_decoder.py",
+      "source": "                print(f\"⚠️ Thumbnail decoder: {decoder} could not decode \"\n                      f\"({type(e).__name__}: {e}) — switching to software\")",
+      "target": "                print(f\"⚠️ 缩略图解码器：{decoder} 无法解码\"\n                      f\"（{type(e).__name__}：{e}）——将切换到软件解码\")",
+      "before": "                # rather than failing every thumbnail of this video.",
+      "after": "                try:",
+      "hunk": "@@ -99,8 +99,8 @@ def _serve(conn, video_path: str) -> None:"
+    },
+    {
+      "id": "video_ai_editor/thumbnail_decoder.py#2",
+      "file": "video_ai_editor/thumbnail_decoder.py",
+      "source": "                    print(f\"🎞 Thumbnail decoder: {detail}\")",
+      "target": "                    print(f\"🎞 缩略图解码器：{detail}\")",
+      "before": "                    self.decoder = detail",
+      "after": "                    _note(\"thumb.decoder\", using=detail, video=self.video_path)",
+      "hunk": "@@ -258,7 +258,7 @@ class PersistentDecoder:"
+    },
+    {
+      "id": "video_ai_editor/thumbnail_decoder.py#3",
+      "file": "video_ai_editor/thumbnail_decoder.py",
+      "source": "                print(f\"⚠️ Thumbnail decoder: frame at {int(time_ms)}ms failed — {detail}\")",
+      "target": "                print(f\"⚠️ 缩略图解码器：{int(time_ms)}ms 处的帧解码失败——{detail}\")",
+      "before": "                # fails this way otherwise leaves nothing in the log at all.",
+      "after": "            return False",
+      "hunk": "@@ -267,7 +267,7 @@ class PersistentDecoder:"
+    },
+    {
+      "id": "video_ai_editor/thumbnail_decoder.py#4",
+      "file": "video_ai_editor/thumbnail_decoder.py",
+      "source": "            print(f\"⚠️ Thumbnail decoder would not start: {e}\")",
+      "target": "            print(f\"⚠️ 缩略图解码器无法启动：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "            _note(\"thumb.decoder_unavailable\", error=f\"{type(e).__name__}: {e}\")",
+      "hunk": "@@ -308,7 +308,7 @@ class PersistentDecoder:"
+    },
+    {
+      "id": "video_ai_editor/thumbnail_decoder.py#5",
+      "file": "video_ai_editor/thumbnail_decoder.py",
+      "source": "        print(f\"⚠️ Thumbnail decoder stopped ({reason}) — \"\n              f\"{'giving up on it' if permanent else 'starting another'}\")",
+      "target": "        print(f\"⚠️ 缩略图解码器已停止（{reason}）——\"\n              f\"{'将不再重试' if permanent else '正在启动新的解码器'}\")",
+      "before": "        self.restarts += 1",
+      "after": "        _note(\"thumb.decoder_died\", reason=reason, restarts=self.restarts,",
+      "hunk": "@@ -316,8 +316,8 @@ class PersistentDecoder:"
     },
     {
       "id": "video_ai_editor/timeline_bars.py#1",

@@ -5053,7 +5053,7 @@ class SignalTimelineWindow(QMainWindow):
             # available one in turn and fall through to CPU libx264 last.
             attempts = self._encoder_chain()
 
-            last_err = "Unknown error"
+            last_err = "未知错误"
             for enc, vargs in attempts:
                 cmd = [ffmpeg_exe(), "-y", "-hide_banner", "-nostats",
                        "-progress", "pipe:1"] + inputs + [

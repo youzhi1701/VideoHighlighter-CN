@@ -1,8 +1,7 @@
-"""``python -m modules.teach`` — every step of teaching a model, one command each.
+"""``python -m modules.teach`` —— 模型示教的每个步骤都对应一条命令。
 
-Each command prints exactly one JSON object on stdout, and everything else
-(progress, library chatter) goes to stderr, so a script or an agent can parse
-the answer without guessing. ``status`` names the next command to run.
+每条命令在 stdout 中只输出一个 JSON 对象，其余内容（进度、库日志）
+都写入 stderr，因此脚本或智能体无需猜测即可解析结果。``status`` 会给出下一条应执行的命令。
 
     python -m modules.teach --project jumps init --task actions
     python -m modules.teach --project jumps add-class "<name>" --description "..."

@@ -170,7 +170,7 @@ class CategoryStore:
                 cat = CustomCategory.from_json(d)
                 self.categories[cat.name] = cat
         except Exception as e:
-            print(f"⚠️  Custom categories: unreadable store ({e}); starting empty")
+            print(f"⚠️  自定义类别：无法读取存储（{e}），将从空数据开始")
         return self
 
     def save(self) -> None:

@@ -129,7 +129,7 @@ def use_writable_cwd() -> str:
         os.makedirs(target, exist_ok=True)
         os.chdir(target)
     except OSError as e:
-        print(f"⚠️ could not work from {target}: {e}")
+        print(f"⚠️ 无法使用工作目录 {target}：{e}")
     return os.getcwd()
 
 
@@ -229,7 +229,7 @@ def object_model_names(path: str) -> list:
         return names_from_model(path) or load_class_names(
             os.path.join(os.path.dirname(path), "labels.json"))
     except Exception as e:
-        print(f"⚠️ could not read classes from {os.path.basename(path)}: {e}")
+        print(f"⚠️ 无法从 {os.path.basename(path)} 读取类别：{e}")
         return []
 
 
@@ -301,7 +301,7 @@ def discover_object_models() -> list:
         from model_hub.hub import installed_detectors
         out.extend(installed_detectors())
     except Exception as e:  # noqa: BLE001 - a broken install must not hide the rest
-        print(f"⚠️ community model discovery failed: {e}")
+        print(f"⚠️ 社区模型发现失败：{e}")
     return out
 
 

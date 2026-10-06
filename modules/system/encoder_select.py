@@ -85,7 +85,7 @@ def preferred_gpu_vendor():
                 if vendor:
                     break
     except Exception as e:
-        print(f"⚠️ [encoder_select] device probe failed: {e}")
+        print(f"⚠️ [编码器选择] 设备探测失败：{e}")
     _vendor_cache = vendor
     return vendor
 
@@ -101,7 +101,7 @@ def _available_encoders(ffmpeg=None):
                              capture_output=True, text=True, timeout=15)
         text = (out.stdout or "") + (out.stderr or "")
     except Exception as e:
-        print(f"⚠️ [encoder_select] could not probe ffmpeg encoders: {e}")
+        print(f"⚠️ [编码器选择] 无法探测 ffmpeg 编码器：{e}")
     _encoders_cache = text
     return text
 
@@ -138,7 +138,7 @@ def probe_video_size(video_path, ffmpeg=None):
                 w, h = int(parts[0]), int(parts[1])
                 break
     except Exception as e:
-        print(f"⚠️ [encoder_select] ffprobe size probe failed: {e}")
+        print(f"⚠️ [编码器选择] ffprobe 分辨率探测失败：{e}")
     if not (w and h):
         try:
             import cv2
@@ -175,7 +175,7 @@ def encoder_chain(video_path, ffmpeg=None, mode="gpu"):
     if mode == "cpu":
         chain = [_LIBX265] if hi_res else [_LIBX264]
         print(f"[encoder_select] {os.path.basename(video_path)} {w}x{h} "
-              f"({'HEVC' if hi_res else 'H.264'}), mode=cpu -> "
+              f"（{'HEVC' if hi_res else 'H.264'}），模式=CPU → "
               f"{', '.join(n for n, _ in chain)}")
         _chain_cache[cache_key] = chain
         return chain
@@ -205,7 +205,7 @@ def encoder_chain(video_path, ffmpeg=None, mode="gpu"):
         present = [it for it in present if key in it[0]]
     chain = present + [_LIBX264]
     print(f"[encoder_select] {os.path.basename(video_path)} {w}x{h} "
-          f"({'HEVC' if hi_res else 'H.264'}), GPU={vendor or 'unknown'} -> "
+          f"（{'HEVC' if hi_res else 'H.264'}），GPU={vendor or '未知'} → "
           f"{', '.join(n for n, _ in chain)}")
     _chain_cache[cache_key] = chain
     return chain

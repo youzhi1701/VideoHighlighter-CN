@@ -131,9 +131,9 @@ class ObjectTrainingWorker(QObject):
 
             def on_epoch(report):
                 snap = snapshot(report, preview_frames, history, draw=self.draw_rounds)
-                print(f"[train] round {report.epoch}: found {snap.found}/{snap.expected}, "
-                      f"{snap.false_alarms} false alarm(s), train loss "
-                      f"{report.train_loss:.4f}, val loss {report.val_loss:.4f}")
+                print(f"[训练] 第 {report.epoch} 轮：找到 {snap.found}/{snap.expected}，"
+                      f"{snap.false_alarms} 个误报，训练损失 
+                      f"{report.train_loss:.4f}，验证损失 {report.val_loss:.4f}")
                 self.round_done.emit(snap)
 
             stage = "正在训练"
@@ -199,10 +199,10 @@ def _record_speed(result, size: str, extract_per_frame=None, fixed_seconds=None)
                      result.train_images_per_second, result.val_images_per_second)
         store.record_overheads(extract_per_frame, fixed_seconds)
         store.save()
-        print(f"[train] measured {result.train_images_per_second:.1f} img/s training, "
-              f"{result.val_images_per_second:.1f} img/s validating on {result.device}")
+        print(f"[训练] 实测训练速度 {result.train_images_per_second:.1f} 张/秒，
+              f"验证速度 {result.val_images_per_second:.1f} 张/秒，设备 {result.device}")
     except Exception as exc:                    # noqa: BLE001
-        print(f"[train] could not record training speed: {exc}")
+        print(f"[训练] 无法记录训练速度：{exc}")
 
 
 def _probe_training_device() -> tuple:
@@ -1274,7 +1274,7 @@ class TrainingPanel(QWidget):
             print(f"[training] could not list devices: {exc}")
 
         if devices:
-            label.setText("训练 hardware: " + "; ".join(devices))
+            label.setText("训练硬件：" + "；".join(devices))
             label.setStyleSheet("color:#999;")
         else:
             label.setText(

@@ -352,7 +352,7 @@ def profile(path: str, *, use_cache: bool = True, log_fn=print) -> ClipWindows:
     except Exception:
         return clip
     if not opened:
-        log_fn(f"⚠️ Could not open {os.path.basename(path)} to measure it")
+        log_fn(f"⚠️ 无法打开 {os.path.basename(path)} to measure it")
         return clip
 
     try:
@@ -440,7 +440,7 @@ def profile(path: str, *, use_cache: bool = True, log_fn=print) -> ClipWindows:
         # expected has to cost the measurement and nothing else. Half-filled
         # samples are dropped rather than scored: a clip measured up to the
         # point it broke would be ranked against clips measured in full.
-        log_fn(f"⚠️ Could not measure {os.path.basename(path)} ({exc}); "
+        log_fn(f"⚠️ 无法测量 {os.path.basename(path)} ({exc}); "
                f"its shots will start at the top of the clip")
         clip.samples = []
         clip.measured = False
@@ -470,7 +470,7 @@ def profile_all(paths, *, use_cache: bool = True, log_fn=print) -> dict:
     measured = [c for c in out.values() if c.measured]
     if measured:
         late = [c for c in measured if c.settle > 0.4]
-        log_fn(f"🔍 Measured {len(measured)} clip(s) for camera settling"
+        log_fn(f"🔍 已测量 {len(measured)} clip(s) for camera settling"
                + (f"; {len(late)} start on the camera still being placed"
                   if late else "; all of them start clean"))
     return out

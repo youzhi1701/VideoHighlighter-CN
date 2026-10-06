@@ -91,7 +91,7 @@ def apply_music(video, music, out, mode="replace", music_volume=0.8,
 
     effective = mode
     if mode in ("mix", "duck") and not _has_audio_stream(video):
-        log_fn(f"🎵 Video has no audio stream; '{mode}' degrades to 'replace'")
+        log_fn(f"🎵 视频没有音频流；“{mode}”将回退为“replace”模式")
         effective = "replace"
 
     if effective == "replace":
@@ -127,7 +127,7 @@ def apply_music(video, music, out, mode="replace", music_volume=0.8,
            "-map", "0:v:0", "-map", "[a]",
            "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
            *extra, out]
-    log_fn(f"🎵 Applying music ({effective}, volume {vol:.2f}): "
+    log_fn(f"🎵 正在应用音乐（{effective}，音量 {vol:.2f}): "
            f"{os.path.basename(str(music))}")
     proc = subprocess.run(cmd, capture_output=True, text=True)
     if proc.returncode != 0 or not os.path.exists(out):

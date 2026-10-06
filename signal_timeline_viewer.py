@@ -1561,7 +1561,7 @@ class SignalTimelineWindow(QMainWindow):
             row_layout.addWidget(checkbox)
             row_layout.addStretch()
 
-            remove = self._mini_button("✕", f"Remove all '{query}' findings")
+            remove = self._mini_button("✕", f"移除所有“{query}”搜索结果")
             remove.clicked.connect(lambda _=False, q=query: self._remove_visual_query(q))
             row_layout.addWidget(remove)
 
@@ -3031,7 +3031,7 @@ class SignalTimelineWindow(QMainWindow):
                     row["status"].setText("失败 — 请查看日志")
                 self.statusBar().showMessage(
                     f"{kind} 分析失败：{str(result)[:80]}", 6000)
-                print(f"❌ {kind} analysis failed: {result}")
+                print(f"❌ {kind} 分析失败：{result}")
             return
 
         if kind == "motion":
@@ -3138,7 +3138,7 @@ class SignalTimelineWindow(QMainWindow):
             dock.setWidget(panel)
             self.transcript_panel = panel
         except Exception as e:
-            print(f"⚠️ Could not refresh transcript panel: {e}")
+            print(f"⚠️ 无法刷新转录面板：{e}")
 
     def _merge_into_cache_file(self, patch: dict):
         """Fold `patch` into this video's on-disk cache via the shared per-signal
@@ -3754,8 +3754,8 @@ class SignalTimelineWindow(QMainWindow):
             total_actions = len(self.signal_scene.action_types)
             total_objects = len(self.signal_scene.object_classes)
             
-            action_text = f"{len(visible_actions)}/{total_actions} actions"
-            object_text = f"{len(visible_objects)}/{total_objects} objects"
+            action_text = f"{len(visible_actions)}/{total_actions} 个动作"
+            object_text = f"{len(visible_objects)}/{total_objects} 个物体"
 
             parts = [action_text, object_text]
             # Only mentioned when the video actually has composed events, so the
@@ -3763,7 +3763,7 @@ class SignalTimelineWindow(QMainWindow):
             events = getattr(self.signal_scene, 'visible_events', {})
             if events:
                 shown = sum(1 for v in events.values() if v)
-                parts.append(f"{shown}/{len(events)} events")
+                parts.append(f"{shown}/{len(events)} 个事件")
 
             self.filter_summary.setText("当前显示：" + ", ".join(parts))
             self.confidence_label.setText(f"动作：{self.signal_scene.min_action_confidence:.0%} | 物体：{self.signal_scene.min_object_confidence:.0%}")
@@ -3773,13 +3773,13 @@ class SignalTimelineWindow(QMainWindow):
             
             if (self.signal_scene.min_action_confidence > 0 or self.signal_scene.max_action_confidence < 1 
                 or self.signal_scene.min_object_confidence > 0 or self.signal_scene.max_object_confidence < 1):
-                filter_details.append(f"Actions≥{self.signal_scene.min_action_confidence:.0%}, Objects≥{self.signal_scene.min_object_confidence:.0%}")
+                filter_details.append(f"动作≥{self.signal_scene.min_action_confidence:.0%}，物体≥{self.signal_scene.min_object_confidence:.0%}")
             
             if len(visible_actions) < total_actions:
                 if len(visible_actions) <= 3:
-                    filter_details.append(f"Actions: {', '.join(visible_actions)}")
+                    filter_details.append(f"动作：{', '.join(visible_actions)}")
                 else:
-                    filter_details.append(f"Actions: {len(visible_actions)} shown")
+                    filter_details.append(f"动作：显示 {len(visible_actions)} 个")
             
             if len(visible_objects) < total_objects:
                 if len(visible_objects) <= 3:
@@ -4657,8 +4657,8 @@ class SignalTimelineWindow(QMainWindow):
             total_actions = len(self.signal_scene.action_types)
             total_objects = len(self.signal_scene.object_classes)
             
-            action_text = f"{len(visible_actions)}/{total_actions} actions"
-            object_text = f"{len(visible_objects)}/{total_objects} objects"
+            action_text = f"{len(visible_actions)}/{total_actions} 个动作"
+            object_text = f"{len(visible_objects)}/{total_objects} 个物体"
 
             parts = [action_text, object_text]
             # Only mentioned when the video actually has composed events, so the
@@ -4666,7 +4666,7 @@ class SignalTimelineWindow(QMainWindow):
             events = getattr(self.signal_scene, 'visible_events', {})
             if events:
                 shown = sum(1 for v in events.values() if v)
-                parts.append(f"{shown}/{len(events)} events")
+                parts.append(f"{shown}/{len(events)} 个事件")
 
             self.filter_summary.setText("当前显示：" + ", ".join(parts))
             
@@ -4675,9 +4675,9 @@ class SignalTimelineWindow(QMainWindow):
                 filter_details = []
                 if len(visible_actions) < total_actions:
                     if len(visible_actions) <= 3:
-                        filter_details.append(f"Actions: {', '.join(visible_actions)}")
+                        filter_details.append(f"动作：{', '.join(visible_actions)}")
                     else:
-                        filter_details.append(f"Actions: {len(visible_actions)} shown")
+                        filter_details.append(f"动作：显示 {len(visible_actions)} 个")
                 
                 if len(visible_objects) < total_objects:
                     if len(visible_objects) <= 3:

@@ -29904,15 +29904,6 @@
       "id": "video_ai_editor/signal_timeline.py#52"
     },
     {
-      "file": "tools/labeler.py",
-      "source": "              关键点将由手动放置。（可选：pip install ultralytics；\"",
-      "target": "              \"关键点将由手动放置。（可选：pip install ultralytics；\"",
-      "before": "        print(\"ℹ️ 姿态辅助已关闭——未安装 ultralytics。仍可正常手动标注，\"",
-      "after": "              \"AGPL，仅开发环境使用，不随发行版分发。）\")",
-      "hunk": "@@ -2354,7 +2354,7 @@ def export_labels(self):",
-      "id": "tools/labeler.py#1"
-    },
-    {
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(f\"SignalTimelineWindow.__init__ CALLED with video_path={video_path}\")\n        debug_log(f\"  cache_data provided: {cache_data is not None}\")",
       "target": "        debug_log(f\"已调用 SignalTimelineWindow.__init__，video_path={video_path}\")\n        debug_log(f\"  是否提供 cache_data：{cache_data is not None}\")",

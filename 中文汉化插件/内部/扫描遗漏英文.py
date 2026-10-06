@@ -136,6 +136,11 @@ def visible_candidate(text: str, allow: set[str]) -> bool:
     # Without stripping them, strings such as `✖ ${e.message}` are falsely
     # classified as untranslated because the variable name contains letters.
     t = re.sub(r"\$\{[^{}]*\}", "{…}", t)
+    # Rich-text markup is presentation structure, not untranslated wording.
+    # Strip tags before testing for English so fragments such as </span><br>
+    # do not become false positives merely because HTML tag names use letters.
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = clean(t)
     if not t or t in allow or CJK_RE.search(t) or not EN_RE.search(t):
         return False
     if t.startswith(("http://", "https://")):
@@ -187,6 +192,10 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     try:
         source_text = path.read_text(encoding="utf-8")
         tree = ast.parse(source_text)
+        parent_of: dict[int, ast.AST] = {}
+        for parent in ast.walk(tree):
+            for child in ast.iter_child_nodes(parent):
+                parent_of[id(child)] = parent
     except SyntaxError as exc:
         # A broken localized string is more serious than untranslated text.
         # Never silently skip the file: surface the parser error and make CI fail.
@@ -345,11 +354,28 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 # tokens are usually internal protocol/status/font/dict values
                 # (for example success, filepath, prev, Arial, encode). Real
                 # one-word UI labels are already covered by UI_CALLS, setters,
-                # UI assignments and runtime emit() handling above. Keeping the
-                # safety net phrase-like avoids pressuring maintainers to
-                # translate internal identifiers just to reduce scan counts.
+                # UI assignments and runtime emit() handling above.
                 if re.fullmatch(r"[A-Za-z][A-Za-z0-9_.-]*", cleaned):
                     continue
+
+                # Do not flag structural literals that participate in program
+                # behaviour. Common examples are dict protocol values, enum/
+                # status comparisons and keyword tables such as
+                # _VISION_KEYWORDS. Translating these would change behaviour,
+                # which the localization audit must actively prevent.
+                parent = parent_of.get(id(node))
+                if isinstance(parent, (ast.Dict, ast.Compare, ast.Subscript)):
+                    continue
+                if isinstance(parent, (ast.List, ast.Tuple, ast.Set)):
+                    grand = parent_of.get(id(parent))
+                    targets = []
+                    if isinstance(grand, ast.Assign):
+                        targets = [n for t in grand.targets for n in assignment_names(t)]
+                    elif isinstance(grand, ast.AnnAssign):
+                        targets = assignment_names(grand.target)
+                    if targets and not any(UI_NAME_RE.search(n) for n in targets):
+                        continue
+
                 hits.append(Hit(rel, getattr(node, "lineno", 0),
                                 "python-gui-string", "medium", cleaned))
 

@@ -213,6 +213,13 @@
       ]
     },
     {
+      "source": "(is --group finding the video in the file names?)",
+      "target": "（请检查 --group 是否能从文件名中正确识别源视频）",
+      "files": [
+        "modules/teach/benchmark.py"
+      ]
+    },
+    {
       "source": "(it fell back — see the warning above for why)",
       "target": "（发生了回退，原因请查看上方警告）",
       "files": [
@@ -1755,6 +1762,41 @@
       ]
     },
     {
+      "source": "[model_hub] blocklist unavailable ({exc}); listing without it",
+      "target": "[模型中心] 无法获取屏蔽列表（{exc}）；将继续显示可获取的模型",
+      "files": [
+        "model_hub/hub.py"
+      ]
+    },
+    {
+      "source": "[packs] could not mark {folder} for removal: {exc}",
+      "target": "[资源包] 无法将 {folder} 标记为待移除：{exc}",
+      "files": [
+        "modules/packs/pack_manager.py"
+      ]
+    },
+    {
+      "source": "[packs] installed {name} {pack.version} at {where}",
+      "target": "[资源包] 已安装 {name} {pack.version} → {where}",
+      "files": [
+        "modules/packs/pack_manager.py"
+      ]
+    },
+    {
+      "source": "[packs] skipping a malformed lock entry ({exc}): {row!r}",
+      "target": "[资源包] 已跳过格式错误的锁定条目（{exc}）：{row!r}",
+      "files": [
+        "modules/packs/pack_manager.py"
+      ]
+    },
+    {
+      "source": "[packs] unreadable {path}: {exc}",
+      "target": "[资源包] 无法读取 {path}：{exc}",
+      "files": [
+        "modules/packs/pack_manager.py"
+      ]
+    },
+    {
       "source": "[precomp annotated]",
       "target": "[预计算标注]",
       "files": [
@@ -3225,6 +3267,20 @@
       "target": "来自手表或手机的 .gpx 文件",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "a box is x,y,w,h as fractions of the frame, e.g. 0.4,0.3,0.2,0.25",
+      "target": "检测框应为 x,y,w,h，数值使用画面比例，例如 0.4,0.3,0.2,0.25",
+      "files": [
+        "modules/teach/seed.py"
+      ]
+    },
+    {
+      "source": "a box shows an object: seed an object project",
+      "target": "检测框用于示教物体，请对物体项目使用 seed",
+      "files": [
+        "modules/teach/seed.py"
       ]
     },
     {
@@ -4937,6 +4993,13 @@
       ]
     },
     {
+      "source": "box {text!r} is not inside the frame (x,y,w,h as fractions)",
+      "target": "检测框 {text!r} 超出画面范围（x,y,w,h 均应使用画面比例）",
+      "files": [
+        "modules/teach/seed.py"
+      ]
+    },
+    {
       "source": "boxes {number}: is the yellow box around the named thing, and tight?",
       "target": "检测框批次 {number}：黄色框是否准确且紧密地包围了目标？",
       "files": [
@@ -5897,6 +5960,13 @@
       "target": "每批片段数：",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "clips come from one video: nothing to hold out",
+      "target": "这些片段都来自同一个视频，无法留出独立视频进行评估",
+      "files": [
+        "modules/teach/benchmark.py"
       ]
     },
     {
@@ -8441,6 +8511,27 @@
       ]
     },
     {
+      "source": "evaluate: CLIP vectors {i}/{n}",
+      "target": "评估：CLIP 向量 {i}/{n}",
+      "files": [
+        "modules/teach/benchmark.py"
+      ]
+    },
+    {
+      "source": "evaluate: sheet {sheet}: {curve[-1]}",
+      "target": "评估：检查批次 {sheet}：{curve[-1]}",
+      "files": [
+        "modules/teach/benchmark.py"
+      ]
+    },
+    {
+      "source": "evaluate: {len(project.samples)} clips, {len(names)} classes; sorting",
+      "target": "评估：{len(project.samples)} 个片段，{len(names)} 个类别；正在排序",
+      "files": [
+        "modules/teach/benchmark.py"
+      ]
+    },
+    {
       "source": "Even throughout — what ffmpeg does unaided",
       "target": "全程匀速——FFmpeg 默认的直接变化",
       "files": [
@@ -10599,6 +10690,13 @@
       ]
     },
     {
+      "source": "Input {inp.name} {expected} {inp.type}",
+      "target": "输入 {inp.name} {expected} {inp.type}",
+      "files": [
+        "model_hub/package.py"
+      ]
+    },
+    {
       "source": "Input: {args.input}",
       "target": "输入：{args.input}",
       "files": [
@@ -11822,6 +11920,13 @@
       ]
     },
     {
+      "source": "Manifest has no sha256 for model.onnx; rebuild the package.",
+      "target": "清单中缺少 model.onnx 的 sha256；请重新构建模型包。",
+      "files": [
+        "model_hub/package.py"
+      ]
+    },
+    {
       "source": "manifest is the {manifest.get('edition')} edition, not {args.edition}",
       "target": "manifest 版本类型为 {manifest.get('edition')}，不是 {args.edition}",
       "files": [
@@ -12233,6 +12338,13 @@
       ]
     },
     {
+      "source": "missing: {source.path}",
+      "target": "缺少文件：{source.path}",
+      "files": [
+        "modules/teach/cut.py"
+      ]
+    },
+    {
       "source": "Mix",
       "target": "混合",
       "files": [
@@ -12390,6 +12502,13 @@
     {
       "source": "model.onnx could not be parsed: {exc}",
       "target": "无法解析 model.onnx：{exc}",
+      "files": [
+        "model_hub/package.py"
+      ]
+    },
+    {
+      "source": "model.onnx does not match the sha256 in the manifest.",
+      "target": "model.onnx 与清单中的 sha256 不匹配。",
       "files": [
         "model_hub/package.py"
       ]
@@ -13074,6 +13193,13 @@
       ]
     },
     {
+      "source": "no dataset folder {root}",
+      "target": "未找到数据集文件夹：{root}",
+      "files": [
+        "modules/teach/benchmark.py"
+      ]
+    },
+    {
       "source": "no dataset yet; run build first",
       "target": "尚未构建数据集，请先运行 build",
       "files": [
@@ -13412,10 +13538,24 @@
       ]
     },
     {
+      "source": "no setting {key!r}",
+      "target": "不存在设置项 {key!r}",
+      "files": [
+        "modules/teach/benchmark.py"
+      ]
+    },
+    {
       "source": "no setting {key!r}; settings: {sorted(known)}",
       "target": "不存在设置项 {key!r}；可用设置：{sorted(known)}",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "no single-class clips in train or val to sort",
+      "target": "train 或 val 中没有可用于排序的单类别片段",
+      "files": [
+        "modules/teach/benchmark.py"
       ]
     },
     {
@@ -14311,6 +14451,13 @@
       ]
     },
     {
+      "source": "Only .onnx models can be published. Export your model to ONNX first.",
+      "target": "只能发布 .onnx 模型。请先将模型导出为 ONNX。",
+      "files": [
+        "model_hub/package.py"
+      ]
+    },
+    {
       "source": "Only loads bboxes near current playhead position.",
       "target": "只加载当前播放头附近的边界框。",
       "files": [
@@ -14371,6 +14518,13 @@
       "target": "ONNX 模型 (*.onnx)",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "ONNX opset {max((o.version for o in proto.opset_import if o.domain in ('', 'ai.onnx')), default='?')}",
+      "target": "ONNX 算子集版本 {max((o.version for o in proto.opset_import if o.domain in ('', 'ai.onnx')), default='?')}",
+      "files": [
+        "model_hub/package.py"
       ]
     },
     {
@@ -23394,6 +23548,13 @@
       ]
     },
     {
+      "source": "{path}: aliases are one JSON object of name -> name (or \\\"\\\")",
+      "target": "{path}：aliases 必须是一个“名称 -> 名称（或空字符串）”的 JSON 对象",
+      "files": [
+        "modules/teach/benchmark.py"
+      ]
+    },
+    {
       "source": "{pending} more still need checking.",
       "target": "还有 {pending} 个示例需要检查。",
       "files": [
@@ -23468,6 +23629,13 @@
       "target": "另有 {result['too_new']} 个因过新暂不判断",
       "files": [
         "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "{root} has none of {', '.join(SPLITS)}",
+      "target": "{root} 中没有 {', '.join(SPLITS)} 中的任何数据划分",
+      "files": [
+        "modules/teach/benchmark.py"
       ]
     },
     {

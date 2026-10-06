@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "581ae315648d5d6dc880ac0125583d118d8a07b8"
+    "head_commit": "43283d7762521f662d4e055251d0d65bae0df53b"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -16892,6 +16892,15 @@
     {
       "id": "model_hub/hub.py#10",
       "file": "model_hub/hub.py",
+      "source": "        print(f\"[model_hub] blocklist unavailable ({exc}); listing without it\")",
+      "target": "        print(f\"[模型中心] 无法获取屏蔽列表（{exc}）；将继续显示可获取的模型\")",
+      "before": "    except Exception as exc:  # noqa: BLE001",
+      "after": "        return set()",
+      "hunk": "@@ -181,7 +181,7 @@ def fetch_blocklist(url: str = BLOCKLIST_URL, timeout: float = 10.0) -> set[str]"
+    },
+    {
+      "id": "model_hub/hub.py#11",
+      "file": "model_hub/hub.py",
       "source": "        report = CheckReport(errors=[f\"Invalid repository id: {repo_id}\"])",
       "target": "        report = CheckReport(errors=[f\"无效的仓库 ID：{repo_id}\"])",
       "before": "    if not REPO_ID_RE.match(repo_id):",
@@ -16899,7 +16908,7 @@
       "hunk": "@@ -284,11 +284,11 @@ def install(repo_id: str, revision: str | None = None, models_dir: str | Path |"
     },
     {
-      "id": "model_hub/hub.py#11",
+      "id": "model_hub/hub.py#12",
       "file": "model_hub/hub.py",
       "source": "            f\"{repo_id} was removed from the community models after a report.\"])",
       "target": "            f\"{repo_id} 因收到举报已从社区模型中移除。\"])",
@@ -16908,7 +16917,7 @@
       "hunk": "@@ -284,11 +284,11 @@ def install(repo_id: str, revision: str | None = None, models_dir: str | Path |"
     },
     {
-      "id": "model_hub/hub.py#12",
+      "id": "model_hub/hub.py#13",
       "file": "model_hub/hub.py",
       "source": "        progress(f\"Downloading {repo_id}@{revision[:8]}…\")",
       "target": "        progress(f\"正在下载 {repo_id}@{revision[:8]}…\")",
@@ -16917,7 +16926,7 @@
       "hunk": "@@ -299,13 +299,13 @@ def install(repo_id: str, revision: str | None = None, models_dir: str | Path |"
     },
     {
-      "id": "model_hub/hub.py#13",
+      "id": "model_hub/hub.py#14",
       "file": "model_hub/hub.py",
       "source": "        progress(\"Checking model…\")",
       "target": "        progress(\"正在检查模型…\")",
@@ -16926,7 +16935,7 @@
       "hunk": "@@ -299,13 +299,13 @@ def install(repo_id: str, revision: str | None = None, models_dir: str | Path |"
     },
     {
-      "id": "model_hub/hub.py#14",
+      "id": "model_hub/hub.py#15",
       "file": "model_hub/hub.py",
       "source": "            f\"This is a {TASKS[manifest.task][0].lower()} model; this version of \"\n            \"VideoHighlighter can only use object detection models.\")",
       "target": "            f\"这是一个 {TASKS[manifest.task][0]} 模型；当前版本的 \"\n            \"VideoHighlighter 只能使用物体检测模型。\")",
@@ -16935,7 +16944,7 @@
       "hunk": "@@ -320,8 +320,8 @@ def install_folder(package_dir: str | Path, repo_id: str, revision: str,"
     },
     {
-      "id": "model_hub/hub.py#15",
+      "id": "model_hub/hub.py#16",
       "file": "model_hub/hub.py",
       "source": "    progress(\"Installed.\")",
       "target": "    progress(\"安装完成。\")",
@@ -17054,6 +17063,15 @@
     {
       "id": "model_hub/package.py#13",
       "file": "model_hub/package.py",
+      "source": "        report.info.append(f\"ONNX opset {max((o.version for o in proto.opset_import if o.domain in ('', 'ai.onnx')), default='?')}\")",
+      "target": "        report.info.append(f\"ONNX 算子集版本 {max((o.version for o in proto.opset_import if o.domain in ('', 'ai.onnx')), default='?')}\")",
+      "before": "            return",
+      "after": "        del proto",
+      "hunk": "@@ -138,19 +138,19 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
+    },
+    {
+      "id": "model_hub/package.py#14",
+      "file": "model_hub/package.py",
       "source": "        report.warnings.append(\"Package 'onnx' not installed; skipped external-data check.\")",
       "target": "        report.warnings.append(\"未安装 onnx 包，已跳过外部数据检查。\")",
       "before": "    except ImportError:",
@@ -17061,7 +17079,7 @@
       "hunk": "@@ -138,19 +138,19 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#14",
+      "id": "model_hub/package.py#15",
       "file": "model_hub/package.py",
       "source": "        report.errors.append(f\"model.onnx could not be parsed: {exc}\")",
       "target": "        report.errors.append(f\"无法解析 model.onnx：{exc}\")",
@@ -17070,43 +17088,52 @@
       "hunk": "@@ -138,19 +138,19 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#15",
+      "id": "model_hub/package.py#16",
       "file": "model_hub/package.py",
       "source": "        report.errors.append(f\"ONNX Runtime cannot load the model: {exc}\")",
       "target": "        report.errors.append(f\"ONNX Runtime 无法加载模型：{exc}\")",
       "before": "    except Exception as exc:  # noqa: BLE001",
       "after": "        return",
-      "hunk": "@@ -158,23 +158,23 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
+      "hunk": "@@ -158,25 +158,25 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#16",
+      "id": "model_hub/package.py#17",
       "file": "model_hub/package.py",
       "source": "        report.errors.append(f\"Model must have exactly one input (has {len(inputs)}).\")",
       "target": "        report.errors.append(f\"模型必须只有一个输入（当前有 {len(inputs)} 个）。\")",
       "before": "    if len(inputs) != 1:",
       "after": "        return",
-      "hunk": "@@ -158,23 +158,23 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
+      "hunk": "@@ -158,25 +158,25 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#17",
+      "id": "model_hub/package.py#18",
       "file": "model_hub/package.py",
       "source": "            f\"Input shape {actual} does not match the manifest {expected} \"\n            f\"(check width/height/channels/layout{'/frames' if manifest.task == 'action_recognition' else ''}).\")",
       "target": "            f\"输入形状 {actual} 与清单中的 {expected} 不匹配 \"\n            f\"（请检查宽度/高度/通道/布局{'/帧数' if manifest.task == 'action_recognition' else ''}）。\")",
       "before": "        report.errors.append(",
       "after": "        return",
-      "hunk": "@@ -158,23 +158,23 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
+      "hunk": "@@ -158,25 +158,25 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#18",
+      "id": "model_hub/package.py#19",
       "file": "model_hub/package.py",
       "source": "        report.errors.append(f\"Unsupported input type {inp.type}.\")",
       "target": "        report.errors.append(f\"不支持的输入类型：{inp.type}。\")",
       "before": "    if inp.type not in (\"tensor(float)\", \"tensor(float16)\", \"tensor(uint8)\"):",
       "after": "        return",
-      "hunk": "@@ -158,23 +158,23 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
+      "hunk": "@@ -158,25 +158,25 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#19",
+      "id": "model_hub/package.py#20",
+      "file": "model_hub/package.py",
+      "source": "    report.info.append(f\"Input {inp.name} {expected} {inp.type}\")",
+      "target": "    report.info.append(f\"输入 {inp.name} {expected} {inp.type}\")",
+      "before": "        return",
+      "after": "",
+      "hunk": "@@ -158,25 +158,25 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
+    },
+    {
+      "id": "model_hub/package.py#21",
       "file": "model_hub/package.py",
       "source": "        report.errors.append(f\"Test inference failed: {exc}\")",
       "target": "        report.errors.append(f\"测试推理失败：{exc}\")",
@@ -17115,7 +17142,7 @@
       "hunk": "@@ -184,9 +184,9 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#20",
+      "id": "model_hub/package.py#22",
       "file": "model_hub/package.py",
       "source": "    report.info.append(\"Test inference ran on CPU\")",
       "target": "    report.info.append(\"已在 CPU 上完成测试推理\")",
@@ -17124,7 +17151,7 @@
       "hunk": "@@ -184,9 +184,9 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#21",
+      "id": "model_hub/package.py#23",
       "file": "model_hub/package.py",
       "source": "                f\"Detector output {list(out.shape)} is in the transposed [1, 4 + labels, N] \"\n                \"layout of an AGPL training toolkit. Only detectors trained in \"\n                \"VideoHighlighter (YOLOX) can be shared: a model trained with that \"\n                \"toolkit carries its licence.\")",
       "target": "                f\"检测器输出 {list(out.shape)} 使用了转置的 [1, 4 + labels, N] 布局，\"\n                \"该布局来自 AGPL 训练工具。只有在 VideoHighlighter 中训练的 \"\n                \"YOLOX 检测器可以分享；使用该工具训练的模型受其许可证约束。\")",
@@ -17133,7 +17160,7 @@
       "hunk": "@@ -194,22 +194,21 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#22",
+      "id": "model_hub/package.py#24",
       "file": "model_hub/package.py",
       "source": "                f\"Detector output {list(out.shape)} does not match the YOLOX format \"\n                f\"[1, N, {5 + n}] for {n} labels.\")",
       "target": "                f\"检测器输出 {list(out.shape)} 与 YOLOX 格式不匹配。\"\n                f\"{n} 个标签应对应 [1, N, {5 + n}]。\")",
@@ -17142,7 +17169,7 @@
       "hunk": "@@ -194,22 +194,21 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#23",
+      "id": "model_hub/package.py#25",
       "file": "model_hub/package.py",
       "source": "                f\"Output {list(out.shape)} does not match {n} labels (expected [1, {n}]).\")",
       "target": "                f\"输出 {list(out.shape)} 与 {n} 个标签不匹配（预期为 [1, {n}]）。\")",
@@ -17151,7 +17178,7 @@
       "hunk": "@@ -194,22 +194,21 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#24",
+      "id": "model_hub/package.py#26",
       "file": "model_hub/package.py",
       "source": "    report.info.append(f\"Output {list(out.shape)} matches {n} label(s)\")",
       "target": "    report.info.append(f\"输出 {list(out.shape)} 与 {n} 个标签匹配\")",
@@ -17160,22 +17187,49 @@
       "hunk": "@@ -194,22 +194,21 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:"
     },
     {
-      "id": "model_hub/package.py#25",
+      "id": "model_hub/package.py#27",
+      "file": "model_hub/package.py",
+      "source": "            report.errors.append(\"Manifest has no sha256 for model.onnx; rebuild the package.\")",
+      "target": "            report.errors.append(\"清单中缺少 model.onnx 的 sha256；请重新构建模型包。\")",
+      "before": "        if not expected:",
+      "after": "        elif sha256_file(model) != expected:",
+      "hunk": "@@ -230,11 +229,11 @@ def check_package(folder: str | Path, require_compliance: bool = True,"
+    },
+    {
+      "id": "model_hub/package.py#28",
+      "file": "model_hub/package.py",
+      "source": "            report.errors.append(\"model.onnx does not match the sha256 in the manifest.\")",
+      "target": "            report.errors.append(\"model.onnx 与清单中的 sha256 不匹配。\")",
+      "before": "        elif sha256_file(model) != expected:",
+      "after": "        else:",
+      "hunk": "@@ -230,11 +229,11 @@ def check_package(folder: str | Path, require_compliance: bool = True,"
+    },
+    {
+      "id": "model_hub/package.py#29",
       "file": "model_hub/package.py",
       "source": "            report.info.append(\"Checksum verified\")",
       "target": "            report.info.append(\"校验值验证通过\")",
       "before": "        else:",
       "after": "",
-      "hunk": "@@ -234,7 +233,7 @@ def check_package(folder: str | Path, require_compliance: bool = True,"
+      "hunk": "@@ -230,11 +229,11 @@ def check_package(folder: str | Path, require_compliance: bool = True,"
     },
     {
-      "id": "model_hub/package.py#26",
+      "id": "model_hub/package.py#30",
       "file": "model_hub/package.py",
       "source": "        raise FileExistsError(f\"{out} is not empty; choose an empty folder.\")",
       "target": "        raise FileExistsError(f\"{out} 不是空文件夹；请选择一个空文件夹。\")",
       "before": "    if out.exists() and any(out.iterdir()):",
       "after": "    if model_file.suffix.lower() != \".onnx\":",
-      "hunk": "@@ -249,7 +248,7 @@ def build_package(model_file: str | Path, manifest: Manifest, out_dir: str | Pat"
+      "hunk": "@@ -249,9 +248,9 @@ def build_package(model_file: str | Path, manifest: Manifest, out_dir: str | Pat"
+    },
+    {
+      "id": "model_hub/package.py#31",
+      "file": "model_hub/package.py",
+      "source": "        raise ValueError(\"Only .onnx models can be published. Export your model to ONNX first.\")",
+      "target": "        raise ValueError(\"只能发布 .onnx 模型。请先将模型导出为 ONNX。\")",
+      "before": "    if model_file.suffix.lower() != \".onnx\":",
+      "after": "    out.mkdir(parents=True, exist_ok=True)",
+      "hunk": "@@ -249,9 +248,9 @@ def build_package(model_file: str | Path, manifest: Manifest, out_dir: str | Pat"
     },
     {
       "id": "model_training/action_head/features.py#1",
@@ -21773,6 +21827,24 @@
     {
       "id": "modules/packs/pack_manager.py#1",
       "file": "modules/packs/pack_manager.py",
+      "source": "        print(f\"[packs] unreadable {path}: {exc}\")",
+      "target": "        print(f\"[资源包] 无法读取 {path}：{exc}\")",
+      "before": "    except (OSError, ValueError) as exc:",
+      "after": "        return {}",
+      "hunk": "@@ -214,7 +214,7 @@ def load_lock(path: Optional[str] = None) -> dict:"
+    },
+    {
+      "id": "modules/packs/pack_manager.py#2",
+      "file": "modules/packs/pack_manager.py",
+      "source": "            print(f\"[packs] skipping a malformed lock entry ({exc}): {row!r}\")",
+      "target": "            print(f\"[资源包] 已跳过格式错误的锁定条目（{exc}）：{row!r}\")",
+      "before": "        except (KeyError, TypeError, ValueError) as exc:",
+      "after": "            continue",
+      "hunk": "@@ -231,7 +231,7 @@ def load_lock(path: Optional[str] = None) -> dict:"
+    },
+    {
+      "id": "modules/packs/pack_manager.py#3",
+      "file": "modules/packs/pack_manager.py",
       "source": "        return (f\"The {pack.name} pack is built for Python {pack.python}, but this \"\n                f\"app runs {python_tag()}. The app and its packs are out of step; \"\n                f\"download the current release.\")",
       "target": "        return (f\"{pack.name} 组件包适用于 Python {pack.python}，但当前软件运行的是 \"\n                f\"{python_tag()}。软件与组件包版本不匹配，请下载当前最新版本。\")",
       "before": "    if pack.python and pack.python != python_tag():",
@@ -21780,7 +21852,7 @@
       "hunk": "@@ -302,9 +302,8 @@ def python_tag() -> str:"
     },
     {
-      "id": "modules/packs/pack_manager.py#2",
+      "id": "modules/packs/pack_manager.py#4",
       "file": "modules/packs/pack_manager.py",
       "source": "        return (\"No NVIDIA graphics card was found, so the NVIDIA download would \"\n                \"not speed anything up. VideoHighlighter keeps using the \"\n                \"processor or your Intel/AMD graphics.\")",
       "target": "        return (\"未检测到 NVIDIA 显卡，因此下载 NVIDIA 加速组件不会提升速度。\"\n                \"VideoHighlighter 将继续使用处理器或 Intel/AMD 显卡。\")",
@@ -21789,7 +21861,7 @@
       "hunk": "@@ -368,15 +367,13 @@ def cuda_pack_advice(gpus: list) -> Optional[str]:"
     },
     {
-      "id": "modules/packs/pack_manager.py#3",
+      "id": "modules/packs/pack_manager.py#5",
       "file": "modules/packs/pack_manager.py",
       "source": "        return (f\"Your NVIDIA driver ({best.driver}) is too old for GPU \"\n                f\"acceleration. Update it to {need} or newer from nvidia.com, \"\n                f\"then try again.\")",
       "target": "        return (f\"当前 NVIDIA 驱动（{best.driver}）版本过低，无法使用 GPU 加速。\"\n                f\"请从 nvidia.com 更新到 {need} 或更高版本后重试。\")",
@@ -21798,7 +21870,7 @@
       "hunk": "@@ -368,15 +367,13 @@ def cuda_pack_advice(gpus: list) -> Optional[str]:"
     },
     {
-      "id": "modules/packs/pack_manager.py#4",
+      "id": "modules/packs/pack_manager.py#6",
       "file": "modules/packs/pack_manager.py",
       "source": "                f\"connection closed at {_size(part)} of {pack.bytes} bytes\")",
       "target": "                f\"连接在已下载 {_size(part)} / {pack.bytes} 字节时中断\")",
@@ -21807,7 +21879,7 @@
       "hunk": "@@ -501,23 +498,21 @@ def download_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#5",
+      "id": "modules/packs/pack_manager.py#7",
       "file": "modules/packs/pack_manager.py",
       "source": "                raise PackError(f\"{pack.asset} could not be downloaded \"\n                                f\"(HTTP {code} from {pack.url}).\") from exc",
       "target": "                raise PackError(f\"{pack.asset} 下载失败（{pack.url} 返回 HTTP {code}）。\") from exc",
@@ -21816,16 +21888,16 @@
       "hunk": "@@ -501,23 +498,21 @@ def download_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#6",
+      "id": "modules/packs/pack_manager.py#8",
       "file": "modules/packs/pack_manager.py",
-      "source": "                raise PackError(f\"{pack.asset} could not be downloaded: {exc}. \"\n                                f\"What arrived is kept; trying again continues \"\n                                f\"from there.\") from exc",
-      "target": "                raise PackError(f\"{pack.asset} 下载失败：{exc}。已下载的数据会保留，\"\n                                f\"下次重试时将继续下载。\") from exc",
+      "source": "                raise PackError(f\"{pack.asset} could not be downloaded: {exc}. \"\n                                f\"What arrived is kept; trying again continues \"\n                                f\"from there.\") from exc\n            print(f\"[packs] {pack.asset}: {exc}; retrying ({failures}/{RETRIES})\")",
+      "target": "                raise PackError(f\"{pack.asset} 下载失败：{exc}。已下载的数据会保留，\"\n                                f\"下次重试时将继续下载。\") from exc\n            print(f\"[资源包] {pack.asset}：{exc}；正在重试（{failures}/{RETRIES}）\")",
       "before": "            if failures > RETRIES:",
-      "after": "            print(f\"[packs] {pack.asset}: {exc}; retrying ({failures}/{RETRIES})\")",
+      "after": "        if failures > RETRIES:",
       "hunk": "@@ -501,23 +498,21 @@ def download_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#7",
+      "id": "modules/packs/pack_manager.py#9",
       "file": "modules/packs/pack_manager.py",
       "source": "            raise PackError(f\"{pack.asset}: the server kept sending a different file.\")",
       "target": "            raise PackError(f\"{pack.asset}：服务器持续返回与预期不一致的文件。\")",
@@ -21834,7 +21906,7 @@
       "hunk": "@@ -501,23 +498,21 @@ def download_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#8",
+      "id": "modules/packs/pack_manager.py#10",
       "file": "modules/packs/pack_manager.py",
       "source": "        raise PackError(f\"{pack.asset} did not match its checksum and was \"\n                        f\"discarded. Try again; if it keeps happening, the \"\n                        f\"download is being altered on the way.\")",
       "target": "        raise PackError(f\"{pack.asset} 校验值不匹配，已丢弃该文件。请重试；\"\n                        f\"如果持续出现此问题，下载内容可能在传输过程中被修改。\")",
@@ -21843,7 +21915,7 @@
       "hunk": "@@ -525,9 +520,8 @@ def download_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#9",
+      "id": "modules/packs/pack_manager.py#11",
       "file": "modules/packs/pack_manager.py",
       "source": "            raise PackError(f\"7-Zip could not unpack {os.path.basename(archive)} \"\n                            f\"(exit code {proc.returncode}). {' '.join(tail)}\".strip())",
       "target": "            raise PackError(f\"7-Zip 无法解压 {os.path.basename(archive)} \"\n                            f\"（退出代码 {proc.returncode}）。 {' '.join(tail)}\".strip())",
@@ -21852,7 +21924,7 @@
       "hunk": "@@ -566,15 +560,15 @@ def extract(archive: str, dest: str, *, run: Callable = subprocess.run,"
     },
     {
-      "id": "modules/packs/pack_manager.py#10",
+      "id": "modules/packs/pack_manager.py#12",
       "file": "modules/packs/pack_manager.py",
       "source": "        raise PackError(\"7-Zip was not found, so the download cannot be unpacked. \"\n                        \"7zr.exe belongs next to VideoHighlighter.exe; \"\n                        \"re-extract the portable archive.\") from None",
       "target": "        raise PackError(\"未找到 7-Zip，因此无法解压下载内容。\"\n                        \"7zr.exe 应与 VideoHighlighter.exe 位于同一目录；\"\n                        \"请重新解压便携版程序。\") from None",
@@ -21861,7 +21933,7 @@
       "hunk": "@@ -566,15 +560,15 @@ def extract(archive: str, dest: str, *, run: Callable = subprocess.run,"
     },
     {
-      "id": "modules/packs/pack_manager.py#11",
+      "id": "modules/packs/pack_manager.py#13",
       "file": "modules/packs/pack_manager.py",
       "source": "        raise PackError(f\"{pack.asset} does not hold a pack (no site-packages \"\n                        f\"and pack.json at its top).\")",
       "target": "        raise PackError(f\"{pack.asset} 不是有效组件包（顶层缺少 site-packages \"\n                        f\"和 pack.json）。\")",
@@ -21870,7 +21942,16 @@
       "hunk": "@@ -600,8 +594,8 @@ def _place_python(pack: Pack, unpacked: str, root: str) -> str:"
     },
     {
-      "id": "modules/packs/pack_manager.py#12",
+      "id": "modules/packs/pack_manager.py#14",
+      "file": "modules/packs/pack_manager.py",
+      "source": "                print(f\"[packs] could not mark {folder} for removal: {exc}\")",
+      "target": "                print(f\"[资源包] 无法将 {folder} 标记为待移除：{exc}\")",
+      "before": "            except OSError as exc:",
+      "after": "",
+      "hunk": "@@ -636,7 +630,7 @@ def _mark_superseded(pack: Pack, priority: int) -> None:"
+    },
+    {
+      "id": "modules/packs/pack_manager.py#15",
       "file": "modules/packs/pack_manager.py",
       "source": "        raise PackError(f\"{pack.asset} does not hold a models/ folder.\")",
       "target": "        raise PackError(f\"{pack.asset} 中缺少 models/ 文件夹。\")",
@@ -21879,7 +21960,7 @@
       "hunk": "@@ -652,7 +646,7 @@ def _place_model(pack: Pack, unpacked: str, root: str) -> str:"
     },
     {
-      "id": "modules/packs/pack_manager.py#13",
+      "id": "modules/packs/pack_manager.py#16",
       "file": "modules/packs/pack_manager.py",
       "source": "            raise PackError(\"The visual search model is in use. Close visual \"\n                            \"search and try again.\") from exc",
       "target": "            raise PackError(\"视觉搜索模型正在使用中。请关闭视觉搜索后重试。\") from exc",
@@ -21888,7 +21969,7 @@
       "hunk": "@@ -661,8 +655,7 @@ def _place_model(pack: Pack, unpacked: str, root: str) -> str:"
     },
     {
-      "id": "modules/packs/pack_manager.py#14",
+      "id": "modules/packs/pack_manager.py#17",
       "file": "modules/packs/pack_manager.py",
       "source": "        return PackResult(False, f\"This build does not offer {name} \"\n                                 f\"(no {LOCK_NAME} entry).\", name)",
       "target": "        return PackResult(False, f\"当前版本未提供 {name} \"\n                                 f\"（{LOCK_NAME} 中没有对应条目）。\", name)",
@@ -21897,7 +21978,7 @@
       "hunk": "@@ -683,13 +676,13 @@ def install_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#15",
+      "id": "modules/packs/pack_manager.py#18",
       "file": "modules/packs/pack_manager.py",
       "source": "        return PackResult(True, f\"{name} is already installed.\", name,",
       "target": "        return PackResult(True, f\"{name} 已安装。\", name,",
@@ -21906,7 +21987,7 @@
       "hunk": "@@ -683,13 +676,13 @@ def install_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#16",
+      "id": "modules/packs/pack_manager.py#19",
       "file": "modules/packs/pack_manager.py",
       "source": "            f\"Not enough free space for {name} on {os.path.splitdrive(os.path.abspath(root))[0] or root}: \"\n            f\"needs about {-(-need // 2**20)} MB, {free // 2**20} MB free.\"), name)",
       "target": "            f\"{os.path.splitdrive(os.path.abspath(root))[0] or root} 上没有足够空间安装 {name}：\"\n            f\"约需 {-(-need // 2**20)} MB，当前可用 {free // 2**20} MB。\"), name)",
@@ -21915,7 +21996,7 @@
       "hunk": "@@ -699,16 +692,15 @@ def install_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#17",
+      "id": "modules/packs/pack_manager.py#20",
       "file": "modules/packs/pack_manager.py",
       "source": "            return PackResult(False, \"Download paused. It continues where it \"\n                                     \"stopped the next time.\", name, cancelled=True)",
       "target": "            return PackResult(False, \"下载已暂停。下次会从上次停止的位置继续。\", name, cancelled=True)",
@@ -21924,7 +22005,7 @@
       "hunk": "@@ -699,16 +692,15 @@ def install_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#18",
+      "id": "modules/packs/pack_manager.py#21",
       "file": "modules/packs/pack_manager.py",
       "source": "        return PackResult(False, f\"{name} could not be installed: {exc}\", name)",
       "target": "        return PackResult(False, f\"{name} 安装失败：{exc}\", name)",
@@ -21933,13 +22014,13 @@
       "hunk": "@@ -721,7 +713,7 @@ def install_pack("
     },
     {
-      "id": "modules/packs/pack_manager.py#19",
+      "id": "modules/packs/pack_manager.py#22",
       "file": "modules/packs/pack_manager.py",
-      "source": "    msg = (f\"{name} is installed. Restart VideoHighlighter to use it.\"\n           if restart else f\"{name} is installed.\")",
-      "target": "    msg = (f\"{name} 已安装。重启 VideoHighlighter 后即可使用。\"\n           if restart else f\"{name} 已安装。\")",
-      "before": "    print(f\"[packs] installed {name} {pack.version} at {where}\")",
+      "source": "    print(f\"[packs] installed {name} {pack.version} at {where}\")\n    msg = (f\"{name} is installed. Restart VideoHighlighter to use it.\"\n           if restart else f\"{name} is installed.\")",
+      "target": "    print(f\"[资源包] 已安装 {name} {pack.version} → {where}\")\n    msg = (f\"{name} 已安装。重启 VideoHighlighter 后即可使用。\"\n           if restart else f\"{name} 已安装。\")",
+      "before": "        pass",
       "after": "    return PackResult(True, msg, name, restart_required=restart)",
-      "hunk": "@@ -731,8 +723,8 @@ def install_pack("
+      "hunk": "@@ -730,9 +722,9 @@ def install_pack("
     },
     {
       "id": "modules/packs/pack_ui.py#1",
@@ -24219,6 +24300,109 @@
       "hunk": "@@ -107,15 +107,15 @@ def run_once(root: str, *, train: bool = True, run_cli: Optional[Callable] = Non"
     },
     {
+      "id": "modules/teach/benchmark.py#1",
+      "file": "modules/teach/benchmark.py",
+      "source": "        raise ValueError(f\"{path}: aliases are one JSON object of name -> name (or \\\"\\\")\")",
+      "target": "        raise ValueError(f\"{path}：aliases 必须是一个“名称 -> 名称（或空字符串）”的 JSON 对象\")",
+      "before": "    if not isinstance(data, dict) or not all(isinstance(v, str) for v in data.values()):",
+      "after": "    return {str(k).strip(): v.strip() for k, v in data.items()}",
+      "hunk": "@@ -89,7 +89,7 @@ def load_aliases(path: Optional[str]) -> dict:"
+    },
+    {
+      "id": "modules/teach/benchmark.py#2",
+      "file": "modules/teach/benchmark.py",
+      "source": "        raise FileNotFoundError(f\"no dataset folder {root}\")",
+      "target": "        raise FileNotFoundError(f\"未找到数据集文件夹：{root}\")",
+      "before": "    if not os.path.isdir(root):",
+      "after": "    clips, skipped, splits, misnamed = [], [], [], []",
+      "hunk": "@@ -145,7 +145,7 @@ def read_dataset(root: str, aliases: Optional[dict] = None,"
+    },
+    {
+      "id": "modules/teach/benchmark.py#3",
+      "file": "modules/teach/benchmark.py",
+      "source": "        raise FileNotFoundError(f\"{root} has none of {', '.join(SPLITS)}\")",
+      "target": "        raise FileNotFoundError(f\"{root} 中没有 {', '.join(SPLITS)} 中的任何数据划分\")",
+      "before": "    if not splits:",
+      "after": "    return {\"clips\": clips, \"skipped\": skipped, \"splits\": splits, \"misnamed\": misnamed,",
+      "hunk": "@@ -176,7 +176,7 @@ def read_dataset(root: str, aliases: Optional[dict] = None,"
+    },
+    {
+      "id": "modules/teach/benchmark.py#4",
+      "file": "modules/teach/benchmark.py",
+      "source": "        raise ValueError(\"no single-class clips in train or val to sort\")",
+      "target": "        raise ValueError(\"train 或 val 中没有可用于排序的单类别片段\")",
+      "before": "    if not pool:",
+      "after": "    project = _fresh_project(work_dir)",
+      "hunk": "@@ -346,11 +346,11 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,"
+    },
+    {
+      "id": "modules/teach/benchmark.py#5",
+      "file": "modules/teach/benchmark.py",
+      "source": "            raise KeyError(f\"no setting {key!r}\")",
+      "target": "            raise KeyError(f\"不存在设置项 {key!r}\")",
+      "before": "        if not hasattr(project.settings, key):",
+      "after": "        setattr(project.settings, key, value)",
+      "hunk": "@@ -346,11 +346,11 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/teach/benchmark.py#6",
+      "file": "modules/teach/benchmark.py",
+      "source": "            say(f\"evaluate: CLIP vectors {i}/{n}\")",
+      "target": "            say(f\"评估：CLIP 向量 {i}/{n}\")",
+      "before": "        if i == n or i % 200 == 0:",
+      "after": "",
+      "hunk": "@@ -381,9 +381,9 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/teach/benchmark.py#7",
+      "file": "modules/teach/benchmark.py",
+      "source": "    say(f\"evaluate: {len(project.samples)} clips, {len(names)} classes; sorting\")",
+      "target": "    say(f\"评估：{len(project.samples)} 个片段，{len(names)} 个类别；正在排序\")",
+      "before": "",
+      "after": "    sort_project(project, embedder, frame_reader=frame_reader, progress=embedded)",
+      "hunk": "@@ -381,9 +381,9 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,"
+    },
+    {
+      "id": "modules/teach/benchmark.py#8",
+      "file": "modules/teach/benchmark.py",
+      "source": "            say(f\"evaluate: sheet {sheet}: {curve[-1]}\")",
+      "target": "            say(f\"评估：检查批次 {sheet}：{curve[-1]}\")",
+      "before": "        if sheet % 10 == 0:",
+      "after": "",
+      "hunk": "@@ -415,7 +415,7 @@ def simulate(clips: Sequence[Clip], embedder, work_dir: str, *, seeds: int = 5,"
+    },
+    {
+      "id": "modules/teach/benchmark.py#9",
+      "file": "modules/teach/benchmark.py",
+      "source": "        raise ValueError(\"clips come from one video: nothing to hold out \"\n                         \"(is --group finding the video in the file names?)\")",
+      "target": "        raise ValueError(\"这些片段都来自同一个视频，无法留出独立视频进行评估\"\n                         \"（请检查 --group 是否能从文件名中正确识别源视频）\")",
+      "before": "    if len(groups) < 2:",
+      "after": "    rng = random.Random(rng_seed)",
+      "hunk": "@@ -516,8 +516,8 @@ def sort_test(clips: Sequence[Clip], embedder, work_dir: str, *,"
+    },
+    {
+      "id": "modules/teach/benchmark.py#10",
+      "file": "modules/teach/benchmark.py",
+      "source": "            raise KeyError(f\"no setting {key!r}\")",
+      "target": "            raise KeyError(f\"不存在设置项 {key!r}\")",
+      "before": "        if not hasattr(project.settings, key):",
+      "after": "        setattr(project.settings, key, value)",
+      "hunk": "@@ -526,7 +526,7 @@ def sort_test(clips: Sequence[Clip], embedder, work_dir: str, *,",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/teach/benchmark.py#11",
+      "file": "modules/teach/benchmark.py",
+      "source": "            say(f\"evaluate: CLIP vectors {i}/{n}\")",
+      "target": "            say(f\"评估：CLIP 向量 {i}/{n}\")",
+      "before": "        if i == n or i % 200 == 0:",
+      "after": "",
+      "hunk": "@@ -541,7 +541,7 @@ def sort_test(clips: Sequence[Clip], embedder, work_dir: str, *,",
+      "safe_duplicate": true
+    },
+    {
       "id": "modules/teach/boxes.py#1",
       "file": "modules/teach/boxes.py",
       "source": "        captions.append(f\"{box.class_name} ({box.source} {box.confidence:.2f})\")",
@@ -24974,6 +25158,15 @@
       "hunk": "@@ -830,7 +817,7 @@ def run(argv=None) -> tuple:"
     },
     {
+      "id": "modules/teach/cut.py#1",
+      "file": "modules/teach/cut.py",
+      "source": "            failed.append({\"source\": source.id, \"error\": f\"missing: {source.path}\"})",
+      "target": "            failed.append({\"source\": source.id, \"error\": f\"缺少文件：{source.path}\"})",
+      "before": "        if not os.path.exists(source.path):",
+      "after": "            continue",
+      "hunk": "@@ -100,7 +100,7 @@ def cut_project(project: Project, *, run: Optional[Callable] = None,"
+    },
+    {
       "id": "modules/teach/doctor.py#1",
       "file": "modules/teach/doctor.py",
       "source": "            raise ImportError(\"not a usable OpenCV\")",
@@ -25593,6 +25786,33 @@
       "before": "        labels = boxes.store(project)",
       "after": "",
       "hunk": "@@ -387,8 +387,8 @@ class BoxReviewWindow(ReviewWindow):"
+    },
+    {
+      "id": "modules/teach/seed.py#1",
+      "file": "modules/teach/seed.py",
+      "source": "        raise ValueError(\"a box is x,y,w,h as fractions of the frame, e.g. 0.4,0.3,0.2,0.25\")",
+      "target": "        raise ValueError(\"检测框应为 x,y,w,h，数值使用画面比例，例如 0.4,0.3,0.2,0.25\")",
+      "before": "    if len(values) != 4:",
+      "after": "    x, y, w, h = values",
+      "hunk": "@@ -25,10 +25,10 @@ def parse_box(text) -> tuple:"
+    },
+    {
+      "id": "modules/teach/seed.py#2",
+      "file": "modules/teach/seed.py",
+      "source": "        raise ValueError(f\"box {text!r} is not inside the frame (x,y,w,h as fractions)\")",
+      "target": "        raise ValueError(f\"检测框 {text!r} 超出画面范围（x,y,w,h 均应使用画面比例）\")",
+      "before": "    if w <= 0 or h <= 0 or x < 0 or y < 0 or x + w > 1.0001 or y + h > 1.0001:",
+      "after": "    return (x, y, w, h)",
+      "hunk": "@@ -25,10 +25,10 @@ def parse_box(text) -> tuple:"
+    },
+    {
+      "id": "modules/teach/seed.py#3",
+      "file": "modules/teach/seed.py",
+      "source": "        raise ValueError(\"a box shows an object: seed an object project\")",
+      "target": "        raise ValueError(\"检测框用于示教物体，请对物体项目使用 seed\")",
+      "before": "    if project.task != OBJECTS:",
+      "after": "    created = project.get_class(name) is None",
+      "hunk": "@@ -43,7 +43,7 @@ def seed(root: str, video: str, moment: float, box, name: str,"
     },
     {
       "id": "modules/teach/sort.py#1",

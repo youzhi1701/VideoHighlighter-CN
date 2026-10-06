@@ -105,7 +105,7 @@ def build() -> Image.Image:
 
 def main() -> int:
     if not os.path.exists(SOURCE):
-        print(f"❌ Missing source artwork: {SOURCE}")
+        print(f"❌ 缺少源图文件：{SOURCE}")
         return 1
     img = build()
 
@@ -113,11 +113,11 @@ def main() -> int:
     # future tweak that reintroduces magenta would punch a hole in the splash
     # on Windows, and that is not obvious from looking at the code.
     if any(c == (255, 0, 255) for _n, c in (img.getcolors(W * H) or [])):
-        print("❌ Image contains #ff00ff, which Windows treats as transparent")
+        print("❌ 图像包含 #ff00ff，Windows 会将该颜色视为透明色")
         return 1
 
     img.save(TARGET, "PNG")
-    print(f"✅ Wrote {TARGET} ({img.width}x{img.height})")
+    print(f"✅ 已写入 {TARGET}（{img.width}x{img.height}）")
     return 0
 
 

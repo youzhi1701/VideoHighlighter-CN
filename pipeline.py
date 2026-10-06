@@ -349,21 +349,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         
         for idx, single_video_path in enumerate(video_path, 1):
             log_fn(f"\n{'='*60}")
-            log_fn(f"📹 Processing video {idx}/{total_videos}: {os.path.basename(single_video_path)}")
+            log_fn(f"📹 正在处理视频 {idx}/{total_videos}：{os.path.basename(single_video_path)}")
             log_fn(f"{'='*60}\n")
             
             # Check cancellation
             if cancel_flag and cancel_flag.is_set():
-                log_fn("⏹️ Batch processing cancelled")
+                log_fn("⏹️ 批量处理已取消")
                 break
             
             # Videos finished so far, not a percentage — the GUI gives this its
             # own row, so it survives the per-stage updates the video below emits.
             failed = sum(1 for _, r in results if r is None)
-            detail = f"Video {idx}/{total_videos}: {os.path.basename(single_video_path)}"
+            detail = f"视频 {idx}/{total_videos}：{os.path.basename(single_video_path)}"
             if failed:
-                detail += f" ({failed} failed)"
-            progress.update_progress(idx - 1, total_videos, "Batch Processing", detail)
+                detail += f"（{failed} 个失败）"
+            progress.update_progress(idx - 1, total_videos, "批量处理", detail)
             
             # Name the mp4. Callers that pass output_base (the GUI field) get
             # that name; everyone else keeps <video>_highlight.mp4, which is
@@ -396,26 +396,26 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 results.append((single_video_path, result))
                 
                 if result:
-                    log_fn(f"✅ Completed {idx}/{total_videos}: {os.path.basename(result)}")
+                    log_fn(f"✅ 已完成 {idx}/{total_videos}：{os.path.basename(result)}")
                 else:
-                    log_fn(f"⚠️ Failed {idx}/{total_videos}: {os.path.basename(single_video_path)}")
+                    log_fn(f"⚠️ 处理失败 {idx}/{total_videos}：{os.path.basename(single_video_path)}")
             except Exception as e:
-                log_fn(f"❌ Error processing {single_video_path}: {e}")
+                log_fn(f"❌ 处理 {single_video_path} 时出错：{e}")
                 results.append((single_video_path, None))
         
         # Summary
         log_fn(f"\n{'='*60}")
-        log_fn(f"📊 BATCH PROCESSING SUMMARY")
+        log_fn("📊 批量处理汇总")
         log_fn(f"{'='*60}")
         successful = sum(1 for _, r in results if r is not None)
-        log_fn(f"Total: {total_videos} | ✅ Success: {successful} | ❌ Failed: {total_videos - successful}")
+        log_fn(f"总数：{total_videos} | ✅ 成功：{successful} | ❌ 失败：{total_videos - successful}")
         
         for input_path, output_path in results:
             status = "✅" if output_path else "❌"
             log_fn(f"  {status} {os.path.basename(input_path)}")
         
-        progress.update_progress(len(results), total_videos, "Batch Processing",
-                               f"Complete: {successful}/{total_videos} succeeded")
+        progress.update_progress(len(results), total_videos, "批量处理",
+                               f"已完成：{successful}/{total_videos} 个成功")
         return results
     
     # ========== SINGLE FILE PROCESSING ==========
@@ -509,22 +509,22 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         actions_require_objects = gui_config.get("actions_require_objects", False)
         highlight_objects_check = gui_config.get("highlight_objects", config.get("highlight_objects", []))
         if actions_require_objects and not highlight_objects_check:
-            log("❌ 'Score actions only if objects detected' is enabled, but no objects are configured. "
-                "Please add objects to detect, or uncheck that option.")
+            log("❌ 已启用“仅在检测到物体时为动作评分”，但尚未配置要检测的物体。"
+                "请添加物体类别，或关闭该选项。")
             return None
         # ────────────────────────────────────────────────────────────────────────────
 
         if not os.path.isfile(video_path):
-            raise FileNotFoundError(f"Input video not found at path: {video_path}")
+            raise FileNotFoundError(f"找不到输入视频：{video_path}")
 
         # Initial progress
-        progress.update_progress(0, 100, "Pipeline", "Initializing...")
-        check_cancellation(cancel_flag, log, "setup")
+        progress.update_progress(0, 100, "处理流水线", "正在初始化…")
+        check_cancellation(cancel_flag, log, "初始化")
 
         # Device check — prefer CUDA > XPU > CPU
         gpu_available, yolo_device = check_gpu_availability(log_fn=log)
         motion_device = yolo_device if "cuda" in yolo_device else "cpu"
-        log(f"🎯 YOLO device: {yolo_device}")
+        log(f"🎯 YOLO 设备：{yolo_device}")
 
         # Get video info
         cap = cv2.VideoCapture(video_path)
@@ -532,9 +532,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
         cap.release()
         video_duration = get_video_duration(video_path, log_fn=log)  # robust; avoids cv2 VFR 2× misread
-        log(f"🎬 Video duration: {video_duration:.2f}s, FPS: {fps}, total frames: {total_frames}")
+        log(f"🎬 视频时长：{video_duration:.2f} 秒，FPS：{fps}，总帧数：{total_frames}")
 
-        check_cancellation(cancel_flag, log, "video info extraction")
+        check_cancellation(cancel_flag, log, "读取视频信息")
 
         # --- Time Range Processing ---
         USE_TIME_RANGE = gui_config.get("use_time_range", False)
@@ -1335,7 +1335,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                            cache_dir=gui_config.get("cache_dir", "./cache"),
                            params=analysis_params, log_fn=log)
         except Exception as _ce:
-            log(f"⚠️ Composition engine skipped: {_ce}")
+            log(f"⚠️ 已跳过构图引擎：{_ce}")
 
         print("Detections per second:", len(object_detections))
 
@@ -1743,9 +1743,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     processed_video_path, bank, AVOID_IDS, fps,
                     log_fn=log, cancel_flag=cancel_flag,
                 )
-                log(f"🚫 Avoid: located {len(forbidden_ranges)} forbidden range(s)")
+                log(f"🚫 排除：已定位 {len(forbidden_ranges)} 个禁用区间")
             except Exception as e:
-                log(f"⚠️ Avoid resolver unavailable — running without exclusion: {e}")
+                log(f"⚠️ 排除解析器不可用，将不应用人物排除：{e}")
                 forbidden_ranges, forbidden_boxes_by_frame = [], {}
         # ========== END AVOID LOCATE ==========
 
@@ -1756,7 +1756,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             from modules.segments.manual_avoid import parse_ranges, combine
             manual_avoid = parse_ranges(gui_config.get("avoid_manual_ranges", []))
         except Exception as e:
-            log(f"⚠️ Manual avoid parse failed — ignoring manual ranges: {e}")
+            log(f"⚠️ 手动排除区间解析失败，将忽略这些区间：{e}")
             manual_avoid = []
         if manual_avoid:
             forbidden_ranges = combine(forbidden_ranges, manual_avoid)
@@ -1967,10 +1967,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     face_score = face_to_signal(
                         best_by_second(face_seconds), video_duration,
                         labels=FACE_LABELS, points=FACE_POINTS)
-                    log(f"😐 Expressions: {int((face_score > 0).sum())} second(s) "
-                        f"matched {', '.join(FACE_LABELS)}")
+                    log(f"😐 表情：有 {int((face_score > 0).sum())} 秒 "
+                        f"匹配 {', '.join(FACE_LABELS)}")
             except Exception as _fe:
-                log(f"⚠️ Expression scan skipped: {_fe}")
+                log(f"⚠️ 已跳过表情扫描：{_fe}")
 
         # Report-only fallback. The scan above runs solely when expressions are
         # being *scored*, which is right for the cut — but it also meant that
@@ -2375,9 +2375,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         cancel_fn=(lambda: bool(cancel_flag
                                                 and cancel_flag.is_set())))
                 except Exception as _ne:
-                    log(f"⚠️ Narration skipped: {_ne}")
+                    log(f"⚠️ 已跳过讲述生成：{_ne}")
             except Exception as _re:
-                log(f"⚠️ Highlight report skipped: {_re}")
+                log(f"⚠️ 已跳过高光报告：{_re}")
 
         # ========== SAVE HIGHLIGHT SEGMENTS TO CACHE ==========
         if segments and use_cache and not (cancel_flag and cancel_flag.is_set()):
@@ -2768,15 +2768,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
 
                         music_root, music_ext = os.path.splitext(OUTPUT_FILE)
                         music_tmp = f"{music_root}_music{music_ext or '.mp4'}"
-                        log(f"🎵 Applying music: {os.path.basename(MUSIC_PATH)}")
+                        log(f"🎵 正在应用音乐：{os.path.basename(MUSIC_PATH)}")
                         apply_music(
                             OUTPUT_FILE, MUSIC_PATH, music_tmp,
                             mode=MUSIC_MODE, music_volume=MUSIC_VOLUME, log_fn=log,
                         )
                         os.replace(music_tmp, OUTPUT_FILE)
-                        log("🎵 Music applied to highlight")
+                        log("🎵 音乐已应用到高光视频")
                     except Exception as e:
-                        log(f"⚠️ Could not apply music (left highlight as-is): {e}")
+                        log(f"⚠️ 无法应用音乐，已保留原高光视频：{e}")
                         try:
                             if os.path.exists(music_tmp):
                                 os.remove(music_tmp)
@@ -2785,7 +2785,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         except RuntimeError:
             return None
         except Exception as e:
-            log(f"⚠️ Error during cutting/concatenation: {e}")
+            log(f"⚠️ 剪切/拼接过程中出错：{e}")
             raise
 
         # Create matching subtitles for highlight video OR full video

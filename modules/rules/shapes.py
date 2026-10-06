@@ -201,7 +201,7 @@ def relates(source: dict, region: dict, relation: str = INSIDE,
         return overlap_fraction(as_polygon(source), as_polygon(region)) >= min_overlap
     if relation == TOUCHES:
         return gap(as_polygon(source), as_polygon(region)) <= max_gap
-    raise ValueError(f"relation must be one of {RELATIONS}, not {relation!r}")
+    raise ValueError(f"关系类型必须为 {RELATIONS} 之一，不能是 {relation!r}")
 
 
 def simplify(points: Sequence, tolerance: float) -> list:

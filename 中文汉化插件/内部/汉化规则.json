@@ -34975,7 +34975,8 @@
       "before": "    s.add_argument(\"--skip-checks\", action=\"store_true\", dest=\"skip_checks\",",
       "after": "",
       "hunk": "@@ -677,34 +674,34 @@ def parser() -> argparse.ArgumentParser:",
-      "id": "modules/teach/cli.py#52"
+      "id": "modules/teach/cli.py#52",
+      "safe_duplicate": true
     },
     {
       "file": "modules/teach/cli.py",

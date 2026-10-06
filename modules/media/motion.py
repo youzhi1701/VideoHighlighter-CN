@@ -88,8 +88,8 @@ def normalise_motion(name: str) -> str:
     """Accept a motion name, or raise with the real ones."""
     key = (name or "none").strip().lower().replace("-", "_").replace(" ", "_")
     if key not in MOTIONS:
-        raise ValueError(f"unknown motion {name!r} — expected one of "
-                         f"{', '.join(MOTIONS)}")
+        raise ValueError(f"未知运动类型 {name!r}——应为 "
+                         f"{', '.join(MOTIONS)} 之一")
     return key
 
 

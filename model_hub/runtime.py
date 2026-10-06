@@ -102,7 +102,7 @@ class CommunityModelRunner:
     # ------------------------------------------------------------------ run
     def detect(self, frame_bgr: np.ndarray, threshold: float | None = None) -> list[Hit]:
         if self.m.task == "action_recognition":
-            raise ValueError("Use classify_clip() for action recognition models.")
+            raise ValueError("动作识别模型请使用 classify_clip()。")
         thr = self.m.confidence_threshold if threshold is None else threshold
 
         if self._detector is not None:
@@ -120,7 +120,7 @@ class CommunityModelRunner:
     def classify_clip(self, frames_bgr: Sequence[np.ndarray],
                       threshold: float | None = None) -> list[Hit]:
         if self.m.task != "action_recognition":
-            raise ValueError("classify_clip() is only for action recognition models.")
+            raise ValueError("classify_clip() 仅适用于动作识别模型。")
         need = self.m.input.frames
         if len(frames_bgr) != need:
             idx = np.linspace(0, len(frames_bgr) - 1, need).round().astype(int)

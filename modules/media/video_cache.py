@@ -278,13 +278,13 @@ class VideoAnalysisCache:
         enable_highlight_cache: bool = True,
         max_highlight_versions: int = 10,
     ):
-        print(f"\n🔧 [DEBUG] VideoAnalysisCache.__init__")
-        print(f"  - cache_dir: {cache_dir}")
-        print(f"  - enable_highlight_cache: {enable_highlight_cache}")
+        print("\n🔧 [调试] VideoAnalysisCache.__init__")
+        print(f"  - 缓存目录：{cache_dir}")
+        print(f"  - 是否启用高光缓存：{enable_highlight_cache}")
         
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
-        print(f"  ✓ Cache directory: {self.cache_dir.absolute()}")
+        print(f"  ✓ 缓存目录：{self.cache_dir.absolute()}")
 
         self.max_cache_size = int(max_cache_size_mb) * 1024 * 1024
         self.enable_highlight_cache = bool(enable_highlight_cache)
@@ -292,15 +292,15 @@ class VideoAnalysisCache:
         
         # Initialize base_cache as self reference
         self.base_cache = self
-        print(f"  ✓ Initialized base_cache = self")
+        print("  ✓ 已初始化 base_cache = self")
 
         self._lock = threading.RLock()
-        print(f"  ✓ Created thread lock")
+        print("  ✓ 已创建线程锁")
 
         # enhanced directory structure
         (self.cache_dir / "highlights").mkdir(exist_ok=True)
         (self.cache_dir / "temp").mkdir(exist_ok=True)
-        print(f"  ✓ Created subdirectories: highlights/, temp/")
+        print("  ✓ 已创建子目录：highlights/、temp/")
 
         self.stats = {
             "hits": 0,
@@ -309,15 +309,15 @@ class VideoAnalysisCache:
             "highlight_hits": 0,
             "highlight_misses": 0,
         }
-        print(f"  ✓ Initialized stats")
-        print(f"🔧 [DEBUG] __init__ complete\n")
+        print("  ✓ 已初始化统计信息")
+        print("🔧 [调试] __init__ 完成\n")
 
     # ---------- hashing / paths ----------
 
     def _get_video_hash(self, video_path: str) -> str:
         video_path = Path(video_path)
         if not video_path.exists():
-            raise FileNotFoundError(f"Video file not found: {video_path}")
+            raise FileNotFoundError(f"找不到视频文件：{video_path}")
 
         stat = video_path.stat()
         hash_string = f"{video_path.absolute()}_{stat.st_size}_{stat.st_mtime}"
@@ -387,7 +387,7 @@ class VideoAnalysisCache:
             atomic_write_json(cache_path, cache_data)
 
             self.stats["saves"] += 1
-            print(f"✓ Cache saved: {cache_path}")
+            print(f"✓ 缓存已保存：{cache_path}")
 
     def load(self, video_path: str, params: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
         """
@@ -413,12 +413,12 @@ class VideoAnalysisCache:
 
                 current_hash = self._get_video_hash(video_path)
                 if cache_data.get("video_hash") != current_hash:
-                    print("⚠ Cache is outdated (video file changed), will re-process")
+                    print("⚠ 缓存已过期（视频文件已变化），将重新处理")
                     self.stats["misses"] += 1
                     return None
 
                 if cache_data.get("cache_complete") is not True:
-                    print("⚠ Cache incomplete, will re-process")
+                    print("⚠ 缓存不完整，将重新处理")
                     self.stats["misses"] += 1
                     return None
 

@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "a4aedecf7ffdb564fe47b7b7021c1daae2813aee"
+    "head_commit": "5df9ab9f6fddbd416052247cd8221038eb5c42ce"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -35085,6 +35085,24 @@
       "after": "        return finish()",
       "hunk": "@@ -175,7 +175,7 @@ def _deadline():",
       "id": "modules/system/smoke_test.py#8"
+    },
+    {
+      "file": "llm/llm_chat_widget.py",
+      "source": "        print(f\"[t={timestamp:6.1f}s] {frame_dims} {b64_kb:5.0f}KB Δ={scene_diff:5.1f} | \"\n              f\"encode={t_encode*1000:5.0f}ms  llm={t_llm*1000:6.0f}ms  \"\n              f\"confirm={t_confirm*1000:6.0f}ms  TOTAL={t_total*1000:6.0f}ms \"\n              f\"({'YES' if starts_with_yes else 'no '})\")",
+      "target": "        print(f\"[时间={timestamp:6.1f}秒] {frame_dims} {b64_kb:5.0f}KB Δ={scene_diff:5.1f} | \"\n              f\"编码={t_encode*1000:5.0f}ms  大模型={t_llm*1000:6.0f}ms  \"\n              f\"确认={t_confirm*1000:6.0f}ms  总计={t_total*1000:6.0f}ms \"\n              f\"({'是' if starts_with_yes else '否'})\")",
+      "before": "        t_total = time.perf_counter() - frame_t0",
+      "after": "        return result",
+      "hunk": "@@ -251,10 +251,10 @@ def _vlm_analyze(self, timestamp, frame, stage_totals, scene_diff=-1.0):",
+      "id": "llm/llm_chat_widget.py#184"
+    },
+    {
+      "file": "llm/llm_chat_widget.py",
+      "source": "        print(f\"CLIP: top {len(top)} of {len(scored)} frames \"\n              f\"(scores {top[0][1]:.2f}..{top[-1][1]:.2f})\" if top else \"CLIP: no frames\")",
+      "target": "        print(f\"CLIP：从 {len(scored)} 帧中选出前 {len(top)} 帧 \"\n              f\"（评分 {top[0][1]:.2f}..{top[-1][1]:.2f}）\" if top else \"CLIP：没有可用帧\")",
+      "before": "        top = scored[:self.top_k]",
+      "after": "        results = []",
+      "hunk": "@@ -501,8 +501,8 @@ def _run_clip(self):",
+      "id": "llm/llm_chat_widget.py#185"
     }
   ]
 }

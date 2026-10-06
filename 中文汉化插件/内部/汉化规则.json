@@ -35108,8 +35108,7 @@
       "file": "modules/teach/cli.py",
       "source": "                   help=\"do not run `doctor` first\")",
       "target": "                   help=\"启动前不运行 `doctor` 环境检查\")",
-      "before": "    s.add_argument(\"--skip-checks\", action=\"store_true\", dest=\"skip_checks\",",
-      "after": "\n    sub.add_parser(\"doctor\", help=\"is this machine ready? (seconds; nothing is loaded)\")",
+      "before": "    s.add_argument(\"--train\", action=\"store_true\")\\n    s.add_argument(\"--skip-checks\", action=\"store_true\", dest=\"skip_checks\",",
       "hunk": "@@ -701,7 +701,7 @@ def parser() -> argparse.ArgumentParser:"
     },
     {
@@ -35117,8 +35116,7 @@
       "file": "modules/teach/cli.py",
       "source": "                   help=\"do not run `doctor` first\")",
       "target": "                   help=\"启动前不运行 `doctor` 环境检查\")",
-      "before": "    s.add_argument(\"--skip-checks\", action=\"store_true\", dest=\"skip_checks\",",
-      "after": "\n    s = sub.add_parser(\"by-class\", help=\"rebuild by-class/<video>/<class>/ folders \"",
+      "before": "                   help=\"leave out classes with fewer clips than this (0 keeps all)\")\\n    s.add_argument(\"--skip-checks\", action=\"store_true\", dest=\"skip_checks\",",
       "hunk": "@@ -768,7 +768,7 @@ def parser() -> argparse.ArgumentParser:"
     }
   ]

@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "4f6b266cdfa629c800480327870df00c1725e84a"
+    "head_commit": "252ac7ce8e62bc335bc36ad7b33278ae73638a05"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -7739,6 +7739,42 @@
       "hunk": "@@ -84,12 +84,12 @@ export async function pickScriptFile(): Promise<string | null> {"
     },
     {
+      "id": "llm/category_scoring.py#1",
+      "file": "llm/category_scoring.py",
+      "source": "        raise ValueError(\"tile_embeddings must be [n_regions, dim] with n_regions >= 1\")",
+      "target": "        raise ValueError(\"tile_embeddings 必须为 [n_regions, dim]，且 n_regions >= 1\")",
+      "before": "    if tile_embeddings.ndim != 2 or len(tile_embeddings) == 0:",
+      "after": "    if len(tiles) != len(tile_embeddings):",
+      "hunk": "@@ -177,10 +177,10 @@ def score_regions(tile_embeddings: np.ndarray, category: CustomCategory,"
+    },
+    {
+      "id": "llm/category_scoring.py#2",
+      "file": "llm/category_scoring.py",
+      "source": "            f\"got {len(tiles)} regions but {len(tile_embeddings)} embeddings\")",
+      "target": "            f\"区域数量为 {len(tiles)}，但嵌入数量为 {len(tile_embeddings)}\")",
+      "before": "        raise ValueError(",
+      "after": "",
+      "hunk": "@@ -177,10 +177,10 @@ def score_regions(tile_embeddings: np.ndarray, category: CustomCategory,"
+    },
+    {
+      "id": "llm/clip_categories.py#1",
+      "file": "llm/clip_categories.py",
+      "source": "        raise ValueError(\"Need at least one example frame.\")",
+      "target": "        raise ValueError(\"至少需要一个示例画面。\")",
+      "before": "    if not idx:",
+      "after": "    vector = l2_normalize(index.embeddings[idx].mean(axis=0))",
+      "hunk": "@@ -85,7 +85,7 @@ def learn_category(index: ClipFrameIndex, name: str,"
+    },
+    {
+      "id": "llm/clip_categories.py#2",
+      "file": "llm/clip_categories.py",
+      "source": "            print(f\"⚠️  Custom categories: unreadable store ({e}); starting empty\")",
+      "target": "            print(f\"⚠️  自定义类别：无法读取存储（{e}），将从空数据开始\")",
+      "before": "        except Exception as e:",
+      "after": "        return self",
+      "hunk": "@@ -170,7 +170,7 @@ class CategoryStore:"
+    },
+    {
       "id": "llm/clip_index.py#1",
       "file": "llm/clip_index.py",
       "source": "            raise RuntimeError(\"Call set_query() first.\")",
@@ -10901,6 +10937,15 @@
       "before": "        if query:",
       "after": null,
       "hunk": "@@ -546,5 +546,5 @@ Example:"
+    },
+    {
+      "id": "llm/ollama_host.py#1",
+      "file": "llm/ollama_host.py",
+      "source": "        print(f\"⚠️ Could not store the Ollama host: {exc}\")",
+      "target": "        print(f\"⚠️ 无法保存 Ollama 主机地址：{exc}\")",
+      "before": "    except Exception as exc:                            # pragma: no cover - defensive",
+      "after": "    return url",
+      "hunk": "@@ -140,7 +140,7 @@ def remember(value, settings=None) -> str:"
     },
     {
       "id": "main.py#1",
@@ -17394,6 +17439,24 @@
       "hunk": "@@ -249,9 +248,9 @@ def build_package(model_file: str | Path, manifest: Manifest, out_dir: str | Pat"
     },
     {
+      "id": "model_hub/runtime.py#1",
+      "file": "model_hub/runtime.py",
+      "source": "            raise ValueError(\"Use classify_clip() for action recognition models.\")",
+      "target": "            raise ValueError(\"动作识别模型请使用 classify_clip()。\")",
+      "before": "        if self.m.task == \"action_recognition\":",
+      "after": "        thr = self.m.confidence_threshold if threshold is None else threshold",
+      "hunk": "@@ -102,7 +102,7 @@ class CommunityModelRunner:"
+    },
+    {
+      "id": "model_hub/runtime.py#2",
+      "file": "model_hub/runtime.py",
+      "source": "            raise ValueError(\"classify_clip() is only for action recognition models.\")",
+      "target": "            raise ValueError(\"classify_clip() 仅适用于动作识别模型。\")",
+      "before": "        if self.m.task != \"action_recognition\":",
+      "after": "        need = self.m.input.frames",
+      "hunk": "@@ -120,7 +120,7 @@ class CommunityModelRunner:"
+    },
+    {
       "id": "model_training/action_head/features.py#1",
       "file": "model_training/action_head/features.py",
       "source": "                print(f\"⚠️ Feature cache {path} unreadable ({e}); encoding again\")",
@@ -18892,6 +18955,24 @@
       "hunk": "@@ -579,6 +579,6 @@ def apply_dataset_split(train_dataset, val_dataset, valid_actions,"
     },
     {
+      "id": "model_training/shared/detection.py#1",
+      "file": "model_training/shared/detection.py",
+      "source": "        print(f\"🧍 YOLOX people model loaded: {_yolox_people_model.model_xml}\")",
+      "target": "        print(f\"🧍 YOLOX 人物模型已加载：{_yolox_people_model.model_xml}\")",
+      "before": "        _yolox_people_model = YoloxPeopleDetector(model_xml=model_xml, device=device)",
+      "after": "    return _yolox_people_model",
+      "hunk": "@@ -22,7 +22,7 @@ def get_yolox_people_model(model_xml: str | None = None, device: str = \"GPU\"):"
+    },
+    {
+      "id": "model_training/shared/detection.py#2",
+      "file": "model_training/shared/detection.py",
+      "source": "        print(\"⚠️ Pose model unavailable — using person boxes for ROI.\")",
+      "target": "        print(\"⚠️ 姿态模型不可用——ROI 将改用人物检测框。\")",
+      "before": "    def __init__(self, model_name=None, conf_threshold=0.3, device=None):",
+      "after": "        self.model = None",
+      "hunk": "@@ -681,7 +681,7 @@ class PoseExtractor:"
+    },
+    {
       "id": "model_training/shared/feature_cache.py#1",
       "file": "model_training/shared/feature_cache.py",
       "source": "        print(f\"✅ Feature cache loaded: {cache_path}\")\n        print(f\"   {info['num_samples']} samples, feature dim = {info['feature_dim']}\")",
@@ -19144,6 +19225,24 @@
       "hunk": "@@ -189,7 +189,7 @@ def create_sample_visualizations(dataset, pose_extractor, num_samples=2,"
     },
     {
+      "id": "modules/audio/audio_peaks.py#1",
+      "file": "modules/audio/audio_peaks.py",
+      "source": "        print(f\"✓ Found {len(peaks)} audio peaks\")",
+      "target": "        print(f\"✓ 找到 {len(peaks)} 个音频峰值\")",
+      "before": "        ",
+      "after": "        return peaks",
+      "hunk": "@@ -213,11 +213,11 @@ def extract_audio_peaks(video_path, threshold_db=-20, chunk_duration_ms=10, merg"
+    },
+    {
+      "id": "modules/audio/audio_peaks.py#2",
+      "file": "modules/audio/audio_peaks.py",
+      "source": "        raise RuntimeError(f\"❌ ffmpeg failed: {e}\")",
+      "target": "        raise RuntimeError(f\"❌ ffmpeg 执行失败：{e}\")",
+      "before": "    except subprocess.CalledProcessError as e:",
+      "after": "    finally:",
+      "hunk": "@@ -213,11 +213,11 @@ def extract_audio_peaks(video_path, threshold_db=-20, chunk_duration_ms=10, merg"
+    },
+    {
       "id": "modules/audio/music_analysis.py#1",
       "file": "modules/audio/music_analysis.py",
       "source": "            raise RuntimeError(\"ffmpeg could not decode the music file:\\n\"",
@@ -19279,6 +19378,24 @@
       "before": "    except (TypeError, ValueError, KeyError) as exc:",
       "after": null,
       "hunk": "@@ -1163,4 +1163,4 @@ def load_analysis(path: str) -> MusicAnalysis:"
+    },
+    {
+      "id": "modules/audio/reaction_bursts.py#1",
+      "file": "modules/audio/reaction_bursts.py",
+      "source": "            raise RuntimeError(\"expected 16-bit mono PCM from ffmpeg\")",
+      "target": "            raise RuntimeError(\"预期从 ffmpeg 获得 16 位单声道 PCM 音频\")",
+      "before": "        if wf.getnchannels() != 1 or wf.getsampwidth() != 2:",
+      "after": "        total = max(1, wf.getnframes())",
+      "hunk": "@@ -159,7 +159,7 @@ def frame_features(wav_path: str,"
+    },
+    {
+      "id": "modules/audio/reaction_bursts.py#2",
+      "file": "modules/audio/reaction_bursts.py",
+      "source": "            raise RuntimeError(\"no audio track found in this video\")",
+      "target": "            raise RuntimeError(\"该视频中未找到音轨\")",
+      "before": "        if not len(rms):",
+      "after": "",
+      "hunk": "@@ -463,7 +463,7 @@ def analyse(video_path: str,"
     },
     {
       "id": "modules/audio/speaker_utils.py#1",
@@ -19929,6 +20046,24 @@
       "before": "    else:",
       "after": null,
       "hunk": "@@ -552,6 +552,6 @@ def create_highlight_subtitles(original_segments: List[Dict], highlight_segments"
+    },
+    {
+      "id": "modules/audio/vocal_signals.py#1",
+      "file": "modules/audio/vocal_signals.py",
+      "source": "            raise RuntimeError(\"expected 16-bit mono PCM from ffmpeg\")",
+      "target": "            raise RuntimeError(\"预期从 ffmpeg 获得 16 位单声道 PCM 音频\")",
+      "before": "        if wf.getnchannels() != 1 or wf.getsampwidth() != 2:",
+      "after": "        total = max(1, wf.getnframes())",
+      "hunk": "@@ -242,7 +242,7 @@ def per_second_features(wav_path: str,"
+    },
+    {
+      "id": "modules/audio/vocal_signals.py#2",
+      "file": "modules/audio/vocal_signals.py",
+      "source": "            raise RuntimeError(\"no audio track found in this video\")",
+      "target": "            raise RuntimeError(\"该视频中未找到音轨\")",
+      "before": "        if not len(raw[\"level\"]):",
+      "after": "",
+      "hunk": "@@ -516,7 +516,7 @@ def analyse(video_path: str,"
     },
     {
       "id": "modules/crop/actions.py#1",
@@ -20723,6 +20858,15 @@
       "before": "    if mean_count >= 2.3 and max_count >= 3 and final_count < 3 and combined_3_freq >= 0.10:",
       "after": "        final_count = 3",
       "hunk": "@@ -464,16 +464,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/pose.py#1",
+      "file": "modules/crop/pose.py",
+      "source": "        print(f\"⚠️ Pose estimation failed: {e}\")",
+      "target": "        print(f\"⚠️ 姿态估计失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return []",
+      "hunk": "@@ -100,7 +100,7 @@ def get_pose_keypoints_for_frame(rgb_frame, pose_model, conf=0.15, person_boxes="
     },
     {
       "id": "modules/crop/track.py#1",
@@ -21542,10 +21686,37 @@
       "id": "modules/media/ffmpeg_tools.py#1",
       "file": "modules/media/ffmpeg_tools.py",
       "source": "        log_fn(\"❌ No ffmpeg found. It normally comes with the app's requirements \"\n               \"(imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.\")",
-      "target": "        log_fn(\"❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装 \"\n               \"（imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.\")",
+      "target": "        log_fn(\"❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装\"\n               \"（imageio-ffmpeg）。请重新安装依赖，或将 ffmpeg 加入 PATH。\")",
       "before": "    if not src:",
       "after": "        return None",
       "hunk": "@@ -101,8 +101,8 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:"
+    },
+    {
+      "id": "modules/media/ffmpeg_tools.py#2",
+      "file": "modules/media/ffmpeg_tools.py",
+      "source": "            print(f\"⚠️ [ffmpeg_tools] could not stage {src} as {dst}: {e}\")",
+      "target": "            print(f\"⚠️ [ffmpeg_tools] 无法将 {src} 暂存为 {dst}：{e}\")",
+      "before": "        if not os.path.isfile(dst):",
+      "after": "            return None",
+      "hunk": "@@ -113,12 +113,12 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:"
+    },
+    {
+      "id": "modules/media/ffmpeg_tools.py#3",
+      "file": "modules/media/ffmpeg_tools.py",
+      "source": "        print(f\"⚠️ [ffmpeg_tools] kept the previously staged ffmpeg ({e})\")",
+      "target": "        print(f\"⚠️ [ffmpeg_tools] 已保留之前暂存的 ffmpeg（{e}）\")",
+      "before": "            return None",
+      "after": "",
+      "hunk": "@@ -113,12 +113,12 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:"
+    },
+    {
+      "id": "modules/media/ffmpeg_tools.py#4",
+      "file": "modules/media/ffmpeg_tools.py",
+      "source": "    print(f\"[ffmpeg_tools] no ffmpeg on PATH; using the bundled one as {dst}\")",
+      "target": "    print(f\"[ffmpeg_tools] PATH 中未找到 ffmpeg；将使用内置版本：{dst}\")",
+      "before": "    os.environ[\"PATH\"] = bin_dir + os.pathsep + os.environ.get(\"PATH\", \"\")",
+      "after": "    _ensured = dst",
+      "hunk": "@@ -113,12 +113,12 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:"
     },
     {
       "id": "modules/media/gopro_ingest.py#1",
@@ -21612,6 +21783,15 @@
     },
     {
       "id": "modules/media/motion.py#1",
+      "file": "modules/media/motion.py",
+      "source": "        raise ValueError(f\"unknown motion {name!r} — expected one of \"\n                         f\"{', '.join(MOTIONS)}\")",
+      "target": "        raise ValueError(f\"未知运动类型 {name!r}——应为 \"\n                         f\"{', '.join(MOTIONS)} 之一\")",
+      "before": "    if key not in MOTIONS:",
+      "after": "    return key",
+      "hunk": "@@ -88,8 +88,8 @@ def normalise_motion(name: str) -> str:"
+    },
+    {
+      "id": "modules/media/motion.py#2",
       "file": "modules/media/motion.py",
       "source": "        log_fn(f\"⚠️ Could not apply the {name} motion ({tail_line[0]}); \"\n               f\"the clip keeps its picture\")",
       "target": "        log_fn(f\"⚠️ 无法应用“{name}”运动效果（{tail_line[0]}）；\"\n               f\"将保留该片段的原始画面\")",
@@ -22383,6 +22563,24 @@
       "before": "    cache = VideoAnalysisCache()",
       "after": null,
       "hunk": "@@ -840,4 +839,4 @@ __all__ = ["
+    },
+    {
+      "id": "modules/media/video_cutter.py#1",
+      "file": "modules/media/video_cutter.py",
+      "source": "            print(f\"Clip saved: {output_path} [{enc}]\")",
+      "target": "            print(f\"片段已保存：{output_path} [{enc}]\")",
+      "before": "        if result.returncode == 0 and os.path.exists(output_path):",
+      "after": "            return",
+      "hunk": "@@ -36,13 +36,13 @@ def cut_video(video_path, start_time, end_time, output_path, mode=\"gpu\"):"
+    },
+    {
+      "id": "modules/media/video_cutter.py#2",
+      "file": "modules/media/video_cutter.py",
+      "source": "        print(f\"⚠️ cut_video {enc} failed (rc={result.returncode}): {first_line}; \"\n              + (\"trying next encoder\" if enc != \"libx264\" else \"no fallback left\"))\n    raise RuntimeError(f\"cut_video failed for {output_path}: {last_err}\")",
+      "target": "        print(f\"⚠️ cut_video 使用 {enc} 失败（返回码={result.returncode}）：{first_line}；\"\n              + (\"正在尝试下一个编码器\" if enc != \"libx264\" else \"已无备用编码器\"))\n    raise RuntimeError(f\"cut_video 处理 {output_path} 失败：{last_err}\")",
+      "before": "        first_line = last_err.splitlines()[0] if last_err.splitlines() else last_err",
+      "after": null,
+      "hunk": "@@ -36,13 +36,13 @@ def cut_video(video_path, start_time, end_time, output_path, mode=\"gpu\"):"
     },
     {
       "id": "modules/narration/chapter_story.py#1",
@@ -23573,6 +23771,15 @@
       "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
     },
     {
+      "id": "modules/report/highlight_advice.py#1",
+      "file": "modules/report/highlight_advice.py",
+      "source": "        print(f\"⚠️ Unmeasured claims skipped: {exc}\")",
+      "target": "        print(f\"⚠️ 已跳过无法测量的陈述：{exc}\")",
+      "before": "    except Exception as exc:                       # pragma: no cover - defensive",
+      "after": "    report[\"advice\"] = [f.as_dict() for f in",
+      "hunk": "@@ -731,7 +731,7 @@ def attach_advice(report: dict,"
+    },
+    {
       "id": "modules/report/highlight_prose.py#1",
       "file": "modules/report/highlight_prose.py",
       "source": "        sections.append((\"Summary\", summary))",
@@ -23715,6 +23922,24 @@
       "before": "    except Exception as exc:                       # pragma: no cover - defensive",
       "after": "        return []",
       "hunk": "@@ -2399,7 +2399,7 @@ def _clip_sections(entry: Mapping, readings: Mapping,"
+    },
+    {
+      "id": "modules/report/highlight_report.py#15",
+      "file": "modules/report/highlight_report.py",
+      "source": "    note = (f\"contributed {scored:.0f} points\" if scored\n            else \"contributed no points to this pick\")",
+      "target": "    note = (f\"为本次入选贡献 {scored:.0f} 分\" if scored\n            else \"没有为本次入选贡献分数\")",
+      "before": "    scored = entry[\"breakdown\"].get(\"audio\", 0.0)",
+      "after": "    caption = (",
+      "hunk": "@@ -2768,13 +2768,13 @@ def _segment_wave(report: Mapping, entry: Mapping) -> str:"
+    },
+    {
+      "id": "modules/report/highlight_report.py#16",
+      "file": "modules/report/highlight_report.py",
+      "source": "        f'<div class=\"wavelab\">Loudness through the clip — '\n        f'<b style=\"color:#5ac8b0\">|</b> marks {html.escape(entry[\"timestamp\"])}, '\n        f'the second that scored highest. Volume is drawn for context only and '\n        f'{note}, so a louder stretch elsewhere in the clip did not move it.</div>'",
+      "target": "        f'<div class=\"wavelab\">片段响度变化——'\n        f'<b style=\"color:#5ac8b0\">|</b> 标记 {html.escape(entry[\"timestamp\"])}，'\n        f'即得分最高的那一秒。音量曲线仅用于提供上下文，且{note}，'\n        f'因此片段中其他位置即使更响，也不会改变该入选点。</div>'",
+      "before": "    caption = (",
+      "after": "    )",
+      "hunk": "@@ -2768,13 +2768,13 @@ def _segment_wave(report: Mapping, entry: Mapping) -> str:"
     },
     {
       "id": "modules/report/sequence_findings.py#1",
@@ -23904,6 +24129,15 @@
       "before": "            json.dump(report, fh, indent=1)",
       "after": "    return 0",
       "hunk": "@@ -331,7 +322,7 @@ def main(argv=None):"
+    },
+    {
+      "id": "modules/report/uncovered_claims.py#1",
+      "file": "modules/report/uncovered_claims.py",
+      "source": "        print(f\"⚠️ Unmeasured claims skipped: {exc}\")",
+      "target": "        print(f\"⚠️ 已跳过无法测量的陈述：{exc}\")",
+      "before": "    except Exception as exc:                       # pragma: no cover - defensive",
+      "after": "        report[\"unmeasured\"] = {}",
+      "hunk": "@@ -265,6 +265,6 @@ def ensure(report: dict) -> dict:"
     },
     {
       "id": "modules/rules/compose_events.py#1",
@@ -24111,6 +24345,24 @@
       "before": "    except Exception as exc:",
       "after": "        return None",
       "hunk": "@@ -266,7 +266,7 @@ def propose(claim: str,"
+    },
+    {
+      "id": "modules/rules/rule_proposal.py#11",
+      "file": "modules/rules/rule_proposal.py",
+      "source": "        raise ValueError(f\"'{proposal.name}' is already in {rules_path}\")",
+      "target": "        raise ValueError(f\"“{proposal.name}”已存在于 {rules_path}\")",
+      "before": "    if any(str(e.get(\"name\") or \"\").lower() == proposal.name for e in existing):",
+      "after": "",
+      "hunk": "@@ -294,7 +294,7 @@ def apply(rules_path: str, proposal: Proposal,"
+    },
+    {
+      "id": "modules/rules/rule_proposal.py#12",
+      "file": "modules/rules/rule_proposal.py",
+      "source": "        print(f\"⚠️ Could not read pending checks: {exc}\")",
+      "target": "        print(f\"⚠️ 无法读取待检查项目：{exc}\")",
+      "before": "    except Exception as exc:                       # pragma: no cover - defensive",
+      "after": "        return []",
+      "hunk": "@@ -349,7 +349,7 @@ def load_checks(video_path: str) -> list:"
     },
     {
       "id": "modules/segments/auto_pipeline.py#1",
@@ -25220,6 +25472,33 @@
       "hunk": "@@ -59,10 +59,10 @@ def is_video_path(path: str) -> bool:"
     },
     {
+      "id": "modules/system/app_paths.py#1",
+      "file": "modules/system/app_paths.py",
+      "source": "        print(f\"⚠️ could not work from {target}: {e}\")",
+      "target": "        print(f\"⚠️ 无法使用工作目录 {target}：{e}\")",
+      "before": "    except OSError as e:",
+      "after": "    return os.getcwd()",
+      "hunk": "@@ -129,7 +129,7 @@ def use_writable_cwd() -> str:"
+    },
+    {
+      "id": "modules/system/app_paths.py#2",
+      "file": "modules/system/app_paths.py",
+      "source": "        print(f\"⚠️ could not read classes from {os.path.basename(path)}: {e}\")",
+      "target": "        print(f\"⚠️ 无法从 {os.path.basename(path)} 读取类别：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return []",
+      "hunk": "@@ -229,7 +229,7 @@ def object_model_names(path: str) -> list:"
+    },
+    {
+      "id": "modules/system/app_paths.py#3",
+      "file": "modules/system/app_paths.py",
+      "source": "        print(f\"⚠️ community model discovery failed: {e}\")",
+      "target": "        print(f\"⚠️ 社区模型发现失败：{e}\")",
+      "before": "    except Exception as e:  # noqa: BLE001 - a broken install must not hide the rest",
+      "after": "    return out",
+      "hunk": "@@ -301,7 +301,7 @@ def discover_object_models() -> list:"
+    },
+    {
       "id": "modules/system/compute_backend.py#1",
       "file": "modules/system/compute_backend.py",
       "source": "    (AUTO, \"Automatic — the fastest backend this machine has\"),\n    (CUDA, \"NVIDIA (CUDA)\"),\n    (INTEL, \"Intel (OpenVINO)\"),\n    (DIRECTML, \"AMD / any DX12 card (DirectML)\"),\n    (APPLE, \"Apple GPU (Core ML)\"),\n    (CPU, \"Processor only\"),",
@@ -25668,6 +25947,24 @@
       "before": "    print(f\"[encoder_select] {os.path.basename(video_path)} {w}x{h} \"",
       "after": "          f\"{', '.join(n for n, _ in chain)}\")",
       "hunk": "@@ -205,7 +205,7 @@ def encoder_chain(video_path, ffmpeg=None, mode=\"gpu\"):"
+    },
+    {
+      "id": "modules/system/https_certs.py#1",
+      "file": "modules/system/https_certs.py",
+      "source": "        print(f\"⚠️ certifi CA bundle unusable ({type(e).__name__}: {e})\")",
+      "target": "        print(f\"⚠️ certifi CA 证书包不可用（{type(e).__name__}：{e}）\")",
+      "before": "    except Exception as e:  # noqa: BLE001 - a broken bundle must not stop a launch",
+      "after": "        return None",
+      "hunk": "@@ -47,7 +47,7 @@ def context():"
+    },
+    {
+      "id": "modules/system/ort_coreml.py#1",
+      "file": "modules/system/ort_coreml.py",
+      "source": "        print(f\"⚠️ {UNITS_ENV}={raw!r} is not one of \"\n              f\"{', '.join(sorted(set(UNITS) - {'auto', 'metal', 'npu', 'neural'}))}\"\n              f\" — using {DEFAULT_UNITS}\")",
+      "target": "        print(f\"⚠️ {UNITS_ENV}={raw!r} 不在允许值 \"\n              f\"{', '.join(sorted(set(UNITS) - {'auto', 'metal', 'npu', 'neural'}))} 中，\"\n              f\"将使用 {DEFAULT_UNITS}\")",
+      "before": "    if units is None:",
+      "after": "        return DEFAULT_UNITS",
+      "hunk": "@@ -73,9 +73,9 @@ def compute_units() -> str:"
     },
     {
       "id": "modules/system/ort_directml.py#1",
@@ -26897,6 +27194,15 @@
       "hunk": "@@ -154,4 +152,4 @@ def require(root: str, run_checks: Optional[Callable] = None) -> None:"
     },
     {
+      "id": "modules/teach/embed.py#1",
+      "file": "modules/teach/embed.py",
+      "source": "                raise RuntimeError(\"the frame encoder is not installed or cannot run here\")",
+      "target": "                raise RuntimeError(\"帧编码器未安装或无法在当前环境运行\")",
+      "before": "            if encoder is None:",
+      "after": "            self._encoder = encoder",
+      "hunk": "@@ -82,7 +82,7 @@ class FrameEncoderBackend:"
+    },
+    {
       "id": "modules/teach/find.py#1",
       "file": "modules/teach/find.py",
       "source": "        raise ValueError(\"find is for object projects\")",
@@ -26931,6 +27237,15 @@
       "before": "    if result[\"seeds\"] > 1:",
       "after": null,
       "hunk": "@@ -33,10 +33,9 @@ def teach(video: str, moment: float, roi, name: str) -> dict:"
+    },
+    {
+      "id": "modules/teach/linear.py#1",
+      "file": "modules/teach/linear.py",
+      "source": "        raise ValueError(\"a linear layer needs two classes or more\")",
+      "target": "        raise ValueError(\"线性分类层至少需要两个类别\")",
+      "before": "    if len(classes) < 2:",
+      "after": "    index = {c: i for i, c in enumerate(classes)}",
+      "hunk": "@@ -53,7 +53,7 @@ def fit(x, labels: Sequence[str], *, l2: float = L2, steps: int = STEPS,"
     },
     {
       "id": "modules/teach/naming.py#1",
@@ -29907,6 +30222,15 @@
       "hunk": "@@ -417,7 +417,7 @@ def build_object_detector(mode: str = \"coco\", custom_model_xml: str = \"\","
     },
     {
+      "id": "modules/vision/detection_backend.py#8",
+      "file": "modules/vision/detection_backend.py",
+      "source": "        \"No YOLOX IR found. Run: python tools/get_yolox_model.py\"",
+      "target": "        \"未找到 YOLOX IR 模型。请运行：python tools/get_yolox_model.py\"",
+      "before": "      raise FileNotFoundError(",
+      "after": "      )",
+      "hunk": "@@ -588,7 +588,7 @@ class YoloxPeopleDetector:"
+    },
+    {
       "id": "modules/vision/face_emotions.py#1",
       "file": "modules/vision/face_emotions.py",
       "source": "            print(f\"ℹ Expression classifier not installed ({self.model_path}); \"\n                  \"built-in expression classes are unavailable. Taught face \"\n                  \"categories are unaffected.\")",
@@ -30292,6 +30616,24 @@
       "before": "",
       "after": "    model = ov.convert_model(str(onnx_path))",
       "hunk": "@@ -110,7 +110,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non"
+    },
+    {
+      "id": "modules/vision/tracking_backend.py#1",
+      "file": "modules/vision/tracking_backend.py",
+      "source": "                \"No YOLOX IR found for tracking. Run: python tools/get_yolox_model.py\"",
+      "target": "                \"跟踪功能未找到 YOLOX IR 模型。请运行：python tools/get_yolox_model.py\"",
+      "before": "            raise FileNotFoundError(",
+      "after": "            )",
+      "hunk": "@@ -127,7 +127,7 @@ class YoloxPersonTracker:"
+    },
+    {
+      "id": "modules/vision/tracking_backend.py#2",
+      "file": "modules/vision/tracking_backend.py",
+      "source": "            raise FileNotFoundError(f\"Cannot open video: {video_path}\")",
+      "target": "            raise FileNotFoundError(f\"无法打开视频：{video_path}\")",
+      "before": "        if not cap.isOpened():",
+      "after": "",
+      "hunk": "@@ -147,7 +147,7 @@ class YoloxPersonTracker:"
     },
     {
       "id": "modules/vision/training_preview.py#1",
@@ -31014,6 +31356,42 @@
       "before": "  begin",
       "after": "    Exit;",
       "hunk": "@@ -327,9 +330,9 @@ begin"
+    },
+    {
+      "id": "packaging/packs/rthook_packs.py#1",
+      "file": "packaging/packs/rthook_packs.py",
+      "source": "                print(f\"[packs] {target}: updated\")",
+      "target": "                print(f\"[资源包] {target}：已更新\")",
+      "before": "                os.rename(pending, os.path.join(root, target))",
+      "after": "            except OSError:",
+      "hunk": "@@ -111,7 +111,7 @@ def _maintain(roots):"
+    },
+    {
+      "id": "packaging/packs/rthook_packs.py#2",
+      "file": "packaging/packs/rthook_packs.py",
+      "source": "                    print(f\"[packs] {name}: removed, superseded by {replacement}\")",
+      "target": "                    print(f\"[资源包] {name}：已移除，由 {replacement} 替代\")",
+      "before": "                if _to_trash(root, name):",
+      "after": "",
+      "hunk": "@@ -128,7 +128,7 @@ def _maintain(roots):"
+    },
+    {
+      "id": "packaging/packs/rthook_packs.py#3",
+      "file": "packaging/packs/rthook_packs.py",
+      "source": "            print(f\"[packs] maintenance skipped: {exc}\")",
+      "target": "            print(f\"[资源包] 已跳过维护：{exc}\")",
+      "before": "        except Exception as exc:  # never stop the app from starting over this",
+      "after": "    for _priority, name, site in _chosen_packs(roots):",
+      "hunk": "@@ -170,7 +170,7 @@ def _install_packs():"
+    },
+    {
+      "id": "packaging/packs/rthook_packs.py#4",
+      "file": "packaging/packs/rthook_packs.py",
+      "source": "        print(f\"[packs] {name}\")",
+      "target": "        print(f\"[资源包] 已加载 {name}\")",
+      "before": "                pass",
+      "after": "",
+      "hunk": "@@ -181,7 +181,7 @@ def _install_packs():"
     },
     {
       "id": "pipeline.py#1",
@@ -38127,6 +38505,51 @@
       "hunk": "@@ -238,8 +236,8 @@ def main(argv=None) -> int:"
     },
     {
+      "id": "tools/check_local_imports.py#1",
+      "file": "tools/check_local_imports.py",
+      "source": "        raise GitError(f\"not a git repository: {result.stderr.strip()}\")",
+      "target": "        raise GitError(f\"不是 Git 仓库：{result.stderr.strip()}\")",
+      "before": "    if result.returncode != 0:",
+      "after": "    return Path(result.stdout.strip())",
+      "hunk": "@@ -394,7 +394,7 @@ def run_check(repo_root: Path) -> list[Violation]:"
+    },
+    {
+      "id": "tools/check_local_imports.py#2",
+      "file": "tools/check_local_imports.py",
+      "source": "        print(f\"check_local_imports: {exc}\")",
+      "target": "        print(f\"本地导入检查：{exc}\")",
+      "before": "    except GitError as exc:",
+      "after": "        return 1",
+      "hunk": "@@ -403,16 +403,16 @@ def main() -> int:"
+    },
+    {
+      "id": "tools/check_local_imports.py#3",
+      "file": "tools/check_local_imports.py",
+      "source": "        print(\"check_local_imports: no violations found.\")",
+      "target": "        print(\"本地导入检查：未发现违规项。\")",
+      "before": "    if not violations:",
+      "after": "        return 0",
+      "hunk": "@@ -403,16 +403,16 @@ def main() -> int:"
+    },
+    {
+      "id": "tools/check_local_imports.py#4",
+      "file": "tools/check_local_imports.py",
+      "source": "    print(f\"check_local_imports: {len(violations)} violation(s) found.\")",
+      "target": "    print(f\"本地导入检查：发现 {len(violations)} 个违规项。\")",
+      "before": "        print(str(violation))",
+      "after": "    return 1",
+      "hunk": "@@ -403,16 +403,16 @@ def main() -> int:"
+    },
+    {
+      "id": "tools/compare_outliners.py#1",
+      "file": "tools/compare_outliners.py",
+      "source": "        print(f\"No {args.cls!r} detections cached for this video; run object detection first.\")",
+      "target": "        print(f\"该视频没有缓存 {args.cls!r} 的检测结果；请先运行对象检测。\")",
+      "before": "    if not picks:",
+      "after": "        return 1",
+      "hunk": "@@ -129,7 +129,7 @@ def main(argv=None) -> int:"
+    },
+    {
       "id": "tools/convert_yolo_to_coco.py#1",
       "file": "tools/convert_yolo_to_coco.py",
       "source": "        raise FileNotFoundError(f\"Missing image dir: {img_dir}\")",
@@ -38206,6 +38629,24 @@
       "before": "        os.replace(tmp[:-4] + ext, xml[:-4] + ext)",
       "after": "    return 0",
       "hunk": "@@ -61,7 +61,7 @@ def main() -> int:"
+    },
+    {
+      "id": "tools/get_rtmpose_model.py#1",
+      "file": "tools/get_rtmpose_model.py",
+      "source": "    print(f\"\\nDone. IR files in: {rtmpose_models.MODEL_DIR}\")\n    print(\"The app discovers these automatically \"\n          \"(modules.vision.pose_backend.find_default_rtmpose_ir).\")",
+      "target": "    print(f\"\\n完成。IR 文件位于：{rtmpose_models.MODEL_DIR}\")\n    print(\"应用会自动发现这些模型\"\n          \"（modules.vision.pose_backend.find_default_rtmpose_ir）。\")",
+      "before": "        return 1",
+      "after": "    return 0",
+      "hunk": "@@ -26,9 +26,9 @@ def main(argv: list[str]) -> int:"
+    },
+    {
+      "id": "tools/get_yolox_model.py#1",
+      "file": "tools/get_yolox_model.py",
+      "source": "    print(f\"\\nDone. IR files in: {yolox_models.MODEL_DIR}\")\n    print(\"The app discovers these automatically \"\n          \"(modules.vision.detection_backend.find_default_yolox_ir).\")",
+      "target": "    print(f\"\\n完成。IR 文件位于：{yolox_models.MODEL_DIR}\")\n    print(\"应用会自动发现这些模型\"\n          \"（modules.vision.detection_backend.find_default_yolox_ir）。\")",
+      "before": "        return 1",
+      "after": "    return 0",
+      "hunk": "@@ -26,9 +26,9 @@ def main(argv: list[str]) -> int:"
     },
     {
       "id": "tools/labeler.py#1",
@@ -39672,6 +40113,33 @@
       "hunk": "@@ -2345,17 +2345,17 @@ if __name__ == \"__main__\":"
     },
     {
+      "id": "tools/make_splash.py#1",
+      "file": "tools/make_splash.py",
+      "source": "        print(f\"❌ Missing source artwork: {SOURCE}\")",
+      "target": "        print(f\"❌ 缺少源图文件：{SOURCE}\")",
+      "before": "    if not os.path.exists(SOURCE):",
+      "after": "        return 1",
+      "hunk": "@@ -105,7 +105,7 @@ def build() -> Image.Image:"
+    },
+    {
+      "id": "tools/make_splash.py#2",
+      "file": "tools/make_splash.py",
+      "source": "        print(\"❌ Image contains #ff00ff, which Windows treats as transparent\")",
+      "target": "        print(\"❌ 图像包含 #ff00ff，Windows 会将该颜色视为透明色\")",
+      "before": "    if any(c == (255, 0, 255) for _n, c in (img.getcolors(W * H) or [])):",
+      "after": "        return 1",
+      "hunk": "@@ -113,11 +113,11 @@ def main() -> int:"
+    },
+    {
+      "id": "tools/make_splash.py#3",
+      "file": "tools/make_splash.py",
+      "source": "    print(f\"✅ Wrote {TARGET} ({img.width}x{img.height})\")",
+      "target": "    print(f\"✅ 已写入 {TARGET}（{img.width}x{img.height}）\")",
+      "before": "    img.save(TARGET, \"PNG\")",
+      "after": "    return 0",
+      "hunk": "@@ -113,11 +113,11 @@ def main() -> int:"
+    },
+    {
       "id": "tools/probe_player.py#1",
       "file": "tools/probe_player.py",
       "source": "        print(\"Playwright is not installed:  pip install playwright\"\n              \"  &&  playwright install chromium\", file=sys.stderr)",
@@ -40291,6 +40759,15 @@
       "before": "    p.add_argument(\"--manifest\", required=True)",
       "after": "    p.add_argument(\"--notes\")",
       "hunk": "@@ -501,57 +501,57 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/release_notes.py#1",
+      "file": "tools/release_notes.py",
+      "source": "    parser.add_argument(\"--since\", help=\"previous release ref (default: nearest tag)\")\n    parser.add_argument(\"--until\", default=\"HEAD\", help=\"ref being released\")\n    parser.add_argument(\"--out\", help=\"write here instead of stdout\")",
+      "target": "    parser.add_argument(\"--since\", help=\"上一发行版引用（默认：最近的标签）\")\n    parser.add_argument(\"--until\", default=\"HEAD\", help=\"本次要发布的引用\")\n    parser.add_argument(\"--out\", help=\"写入此文件，而不是输出到标准输出\")",
+      "before": "    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])",
+      "after": "    args = parser.parse_args(list(argv) if argv is not None else None)",
+      "hunk": "@@ -159,9 +159,9 @@ def collect(since: Optional[str], until: str) -> list[Commit]:"
     },
     {
       "id": "tools/serve_report.py#1",
@@ -44671,6 +45148,15 @@
     {
       "id": "video_ai_editor/signal_timeline.py#53",
       "file": "video_ai_editor/signal_timeline.py",
+      "source": "            msg = (\"(no visual search results — search via the Visual Search \"\n                   \"panel or ask the LLM Assistant)\") if not self.visual_findings \\\n                  else \"(visual findings filtered out)\"",
+      "target": "            msg = (\"（暂无视觉搜索结果——请通过“视觉搜索”面板搜索，\"\n                   \"或询问大模型助手）\") if not self.visual_findings \\\n                  else \"（视觉搜索结果已被筛选条件过滤）\"",
+      "before": "        if not query_groups:",
+      "after": "            text = self.addText(msg, QFont(\"Arial\", 9))",
+      "hunk": "@@ -2378,9 +2377,9 @@ class SignalTimelineScene(QGraphicsScene):"
+    },
+    {
+      "id": "video_ai_editor/signal_timeline.py#54",
+      "file": "video_ai_editor/signal_timeline.py",
       "source": "        act_one = menu.addAction(\"➕  Add this clip to edit timeline\")",
       "target": "        act_one = menu.addAction(\"➕  将此片段加入剪辑时间线\")",
       "before": "        menu = QMenu(self)",
@@ -44678,7 +45164,7 @@
       "hunk": "@@ -2713,18 +2712,18 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#54",
+      "id": "video_ai_editor/signal_timeline.py#55",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            act_all = menu.addAction(f\"➕  Add all “{group_name}” clips  ({len(row_clips)})\")",
       "target": "            act_all = menu.addAction(f\"➕  将“{group_name}”全部片段加入剪辑时间线（{len(row_clips)}）\")",
@@ -44687,7 +45173,7 @@
       "hunk": "@@ -2713,18 +2712,18 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#55",
+      "id": "video_ai_editor/signal_timeline.py#56",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            act_swap = menu.addAction(\"🔀  Swap for the next best moment\")\n            act_undo = menu.addAction(\"↩  Undo last swap\")",
       "target": "            act_swap = menu.addAction(\"🔀  替换为下一个最佳时刻\")\n            act_undo = menu.addAction(\"↩  撤销上次替换\")",
@@ -44696,7 +45182,7 @@
       "hunk": "@@ -2713,18 +2712,18 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#56",
+      "id": "video_ai_editor/signal_timeline.py#57",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        act_avoid = menu.addAction(\"🚫  Avoid this range in highlights\")\n        act_clear = menu.addAction(\"Clear all avoid ranges\")",
       "target": "        act_avoid = menu.addAction(\"🚫  从高光中排除此区间\")\n        act_clear = menu.addAction(\"清空全部排除区间\")",
@@ -44705,7 +45191,7 @@
       "hunk": "@@ -2742,8 +2741,8 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#57",
+      "id": "video_ai_editor/signal_timeline.py#58",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        act_remove = menu.addAction(\"🗑  Remove this avoid range\")\n        act_clear = menu.addAction(\"Clear all avoid ranges\")",
       "target": "        act_remove = menu.addAction(\"🗑  移除此排除区间\")\n        act_clear = menu.addAction(\"清空全部排除区间\")",
@@ -44714,7 +45200,7 @@
       "hunk": "@@ -2790,8 +2789,8 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#58",
+      "id": "video_ai_editor/signal_timeline.py#59",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                                f\"Selected {duration:.2f}s  \"\n                                f\"({t0:.2f}s → {t1:.2f}s)  \"\n                                \"— drag selection into edit timeline to add\",",
       "target": "                                f\"已选择 {duration:.2f} 秒  \"\n                                f\"（{t0:.2f} 秒 → {t1:.2f} 秒）  \"\n                                \"— 可将所选区间拖入编辑时间线以添加片段\",",
@@ -44723,7 +45209,7 @@
       "hunk": "@@ -3042,9 +3041,9 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#59",
+      "id": "video_ai_editor/signal_timeline.py#60",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            'label':      f\"Range {start_time:.2f}s–{end_time:.2f}s\",",
       "target": "            'label':      f\"范围 {start_time:.2f}秒–{end_time:.2f}秒\",",
@@ -44824,6 +45310,15 @@
     {
       "id": "video_ai_editor/timeline_bars.py#1",
       "file": "video_ai_editor/timeline_bars.py",
+      "source": "            print(f\"⚠️ Drag serialize failed, skipping drag: {e}\")",
+      "target": "            print(f\"⚠️ 拖拽数据序列化失败，已取消本次拖拽：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "            self.mouse_press_pos = None",
+      "hunk": "@@ -153,7 +153,7 @@ class DraggableTimelineBar(QGraphicsRectItem):"
+    },
+    {
+      "id": "video_ai_editor/timeline_bars.py#2",
+      "file": "video_ai_editor/timeline_bars.py",
       "source": "        self.setToolTip(f\"Drag to place • Right-click to add (this / all in row)\\n{self.bar.label}\\n{self.bar.start_time:.1f}s - {self.bar.end_time:.1f}s\\nDuration: {duration:.1f}s\")",
       "target": "        self.setToolTip(f\"拖动放置 • 右键添加（当前 / 本行全部）\\n{self.bar.label}\\n{self.bar.start_time:.1f}秒 - {self.bar.end_time:.1f}秒\\n时长：{duration:.1f}秒\")",
       "before": "        duration = self.bar.end_time - self.bar.start_time",
@@ -44833,6 +45328,24 @@
     {
       "id": "video_ai_editor/timeline_export.py#1",
       "file": "video_ai_editor/timeline_export.py",
+      "source": "                label = \"Face\"",
+      "target": "                label = \"人脸\"",
+      "before": "                key = (\"track\", track)",
+      "after": "            groups.setdefault(key, []).append(when)",
+      "hunk": "@@ -424,7 +424,7 @@ def _face_spans(cache: dict) -> list[Span]:"
+    },
+    {
+      "id": "video_ai_editor/timeline_export.py#2",
+      "file": "video_ai_editor/timeline_export.py",
+      "source": "    \"Clip\", \"Start (s)\", \"End (s)\", \"Duration (s)\", \"Frame in\", \"Frame out\",",
+      "target": "    \"片段\", \"开始时间（秒）\", \"结束时间（秒）\", \"时长（秒）\", \"起始帧\", \"结束帧\",",
+      "before": "_CSV_COLUMNS = (",
+      "after": ")",
+      "hunk": "@@ -811,7 +811,7 @@ def fcpxml_text(sequence: Sequence) -> tuple[str, int]:"
+    },
+    {
+      "id": "video_ai_editor/timeline_export.py#3",
+      "file": "video_ai_editor/timeline_export.py",
       "source": "    mark = \"marker\" if markers == 1 else \"markers\"",
       "target": "    mark = \"标记\" if markers == 1 else \"标记\"",
       "before": "    \"\"\"The info line under the format combo.\"\"\"",
@@ -44840,7 +45353,7 @@
       "hunk": "@@ -1016,15 +1016,15 @@ def count_markers(sequence: Sequence) -> int:"
     },
     {
-      "id": "video_ai_editor/timeline_export.py#2",
+      "id": "video_ai_editor/timeline_export.py#4",
       "file": "video_ai_editor/timeline_export.py",
       "source": "        f\"Exporting {clip_count} clips, total duration: {duration:.1f}s. \"\n        f\"{timebase.describe()}. {markers} {mark}.\"",
       "target": "        f\"正在导出 {clip_count} 个片段，总时长：{duration:.1f} 秒。\"\n        f\"{timebase.describe()}。{markers} 个{mark}。\"",
@@ -44849,7 +45362,7 @@
       "hunk": "@@ -1016,15 +1016,15 @@ def count_markers(sequence: Sequence) -> int:"
     },
     {
-      "id": "video_ai_editor/timeline_export.py#3",
+      "id": "video_ai_editor/timeline_export.py#5",
       "file": "video_ai_editor/timeline_export.py",
       "source": "            f\" FCPXML keeps every frame. \"\n            f\"The EDL is counted at {timebase.edl_fps} fps.\"",
       "target": "            f\" FCPXML 会保留每一帧。\"\n            f\"EDL 按 {timebase.edl_fps} fps 计数。\"",

@@ -38,6 +38,13 @@
       ]
     },
     {
+      "source": "'{proposal.name}' is already in {rules_path}",
+      "target": "“{proposal.name}”已存在于 {rules_path}",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
       "source": "(+{rec['since_previous_s']:g}s)",
       "target": "（距上一个 +{rec['since_previous_s']:g} 秒）",
       "files": [
@@ -241,6 +248,13 @@
       ]
     },
     {
+      "source": "(imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.",
+      "target": "（imageio-ffmpeg）。请重新安装依赖，或将 ffmpeg 加入 PATH。",
+      "files": [
+        "modules/media/ffmpeg_tools.py"
+      ]
+    },
+    {
       "source": "(is --group finding the video in the file names?)",
       "target": "（请检查 --group 是否能从文件名中正确识别源视频）",
       "files": [
@@ -350,6 +364,13 @@
       "target": "（未安装 torch：{e}——仅检查路由，不会运行张量）",
       "files": [
         "tools/simulate_directml.py"
+      ]
+    },
+    {
+      "source": "(no visual search results — search via the Visual Search",
+      "target": "（暂无视觉搜索结果——请通过“视觉搜索”面板搜索，",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -596,6 +617,13 @@
       "target": "（使用当前间隔：{self.search_interval.value()} 秒）",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "(visual findings filtered out)",
+      "target": "（视觉搜索结果已被筛选条件过滤）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -1699,6 +1727,13 @@
       ]
     },
     {
+      "source": "<b style=\"color:#5ac8b0\">|</b> marks {html.escape(entry[\"timestamp\"])},",
+      "target": "<b style=\"color:#5ac8b0\">|</b> 标记 {html.escape(entry[\"timestamp\"])}，",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "<b>Add a model</b>",
       "target": "<b>添加模型</b>",
       "files": [
@@ -1787,6 +1822,13 @@
       "target": "“状态”功能查看下一步。",
       "files": [
         "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "<div class=\"wavelab\">Loudness through the clip —",
+      "target": "<div class=\"wavelab\">片段响度变化——",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -1944,6 +1986,13 @@
       ]
     },
     {
+      "source": "[ffmpeg_tools] no ffmpeg on PATH; using the bundled one as {dst}",
+      "target": "[ffmpeg_tools] PATH 中未找到 ffmpeg；将使用内置版本：{dst}",
+      "files": [
+        "modules/media/ffmpeg_tools.py"
+      ]
+    },
+    {
       "source": "[labels] dataset at {out_dir}:",
       "target": "[标签] 数据集已生成于 {out_dir}：",
       "files": [
@@ -1986,6 +2035,13 @@
       ]
     },
     {
+      "source": "[packs] maintenance skipped: {exc}",
+      "target": "[资源包] 已跳过维护：{exc}",
+      "files": [
+        "packaging/packs/rthook_packs.py"
+      ]
+    },
+    {
       "source": "[packs] skipping a malformed lock entry ({exc}): {row!r}",
       "target": "[资源包] 已跳过格式错误的锁定条目（{exc}）：{row!r}",
       "files": [
@@ -1997,6 +2053,27 @@
       "target": "[资源包] 无法读取 {path}：{exc}",
       "files": [
         "modules/packs/pack_manager.py"
+      ]
+    },
+    {
+      "source": "[packs] {name}",
+      "target": "[资源包] 已加载 {name}",
+      "files": [
+        "packaging/packs/rthook_packs.py"
+      ]
+    },
+    {
+      "source": "[packs] {name}: removed, superseded by {replacement}",
+      "target": "[资源包] {name}：已移除，由 {replacement} 替代",
+      "files": [
+        "packaging/packs/rthook_packs.py"
+      ]
+    },
+    {
+      "source": "[packs] {target}: updated",
+      "target": "[资源包] {target}：已更新",
+      "files": [
+        "packaging/packs/rthook_packs.py"
       ]
     },
     {
@@ -2480,6 +2557,20 @@
       "target": "\\n调试：从 {num_actions} 种动作中选择了 {len(selected_sequences)} 个序列",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "\\nDone. IR files in: {rtmpose_models.MODEL_DIR}",
+      "target": "\\n完成。IR 文件位于：{rtmpose_models.MODEL_DIR}",
+      "files": [
+        "tools/get_rtmpose_model.py"
+      ]
+    },
+    {
+      "source": "\\nDone. IR files in: {yolox_models.MODEL_DIR}",
+      "target": "\\n完成。IR 文件位于：{yolox_models.MODEL_DIR}",
+      "files": [
+        "tools/get_yolox_model.py"
       ]
     },
     {
@@ -3645,6 +3736,13 @@
       "target": "当前为硬边，与 FFmpeg 默认绘制效果一致。",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "a linear layer needs two classes or more",
+      "target": "线性分类层至少需要两个类别",
+      "files": [
+        "modules/teach/linear.py"
       ]
     },
     {
@@ -5722,6 +5820,13 @@
       ]
     },
     {
+      "source": "Cannot open video: {video_path}",
+      "target": "无法打开视频：{video_path}",
+      "files": [
+        "modules/vision/tracking_backend.py"
+      ]
+    },
+    {
       "source": "cannot read cut list {os.path.basename(path)}:",
       "target": "无法读取剪辑列表 {os.path.basename(path)}：",
       "files": [
@@ -5887,6 +5992,27 @@
       "target": "检查 {len(labels.pending())} 个候选检测框。",
       "files": [
         "modules/teach/status.py"
+      ]
+    },
+    {
+      "source": "check_local_imports: no violations found.",
+      "target": "本地导入检查：未发现违规项。",
+      "files": [
+        "tools/check_local_imports.py"
+      ]
+    },
+    {
+      "source": "check_local_imports: {exc}",
+      "target": "本地导入检查：{exc}",
+      "files": [
+        "tools/check_local_imports.py"
+      ]
+    },
+    {
+      "source": "check_local_imports: {len(violations)} violation(s) found.",
+      "target": "本地导入检查：发现 {len(violations)} 个违规项。",
+      "files": [
+        "tools/check_local_imports.py"
       ]
     },
     {
@@ -6088,6 +6214,13 @@
       ]
     },
     {
+      "source": "classify_clip() is only for action recognition models.",
+      "target": "classify_clip() 仅适用于动作识别模型。",
+      "files": [
+        "model_hub/runtime.py"
+      ]
+    },
+    {
       "source": "Clear",
       "target": "清空",
       "files": [
@@ -6222,6 +6355,13 @@
       ]
     },
     {
+      "source": "Clip",
+      "target": "片段",
+      "files": [
+        "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
       "source": "CLIP + LLM",
       "target": "CLIP + 大模型",
       "files": [
@@ -6303,6 +6443,13 @@
       "target": "CLIP 采样间隔（秒）",
       "files": [
         "modules/segments/chapters.py"
+      ]
+    },
+    {
+      "source": "Clip saved: {output_path} [{enc}]",
+      "target": "片段已保存：{output_path} [{enc}]",
+      "files": [
+        "modules/media/video_cutter.py"
       ]
     },
     {
@@ -6916,6 +7063,20 @@
       "target": "继续，包括训练（可能需要较长时间）",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "contributed no points to this pick",
+      "target": "没有为本次入选贡献分数",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
+      "source": "contributed {scored:.0f} points",
+      "target": "为本次入选贡献 {scored:.0f} 分",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -7713,6 +7874,13 @@
       "target": "切分 {s}：{i}/{n}",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "cut_video failed for {output_path}: {last_err}",
+      "target": "cut_video 处理 {output_path} 失败：{last_err}",
+      "files": [
+        "modules/media/video_cutter.py"
       ]
     },
     {
@@ -8613,6 +8781,13 @@
       ]
     },
     {
+      "source": "Duration (s)",
+      "target": "时长（秒）",
+      "files": [
+        "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
       "source": "Duration: 300s (5:00)",
       "target": "时长：300 秒（5:00）",
       "files": [
@@ -8884,6 +9059,13 @@
       "files": [
         "frontend/src/components/tabs/DownloadTab.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "End (s)",
+      "target": "结束时间（秒）",
+      "files": [
+        "video_ai_editor/timeline_export.py"
       ]
     },
     {
@@ -9255,6 +9437,14 @@
       ]
     },
     {
+      "source": "expected 16-bit mono PCM from ffmpeg",
+      "target": "预期从 ffmpeg 获得 16 位单声道 PCM 音频",
+      "files": [
+        "modules/audio/reaction_bursts.py",
+        "modules/audio/vocal_signals.py"
+      ]
+    },
+    {
       "source": "expected [1, anchors, 5+C], got shape {tuple(output.shape)}",
       "target": "预期形状 [1, anchors, 5+C]，实际为 {tuple(output.shape)}",
       "files": [
@@ -9463,6 +9653,13 @@
       "target": "f <秒数>      - 向前移动 N 秒",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "Face",
+      "target": "人脸",
+      "files": [
+        "video_ai_editor/timeline_export.py"
       ]
     },
     {
@@ -10357,6 +10554,20 @@
       ]
     },
     {
+      "source": "Frame in",
+      "target": "起始帧",
+      "files": [
+        "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
+      "source": "Frame out",
+      "target": "结束帧",
+      "files": [
+        "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
       "source": "Frame sampling rate",
       "target": "视频帧采样间隔",
       "files": [
@@ -10741,6 +10952,13 @@
       "target": "进球、得分、获胜",
       "files": [
         "frontend/src/components/tabs/TranscriptTab.tsx"
+      ]
+    },
+    {
+      "source": "got {len(tiles)} regions but {len(tile_embeddings)} embeddings",
+      "target": "区域数量为 {len(tiles)}，但嵌入数量为 {len(tile_embeddings)}",
+      "files": [
+        "llm/category_scoring.py"
       ]
     },
     {
@@ -13744,6 +13962,13 @@
       ]
     },
     {
+      "source": "Need at least one example frame.",
+      "target": "至少需要一个示例画面。",
+      "files": [
+        "llm/clip_categories.py"
+      ]
+    },
+    {
       "source": "need full control or to teach it what to look for.",
       "target": "才需要打开“详细设置”。",
       "files": [
@@ -13932,6 +14157,14 @@
       "target": "未找到已标注视频 — 请点击“生成”",
       "files": [
         "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "no audio track found in this video",
+      "target": "该视频中未找到音轨",
+      "files": [
+        "modules/audio/reaction_bursts.py",
+        "modules/audio/vocal_signals.py"
       ]
     },
     {
@@ -14149,6 +14382,13 @@
       "target": "未找到表情结果。如果未安装表情模型，",
       "files": [
         "video_ai_editor/search_panel.py"
+      ]
+    },
+    {
+      "source": "no fallback left",
+      "target": "已无备用编码器",
+      "files": [
+        "modules/media/video_cutter.py"
       ]
     },
     {
@@ -14694,10 +14934,31 @@
       ]
     },
     {
+      "source": "No YOLOX IR found for tracking. Run: python tools/get_yolox_model.py",
+      "target": "跟踪功能未找到 YOLOX IR 模型。请运行：python tools/get_yolox_model.py",
+      "files": [
+        "modules/vision/tracking_backend.py"
+      ]
+    },
+    {
+      "source": "No YOLOX IR found. Run: python tools/get_yolox_model.py",
+      "target": "未找到 YOLOX IR 模型。请运行：python tools/get_yolox_model.py",
+      "files": [
+        "modules/vision/detection_backend.py"
+      ]
+    },
+    {
       "source": "no YOLOX model installed",
       "target": "未安装 YOLOX 模型",
       "files": [
         "modules/teach/doctor.py"
+      ]
+    },
+    {
+      "source": "No {args.cls!r} detections cached for this video; run object detection first.",
+      "target": "该视频没有缓存 {args.cls!r} 的检测结果；请先运行对象检测。",
+      "files": [
+        "tools/compare_outliners.py"
       ]
     },
     {
@@ -14784,6 +15045,13 @@
       "target": "不是有效文件夹：{path!r}",
       "files": [
         "sidecar/server.py"
+      ]
+    },
+    {
+      "source": "not a git repository: {result.stderr.strip()}",
+      "target": "不是 Git 仓库：{result.stderr.strip()}",
+      "files": [
+        "tools/check_local_imports.py"
       ]
     },
     {
@@ -16142,6 +16410,13 @@
       ]
     },
     {
+      "source": "panel or ask the LLM Assistant)",
+      "target": "或询问大模型助手）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
       "source": "Parameters: {total:,}",
       "target": "参数量：{total:,}",
       "files": [
@@ -16784,6 +17059,13 @@
       "files": [
         "llm/llm_chat_widget.py",
         "video_ai_editor/transcript_panel.py"
+      ]
+    },
+    {
+      "source": "previous release ref (default: nearest tag)",
+      "target": "上一发行版引用（默认：最近的标签）",
+      "files": [
+        "tools/release_notes.py"
       ]
     },
     {
@@ -17625,6 +17907,13 @@
       "target": "和独立片段，同时展示每个片段入选的原因——",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "ref being released",
+      "target": "本次要发布的引用",
+      "files": [
+        "tools/release_notes.py"
       ]
     },
     {
@@ -20216,6 +20505,13 @@
       ]
     },
     {
+      "source": "Start (s)",
+      "target": "开始时间（秒）",
+      "files": [
+        "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
       "source": "start a project",
       "target": "创建项目",
       "files": [
@@ -20802,6 +21098,14 @@
       ]
     },
     {
+      "source": "The app discovers these automatically",
+      "target": "应用会自动发现这些模型",
+      "files": [
+        "tools/get_rtmpose_model.py",
+        "tools/get_yolox_model.py"
+      ]
+    },
+    {
       "source": "The application files are fetched from GitHub. This is a large download.",
       "target": "正在从 GitHub 获取应用程序文件，下载体积较大，请保持网络连接。",
       "files": [
@@ -20876,6 +21180,13 @@
       "target": "用于最开始两秒。很多人会静音观看，因此这通常是他们最先看到的内容。",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "the frame encoder is not installed or cannot run here",
+      "target": "帧编码器未安装或无法在当前环境运行",
+      "files": [
+        "modules/teach/embed.py"
       ]
     },
     {
@@ -21024,6 +21335,13 @@
       "target": "最后才回退到 CPU",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "the second that scored highest. Volume is drawn for context only and",
+      "target": "即得分最高的那一秒。音量曲线仅用于提供上下文，且{note}，",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -21311,6 +21629,13 @@
       "target": "编号 {n}：{exc}",
       "files": [
         "modules/teach/review.py"
+      ]
+    },
+    {
+      "source": "tile_embeddings must be [n_regions, dim] with n_regions >= 1",
+      "target": "tile_embeddings 必须为 [n_regions, dim]，且 n_regions >= 1",
+      "files": [
+        "llm/category_scoring.py"
       ]
     },
     {
@@ -21969,6 +22294,13 @@
       ]
     },
     {
+      "source": "trying next encoder",
+      "target": "正在尝试下一个编码器",
+      "files": [
+        "modules/media/video_cutter.py"
+      ]
+    },
+    {
       "source": "turns them back on.",
       "target": "可重新开启这些推荐。",
       "files": [
@@ -22117,6 +22449,13 @@
       "target": "未知标签类型：{kind}",
       "files": [
         "sidecar/server.py"
+      ]
+    },
+    {
+      "source": "unknown motion {name!r} — expected one of",
+      "target": "未知运动类型 {name!r}——应为",
+      "files": [
+        "modules/media/motion.py"
       ]
     },
     {
@@ -22589,6 +22928,13 @@
       "target": "可改用 `review`（联系表图片）和 `verdict` 命令",
       "files": [
         "modules/teach/doctor.py"
+      ]
+    },
+    {
+      "source": "Use classify_clip() for action recognition models.",
+      "target": "动作识别模型请使用 classify_clip()。",
+      "files": [
+        "model_hub/runtime.py"
       ]
     },
     {
@@ -23775,6 +24121,13 @@
       ]
     },
     {
+      "source": "write here instead of stdout",
+      "target": "写入此文件，而不是输出到标准输出",
+      "files": [
+        "tools/release_notes.py"
+      ]
+    },
+    {
       "source": "Write per-class validation accuracy here as JSON",
       "target": "将每个类别的验证准确率以 JSON 写入此处",
       "files": [
@@ -24045,6 +24398,20 @@
       "target": "{' [支持应用内安装]' if can_install else ''}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{', '.join(MOTIONS)}",
+      "target": "{', '.join(MOTIONS)} 之一",
+      "files": [
+        "modules/media/motion.py"
+      ]
+    },
+    {
+      "source": "{', '.join(sorted(set(UNITS) - {'auto', 'metal', 'npu', 'neural'}))}",
+      "target": "{', '.join(sorted(set(UNITS) - {'auto', 'metal', 'npu', 'neural'}))} 中，",
+      "files": [
+        "modules/system/ort_coreml.py"
       ]
     },
     {
@@ -25205,6 +25572,13 @@
       ]
     },
     {
+      "source": "{note}, so a louder stretch elsewhere in the clip did not move it.</div>",
+      "target": "因此片段中其他位置即使更响，也不会改变该入选点。</div>",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "{n} identities",
       "target": "识别到 {n} 个人物",
       "files": [
@@ -25797,6 +26171,13 @@
       "target": "——可尝试“{PACES[faster].label}”节奏",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "— using {DEFAULT_UNITS}",
+      "target": "将使用 {DEFAULT_UNITS}",
+      "files": [
+        "modules/system/ort_coreml.py"
       ]
     },
     {
@@ -27869,6 +28250,13 @@
       ]
     },
     {
+      "source": "⚠️  Custom categories: unreadable store ({e}); starting empty",
+      "target": "⚠️  自定义类别：无法读取存储（{e}），将从空数据开始",
+      "files": [
+        "llm/clip_categories.py"
+      ]
+    },
+    {
       "source": "⚠️  Dataset path {root} does not exist",
       "target": "⚠️  数据集路径不存在：{root}",
       "files": [
@@ -27978,6 +28366,20 @@
       "target": "⚠️ [编码器选择] ffprobe 分辨率探测失败：{e}",
       "files": [
         "modules/system/encoder_select.py"
+      ]
+    },
+    {
+      "source": "⚠️ [ffmpeg_tools] could not stage {src} as {dst}: {e}",
+      "target": "⚠️ [ffmpeg_tools] 无法将 {src} 暂存为 {dst}：{e}",
+      "files": [
+        "modules/media/ffmpeg_tools.py"
+      ]
+    },
+    {
+      "source": "⚠️ [ffmpeg_tools] kept the previously staged ffmpeg ({e})",
+      "target": "⚠️ [ffmpeg_tools] 已保留之前暂存的 ffmpeg（{e}）",
+      "files": [
+        "modules/media/ffmpeg_tools.py"
       ]
     },
     {
@@ -28254,6 +28656,13 @@
       ]
     },
     {
+      "source": "⚠️ certifi CA bundle unusable ({type(e).__name__}: {e})",
+      "target": "⚠️ certifi CA 证书包不可用（{type(e).__name__}：{e}）",
+      "files": [
+        "modules/system/https_certs.py"
+      ]
+    },
+    {
       "source": "⚠️ Chapter breakdown skipped: {exc}",
       "target": "⚠️ 已跳过章节拆解：{exc}",
       "files": [
@@ -28356,6 +28765,13 @@
       "target": "⚠️ 已跳过组合命中率分析：{exc}",
       "files": [
         "modules/report/highlight_report.py"
+      ]
+    },
+    {
+      "source": "⚠️ community model discovery failed: {e}",
+      "target": "⚠️ 社区模型发现失败：{e}",
+      "files": [
+        "modules/system/app_paths.py"
       ]
     },
     {
@@ -28752,6 +29168,13 @@
       ]
     },
     {
+      "source": "⚠️ could not read classes from {os.path.basename(path)}: {e}",
+      "target": "⚠️ 无法从 {os.path.basename(path)} 读取类别：{e}",
+      "files": [
+        "modules/system/app_paths.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not read composition rules: {exc}",
       "target": "⚠️ 无法读取组合规则：{exc}",
       "files": [
@@ -28777,6 +29200,13 @@
       "target": "⚠️ 无法从标注中读取 keypoint_names：{_e}",
       "files": [
         "training/train_yolox_dataset.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not read pending checks: {exc}",
+      "target": "⚠️ 无法读取待检查项目：{exc}",
+      "files": [
+        "modules/rules/rule_proposal.py"
       ]
     },
     {
@@ -28934,6 +29364,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not store the Ollama host: {exc}",
+      "target": "⚠️ 无法保存 Ollama 主机地址：{exc}",
+      "files": [
+        "llm/ollama_host.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not update LLM context: {e}",
       "target": "⚠️ 无法更新大模型上下文：{e}",
       "files": [
@@ -28945,6 +29382,13 @@
       "target": "⚠️ 无法更新已分析视频计数：{exc}",
       "files": [
         "sidecar/worker.py"
+      ]
+    },
+    {
+      "source": "⚠️ could not work from {target}: {e}",
+      "target": "⚠️ 无法使用工作目录 {target}：{e}",
+      "files": [
+        "modules/system/app_paths.py"
       ]
     },
     {
@@ -28990,6 +29434,13 @@
       ]
     },
     {
+      "source": "⚠️ cut_video {enc} failed (rc={result.returncode}): {first_line};",
+      "target": "⚠️ cut_video 使用 {enc} 失败（返回码={result.returncode}）：{first_line}；",
+      "files": [
+        "modules/media/video_cutter.py"
+      ]
+    },
+    {
       "source": "⚠️ Decode thread would not stop — leaving the",
       "target": "⚠️ 解码线程无法停止；为避免读取过程中释放资源，",
       "files": [
@@ -29022,6 +29473,13 @@
       "target": "⚠️ 下载任务正在进行中！",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Drag serialize failed, skipping drag: {e}",
+      "target": "⚠️ 拖拽数据序列化失败，已取消本次拖拽：{e}",
+      "files": [
+        "video_ai_editor/timeline_bars.py"
       ]
     },
     {
@@ -30209,10 +30667,24 @@
       ]
     },
     {
+      "source": "⚠️ Pose estimation failed: {e}",
+      "target": "⚠️ 姿态估计失败：{e}",
+      "files": [
+        "modules/crop/pose.py"
+      ]
+    },
+    {
       "source": "⚠️ Pose model disabled — ROI will use YOLOX person boxes only.",
       "target": "⚠️ 姿态模型已禁用——ROI 将仅使用 YOLOX 人物检测框。",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️ Pose model unavailable — using person boxes for ROI.",
+      "target": "⚠️ 姿态模型不可用——ROI 将改用人物检测框。",
+      "files": [
+        "model_training/shared/detection.py"
       ]
     },
     {
@@ -30889,6 +31361,14 @@
     },
     {
       "source": "⚠️ Unmeasured claims skipped: {exc}",
+      "target": "⚠️ 已跳过无法测量的陈述：{exc}",
+      "files": [
+        "modules/report/highlight_advice.py",
+        "modules/report/uncovered_claims.py"
+      ]
+    },
+    {
+      "source": "⚠️ Unmeasured claims skipped: {exc}",
       "target": "⚠️ 已跳过未测量声明分析：{exc}",
       "files": [
         "modules/report/highlight_report.py"
@@ -31137,6 +31617,13 @@
       "target": "⚠️ {os.path.basename(str(path))}：未检测到节拍",
       "files": [
         "modules/audio/music_analysis.py"
+      ]
+    },
+    {
+      "source": "⚠️ {UNITS_ENV}={raw!r} is not one of",
+      "target": "⚠️ {UNITS_ENV}={raw!r} 不在允许值",
+      "files": [
+        "modules/system/ort_coreml.py"
       ]
     },
     {
@@ -32633,6 +33120,13 @@
       ]
     },
     {
+      "source": "✅ Wrote {TARGET} ({img.width}x{img.height})",
+      "target": "✅ 已写入 {TARGET}（{img.width}x{img.height}）",
+      "files": [
+        "tools/make_splash.py"
+      ]
+    },
+    {
       "source": "✅ XPU memory cleaned up",
       "target": "✅ XPU 显存已清理",
       "files": [
@@ -33029,6 +33523,13 @@
       "target": "✓ 使用选择器 {selector} 找到 {len(elements)} 个元素",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "✓ Found {len(peaks)} audio peaks",
+      "target": "✓ 找到 {len(peaks)} 个音频峰值",
+      "files": [
+        "modules/audio/audio_peaks.py"
       ]
     },
     {
@@ -33901,6 +34402,13 @@
       ]
     },
     {
+      "source": "❌ ffmpeg failed: {e}",
+      "target": "❌ ffmpeg 执行失败：{e}",
+      "files": [
+        "modules/audio/audio_peaks.py"
+      ]
+    },
+    {
       "source": "❌ ffmpeg not found for trimming ({e}). It comes with the app's",
       "target": "❌ 找不到用于裁剪的 ffmpeg（{e}）。它随应用依赖 imageio-ffmpeg 提供，",
       "files": [
@@ -33912,6 +34420,13 @@
       "target": "❌ 画面截取失败：{e}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "❌ Image contains #ff00ff, which Windows treats as transparent",
+      "target": "❌ 图像包含 #ff00ff，Windows 会将该颜色视为透明色",
+      "files": [
+        "tools/make_splash.py"
       ]
     },
     {
@@ -33968,6 +34483,13 @@
       "target": "❌ 大模型查询出错：{e}",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "❌ Missing source artwork: {SOURCE}",
+      "target": "❌ 缺少源图文件：{SOURCE}",
+      "files": [
+        "tools/make_splash.py"
       ]
     },
     {
@@ -38267,6 +38789,13 @@
       "target": "🧍 检测到全身动作——身体可见且运动分布在多个区域",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "🧍 YOLOX people model loaded: {_yolox_people_model.model_xml}",
+      "target": "🧍 YOLOX 人物模型已加载：{_yolox_people_model.model_xml}",
+      "files": [
+        "model_training/shared/detection.py"
       ]
     },
     {

@@ -261,7 +261,7 @@ class _VisualSearchWorker(QObject):
         if not stage_totals.get('llm'):
             return
         print("\n" + "=" * 70)
-        print("PROFILE SUMMARY")
+        print("性能统计汇总")
         print("=" * 70)
         print(f"{'stage':<10} {'count':>5} {'mean':>8} {'median':>8} {'min':>8} {'max':>8} {'total':>8}")
         for stage in ('encode', 'llm', 'confirm'):
@@ -296,7 +296,7 @@ class _VisualSearchWorker(QObject):
             self.analyzer.current_time = timestamp
             frame = self.analyzer.seek_to_time(timestamp)
             if frame is None:
-                print(f"[t={timestamp:6.1f}s] seek failed")
+                print(f"[t={timestamp:6.1f}s] 定位失败")
                 continue
 
             # content-aware skip (cheap downscaled diff; never sent to the model)
@@ -308,7 +308,7 @@ class _VisualSearchWorker(QObject):
                     scene_diff = float(np.abs(small - self._prev_small).mean())
                     if scene_diff < self.scene_threshold:
                         n_skipped += 1
-                        print(f"[t={timestamp:6.1f}s] skipped (scene Δ={scene_diff:4.1f} < {self.scene_threshold})")
+                        print(f"[t={timestamp:6.1f}s] 已跳过（场景变化 Δ={scene_diff:4.1f} < {self.scene_threshold}）")
                         continue
                 self._prev_small = small
 
@@ -319,7 +319,7 @@ class _VisualSearchWorker(QObject):
             except GenerationCancelled:
                 break
             except Exception as e:
-                print(f"Error at {timestamp:.1f}s: {e}")
+                print(f"{timestamp:.1f} 秒处出错：{e}")
                 continue
             if result is None:
                 break
@@ -391,7 +391,7 @@ class _VisualSearchWorker(QObject):
 
         elapsed = time.perf_counter() - t0
         encoded = self._clip_memo_added
-        print(f"\nCLIP scan: {len(scored)} frames in {elapsed:.1f}s "
+        print(f"\nCLIP 扫描：{len(scored)} 帧，用时 {elapsed:.1f} 秒 
               f"({elapsed/max(1,len(scored))*1000:.1f} ms/frame) on {self._clip.device} "
               f"— {len(scored) - encoded} from memo, {encoded} newly encoded")
         self._save_clip_memo()
@@ -444,7 +444,7 @@ class _VisualSearchWorker(QObject):
             )
         except Exception as e:
             # A memo is an optimisation; never let it break search.
-            print(f"⚠️  CLIP memo unavailable ({e}); scanning without it")
+            print(f"⚠️ CLIP 记忆缓存不可用（{e}）；将不使用缓存继续扫描")
             self._clip_memo, self._clip_memo_path = None, None
 
     def _save_clip_memo(self):
@@ -455,9 +455,9 @@ class _VisualSearchWorker(QObject):
             return
         try:
             self._clip_memo.save(self._clip_memo_path)
-            print(f"🧠 CLIP memo: saved {len(self._clip_memo)} frames")
+            print(f"🧠 CLIP 记忆缓存：已保存 {len(self._clip_memo)} 帧")
         except Exception as e:
-            print(f"⚠️  CLIP memo: could not save ({e})")
+            print(f"⚠️ CLIP 记忆缓存保存失败（{e}）")
 
     def _embed_and_score(self, timestamps, grab):
         """Score `timestamps`, encoding only the ones the memo doesn't hold.
@@ -506,7 +506,7 @@ class _VisualSearchWorker(QObject):
         results = []
         for ts, score in sorted(top, key=lambda x: x[0]):  # chronological for playback
             tstr = f"{int(ts)//60}:{int(ts)%60:02d}"
-            analysis = f"CLIP match (similarity {score:.2f})"
+            analysis = f"CLIP 匹配（相似度 {score:.2f}）"
             results.append({"timestamp": ts, "timestamp_str": tstr,
                             "analysis": analysis, "contains_target": True,
                             "clip_score": score})
@@ -521,7 +521,7 @@ class _VisualSearchWorker(QObject):
         if scored is None:
             return
         candidates = scored[:self.top_k]
-        print(f"CLIP+LLM: confirming top {len(candidates)} candidates with the VLM")
+        print(f"CLIP+LLM：正在使用视觉模型确认排名前 {len(candidates)} 个候选画面")
         # Mark the handoff in the UI too. Without it the funnel is invisible:
         # the scan's progress and the confirms' progress read identically, and
         # a Top-K at or above the number of sampled frames (short video, coarse
@@ -538,7 +538,7 @@ class _VisualSearchWorker(QObject):
             if self._cancel_token.is_cancelled:
                 break
             self.progress.emit(rank + 1, len(candidates), ts,
-                               f"VLM confirm {ts:.0f}s (CLIP {score:.2f})")
+                               f"视觉模型确认 {ts:.0f} 秒（CLIP {score:.2f}）")
             self.analyzer.current_time = ts
             frame = self.analyzer.seek_to_time(ts)
             if frame is None:
@@ -548,7 +548,7 @@ class _VisualSearchWorker(QObject):
             except GenerationCancelled:
                 break
             except Exception as e:
-                print(f"Error at {ts:.1f}s: {e}")
+                print(f"{ts:.1f} 秒处出错：{e}")
                 continue
             if result is None:
                 break
@@ -1394,7 +1394,7 @@ class LLMChatWidget(QWidget):
                 # save=False — defer disk write until scan finishes (see D3)
                 window.add_visual_findings([finding], save=False)
             except Exception as e:
-                print(f"⚠️ Failed to push visual finding to timeline: {e}")
+                print(f"⚠️ 无法将视觉搜索结果写入时间线：{e}")
         
         # Update preview window directly (QMediaPlayer has its own decoder,
         # so this is safe). Do NOT call _seek_to_timestamp() here — that
@@ -2482,7 +2482,7 @@ class LLMChatWidget(QWidget):
         if self._llm_thread_running():
             self._worker.cancel()
             if not self._worker_thread.wait(5000):
-                print("⚠️ LLM thread did not stop in time, terminating")
+                print("⚠️ 大模型线程未能及时停止，正在强制终止")
                 self._worker_thread.terminate()
                 self._worker_thread.wait(2000)
 
@@ -2490,7 +2490,7 @@ class LLMChatWidget(QWidget):
         if self._search_thread_running():
             self._search_worker.cancel()
             if not self._search_worker_thread.wait(5000):
-                print("⚠️ Search thread did not stop in time, terminating")
+                print("⚠️ 搜索线程未能及时停止，正在强制终止")
                 self._search_worker_thread.terminate()
                 self._search_worker_thread.wait(2000)
 

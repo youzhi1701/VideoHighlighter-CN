@@ -48,7 +48,7 @@ class PackInstallWorker(QThread):
                 should_cancel=lambda: self._cancel,
             )
         except Exception as e:  # install_pack does not raise; belt and braces
-            print(f"pack_install: unexpected failure ({type(e).__name__}: {e})")
+            print(f"资源包安装发生意外错误（{type(e).__name__}：{e}）")
             result = pack_manager.PackResult(False, f"下载失败：{e}", self.name)
         self.finished_with.emit(result)
 
@@ -157,6 +157,6 @@ def _offer_restart(parent, title):
         subprocess.Popen(update_apply.relaunch_command(),
                          cwd=update_apply.install_root(), close_fds=True)
     except Exception as e:
-        print(f"pack_install: could not relaunch ({e})")
+        print(f"资源包安装后无法重新启动程序（{e}）")
         return
     QApplication.quit()

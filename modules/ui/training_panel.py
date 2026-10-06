@@ -955,7 +955,7 @@ class ActionTrainingSection(QWidget):
         self.pipeline_combo = QComboBox()
         self.pipeline_combo.addItem("自动（匹配当前硬件）", "auto")
         self.pipeline_combo.addItem("Intel - OpenVINO 编码器", "intel")
-        self.pipeline_combo.addItem("NVIDIA - 3D CNN", "r3d")
+        self.pipeline_combo.addItem("NVIDIA - 3D 卷积网络", "r3d")
         self.pipeline_combo.currentIndexChanged.connect(self._choose_pipeline)
         form.addRow("训练方式：", self.pipeline_combo)
 
@@ -964,7 +964,7 @@ class ActionTrainingSection(QWidget):
                               ("mc3_18", "更轻量"),
                               ("r2plus1d_18", "较慢，通常效果更好")):
             self.variant_combo.addItem(f"{variant} - {hint}", variant)
-        form.addRow("3D CNN 模型：", self.variant_combo)
+        form.addRow("3D 卷积网络模型：", self.variant_combo)
         # Held so the row can be hidden: it belongs to the 3D CNN only, and a
         # visible-but-irrelevant control reads as a setting that was ignored.
         self._advanced_form = form

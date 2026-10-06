@@ -8,6 +8,7 @@ real UI text while leaving protocols, model IDs and internal values untouched.
 from __future__ import annotations
 
 import argparse
+import html
 import ast
 import json
 import re
@@ -99,6 +100,8 @@ DEV_ONLY_PATHS = {
     "tools/export_frame_encoder.py",
     "tools/scrape_listing_probe.py",
     "tools/strip_bundle.py",
+    "tools/probe_player.py",
+    "tools/bench_openvino_models.py",
 }
 DEV_ONLY_PREFIXES = (
     "tools/teach_lab/",
@@ -154,6 +157,7 @@ def visible_candidate(text: str, allow: set[str]) -> bool:
     # Strip tags before testing for English so fragments such as </span><br>
     # do not become false positives merely because HTML tag names use letters.
     t = re.sub(r"<[^>]+>", " ", t)
+    t = html.unescape(t)
     t = clean(t)
     if not t or t in allow or CJK_RE.search(t) or not EN_RE.search(t):
         return False

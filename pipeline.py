@@ -54,7 +54,7 @@ try:
     TRANSCRIPT_AVAILABLE = True
 except ImportError:
     TRANSCRIPT_AVAILABLE = False
-    print("⚠ Warning: Transcript modules not available. Transcript features disabled.")
+    print("⚠ 警告：转录模块不可用，转录相关功能已禁用。")
 
 def seconds_to_mmss(sec):
     """Convert seconds to mm:ss format"""
@@ -1336,7 +1336,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         except Exception as _ce:
             log(f"⚠️ 已跳过构图引擎：{_ce}")
 
-        print("Detections per second:", len(object_detections))
+        print("每秒检测结果数：", len(object_detections))
 
         def group_consecutive_adaptive(actions, max_gap=1.3, jump_threshold=0.01):
             """
@@ -1470,9 +1470,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         (enable_r3d, r3d_half, r3d_device,
                          r3d_onnx_dml) = _explicit
                         if r3d_onnx_dml:
-                            print("🎯 Action backend → R3D on DirectML through "
-                                "ONNX Runtime; it stays on the CPU if the export or "
-                                "the provider will not run")
+                            print("🎯 动作后端 → 通过 ONNX Runtime 在 DirectML 上运行 R3D；"
+                                "如果导出或执行提供程序无法运行，将回退到 CPU")
                     else:  # "auto"
                         # R3D needs a GPU to be worth it. On Intel it stays off —
                         # R3D there could only run on the CPU, and OpenVINO on the
@@ -1491,7 +1490,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             enable_r3d = True
                             r3d_half = True
                             r3d_device = _dev.pytorch_device
-                            print(f"🎯 Auto backend → CUDA detected, using R3D ({_dev.backend_name})")
+                            print(f"🎯 自动后端 → 检测到 CUDA，使用 R3D（{_dev.backend_name}）")
                         elif _dev.dml_device:
                             enable_r3d = True
                             r3d_half = False  # FP16 is uneven on DirectML
@@ -1509,10 +1508,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             # operator coverage. _try_onnx() already waits for
                             # exactly this case and was never given permission.
                             r3d_onnx_dml = True
-                            print(f"🎯 Auto backend → DirectML detected, using R3D on "
-                                f"{_dev.dml_device} ({_dev.backend_name}); if that "
-                                f"backend cannot run it, ONNX Runtime is tried on "
-                                f"the same card before the CPU")
+                            print(f"🎯 自动后端 → 检测到 DirectML，在 "
+                                f"{_dev.dml_device}（{_dev.backend_name}）上使用 R3D；如果该后端"
+                                f"无法运行，将先尝试在同一显卡上使用 ONNX Runtime，"
+                                f"最后才回退到 CPU")
                         elif getattr(_dev, "onnx_dml_torch", False):
                             # Same card, the other runtime. This is the packaged
                             # build on a DX12 box: torch cannot address the GPU
@@ -1526,20 +1525,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                             r3d_half = False      # fp16 is uneven on DirectML
                             r3d_device = "cpu"    # torch's device; the model leaves it
                             r3d_onnx_dml = True
-                            print(f"🎯 Auto backend → ONNX Runtime on the GPU, using "
-                                f"R3D ({_dev.backend_name}); it stays on the CPU if "
-                                f"the export or the provider will not run")
+                            print(f"🎯 自动后端 → 在 GPU 上使用 ONNX Runtime，运行 "
+                                f"R3D（{_dev.backend_name}）；如果导出或执行提供程序无法运行，"
+                                f"将回退到 CPU")
                         else:
                             enable_r3d = False
                             r3d_half = False
-                            print(f"🎯 Auto backend → no CUDA, using OpenVINO on {_dev.backend_name}")
+                            print(f"🎯 自动后端 → 未检测到 CUDA，在 {_dev.backend_name} 上使用 OpenVINO")
 
                     log("🎯 动作识别：" + action_backend_summary(
                         enable_r3d, r3d_model, r3d_device, r3d_onnx_dml,
                         openvino_device, auto=_explicit is None))
-                    print(f"   action backend setting: {action_backend} | R3D model: {r3d_model} | "
-                          f"enable_r3d: {enable_r3d} | r3d_device: {r3d_device or 'auto'} | "
-                          f"onnx_dml: {r3d_onnx_dml} | OpenVINO device: {openvino_device}")
+                    print(f"   动作后端设置：{action_backend} | R3D 模型：{r3d_model} | "
+                          f"启用 R3D：{enable_r3d} | R3D 设备：{r3d_device or 'auto'} | "
+                          f"ONNX DirectML：{r3d_onnx_dml} | OpenVINO 设备：{openvino_device}")
 
                     action_models_selection = gui_config.get("action_models", "mixed") or "mixed"
                     all_action_detections, action_bboxes_cache = run_action_detection(
@@ -1980,10 +1979,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     processed_video_path, gui_config.get("cache_dir", "./cache")))
                 if _cached:
                     face_seconds = _cached
-                    print(f"ℹ Expression scan reused for the report only "
-                          f"({len(_cached)} second(s)); it scored no points.")
+                    print(f"ℹ 表情扫描结果仅用于报告复用"
+                          f"（{len(_cached)} 秒）；不会计入高光评分。")
             except Exception as _fe:
-                print(f"⚠️ Cached expression scan not loaded: {_fe}")
+                print(f"⚠️ 无法加载缓存的表情扫描结果：{_fe}")
 
         # Sum signals
         score = (scene_score + motion_event_score + motion_peak_score + audio_score +
@@ -2031,19 +2030,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         ending_start = max(0, video_duration - 120)
         ending_scores = score[int(ending_start):] if ending_start < len(score) else []
 
-        print(f"\n=== SCORE DISTRIBUTION ===")
-        print(f"Max score: {max_score:.1f}")
-        print(f"Min score: {min_score:.1f}")
-        print(f"Average score: {avg_score:.1f}")
-        print(f"Score range: {max_score - min_score:.1f}")
-        print(f"Average ending score: {np.mean(ending_scores) if len(ending_scores) > 0 else 0:.2f}")
+        print("\n=== 评分分布 ===")
+        print(f"最高分：{max_score:.1f}")
+        print(f"最低分：{min_score:.1f}")
+        print(f"平均分：{avg_score:.1f}")
+        print(f"分数跨度：{max_score - min_score:.1f}")
+        print(f"结尾平均分：{np.mean(ending_scores) if len(ending_scores) > 0 else 0:.2f}")
 
         # Top 10 scoring seconds
         top_indices = np.argsort(score)[-10:][::-1]
-        print(f"\n=== TOP 10 SCORING MOMENTS ===")
+        print("\n=== 评分最高的 10 个时刻 ===")
         for i, idx in enumerate(top_indices):
             timestamp = f"{idx//60:02d}:{idx%60:02d}"
-            print(f"{i+1}. Second {idx} ({timestamp}): {score[idx]:.1f} points")
+            print(f"{i+1}. 第 {idx} 秒（{timestamp}）：{score[idx]:.1f} 分")
 
         # Module-level flag to ensure logging happens only once per video
         if 'segments_logged' not in globals():

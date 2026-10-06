@@ -130,7 +130,7 @@ def get_id_from_name(name):
         for k, v in KINETICS_400_LABELS.items():
             if v.lower() == name.lower():
                 return int(k), 'intel'
-    raise ValueError(f"Action '{name}' not found in any label set")
+    raise ValueError(f"在任何标签集中都找不到动作 '{name}'")
 
 def get_all_ids_from_name(name):
     """Return ALL model matches for a given action name (for mixed mode).
@@ -163,7 +163,7 @@ def get_all_ids_from_name(name):
             if v.lower() == clean_name.lower():
                 results.append((int(k), 'intel'))
     if not results:
-        raise ValueError(f"Action '{name}' not found in any label set")
+        raise ValueError(f"在任何标签集中都找不到动作 '{name}'")
     return results
 
 def get_id_from_name_with_r3d(name):
@@ -177,7 +177,7 @@ def get_id_from_name_with_r3d(name):
             if v.lower() == name.lower():
                 # Prefer 'cuda' model type if CUDA is available, else 'intel'
                 return int(k), 'intel'
-    raise ValueError(f"Action '{name}' not found in any label set")
+    raise ValueError(f"在任何标签集中都找不到动作 '{name}'")
 
 
 # =============================
@@ -565,7 +565,7 @@ class R3DModelWrapper:
         elif model_name == 'r2plus1d_18':
             self.model = video_models.r2plus1d_18(weights='DEFAULT')
         else:
-            raise ValueError(f"Unknown R3D variant: {model_name}")
+            raise ValueError(f"未知的 R3D 变体：{model_name}")
 
         if custom_weights and custom_num_classes:
             in_features = self.model.fc.in_features
@@ -999,8 +999,8 @@ class ParallelYOLODetector:
                 print(f"⚠️ 无法获取 YOLOX 检测器：{e}")
         if not model_xml or not os.path.exists(model_xml):
             raise FileNotFoundError(
-                f"YOLOX IR not found ({model_xml!r}). "
-                "Run tools/get_yolox_model.py to install one."
+                f"未找到 YOLOX IR（{model_xml!r}）。"
+                "请运行 tools/get_yolox_model.py 进行安装。"
             )
         # Person-only detector: class 0 in COCO ordering.
         self.model = YoloxOpenVINODetector(
@@ -1191,7 +1191,7 @@ def load_models(device="AUTO", openvino_threads=None,
         print(f"✓ OpenVINO CPU 线程数已设为 {openvino_threads}")
 
     if not ENCODER_XML.exists() or not ENCODER_BIN.exists():
-        raise FileNotFoundError(f"❌ Encoder model not found at {ENCODER_XML}")
+        raise FileNotFoundError(f"❌ 在 {ENCODER_XML} 未找到编码器模型")
     print("✓ 已找到编码器模型")
 
     # ---- Encoder (always required) ----
@@ -1353,8 +1353,8 @@ def load_models(device="AUTO", openvino_threads=None,
     loaded = [k for k, v in models_info.items() if v is not None]
     if not loaded:
         raise FileNotFoundError(
-            f"❌ No models loaded for action_models='{action_models}'! "
-            f"Check that the required model files exist."
+            f"❌ action_models='{action_models}' 未加载任何模型！"
+            f"请检查所需模型文件是否存在。"
         )
 
     # ---- Summary ----
@@ -1855,7 +1855,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
             frame_id += 1
 
             if progress_callback and time.time() - last_gui_update > 0.1:
-                progress_msg = f"Warm-up: {warm_up_frame_count}/{warm_up_frames_needed} frames"
+                progress_msg = f"预热：{warm_up_frame_count}/{warm_up_frames_needed} 帧"
                 progress_callback(warm_up_frame_count, warm_up_frames_needed, "预热",
                                   progress_msg)
                 last_gui_update = time.time()
@@ -2377,11 +2377,11 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
 
     if progress_callback:
         total_time = time.time() - start_time
-        final_msg = (f"Complete! {detection_count} actions detected | "
-                     f"{frame_id} frames in {total_time:.1f}s | "
-                     f"Speed: {_speed_text(frame_id, total_time, sample_rate)}")
+        final_msg = (f"完成！检测到 {detection_count} 个动作 | "
+                     f"{frame_id} 帧，用时 {total_time:.1f} 秒 | "
+                     f"速度：{_speed_text(frame_id, total_time, sample_rate)}")
         if r3d_wrapper:
-            final_msg += f" | R3D time: {r3d_time:.1f}s"
+            final_msg += f" | R3D 用时：{r3d_time:.1f} 秒"
         progress_callback(processed_frames, expected_processed_frames,
                           "动作识别完成", final_msg)
 

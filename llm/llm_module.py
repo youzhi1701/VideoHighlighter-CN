@@ -1173,7 +1173,7 @@ class LLMModule:
             # `device` is an OpenVINO device string rather than a layer count.
             self._backend = _OpenVINOBackend(model_path=model_path, device=device)
         else:
-            raise ValueError(f"Unknown backend: {backend}. Use 'ollama' or 'llama-cpp'.")
+            raise ValueError(f"未知的大模型后端：{backend}。请使用 'ollama'、'llama-cpp' 或 'openvino'。")
 
     def load(self):
         """Load/verify the model. Raises RuntimeError on failure."""

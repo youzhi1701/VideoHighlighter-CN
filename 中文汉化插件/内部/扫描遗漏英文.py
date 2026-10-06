@@ -247,10 +247,10 @@ def scan_ts(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     text = path.read_text(encoding="utf-8", errors="ignore")
     hits: list[Hit] = []
     runtime_patterns = [
-        ("tsx-toast", "high", re.compile(r"\btoast\.(?:error|success|warning|info)\(\s*([\\"'])(.*?)\1", re.I)),
-        ("tsx-log", "high", re.compile(r"\bappendLog\(\s*([\\"'\x60])(.*?)\1", re.I)),
-        ("tsx-runtime-call", "medium", re.compile(r"\b(?:setStatus|setMessage|setError|setTitle|setLabel|setHint)\(\s*([\\"'])(.*?)\1", re.I)),
-        ("tsx-option", "medium", re.compile(r"\b(?:name|label|description|help|hint)\s*:\s*([\\"'])(.*?)\1", re.I)),
+        ("tsx-toast", "high", re.compile(r"""\btoast\.(?:error|success|warning|info)\(\s*(["'])(.*?)\1""", re.I)),
+        ("tsx-log", "high", re.compile(r"""\bappendLog\(\s*(["'`])(.*?)\1""", re.I)),
+        ("tsx-runtime-call", "medium", re.compile(r"""\b(?:setStatus|setMessage|setError|setTitle|setLabel|setHint)\(\s*(["'])(.*?)\1""", re.I)),
+        ("tsx-option", "medium", re.compile(r"""\b(?:name|label|description|help|hint)\s*:\s*(["'])(.*?)\1""", re.I)),
     ]
     for kind, priority, pattern in TSX_PATTERNS + runtime_patterns:
         for m in pattern.finditer(text):
@@ -267,8 +267,8 @@ ISS_HINTS = (
 
 
 QML_PATTERNS = [
-    ("qml-text", "high", re.compile(r"\\b(?:text|title|placeholderText|toolTip|accessibleName)\\s*:\\s*([\\"'])(.*?)\\1", re.I)),
-    ("qml-menu", "high", re.compile(r"\\b(?:label|name|description|message|hint)\\s*:\\s*([\\"'])(.*?)\\1", re.I)),
+    ("qml-text", "high", re.compile(r"""\b(?:text|title|placeholderText|toolTip|accessibleName)\s*:\s*(["'])(.*?)\1""", re.I)),
+    ("qml-menu", "high", re.compile(r"""\b(?:label|name|description|message|hint)\s*:\s*(["'])(.*?)\1""", re.I)),
 ]
 
 
@@ -281,7 +281,7 @@ def scan_qml(path: Path, rel: str, allow: set[str]) -> list[Hit]:
             if visible_candidate(value, allow):
                 hits.append(Hit(
                     rel,
-                    text.count("\\n", 0, m.start()) + 1,
+                    text.count("\n", 0, m.start()) + 1,
                     kind,
                     priority,
                     clean(value),

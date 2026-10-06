@@ -80,7 +80,7 @@ def ollama_models(base_url: Optional[str] = None,
         from llm.llm_module import get_ollama_models
         found = [str(name) for name in (get_ollama_models(base_url) or [])]
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Could not list Ollama models: {exc}")
+        print(f"⚠️ 无法列出 Ollama 模型：{exc}")
         found = []
     _cache[base_url] = found
     return list(found)
@@ -142,4 +142,4 @@ def remember_gguf(path: str, settings=None) -> None:
         stored = [str(p) for p in _stored(settings) if str(p) != path]
         settings.setValue(RECENT_GGUF_KEY, [path] + stored[:MAX_RECENT_GGUF - 1])
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Could not remember the GGUF path: {exc}")
+        print(f"⚠️ 无法保存 GGUF 路径记录：{exc}")

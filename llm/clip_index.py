@@ -426,16 +426,16 @@ def load_or_build(video_path: str, cache_path: str, interval: float = 1.0,
 def main():
     import argparse
 
-    ap = argparse.ArgumentParser(description="Build a CLIP frame index and query it.")
+    ap = argparse.ArgumentParser(description="构建 CLIP 视频帧索引并进行查询。")
     ap.add_argument("--video", required=True)
     ap.add_argument("--query", action="append", default=[],
-                    help="repeatable; each is scored against the same index")
+                    help="可重复指定；每个查询都针对同一索引评分")
     ap.add_argument("--interval", type=float, default=1.0)
     ap.add_argument("--topk", type=int, default=20)
     ap.add_argument("--device", default="AUTO",
-                    help="AUTO/GPU (NVIDIA if present, else Intel GPU, else CPU), "
-                         "CUDA, cuda:N, CPU, or any OpenVINO device string")
-    ap.add_argument("--cache", default=None, help="path to .npz index cache")
+                    help="AUTO/GPU（有 NVIDIA 时优先使用，否则 Intel GPU，再否则 CPU），"
+                         "也可使用 CUDA、cuda:N、CPU 或任意 OpenVINO 设备字符串")
+    ap.add_argument("--cache", default=None, help=".npz 索引缓存路径")
     args = ap.parse_args()
 
     cache = args.cache or os.path.splitext(args.video)[0] + ".clipindex.npz"

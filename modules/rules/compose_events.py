@@ -131,7 +131,7 @@ def apply_rules(object_detections: Optional[Mapping],
             # A malformed rules file must not cost the run its detections. The
             # previous pass's events are still stripped, because they no longer
             # correspond to a rule set anyone can read.
-            log_fn(f"⚠️ Composition rules could not be loaded: {exc}")
+            log_fn(f"⚠️ 无法加载构图规则：{exc}")
             engine, names = None, []
 
     detections, boxes = strip_events(detections, boxes, previous | set(names))
@@ -177,10 +177,10 @@ def apply_rules(object_detections: Optional[Mapping],
             parts.append(f"removed {', '.join(gone)}")
         note = f" (rules changed since the cached pass: {'; '.join(parts)})"
     if hits:
-        log_fn(f"✅ Composition engine: {hits} event-hit(s) over "
+        log_fn(f"✅ 构图引擎：命中 {hits} 个事件) over "
                f"{len(composed)} second(s) from {len(names)} rule(s){note}")
     else:
-        log_fn(f"ℹ️ Composition engine: {len(names)} rule(s), nothing "
+        log_fn(f"ℹ️ 构图引擎：{len(names)} rule(s), nothing "
                f"matched{note}")
     return detections, boxes, names, hits
 
@@ -240,9 +240,8 @@ def write_back(video_path: str,
         cache = VideoAnalysisCache(cache_dir=cache_dir)
         cache.save(video_path, payload,
                    params=dict(params) if params else None)
-        log_fn("✅ Cached events refreshed — the timeline will show the "
-               "current rule set.")
+        log_fn("✅ 已刷新缓存事件，时间线将显示当前规则集。")
         return True
     except Exception as exc:
-        log_fn(f"⚠️ Could not refresh cached events: {exc}")
+        log_fn(f"⚠️ 无法刷新缓存事件：{exc}")
         return False

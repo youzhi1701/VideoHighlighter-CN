@@ -30,7 +30,7 @@ try:
     CUDA_AVAILABLE = _devices.gpu_available and _devices.pytorch_device == 'cuda'
     _PYTORCH_DEVICE = _devices.pytorch_device  # 'cuda' | 'cpu'
 except ImportError:
-    print("⚠️ PyTorch not installed — R3D/CUDA backend disabled")
+    print("⚠️ 未安装 PyTorch，R3D/CUDA 后端已禁用")
     _PYTORCH_DEVICE = 'cpu'
 
 # =============================
@@ -74,16 +74,16 @@ def load_label_mappings():
             custom_data = json.load(f)
             CUSTOM_LABELS = custom_data.get('idx_to_label', {})
             CUSTOM_LABELS = {int(k): v for k, v in CUSTOM_LABELS.items()}
-        print(f"✓ Loaded custom OpenVINO model labels: {len(CUSTOM_LABELS)} classes")
+        print(f"✓ 已加载自定义 OpenVINO 模型标签：{len(CUSTOM_LABELS)} 个类别")
     else:
         CUSTOM_LABELS = None
 
     if KINETICS_LABELS_PATH.exists():
         with open(KINETICS_LABELS_PATH, "r") as f:
             KINETICS_400_LABELS = json.load(f)
-        print(f"✓ Loaded Kinetics-400 labels: {len(KINETICS_400_LABELS)} classes")
+        print(f"✓ 已加载 Kinetics-400 标签：{len(KINETICS_400_LABELS)} 个类别")
     else:
-        print("⚠️ Kinetics-400 labels not found")
+        print("⚠️ 未找到 Kinetics-400 标签")
 
     if R3D_CUSTOM_MAPPING_PATH.exists():
         with open(R3D_CUSTOM_MAPPING_PATH, "r") as f:
@@ -98,9 +98,9 @@ def load_label_mappings():
                     'model_variant': r3d_data.get('model_variant'),
                     'num_classes': len(R3D_CUSTOM_LABELS),
                 }
-        print(f"✓ Loaded R3D custom labels: {len(R3D_CUSTOM_LABELS)} classes")
+        print(f"✓ 已加载 R3D 自定义标签：{len(R3D_CUSTOM_LABELS)} 个类别")
         variant = (R3D_CUSTOM_META or {}).get('model_variant', 'unknown')
-        print(f"  Model variant: {variant}")
+        print(f"  模型变体：{variant}")
     else:
         R3D_CUSTOM_LABELS = None
         R3D_CUSTOM_META = None
@@ -489,8 +489,8 @@ def _resolve_r3d_device(device_str):
 
         resolved = dml.normalize(str(device_str))
         if not resolved:
-            print(f"⚠️ R3D: DirectML requested but unusable "
-                  f"({dml.unavailable_reason()}); using CPU")
+            print(f"⚠️ R3D：已请求 DirectML，但当前不可用"
+                  f"（{dml.unavailable_reason()}），改用 CPU")
             return torch.device('cpu')
         try:
             # The import *is* the backend registration; without it torch does
@@ -498,8 +498,8 @@ def _resolve_r3d_device(device_str):
             # that looks perfectly valid.
             import torch_directml  # noqa: F401 — imported for the side effect
         except Exception as e:  # noqa: BLE001
-            print(f"⚠️ R3D: torch-directml will not import "
-                  f"({type(e).__name__}: {e}); using CPU")
+            print(f"⚠️ R3D：无法导入 torch-directml "
+                  f"（{type(e).__name__}：{e}），改用 CPU")
             return torch.device('cpu')
         return torch.device(resolved)
 
@@ -509,7 +509,7 @@ def _resolve_r3d_device(device_str):
     try:
         return torch.device(device_str)
     except Exception:  # noqa: BLE001 — an unparseable string is not worth a crash
-        print(f"⚠️ R3D: unrecognised device {device_str!r}; using CPU")
+        print(f"⚠️ R3D：无法识别设备 {device_str!r}，改用 CPU")
         return torch.device('cpu')
 
 
@@ -555,7 +555,7 @@ class R3DModelWrapper:
         self.num_classes = custom_num_classes or 400  # default Kinetics-400
 
         tag = " (custom)" if custom_weights else ""
-        print(f"🚀 Loading {model_name}{tag} on {self.device} (FP16: {self.half})...")
+        print(f"🚀 正在 {self.device} 上加载 {model_name}{tag}（FP16：{self.half}）…")
 
         # Load pretrained model
         if model_name == 'r3d_18':
@@ -579,7 +579,7 @@ class R3DModelWrapper:
                 self.model.load_state_dict(state['model_state_dict'])
             else:
                 self.model.load_state_dict(state)
-            print(f"   ✓ Loaded custom weights: {custom_num_classes} classes")
+            print(f"   ✓ 已加载自定义权重：{custom_num_classes} 个类别")
 
         self.model.eval()
         self._place_on_device()
@@ -591,7 +591,7 @@ class R3DModelWrapper:
         # Last resort before the processor. Asked *after* the warm-up, so a
         # torch backend that survived it keeps the card it already has.
         self.onnx = self._try_onnx(custom_weights)
-        print(f"✓ {model_name} loaded and warmed up on {self.backend_label}")
+        print(f"✓ {model_name} 已在 {self.backend_label} 上加载并完成预热")
 
     def _try_onnx(self, custom_weights=None):
         """An ONNX Runtime session on a DX12 GPU, or None to stay on torch.
@@ -615,7 +615,7 @@ class R3DModelWrapper:
         runner = r3d_onnx.load(self.model, self.model_name, self.num_classes,
                                custom_weights=custom_weights)
         if runner is not None:
-            print(f"✅ {self.model_name} on ONNX Runtime via DirectML")
+            print(f"✅ {self.model_name} 已通过 DirectML 运行于 ONNX Runtime")
         return runner
 
     @property
@@ -669,10 +669,10 @@ class R3DModelWrapper:
         except Exception as e:  # noqa: BLE001 — narrowed immediately below
             if not _is_directml_device(self.device):
                 raise
-            print(f"⚠️ R3D: DirectML cannot run {self.model_name} "
-                  f"({type(e).__name__}: {e})")
-            print("   Falling back to the CPU for action recognition. This is "
-                  "slower but correct; see docs/AMD-GPU.md.")
+            print(f"⚠️ R3D：DirectML 无法运行 {self.model_name} "
+                  f"（{type(e).__name__}：{e}）")
+            print("   动作识别正在回退到 CPU。速度会较慢，但结果仍然正确；"
+                  "详见 docs/AMD-GPU.md。")
 
         self.device = torch.device('cpu')
         self.half = False
@@ -784,7 +784,7 @@ class R3DModelWrapper:
         if self.device.type == 'cuda':
             torch.cuda.empty_cache()
         gc.collect()
-        print(f"🧹 {self.model_name} cleaned up")
+        print(f"🧹 {self.model_name} 已清理")
 
 
 # =============================
@@ -882,10 +882,10 @@ class _StallWatchdog:
     def _dump(self, phase, stuck):
         import traceback
         names = {t.ident: t.name for t in threading.enumerate()}
-        print(f"⛔ Action loop stalled: {stuck:.0f}s in '{phase}'. "
-              f"Thread stacks follow (the run is still waiting):", flush=True)
+        print(f"⛔ 动作识别循环卡住：在“{phase}”阶段已等待 {stuck:.0f} 秒。"
+              f"下面输出线程堆栈（任务仍在等待）：", flush=True)
         for ident, frame in sys._current_frames().items():
-            print(f"--- {names.get(ident, 'thread')} ({ident}) ---")
+            print(f"--- {names.get(ident, '线程')}（{ident}）---")
             print("".join(traceback.format_stack(frame)).rstrip(), flush=True)
 
     def close(self):
@@ -992,11 +992,11 @@ class ParallelYOLODetector:
         if not model_xml and not getattr(sys, "frozen", False):
             try:
                 from modules.vision import yolox_models
-                print("⬇️ First run: fetching the YOLOX person detector (Apache-2.0)…")
+                print("⬇️ 首次运行：正在获取 YOLOX 人体检测器（Apache-2.0）…")
                 yolox_models.install()
                 model_xml = find_default_yolox_ir(prefer="small")
             except Exception as e:
-                print(f"⚠️ Could not fetch the YOLOX detector: {e}")
+                print(f"⚠️ 无法获取 YOLOX 检测器：{e}")
         if not model_xml or not os.path.exists(model_xml):
             raise FileNotFoundError(
                 f"YOLOX IR not found ({model_xml!r}). "
@@ -1054,7 +1054,7 @@ class ParallelYOLODetector:
                 self.last_detections = boxes
             return boxes
         except Exception as e:
-            print(f"Person detection error: {e}")
+            print(f"人体检测出错：{e}")
             return []
 
     def get_latest_detections(self):
@@ -1126,22 +1126,22 @@ def compile_with_fallback(ie, model, preferred_device, model_name="model"):
     
     # First try the preferred device
     try:
-        print(f"🔄 Attempting to compile {model_name} on {preferred_device}...")
+        print(f"🔄 正在尝试在 {preferred_device} 上编译 {model_name}…")
         compiled = ie.compile_model(model=model, device_name=preferred_device)
-        print(f"✅ Successfully compiled {model_name} on {preferred_device}")
+        print(f"✅ 已成功在 {preferred_device} 上编译 {model_name}")
         return compiled, preferred_device
     except Exception as e:
         # Check if it's the LSTM/dynamic shape error
         error_str = str(e)
         if preferred_device != "CPU":
-            print(f"⚠️ Compilation on {preferred_device} failed with LSTM/dynamic shape error")
-            print(f"🔄 Falling back {model_name} to CPU...")
+            print(f"⚠️ 在 {preferred_device} 上编译失败：LSTM/动态形状错误")
+            print(f"🔄 正在将 {model_name} 回退到 CPU…")
             try:
                 compiled = ie.compile_model(model=model, device_name="CPU")
-                print(f"✅ Successfully compiled {model_name} on CPU")
+                print(f"✅ 已成功在 CPU 上编译 {model_name}")
                 return compiled, "CPU"
             except Exception as cpu_e:
-                print(f"❌ CPU compilation also failed: {cpu_e}")
+                print(f"❌ CPU 编译同样失败：{cpu_e}")
                 raise
         else:
             # Re-raise if it's a different error or already on CPU
@@ -1166,7 +1166,7 @@ def load_models(device="AUTO", openvino_threads=None,
     """
     ie = Core()
     available_devices = ie.available_devices
-    print(f"Available OpenVINO devices: {available_devices}")
+    print(f"可用的 OpenVINO 设备：{available_devices}")
 
     if device == "AUTO":
         # OpenVINO's GPU plugin is written for Intel graphics, yet it lists any
@@ -1184,15 +1184,15 @@ def load_models(device="AUTO", openvino_threads=None,
     else:
         selected_device = device if device in available_devices else "CPU"
 
-    print(f"Requested OpenVINO device: {selected_device}")
+    print(f"请求的 OpenVINO 设备：{selected_device}")
 
     if openvino_threads and selected_device == "CPU":
         ie.set_property("CPU", {"INFERENCE_NUM_THREADS": openvino_threads})
-        print(f"✓ OpenVINO CPU threads set to {openvino_threads}")
+        print(f"✓ OpenVINO CPU 线程数已设为 {openvino_threads}")
 
     if not ENCODER_XML.exists() or not ENCODER_BIN.exists():
         raise FileNotFoundError(f"❌ Encoder model not found at {ENCODER_XML}")
-    print("✓ Encoder model found")
+    print("✓ 已找到编码器模型")
 
     # ---- Encoder (always required) ----
     encoder_model = ie.read_model(model=ENCODER_XML, weights=ENCODER_BIN)
@@ -1219,10 +1219,10 @@ def load_models(device="AUTO", openvino_threads=None,
     decoder_device = actual_device
     if r3d_onnx_dml and actual_device != "CPU":
         decoder_device = "CPU"
-        print(f"📌 Decoders on CPU: {actual_device} is already running R3D "
-              f"through ONNX Runtime, and the CPU is the faster of the two here")
+        print(f"📌 解码器使用 CPU：{actual_device} 已通过 ONNX Runtime 运行 R3D，"
+              f"在当前环境下 CPU 是两种方案中更快的选择")
     if encoder_device != selected_device:
-        print(f"📌 Note: Encoder running on {encoder_device} (different from requested {selected_device})")
+        print(f"📌 提示：编码器实际运行于 {encoder_device}（与请求的 {selected_device} 不同）")
 
     # Custom decoder is user-swappable: resolve next-to-exe first, else bundled.
     custom_decoder_xml = Path(_action_model_file("action_classifier_3d.xml"))
@@ -1239,14 +1239,14 @@ def load_models(device="AUTO", openvino_threads=None,
     load_r3d_custom = action_models in ('r3d_custom_only', 'mixed')
 
     print(f"\n📋 Action models selection: '{action_models}'")
-    print(f"   Load custom OpenVINO:  {load_custom}")
-    print(f"   Load Intel Kinetics:   {load_intel}")
-    print(f"   Load R3D pretrained:   {load_r3d_pre}")
-    print(f"   Load R3D custom:       {load_r3d_custom}")
+    print(f"   加载自定义 OpenVINO：{load_custom}")
+    print(f"   加载 Intel Kinetics： {load_intel}")
+    print(f"   加载 R3D 预训练模型： {load_r3d_pre}")
+    print(f"   加载 R3D 自定义模型： {load_r3d_custom}")
 
     # ---- Custom fine-tuned decoder (OpenVINO) ----
     if load_custom and custom_decoder_xml.exists() and custom_decoder_bin.exists():
-        print("✓ Loading custom fine-tuned decoder model")
+        print("✓ 正在加载自定义微调解码器模型")
         custom_decoder_model = ie.read_model(model=custom_decoder_xml, weights=custom_decoder_bin)
         compiled_custom_decoder, custom_device = compile_with_fallback(
             ie, custom_decoder_model, decoder_device, model_name="custom decoder"
@@ -1259,13 +1259,13 @@ def load_models(device="AUTO", openvino_threads=None,
             'type':     'openvino',
             'device':   custom_device,
         }
-        print(f"  ✅ Custom decoder ready on {custom_device}")
+        print(f"  ✅ 自定义解码器已就绪，设备：{custom_device}")
     elif load_custom:
-        print("⚠️ Custom decoder requested but model files not found — skipping")
+        print("⚠️ 已请求自定义解码器，但未找到模型文件，已跳过")
 
     # ---- Intel Kinetics-400 decoder (OpenVINO) ----
     if load_intel and intel_decoder_xml.exists() and intel_decoder_bin.exists():
-        print("✓ Loading Intel Kinetics-400 decoder model")
+        print("✓ 正在加载 Intel Kinetics-400 解码器模型")
         intel_decoder_model = ie.read_model(model=intel_decoder_xml, weights=intel_decoder_bin)
         compiled_intel_decoder, intel_device = compile_with_fallback(
             ie, intel_decoder_model, decoder_device, model_name="Intel decoder"
@@ -1278,9 +1278,9 @@ def load_models(device="AUTO", openvino_threads=None,
             'type':     'openvino',
             'device':   intel_device,
         }
-        print(f"  ✅ Intel decoder ready on {intel_device}")
+        print(f"  ✅ Intel 解码器已就绪，设备：{intel_device}")
     elif load_intel:
-        print("⚠️ Intel decoder requested but model files not found — skipping")
+        print("⚠️ 已请求 Intel 解码器，但未找到模型文件，已跳过")
 
     # ---- R3D pretrained — Kinetics-400 (PyTorch) ----
     r3d_wrapper = None
@@ -1292,7 +1292,7 @@ def load_models(device="AUTO", openvino_threads=None,
             # the "R3D + CPU" backend choice means the CPU on every machine,
             # rather than quietly becoming DirectML on an AMD one.
             r3d_device = r3d_device or _PYTORCH_DEVICE
-            print(f"🔄 Initializing R3D pretrained model on {r3d_device}...")
+            print(f"🔄 正在 {r3d_device} 上初始化 R3D 预训练模型…")
             r3d_wrapper = R3DModelWrapper(
                 model_name=r3d_model_name,
                 device_str=r3d_device,
@@ -1308,12 +1308,12 @@ def load_models(device="AUTO", openvino_threads=None,
                 # and the ONNX Runtime attempt.
                 'device':  r3d_wrapper.backend_label,
             }
-            print(f"✅ R3D pretrained loaded on {r3d_wrapper.backend_label}")
+            print(f"✅ R3D 预训练模型已加载到 {r3d_wrapper.backend_label}")
         except Exception as e:
-            print(f"⚠️ Failed to load R3D pretrained model: {e}")
+            print(f"⚠️ 加载 R3D 预训练模型失败：{e}")
             r3d_wrapper = None
     elif load_r3d_pre and enable_r3d and not TORCH_AVAILABLE:
-        print("⚠️ R3D pretrained requested but PyTorch is not installed — skipping")
+        print("⚠️ 已请求 R3D 预训练模型，但未安装 PyTorch，已跳过")
 
     # ---- R3D custom fine-tuned (PyTorch) ----
     if load_r3d_custom and enable_r3d and TORCH_AVAILABLE:
@@ -1322,8 +1322,8 @@ def load_models(device="AUTO", openvino_threads=None,
                 r3d_custom_device = r3d_device or _PYTORCH_DEVICE
                 custom_variant = (R3D_CUSTOM_META or {}).get('model_variant') or r3d_model_name
                 num_classes = len(R3D_CUSTOM_LABELS)
-                print(f"🔄 Initializing R3D custom model ({num_classes} classes, "
-                      f"variant: {custom_variant}) on {r3d_custom_device}...")
+                print(f"🔄 正在 {r3d_custom_device} 上初始化 R3D 自定义模型"
+                      f"（{num_classes} 个类别，变体：{custom_variant}）…")
                 r3d_custom_wrapper = R3DModelWrapper(
                     model_name=custom_variant,
                     device_str=r3d_custom_device,
@@ -1338,16 +1338,16 @@ def load_models(device="AUTO", openvino_threads=None,
                     'type':    'pytorch',
                     'device':  r3d_custom_wrapper.backend_label,
                 }
-                print(f"✅ R3D custom model loaded on "
+                print(f"✅ R3D 自定义模型已加载到 "
                       f"{r3d_custom_wrapper.backend_label}")
             except Exception as e:
-                print(f"⚠️ Failed to load R3D custom model: {e}")
+                print(f"⚠️ 加载 R3D 自定义模型失败：{e}")
         elif R3D_CUSTOM_LABELS and not R3D_CUSTOM_WEIGHTS_PATH.exists():
-            print(f"⚠️ R3D custom mapping found but weights missing: {R3D_CUSTOM_WEIGHTS_PATH}")
+            print(f"⚠️ 已找到 R3D 自定义映射，但缺少权重：{R3D_CUSTOM_WEIGHTS_PATH}")
         else:
-            print("⚠️ R3D custom requested but mapping file not found — skipping")
+            print("⚠️ 已请求 R3D 自定义模型，但未找到映射文件，已跳过")
     elif load_r3d_custom and enable_r3d and not TORCH_AVAILABLE:
-        print("⚠️ R3D custom requested but PyTorch is not installed — skipping")
+        print("⚠️ 已请求 R3D 自定义模型，但未安装 PyTorch，已跳过")
 
     # ---- Sanity check ----
     loaded = [k for k, v in models_info.items() if v is not None]
@@ -1359,17 +1359,17 @@ def load_models(device="AUTO", openvino_threads=None,
 
     # ---- Summary ----
     print("\n" + "=" * 60)
-    print("📊 MODEL LOADING SUMMARY")
+    print("📊 模型加载汇总")
     print("=" * 60)
-    print(f"  - Encoder:        ✓ Loaded (on {encoder_device})")
-    print(f"  - Custom model:   "
-          f"{'✓ Available (on ' + models_info['custom']['device'] + ')' if models_info['custom'] else '✗ Not loaded'}")
-    print(f"  - Intel model:    "
-          f"{'✓ Available (on ' + models_info['intel']['device'] + ')' if models_info['intel'] else '✗ Not loaded'}")
-    print(f"  - R3D/CUDA:       "
-          f"{'✓ Available (on ' + models_info['cuda']['device'] + ')' if models_info['cuda'] else '✗ Not loaded'}")
-    print(f"  - R3D Custom:     "
-          f"{'✓ Available (' + str(len(R3D_CUSTOM_LABELS)) + ' classes, on ' + models_info['r3d_custom']['device'] + ')' if models_info.get('r3d_custom') else '✗ Not loaded'}")
+    print(f"  - 编码器：        ✓ 已加载（{encoder_device}）")
+    print(f"  - 自定义模型：    "
+          f"{'✓ 可用（' + models_info['custom']['device'] + '）' if models_info['custom'] else '✗ 未加载'}")
+    print(f"  - Intel 模型：    "
+          f"{'✓ 可用（' + models_info['intel']['device'] + '）' if models_info['intel'] else '✗ 未加载'}")
+    print(f"  - R3D/CUDA：      "
+          f"{'✓ 可用（' + models_info['cuda']['device'] + '）' if models_info['cuda'] else '✗ 未加载'}")
+    print(f"  - R3D 自定义：    "
+          f"{'✓ 可用（' + str(len(R3D_CUSTOM_LABELS)) + ' 个类别，' + models_info['r3d_custom']['device'] + '）' if models_info.get('r3d_custom') else '✗ 未加载'}")
     print("=" * 60)
 
     return (
@@ -1583,17 +1583,17 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
 
     # ---- CPU thread budget ----
     cpu_count = os.cpu_count() or 4
-    print(f"📊 CPU cores: {cpu_count} (threads: {cpu_count})")
+    print(f"📊 CPU 核心数：{cpu_count}（线程数：{cpu_count}）")
 
     if openvino_threads is None:
         openvino_threads = max(2, cpu_count // 2)
     os.environ["OMP_NUM_THREADS"] = str(openvino_threads)
     os.environ["MKL_NUM_THREADS"] = str(openvino_threads)
-    print(f"✅ OpenVINO threads: {openvino_threads} | "
-          f"YOLO workers: {yolo_workers} | Preprocess workers: {preprocess_workers}")
+    print(f"✅ OpenVINO 线程：{openvino_threads} | "
+          f"YOLO 工作线程：{yolo_workers} | 预处理线程：{preprocess_workers}")
     if enable_r3d:
-        print(f"✅ R3D model: {r3d_model_name} | FP16: {r3d_half}")
-    print(f"✅ Action models: {action_models}")
+        print(f"✅ R3D 模型：{r3d_model_name} | FP16：{r3d_half}")
+    print(f"✅ 动作模型：{action_models}")
 
     # ---- Parse interesting actions ----
     action_to_model = {}
@@ -1618,7 +1618,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                     action_to_model[key] = (action_id, model_type)
                     # Use get_action_name to get the proper display name (preserves casing)
                     display_name = get_action_name(action_id, model_type)
-                    print(f"📌 Action '{display_name}' → {model_type} model (ID: {action_id})")
+                    print(f"📌 动作“{display_name}”→ {model_type} 模型（ID：{action_id}）")
 
                     # If R3D is enabled and the action is from Kinetics-400 (intel),
                     # also map to cuda when action_models allows it
@@ -1626,7 +1626,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                             and action_models in ('intel_only', 'mixed')):
                         cuda_key = f"{clean_name.lower()}__cuda"
                         action_to_model[cuda_key] = (action_id, 'cuda')
-                        print(f"   ↳ Also mapped to R3D/CUDA model (ID: {action_id})")
+                        print(f"   ↳ 同时映射到 R3D/CUDA 模型（ID：{action_id}）")
 
             except ValueError as e:
                 print(f"⚠️ {e}")
@@ -1656,7 +1656,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
     # encoder pass over the whole video).
     enc_imagenet = bool(models_info.get('custom')) and not models_info.get('intel')
     if enc_imagenet:
-        print("✓ Encoder input: ImageNet-normalised (custom decoder training convention)")
+        print("✓ 编码器输入：ImageNet 标准化（自定义解码器训练约定）")
 
     # ---- Warn if any mapped action refers to a model that didn't load ----
     if action_to_model:
@@ -1665,9 +1665,9 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
             if models_info.get(model_type) is None:
                 missing_models.add(model_type)
         if missing_models:
-            print(f"⚠️ WARNING: Some actions are mapped to models that are NOT loaded: "
-                  f"{missing_models}. Those actions will produce 0 detections.")
-            print(f"   → Check that the corresponding model files exist and action_models='{action_models}' is correct.")
+            print(f"⚠️ 警告：部分动作映射到了尚未加载的模型："
+                  f"{missing_models}。这些动作将产生 0 个检测结果。")
+            print(f"   → 请检查对应模型文件是否存在，并确认 action_models='{action_models}' 设置正确。")
 
     # ---- Single, clear compute-backend label for the progress bar ----
     # PyTorch/CUDA wins the label when active (it does the heavy inference);
@@ -1679,7 +1679,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
         _backend_label = "OpenVINO/GPU"
     else:
         _backend_label = "OpenVINO/CPU"
-    print(f"🎯 Action recognition backend: {_backend_label}")
+    print(f"🎯 动作识别后端：{_backend_label}")
 
     # ---- Preprocessing pipeline ----
     preprocess_pool = PreprocessPipeline(num_workers=preprocess_workers)
@@ -1702,12 +1702,12 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
             )
             person_tracker = PersonTracker(iou_threshold=0.3, max_lost_frames=10)
             action_detector = SmartActionDetector(sticky_frames=15)
-            print(f"🔍 Person detector: YOLOX/OpenVINO "
+            print(f"🔍 人体检测器：YOLOX/OpenVINO "
                   f"({os.path.basename(yolo_detector.model_xml)}, "
-                  f"{yolo_workers} workers, skip: {yolo_skip_frames})")
+                  f"{yolo_workers} 个工作线程，跳帧：{yolo_skip_frames}）")
         except FileNotFoundError as e:
             print(f"⚠️ {e}")
-            print("⚠️ Falling back to full-frame action classification (no person ROIs)")
+            print("⚠️ 正在回退到整帧动作分类（不使用人体 ROI）")
             use_person_detection = False
 
     # ---- Open video ----
@@ -1738,11 +1738,11 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
             if frame_height > 1080 and downscale_factor < 1.0:
                 frame_width = int(frame_width * downscale_factor)
                 frame_height = int(frame_height * downscale_factor)
-                print(f"📏 Downscaling output to {frame_width}x{frame_height}")
+                print(f"📏 正在将输出缩放到 {frame_width}x{frame_height}")
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
             video_writer = ThreadedVideoWriter(annotated_output, fourcc, fps,
                                                (frame_width, frame_height))
-            print(f"🎨 Creating annotated video (threaded writer): {annotated_output}")
+            print(f"🎨 正在创建标注视频（多线程写入）：{annotated_output}")
 
         sequence_buffer = []
         all_actions = []
@@ -1856,13 +1856,13 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
 
             if progress_callback and time.time() - last_gui_update > 0.1:
                 progress_msg = f"Warm-up: {warm_up_frame_count}/{warm_up_frames_needed} frames"
-                progress_callback(warm_up_frame_count, warm_up_frames_needed, "Warm-up",
+                progress_callback(warm_up_frame_count, warm_up_frames_needed, "预热",
                                   progress_msg)
                 last_gui_update = time.time()
 
-        print(f"✅ Warm-up complete: Buffer has {len(sequence_buffer)}/{SEQUENCE_LENGTH} frames")
+        print(f"✅ 预热完成：缓冲区已有 {len(sequence_buffer)}/{SEQUENCE_LENGTH} 帧")
         if raw_frame_buffer is not None:
-            print(f"   R3D raw buffer: {len(raw_frame_buffer)}/{R3D_CLIP_LENGTH} frames")
+            print(f"   R3D 原始缓冲区：{len(raw_frame_buffer)}/{R3D_CLIP_LENGTH} 帧")
 
         # =============================================
         # MAIN PROCESSING LOOP
@@ -1886,10 +1886,10 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
             # window at all. A caller that passes no preview_fn leaves the
             # window on its placeholder, which looks exactly like a preview
             # that broke.
-            print(f"🖼️ Live preview: {'on' if preview_fn is not None else 'not wired by this caller'}")
+            print(f"🖼️ 实时预览：{'开启' if preview_fn is not None else '当前调用方未接入'}")
             while True:
                 if cancel_flag and cancel_flag.is_set():
-                    print("⚠️ Action detection canceled by user.")
+                    print("⚠️ 用户已取消动作检测。")
                     break
 
                 watchdog.beat('waiting for a decoded frame')
@@ -1984,8 +1984,8 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                             # to tell apart from a preview that was never fed.
                             if not _preview_failed:
                                 _preview_failed = True
-                                print(f"⚠️ Live preview frame failed "
-                                      f"(reported once per run): {e}")
+                                print(f"⚠️ 实时预览帧处理失败 "
+                                      f"（每次运行仅报告一次）：{e}")
 
                 # ---- Action recognition (sampled frames) ----
                 if frame_id % sample_rate == 0:
@@ -2059,7 +2059,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                                         decoder_cache['cuda'] = softmax(r3d_logits)
                                     except Exception as e:
                                         if debug:
-                                            print(f"⚠️ R3D inference error: {e}")
+                                            print(f"⚠️ R3D 推理出错：{e}")
 
                                 # Custom R3D (fine-tuned)
                                 r3d_custom_info = models_info.get('r3d_custom')
@@ -2070,7 +2070,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                                         decoder_cache['r3d_custom'] = softmax(r3d_custom_logits)
                                     except Exception as e:
                                         if debug:
-                                            print(f"⚠️ R3D custom inference error: {e}")
+                                            print(f"⚠️ R3D 自定义模型推理出错：{e}")
 
                                 r3d_time += time.time() - r3d_start
 
@@ -2112,7 +2112,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                                         detection_count += 1
                                         if debug:
                                             print(f"{use_timestamp_str} -> {action_name} "
-                                                  f"[{model_type}] (score:{score:.3f})")
+                                                  f"[{model_type}]（得分：{score:.3f}）")
                             else:
                                 # === Scan all loaded models ===
                                 all_probabilities = {}
@@ -2156,7 +2156,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                                     detection_count += 1
                                     if debug:
                                         print(f"{use_timestamp_str} -> {action_name} "
-                                              f"[{model_type}] (score:{score:.3f})")
+                                              f"[{model_type}]（得分：{score:.3f}）")
 
                             if frame_detections:
                                 frame_detections.sort(key=lambda x: x[1], reverse=True)
@@ -2212,7 +2212,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                         f"Backend: {_backend_label} | "
                         f"Models: {action_models}")
                     progress_callback(processed_frames, expected_processed_frames,
-                                      "Action Recognition", progress_msg)
+                                      "动作识别", progress_msg)
                     last_gui_update = current_time
 
             # =============================================
@@ -2251,7 +2251,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                                 decoder_cache['cuda'] = softmax(r3d_logits)
                             except Exception as e:
                                 if debug:
-                                    print(f"⚠️ R3D flush error: {e}")
+                                    print(f"⚠️ R3D 刷新缓冲区出错：{e}")
 
                         r3d_custom_info = models_info.get('r3d_custom')
                         if r3d_custom_info is not None:
@@ -2261,7 +2261,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                                 decoder_cache['r3d_custom'] = softmax(r3d_custom_logits)
                             except Exception as e:
                                 if debug:
-                                    print(f"⚠️ R3D custom flush error: {e}")
+                                    print(f"⚠️ R3D 自定义模型刷新缓冲区出错：{e}")
 
                     if interesting_actions_set:
                         for key, (action_id, model_type) in action_to_model.items():
@@ -2346,14 +2346,14 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
             # Never release a capture another thread may still be reading:
             # leaking one VideoCapture for the rest of the process costs a
             # handle, while releasing it under a live read takes the run down.
-            print("⚠️ Decode thread would not stop — leaving the "
-                  "capture open rather than releasing it underneath the reader.")
+            print("⚠️ 解码线程无法停止；为避免读取过程中释放资源，"
+                  "将暂时保持视频捕获对象开启。")
             release_capture = False
         if release_capture:
             cap.release()
         if video_writer:
             video_writer.release()
-            print(f"✅ Annotated video saved: {annotated_output}")
+            print(f"✅ 标注视频已保存：{annotated_output}")
         if yolo_detector:
             yolo_detector.shutdown()
         if person_tracker:
@@ -2373,7 +2373,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
         if raw_frame_buffer is not None:
             raw_frame_buffer.clear()
         gc.collect()
-        print("✅ Cleanup complete")
+        print("✅ 清理完成")
 
     if progress_callback:
         total_time = time.time() - start_time
@@ -2383,29 +2383,29 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
         if r3d_wrapper:
             final_msg += f" | R3D time: {r3d_time:.1f}s"
         progress_callback(processed_frames, expected_processed_frames,
-                          "Action Recognition Complete", final_msg)
+                          "动作识别完成", final_msg)
 
     # ---- Performance summary ----
     print("\n" + "=" * 60)
-    print("🏁 PERFORMANCE SUMMARY")
+    print("🏁 性能汇总")
     print("=" * 60)
     total_time = time.time() - start_time
-    print(f"Total time:           {total_time:.1f}s")
-    print(f"Total frames:         {frame_id}")
-    print(f"Overall FPS:          {frame_id / total_time:.1f}")
-    print(f"Action models:        {action_models}")
-    print(f"YOLO time:            {yolo_time:.1f}s ({yolo_time / total_time * 100:.1f}%)")
-    print(f"Preprocess time:      {preprocess_time:.1f}s ({preprocess_time / total_time * 100:.1f}%)")
-    print(f"Inference time (OV):  {inference_time:.1f}s ({inference_time / total_time * 100:.1f}%)")
+    print(f"总耗时：             {total_time:.1f} 秒")
+    print(f"总帧数：             {frame_id}")
+    print(f"总体 FPS：            {frame_id / total_time:.1f}")
+    print(f"动作模型：            {action_models}")
+    print(f"YOLO 耗时：           {yolo_time:.1f} 秒（{yolo_time / total_time * 100:.1f}%）")
+    print(f"预处理耗时：          {preprocess_time:.1f} 秒（{preprocess_time / total_time * 100:.1f}%）")
+    print(f"推理耗时（OV）：      {inference_time:.1f} 秒（{inference_time / total_time * 100:.1f}%）")
     if r3d_wrapper:
-        print(f"R3D/CUDA time:        {r3d_time:.1f}s ({r3d_time / total_time * 100:.1f}%)")
-    print(f"Draw time:            {draw_time:.1f}s ({draw_time / total_time * 100:.1f}%)")
-    print(f"CPU cores:            {os.cpu_count()}")
-    print(f"OpenVINO threads:     {openvino_threads}")
+        print(f"R3D/CUDA 耗时：       {r3d_time:.1f} 秒（{r3d_time / total_time * 100:.1f}%）")
+    print(f"绘制耗时：            {draw_time:.1f} 秒（{draw_time / total_time * 100:.1f}%）")
+    print(f"CPU 核心数：          {os.cpu_count()}")
+    print(f"OpenVINO 线程数：     {openvino_threads}")
     if r3d_wrapper:
         device_name = _r3d_device_name(r3d_wrapper)
-        print(f"R3D device:           {device_name}")
-    print(f"Actions detected:     {detection_count}")
+        print(f"R3D 设备：            {device_name}")
+    print(f"检测到的动作数：      {detection_count}")
     print("=" * 60)
 
     return all_actions, action_bboxes_cache
@@ -2421,11 +2421,11 @@ def print_top_actions(all_actions, top_n=20):
             timestamp, frame_id, action_id, score, action_name, model_type = item
             mins, secs = divmod(int(timestamp), 60)
             print(f"{i + 1:2d}. {mins:02d}:{secs:02d} -> {action_name} "
-                  f"[{model_type}] (score:{score:.3f})")
+                  f"[{model_type}]（得分：{score:.3f}）")
         else:
             timestamp, frame_id, action_id, score, action_name = item
             mins, secs = divmod(int(timestamp), 60)
-            print(f"{i + 1:2d}. {mins:02d}:{secs:02d} -> {action_name} (score:{score:.3f})")
+            print(f"{i + 1:2d}. {mins:02d}:{secs:02d} -> {action_name}（得分：{score:.3f}）")
 
 
 def print_most_common_actions(all_actions, top_n=20):
@@ -2433,7 +2433,7 @@ def print_most_common_actions(all_actions, top_n=20):
     counter = Counter(action_names)
     print(f"\nTop {min(top_n, len(counter))} most common actions:")
     for i, (action_name, count) in enumerate(counter.most_common(top_n)):
-        print(f"{i + 1:2d}. {action_name} ({count} occurrences)")
+        print(f"{i + 1:2d}. {action_name}（出现 {count} 次）")
 
 
 def detect_action_sequences(all_actions, score_threshold=0.01, min_duration=1.0):
@@ -2476,7 +2476,7 @@ def print_action_sequences(all_actions):
         model_info = f" [{seq.get('model_type', 'unknown')}]" if 'model_type' in seq else ""
         print(f"{i + 1:2d}. {seq['action_name']}{model_info} Duration: {duration:.1f}s "
               f"({start_mins:02d}:{start_secs:02d} - {end_mins:02d}:{end_secs:02d}) "
-              f"Max score: {seq['max_score']:.3f}")
+              f"最高得分：{seq['max_score']:.3f}")
 
 
 # =============================
@@ -2525,24 +2525,24 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     print("=" * 60)
-    print("🎯 ACTION RECOGNITION — OPTIMIZED + R3D/CUDA")
+    print("🎯 动作识别 — 优化版 + R3D/CUDA")
     print("=" * 60)
-    print(f"Input: {args.input}")
-    print(f"OpenVINO device: {args.device}")
-    print(f"Person detection: {'ENABLED' if args.use_person_detection else 'DISABLED'}")
+    print(f"输入：{args.input}")
+    print(f"OpenVINO 设备：{args.device}")
+    print(f"人体检测：{'已启用' if args.use_person_detection else '已禁用'}")
     if args.use_person_detection:
-        print(f"YOLO workers: {args.yolo_workers}, Skip frames: {args.yolo_skip}")
-        print(f"Downscale factor: {args.downscale_factor}")
-    print(f"Bounding boxes: {'ENABLED' if args.draw_bboxes else 'DISABLED'}")
+        print(f"YOLO 工作线程：{args.yolo_workers}，跳帧：{args.yolo_skip}")
+        print(f"缩放系数：{args.downscale_factor}")
+    print(f"检测框：{'已启用' if args.draw_bboxes else '已禁用'}")
     if args.annotated_output:
-        print(f"Annotated output: {args.annotated_output}")
+        print(f"标注视频输出：{args.annotated_output}")
     if args.openvino_threads:
-        print(f"OpenVINO threads: {args.openvino_threads}")
-    print(f"Preprocess workers: {args.preprocess_workers}")
+        print(f"OpenVINO 线程数：{args.openvino_threads}")
+    print(f"预处理工作线程：{args.preprocess_workers}")
     if args.enable_r3d:
-        print(f"R3D model: {args.r3d_model} | FP16: {not args.r3d_no_half}")
+        print(f"R3D 模型：{args.r3d_model} | FP16：{not args.r3d_no_half}")
     else:
-        print("R3D/CUDA: DISABLED")
+        print("R3D/CUDA：已禁用")
     print("=" * 60)
 
     try:
@@ -2578,4 +2578,4 @@ if __name__ == "__main__":
         gc.collect()
         if CUDA_AVAILABLE:
             torch.cuda.empty_cache()
-        print("🧹 Final cleanup complete")
+        print("🧹 最终清理完成")

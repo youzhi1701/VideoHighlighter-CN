@@ -6733,8 +6733,7 @@ class VideoHighlighterGUI(QWidget):
         classes = vocabulary.get("classes") or []
         if not classes:
             self.append_log(
-                "⚠️ This report has no detections to build a rule from. Run "
-                "object detection with a transcript first.")
+                "⚠️ 此报告没有可用于生成规则的检测结果。请先运行物体检测并生成转录文本。")
             return
 
         # What the user wants tested. Seeded from the strongest gap so the
@@ -6783,9 +6782,8 @@ class VideoHighlighterGUI(QWidget):
 
         if proposal is None:
             self.append_log(
-                "⚠️ No usable rule came back. Either the claim cannot be "
-                "expressed with the classes this video has, or the model named "
-                "one it does not have — the debug log says which.")
+                "⚠️ 未生成可用规则。可能是该内容无法用当前视频已有类别表达，"
+                "或模型引用了视频中不存在的类别；详细原因请查看调试日志。")
             from modules.ui import pro_offer
             self._show_pro_offer(pro_offer.for_unbuildable_rule())
             return
@@ -6810,10 +6808,9 @@ class VideoHighlighterGUI(QWidget):
             self.append_log(f"⚠️ 无法写入规则：{exc}")
             return
         self.append_log(
-            f"✅ Added '{proposal.name}' to {os.path.basename(rules_path)}. "
-            "Re-run with object detection forced (a cached detection pass "
-            "skips the composition engine), then tell the chapters again — the "
-            "report will say whether it fired.")
+            f"✅ 已将“{proposal.name}”添加到 {os.path.basename(rules_path)}。"
+            "请强制重新运行物体检测（仅使用缓存检测会跳过构图引擎），"
+            "然后重新生成章节讲述；报告会显示该规则是否触发。")
 
     @staticmethod
     def _claim_second(report, claim):

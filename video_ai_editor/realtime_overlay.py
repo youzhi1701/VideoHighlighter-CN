@@ -188,7 +188,7 @@ class LazyBBoxLoader:
         if self._loaded:
             return
         
-        print(f"📦 Loading bbox data from cache...")
+        print("📦 正在从缓存加载检测框数据…")
         
         # ── Object bboxes ──
         self._object_bboxes = self.cache_data.get('object_bboxes', []) or []
@@ -211,8 +211,8 @@ class LazyBBoxLoader:
         self._loaded = True
         self._load_count = len(self._object_bboxes) + len(self._action_bboxes)
         
-        print(f"   Loaded {self._load_count} bbox overlays")
-        print(f"   Object bboxes: {len(self._object_bboxes)}, Action bboxes: {len(self._action_bboxes)}")
+        print(f"   已加载 {self._load_count} 个检测框叠加项")
+        print(f"   物体检测框：{len(self._object_bboxes)}，动作检测框：{len(self._action_bboxes)}")
         
         # Build timestamp index
         self._build_timestamp_index()
@@ -222,7 +222,7 @@ class LazyBBoxLoader:
         
         if HAS_PSUTIL:
             mem = psutil.Process().memory_info().rss / (1024 * 1024)
-            print(f"   Memory after load: {mem:.1f} MB")
+            print(f"   加载后内存占用：{mem:.1f} MB")
     
     def _build_timestamp_index(self):
         """Build index of timestamps for fast lookup."""
@@ -242,7 +242,7 @@ class LazyBBoxLoader:
             self._timestamp_index[bucket].append(('action', entry))
         
         self._index_loaded = True
-        print(f"   Built index: {len(self._timestamp_index)} time buckets")
+        print(f"   已建立索引：{len(self._timestamp_index)} 个时间区块")
     
     def get_bboxes_for_time(self, time_seconds: float, window: float = 0.5) -> List[dict]:
         """
@@ -665,7 +665,7 @@ class OverlayScene(QGraphicsScene):
         self._bbox_loader = bbox_loader
         self._detection_count = bbox_loader.get_total_count()
         self._build_class_colors()
-        print(f"🎯 Lazy loader ready: {self._detection_count} bboxes available")
+        print(f"🎯 延迟加载器已就绪：共有 {self._detection_count} 个检测框可用")
         return self._detection_count
 
     def _build_class_colors(self):
@@ -728,7 +728,7 @@ class OverlayScene(QGraphicsScene):
                     self._bbox_items[bucket].append(item)
             
             if new_items:
-                print(f"📦 Added {len(new_items)} new bbox items at {time_seconds:.1f}s")
+                print(f"📦 在 {time_seconds:.1f} 秒处新增 {len(new_items)} 个检测框项目")
         
         # Calculate which buckets are in range
         half_window_buckets = max(1, int(window * 10))
@@ -1565,7 +1565,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     if len(sys.argv) < 2:
-        print("Usage: python realtime_overlay.py <video_path> [cache.json]")
+        print("用法：python realtime_overlay.py <视频路径> [cache.json]")
         sys.exit(1)
 
     video_path = sys.argv[1]
@@ -1606,12 +1606,12 @@ if __name__ == "__main__":
     def _capture():
         b64 = preview.capture_frame_base64()
         if b64:
-            print(f"Captured frame: {len(b64) // 1024} KB base64")
+            print(f"已截取画面：{len(b64) // 1024} KB（base64）")
             # Save to file for inspection
             import base64 as b64mod
             with open("captured_frame.jpg", "wb") as f:
                 f.write(b64mod.b64decode(b64))
-            print("Saved to captured_frame.jpg")
+            print("已保存到 captured_frame.jpg")
         else:
             print("未能截取画面")
     capture_btn.clicked.connect(_capture)

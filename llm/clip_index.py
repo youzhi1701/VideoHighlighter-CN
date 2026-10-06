@@ -118,7 +118,7 @@ class ClipEmbedder(ClipFramePrefilter):
         Row 0 is the positive prompt. Feed straight to `score_embeddings`.
         """
         if self._labels is None:
-            raise RuntimeError("Call set_query() first.")
+            raise RuntimeError("请先调用 set_query()。")
         return self.embed_texts(self._labels)
 
     def embed_frames_bgr(self, frames_bgr: Sequence) -> np.ndarray:
@@ -127,7 +127,7 @@ class ClipEmbedder(ClipFramePrefilter):
         from PIL import Image
 
         if self._model is None:
-            raise RuntimeError("Call load() first.")
+            raise RuntimeError("请先调用 load()。")
         images = [Image.fromarray(cv2.cvtColor(f, cv2.COLOR_BGR2RGB)) for f in frames_bgr]
         out = self.infer([_DUMMY_TEXT], images)
         img = l2_normalize(to_numpy(out.image_embeds).astype(np.float32))
@@ -141,7 +141,7 @@ class ClipEmbedder(ClipFramePrefilter):
         from PIL import Image
 
         if self._model is None:
-            raise RuntimeError("Call load() first.")
+            raise RuntimeError("请先调用 load()。")
         dummy = Image.fromarray(
             np.zeros((_DUMMY_IMAGE_SIZE, _DUMMY_IMAGE_SIZE, 3), dtype=np.uint8)
         )
@@ -172,7 +172,7 @@ class ClipFrameIndex:
                  meta: Optional[dict] = None):
         if len(timestamps) != len(embeddings):
             raise ValueError(
-                f"{len(timestamps)} timestamps vs {len(embeddings)} embeddings"
+                f"时间戳数量 {len(timestamps)} 与嵌入数量 {len(embeddings)} 不一致"
             )
         self.timestamps = np.asarray(timestamps, dtype=np.float32)
         # Stored fp16 (1 KB/frame), computed in fp32.
@@ -214,7 +214,7 @@ class ClipFrameIndex:
         free rather than corrupting the memo)."""
         emb = np.asarray(embeddings, dtype=np.float32)
         if len(timestamps) != len(emb):
-            raise ValueError(f"{len(timestamps)} timestamps vs {len(emb)} embeddings")
+            raise ValueError(f"时间戳数量 {len(timestamps)} 与嵌入数量 {len(emb)} 不一致")
         new_ts, new_emb = [], []
         seen = set()
         for ts, e in zip(timestamps, emb):
@@ -329,11 +329,11 @@ def open_memo(video_path: str, model_id: str, cache_path: Optional[str] = None,
         try:
             memo = ClipFrameIndex.load(path)
             if memo.matches(video_path, model_id):
-                print(f"🧠 CLIP memo: {len(memo)} frames already embedded")
+                print(f"🧠 CLIP 缓存：已有 {len(memo)} 帧完成嵌入")
                 return memo, path
-            print("🧠 CLIP memo: cache is for different video/model, starting fresh")
+            print("🧠 CLIP 缓存：缓存对应其他视频或模型，将重新开始")
         except Exception as e:
-            print(f"⚠️  CLIP memo: unreadable cache ({e}); starting fresh")
+            print(f"⚠️  CLIP 缓存：无法读取缓存（{e}），将重新开始")
     meta = _video_fingerprint(video_path, model_id)
     return ClipFrameIndex(np.zeros(0, dtype=np.float32),
                           np.zeros((0, 512), dtype=np.float32), meta), path
@@ -355,7 +355,7 @@ def build_index(video_path: str, interval: float = 1.0, batch: int = 16,
 
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        raise RuntimeError(f"Could not open video: {video_path}")
+        raise RuntimeError(f"无法打开视频：{video_path}")
     fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
     step = max(1, int(round(fps * interval)))
@@ -398,7 +398,7 @@ def build_index(video_path: str, interval: float = 1.0, batch: int = 16,
     meta["logit_scale"] = pf.logit_scale
     elapsed = time.perf_counter() - t0
     per = (elapsed / len(timestamps) * 1000) if timestamps else 0.0
-    print(f"🧠 CLIP index: {len(timestamps)} frames in {elapsed:.1f}s ({per:.1f} ms/frame)")
+    print(f"🧠 CLIP 索引：{len(timestamps)} 帧，用时 {elapsed:.1f} 秒（{per:.1f} 毫秒/帧）")
     return ClipFrameIndex(np.array(timestamps, dtype=np.float32), embeddings, meta)
 
 
@@ -410,16 +410,16 @@ def load_or_build(video_path: str, cache_path: str, interval: float = 1.0,
         try:
             idx = ClipFrameIndex.load(cache_path)
             if idx.matches(video_path, model_id, interval):
-                print(f"🧠 CLIP index: reusing {len(idx)} cached frames")
+                print(f"🧠 CLIP 索引：复用 {len(idx)} 个缓存帧")
                 return idx
-            print("🧠 CLIP index: cache stale (video/settings changed), rebuilding")
+            print("🧠 CLIP 索引：缓存已过期（视频或设置已变化），正在重建")
         except Exception as e:
-            print(f"⚠️  CLIP index: unreadable cache ({e}); rebuilding")
+            print(f"⚠️  CLIP 索引：无法读取缓存（{e}），正在重建")
     idx = build_index(video_path, interval=interval, device=device, **kw)
     try:
         idx.save(cache_path)
     except Exception as e:
-        print(f"⚠️  CLIP index: could not cache ({e})")
+        print(f"⚠️  CLIP 索引：无法写入缓存（{e}）")
     return idx
 
 
@@ -451,9 +451,9 @@ def main():
         vec = pf.embed_texts([f"a photo of {q}"])[0]
         scores = idx.query_vector(vec, negatives=negatives, logit_scale=scale)
         ms = (time.perf_counter() - t0) * 1000
-        print(f"\n🔎 {q!r} — scored {len(idx)} frames in {ms:.1f} ms")
+        print(f"\n🔎 {q!r} —— 已为 {len(idx)} 帧评分，用时 {ms:.1f} 毫秒")
         for ts, sc in idx.top_k(scores, args.topk):
-            print(f"   {int(ts)//60:>3d}:{int(ts)%60:02d}  ({ts:7.1f}s)   score={sc:.3f}")
+            print(f"   {int(ts)//60:>3d}:{int(ts)%60:02d}  ({ts:7.1f}秒)   分数={sc:.3f}")
 
 
 if __name__ == "__main__":

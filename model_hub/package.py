@@ -145,7 +145,7 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
         if custom:
             report.errors.append(f"不支持自定义算子域：{', '.join(custom)}")
             return
-        report.info.append(f"ONNX opset {max((o.version for o in proto.opset_import if o.domain in ('', 'ai.onnx')), default='?')}")
+        report.info.append(f"ONNX 算子集版本 {max((o.version for o in proto.opset_import if o.domain in ('', 'ai.onnx')), default='?')}")
         del proto
     except ImportError:
         report.warnings.append("未安装 onnx 包，已跳过外部数据检查。")
@@ -176,7 +176,7 @@ def check_onnx(folder: Path, manifest: Manifest, report: CheckReport) -> None:
     if inp.type not in ("tensor(float)", "tensor(float16)", "tensor(uint8)"):
         report.errors.append(f"不支持的输入类型：{inp.type}。")
         return
-    report.info.append(f"Input {inp.name} {expected} {inp.type}")
+    report.info.append(f"输入 {inp.name} {expected} {inp.type}")
 
     dtype = {"tensor(float)": np.float32, "tensor(float16)": np.float16,
              "tensor(uint8)": np.uint8}[inp.type]
@@ -229,9 +229,9 @@ def check_package(folder: str | Path, require_compliance: bool = True,
     if verify_hashes and model.is_file():
         expected = manifest.sha256.get(manifest.model_file)
         if not expected:
-            report.errors.append("Manifest has no sha256 for model.onnx; rebuild the package.")
+            report.errors.append("清单中缺少 model.onnx 的 sha256；请重新构建模型包。")
         elif sha256_file(model) != expected:
-            report.errors.append("model.onnx does not match the sha256 in the manifest.")
+            report.errors.append("model.onnx 与清单中的 sha256 不匹配。")
         else:
             report.info.append("校验值验证通过")
 
@@ -250,7 +250,7 @@ def build_package(model_file: str | Path, manifest: Manifest, out_dir: str | Pat
     if out.exists() and any(out.iterdir()):
         raise FileExistsError(f"{out} 不是空文件夹；请选择一个空文件夹。")
     if model_file.suffix.lower() != ".onnx":
-        raise ValueError("Only .onnx models can be published. Export your model to ONNX first.")
+        raise ValueError("只能发布 .onnx 模型。请先将模型导出为 ONNX。")
     out.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(model_file, out / "model.onnx")
     if license_file:

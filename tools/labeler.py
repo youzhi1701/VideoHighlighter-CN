@@ -159,7 +159,7 @@ class VideoLabelerGUI:
                         internal.append(_make_internal(display, internal))
                     return internal
         except Exception as e:
-            print(f"⚠️ Could not read {self.keypoint_config_file}: {e}")
+            print(f"⚠️ 无法读取 {self.keypoint_config_file}：{e}")
         return list(self.DEFAULT_KEYPOINTS)
 
     def _save_keypoint_names(self):
@@ -2193,7 +2193,7 @@ class VideoLabelerGUI:
         listbox.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         scrollbar.config(command=listbox.yview)
         
-        listbox.insert(tk.END, f"{'Status':<8} {'Video Name':<50} {'Frames':<15} {'Date':<20}")
+        listbox.insert(tk.END, f"{'状态':<8} {'视频名称':<50} {'帧数':<15} {'日期':<20}")
         listbox.insert(tk.END, "=" * 95)
         
         completed_count = 0
@@ -2205,20 +2205,20 @@ class VideoLabelerGUI:
                 frames = status.get('frames_labeled', 0)
                 total = status.get('total_frames', 0)
                 date = status.get('completion_date', '')[:10]
-                listbox.insert(tk.END, f"{'✅ DONE':<8} {video_name:<50} {frames}/{total:<10} {date:<20}")
+                listbox.insert(tk.END, f"{'✅ 完成':<8} {video_name:<50} {frames}/{total:<10} {date:<20}")
                 completed_count += 1
             elif status and not status.get('completed', False):
                 frames = status.get('frames_labeled', 0)
                 total = status.get('total_frames', 0)
-                listbox.insert(tk.END, f"{'🔄 IN PROGRESS':<8} {video_name:<50} {frames}/{total:<10} {'':<20}")
+                listbox.insert(tk.END, f"{'🔄 进行中':<8} {video_name:<50} {frames}/{total:<10} {'':<20}")
             else:
-                listbox.insert(tk.END, f"{'⬜ PENDING':<8} {video_name:<50} {'0/0':<15} {'':<20}")
+                listbox.insert(tk.END, f"{'⬜ 待处理':<8} {video_name:<50} {'0/0':<15} {'':<20}")
         
         total = len(self.video_files)
         percent = (completed_count/total*100) if total > 0 else 0
         
         listbox.insert(tk.END, "=" * 95)
-        listbox.insert(tk.END, f"📊 Completed: {completed_count}/{total} videos ({percent:.1f}%)")
+        listbox.insert(tk.END, f"📊 已完成：{completed_count}/{total} 个视频（{percent:.1f}%）")
         
         btn_frame = ttk.Frame(progress_window)
         btn_frame.pack(pady=5)
@@ -2309,7 +2309,7 @@ class VideoLabelerGUI:
             with open(export_path, 'w') as f:
                 json.dump(data, f, indent=2)
 
-            print(f"[export] saved → {export_path}")
+            print(f"[导出] 已保存 → {export_path}")
             self.current_video_exported = True
 
             if self.video_path:

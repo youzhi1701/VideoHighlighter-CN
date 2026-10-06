@@ -101,8 +101,8 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:
 
     src = _bundled_ffmpeg()
     if not src:
-        log_fn("❌ No ffmpeg found. It normally comes with the app's requirements "
-               "(imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.")
+        log_fn("❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装 "
+               "（imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.")
         return None
 
     bin_dir = _bin_dir()

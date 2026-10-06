@@ -306,7 +306,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
             if split_was_detected:
                 bbox_count = split_corrected_count
                 if idx % 10 == 0:
-                    print(f"  🔬 Frame {idx}: Split detected! 2→{split_corrected_count} ({split_reason})")
+                    print(f"  🔬 帧 {idx}：检测到人物拆分误判！2→{split_corrected_count}（{split_reason}）")
 
         # ===== METHOD 2: POSE SKELETON COUNTING =====
         pose_count = 0
@@ -340,7 +340,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
             pose_count = max(raw_pose_count, cluster_count)
 
             if raw_pose_count != cluster_count:
-                print(f"    🔬 Pose: raw_skeletons={raw_pose_count}, clustered={cluster_count} → using {pose_count}")
+                print(f"    🔬 姿态：原始骨架={raw_pose_count}，聚类后={cluster_count} → 使用 {pose_count}")
 
         # ===== METHOD 3: COMBINED ANALYSIS =====
         combined_count = bbox_count
@@ -366,7 +366,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
                 if has_evidence_of_third_person(
                     merged_bbox, partial_detections, keypoint_clusters, w, h
                 ):
-                    print(f"  🔍 Frame {idx}: Adjacency bonus - likely 3rd person")
+                    print(f"  🔍 帧 {idx}：相邻检测加成——可能存在第 3 人")
                     combined_count = 3
 
         bbox_counts.append(bbox_count)
@@ -385,8 +385,8 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
         })
 
         if idx % 10 == 0:
-            filter_info = f", filtered={filtered_by_pose}" if filtered_by_pose > 0 else ""
-            print(f"  Frame {idx+1}/{len(frame_indices)}: bbox={bbox_count}, pose={pose_count}, combined={combined_count}{filter_info}")
+            filter_info = f"，已过滤={filtered_by_pose}" if filtered_by_pose > 0 else ""
+            print(f"  帧 {idx+1}/{len(frame_indices)}：边界框={bbox_count}，姿态={pose_count}，综合={combined_count}{filter_info}")
 
     cap.release()
 
@@ -397,12 +397,12 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
 
     # ===== FINAL COUNT DETERMINATION =====
     total_filtered = sum(pose_filtered_counts)
-    print(f"  📊 Detection summary:")
-    print(f"     BBox counts: {bbox_counts}")
-    print(f"     Pose counts: {pose_counts}")
-    print(f"     Combined counts: {combined_counts}")
+    print("  📊 检测摘要：")
+    print(f"     边界框计数：{bbox_counts}")
+    print(f"     姿态计数：{pose_counts}")
+    print(f"     综合计数：{combined_counts}")
     if total_filtered > 0:
-        print(f"     🔬 Pose validation filtered {total_filtered} false positives across all frames")
+        print(f"     🔬 姿态验证在全部帧中共过滤 {total_filtered} 个误检")
 
     # Use combined counts as primary method
     counts_array = np.array(combined_counts)
@@ -413,8 +413,8 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
     counter = Counter(combined_counts)
     most_common = counter.most_common(3)
 
-    print(f"  Statistics: mean={mean_count:.1f}, median={median_count}, max={max_count}")
-    print(f"  Most common: {most_common}")
+    print(f"  统计：均值={mean_count:.1f}，中位数={median_count}，最大值={max_count}")
+    print(f"  最常见计数：{most_common}")
 
     # Decision logic: use MODE-FIRST approach (more robust than max)
     # Previously used max(candidate_counts) which favored occasional split detections
@@ -423,16 +423,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
     mode_count = most_common[0][0]
     mode_freq = most_common[0][1] / len(combined_counts)
     
-    print(f"  📊 Mode: {mode_count} (appears {mode_freq:.0%} of frames)")
+    print(f"  📊 众数：{mode_count}（出现在 {mode_freq:.0%} 的帧中）")
     
     if mode_freq >= 0.40:
         # Strong mode - trust it
         final_count = mode_count
-        print(f"  ✅ Using mode (strong): {final_count}")
+        print(f"  ✅ 使用众数（证据充分）：{final_count}")
     else:
         # No strong mode - use median (robust to outliers)
         final_count = int(round(median_count))
-        print(f"  ✅ Using median (no strong mode): {final_count}")
+        print(f"  ✅ 使用中位数（无明显众数）：{final_count}")
     
     # Upgrade to higher count ONLY with strong multi-method agreement
     # For upgrading 1→2: require BOTH bbox AND pose to find 2+ in ≥30% of frames
@@ -441,9 +441,9 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
         pose_2plus = sum(1 for c in pose_counts if c >= 2) / len(pose_counts) if pose_counts else 0
         if bbox_2plus >= 0.30 and pose_2plus >= 0.30:
             final_count = 2
-            print(f"  ⬆️ Upgraded 1→2: bbox_2+={bbox_2plus:.0%}, pose_2+={pose_2plus:.0%}")
+            print(f"  ⬆️ 从 1 人提升为 2 人：bbox_2+={bbox_2plus:.0%}，pose_2+={pose_2plus:.0%}")
         else:
-            print(f"  ℹ️ Staying at 1: bbox_2+={bbox_2plus:.0%}, pose_2+={pose_2plus:.0%} (need both ≥30%)")
+            print(f"  ℹ️ 保持 1 人：bbox_2+={bbox_2plus:.0%}，pose_2+={pose_2plus:.0%}（两者都需 ≥30%）")
 
     # Override logic: if max_count is significantly higher and appears FREQUENTLY enough
     if max_count >= 3:
@@ -456,7 +456,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
         pose_3_pct = pose_3plus / total if total > 0 else 0
         combined_3_pct = combined_3plus / total if total > 0 else 0
         
-        print(f"  📊 3+ frequency: bbox={bbox_3_pct:.0%} ({bbox_3plus}/{total}), pose={pose_3_pct:.0%} ({pose_3plus}/{total}), combined={combined_3_pct:.0%} ({combined_3plus}/{total})")
+        print(f"  📊 3+ 人出现频率：bbox={bbox_3_pct:.0%}（{bbox_3plus}/{total}），pose={pose_3_pct:.0%}（{pose_3plus}/{total}），综合={combined_3_pct:.0%}（{combined_3plus}/{total}）")
         
         # Require 3+ to appear in at least 20% of frames from BOTH bbox AND pose methods
         # OR combined ≥35% (stricter than before)
@@ -464,16 +464,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames
         combined_strong = combined_3_pct >= 0.35
         
         if both_agree or combined_strong:
-            print(f"  ⚠️ Strong evidence of 3: bbox={bbox_3_pct:.0%}, pose={pose_3_pct:.0%}, combined={combined_3_pct:.0%}")
+            print(f"  ⚠️ 有充分证据表明为 3 人：bbox={bbox_3_pct:.0%}，pose={pose_3_pct:.0%}，综合={combined_3_pct:.0%}")
             final_count = max(final_count, 3)
         else:
-            print(f"  ℹ️ Max=3 but insufficient agreement: bbox={bbox_3_pct:.0%}, pose={pose_3_pct:.0%}, combined={combined_3_pct:.0%}")
+            print(f"  ℹ️ 最大计数为 3，但一致性不足：bbox={bbox_3_pct:.0%}，pose={pose_3_pct:.0%}，综合={combined_3_pct:.0%}")
 
     # Special case: if mean is 2.3+ and max is 3+, likely 3 people
     # Also require 3+ in at least 10% of frames
     combined_3_freq = sum(1 for c in combined_counts if c >= 3) / len(combined_counts) if combined_counts else 0
     if mean_count >= 2.3 and max_count >= 3 and final_count < 3 and combined_3_freq >= 0.10:
-        print(f"  ⚠️ Overriding to 3: mean={mean_count:.1f}, max={max_count}, freq={combined_3_freq:.0%}")
+        print(f"  ⚠️ 修正为 3 人：均值={mean_count:.1f}，最大值={max_count}，频率={combined_3_freq:.0%}")
         final_count = 3
 
     if return_details:

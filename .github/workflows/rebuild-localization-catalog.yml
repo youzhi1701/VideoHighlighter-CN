@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/rebuild-localization-catalog.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write

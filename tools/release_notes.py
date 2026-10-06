@@ -150,9 +150,16 @@ def collect(since: Optional[str], until: str) -> list[Commit]:
                f"--format=%H{_FIELD}%s{_FIELD}%b{_RECORD}", span)
     commits = []
     for record in raw.split(_RECORD):
-        record = record.strip()
+        # Do not use plain .strip() here: Python treats ASCII field/record
+        # separators as whitespace. For commits with an empty body, stripping
+        # would remove the trailing _FIELD and turn a valid 3-field record into
+        # only 2 fields. Only trim line endings around git's records.
+        record = record.strip("\r\n")
         if record:
-            sha, subject, body = record.split(_FIELD, 2)
+            parts = record.split(_FIELD, 2)
+            if len(parts) != 3:
+                raise ValueError(f"malformed git log record for release notes: {record!r}")
+            sha, subject, body = parts
             commits.append(Commit(sha, subject, body))
     return commits
 

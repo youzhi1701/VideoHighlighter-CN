@@ -135,8 +135,24 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     hits: list[Hit] = []
     try:
         tree = ast.parse(path.read_text(encoding="utf-8"))
-    except (SyntaxError, UnicodeDecodeError):
-        return hits
+    except SyntaxError as exc:
+        # A broken localized string is more serious than untranslated text.
+        # Never silently skip the file: surface the parser error and make CI fail.
+        return [Hit(
+            rel,
+            int(exc.lineno or 0),
+            "python-syntax-error",
+            "critical",
+            clean(f"{exc.msg}（列 {exc.offset or 0}）"),
+        )]
+    except UnicodeDecodeError as exc:
+        return [Hit(
+            rel,
+            0,
+            "python-decode-error",
+            "critical",
+            clean(str(exc)),
+        )]
 
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
@@ -272,9 +288,11 @@ def main() -> int:
     hits = [uniq[k] for k in sorted(uniq)]
     counts = Counter(h.file for h in hits)
     priorities = Counter(h.priority for h in hits)
+    syntax_errors = [h for h in hits if h.kind in {"python-syntax-error", "python-decode-error"}]
 
     payload = {
         "count": len(hits),
+        "syntax_error_count": len(syntax_errors),
         "priority_counts": dict(priorities),
         "files_with_candidates": len(counts),
         "top_files": counts.most_common(30),
@@ -293,6 +311,11 @@ def main() -> int:
     for h in [x for x in hits if x.priority == "high"][:500]:
         print(f"  {h.file}:{h.line} [{h.kind}] {h.text}")
     print(f"report: {args.report}")
+    if syntax_errors:
+        print(f"Python syntax/decode errors: {len(syntax_errors)}")
+        for h in syntax_errors:
+            print(f"  {h.file}:{h.line} [{h.kind}] {h.text}")
+        return 2
     return 0
 
 

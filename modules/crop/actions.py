@@ -422,19 +422,19 @@ def process_video_with_dynamic_crops(input_path, output_folder, yolo_model, crop
     # Release debug writer
     if DEBUG_MODE and DEBUG_CREATE_VIDEOS and debug_writer:
         debug_writer.release()
-        print(f"✅ Debug video saved: {os.path.basename(debug_path)}")
+        print(f"✅ 调试视频已保存：{os.path.basename(debug_path)}")
 
     
-    print(f"✅ {position_text} processing complete for {os.path.basename(input_path)}!")
-    print(f" Frames processed: {frame_count}")
+    print(f"✅ {position_text} 处理完成：{os.path.basename(input_path)}！")
+    print(f" 已处理帧数：{frame_count}")
     
     if DEBUG_MODE and debug_video_folder:
-        print(f"📊 Debug visualizations saved to: {debug_video_folder}")
-        print(f"📸 Debug samples captured: {debug_sample_count}")
+        print(f"📊 调试可视化已保存到：{debug_video_folder}")
+        print(f"📸 已捕获调试样本：{debug_sample_count}")
     
     for i, output_path in enumerate(output_files):
         position = positions[i]
-        print(f" Output {position}: {os.path.basename(output_path)}")
+        print(f" 输出 {position}：{os.path.basename(output_path)}")
     
     return output_files
 
@@ -445,10 +445,10 @@ def copy_video_to_output(input_path, output_folder):
 
     try:
         shutil.copy2(input_path, output_path)
-        print(f"📋 Copied: {filename} (no processing)")
+        print(f"📋 已复制：{filename}（未处理）")
         return output_path
     except Exception as e:
-        print(f"❌ Error copying {filename}: {e}")
+        print(f"❌ 复制 {filename} 时出错：{e}")
         return None
 
 
@@ -480,10 +480,10 @@ def main(input_folder=None, output_folder=None, debug=None, ask_delete=False):
 def _offer_to_delete(handled, ask):
     """Delete the originals of ``handled`` if the person at the console says so."""
     if not handled:
-        print("📁 No new videos were processed (all were already done)")
+        print("📁 没有需要新处理的视频（全部已经完成）")
         return
     if not ask:
-        print("📁 Original videos kept intact")
+        print("📁 原始视频保持不变")
         return
     print("\n" + "="*50)
     response = input("❓ Do you want to delete the original videos? (y/n): ").strip().lower()
@@ -493,13 +493,13 @@ def _offer_to_delete(handled, ask):
         for original_path in handled:
             try:
                 os.remove(original_path)
-                print(f"🗑️ Deleted: {os.path.basename(original_path)}")
+                print(f"🗑️ 已删除：{os.path.basename(original_path)}")
                 deleted_count += 1
             except Exception as e:
-                print(f"❌ Error deleting {original_path}: {e}")
-        print(f"\n✅ Deleted {deleted_count} original video(s)")
+                print(f"❌ 删除 {original_path} 时出错：{e}")
+        print(f"\n✅ 已删除 {deleted_count} 个原始视频")
     else:
-        print("📁 Original videos kept intact")
+        print("📁 原始视频保持不变")
 
 
 def _run_batch(ask_delete=False):
@@ -511,25 +511,25 @@ def _run_batch(ask_delete=False):
     if DEBUG_MODE and DEBUG_OUTPUT_FOLDER:
         os.makedirs(DEBUG_OUTPUT_FOLDER, exist_ok=True)
 
-    print("🚀 Starting SMART batch video processing (Activity-Based Zone Detection)...")
-    print(f"Input folder: {INPUT_FOLDER}")
-    print(f"Output folder: {OUTPUT_FOLDER}")
-    print(f"ROI detection: {'ENABLED' if USE_ROI_DETECTION else 'DISABLED'}")
-    print(f"Smart crop strategy: ENABLED ✨ (Activity-aware, fully automatic)")
-    print(f"Pose validation: ENABLED 🔬 (conf < {POSE_VALIDATION_CONF_THRESHOLD} requires pose keypoints)")
+    print("🚀 开始智能批量视频处理（基于活动区域检测）…")
+    print(f"输入文件夹：{INPUT_FOLDER}")
+    print(f"输出文件夹：{OUTPUT_FOLDER}")
+    print(f"ROI 检测：{'已启用' if USE_ROI_DETECTION else '已禁用'}")
+    print("智能裁剪策略：已启用 ✨（感知活动区域，全自动）")
+    print(f"姿态验证：已启用 🔬（置信度 < {POSE_VALIDATION_CONF_THRESHOLD} 时需要姿态关键点）")
     
     if DEBUG_MODE:
-        print(f"🔍 DEBUG MODE ENABLED - Visualizing {DEBUG_SAMPLES} samples per video")
-        print(f"📁 Debug output folder: {DEBUG_OUTPUT_FOLDER}")
-        print("🎨 Visualization colors:")
-        print("   RED (0, 0, 255) - Original YOLO detections")
-        print("   YELLOW (0, 255, 255) - Expanded boxes")
-        print("   GREEN (0, 255, 0) - Smoothed boxes")
-        print("   BLUE (255, 0, 0) - Final crop regions (good tracking)")
-        print("   MAGENTA (255, 0, 255) - Final crop regions (fallback mode)")
+        print(f"🔍 已启用调试模式——每个视频可视化 {DEBUG_SAMPLES} 个样本")
+        print(f"📁 调试输出文件夹：{DEBUG_OUTPUT_FOLDER}")
+        print("🎨 可视化颜色：")
+        print("   红色 (0, 0, 255) - 原始 YOLO 检测框")
+        print("   黄色 (0, 255, 255) - 扩展检测框")
+        print("   绿色 (0, 255, 0) - 平滑后的检测框")
+        print("   蓝色 (255, 0, 0) - 最终裁剪区域（跟踪正常）")
+        print("   洋红色 (255, 0, 255) - 最终裁剪区域（回退模式）")
         print("-" * 60)
 
-    print("📦 Loading person detector (YOLOX)...")
+    print("📦 正在加载人物检测器（YOLOX）…")
     from modules.vision.detection_backend import YoloxPeopleDetector
     # score_thr, NOT the per-call conf= argument, is what YOLOX filters on:
     # YoloxOpenVINODetector applies `cls_scores > self.score_thr` inside
@@ -540,18 +540,18 @@ def _run_batch(ask_delete=False):
     # Build the detector permissively and let each call site's conf= do the
     # filtering it already thinks it is doing.
     yolo = YoloxPeopleDetector(score_thr=DETECTOR_SCORE_FLOOR)
-    print("✅ Person detector loaded")
+    print("✅ 人物检测器加载完成")
 
     # Load pose model for activity analysis
     pose_model = None
     if USE_POSE_ESTIMATION or USE_ROI_DETECTION:
-        print("📦 Loading pose estimator (RTMPose)...")
+        print("📦 正在加载姿态估计器（RTMPose）…")
         from modules.vision.pose_backend import build_pose_estimator
         pose_model = build_pose_estimator(auto_install=True)
         if pose_model is None:
-            print("ℹ️ Pose estimation unavailable — continuing with person boxes")
+            print("ℹ️ 姿态估计不可用——继续使用人物检测框")
         else:
-            print("✅ Pose estimator loaded")
+            print("✅ 姿态估计器加载完成")
 
     video_extensions = ['*.mp4', '*.avi', '*.mov', '*.mkv', '*.flv', '*.wmv']
     video_files = []
@@ -559,10 +559,10 @@ def _run_batch(ask_delete=False):
         video_files.extend(glob.glob(os.path.join(INPUT_FOLDER, ext)))
 
     if not video_files:
-        print(f"❌ No video files found in {INPUT_FOLDER}")
+        print(f"❌ 在 {INPUT_FOLDER} 中未找到视频文件")
         return
 
-    print(f"📁 Found {len(video_files)} video(s) to process\n")
+    print(f"📁 找到 {len(video_files)} 个待处理视频\n")
 
     all_handled_videos = []
     skipped_videos = []
@@ -572,11 +572,11 @@ def _run_batch(ask_delete=False):
 
         already_processed, processing_type = is_video_already_processed(video_path, OUTPUT_FOLDER)
         if already_processed:
-            print(f"⏭️ [{i}/{len(video_files)}] Skipping {filename} (already processed as {processing_type})")
+            print(f"⏭️ [{i}/{len(video_files)}] 跳过 {filename}（已按 {processing_type} 处理）")
             skipped_videos.append((filename, processing_type))
             continue
 
-        print(f"🔍 [{i}/{len(video_files)}] Investigating {filename}...")
+        print(f"🔍 [{i}/{len(video_files)}] 正在分析 {filename}…")
 
         # ✨ Enhanced people counting
         start_time = time.time()
@@ -588,18 +588,18 @@ def _run_batch(ask_delete=False):
         people_count = people_info['final_count']
         elapsed = time.time() - start_time
         
-        print(f"   👥 Detected {people_count} person(s) in {elapsed:.1f}s")
-        print(f"      Method: {people_info['method']}")
+        print(f"   👥 在 {elapsed:.1f} 秒内检测到 {people_count} 人")
+        print(f"      方法：{people_info['method']}")
         
         # Show detection breakdown if available
         if 'bbox_counts' in people_info and 'pose_counts' in people_info:
             bbox_avg = np.mean(people_info['bbox_counts'])
             pose_avg = np.mean(people_info['pose_counts'])
-            print(f"      Avg BBox: {bbox_avg:.1f}, Avg Pose: {pose_avg:.1f}")
+            print(f"      平均检测框：{bbox_avg:.1f}，平均姿态数：{pose_avg:.1f}")
         
         # Show pose validation stats
         if 'total_pose_filtered' in people_info and people_info['total_pose_filtered'] > 0:
-            print(f"      🔬 Pose validation filtered {people_info['total_pose_filtered']} false positives")
+            print(f"      🔬 姿态验证已过滤 {people_info['total_pose_filtered']} 个误检")
 
         # ===== CORNER CASE OVERRIDE - MODIFIED CONDITION =====
         bbox_counts = people_info.get('bbox_counts', [])
@@ -624,13 +624,13 @@ def _run_batch(ask_delete=False):
         closeup = bool(CLOSEUP_AREA_RATIO and largest
                        and np.median(largest) >= CLOSEUP_AREA_RATIO)
         if closeup:
-            print(f"   🔎 Close-up: biggest person covers {np.median(largest):.0%} of the frame")
+            print(f"   🔎 近景：最大人物约占画面 {np.median(largest):.0%}")
 
         if not closeup and low_yolo_frames >= 0.7 and pose_max >= 3 and people_count <= 2:
-            print(f"   🚨 CORNER CASE DETECTED: YOLO sees 0-1, Pose sees up to {pose_max}")
+            print(f"   🚨 检测到特殊情况：YOLO 仅识别 0-1 人，但姿态最多识别 {pose_max} 人")
 
             if pose_3plus_share >= 0.20:
-                print(f"   ✅ Pose detected {pose_max} skeletons - Overriding without zone check!")
+                print(f"   ✅ 姿态检测到 {pose_max} 个骨架——直接覆盖区域判断！")
                 
                 # Use pose count to determine crop count
                 crop_count = min(pose_max, 3)  # 3 crops max
@@ -641,7 +641,7 @@ def _run_batch(ask_delete=False):
                 people_info['crop_count'] = crop_count
                 people_info['positions'] = positions
                 
-                print(f"   🎬 Processing with {crop_count}-crop (pose-based override)")
+                print(f"   🎬 使用 {crop_count} 路裁剪处理（基于姿态覆盖）")
                 output_files = process_video_with_dynamic_crops(
                     video_path,
                     OUTPUT_FOLDER,
@@ -654,7 +654,7 @@ def _run_batch(ask_delete=False):
                 all_handled_videos.append(video_path)
                 continue
             else:
-                print(f"   ℹ️ 3+ skeletons in only {pose_3plus_share:.0%} of frames, not enough for override")
+                print(f"   ℹ️ 仅 {pose_3plus_share:.0%} 的帧出现 3 个以上骨架，不足以触发覆盖逻辑")
                     # ===== END CORNER CASE OVERRIDE =====
 
         # STEP 2: Determine crop strategy
@@ -664,10 +664,10 @@ def _run_batch(ask_delete=False):
 
         if closeup:
             strategy = "close-up-whole"
-            print(f"   📋 Close-up - keeping the clip whole")
+            print("   📋 近景素材——保留完整片段")
         elif people_count >= MIN_PEOPLE_REQUIRED:
             if people_count >= 4:
-                print(f"   👥👥 4+ people detected - analyzing distribution...")
+                print("   👥👥 检测到 4 人以上——正在分析分布…")
 
                 # Get zone analysis for distribution
                 zone_scores, zone_people, zone_activity, zone_positions = analyze_region_activity(
@@ -679,7 +679,7 @@ def _run_batch(ask_delete=False):
                 center_avg = np.mean(zone_people['center']) if zone_people['center'] else 0
                 right_avg = np.mean(zone_people['right']) if zone_people['right'] else 0
 
-                print(f"   📊 Zone distribution: Left={left_avg:.1f}, Center={center_avg:.1f}, Right={right_avg:.1f}")
+                print(f"   📊 区域分布：左={left_avg:.1f}，中={center_avg:.1f}，右={right_avg:.1f}")
 
                 # Count zones with significant people presence
                 zones_with_people = []
@@ -690,12 +690,12 @@ def _run_batch(ask_delete=False):
                 if right_avg >= ZONE_PEOPLE_MIN:
                     zones_with_people.append('right')
 
-                print(f"   📍 Zones with people (avg >= {ZONE_PEOPLE_MIN}): {zones_with_people}")
+                print(f"   📍 有人物的区域（平均值 >= {ZONE_PEOPLE_MIN}）：{zones_with_people}")
 
                 # Decision logic for 4+ people
                 if len(zones_with_people) >= 3:
                     # People in all 3 zones → use all 3 crops
-                    print(f"   🎯 People in all 3 zones → 3 crops")
+                    print("   🎯 三个区域都有人 → 3 路裁剪")
                     crop_count = 3
                     positions = ['left', 'center', 'right']
                     strategy = "4plus-all-three-zones"
@@ -705,18 +705,18 @@ def _run_batch(ask_delete=False):
                     crop_count = 2
                     positions = zones_with_people
                     strategy = f"4plus-two-zones-{'-'.join(zones_with_people)}"
-                    print(f"   🎯 People in 2 zones → {positions}")
+                    print(f"   🎯 两个区域有人 → {positions}")
 
                 elif len(zones_with_people) == 1:
                     # All concentrated in one zone
                     crop_count = 1
                     positions = zones_with_people
                     strategy = f"4plus-concentrated-{zones_with_people[0]}"
-                    print(f"   🎯 All concentrated in {zones_with_people[0]}")
+                    print(f"   🎯 人物全部集中在 {zones_with_people[0]}")
 
                 else:
                     # Fallback: use all 3 to be safe
-                    print(f"   ⚖️ Can't determine distribution → 3 crops to be safe")
+                    print("   ⚖️ 无法确定分布 → 为稳妥起见使用 3 路裁剪")
                     crop_count = 3
                     positions = ['left', 'center', 'right']
                     strategy = "4plus-fallback-all-three"
@@ -731,14 +731,14 @@ def _run_batch(ask_delete=False):
                     bbox_counts=people_info.get('bbox_counts', []),
                     pose_counts=people_info.get('pose_counts', [])
                 )
-                print(f"   ✅ Strategy: {crop_count}-crop ({strategy})")
-                print(f"      Positions: {positions}")
+                print(f"   ✅ 策略：{crop_count} 路裁剪（{strategy}）")
+                print(f"      位置：{positions}")
         else:
             # Not enough people
             crop_count = 0
             positions = []
             strategy = f"insufficient-people-{people_count}"
-            print(f"   📋 Not enough people for cropping")
+            print("   📋 人数不足，不进行裁剪拆分")
 
         # Add crop strategy to people_info for debugging
         people_info['crop_strategy'] = strategy
@@ -748,7 +748,7 @@ def _run_batch(ask_delete=False):
         # STEP 3: Process or copy based on strategy
         # Fully automatic - if crop_count is 0, copy; otherwise crop
         if crop_count >= MIN_PEOPLE_REQUIRED and len(positions) >= MIN_PEOPLE_REQUIRED:
-            print(f"   🎬 Processing with {crop_count}-crop: {positions}")
+            print(f"   🎬 正在使用 {crop_count} 路裁剪处理：{positions}")
             
             # Modify process_video_with_dynamic_crops to accept people_info
             output_files = process_video_with_dynamic_crops(
@@ -761,14 +761,14 @@ def _run_batch(ask_delete=False):
             )
         else:
             reason = "strategy" if crop_count == 0 else "people count"
-            print(f"   📋 Copying {filename} as-is (reason: {reason}, strategy: {strategy})")
+            print(f"   📋 原样复制 {filename}（原因：{reason}，策略：{strategy}）")
             
             # Copy the video
             copy_video_to_output(video_path, OUTPUT_FOLDER)
             
             # ==== CREATE DEBUG VIDEO FOR SKIPPED VIDEO (if debug mode is enabled) ====
             if DEBUG_MODE and DEBUG_CREATE_VIDEOS:
-                print(f"   🎥 Creating debug video for skipped video...")
+                print("   🎥 正在为跳过的视频创建调试视频…")
                 
                 # Create a dummy detector with the attributes that create_enhanced_debug_frame expects
                 class DummyDetector:
@@ -809,7 +809,7 @@ def _run_batch(ask_delete=False):
                     frame_count = 0
                     sample_interval = 30
                     
-                    print(f"      Debug video: {debug_filename}")
+                    print(f"      调试视频：{debug_filename}")
                     
                     while True:
                         ret, frame = cap.read()
@@ -859,7 +859,7 @@ def _run_batch(ask_delete=False):
                         frame_count += 1
                     
                     debug_writer.release()
-                    print(f"      ✅ Debug video saved")
+                    print("      ✅ 调试视频已保存")
                 
                 cap.release()
 
@@ -892,43 +892,43 @@ def _run_batch(ask_delete=False):
                 with open(people_info_path, 'w') as f:
                     json.dump(serializable_info, f, indent=2)
                 
-                print(f"   💾 Saved people count info to: {os.path.basename(people_info_path)}")
+                print(f"   💾 人数统计信息已保存到：{os.path.basename(people_info_path)}")
             else:
                 reason = "strategy" if crop_count == 0 else "people count"
-                print(f"   📋 Copying {filename} as-is (reason: {reason}, strategy: {strategy})")
+                print(f"   📋 原样复制 {filename}（原因：{reason}，策略：{strategy}）")
                 copy_video_to_output(video_path, OUTPUT_FOLDER)
 
             all_handled_videos.append(video_path)
 
     print("\n" + "="*60)
-    print("📊 PROCESSING SUMMARY")
+    print("📊 处理汇总")
     print("="*60)
 
     if skipped_videos:
-        print(f"⏭️ Skipped {len(skipped_videos)} video(s):")
+        print(f"⏭️ 已跳过 {len(skipped_videos)} 个视频：")
         for filename, processing_type in skipped_videos:
             print(f"   - {filename} ({processing_type})")
 
     if all_handled_videos:
-        print(f"✅ Processed {len(all_handled_videos)} video(s)")
+        print(f"✅ 已处理 {len(all_handled_videos)} 个视频")
         
         if DEBUG_MODE:
-            print(f"🔍 Debug visualizations saved to: {DEBUG_OUTPUT_FOLDER}")
+            print(f"🔍 调试可视化已保存到：{DEBUG_OUTPUT_FOLDER}")
             for video_path in all_handled_videos:
                 base_name = os.path.splitext(os.path.basename(video_path))[0]
                 debug_folder = os.path.join(DEBUG_OUTPUT_FOLDER, base_name)
                 if os.path.exists(debug_folder):
                     debug_files = glob.glob(os.path.join(debug_folder, "*_debug.jpg"))
-                    print(f"   {base_name}: {len(debug_files)} debug images")
+                    print(f"   {base_name}：{len(debug_files)} 张调试图片")
 
     _offer_to_delete(all_handled_videos, ask_delete)
 
-    print("\n🎉 Batch processing complete!")
+    print("\n🎉 批量处理完成！")
 
 if __name__ == "__main__":
-    print("Script starting...")
+    print("脚本正在启动…")
     try:
         main(ask_delete=True)
     except Exception as e:
-        print(f"\n❌ SCRIPT CRASHED: {e}")
+        print(f"\n❌ 脚本崩溃：{e}")
         import traceback

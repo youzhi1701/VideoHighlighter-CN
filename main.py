@@ -828,7 +828,7 @@ class UpdateCheckWorker(QThread):
             info = update_check.check_for_update(force=self.force)
         except Exception as e:
             # An update check must never be the reason anything goes wrong.
-            print(f"update_check: check failed ({type(e).__name__}: {e})")
+            print(f"更新检查失败（{type(e).__name__}：{e}）")
             if self.force:
                 self.nothing.emit("当前无法检查更新。")
             return
@@ -837,7 +837,7 @@ class UpdateCheckWorker(QThread):
         elif self.force:
             # The automatic check says nothing when there is nothing; a user who
             # pressed a button is owed an answer either way.
-            self.nothing.emit(f"当前已是最新版本（{__version__}).")
+            self.nothing.emit(f"当前已是最新版本（{__version__}）。")
 
 
 class UpdateInstallWorker(QThread):
@@ -868,7 +868,7 @@ class UpdateInstallWorker(QThread):
                 should_cancel=lambda: self._cancel,
             )
         except Exception as e:
-            print(f"update_install: unexpected failure ({type(e).__name__}: {e})")
+            print(f"更新安装发生意外错误（{type(e).__name__}：{e}）")
             result = update_install.InstallResult(
                 ok=False, message=f"更新失败：{e}")
         self.finished_with.emit(result)
@@ -3584,8 +3584,8 @@ class VideoHighlighterGUI(QWidget):
         self.update_get_btn.setVisible(not can_install)
 
         self.update_banner.setVisible(True)
-        print(f"update_check: {info.version} available (running {__version__})"
-              f"{' [self-install]' if can_install else ''}")
+        print(f"发现可用更新：{info.version}（当前运行 {__version__}）"
+              f"{' [支持应用内安装]' if can_install else ''}")
 
     def _sweep_updated_files(self):
         from modules.update import update_apply
@@ -3593,11 +3593,10 @@ class VideoHighlighterGUI(QWidget):
         try:
             freed = update_apply.sweep_old(update_apply.install_root())
         except Exception as e:
-            print(f"update_apply: sweep failed ({e})")
+            print(f"更新清理失败（{e}）")
             return
         if freed:
-            print(f"update_apply: reclaimed {freed / (1024 ** 2):.1f} MB "
-                  "from the previous update")
+            print(f"已从上一次更新中回收 {freed / (1024 ** 2):.1f} MB 空间")
 
     def _install_update(self):
         """Download and apply the pending release."""
@@ -3675,7 +3674,7 @@ class VideoHighlighterGUI(QWidget):
             subprocess.Popen(update_apply.relaunch_command(),
                              cwd=update_apply.install_root(), close_fds=True)
         except Exception as e:
-            print(f"update_install: could not relaunch ({e})")
+            print(f"更新后无法重新启动程序（{e}）")
             return
         QApplication.quit()
 
@@ -7342,7 +7341,7 @@ if __name__ == "__main__":
         idx = sys.argv.index("--timeline")
         video = sys.argv[idx + 1] if len(sys.argv) > idx + 1 else ""
         if not video or not os.path.exists(video):
-            print(f"--timeline needs an existing video path (got {video!r})")
+            print(f"--timeline 需要一个已存在的视频路径（当前为 {video!r}）")
             _hard_exit(2)
         from signal_timeline_viewer import SignalTimelineWindow
         win = SignalTimelineWindow(video)
@@ -7353,13 +7352,13 @@ if __name__ == "__main__":
     # reporting through the window build (the remaining seconds) and follows
     # the app's theme. begin() closes the native splash once this is painted.
     startup_splash.begin(f"VideoHighlighter {__edition__}",
-                         f"Version {__version__}", steps=2)
+                         f"版本 {__version__}", steps=2)
 
     # Reopen the live debug-log window if it was on last session (needs the
     # QApplication, hence here and not earlier).
     debug_console.restore_console_preference()
 
-    startup_splash.stage("Building the workspace…")
+    startup_splash.stage("正在构建工作区…")
     gui = VideoHighlighterGUI()
     gui.show()
     startup_splash.finish(gui)

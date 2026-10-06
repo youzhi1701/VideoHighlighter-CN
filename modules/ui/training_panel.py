@@ -459,7 +459,7 @@ class ObjectTrainingSection(QWidget):
                 from training.train_estimate import frames_in_store
                 self._frames = frames_in_store(store)
             except Exception as exc:            # noqa: BLE001
-                print(f"[training] could not count frames: {exc}")
+                print(f"[训练] 无法统计帧数：{exc}")
                 self._frames = (0, 0)
             self._refresh_estimate()
         else:
@@ -512,7 +512,7 @@ class ObjectTrainingSection(QWidget):
                     try:
                         device, name = _probe_training_device()
                     except Exception as exc:    # noqa: BLE001
-                        print(f"[training] device probe failed: {exc}")
+                        print(f"[训练] 设备探测失败：{exc}")
                         device, name = "cpu", ""
                     self._device_found.emit(device, name)
 
@@ -531,7 +531,7 @@ class ObjectTrainingSection(QWidget):
                 store=ThroughputStore(default_store_path()).load(),
                 pretrained_cached=os.path.exists(pretrained_path(size)))
         except Exception as exc:                # noqa: BLE001
-            print(f"[training] estimate failed: {exc}")
+            print(f"[训练] 时间估算失败：{exc}")
             self.estimate_label.setText("")
             return
         self._estimate_seconds = est.seconds
@@ -824,7 +824,7 @@ class ActionTrainingWorker(QObject):
             for line in self._process.stdout:
                 line = line.rstrip()
                 if line:
-                    print(f"[actions] {line}")   # the debug log keeps everything
+                    print(f"[动作训练] {line}")   # the debug log keeps everything
                     note = self._read(line) or note
             code = self._process.wait()
 
@@ -1027,7 +1027,7 @@ class ActionTrainingSection(QWidget):
             backend = str(getattr(info, "backend_name", "CPU"))
             gpu_present = bool(getattr(info, "gpu_available", False))
         except Exception as exc:                    # pragma: no cover - defensive
-            print(f"[training] device detection failed: {exc}")
+            print(f"[训练] 设备检测失败：{exc}")
 
         has_cuda = backend.upper().startswith("CUDA")
 
@@ -1245,7 +1245,7 @@ class TrainingPanel(QWidget):
             tabs.addTab(self.teach, "从视频学习")
         except Exception as exc:                # pragma: no cover - never cost the rest
             self.teach = None
-            print(f"[training] teach panel unavailable: {exc}")
+            print(f"[训练] 教学面板不可用：{exc}")
         tabs.addTab(self.objects, "物体")
         tabs.addTab(self.actions, "动作")
 
@@ -1271,7 +1271,7 @@ class TrainingPanel(QWidget):
             devices = describe_devices()
         except Exception as exc:                # pragma: no cover - defensive
             devices = []
-            print(f"[training] could not list devices: {exc}")
+            print(f"[训练] 无法列出设备：{exc}")
 
         if devices:
             label.setText("训练硬件：" + "；".join(devices))

@@ -107,7 +107,7 @@ def write_config(*, edition: str, tag: str) -> Path:
     """
     path = CONFIG_PATHS[edition.lower()]
     if not path.exists():
-        raise SystemExit(f"no committed config for {edition}: {path}")
+        raise SystemExit(f"{edition} 没有已提交的配置：{path}")
 
     config = make_config(edition=edition, tag=tag)
     try:
@@ -118,17 +118,17 @@ def write_config(*, edition: str, tag: str) -> Path:
         config["notes"] = existing["notes"]
 
     path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
-    print(f"OK {path} (tag={tag})")
+    print(f"完成 {path}（标签={tag}）")
     return path
 
 
 def build_zip(*, edition: str, tag: str, out: Path) -> Path:
     if not BOOTSTRAP.is_dir():
-        raise SystemExit(f"bootstrap folder missing: {BOOTSTRAP}")
+        raise SystemExit(f"缺少引导安装目录：{BOOTSTRAP}")
 
     missing = [name for name in ZIP_MEMBERS[:2] if not (BOOTSTRAP / name).exists()]
     if missing:
-        raise SystemExit(f"missing bootstrap files: {', '.join(missing)}")
+        raise SystemExit(f"缺少引导安装文件：{', '.join(missing)}")
 
     config = make_config(edition=edition, tag=tag)
     staging = out.parent / f".bootstrap-staging-{out.stem}"
@@ -152,8 +152,8 @@ def build_zip(*, edition: str, tag: str, out: Path) -> Path:
         staging.rmdir()
 
     size_kb = out.stat().st_size / 1024
-    print(f"OK {out} ({size_kb:.1f} KB)")
-    print(f"   edition={edition} tag={tag} repo={config['repo']}")
+    print(f"完成 {out}（{size_kb:.1f} KB）")
+    print(f"   版本类型={edition} 标签={tag} 仓库={config['repo']}")
     return out
 
 
@@ -163,24 +163,23 @@ def main(argv: list[str] | None = None) -> int:
         "--edition",
         choices=("free", "pro"),
         required=True,
-        help="Free (public GitHub) or Pro (pinned tag; LS for customers).",
+        help="Free（公开 GitHub）或 Pro（固定标签；面向客户）。",
     )
     parser.add_argument(
         "--tag",
         default=None,
-        help="Release tag, e.g. 0.9.0 or 0.9.0-Pro. Defaults to version.py.",
+        help="Release 标签，例如 0.9.0 或 0.9.0-Pro；默认取自 version.py。",
     )
     parser.add_argument(
         "--write-config",
         action="store_true",
-        help="Rewrite the committed bootstrap config for this edition instead "
-             "of building the zip. Run this after bumping version.py.",
+        help="重写该版本类型已提交的引导配置，而不是构建 zip；更新 version.py 后运行。",
     )
     parser.add_argument(
         "--out",
         type=Path,
         default=ROOT / "packaging" / "bootstrap" / "00-VideoHighlighter-Windows-Setup.zip",
-        help="Output zip path (00- prefix keeps it first on the release Assets list).",
+        help="输出 zip 路径（00- 前缀可使其排在 Release 资源列表首位）。",
     )
     args = parser.parse_args(argv)
     tag = args.tag or default_tag(args.edition)

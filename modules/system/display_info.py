@@ -21,13 +21,13 @@ import sys
 def _screen_line(screen) -> str:
     geometry = screen.geometry()
     available = screen.availableGeometry()
-    return (f"   {screen.name() or 'screen'}: "
-            f"{geometry.width()}x{geometry.height()} at "
-            f"({geometry.x()},{geometry.y()}), "
-            f"usable {available.width()}x{available.height()}, "
-            f"ratio {screen.devicePixelRatio():g}, "
-            f"{screen.logicalDotsPerInch():.0f} logical DPI, "
-            f"{screen.physicalDotsPerInch():.0f} physical")
+    return (f"   {screen.name() or '屏幕'}: "
+            f"{geometry.width()}x{geometry.height()}，位置 "
+            f"({geometry.x()},{geometry.y()})，"
+            f"可用区域 {available.width()}x{available.height()}，"
+            f"像素比 {screen.devicePixelRatio():g}，"
+            f"逻辑 DPI {screen.logicalDotsPerInch():.0f}，"
+            f"物理 DPI {screen.physicalDotsPerInch():.0f}")
 
 
 def describe(app) -> list:
@@ -37,26 +37,26 @@ def describe(app) -> list:
         screens = list(app.screens())
         primary = app.primaryScreen()
     except Exception as e:  # noqa: BLE001 - diagnostics must not raise
-        return [f"   (could not read the screens: {type(e).__name__}: {e})"]
+        return [f"   （无法读取显示器信息：{type(e).__name__}：{e}）"]
 
     for screen in screens:
         try:
-            mark = " (primary)" if screen is primary else ""
+            mark = "（主显示器）" if screen is primary else ""
             lines.append(_screen_line(screen) + mark)
         except Exception as e:  # noqa: BLE001
-            lines.append(f"   (a screen would not describe itself: {e})")
+            lines.append(f"   （无法读取此显示器详情：{e}）")
 
     factor = os.environ.get("QT_SCALE_FACTOR")
     rounding = os.environ.get("QT_SCALE_FACTOR_ROUNDING_POLICY")
-    lines.append(f"   QT_SCALE_FACTOR={factor or '(unset)'}, "
-                 f"rounding={rounding or '(default)'}, "
+    lines.append(f"   QT_SCALE_FACTOR={factor or '（未设置）'}, "
+                 f"rounding={rounding or '（默认）'}, "
                  f"platform={sys.platform}")
     return lines
 
 
 def log(app, log_fn=print) -> None:
     """Report the display setup once, at startup."""
-    log_fn("🖥️ Displays:")
+    log_fn("🖥️ 显示器：")
     for line in describe(app):
         log_fn(line)
 
@@ -71,10 +71,10 @@ def log_window_size(window, label: str, log_fn=print) -> None:
     try:
         size = window.size()
         ratio = window.devicePixelRatioF()
-        state = "maximised" if window.isMaximized() else (
-            "fullscreen" if window.isFullScreen() else "windowed")
-        log_fn(f"🖥️ {label}: {size.width()}x{size.height()} logical, "
-               f"{int(size.width() * ratio)}x{int(size.height() * ratio)} "
-               f"physical, {state}")
+        state = "最大化" if window.isMaximized() else (
+            "全屏" if window.isFullScreen() else "窗口")
+        log_fn(f"🖥️ {label}：逻辑尺寸 {size.width()}x{size.height()}，"
+               f"物理尺寸 {int(size.width() * ratio)}x{int(size.height() * ratio)}，"
+               f"状态：{state}")
     except Exception as e:  # noqa: BLE001 - diagnostics must not raise
-        log_fn(f"🖥️ {label}: size unavailable ({type(e).__name__}: {e})")
+        log_fn(f"🖥️ {label}：无法读取尺寸（{type(e).__name__}：{e}）")

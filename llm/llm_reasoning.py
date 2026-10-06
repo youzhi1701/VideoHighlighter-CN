@@ -265,9 +265,9 @@ class VideoReasoningEngine:
         elif len(categories) == 1:
             cat = list(categories)[0]
             if density > 2.0:
-                return f"高强度 {cat} 活动过程"
+                return "高强度同类动作过程"
             else:
-                return f"持续的 {cat} 活动"
+                return "持续的同类动作"
         else:
             if density > 2.0:
                 return "包含多种活动的快速动作过程"

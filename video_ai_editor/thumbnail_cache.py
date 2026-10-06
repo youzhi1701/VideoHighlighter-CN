@@ -630,9 +630,9 @@ class ThumbnailCache(QObject):
         """A frame this source could not produce. Said once, then counted."""
         self._gaps += 1
         if self._gaps == 1:
-            print(f"⚠️ No thumbnail at {time_ms / 1000:.1f}s "
-                  f"({self._src_w}x{self._src_h}) — leaving the slot empty "
-                  f"rather than decoding the whole frame")
+            print(f"⚠️ {time_ms / 1000:.1f} 秒处没有缩略图 "
+                  f"（{self._src_w}x{self._src_h}），将保留空位，"
+                  f"避免解码完整大帧")
         if repaint_trace is not None:
             repaint_trace.note("thumb.gap", t_ms=time_ms, h=height,
                                total=self._gaps)
@@ -647,14 +647,14 @@ class ThumbnailCache(QObject):
         else in the log.
         """
         message = (error or "").strip().splitlines()
-        message = message[-1] if message else "no output"
+        message = message[-1] if message else "无输出"
         key = (hw, message)
         with self._lock:
             if key in self._reported_failures:
                 return
             self._reported_failures.add(key)
-        via = hw or "software"
-        print(f"⚠️ Thumbnail decode via {via} failed: {message}")
+        via = hw or "软件解码"
+        print(f"⚠️ 通过 {via} 解码缩略图失败：{message}")
         if repaint_trace is not None:
             repaint_trace.note("thumb.decoder_failed", via=via, error=message)
 

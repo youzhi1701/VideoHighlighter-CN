@@ -1379,15 +1379,15 @@ class SignalTimelineWindow(QMainWindow):
                 wf_len = len(self.waveform) if getattr(self, "waveform", None) else 0
                 delta = player_dur - cache_dur
                 debug_log(
-                    f"⏱ SYNC: player_duration={player_dur:.3f}s "
-                    f"cache/scene video_duration={cache_dur:.3f}s "
-                    f"delta(player-cache)={delta:+.3f}s waveform_points={wf_len}"
+                    f"⏱ 同步诊断：播放器时长={player_dur:.3f}秒 "
+                    f"缓存/场景时长={cache_dur:.3f}秒 "
+                    f"播放器-缓存差值={delta:+.3f}秒 波形点数={wf_len}"
                 )
                 if abs(delta) > 0.3:
                     debug_log(
-                        f"⚠️ SYNC: duration mismatch {delta:+.3f}s — waveform is "
-                        f"stretched over cache duration while the playhead uses the "
-                        f"player clock, so they will drift by ~{abs(delta):.2f}s by the end."
+                        f"⚠️ 同步诊断：时长不一致 {delta:+.3f}秒——波形按缓存时长拉伸，"
+                        f"而播放头使用播放器时钟，因此到结尾时预计会偏移约 "
+                        f"{abs(delta):.2f}秒。"
                     )
 
     def update_time_display(self, position):

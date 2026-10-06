@@ -213,11 +213,11 @@ def extract_audio_peaks(video_path, threshold_db=-20, chunk_duration_ms=10, merg
         event_center = (current_event_start + current_event_end) / 2
         peaks.append(round(event_center, 3))
         
-        print(f"✓ Found {len(peaks)} audio peaks")
+        print(f"✓ 找到 {len(peaks)} 个音频峰值")
         return peaks
 
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"❌ ffmpeg failed: {e}")
+        raise RuntimeError(f"❌ ffmpeg 执行失败：{e}")
     finally:
         # Clean up temporary file
         try:

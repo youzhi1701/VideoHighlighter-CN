@@ -573,8 +573,8 @@ def main():
     for ch in chapters:
         print(f"{ch['timestamp']}  {ch['title']:<14} "
               f"{format_timestamp(ch['duration']):>8}  "
-              f"{ch['shots']:>4} shots  {ch['pace']:<10} "
-              f"novelty {ch['boundary_score']:.3f}")
+              f"{ch['shots']:>4} 个镜头  {ch['pace']:<10} "
+              f"新颖度 {ch['boundary_score']:.3f}")
 
     if args.ffmetadata:
         with open(args.ffmetadata, "w", encoding="utf-8") as fh:

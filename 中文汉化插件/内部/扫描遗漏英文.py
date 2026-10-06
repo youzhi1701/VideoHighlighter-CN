@@ -352,7 +352,15 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
             for key, val in zip(node.keys, node.values):
                 k = string_value(key) if key else None
                 if k and UI_KEY_RE.match(k):
-                    add(hits, rel, val, "python-ui-dict", "medium", string_value(val), allow)
+                    value = string_value(val)
+                    # Status/result fields often carry protocol tokens consumed
+                    # by code rather than text shown to a person. Translating
+                    # values such as success/ok/SKIPPED/cancelled would break
+                    # control flow while making the scan count look better.
+                    if k.lower() in {"status", "result"} and value and re.fullmatch(
+                            r"[A-Za-z][A-Za-z0-9_.-]*", clean(value)):
+                        continue
+                    add(hits, rel, val, "python-ui-dict", "medium", value, allow)
 
     # Deep pass: runtime/user-facing strings emitted indirectly from GUI files.
     # This catches status/error/progress signals and helper-returned text that

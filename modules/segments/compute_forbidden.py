@@ -270,4 +270,4 @@ if __name__ == "__main__":
     print(f"\n排除区间（{len(ranges)}）：")
     for a, b in ranges[:20]:
         print(f"  {a:.1f}s – {b:.1f}s")
-    print(f"forbidden_boxes_by_frame: {len(boxes)} frame(s)")
+    print(f"逐帧排除框：共 {len(boxes)} 帧")

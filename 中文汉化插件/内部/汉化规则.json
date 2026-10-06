@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "9a3d9cebd820e677277ff84e397d29f7c6fb262a"
+    "head_commit": "21736e1936b933d359c46117e8911c82fb7eb08f"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -21711,6 +21711,150 @@
       "before": "      ClipPackDownloaded := FetchComponent('{#ClipPackAsset}', '{#ClipPackSha256}',",
       "after": "  finally",
       "hunk": "@@ -331,14 +334,14 @@ begin"
+    },
+    {
+      "id": "packaging/installer/videohighlighter-packs.iss#17",
+      "file": "packaging/installer/videohighlighter-packs.iss",
+      "source": "  WizardForm.StatusLabel.Caption := 'Unpacking NVIDIA GPU acceleration (this takes a few minutes)...';",
+      "target": "  WizardForm.StatusLabel.Caption := '正在解压 NVIDIA GPU 加速组件（可能需要几分钟）…';",
+      "before": "  Staging := Target + '.partial';",
+      "after": "  WizardForm.Refresh;",
+      "hunk": "@@ -372,7 +375,7 @@ var"
+    },
+    {
+      "id": "packaging/installer/videohighlighter-packs.iss#18",
+      "file": "packaging/installer/videohighlighter-packs.iss",
+      "source": "  MsgBox('Could not install NVIDIA GPU acceleration. VideoHighlighter is '\n    + 'installed and will run on the processor; run Setup again to retry.',",
+      "target": "  MsgBox('无法安装 NVIDIA GPU 加速组件。VideoHighlighter 已安装完成，'\n    + '当前将使用 CPU 运行；如需重试，请重新运行安装程序。',",
+      "before": "  end;",
+      "after": "    mbError, MB_OK);",
+      "hunk": "@@ -385,8 +388,8 @@ begin"
+    },
+    {
+      "id": "packaging/installer/videohighlighter-packs.iss#19",
+      "file": "packaging/installer/videohighlighter-packs.iss",
+      "source": "  WizardForm.StatusLabel.Caption := 'Unpacking the visual search model...';",
+      "target": "  WizardForm.StatusLabel.Caption := '正在解压视觉搜索模型…';",
+      "before": "  Target := ExpandConstant('{app}\\models\\{#ClipDirName}');",
+      "after": "  WizardForm.Refresh;",
+      "hunk": "@@ -398,7 +401,7 @@ var"
+    },
+    {
+      "id": "packaging/installer/videohighlighter-packs.iss#20",
+      "file": "packaging/installer/videohighlighter-packs.iss",
+      "source": "  MsgBox('Could not install the visual search model. Everything else works; '\n    + 'run Setup again to add it.', mbError, MB_OK);",
+      "target": "  MsgBox('无法安装视觉搜索模型，其他功能仍可正常使用；'\n    + '如需添加该模型，请重新运行安装程序。', mbError, MB_OK);",
+      "before": "  end;",
+      "after": "end;",
+      "hunk": "@@ -412,8 +415,8 @@ begin"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#1",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "",
+      "target": "[Languages]\nName: \"chinesesimplified\"; MessagesFile: \"ChineseSimplified.isl\"\n",
+      "before": "",
+      "after": "[Files]",
+      "hunk": "@@ -106,6 +106,9 @@ SolidCompression=yes"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#2",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "Name: \"desktopicon\"; Description: \"Create a &desktop shortcut\"",
+      "target": "Name: \"desktopicon\"; Description: \"创建桌面快捷方式(&D)\"",
+      "before": "[Tasks]",
+      "after": "",
+      "hunk": "@@ -117,15 +120,15 @@ Source: \"{#EmbeddedArchive}\"; DestDir: \"{tmp}\"; Flags: nocompression deleteafter"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#3",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "Name: \"{group}\\Uninstall {#AppName}\"; Filename: \"{uninstallexe}\"",
+      "target": "Name: \"{group}\\卸载 {#AppName}\"; Filename: \"{uninstallexe}\"",
+      "before": "Name: \"{group}\\{#AppName}\"; Filename: \"{app}\\{#AppExe}\"",
+      "after": "Name: \"{autodesktop}\\{#AppName}\"; Filename: \"{app}\\{#AppExe}\"; Tasks: desktopicon",
+      "hunk": "@@ -117,15 +120,15 @@ Source: \"{#EmbeddedArchive}\"; DestDir: \"{tmp}\"; Flags: nocompression deleteafter"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#4",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "Filename: \"{app}\\{#AppExe}\"; Description: \"Launch {#AppName}\"; Flags: nowait postinstall skipifsilent",
+      "target": "Filename: \"{app}\\{#AppExe}\"; Description: \"启动 {#AppName}\"; Flags: nowait postinstall skipifsilent",
+      "before": "[Run]",
+      "after": "",
+      "hunk": "@@ -117,15 +120,15 @@ Source: \"{#EmbeddedArchive}\"; DestDir: \"{tmp}\"; Flags: nocompression deleteafter"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#5",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "      IntToStr(Progress div 1048576) + ' of ' + IntToStr(ProgressMax div 1048576) + ' MB');",
+      "target": "      IntToStr(Progress div 1048576) + ' / ' + IntToStr(ProgressMax div 1048576) + ' MB');",
+      "before": "    DownloadPage.SetText(FileName,",
+      "after": "  Result := True;",
+      "hunk": "@@ -144,15 +147,15 @@ function OnDownloadProgress(const Url, FileName: String; const Progress, Progres"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#6",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "    'Downloading {#AppName}',\n    'The application files are fetched from GitHub. This is a large download.',",
+      "target": "    '正在下载 {#AppName}',\n    '正在从 GitHub 获取应用程序文件，下载体积较大，请保持网络连接。',",
+      "before": "  DownloadPage := CreateDownloadPage(",
+      "after": "    @OnDownloadProgress);",
+      "hunk": "@@ -144,15 +147,15 @@ function OnDownloadProgress(const Url, FileName: String; const Progress, Progres"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#7",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "    MsgBox('Not enough free space on ' + Drive + ' ' + What + '.' + #13#10#13#10\n      + 'Needed: about ' + IntToStr(Need) + ' MB' + #13#10\n      + 'Available: ' + IntToStr(Free) + ' MB' + #13#10#13#10\n      + 'Free up space, or go Back and choose a folder on another drive.',",
+      "target": "    MsgBox('磁盘 ' + Drive + ' 可用空间不足（' + What + '）。' + #13#10#13#10\n      + '需要：约 ' + IntToStr(Need) + ' MB' + #13#10\n      + '可用：' + IntToStr(Free) + ' MB' + #13#10#13#10\n      + '请释放磁盘空间，或返回上一步选择其他磁盘上的安装目录。',",
+      "before": "  if Result then",
+      "after": "      mbError, MB_OK);",
+      "hunk": "@@ -183,10 +186,10 @@ function ShortOfSpace(const Drive, What: String; Need, Free: Int64): Boolean;"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#8",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "      'for the install', NeedApp + NeedTmp, FreeSpaceMB(AppDir));",
+      "target": "      '用于安装', NeedApp + NeedTmp, FreeSpaceMB(AppDir));",
+      "before": "    Result := not ShortOfSpace(ExtractFileDrive(AppDir),",
+      "after": "    Exit;",
+      "hunk": "@@ -207,11 +210,11 @@ begin"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#9",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "  if ShortOfSpace(ExtractFileDrive(AppDir), 'for the install',",
+      "target": "  if ShortOfSpace(ExtractFileDrive(AppDir), '用于安装',",
+      "before": "",
+      "after": "                  NeedApp, FreeSpaceMB(AppDir)) then",
+      "hunk": "@@ -207,11 +210,11 @@ begin"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#10",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "  if ShortOfSpace(ExtractFileDrive(TmpDir), 'for the temporary files',",
+      "target": "  if ShortOfSpace(ExtractFileDrive(TmpDir), '用于临时文件',",
+      "before": "  // needs room for it even when the app is being installed elsewhere.",
+      "after": "                  NeedTmp, FreeSpaceMB(TmpDir)) then",
+      "hunk": "@@ -220,7 +223,7 @@ begin"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#11",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "  WizardForm.StatusLabel.Caption := 'Unpacking the application files (this takes a few minutes)...';",
+      "target": "  WizardForm.StatusLabel.Caption := '正在解压应用程序文件（可能需要几分钟）…';",
+      "before": "",
+      "after": "  WizardForm.Refresh;",
+      "hunk": "@@ -318,7 +321,7 @@ begin"
+    },
+    {
+      "id": "packaging/installer/videohighlighter.iss#12",
+      "file": "packaging/installer/videohighlighter.iss",
+      "source": "    MsgBox('Could not unpack the application files (7-Zip exit code '\n      + IntToStr(ResultCode) + ').'#13#10#13#10\n      + 'The install is incomplete. Run Setup again.', mbCriticalError, MB_OK);",
+      "target": "    MsgBox('无法解压应用程序文件（7-Zip 退出代码：'\n      + IntToStr(ResultCode) + '）。'#13#10#13#10\n      + '安装未完成，请重新运行安装程序。', mbCriticalError, MB_OK);",
+      "before": "  begin",
+      "after": "    Exit;",
+      "hunk": "@@ -327,9 +330,9 @@ begin"
     },
     {
       "id": "pipeline.py#1",

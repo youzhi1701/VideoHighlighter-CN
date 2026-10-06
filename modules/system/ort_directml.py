@@ -216,7 +216,7 @@ def _dxgi_adapters():
             call(factory, RELEASE)
         return adapters
     except Exception as e:  # noqa: BLE001 - not knowing is answered by the provider list
-        print(f"⚠️ Could not list display adapters: {type(e).__name__}: {e}")
+        print(f"⚠️ 无法列出显示适配器：{type(e).__name__}：{e}")
         return None
 
 

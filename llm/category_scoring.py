@@ -177,7 +177,7 @@ def score_regions(tile_embeddings: np.ndarray, category: CustomCategory,
     they are only arguable if they can be measured on fixed inputs.
     """
     if tile_embeddings.ndim != 2 or len(tile_embeddings) == 0:
-        raise ValueError("tile_embeddings must be [n_regions, dim] with n_regions >= 1")
+        raise ValueError("tile_embeddings 必须为 [n_regions, dim]，且 n_regions >= 1")
     if len(tiles) != len(tile_embeddings):
         raise ValueError(
             f"got {len(tiles)} regions but {len(tile_embeddings)} embeddings")

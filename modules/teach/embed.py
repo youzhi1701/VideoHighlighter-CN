@@ -92,8 +92,8 @@ class FrameEncoderBackend:
         return unit(self._load().encode_bgr(list(frames_bgr)))
 
     def texts(self, texts: Sequence[str]) -> np.ndarray:
-        raise RuntimeError("the frame encoder sorts by examples; a class with no examples "
-                           "yet needs CLIP (--embedder clip)")
+        raise RuntimeError("帧编码器依赖示例进行排序；尚无示例的类别需要使用 "
+                           "CLIP（--embedder clip）")
 
 
 EMBEDDERS = ("clip", "frame-encoder")
@@ -105,7 +105,7 @@ def make(name: str = "clip"):
         return FrameEncoderBackend()
     if name == "clip":
         return ClipBackend()
-    raise ValueError(f"unknown embedder {name!r}; one of {', '.join(EMBEDDERS)}")
+    raise ValueError(f"未知嵌入器 {name!r}；应为 {', '.join(EMBEDDERS)} 之一")
 
 
 def unit(a) -> np.ndarray:

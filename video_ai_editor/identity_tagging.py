@@ -136,7 +136,7 @@ def tag_video_with_identities(
             frame_records.append({"timestamp": timestamp, "boxes": norm_boxes})
             processed += 1
             if progress_cb and processed % 30 == 0:
-                progress_cb(processed, f"Tracking + identity… frame {real_frame}")
+                progress_cb(processed, f"正在追踪并识别身份… 第 {real_frame} 帧")
     else:
         print("⚠️ Identity tracking: unknown tracker model type")
         if save_bank:

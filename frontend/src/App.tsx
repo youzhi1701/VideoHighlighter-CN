@@ -653,7 +653,7 @@ export default function App() {
               </span>
               <div className="flex gap-1">
                 <Button size="sm" variant="secondary" onClick={pickMusic} disabled={running}>
-                  Pick
+                  选择
                 </Button>
                 {cfg.music_path && (
                   <Button
@@ -662,7 +662,7 @@ export default function App() {
                     onClick={() => set("music_path", "")}
                     disabled={running}
                   >
-                    Clear
+                    清空
                   </Button>
                 )}
               </div>
@@ -891,11 +891,11 @@ export default function App() {
               </>
             ) : paused ? (
               <>
-                <Play className="size-3.5" /> Resume
+                <Play className="size-3.5" /> 继续
               </>
             ) : (
               <>
-                <Pause className="size-3.5" /> Pause
+                <Pause className="size-3.5" /> 暂停
               </>
             )}
           </Button>

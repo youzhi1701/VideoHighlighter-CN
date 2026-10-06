@@ -122,27 +122,27 @@ class VideoReasoningEngine:
         {
             "name": "arrival",
             "pattern": ["entering", "walking", "standing"],
-            "description": "Someone arrives and stops"
+            "description": "有人到达并停下"
         },
         {
             "name": "departure", 
             "pattern": ["standing", "walking", "exiting"],
-            "description": "Someone leaves after being present"
+            "description": "有人在停留后离开"
         },
         {
             "name": "interaction",
             "pattern": ["approaching", "talking", "leaving"],
-            "description": "Social interaction sequence"
+            "description": "社交互动过程"
         },
         {
             "name": "combat",
             "pattern": ["approaching", "fighting", "exiting"],
-            "description": "Fight sequence"
+            "description": "打斗过程"
         },
         {
             "name": "sports_play",
             "pattern": ["running", "jumping", "throwing"],
-            "description": "Athletic activity"
+            "description": "运动活动"
         }
     ]
     
@@ -261,18 +261,18 @@ class VideoReasoningEngine:
             categories.add(cat)
         
         if len(actions) == 1:
-            return f"Prolonged {actions[0]} activity"
+            return f"持续的 {actions[0]} 活动"
         elif len(categories) == 1:
             cat = list(categories)[0]
             if density > 2.0:
-                return f"Intense {cat} sequence"
+                return f"高强度 {cat} 活动过程"
             else:
-                return f"Sustained {cat} activity"
+                return f"持续的 {cat} 活动"
         else:
             if density > 2.0:
-                return "Rapid action sequence with multiple activities"
+                return "包含多种活动的快速动作过程"
             else:
-                return "Mixed activity period"
+                return "混合活动时段"
     
     # -------------------------------------------------------------------
     # Core reasoning methods
@@ -368,13 +368,13 @@ class VideoReasoningEngine:
                 confidence = match_ratio * 0.8
                 
                 fact = InferredFact(
-                    description=f"Detected {pattern['name']} pattern: {pattern['description']}",
+                    description=f"检测到 {pattern['name']} 模式：{pattern['description']}",
                     entities=["action_sequence"],
                     timestamp=timestamp,
                     confidence=confidence,
                     reasoning_chain=[
-                        f"Found {matches}/{len(pattern['pattern'])} actions in pattern",
-                        f"Actions detected: {', '.join(action_names[:5])}"
+                        f"在模式中匹配到 {matches}/{len(pattern['pattern'])} 个动作",
+                        f"检测到的动作：{', '.join(action_names[:5])}"
                     ],
                     evidence={
                         "pattern": pattern["name"],
@@ -411,13 +411,13 @@ class VideoReasoningEngine:
             if action_pairs:
                 pair = action_pairs[0]
                 fact = InferredFact(
-                    description=f"Transition from {pair[0]} to {pair[1]}",
+                    description=f"动作从 {pair[0]} 转变为 {pair[1]}",
                     entities=[pair[0], pair[1]],
                     timestamp=timestamp,
                     confidence=0.7,
                     reasoning_chain=[
-                        f"Detected {pair[0]} and {pair[1]} in close succession",
-                        "This indicates a change in activity"
+                        f"连续检测到 {pair[0]} 和 {pair[1]}",
+                        "这表明活动发生了变化"
                     ],
                     evidence={
                         "actions": [{"name": a["name"], "conf": a["confidence"]} 
@@ -440,13 +440,13 @@ class VideoReasoningEngine:
         
         if action_count >= 5:
             fact = InferredFact(
-                description=f"High activity moment with {action_count} simultaneous actions",
+                description=f"高活动时刻：同时出现 {action_count} 个动作",
                 entities=["high_intensity"],
                 timestamp=timestamp,
                 confidence=min(0.9, 0.5 + (action_count * 0.05)),
                 reasoning_chain=[
-                    f"{action_count} actions detected simultaneously",
-                    "This is a peak of activity"
+                    f"同时检测到 {action_count} 个动作",
+                    "这是一个活动峰值"
                 ],
                 evidence={
                     "action_count": action_count,
@@ -457,12 +457,12 @@ class VideoReasoningEngine:
             facts.append(fact)
         elif 3 <= action_count < 5:
             fact = InferredFact(
-                description=f"Moderate activity with {action_count} simultaneous actions",
+                description=f"中等活动强度：同时出现 {action_count} 个动作",
                 entities=["moderate_intensity"],
                 timestamp=timestamp,
                 confidence=0.6,
                 reasoning_chain=[
-                    f"{action_count} actions occurring together"
+                    f"有 {action_count} 个动作同时发生"
                 ],
                 evidence={
                     "action_count": action_count,

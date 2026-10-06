@@ -216,7 +216,7 @@ class ModelDialog(QDialog):
         where = f"（地址：{asked}）" if asked else ""
         self.status.setText(
             f"Ollama 服务{where}找到 {len(found)} 个模型。" if found else
-            f"Ollama 服务{where}无响应——请输入模型名，或启动服务后
+            f"Ollama 服务{where}无响应——请输入模型名，或启动服务后"
             "点击刷新。")
 
     def _refresh_tags(self):

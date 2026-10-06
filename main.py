@@ -3530,7 +3530,7 @@ class VideoHighlighterGUI(QWidget):
         self.pro_label.setText(pro_text)
         self.pro_banner.setVisible(True)
         pro_offer.mark_shown(offer.moment)
-        print(f"pro_offer: showed '{offer.moment}'")
+        print(f"Pro 推荐已显示：{offer.moment}")
         return True
 
     def _open_pro_page(self):

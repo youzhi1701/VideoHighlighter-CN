@@ -448,32 +448,32 @@ class SignalTimelineWindow(QMainWindow):
     preview_enabled = False
 
     def __init__(self, video_path, cache_data=None):
-        debug_log(f"SignalTimelineWindow.__init__ CALLED with video_path={video_path}")
-        debug_log(f"  cache_data provided: {cache_data is not None}")
+        debug_log(f"已调用 SignalTimelineWindow.__init__，video_path={video_path}")
+        debug_log(f"  是否提供 cache_data：{cache_data is not None}")
         debug_log(f"\n{'='*60}")
-        debug_log(f"🔍 [TIMELINE] SignalTimelineWindow.__init__ START")
+        debug_log("🔍 [时间线] SignalTimelineWindow.__init__ 开始")
         debug_log(f"{'='*60}")
-        debug_log(f"  - video_path: {video_path}")
-        debug_log(f"  - cache_data provided: {cache_data is not None}")
-        debug_log(f"  - cache_data type: {type(cache_data)}")
+        debug_log(f"  - 视频路径：{video_path}")
+        debug_log(f"  - 是否提供 cache_data：{cache_data is not None}")
+        debug_log(f"  - cache_data 类型：{type(cache_data)}")
         
         if cache_data is not None:
-            debug_log(f"  - cache_data keys: {list(cache_data.keys()) if cache_data else 'None'}")
+            debug_log(f"  - cache_data 键：{list(cache_data.keys()) if cache_data else '无'}")
         
         super().__init__()
         self.video_path = video_path
         
         # If cache_data was provided, use it directly
         if cache_data is not None:
-            debug_log(f"  ✓ Using provided cache_data")
+            debug_log("  ✓ 使用已提供的 cache_data")
             self.cache_data = cache_data
         else:
-            debug_log(f"  ⚠️ No cache_data provided, attempting to load...")
+            debug_log("  ⚠️ 未提供 cache_data，正在尝试加载…")
             self.cache_data = self.load_cache_data()
             
             # If still no cache_data, create minimal structure
             if not self.cache_data:
-                debug_log(f"  ⚠️ Creating minimal cache data structure")
+                debug_log("  ⚠️ 正在创建最小缓存数据结构")
                 self.cache_data = {
                     "video_metadata": {"duration": 0, "fps": 30},
                     "transcript": {"segments": []},
@@ -485,40 +485,40 @@ class SignalTimelineWindow(QMainWindow):
                     "audio_peaks": []
                 }
         
-        debug_log(f"\n  📊 FINAL CACHE DATA STATE:")
-        debug_log(f"  - self.cache_data is None? {self.cache_data is None}")
+        debug_log("\n  📊 最终缓存数据状态：")
+        debug_log(f"  - self.cache_data 是否为空：{self.cache_data is None}")
         if self.cache_data:
-            debug_log(f"  - self.cache_data keys: {list(self.cache_data.keys())}")
+            debug_log(f"  - self.cache_data 键：{list(self.cache_data.keys())}")
             # Check for motion data specifically
-            debug_log(f"    - 'motion_events' present: {'motion_events' in self.cache_data}")
-            debug_log(f"    - 'motion_peaks' present: {'motion_peaks' in self.cache_data}")
-            debug_log(f"    - 'scenes' present: {'scenes' in self.cache_data}")
-            debug_log(f"    - 'video_metadata' present: {'video_metadata' in self.cache_data}")
+            debug_log(f"    - 是否包含 motion_events：{'motion_events' in self.cache_data}")
+            debug_log(f"    - 是否包含 motion_peaks：{'motion_peaks' in self.cache_data}")
+            debug_log(f"    - 是否包含 scenes：{'scenes' in self.cache_data}")
+            debug_log(f"    - 是否包含 video_metadata：{'video_metadata' in self.cache_data}")
             
             if 'video_metadata' in self.cache_data:
-                debug_log(f"      - duration: {self.cache_data['video_metadata'].get('duration', 'N/A')}")
+                debug_log(f"      - 时长：{self.cache_data['video_metadata'].get('duration', 'N/A')}")
         
         # Get video duration from cache or fallback
         self.video_duration = self.cache_data.get('video_metadata', {}).get('duration', 0) if self.cache_data else 0
-        debug_log(f"  - video_duration from cache: {self.video_duration}")
+        debug_log(f"  - 缓存中的视频时长：{self.video_duration}")
         
         # If we still don't have duration, try to get it from the video file
         if self.video_duration == 0 and os.path.exists(video_path):
             try:
                 import cv2
-                debug_log(f"  - Attempting to get duration from video file...")
+                debug_log("  - 正在尝试从视频文件读取时长…")
                 cap = cv2.VideoCapture(video_path)
                 fps = cap.get(cv2.CAP_PROP_FPS)
                 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
                 self.video_duration = total_frames / fps if fps else 0
                 cap.release()
-                debug_log(f"  - Got video duration from file: {self.video_duration:.1f}s")
+                debug_log(f"  - 已从视频文件读取时长：{self.video_duration:.1f} 秒")
             except Exception as e:
-                debug_log(f"  ⚠️ Could not get video duration: {e}")
+                debug_log(f"  ⚠️ 无法获取视频时长：{e}")
                 self.video_duration = 60  # fallback
         
         self.cache = self.get_cache_instance()
-        debug_log(f"  - cache instance: {self.cache is not None}")
+        debug_log(f"  - 缓存实例可用：{self.cache is not None}")
         
         self.current_time = 0
         self._block_position_updates = False
@@ -533,9 +533,9 @@ class SignalTimelineWindow(QMainWindow):
         self.action_types = self._extract_action_types()
         self.object_classes = self._extract_object_classes()
         
-        debug_log(f"\n  📊 EXTRACTED INFO:")
-        debug_log(f"  - action_types: {self.action_types}")
-        debug_log(f"  - object_classes: {self.object_classes}")
+        debug_log("\n  📊 已提取信息：")
+        debug_log(f"  - 动作类型：{self.action_types}")
+        debug_log(f"  - 物体类别：{self.object_classes}")
         
         self.setWindowTitle(f"信号时间线 - {os.path.basename(video_path)}")
         screen = QApplication.primaryScreen().availableGeometry()
@@ -546,10 +546,10 @@ class SignalTimelineWindow(QMainWindow):
 
         # Load waveform from cache - store it in instance variable
         self.waveform = self.load_waveform_from_cache()
-        debug_log(f"  - waveform loaded: {self.waveform is not None}, length: {len(self.waveform) if self.waveform else 0}")
+        debug_log(f"  - 波形已加载：{self.waveform is not None}，长度：{len(self.waveform) if self.waveform else 0}")
         
         # Initialize UI - PASS waveform to constructor
-        debug_log(f"\n  🎨 Initializing UI...")
+        debug_log("\n  🎨 正在初始化界面…")
         self.init_ui()
         
         # bbox_manager is created inside create_video_preview_dock()
@@ -562,13 +562,13 @@ class SignalTimelineWindow(QMainWindow):
 
         # Start background extraction if we don't have cached waveform
         if not self.waveform or len(self.waveform) == 0:
-            debug_log(f"  ⚠️ No cached waveform or empty waveform, starting extraction...")
+            debug_log("  ⚠️ 没有缓存波形或波形为空，开始提取…")
             self.init_waveform()
         else:
-            debug_log(f"  ✅ Using cached waveform ({len(self.waveform)} points)")
+            debug_log(f"  ✅ 使用缓存波形（{len(self.waveform)} 个点）")
         
         debug_log(f"\n{'='*60}")
-        debug_log(f"✅ [TIMELINE] SignalTimelineWindow.__init__ COMPLETE")
+        debug_log("✅ [时间线] SignalTimelineWindow.__init__ 完成")
         debug_log(f"{'='*60}\n")
 
     def launch_preview(self):
@@ -2098,7 +2098,7 @@ class SignalTimelineWindow(QMainWindow):
 
     def get_cache_instance(self):
         """Get cache instance for highlight loading"""
-        print(f"\n🔍 [TIMELINE] get_cache_instance")
+        print("\n🔍 [时间线] 获取缓存实例")
         try:
             from modules.media.video_cache import VideoAnalysisCache
             cache = VideoAnalysisCache()
@@ -2107,7 +2107,7 @@ class SignalTimelineWindow(QMainWindow):
             cache_dir = Path("./cache")
             if cache_dir.exists():
                 cache_files = list(cache_dir.glob("*.cache.json"))
-                print(f"  - Cache directory contains {len(cache_files)} cache files:")
+                print(f"  - 缓存目录包含 {len(cache_files)} 个缓存文件：")
                 for f in cache_files:
                     size_kb = f.stat().st_size / 1024
                     print(f"    - {f.name} ({size_kb:.1f} KB)")
@@ -2216,7 +2216,7 @@ class SignalTimelineWindow(QMainWindow):
             cache_data = cache.load(self.video_path, params=default_params)
             if cache_data:
                 print("  ✓ 找到基于参数的缓存")
-                print(f"  ✓ Contains keys: {list(cache_data.keys())}")
+                print(f"  ✓ 包含键：{list(cache_data.keys())}")
                 print(f"\n{'-'*40}")
                 return cache_data
             
@@ -3821,9 +3821,8 @@ class SignalTimelineWindow(QMainWindow):
 
         path = report_path_for(self.video_path)
         if not path:
-            self._swap_message("No highlight report was found next to this video, "
-                               "so there is nothing to re-choose from. Run the "
-                               "highlighter again to write one.")
+            self._swap_message("在该视频旁未找到高光报告，因此没有可供重新选择的候选片段。"
+                               "请重新运行高光处理以生成报告。")
             return None
         try:
             session = SwapSession.from_report(path)
@@ -3862,20 +3861,19 @@ class SignalTimelineWindow(QMainWindow):
         except IndexError:
             return
         if not session.swap(index):
-            self._swap_message("There is no other moment left to offer for this "
-                               "clip — everything else is either already in the "
-                               "highlight or has been turned down.")
+            self._swap_message("没有其他可替换到此片段的候选时刻；其余内容要么已经在高光中，"
+                               "要么此前已被排除。")
             return
         self._apply_swapped_segments(session)
-        print(f"🔀 Swapped highlight {index + 1} "
-              f"({replaced[0]:.1f}s–{replaced[1]:.1f}s) for another moment")
+        print(f"🔀 已替换第 {index + 1} 个高光片段 "
+              f"（原片段 {replaced[0]:.1f} 秒–{replaced[1]:.1f} 秒）")
 
     def on_undo_highlight_swap(self):
         session = getattr(self, "_highlight_swap_session", None)
         if session is None or not session.undo():
             return
         self._apply_swapped_segments(session)
-        print("↩ Undid the last highlight swap")
+        print("↩ 已撤销上一次高光片段替换")
 
     def get_highlights_from_signal_data(self):
         """Extract highlights from signal timeline cache data"""
@@ -4147,7 +4145,7 @@ class SignalTimelineWindow(QMainWindow):
     @Slot(float, float, float)
     def on_waveform_clicked(self, start_time, end_time, amplitude):
         """Handle waveform clicks - auto-create a clip"""
-        print(f"🎵 Waveform clicked at {start_time:.2f}s, amplitude: {amplitude:.2f}")
+        print(f"🎵 点击波形位置：{start_time:.2f} 秒，振幅：{amplitude:.2f}")
         # Option A: Increase threshold so only very loud sections add clips
         if amplitude > 0.8:  # Much higher threshold
             # Add to edit timeline
@@ -5261,11 +5259,11 @@ original_print = print
 print = debug_log
 
 debug_log("="*60)
-debug_log("🚀 TIMELINE VIEWER STARTING")
+debug_log("🚀 时间线查看器正在启动")
 debug_log("="*60)
-debug_log(f"Python version: {sys.version}")
-debug_log(f"Current working directory: {os.getcwd()}")
-debug_log(f"Script location: {__file__}")
+debug_log(f"Python 版本：{sys.version}")
+debug_log(f"当前工作目录：{os.getcwd()}")
+debug_log(f"脚本位置：{__file__}")
 
 # The repaint crash kills the process inside Qt, so `debug_log` above is no help
 # for it: that reopens the file per call and there is nothing holding a
@@ -5275,9 +5273,9 @@ debug_log(f"Script location: {__file__}")
 try:
     from modules.system import repaint_trace as _repaint_trace
     if _repaint_trace.arm():
-        debug_log(f"🩺 Repaint trace → {_repaint_trace.default_path()}")
+        debug_log(f"🩺 重绘追踪 → {_repaint_trace.default_path()}")
 except Exception as _e:
-    debug_log(f"⚠️ Repaint trace unavailable: {_e}")
+    debug_log(f"⚠️ 重绘追踪不可用：{_e}")
 
 
 
@@ -5293,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):
         int: Application exit code
     """
     debug_log("="*60)
-    debug_log(f"🎬 show_timeline_viewer called")
+    debug_log("🎬 已调用 show_timeline_viewer")
     debug_log(f"  - video_path: {video_path}")
-    debug_log(f"  - cache_data provided: {cache_data is not None}")
-    debug_log(f"  - video_path exists: {os.path.exists(video_path)}")
+    debug_log(f"  - 是否提供 cache_data：{cache_data is not None}")
+    debug_log(f"  - 视频路径是否存在：{os.path.exists(video_path)}")
     
     app = QApplication.instance()
     if app is None:
-        debug_log("  - Creating new QApplication")
+        debug_log("  - 正在创建新的 QApplication")
         app = QApplication(sys.argv)
         # Standalone launch: install the central theme ourselves. (When the
         # pipeline/main GUI launches us the app already carries it.)
@@ -5308,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):
             from modules.ui import theme as _ui_theme
             _ui_theme.apply(app)
         except Exception as e:
-            debug_log(f"  ⚠️ Theme apply failed: {e}")
+            debug_log(f"  ⚠️ 应用主题失败：{e}")
     else:
-        debug_log("  - Using existing QApplication")
+        debug_log("  - 使用现有 QApplication")
     
-    debug_log("  🔵 ABOUT TO CREATE SignalTimelineWindow...")
+    debug_log("  🔵 即将创建 SignalTimelineWindow…")
     try:
         window = SignalTimelineWindow(video_path, cache_data)
-        debug_log("  🟢 SignalTimelineWindow CREATED successfully")
+        debug_log("  🟢 SignalTimelineWindow 创建成功")
     except Exception as e:
-        debug_log(f"  ❌ ERROR creating SignalTimelineWindow: {e}")
+        debug_log(f"  ❌ 创建 SignalTimelineWindow 时出错：{e}")
         import traceback
         traceback.print_exc()
         return -1
     
-    debug_log("  - Showing window...")
+    debug_log("  - 正在显示窗口…")
     window.show()
     
-    debug_log("  - Entering event loop...")
+    debug_log("  - 正在进入事件循环…")
     result = app.exec()
-    debug_log(f"  - Event loop exited with code: {result}")
+    debug_log(f"  - 事件循环已退出，代码：{result}")
     
     return result
 
@@ -5337,4 +5335,4 @@ if __name__ == "__main__":
         video_path = sys.argv[1]
         show_timeline_viewer(video_path)
     else:
-        print("Usage: python signal_timeline_viewer.py <video_path>")
+        print("用法：python signal_timeline_viewer.py <视频路径>")

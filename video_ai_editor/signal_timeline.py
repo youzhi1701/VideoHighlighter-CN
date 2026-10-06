@@ -1050,8 +1050,8 @@ class SignalTimelineScene(QGraphicsScene):
                 # Zoom changed — re-pick the ruler interval for it.
                 self.draw_time_markers()
 
-        print(f"✅ 时间线重建成功，"
-              f"{len(self.row_labels)} lanes, final height={self.sceneRect().height()}")
+        print(f"✅ 时间线重建成功："
+              f"{len(self.row_labels)} 个轨道，最终高度={self.sceneRect().height()}")
         self.timeline_rebuilt.emit()
 
     def _ensure_thumb_cache(self):
@@ -1513,7 +1513,7 @@ class SignalTimelineScene(QGraphicsScene):
                 
                 bar = TimelineBar(
                     start, end, y_pos, self.layer_height,
-                    scene_color, f"Scene {i+1}",
+                    scene_color, f"场景 {i+1}",
                     metadata={'scene_index': i, 'duration': end - start}
                 )
                 self.draw_bar(bar)
@@ -1540,7 +1540,7 @@ class SignalTimelineScene(QGraphicsScene):
                 bar_label = f"运动 x{count}（{avg_conf:.0%}）"
             else:
                 conf = meta.get('confidence', 0)
-                bar_label = f"Motion ({conf:.0%})" if conf else "运动"
+                bar_label = f"运动（{conf:.0%}）" if conf else "运动"
 
             bar = TimelineBar(
                 start, end,
@@ -1568,7 +1568,7 @@ class SignalTimelineScene(QGraphicsScene):
             count = meta.get('merged_count', 1)
             if count > 1:
                 avg_conf = meta.get('avg_confidence', 0)
-                bar_label = f"Peak x{count} ({avg_conf:.0%})" if avg_conf else f"Peak x{count}"
+                bar_label = f"峰值 x{count}（{avg_conf:.0%}）" if avg_conf else f"峰值 x{count}"
             else:
                 bar_label = "峰值"
 
@@ -1600,7 +1600,7 @@ class SignalTimelineScene(QGraphicsScene):
             count = meta.get('merged_count', 1)
             if count > 1:
                 avg_conf = meta.get('avg_confidence', 0)
-                bar_label = f"Audio x{count} ({avg_conf:.0%})" if avg_conf else f"Audio x{count}"
+                bar_label = f"音频 x{count}（{avg_conf:.0%}）" if avg_conf else f"音频 x{count}"
             else:
                 bar_label = "音频"
 
@@ -1639,7 +1639,7 @@ class SignalTimelineScene(QGraphicsScene):
 
         if not segments:
             text = self.addText(
-                "(no highlights — run highlight detection to populate)",
+                "（暂无高光——请先运行高光检测）",
                 QFont("Arial", 9)
             )
             text.setPos(150, y_pos + 15)
@@ -2246,7 +2246,7 @@ class SignalTimelineScene(QGraphicsScene):
             if name == 'visual_search':
                 self.group_order[i] = (
                     'visual_search',
-                    [f"Search: {q}" for q in self.visual_queries]
+                    [f"搜索：{q}" for q in self.visual_queries]
                 )
                 return
 

@@ -713,8 +713,8 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
     fresh_objects = []
     detected = False
     if absent and detect_fn:
-        log(f"🔍 Rules need {', '.join(absent)} — detecting "
-            f"{len(wanted_classes)} class(es) first")
+        log(f"🔍 规则需要 {', '.join(absent)}，正在检测 "
+            f"{len(wanted_classes)} 个类别")
         # The whole set the rules read, not just the missing ones: a spatial
         # rule asks whether one class sits inside another *in the same frame*,
         # and two passes at different times produce two entries per timestamp
@@ -741,7 +741,7 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
         band = _band(progress, *signal_band)
         vocal_progress = (None if band is None else
                           (lambda frac: band(int(float(frac) * 100), 100,
-                                             "Composition", "Measuring audio…")))
+                                             "构图规则", "正在测量音频…")))
         signals = composition_signals.gather(
             video_path, cache_dir=cache_dir, needed=needed,
             progress=vocal_progress, cancel=cancel, log_fn=log)
@@ -752,8 +752,8 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
         # Named rather than silent: a rule referring to a signal nothing
         # supplied simply never fires, which is indistinguishable from a
         # threshold set too high.
-        log(f"⚠️ No values for signal(s): {', '.join(missing)} — rules using "
-            "them cannot fire.")
+        log(f"⚠️ 以下信号没有可用值：{', '.join(missing)}；依赖"
+            "这些信号的规则无法触发。")
         if "expression" in missing:
             # The one input this cannot fetch for itself. A face scan needs a
             # model and a decode of the whole video, and starting one as a side
@@ -804,8 +804,8 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
         for sec, names in sorted(by_sec.items())
     ]
     hits = sum(len(v) for v in composed.values())
-    log(f"🧩 Composition: {hits} event-hit(s) over {len(composed)} second(s) "
-        f"from {len(bboxes)} frames")
+    log(f"🧩 构图规则：{hits} 次事件命中，覆盖 {len(composed)} 秒，"
+        f"来源于 {len(bboxes)} 帧")
     # Also record WHICH names are derived, so the timeline can group them apart
     # from real detections. Written on every run so the list tracks the current
     # rules — a renamed or deleted rule stops being claimed as an event.

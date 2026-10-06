@@ -2970,8 +2970,7 @@ def _pick_playable(ranked: List[str], captured: Dict[str, Dict[str, str]],
         secs, size, live = _measure_media(
             u, _probe_headers(captured.get(u), ua, referer))
         if live:
-            log_fn(f"  ⏭️ live stream (never ends) — not the video, skipping: "
-                   f"{u[:90]}...")
+            log_fn(f"  ⏭️ 检测到直播流（不会结束），不是目标视频，已跳过：{u[:90]}…")
             continue
         if secs:
             desc = f"{int(secs) // 60}:{int(secs) % 60:02d}"
@@ -2987,8 +2986,7 @@ def _pick_playable(ranked: List[str], captured: Dict[str, Dict[str, str]],
         log_fn(f"  ✓ {desc}: {u[:90]}...")
         return u
     if fallback is not None:
-        log_fn("  ⚠ Every candidate measured advert-short; using the best finite "
-               "one — check the result before trusting it")
+        log_fn("  ⚠ 所有候选源都短得像广告；将使用最佳的有限时长候选源，请先检查结果再使用。")
         return fallback
     log_fn("  ✗ 没有可用媒体：所有候选源均为直播流或无法访问")
     return None
@@ -3068,7 +3066,7 @@ def extract_video_source_via_browser(
                         h = {}
                     hdrs = {k: h[k] for k in ("referer", "user-agent", "cookie", "origin") if h.get(k)}
                     captured[req_url] = hdrs
-                    log_fn(f"      📡 Captured ({why}): {req_url[:120]}...")
+                    log_fn(f"      📡 已捕获（{why}）：{req_url[:120]}…")
 
                 def handle_request(request):
                     if _looks_like_media_url(request.url):
@@ -3106,19 +3104,19 @@ def extract_video_source_via_browser(
                 # media requests would pollute the capture list.
                 def handle_popup(popup):
                     try:
-                        log_fn("      🚫 Closed popup tab (ad)")
+                        log_fn("      🚫 已关闭广告弹窗标签页")
                         popup.close()
                     except Exception:
                         pass
 
                 context.on("page", handle_popup)
 
-                log_fn(f"  • Loading with UA: {ua[:50]}...")
+                log_fn(f"  • 正在使用 UA 加载：{ua[:50]}…")
 
                 try:
                     response = page.goto(url, wait_until="domcontentloaded", timeout=45000)
                     if response and response.status >= 400:
-                        log_fn(f"  ⚠ Bad response: {response.status}")
+                        log_fn(f"  ⚠ 响应异常：{response.status}")
                         context.close()
                         continue
 
@@ -3164,10 +3162,10 @@ def extract_video_source_via_browser(
                         prim = None
                     if prim:
                         cx, cy, tag = int(prim[0]), int(prim[1]), prim[2]
-                        log_fn(f"  • Primary player: <{tag}> at ({cx},{cy})")
+                        log_fn(f"  • 主播放器：<{tag}>，位置（{cx},{cy}）")
                     else:
                         cx, cy = 640, 360
-                        log_fn("  • No primary player found; clicking viewport center")
+                        log_fn("  • 未找到主播放器，正在点击视口中心")
 
                     clicked = []
 
@@ -3255,7 +3253,7 @@ def extract_video_source_via_browser(
                     # progressive capture that isn't an advert. Stopping on the
                     # *first* capture would only ever hand us the pre-roll, since
                     # that is by definition requested before the feature.
-                    log_fn("  • Triggering primary player + waiting for stream...")
+                    log_fn("  • 正在触发主播放器并等待视频流…")
                     deadline = time.time() + 25
                     hard_deadline = time.time() + 75
                     first_good = None
@@ -3274,8 +3272,7 @@ def extract_video_source_via_browser(
                             # Only adverts so far: skip past them and keep waiting
                             # for the real stream instead of settling for the ad.
                             if not waited_for_ad:
-                                log_fn("  ⏭️ Only advert media so far — skipping the "
-                                       "pre-roll and waiting for the real stream...")
+                                log_fn("  ⏭️ 当前仅捕获到广告媒体，正在跳过前贴片并等待真实视频流…")
                                 waited_for_ad = True
                             skip_short_ads()
                             deadline = hard_deadline
@@ -3591,8 +3588,7 @@ def download_from_extracted_source(
             return False
         if code in (200, 206):
             return True
-        log_fn(f"  ⚠ Preflight HTTP {code} ({ctype or 'no type'}) — source rejected "
-               f"the replayed headers; skipping to avoid a long stall")
+        log_fn(f"  ⚠ 预检 HTTP {code}（{ctype or '无类型'}）——视频源拒绝了重放请求头；为避免长时间卡住，已跳过")
         return False
 
     if not _preflight(source_url):
@@ -3627,8 +3623,7 @@ def download_from_extracted_source(
         if end_time > start_time:
             section = f"*{start_time:.1f}-{end_time:.1f}"
             cmd.extend(["--download-sections", section])
-            log_fn(f"⏱️ Downloading section: {start_time:.1f}s to {end_time:.1f}s "
-                   f"({end_time - start_time:.1f}s)")
+            log_fn(f"⏱️ 正在下载片段：{start_time:.1f} 秒至 {end_time:.1f} 秒（{end_time - start_time:.1f} 秒）")
 
     cmd.append(source_url)
 

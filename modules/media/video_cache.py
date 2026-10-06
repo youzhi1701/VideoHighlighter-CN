@@ -428,7 +428,7 @@ class VideoAnalysisCache:
                 # pipeline skip every stage it thinks is cached, which is the
                 # "results vanished, had to re-run" report.
                 if not holds_analysis(cache_data):
-                    print("⚠ Cache holds no analysis (single-signal stub), will re-process")
+                    print("⚠ 缓存中没有完整分析结果（仅含单信号占位数据），将重新处理")
                     self.stats["misses"] += 1
                     return None
 
@@ -437,12 +437,12 @@ class VideoAnalysisCache:
                     self.stats["misses"] += 1
                     return None
 
-                print(f"✓ Cache loaded from: {cache_path}")
+                print(f"✓ 已从以下位置加载缓存：{cache_path}")
                 self.stats["hits"] += 1
                 return cache_data
 
             except (json.JSONDecodeError, KeyError) as e:
-                print(f"⚠ Cache file corrupted: {e}, will re-process")
+                print(f"⚠ 缓存文件损坏：{e}，将重新处理")
                 self.stats["misses"] += 1
                 return None
 
@@ -453,7 +453,7 @@ class VideoAnalysisCache:
                 self.save(video_path, analysis_data)
                 return True
             except Exception as e:
-                print(f"❌ Enhanced save failed: {e}")
+                print(f"❌ 增强缓存保存失败：{e}")
                 return False
 
     def load_enhanced(self, video_path: str) -> Optional[Dict[str, Any]]:
@@ -464,7 +464,7 @@ class VideoAnalysisCache:
             cache_path = self._get_cache_path(video_path)
             if cache_path.exists():
                 cache_path.unlink()
-                print(f"✓ Cache deleted: {cache_path}")
+                print(f"✓ 已删除缓存：{cache_path}")
                 return True
             return False
 
@@ -474,7 +474,7 @@ class VideoAnalysisCache:
             for cache_file in self.cache_dir.glob("*.cache.json"):
                 cache_file.unlink()
                 count += 1
-            print(f"✓ Cleared {count} cache file(s)")
+            print(f"✓ 已清理 {count} 个缓存文件")
             return count
 
     def list_cached_videos(self) -> List[Dict[str, Any]]:
@@ -542,7 +542,7 @@ class VideoAnalysisCache:
             analysis_params: Analysis parameters used to generate the cache (for signature-based loading)
         """
         if not self.enable_highlight_cache:
-            print(f"  ❌ enable_highlight_cache is False, returning False")
+            print("  ❌ enable_highlight_cache 为 False，返回 False")
             return False
         
         try:
@@ -556,10 +556,10 @@ class VideoAnalysisCache:
                 'score_info': score_info,
                 'created_at': str(__import__('datetime').datetime.now())
             }
-            print(f"  ✓ Created history_entry")
+            print("  ✓ 已创建 history_entry")
             
             # Get existing data or create new - USE self.load() instead of self.base_cache.load()
-            print(f"  🔄 Loading existing cache data for {video_path}")
+            print(f"  🔄 正在加载 {video_path} 的现有缓存数据")
             cache_data = self.load(video_path, params=analysis_params)
             if cache_data is None:
                 # `load` returns None for two very different situations: nothing
@@ -575,29 +575,28 @@ class VideoAnalysisCache:
                 # valid. Refuse instead: a highlight run that fails to record
                 # itself is cheap next to the run it would have eaten.
                 if self.exists(video_path, params=analysis_params):
-                    print("  ⚠️ An analysis cache exists but could not be read; "
-                          "refusing to overwrite it with a highlights-only entry")
+                    print("  ⚠️ 已存在分析缓存但无法读取；为避免数据丢失，不会用仅含高光的数据覆盖它")
                     return False
                 cache_data = {}
-            print(f"  ✓ Loaded cache_data with keys: {cache_data.keys() if cache_data else 'empty dict'}")
+            print(f"  ✓ 已加载 cache_data，键：{cache_data.keys() if cache_data else '空字典'}")
             
             # Initialize or update highlight history
             if 'highlight_history' not in cache_data:
-                print(f"  📝 Initializing new highlight_history list")
+                print("  📝 正在初始化新的 highlight_history 列表")
                 cache_data['highlight_history'] = []
             else:
-                print(f"  📊 Existing highlight_history has {len(cache_data['highlight_history'])} entries")
+                print(f"  📊 现有 highlight_history 包含 {len(cache_data['highlight_history'])} 条记录")
             
             # Add new entry at the beginning
             cache_data['highlight_history'].insert(0, history_entry)
-            print(f"  ✓ Added new history entry at position 0")
+            print("  ✓ 已在位置 0 添加新的历史记录")
             
             # Keep only last 10 entries
             old_len = len(cache_data['highlight_history'])
             cache_data['highlight_history'] = cache_data['highlight_history'][:self.max_highlight_versions]
             new_len = len(cache_data['highlight_history'])
             if old_len != new_len:
-                print(f"  ✂️ Trimmed history from {old_len} to {new_len} entries")
+                print(f"  ✂️ 已将历史记录从 {old_len} 条裁剪为 {new_len} 条")
             
             # Also save as current highlight segments (for backward compatibility)
             cache_data['highlight_segments'] = segments
@@ -607,17 +606,17 @@ class VideoAnalysisCache:
                 'score_info': score_info,
                 'created_at': history_entry['created_at']
             }
-            print(f"  ✓ Updated current highlight_segments and highlight_metadata")
+            print("  ✓ 已更新当前 highlight_segments 和 highlight_metadata")
             
             # Save back to cache - USE self.save() instead of self.base_cache.save()
-            print(f"  💾 Saving updated cache data...")
+            print("  💾 正在保存更新后的缓存数据…")
             self.save(video_path, cache_data, params=analysis_params)
-            print(f"  ✅ Save completed successfully!")
+            print("  ✅ 保存成功！")
             
             return True
             
         except Exception as e:
-            print(f"  ❌ Exception in save_highlight_segments: {e}")
+            print(f"  ❌ save_highlight_segments 中发生异常：{e}")
             import traceback
             traceback.print_exc()
             return False
@@ -651,7 +650,7 @@ class VideoAnalysisCache:
                 return metadata, segments
 
             except Exception as e:
-                print(f"⚠️ Highlight cache load error: {e}")
+                print(f"⚠️ 高光缓存加载错误：{e}")
                 self.stats["highlight_misses"] += 1
                 return None
 
@@ -686,21 +685,21 @@ class VideoAnalysisCache:
             video_path: Path to video file
             analysis_params: Analysis parameters for signature-based cache lookup
         """
-        print(f"\n🔍 [DEBUG] get_highlight_history called for: {video_path}")
+        print(f"\n🔍 [调试] get_highlight_history 调用目标：{video_path}")
         history = []
         
         try:
             video_hash = self._get_video_hash(video_path)
             cache_dir = Path(self.cache_dir)
             
-            print(f"  - Video hash: {video_hash}")
-            print(f"  - analysis_params provided: {analysis_params is not None}")
+            print(f"  - 视频哈希：{video_hash}")
+            print(f"  - 是否提供 analysis_params：{analysis_params is not None}")
             
             # Method 1: If params provided, try exact signature match first
             if analysis_params is not None:
                 signature = self._make_signature(analysis_params)
                 exact_cache_path = self._get_analysis_cache_path_for_signature(video_path, signature)
-                print(f"  - Looking for exact signature cache: {exact_cache_path.name}")
+                print(f"  - 正在查找精确签名缓存：{exact_cache_path.name}")
                 
                 if exact_cache_path.exists():
                     try:
@@ -710,7 +709,7 @@ class VideoAnalysisCache:
                         # Check for highlight history
                         if 'highlight_history' in cache_data:
                             history.extend(cache_data['highlight_history'])
-                            print(f"  ✓ Found {len(cache_data['highlight_history'])} entries in exact signature cache")
+                            print(f"  ✓ 在精确签名缓存中找到 {len(cache_data['highlight_history'])} 条记录")
                         
                         # Check for legacy highlight segments
                         elif 'highlight_segments' in cache_data and cache_data['highlight_segments']:
@@ -724,31 +723,31 @@ class VideoAnalysisCache:
                                 'score_info': metadata.get('score_info', {}),
                                 'created_at': metadata.get('created_at', 'Unknown')
                             })
-                            print(f"  ✓ Added legacy history from exact signature cache")
+                            print("  ✓ 已从精确签名缓存添加旧版历史记录")
                     except Exception as e:
-                        print(f"  ⚠️ Error reading exact cache: {e}")
+                        print(f"  ⚠️ 读取精确缓存时出错：{e}")
             
             # Method 2: Look for any cache file with this video hash
-            print(f"  - Looking for any cache files with hash {video_hash}")
+            print(f"  - 正在查找哈希为 {video_hash} 的所有缓存文件")
             matching_files = list(cache_dir.glob(f"{video_hash}*.cache.json"))
-            print(f"  - Found {len(matching_files)} cache files matching hash:")
+            print(f"  - 找到 {len(matching_files)} 个哈希匹配的缓存文件：")
             
             for cache_file in matching_files:
                 try:
-                    print(f"    - Reading {cache_file.name}")
+                    print(f"    - 正在读取 {cache_file.name}")
                     with open(cache_file, 'r') as f:
                         cache_data = json.load(f)
                     
                     # Check for highlight history
                     if 'highlight_history' in cache_data:
-                        print(f"      - Found highlight_history with {len(cache_data['highlight_history'])} entries")
+                        print(f"      - 找到 highlight_history，共 {len(cache_data['highlight_history'])} 条记录")
                         history.extend(cache_data['highlight_history'])
                     
                     # Check for legacy highlight segments
                     elif 'highlight_segments' in cache_data and cache_data['highlight_segments']:
                         segments = cache_data.get('highlight_segments', [])
                         metadata = cache_data.get('highlight_metadata', {})
-                        print(f"      - Found legacy highlight_segments with {len(segments)} segments")
+                        print(f"      - 找到旧版 highlight_segments，共 {len(segments)} 个片段")
                         history.append({
                             'segments': segments,
                             'segments_count': len(segments),
@@ -758,7 +757,7 @@ class VideoAnalysisCache:
                             'created_at': metadata.get('created_at', 'Unknown')
                         })
                 except Exception as e:
-                    print(f"      ⚠️ Error reading {cache_file.name}: {e}")
+                    print(f"      ⚠️ 读取 {cache_file.name} 时出错：{e}")
                     continue
             
             # Remove duplicates based on created_at timestamp
@@ -773,15 +772,15 @@ class VideoAnalysisCache:
             # Sort by created_at (most recent first)
             unique_history.sort(key=lambda x: x.get('created_at', ''), reverse=True)
             
-            print(f"  📤 Returning {len(unique_history)} unique history entries")
+            print(f"  📤 返回 {len(unique_history)} 条唯一历史记录")
             if unique_history:
-                print(f"  - First entry created at: {unique_history[0].get('created_at', 'Unknown')}")
-                print(f"  - First entry segments count: {unique_history[0].get('segments_count', 0)}")
+                print(f"  - 第一条记录创建时间：{unique_history[0].get('created_at', '未知')}")
+                print(f"  - 第一条记录片段数：{unique_history[0].get('segments_count', 0)}")
             
             return unique_history
             
         except Exception as e:
-            print(f"  ❌ Exception in get_highlight_history: {e}")
+            print(f"  ❌ get_highlight_history 中发生异常：{e}")
             import traceback
             traceback.print_exc()
             return []
@@ -840,4 +839,4 @@ __all__ = [
 if __name__ == "__main__":
     # Minimal sanity test that does NOT require a real video file:
     cache = VideoAnalysisCache()
-    print("✅ VideoAnalysisCache module loaded (no file operations executed).")
+    print("✅ VideoAnalysisCache 模块已加载（未执行文件操作）。")

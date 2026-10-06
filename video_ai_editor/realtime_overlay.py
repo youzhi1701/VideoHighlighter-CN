@@ -1456,8 +1456,7 @@ class RealtimeOverlayPreview(QWidget):
         except (ValueError, OSError) as exc:
             QMessageBox.warning(self, "训练模型", str(exc))
             return
-        print(f"teach: seeded {result['class']!r} in {result['root']} "
-              f"({result['seeds']} seeds)")
+        print(f"训练：已在 {result['root']} 中为 {result['class']!r} 写入 {result['seeds']} 个种子样本")
         QMessageBox.information(self, "训练模型", message(result))
 
     def _on_teach_region(self, scene_rect):

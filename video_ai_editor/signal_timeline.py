@@ -1537,7 +1537,7 @@ class SignalTimelineScene(QGraphicsScene):
             count = meta.get('merged_count', 1)
             if count > 1:
                 avg_conf = meta.get('avg_confidence', 0)
-                bar_label = f"Motion x{count} ({avg_conf:.0%})"
+                bar_label = f"运动 x{count}（{avg_conf:.0%}）"
             else:
                 conf = meta.get('confidence', 0)
                 bar_label = f"Motion ({conf:.0%})" if conf else "运动"
@@ -3088,7 +3088,7 @@ class SignalTimelineView(QGraphicsView):
             'start_time': start_time,
             'end_time':   end_time,
             'duration':   end_time - start_time,
-            'label':      f"Range {start_time:.2f}s–{end_time:.2f}s",
+            'label':      f"范围 {start_time:.2f}秒–{end_time:.2f}秒",
             'metadata':   {'source': 'range_selection'}
         }
         mime_data.setText(json.dumps(bar_data))

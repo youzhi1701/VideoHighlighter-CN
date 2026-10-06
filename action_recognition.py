@@ -1238,7 +1238,7 @@ def load_models(device="AUTO", openvino_threads=None,
     load_r3d_pre    = action_models in ('intel_only',  'mixed')   # pretrained R3D uses Kinetics-400
     load_r3d_custom = action_models in ('r3d_custom_only', 'mixed')
 
-    print(f"\n📋 Action models selection: '{action_models}'")
+    print(f"\n📋 动作模型选择：'{action_models}'")
     print(f"   加载自定义 OpenVINO：{load_custom}")
     print(f"   加载 Intel Kinetics： {load_intel}")
     print(f"   加载 R3D 预训练模型： {load_r3d_pre}")
@@ -1773,7 +1773,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
         # =============================================
         # WARM-UP PHASE
         # =============================================
-        print(f"\n🔥 WARM-UP: Pre-filling buffer with {warm_up_seconds}s of frames...")
+        print(f"\n🔥 预热：正在预填充 {warm_up_seconds} 秒的视频帧缓冲区…")
         warm_up_frames_needed = min(int(fps * warm_up_seconds), SEQUENCE_LENGTH)
         warm_up_frame_count = 0
 
@@ -2193,24 +2193,24 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                 # ---- Performance stats ----
                 if current_time - last_perf_print > 5.0:
                     total_elapsed = current_time - start_time
-                    r3d_info = f" | R3D: {r3d_time:.1f}s" if r3d_wrapper else ""
-                    print(f"\n📊 Progress: {frame_id}/{total_frames} frames "
+                    r3d_info = f" | R3D：{r3d_time:.1f}秒" if r3d_wrapper else ""
+                    print(f"\n📊 进度：{frame_id}/{total_frames} 帧 "
                           f"({frame_id / total_elapsed:.1f} fps) | "
-                          f"YOLO: {yolo_time:.1f}s | "
-                          f"Preprocess: {preprocess_time:.1f}s | "
-                          f"Inference: {inference_time:.1f}s{r3d_info} | "
-                          f"Draw: {draw_time:.1f}s")
+                          f"YOLO：{yolo_time:.1f}秒 | "
+                          f"预处理：{preprocess_time:.1f}秒 | "
+                          f"推理：{inference_time:.1f}秒{r3d_info} | "
+                          f"绘制：{draw_time:.1f}秒")
                     last_perf_print = current_time
 
                 if progress_callback and (current_time - last_gui_update > 0.1):
                     watchdog.beat('progress callback (GUI)')
                     elapsed = current_time - start_time
                     progress_msg = (
-                        f"Frame {processed_frames}/{expected_processed_frames} | "
-                        f"Detections: {detection_count} | "
-                        f"Speed: {_speed_text(frame_id, elapsed, sample_rate)} | "
-                        f"Backend: {_backend_label} | "
-                        f"Models: {action_models}")
+                        f"帧 {processed_frames}/{expected_processed_frames} | "
+                        f"检测数：{detection_count} | "
+                        f"速度：{_speed_text(frame_id, elapsed, sample_rate)} | "
+                        f"后端：{_backend_label} | "
+                        f"模型：{action_models}")
                     progress_callback(processed_frames, expected_processed_frames,
                                       "动作识别", progress_msg)
                     last_gui_update = current_time
@@ -2338,7 +2338,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
                         recent_detections.extend(frame_detections[:3])
 
     finally:
-        print("\n🧹 Cleaning up resources...")
+        print("\n🧹 正在清理资源…")
         if watchdog is not None:
             watchdog.close()
         release_capture = True
@@ -2415,7 +2415,7 @@ def run_action_detection(video_path, device="AUTO", sample_rate=5, log_file="act
 # =============================
 def print_top_actions(all_actions, top_n=20):
     sorted_actions = sorted(all_actions, key=lambda x: x[3], reverse=True)
-    print(f"\nTop {min(top_n, len(sorted_actions))} actions (by confidence):")
+    print(f"\n置信度最高的 {min(top_n, len(sorted_actions))} 个动作：")
     for i, item in enumerate(sorted_actions[:top_n]):
         if len(item) == 6:
             timestamp, frame_id, action_id, score, action_name, model_type = item
@@ -2431,7 +2431,7 @@ def print_top_actions(all_actions, top_n=20):
 def print_most_common_actions(all_actions, top_n=20):
     action_names = [item[4] for item in all_actions]
     counter = Counter(action_names)
-    print(f"\nTop {min(top_n, len(counter))} most common actions:")
+    print(f"\n出现次数最多的 {min(top_n, len(counter))} 个动作：")
     for i, (action_name, count) in enumerate(counter.most_common(top_n)):
         print(f"{i + 1:2d}. {action_name}（出现 {count} 次）")
 
@@ -2468,13 +2468,13 @@ def detect_action_sequences(all_actions, score_threshold=0.01, min_duration=1.0)
 
 def print_action_sequences(all_actions):
     sequences = detect_action_sequences(all_actions)
-    print(f"\nAction sequences detected ({len(sequences)}):")
+    print(f"\n检测到的动作序列（{len(sequences)}）：")
     for i, seq in enumerate(sequences):
         duration = seq['end_time'] - seq['start_time']
         start_mins, start_secs = divmod(int(seq['start_time']), 60)
         end_mins, end_secs = divmod(int(seq['end_time']), 60)
         model_info = f" [{seq.get('model_type', 'unknown')}]" if 'model_type' in seq else ""
-        print(f"{i + 1:2d}. {seq['action_name']}{model_info} Duration: {duration:.1f}s "
+        print(f"{i + 1:2d}. {seq['action_name']}{model_info} 时长：{duration:.1f} 秒 "
               f"({start_mins:02d}:{start_secs:02d} - {end_mins:02d}:{end_secs:02d}) "
               f"最高得分：{seq['max_score']:.3f}")
 
@@ -2573,7 +2573,7 @@ if __name__ == "__main__":
         print_top_actions(results)
         print_most_common_actions(results)
         print_action_sequences(results)
-        print(f"\n✅ Processing complete. Found {len(results)} action detections.")
+        print(f"\n✅ 处理完成，共找到 {len(results)} 个动作检测结果。")
     finally:
         gc.collect()
         if CUDA_AVAILABLE:

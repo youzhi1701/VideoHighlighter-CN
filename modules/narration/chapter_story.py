@@ -145,7 +145,7 @@ def _chapter_facts(chapter: Mapping) -> list[str]:
         from modules.report.highlight_prose import describe_chapter
         return list(describe_chapter(chapter, spoken_evidence=False))
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Chapter facts skipped: {exc}")
+        print(f"⚠️ 已跳过章节事实信息：{exc}")
         return []
 
 
@@ -361,7 +361,7 @@ def frames_from_video(video_path: str, count: int = FRAMES_PER_CHAPTER):
     try:
         import cv2
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Chapter frames skipped: {exc}")
+        print(f"⚠️ 已跳过章节画面：{exc}")
         return None
 
     def sample(start: float, end: float) -> list:
@@ -487,7 +487,7 @@ def _tell_one(llm, prompt: str, images: Optional[Sequence[str]],
                                 temperature=STORY_TEMPERATURE,
                                 images=list(images))
         except Exception as exc:
-            print(f"⚠️ Chapter frames not used ({exc}); telling from text alone")
+            print(f"⚠️ 章节画面未使用（{exc}）；将仅依据文本生成讲述")
     return _generate(llm, prompt, system, STORY_TOKENS, STORY_TEMPERATURE)
 
 
@@ -524,7 +524,7 @@ def tell(report: Mapping,
             try:
                 images = frames_fn(float(ch["start"]), float(ch["end"]))
             except Exception as exc:
-                print(f"⚠️ Frames for chapter {index} failed: {exc}")
+                print(f"⚠️ 章节 {index} 的画面读取失败：{exc}")
         try:
             text = (_tell_one(llm, chapter_prompt(report, ch, previous),
                               images, system) or "").strip()
@@ -579,7 +579,7 @@ def tell_report_file(json_path: str,
             from modules.report.spoken_evidence import from_report
             report["chapters"] = from_report(report)
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Spoken evidence backfill skipped: {exc}")
+            print(f"⚠️ 已跳过语音证据回填：{exc}")
 
     # And the other half of it: the lines nothing measured. Same reasoning, and
     # this path re-renders the page, so without it the section would be dropped

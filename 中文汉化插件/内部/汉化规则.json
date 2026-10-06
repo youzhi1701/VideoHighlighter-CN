@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "10658fafe3f4f4b5b149f8e11db249d1f1d92e90"
+    "head_commit": "16712e0ae1db6715146632cfcdd4af55cbcc19a7"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -10451,6 +10451,168 @@
       "hunk": "@@ -1791,45 +1785,45 @@ class VideoSeekAnalyzer:"
     },
     {
+      "id": "llm/llm_reasoning.py#1",
+      "file": "llm/llm_reasoning.py",
+      "source": "            \"description\": \"Someone arrives and stops\"",
+      "target": "            \"description\": \"有人到达并停下\"",
+      "before": "            \"pattern\": [\"entering\", \"walking\", \"standing\"],",
+      "after": "        },",
+      "hunk": "@@ -122,27 +122,27 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#2",
+      "file": "llm/llm_reasoning.py",
+      "source": "            \"description\": \"Someone leaves after being present\"",
+      "target": "            \"description\": \"有人在停留后离开\"",
+      "before": "            \"pattern\": [\"standing\", \"walking\", \"exiting\"],",
+      "after": "        },",
+      "hunk": "@@ -122,27 +122,27 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#3",
+      "file": "llm/llm_reasoning.py",
+      "source": "            \"description\": \"Social interaction sequence\"",
+      "target": "            \"description\": \"社交互动过程\"",
+      "before": "            \"pattern\": [\"approaching\", \"talking\", \"leaving\"],",
+      "after": "        },",
+      "hunk": "@@ -122,27 +122,27 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#4",
+      "file": "llm/llm_reasoning.py",
+      "source": "            \"description\": \"Fight sequence\"",
+      "target": "            \"description\": \"打斗过程\"",
+      "before": "            \"pattern\": [\"approaching\", \"fighting\", \"exiting\"],",
+      "after": "        },",
+      "hunk": "@@ -122,27 +122,27 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#5",
+      "file": "llm/llm_reasoning.py",
+      "source": "            \"description\": \"Athletic activity\"",
+      "target": "            \"description\": \"运动活动\"",
+      "before": "            \"pattern\": [\"running\", \"jumping\", \"throwing\"],",
+      "after": "        }",
+      "hunk": "@@ -122,27 +122,27 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#6",
+      "file": "llm/llm_reasoning.py",
+      "source": "            return f\"Prolonged {actions[0]} activity\"",
+      "target": "            return f\"持续的 {actions[0]} 活动\"",
+      "before": "        if len(actions) == 1:",
+      "after": "        elif len(categories) == 1:",
+      "hunk": "@@ -261,18 +261,18 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#7",
+      "file": "llm/llm_reasoning.py",
+      "source": "                return f\"Intense {cat} sequence\"",
+      "target": "                return \"高强度同类动作过程\"",
+      "before": "            if density > 2.0:",
+      "after": "            else:",
+      "hunk": "@@ -261,18 +261,18 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#8",
+      "file": "llm/llm_reasoning.py",
+      "source": "                return f\"Sustained {cat} activity\"",
+      "target": "                return \"持续的同类动作\"",
+      "before": "            else:",
+      "after": "        else:",
+      "hunk": "@@ -261,18 +261,18 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#9",
+      "file": "llm/llm_reasoning.py",
+      "source": "                return \"Rapid action sequence with multiple activities\"",
+      "target": "                return \"包含多种活动的快速动作过程\"",
+      "before": "            if density > 2.0:",
+      "after": "            else:",
+      "hunk": "@@ -261,18 +261,18 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#10",
+      "file": "llm/llm_reasoning.py",
+      "source": "                return \"Mixed activity period\"",
+      "target": "                return \"混合活动时段\"",
+      "before": "            else:",
+      "after": "    ",
+      "hunk": "@@ -261,18 +261,18 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#11",
+      "file": "llm/llm_reasoning.py",
+      "source": "                    description=f\"Detected {pattern['name']} pattern: {pattern['description']}\",",
+      "target": "                    description=f\"检测到 {pattern['name']} 模式：{pattern['description']}\",",
+      "before": "                fact = InferredFact(",
+      "after": "                    entities=[\"action_sequence\"],",
+      "hunk": "@@ -368,13 +368,13 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#12",
+      "file": "llm/llm_reasoning.py",
+      "source": "                        f\"Found {matches}/{len(pattern['pattern'])} actions in pattern\",\n                        f\"Actions detected: {', '.join(action_names[:5])}\"",
+      "target": "                        f\"在模式中匹配到 {matches}/{len(pattern['pattern'])} 个动作\",\n                        f\"检测到的动作：{', '.join(action_names[:5])}\"",
+      "before": "                    reasoning_chain=[",
+      "after": "                    ],",
+      "hunk": "@@ -368,13 +368,13 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#13",
+      "file": "llm/llm_reasoning.py",
+      "source": "                    description=f\"Transition from {pair[0]} to {pair[1]}\",",
+      "target": "                    description=f\"动作从 {pair[0]} 转变为 {pair[1]}\",",
+      "before": "                fact = InferredFact(",
+      "after": "                    entities=[pair[0], pair[1]],",
+      "hunk": "@@ -411,13 +411,13 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#14",
+      "file": "llm/llm_reasoning.py",
+      "source": "                        f\"Detected {pair[0]} and {pair[1]} in close succession\",\n                        \"This indicates a change in activity\"",
+      "target": "                        f\"连续检测到 {pair[0]} 和 {pair[1]}\",\n                        \"这表明活动发生了变化\"",
+      "before": "                    reasoning_chain=[",
+      "after": "                    ],",
+      "hunk": "@@ -411,13 +411,13 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#15",
+      "file": "llm/llm_reasoning.py",
+      "source": "                description=f\"High activity moment with {action_count} simultaneous actions\",",
+      "target": "                description=f\"高活动时刻：同时出现 {action_count} 个动作\",",
+      "before": "            fact = InferredFact(",
+      "after": "                entities=[\"high_intensity\"],",
+      "hunk": "@@ -440,13 +440,13 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#16",
+      "file": "llm/llm_reasoning.py",
+      "source": "                    f\"{action_count} actions detected simultaneously\",\n                    \"This is a peak of activity\"",
+      "target": "                    f\"同时检测到 {action_count} 个动作\",\n                    \"这是一个活动峰值\"",
+      "before": "                reasoning_chain=[",
+      "after": "                ],",
+      "hunk": "@@ -440,13 +440,13 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#17",
+      "file": "llm/llm_reasoning.py",
+      "source": "                description=f\"Moderate activity with {action_count} simultaneous actions\",",
+      "target": "                description=f\"中等活动强度：同时出现 {action_count} 个动作\",",
+      "before": "            fact = InferredFact(",
+      "after": "                entities=[\"moderate_intensity\"],",
+      "hunk": "@@ -457,12 +457,12 @@ class VideoReasoningEngine:"
+    },
+    {
+      "id": "llm/llm_reasoning.py#18",
+      "file": "llm/llm_reasoning.py",
+      "source": "                    f\"{action_count} actions occurring together\"",
+      "target": "                    f\"有 {action_count} 个动作同时发生\"",
+      "before": "                reasoning_chain=[",
+      "after": "                ],",
+      "hunk": "@@ -457,12 +457,12 @@ class VideoReasoningEngine:"
+    },
+    {
       "id": "llm/llm_timeline_bridge.py#1",
       "file": "llm/llm_timeline_bridge.py",
       "source": "            return \"Timeline: NOT CONNECTED\"",
@@ -17547,6 +17709,69 @@
       "hunk": "@@ -337,27 +334,26 @@ def main(argv=None) -> int:"
     },
     {
+      "id": "model_training/intel/model.py#1",
+      "file": "model_training/intel/model.py",
+      "source": "            print(f\"⚠️ Encoder would not compile on {self.device} ({e}); using CPU\")",
+      "target": "            print(f\"⚠️ 编码器无法在 {self.device} 上编译（{e}）；将使用 CPU\")",
+      "before": "            # Falling back keeps the run alive rather than failing at the door.",
+      "after": "            self.device = \"CPU\"",
+      "hunk": "@@ -52,15 +52,15 @@ class IntelFeatureExtractor:"
+    },
+    {
+      "id": "model_training/intel/model.py#2",
+      "file": "model_training/intel/model.py",
+      "source": "        print(f\"[encoder] running on: {self.device}\")",
+      "target": "        print(f\"[编码器] 运行设备：{self.device}\")",
+      "before": "            self.encoder = ie.compile_model(model, device_name=\"CPU\")",
+      "after": "",
+      "hunk": "@@ -52,15 +52,15 @@ class IntelFeatureExtractor:"
+    },
+    {
+      "id": "model_training/intel/model.py#3",
+      "file": "model_training/intel/model.py",
+      "source": "        print(f\"[encoder] input: {self.input_name}, shape: {self.input_shape}\")",
+      "target": "        print(f\"[编码器] 输入：{self.input_name}，形状：{self.input_shape}\")",
+      "before": "        self.input_shape = list(inp.get_shape())",
+      "after": "",
+      "hunk": "@@ -52,15 +52,15 @@ class IntelFeatureExtractor:"
+    },
+    {
+      "id": "model_training/intel/model.py#4",
+      "file": "model_training/intel/model.py",
+      "source": "        print(f\"✅ Decoder: EncoderMLP (GPU-compatible at inference)\")",
+      "target": "        print(\"✅ 解码器：EncoderMLP（推理阶段兼容 GPU）\")",
+      "before": "        )",
+      "after": "    elif decoder_type == \"lstm\":",
+      "hunk": "@@ -287,7 +287,7 @@ def build_decoder(decoder_type, feature_dim, hidden_dim, num_classes,"
+    },
+    {
+      "id": "model_training/intel/model.py#5",
+      "file": "model_training/intel/model.py",
+      "source": "        print(f\"⚠️  Decoder: EncoderLSTM (will fall back to CPU at inference — consider 'mlp')\")",
+      "target": "        print(\"⚠️ 解码器：EncoderLSTM（推理阶段将退回 CPU；建议考虑 'mlp'）\")",
+      "before": "        )",
+      "after": "    else:",
+      "hunk": "@@ -296,10 +296,10 @@ def build_decoder(decoder_type, feature_dim, hidden_dim, num_classes,"
+    },
+    {
+      "id": "model_training/intel/model.py#6",
+      "file": "model_training/intel/model.py",
+      "source": "        raise ValueError(f\"Unknown decoder_type '{decoder_type}'. Use 'mlp' or 'lstm'.\")",
+      "target": "        raise ValueError(f\"未知 decoder_type '{decoder_type}'。请使用 'mlp' 或 'lstm'。\")",
+      "before": "    else:",
+      "after": "",
+      "hunk": "@@ -296,10 +296,10 @@ def build_decoder(decoder_type, feature_dim, hidden_dim, num_classes,"
+    },
+    {
+      "id": "model_training/intel/model.py#7",
+      "file": "model_training/intel/model.py",
+      "source": "    print(f\"   Parameters: {total:,}\")",
+      "target": "    print(f\"   参数量：{total:,}\")",
+      "before": "    total = sum(p.numel() for p in model.parameters())",
+      "after": "    return model",
+      "hunk": "@@ -296,10 +296,10 @@ def build_decoder(decoder_type, feature_dim, hidden_dim, num_classes,"
+    },
+    {
       "id": "model_training/intel/train.py#1",
       "file": "model_training/intel/train.py",
       "source": "                print(f\"✅ Intel GPU detected: {_gpu_name}\")",
@@ -18631,6 +18856,51 @@
       "hunk": "@@ -579,6 +579,6 @@ def apply_dataset_split(train_dataset, val_dataset, valid_actions,"
     },
     {
+      "id": "model_training/shared/feature_cache.py#1",
+      "file": "model_training/shared/feature_cache.py",
+      "source": "        print(f\"✅ Feature cache loaded: {cache_path}\")\n        print(f\"   {info['num_samples']} samples, feature dim = {info['feature_dim']}\")",
+      "target": "        print(f\"✅ 特征缓存已加载：{cache_path}\")\n        print(f\"   {info['num_samples']} 个样本，特征维度 = {info['feature_dim']}\")",
+      "before": "        info = torch.load(cache_path, weights_only=False, map_location='cpu')",
+      "after": "        return cache_path",
+      "hunk": "@@ -57,16 +57,16 @@ def precompute_feature_cache(dataset, encoder, config,"
+    },
+    {
+      "id": "model_training/shared/feature_cache.py#2",
+      "file": "model_training/shared/feature_cache.py",
+      "source": "        print(f\"🗑️  Deleted old feature cache\")",
+      "target": "        print(\"🗑️ 已删除旧特征缓存\")",
+      "before": "        os.remove(cache_path)",
+      "after": "",
+      "hunk": "@@ -57,16 +57,16 @@ def precompute_feature_cache(dataset, encoder, config,"
+    },
+    {
+      "id": "model_training/shared/feature_cache.py#3",
+      "file": "model_training/shared/feature_cache.py",
+      "source": "    print(f\"\\n🔧 Pre-encoding {len(dataset)} clips with OpenVINO encoder...\")\n    print(f\"   (One-time cost — all future epochs load from cache)\")",
+      "target": "    print(f\"\\n🔧 正在使用 OpenVINO 编码器预编码 {len(dataset)} 个片段…\")\n    print(\"   （仅首次执行；后续训练轮次将直接从缓存加载）\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -57,16 +57,16 @@ def precompute_feature_cache(dataset, encoder, config,"
+    },
+    {
+      "id": "model_training/shared/feature_cache.py#4",
+      "file": "model_training/shared/feature_cache.py",
+      "source": "        for frames, labels in tqdm(temp_loader, desc=\"Encoding features\"):",
+      "target": "        for frames, labels in tqdm(temp_loader, desc=\"正在编码特征\"):",
+      "before": "    with torch.no_grad():",
+      "after": "            # frames: (1, T, C, H, W) — encoder expects CPU tensors",
+      "hunk": "@@ -75,7 +75,7 @@ def precompute_feature_cache(dataset, encoder, config,"
+    },
+    {
+      "id": "model_training/shared/feature_cache.py#5",
+      "file": "model_training/shared/feature_cache.py",
+      "source": "    print(f\"✅ Feature cache saved: {cache_path} ({size_mb:.1f} MB)\")\n    print(f\"   {cache_data['num_samples']} samples, \"\n          f\"feature dim = {cache_data['feature_dim']}, \"\n          f\"seq len = {cache_data['sequence_length']}\")",
+      "target": "    print(f\"✅ 特征缓存已保存：{cache_path}（{size_mb:.1f} MB）\")\n    print(f\"   {cache_data['num_samples']} 个样本，\"\n          f\"特征维度 = {cache_data['feature_dim']}，\"\n          f\"序列长度 = {cache_data['sequence_length']}\")",
+      "before": "    size_mb = os.path.getsize(cache_path) / (1024 * 1024)",
+      "after": "",
+      "hunk": "@@ -95,10 +95,10 @@ def precompute_feature_cache(dataset, encoder, config,"
+    },
+    {
       "id": "model_training/shared/training_utils.py#1",
       "file": "model_training/shared/training_utils.py",
       "source": "    print(f\"\\n⚖️  Class weights (inverse frequency):\")",
@@ -18773,6 +19043,69 @@
       "before": "",
       "after": "    return keep, remove, per_class_acc",
       "hunk": "@@ -296,12 +296,12 @@ def create_production_model(model_wrapper, val_fn, min_val_accuracy=0.3):"
+    },
+    {
+      "id": "model_training/shared/visualization.py#1",
+      "file": "model_training/shared/visualization.py",
+      "source": "    print(f\"\\n🎬 Visualization: {video_path}\")\n    print(f\"   Label: {label} | sample_rate: {sample_rate}\")",
+      "target": "    print(f\"\\n🎬 可视化：{video_path}\")\n    print(f\"   标签：{label} | 采样率：{sample_rate}\")",
+      "before": "    \"\"\"Create annotated video showing detection pipeline for a training sample.\"\"\"",
+      "after": "",
+      "hunk": "@@ -35,15 +35,15 @@ def visualize_training_sample(video_path, label, pose_extractor,"
+    },
+    {
+      "id": "model_training/shared/visualization.py#2",
+      "file": "model_training/shared/visualization.py",
+      "source": "        print(f\"❌ Could not open: {video_path}\")",
+      "target": "        print(f\"❌ 无法打开：{video_path}\")",
+      "before": "    if not cap.isOpened():",
+      "after": "        return False",
+      "hunk": "@@ -35,15 +35,15 @@ def visualize_training_sample(video_path, label, pose_extractor,"
+    },
+    {
+      "id": "model_training/shared/visualization.py#3",
+      "file": "model_training/shared/visualization.py",
+      "source": "        print(\"❌ Could not init video writer\")",
+      "target": "        print(\"❌ 无法初始化视频写入器\")",
+      "before": "    if video_writer is None:",
+      "after": "        cap.release()",
+      "hunk": "@@ -67,7 +67,7 @@ def visualize_training_sample(video_path, label, pose_extractor,"
+    },
+    {
+      "id": "model_training/shared/visualization.py#4",
+      "file": "model_training/shared/visualization.py",
+      "source": "    pbar = tqdm(total=total_frames, desc=\"Visualizing\")",
+      "target": "    pbar = tqdm(total=total_frames, desc=\"正在生成可视化\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -85,7 +85,7 @@ def visualize_training_sample(video_path, label, pose_extractor,"
+    },
+    {
+      "id": "model_training/shared/visualization.py#5",
+      "file": "model_training/shared/visualization.py",
+      "source": "            print(f\"⚠️  Frame {frame_count}: {e}\")",
+      "target": "            print(f\"⚠️ 第 {frame_count} 帧：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "",
+      "hunk": "@@ -171,7 +171,7 @@ def visualize_training_sample(video_path, label, pose_extractor,"
+    },
+    {
+      "id": "model_training/shared/visualization.py#6",
+      "file": "model_training/shared/visualization.py",
+      "source": "    print(f\"✅ {ok_frames}/{frame_count} frames ({pct:.1f}%) → {output_path}\")",
+      "target": "    print(f\"✅ {ok_frames}/{frame_count} 帧（{pct:.1f}%）→ {output_path}\")",
+      "before": "    pct = (ok_frames / frame_count * 100) if frame_count else 0",
+      "after": "    return ok_frames > 0",
+      "hunk": "@@ -181,7 +181,7 @@ def visualize_training_sample(video_path, label, pose_extractor,"
+    },
+    {
+      "id": "model_training/shared/visualization.py#7",
+      "file": "model_training/shared/visualization.py",
+      "source": "        print(\"❌ No samples\")",
+      "target": "        print(\"❌ 没有可用样本\")",
+      "before": "    if not dataset.samples:",
+      "after": "        return",
+      "hunk": "@@ -189,7 +189,7 @@ def create_sample_visualizations(dataset, pose_extractor, num_samples=2,"
     },
     {
       "id": "modules/audio/music_analysis.py#1",
@@ -20354,6 +20687,69 @@
       "before": "        if self.debug:",
       "after": "",
       "hunk": "@@ -74,7 +74,7 @@ class ROIDetector:"
+    },
+    {
+      "id": "modules/crop/track.py#3",
+      "file": "modules/crop/track.py",
+      "source": "                print(f\"🎯 Initialized default boxes for all {self.max_actions} positions\")",
+      "target": "                print(f\"🎯 已为全部 {self.max_actions} 个位置初始化默认框\")",
+      "before": "            if frame_idx < 10:  # Only print once at beginning",
+      "after": "",
+      "hunk": "@@ -465,7 +465,7 @@ class MultiActionTracker:"
+    },
+    {
+      "id": "modules/crop/track.py#4",
+      "file": "modules/crop/track.py",
+      "source": "                            print(f\"🔮 Predicted position for {positions[slot_i]} (no detection)\")",
+      "target": "                            print(f\"🔮 已预测 {positions[slot_i]} 的位置（当前无检测结果）\")",
+      "before": "                        if frame_idx % 30 == 0:  # Print occasionally",
+      "after": "",
+      "hunk": "@@ -590,7 +590,7 @@ class MultiActionTracker:"
+    },
+    {
+      "id": "modules/crop/track.py#5",
+      "file": "modules/crop/track.py",
+      "source": "                print(f\"🎯 Locked Action idx={action_idx} ({positions[active_actions_indicies.index(action_idx)]})\")",
+      "target": "                print(f\"🎯 已锁定动作区域 idx={action_idx}（{positions[active_actions_indicies.index(action_idx)]}）\")",
+      "before": "                self.actions_confirmed[action_idx] = True",
+      "after": "",
+      "hunk": "@@ -623,7 +623,7 @@ class MultiActionTracker:"
+    },
+    {
+      "id": "modules/crop/track.py#6",
+      "file": "modules/crop/track.py",
+      "source": "        print(f\"🔧 Raw calibration: {target_w}x{target_h} (aspect: {aspect:.2f})\")",
+      "target": "        print(f\"🔧 原始校准尺寸：{target_w}x{target_h}（宽高比：{aspect:.2f}）\")",
+      "before": "        ",
+      "after": "        ",
+      "hunk": "@@ -984,7 +984,7 @@ def get_multi_calibration(video_path, detector, num_frames=40, crop_count=3, pla"
+    },
+    {
+      "id": "modules/crop/track.py#7",
+      "file": "modules/crop/track.py",
+      "source": "            print(f\"⚠️ No standard resolution match found for {target_w}x{target_h}\")",
+      "target": "            print(f\"⚠️ 未找到与 {target_w}x{target_h} 匹配的标准分辨率\")",
+      "before": "        if best_res is None:",
+      "after": "            ",
+      "hunk": "@@ -1012,7 +1012,7 @@ def get_multi_calibration(video_path, detector, num_frames=40, crop_count=3, pla"
+    },
+    {
+      "id": "modules/crop/track.py#8",
+      "file": "modules/crop/track.py",
+      "source": "        print(f\"✅ Rounded to standard: {target_w}x{target_h}\")",
+      "target": "        print(f\"✅ 已调整到标准分辨率：{target_w}x{target_h}\")",
+      "before": "        ",
+      "after": "        return (target_w, target_h)",
+      "hunk": "@@ -1041,11 +1041,11 @@ def get_multi_calibration(video_path, detector, num_frames=40, crop_count=3, pla"
+    },
+    {
+      "id": "modules/crop/track.py#9",
+      "file": "modules/crop/track.py",
+      "source": "    print(\"⚠️ No detections for calibration, using default 480p\")",
+      "target": "    print(\"⚠️ 校准时没有检测结果，将使用默认 480p\")",
+      "before": "    # Fallback to standard 480p if no detection",
+      "after": "    return (854, 480)",
+      "hunk": "@@ -1041,11 +1041,11 @@ def get_multi_calibration(video_path, detector, num_frames=40, crop_count=3, pla"
     },
     {
       "id": "modules/crop/zones.py#1",
@@ -24084,6 +24480,51 @@
       "before": "    ranges, boxes = compute_forbidden(video, bank, avoid_ids, fps)",
       "after": "    for a, b in ranges[:20]:",
       "hunk": "@@ -267,7 +267,7 @@ if __name__ == \"__main__\":"
+    },
+    {
+      "id": "modules/segments/manual_avoid.py#1",
+      "file": "modules/segments/manual_avoid.py",
+      "source": "        raise ValueError(f\"expected str or number, got {type(token).__name__}\")",
+      "target": "        raise ValueError(f\"预期为字符串或数字，实际为 {type(token).__name__}\")",
+      "before": "    if not isinstance(token, str):",
+      "after": "    m = _TIME_TOKEN.match(token)",
+      "hunk": "@@ -73,10 +73,10 @@ def _parse_time_token(token: str) -> float:"
+    },
+    {
+      "id": "modules/segments/manual_avoid.py#2",
+      "file": "modules/segments/manual_avoid.py",
+      "source": "        raise ValueError(f\"unrecognised time token: {token!r}\")",
+      "target": "        raise ValueError(f\"无法识别的时间值：{token!r}\")",
+      "before": "    if not m:",
+      "after": "    if m.group(4) is not None:",
+      "hunk": "@@ -73,10 +73,10 @@ def _parse_time_token(token: str) -> float:"
+    },
+    {
+      "id": "modules/segments/manual_avoid.py#3",
+      "file": "modules/segments/manual_avoid.py",
+      "source": "                raise ValueError(f\"range dict missing start/end: {item!r}\")",
+      "target": "                raise ValueError(f\"区间数据缺少 start/end：{item!r}\")",
+      "before": "            if start_raw is None or end_raw is None:",
+      "after": "            start = _parse_time_token(start_raw)",
+      "hunk": "@@ -114,7 +114,7 @@ def parse_ranges(raw: Any) -> List[Range]:"
+    },
+    {
+      "id": "modules/segments/manual_avoid.py#4",
+      "file": "modules/segments/manual_avoid.py",
+      "source": "                raise ValueError(f\"string range missing separator: {item!r}\")",
+      "target": "                raise ValueError(f\"字符串区间缺少分隔符：{item!r}\")",
+      "before": "            else:",
+      "after": "        elif isinstance(item, (tuple, list)) and len(item) == 2:",
+      "hunk": "@@ -126,12 +126,12 @@ def parse_ranges(raw: Any) -> List[Range]:"
+    },
+    {
+      "id": "modules/segments/manual_avoid.py#5",
+      "file": "modules/segments/manual_avoid.py",
+      "source": "            raise ValueError(f\"unrecognised range entry: {item!r}\")",
+      "target": "            raise ValueError(f\"无法识别的区间条目：{item!r}\")",
+      "before": "        else:",
+      "after": "",
+      "hunk": "@@ -126,12 +126,12 @@ def parse_ranges(raw: Any) -> List[Range]:"
     },
     {
       "id": "modules/segments/motion_scene_detect_optimized.py#1",
@@ -35650,7 +36091,7 @@
       "target": "                parts.append(f\"{shown}/{len(events)} 个事件\")",
       "before": "                shown = sum(1 for v in events.values() if v)",
       "after": "",
-      "hunk": "@@ -4667,18 +4674,18 @@ class SignalTimelineWindow(QMainWindow):",
+      "hunk": "@@ -4667,28 +4674,28 @@ class SignalTimelineWindow(QMainWindow):",
       "safe_duplicate": true
     },
     {
@@ -35660,7 +36101,7 @@
       "target": "            self.filter_summary.setText(\"当前显示：\" + \", \".join(parts))",
       "before": "",
       "after": "            ",
-      "hunk": "@@ -4667,18 +4674,18 @@ class SignalTimelineWindow(QMainWindow):"
+      "hunk": "@@ -4667,28 +4674,28 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
       "id": "signal_timeline_viewer.py#334",
@@ -35669,7 +36110,7 @@
       "target": "                        filter_details.append(f\"动作：{', '.join(visible_actions)}\")",
       "before": "                    if len(visible_actions) <= 3:",
       "after": "                    else:",
-      "hunk": "@@ -4667,18 +4674,18 @@ class SignalTimelineWindow(QMainWindow):"
+      "hunk": "@@ -4667,28 +4674,28 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
       "id": "signal_timeline_viewer.py#335",
@@ -35678,20 +36119,38 @@
       "target": "                        filter_details.append(f\"动作：显示 {len(visible_actions)} 个\")",
       "before": "                    else:",
       "after": "                ",
-      "hunk": "@@ -4667,18 +4674,18 @@ class SignalTimelineWindow(QMainWindow):"
+      "hunk": "@@ -4667,28 +4674,28 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
       "id": "signal_timeline_viewer.py#336",
+      "file": "signal_timeline_viewer.py",
+      "source": "                        filter_details.append(f\"Objects: {', '.join(visible_objects)}\")",
+      "target": "                        filter_details.append(f\"物体：{', '.join(visible_objects)}\")",
+      "before": "                    if len(visible_objects) <= 3:",
+      "after": "                    else:",
+      "hunk": "@@ -4667,28 +4674,28 @@ class SignalTimelineWindow(QMainWindow):"
+    },
+    {
+      "id": "signal_timeline_viewer.py#337",
+      "file": "signal_timeline_viewer.py",
+      "source": "                        filter_details.append(f\"Objects: {len(visible_objects)} shown\")",
+      "target": "                        filter_details.append(f\"物体：显示 {len(visible_objects)} 个\")",
+      "before": "                    else:",
+      "after": "                ",
+      "hunk": "@@ -4667,28 +4674,28 @@ class SignalTimelineWindow(QMainWindow):"
+    },
+    {
+      "id": "signal_timeline_viewer.py#338",
       "file": "signal_timeline_viewer.py",
       "source": "                self.current_filters_label.setText(\"No filters applied\")",
       "target": "                self.current_filters_label.setText(\"未应用筛选\")",
       "before": "            else:",
       "after": "    ",
-      "hunk": "@@ -4688,7 +4695,7 @@ class SignalTimelineWindow(QMainWindow):",
+      "hunk": "@@ -4667,28 +4674,28 @@ class SignalTimelineWindow(QMainWindow):",
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#337",
+      "id": "signal_timeline_viewer.py#339",
       "file": "signal_timeline_viewer.py",
       "source": "        \"\"\"Where 'Play Edit' should resume from.",
       "target": "        \"\"\"Where '播放剪辑' should resume from.",
@@ -35700,7 +36159,7 @@
       "hunk": "@@ -4696,7 +4703,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#338",
+      "id": "signal_timeline_viewer.py#340",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"⚠️ No clips in edit timeline\", 2000)",
       "target": "            self.statusBar().showMessage(\"⚠️ 剪辑时间线中没有片段\", 2000)",
@@ -35709,7 +36168,7 @@
       "hunk": "@@ -4728,7 +4735,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#339",
+      "id": "signal_timeline_viewer.py#341",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"⏸ Pause\")",
       "target": "        self.play_edit_btn.setText(\"⏸ 暂停\")",
@@ -35719,7 +36178,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#340",
+      "id": "signal_timeline_viewer.py#342",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(f\"▶ Playing edit timeline: {remaining} clip(s)\", 3000)",
       "target": "        self.statusBar().showMessage(f\"▶ 正在播放剪辑时间线：剩余 {remaining} 个片段\", 3000)",
@@ -35728,7 +36187,7 @@
       "hunk": "@@ -4737,9 +4744,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#341",
+      "id": "signal_timeline_viewer.py#343",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -35738,7 +36197,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#342",
+      "id": "signal_timeline_viewer.py#344",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"⏸ Pause\")",
       "target": "            self.play_edit_btn.setText(\"⏸ 暂停\")",
@@ -35747,7 +36206,7 @@
       "hunk": "@@ -4779,7 +4786,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#343",
+      "id": "signal_timeline_viewer.py#345",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"▶ Resumed\", 2000)",
       "target": "            self.statusBar().showMessage(\"▶ 已继续\", 2000)",
@@ -35756,7 +36215,7 @@
       "hunk": "@@ -4791,11 +4798,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#344",
+      "id": "signal_timeline_viewer.py#346",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -35766,7 +36225,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#345",
+      "id": "signal_timeline_viewer.py#347",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"⏸ Paused\", 2000)",
       "target": "            self.statusBar().showMessage(\"⏸ 已暂停\", 2000)",
@@ -35775,7 +36234,7 @@
       "hunk": "@@ -4806,21 +4813,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#346",
+      "id": "signal_timeline_viewer.py#348",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"✅ Edit timeline playback complete\", 3000)",
       "target": "            self.statusBar().showMessage(\"✅ 剪辑时间线播放完成\", 3000)",
@@ -35784,7 +36243,7 @@
       "hunk": "@@ -4806,21 +4813,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#347",
+      "id": "signal_timeline_viewer.py#349",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -35794,7 +36253,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#348",
+      "id": "signal_timeline_viewer.py#350",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"▶ Clip {clip_num}/{total}: {start:.1f}s - {end:.1f}s\",",
       "target": "            f\"▶ 片段 {clip_num}/{total}：{start:.1f} 秒 - {end:.1f} 秒\",",
@@ -35803,7 +36262,7 @@
       "hunk": "@@ -4840,7 +4847,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#349",
+      "id": "signal_timeline_viewer.py#351",
       "file": "signal_timeline_viewer.py",
       "source": "        Honors the same \"Follow Playhead\" toggle used for the source timeline",
       "target": "        Honors the same \"跟随播放头\" toggle used for the source timeline",
@@ -35812,7 +36271,7 @@
       "hunk": "@@ -4876,7 +4883,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#350",
+      "id": "signal_timeline_viewer.py#352",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -35822,7 +36281,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#351",
+      "id": "signal_timeline_viewer.py#353",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(\"⏹ Edit playback stopped\", 2000)",
       "target": "        self.statusBar().showMessage(\"⏹ 剪辑播放已停止\", 2000)",
@@ -35831,7 +36290,7 @@
       "hunk": "@@ -4958,13 +4965,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#352",
+      "id": "signal_timeline_viewer.py#354",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"Playing clip: {start_time:.1f}s for {duration:.1f}s\", 3000",
       "target": "            f\"正在播放片段：从 {start_time:.1f} 秒开始，时长 {duration:.1f} 秒\", 3000",
@@ -35840,7 +36299,7 @@
       "hunk": "@@ -4958,13 +4965,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#353",
+      "id": "signal_timeline_viewer.py#355",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_btn.setText(\"⏸ Pause\")",
       "target": "        self.play_btn.setText(\"⏸ 暂停\")",
@@ -35849,7 +36308,7 @@
       "hunk": "@@ -4973,7 +4980,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#354",
+      "id": "signal_timeline_viewer.py#356",
       "file": "signal_timeline_viewer.py",
       "source": "            QMessageBox.warning(self, \"No Clips\", \"Add some clips to the edit timeline first!\")",
       "target": "            QMessageBox.warning(self, \"没有片段\", \"请先向剪辑时间线添加一些片段！\")",
@@ -35859,7 +36318,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#355",
+      "id": "signal_timeline_viewer.py#357",
       "file": "signal_timeline_viewer.py",
       "source": "            self, \"Save Highlight Video\", default_path, \"MP4 files (*.mp4);;All files (*.*)\"",
       "target": "            self, \"保存高光视频\", default_path, \"MP4 视频 (*.mp4);;所有文件 (*.*)\"",
@@ -35868,7 +36327,7 @@
       "hunk": "@@ -4997,14 +5004,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#356",
+      "id": "signal_timeline_viewer.py#358",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(\"🎬 Rendering highlight video…\")",
       "target": "        self.statusBar().showMessage(\"🎬 正在渲染高光视频…\")",
@@ -35877,7 +36336,7 @@
       "hunk": "@@ -4997,14 +5004,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#357",
+      "id": "signal_timeline_viewer.py#359",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(\"⏳ Rendering… 0%\")",
       "target": "        self.render_highlight_btn.setText(\"⏳ 正在渲染… 0%\")",
@@ -35886,7 +36345,7 @@
       "hunk": "@@ -4997,14 +5004,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#358",
+      "id": "signal_timeline_viewer.py#360",
       "file": "signal_timeline_viewer.py",
       "source": "            last_err = \"Unknown error\"",
       "target": "            last_err = \"未知错误\"",
@@ -35895,7 +36354,7 @@
       "hunk": "@@ -5046,7 +5053,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#359",
+      "id": "signal_timeline_viewer.py#361",
       "file": "signal_timeline_viewer.py",
       "source": "                            msg = (f\"✅ Highlight video rendered!\\n\\n\"\n                                   f\"File: {os.path.basename(output_path)}\\n\"\n                                   f\"Clips: {len(clips)}\\n\"\n                                   f\"Duration: {total_dur:.1f}s\\n\"\n                                   f\"Size: {size_mb:.1f} MB\\n\"\n                                   f\"Encoder: {enc}\")",
       "target": "                            msg = (f\"✅ 高光视频渲染完成！\\n\\n\"\n                                   f\"文件：{os.path.basename(output_path)}\\n\"\n                                   f\"片段数：{len(clips)}\\n\"\n                                   f\"时长：{total_dur:.1f} 秒\\n\"\n                                   f\"大小：{size_mb:.1f} MB\\n\"\n                                   f\"编码器：{enc}\")",
@@ -35904,7 +36363,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#360",
+      "id": "signal_timeline_viewer.py#362",
       "file": "signal_timeline_viewer.py",
       "source": "                        last_err = (errf.read() or \"\").strip()[-2000:] or \"Unknown error\"\n                        print(f\"⚠️ Render with {enc} failed (rc={proc.returncode}); \"\n                              + (\"falling back to next encoder…\"\n                                 if (enc, vargs) != attempts[-1] else \"no fallback left\"))\n                        print(\"   cmd: \" + \" \".join(str(c) for c in cmd))\n                        print(\"   ffmpeg stderr tail:\\n\" + last_err[-1200:])",
       "target": "                        last_err = (errf.read() or \"\").strip()[-2000:] or \"未知错误\"\n                        print(f\"⚠️ 使用 {enc} 渲染失败（返回码={proc.returncode}）；\" + (\"正在回退到下一个编码器…\" if (enc, vargs) != attempts[-1] else \"没有可用回退方案\"))\n                        print(\"   命令：\" + \" \".join(str(c) for c in cmd))\n                        print(\"   ffmpeg 错误输出末尾：\\n\" + last_err[-1200:])",
@@ -35913,7 +36372,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#361",
+      "id": "signal_timeline_viewer.py#363",
       "file": "signal_timeline_viewer.py",
       "source": "            self.render_finished.emit(False, f\"FFmpeg error:\\n{last_err}\")",
       "target": "            self.render_finished.emit(False, f\"FFmpeg 错误：\\n{last_err}\")",
@@ -35922,7 +36381,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#362",
+      "id": "signal_timeline_viewer.py#364",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ [timeline] could not persist render_mode: {e}\")",
       "target": "            print(f\"⚠️ [时间线] 无法保存 render_mode：{e}\")",
@@ -35931,7 +36390,7 @@
       "hunk": "@@ -5128,7 +5133,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#363",
+      "id": "signal_timeline_viewer.py#365",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(f\"⏳ Rendering… {pct}%\")\n        self.statusBar().showMessage(f\"🎬 Rendering highlight video… {pct}%\")",
       "target": "        self.render_highlight_btn.setText(f\"⏳ 正在渲染… {pct}%\")\n        self.statusBar().showMessage(f\"🎬 正在渲染高光视频… {pct}%\")",
@@ -35940,7 +36399,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#364",
+      "id": "signal_timeline_viewer.py#366",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(\"🎬 Render Highlight Video\")",
       "target": "        self.render_highlight_btn.setText(\"🎬 渲染高光视频\")",
@@ -35949,7 +36408,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#365",
+      "id": "signal_timeline_viewer.py#367",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"✅ Highlight rendered!\", 5000)\n            QMessageBox.information(self, \"Render Complete\", message)",
       "target": "            self.statusBar().showMessage(\"✅ 高光视频渲染完成！\", 5000)\n            QMessageBox.information(self, \"渲染完成\", message)",
@@ -35958,7 +36417,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#366",
+      "id": "signal_timeline_viewer.py#368",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"❌ Render failed\", 5000)\n            QMessageBox.critical(self, \"Render Failed\", message)",
       "target": "            self.statusBar().showMessage(\"❌ 渲染失败\", 5000)\n            QMessageBox.critical(self, \"渲染失败\", message)",
@@ -35967,7 +36426,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#367",
+      "id": "signal_timeline_viewer.py#369",
       "file": "signal_timeline_viewer.py",
       "source": "debug_log(\"🚀 TIMELINE VIEWER STARTING\")",
       "target": "debug_log(\"🚀 时间线查看器正在启动\")",
@@ -35976,7 +36435,7 @@
       "hunk": "@@ -5254,11 +5259,11 @@ original_print = print"
     },
     {
-      "id": "signal_timeline_viewer.py#368",
+      "id": "signal_timeline_viewer.py#370",
       "file": "signal_timeline_viewer.py",
       "source": "debug_log(f\"Python version: {sys.version}\")\ndebug_log(f\"Current working directory: {os.getcwd()}\")\ndebug_log(f\"Script location: {__file__}\")",
       "target": "debug_log(f\"Python 版本：{sys.version}\")\ndebug_log(f\"当前工作目录：{os.getcwd()}\")\ndebug_log(f\"脚本位置：{__file__}\")",
@@ -35985,7 +36444,7 @@
       "hunk": "@@ -5254,11 +5259,11 @@ original_print = print"
     },
     {
-      "id": "signal_timeline_viewer.py#369",
+      "id": "signal_timeline_viewer.py#371",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(f\"🩺 Repaint trace → {_repaint_trace.default_path()}\")",
       "target": "        debug_log(f\"🩺 重绘追踪 → {_repaint_trace.default_path()}\")",
@@ -35994,7 +36453,7 @@
       "hunk": "@@ -5268,9 +5273,9 @@ debug_log(f\"Script location: {__file__}\")"
     },
     {
-      "id": "signal_timeline_viewer.py#370",
+      "id": "signal_timeline_viewer.py#372",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"⚠️ Repaint trace unavailable: {_e}\")",
       "target": "    debug_log(f\"⚠️ 重绘追踪不可用：{_e}\")",
@@ -36003,7 +36462,7 @@
       "hunk": "@@ -5268,9 +5273,9 @@ debug_log(f\"Script location: {__file__}\")"
     },
     {
-      "id": "signal_timeline_viewer.py#371",
+      "id": "signal_timeline_viewer.py#373",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"🎬 show_timeline_viewer called\")",
       "target": "    debug_log(\"🎬 已调用 show_timeline_viewer\")",
@@ -36012,7 +36471,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#372",
+      "id": "signal_timeline_viewer.py#374",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"  - cache_data provided: {cache_data is not None}\")\n    debug_log(f\"  - video_path exists: {os.path.exists(video_path)}\")",
       "target": "    debug_log(f\"  - 是否提供 cache_data：{cache_data is not None}\")\n    debug_log(f\"  - 视频路径是否存在：{os.path.exists(video_path)}\")",
@@ -36021,7 +36480,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#373",
+      "id": "signal_timeline_viewer.py#375",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  - Creating new QApplication\")",
       "target": "        debug_log(\"  - 正在创建新的 QApplication\")",
@@ -36030,7 +36489,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#374",
+      "id": "signal_timeline_viewer.py#376",
       "file": "signal_timeline_viewer.py",
       "source": "            debug_log(f\"  ⚠️ Theme apply failed: {e}\")",
       "target": "            debug_log(f\"  ⚠️ 应用主题失败：{e}\")",
@@ -36039,7 +36498,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#375",
+      "id": "signal_timeline_viewer.py#377",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  - Using existing QApplication\")",
       "target": "        debug_log(\"  - 使用现有 QApplication\")",
@@ -36048,7 +36507,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#376",
+      "id": "signal_timeline_viewer.py#378",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  🔵 ABOUT TO CREATE SignalTimelineWindow...\")",
       "target": "    debug_log(\"  🔵 即将创建 SignalTimelineWindow…\")",
@@ -36057,7 +36516,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#377",
+      "id": "signal_timeline_viewer.py#379",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  🟢 SignalTimelineWindow CREATED successfully\")",
       "target": "        debug_log(\"  🟢 SignalTimelineWindow 创建成功\")",
@@ -36066,7 +36525,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#378",
+      "id": "signal_timeline_viewer.py#380",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(f\"  ❌ ERROR creating SignalTimelineWindow: {e}\")",
       "target": "        debug_log(f\"  ❌ 创建 SignalTimelineWindow 时出错：{e}\")",
@@ -36075,7 +36534,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#379",
+      "id": "signal_timeline_viewer.py#381",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  - Showing window...\")",
       "target": "    debug_log(\"  - 正在显示窗口…\")",
@@ -36084,7 +36543,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#380",
+      "id": "signal_timeline_viewer.py#382",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  - Entering event loop...\")",
       "target": "    debug_log(\"  - 正在进入事件循环…\")",
@@ -36093,7 +36552,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#381",
+      "id": "signal_timeline_viewer.py#383",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"  - Event loop exited with code: {result}\")",
       "target": "    debug_log(f\"  - 事件循环已退出，代码：{result}\")",
@@ -36102,7 +36561,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#382",
+      "id": "signal_timeline_viewer.py#384",
       "file": "signal_timeline_viewer.py",
       "source": "        print(\"Usage: python signal_timeline_viewer.py <video_path>\")",
       "target": "        print(\"用法：python signal_timeline_viewer.py <视频路径>\")",
@@ -36163,6 +36622,87 @@
       "before": "    csv_file.close()",
       "after": "",
       "hunk": "@@ -234,13 +234,13 @@ def auto_sort_clips("
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#1",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "        raise SystemExit(f\"no committed config for {edition}: {path}\")",
+      "target": "        raise SystemExit(f\"{edition} 没有已提交的配置：{path}\")",
+      "before": "    if not path.exists():",
+      "after": "",
+      "hunk": "@@ -107,7 +107,7 @@ def write_config(*, edition: str, tag: str) -> Path:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#2",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "    print(f\"OK {path} (tag={tag})\")",
+      "target": "    print(f\"完成 {path}（标签={tag}）\")",
+      "before": "    path.write_text(json.dumps(config, indent=2) + \"\\n\", encoding=\"utf-8\")",
+      "after": "    return path",
+      "hunk": "@@ -118,17 +118,17 @@ def write_config(*, edition: str, tag: str) -> Path:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#3",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "        raise SystemExit(f\"bootstrap folder missing: {BOOTSTRAP}\")",
+      "target": "        raise SystemExit(f\"缺少引导安装目录：{BOOTSTRAP}\")",
+      "before": "    if not BOOTSTRAP.is_dir():",
+      "after": "",
+      "hunk": "@@ -118,17 +118,17 @@ def write_config(*, edition: str, tag: str) -> Path:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#4",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "        raise SystemExit(f\"missing bootstrap files: {', '.join(missing)}\")",
+      "target": "        raise SystemExit(f\"缺少引导安装文件：{', '.join(missing)}\")",
+      "before": "    if missing:",
+      "after": "",
+      "hunk": "@@ -118,17 +118,17 @@ def write_config(*, edition: str, tag: str) -> Path:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#5",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "    print(f\"OK {out} ({size_kb:.1f} KB)\")\n    print(f\"   edition={edition} tag={tag} repo={config['repo']}\")",
+      "target": "    print(f\"完成 {out}（{size_kb:.1f} KB）\")\n    print(f\"   版本类型={edition} 标签={tag} 仓库={config['repo']}\")",
+      "before": "    size_kb = out.stat().st_size / 1024",
+      "after": "    return out",
+      "hunk": "@@ -152,8 +152,8 @@ def build_zip(*, edition: str, tag: str, out: Path) -> Path:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#6",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "        help=\"Free (public GitHub) or Pro (pinned tag; LS for customers).\",",
+      "target": "        help=\"Free（公开 GitHub）或 Pro（固定标签；面向客户）。\",",
+      "before": "        required=True,",
+      "after": "    )",
+      "hunk": "@@ -163,24 +163,23 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#7",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "        help=\"Release tag, e.g. 0.9.0 or 0.9.0-Pro. Defaults to version.py.\",",
+      "target": "        help=\"Release 标签，例如 0.9.0 或 0.9.0-Pro；默认取自 version.py。\",",
+      "before": "        default=None,",
+      "after": "    )",
+      "hunk": "@@ -163,24 +163,23 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#8",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "        help=\"Rewrite the committed bootstrap config for this edition instead \"\n             \"of building the zip. Run this after bumping version.py.\",",
+      "target": "        help=\"重写该版本类型已提交的引导配置，而不是构建 zip；更新 version.py 后运行。\",",
+      "before": "        action=\"store_true\",",
+      "after": "    )",
+      "hunk": "@@ -163,24 +163,23 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "tools/build_bootstrap_zip.py#9",
+      "file": "tools/build_bootstrap_zip.py",
+      "source": "        help=\"Output zip path (00- prefix keeps it first on the release Assets list).\",",
+      "target": "        help=\"输出 zip 路径（00- 前缀可使其排在 Release 资源列表首位）。\",",
+      "before": "        default=ROOT / \"packaging\" / \"bootstrap\" / \"00-VideoHighlighter-Windows-Setup.zip\",",
+      "after": "    )",
+      "hunk": "@@ -163,24 +163,23 @@ def main(argv: list[str] | None = None) -> int:"
     },
     {
       "id": "tools/build_manifest.py#1",
@@ -38801,14 +39341,23 @@
     {
       "id": "tools/publish_release.py#5",
       "file": "tools/publish_release.py",
-      "source": "    print(f\"  blobs        {len(seen)} distinct ({linked} linked, {copied} copied, \"\n          f\"{skipped} already prepared)\")\n    print(f\"  bytes        {total / (1024 ** 2):.1f} MB in the release, \"\n          f\"{stored_bytes / (1024 ** 2):.1f} MB as stored\"\n          + (\" (gzip)\" if gz else \"\"))",
-      "target": "    print(f\"  blobs        {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，\"\n          f\"已准备 {skipped}）\")\n    print(f\"  bytes        发行版共 {total / (1024 ** 2):.1f} MB，\"\n          f\"实际存储 {stored_bytes / (1024 ** 2):.1f} MB\"\n          + (\"（gzip）\" if gz else \"\"))",
-      "before": "    print(f\"  manifest     {prefix}/{MANIFEST_FILENAME}\")",
-      "after": "    if args.github_output:",
-      "hunk": "@@ -155,11 +155,11 @@ def prepare(args) -> int:"
+      "source": "    print(f\"  version      {manifest.get('version')} {manifest.get('edition', '')} \"",
+      "target": "    print(f\"  版本         {manifest.get('version')} {manifest.get('edition', '')} \"",
+      "before": "    print(f\"OK:{out}\")",
+      "after": "          f\"{manifest.get('platform', 'windows')}\")",
+      "hunk": "@@ -151,15 +151,15 @@ def prepare(args) -> int:"
     },
     {
       "id": "tools/publish_release.py#6",
+      "file": "tools/publish_release.py",
+      "source": "    print(f\"  base_url     {manifest['base_url']}\")\n    print(f\"  manifest     {prefix}/{MANIFEST_FILENAME}\")\n    print(f\"  blobs        {len(seen)} distinct ({linked} linked, {copied} copied, \"\n          f\"{skipped} already prepared)\")\n    print(f\"  bytes        {total / (1024 ** 2):.1f} MB in the release, \"\n          f\"{stored_bytes / (1024 ** 2):.1f} MB as stored\"\n          + (\" (gzip)\" if gz else \"\"))",
+      "target": "    print(f\"  基础地址     {manifest['base_url']}\")\n    print(f\"  清单         {prefix}/{MANIFEST_FILENAME}\")\n    print(f\"  内容块       {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，\"\n          f\"已准备 {skipped}）\")\n    print(f\"  大小         发行版共 {total / (1024 ** 2):.1f} MB，\"\n          f\"实际存储 {stored_bytes / (1024 ** 2):.1f} MB\"\n          + (\"（gzip）\" if gz else \"\"))",
+      "before": "          f\"{manifest.get('platform', 'windows')}\")",
+      "after": "    if args.github_output:",
+      "hunk": "@@ -151,15 +151,15 @@ def prepare(args) -> int:"
+    },
+    {
+      "id": "tools/publish_release.py#7",
       "file": "tools/publish_release.py",
       "source": "            print(\"FAIL:say which manifest: --manifest <file>, or --version with\")\n            print(f\"  --base-url (or {BASE_URL_ENV}) naming the update host.\")",
       "target": "            print(\"FAIL: 请指定 manifest：使用 --manifest <文件>，或同时使用 --version 与\")\n            print(f\"  --base-url（或 {BASE_URL_ENV}）指定更新主机。\")",
@@ -38817,7 +39366,7 @@
       "hunk": "@@ -206,8 +206,8 @@ def sign(args) -> int:"
     },
     {
-      "id": "tools/publish_release.py#7",
+      "id": "tools/publish_release.py#8",
       "file": "tools/publish_release.py",
       "source": "            print(f\"FAIL:could not fetch {source}: {exc}\")",
       "target": "            print(f\"FAIL: 无法获取 {source}：{exc}\")",
@@ -38826,7 +39375,7 @@
       "hunk": "@@ -216,29 +216,29 @@ def sign(args) -> int:"
     },
     {
-      "id": "tools/publish_release.py#8",
+      "id": "tools/publish_release.py#9",
       "file": "tools/publish_release.py",
       "source": "        print(f\"FAIL:{source} is not a release manifest ({exc})\")",
       "target": "        print(f\"FAIL: {source} 不是有效的发行版 manifest（{exc}）\")",
@@ -38835,7 +39384,7 @@
       "hunk": "@@ -216,29 +216,29 @@ def sign(args) -> int:"
     },
     {
-      "id": "tools/publish_release.py#9",
+      "id": "tools/publish_release.py#10",
       "file": "tools/publish_release.py",
       "source": "        print(f\"FAIL:{source} describes {manifest.get('version')}, not {args.version}\")",
       "target": "        print(f\"FAIL: {source} 描述的是版本 {manifest.get('version')}，不是 {args.version}\")",
@@ -38844,20 +39393,11 @@
       "hunk": "@@ -216,29 +216,29 @@ def sign(args) -> int:"
     },
     {
-      "id": "tools/publish_release.py#10",
-      "file": "tools/publish_release.py",
-      "source": "    print(f\"Signing {source}\")",
-      "target": "    print(f\"正在签名：{source}\")",
-      "before": "    total = sum(int(e.get(\"size\", 0)) for e in files)",
-      "after": "    print(f\"  version   {manifest.get('version')}\")",
-      "hunk": "@@ -216,29 +216,29 @@ def sign(args) -> int:"
-    },
-    {
       "id": "tools/publish_release.py#11",
       "file": "tools/publish_release.py",
-      "source": "    print(f\"  files     {len(files)} ({total / (1024 ** 2):.1f} MB)\")",
-      "target": "    print(f\"  files     {len(files)} 个文件（{total / (1024 ** 2):.1f} MB）\")",
-      "before": "    print(f\"  base_url  {manifest.get('base_url')}\")",
+      "source": "    print(f\"Signing {source}\")\n    print(f\"  version   {manifest.get('version')}\")\n    print(f\"  edition   {manifest.get('edition')}\")\n    print(f\"  platform  {manifest.get('platform', 'windows')}\")\n    print(f\"  base_url  {manifest.get('base_url')}\")\n    print(f\"  files     {len(files)} ({total / (1024 ** 2):.1f} MB)\")",
+      "target": "    print(f\"正在签名：{source}\")\n    print(f\"  版本      {manifest.get('version')}\")\n    print(f\"  版本类型  {manifest.get('edition')}\")\n    print(f\"  平台      {manifest.get('platform', 'windows')}\")\n    print(f\"  基础地址  {manifest.get('base_url')}\")\n    print(f\"  文件      {len(files)} 个（{total / (1024 ** 2):.1f} MB）\")",
+      "before": "    total = sum(int(e.get(\"size\", 0)) for e in files)",
       "after": "    if manifest.get(\"min_version\"):",
       "hunk": "@@ -216,29 +216,29 @@ def sign(args) -> int:"
     },
@@ -38865,7 +39405,7 @@
       "id": "tools/publish_release.py#12",
       "file": "tools/publish_release.py",
       "source": "        print(f\"  min       {manifest['min_version']} (older installs get the download)\")",
-      "target": "        print(f\"  min       {manifest['min_version']}（更旧版本将获取完整下载）\")",
+      "target": "        print(f\"  最低版本  {manifest['min_version']}（更旧版本将获取完整下载）\")",
       "before": "    if manifest.get(\"min_version\"):",
       "after": "",
       "hunk": "@@ -216,29 +216,29 @@ def sign(args) -> int:"
@@ -39238,6 +39778,60 @@
       "before": "    if not args.all:",
       "after": "    return 0",
       "hunk": "@@ -578,18 +578,18 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/write_packs_lock.py#1",
+      "file": "tools/write_packs_lock.py",
+      "source": "                    help=\"release download URL of the packs tag, e.g. \"",
+      "target": "                    help=\"资源包标签的 Release 下载 URL，例如 \"",
+      "before": "    ap.add_argument(\"--base\", required=True,",
+      "after": "                         \"https://github.com/<owner>/<repo>/releases/download/packs-torch-2.7.1\")",
+      "hunk": "@@ -22,9 +22,9 @@ REQUIRED = (\"name\", \"asset\", \"bytes\", \"sha256\")"
+    },
+    {
+      "id": "tools/write_packs_lock.py#2",
+      "file": "tools/write_packs_lock.py",
+      "source": "    ap.add_argument(\"--packs-json\", help=\"local packs.json (default: <base>/packs.json)\")",
+      "target": "    ap.add_argument(\"--packs-json\", help=\"本地 packs.json（默认：<base>/packs.json）\")",
+      "before": "                         \"https://github.com/<owner>/<repo>/releases/download/packs-torch-2.7.1\")",
+      "after": "    ap.add_argument(\"--out\", required=True)",
+      "hunk": "@@ -22,9 +22,9 @@ REQUIRED = (\"name\", \"asset\", \"bytes\", \"sha256\")"
+    },
+    {
+      "id": "tools/write_packs_lock.py#3",
+      "file": "tools/write_packs_lock.py",
+      "source": "        print(\"packs.json lists no packs\", file=sys.stderr)",
+      "target": "        print(\"packs.json 中没有资源包\", file=sys.stderr)",
+      "before": "    if not packs:",
+      "after": "        return 1",
+      "hunk": "@@ -38,22 +38,22 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/write_packs_lock.py#4",
+      "file": "tools/write_packs_lock.py",
+      "source": "            print(f\"{row.get('name', '?')}: missing {', '.join(missing)}\", file=sys.stderr)",
+      "target": "            print(f\"{row.get('name', '?')}：缺少 {', '.join(missing)}\", file=sys.stderr)",
+      "before": "        if missing:",
+      "after": "            return 1",
+      "hunk": "@@ -38,22 +38,22 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/write_packs_lock.py#5",
+      "file": "tools/write_packs_lock.py",
+      "source": "            print(f\"{row['name']}: sha256 is not a SHA-256\", file=sys.stderr)",
+      "target": "            print(f\"{row['name']}：sha256 不是有效的 SHA-256\", file=sys.stderr)",
+      "before": "        if len(str(row[\"sha256\"])) != 64:",
+      "after": "            return 1",
+      "hunk": "@@ -38,22 +38,22 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/write_packs_lock.py#6",
+      "file": "tools/write_packs_lock.py",
+      "source": "    print(f\"{args.out}: {', '.join(p['name'] for p in packs)} from {lock['tag']}\")",
+      "target": "    print(f\"{args.out}：{', '.join(p['name'] for p in packs)}，来源标签 {lock['tag']}\")",
+      "before": "        fh.write(\"\\n\")",
+      "after": "    return 0",
+      "hunk": "@@ -38,22 +38,22 @@ def main(argv=None) -> int:"
     },
     {
       "id": "training/export_yolox.py#1",

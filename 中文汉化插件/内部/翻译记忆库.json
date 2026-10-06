@@ -381,6 +381,13 @@
       ]
     },
     {
+      "source": "(One-time cost — all future epochs load from cache)",
+      "target": "（仅首次执行；后续训练轮次将直接从缓存加载）",
+      "files": [
+        "model_training/shared/feature_cache.py"
+      ]
+    },
+    {
       "source": "(only model.onnx, videohighlighter.json, README.md and LICENSE;",
       "target": "（只允许 model.onnx、videohighlighter.json、README.md 和 LICENSE；",
       "files": [
@@ -1846,6 +1853,20 @@
       ]
     },
     {
+      "source": "[encoder] input: {self.input_name}, shape: {self.input_shape}",
+      "target": "[编码器] 输入：{self.input_name}，形状：{self.input_shape}",
+      "files": [
+        "model_training/intel/model.py"
+      ]
+    },
+    {
+      "source": "[encoder] running on: {self.device}",
+      "target": "[编码器] 运行设备：{self.device}",
+      "files": [
+        "model_training/intel/model.py"
+      ]
+    },
+    {
       "source": "[export] saved → {export_path}",
       "target": "[导出] 已保存 → {export_path}",
       "files": [
@@ -2960,6 +2981,13 @@
       ]
     },
     {
+      "source": "\\n🎬 Visualization: {video_path}",
+      "target": "\\n🎬 可视化：{video_path}",
+      "files": [
+        "model_training/shared/visualization.py"
+      ]
+    },
+    {
       "source": "\\n🎯 Final segments selected: {len(segments)}, total {total_duration:.1f}s (target {target_duration}s)",
       "target": "\\n🎯 最终选择 {len(segments)} 个片段，总时长 {total_duration:.1f} 秒（目标 {target_duration} 秒）",
       "files": [
@@ -3280,6 +3308,13 @@
       "target": "\\n🔧 [调试] VideoAnalysisCache.__init__",
       "files": [
         "modules/media/video_cache.py"
+      ]
+    },
+    {
+      "source": "\\n🔧 Pre-encoding {len(dataset)} clips with OpenVINO encoder...",
+      "target": "\\n🔧 正在使用 OpenVINO 编码器预编码 {len(dataset)} 个片段…",
+      "files": [
+        "model_training/shared/feature_cache.py"
       ]
     },
     {
@@ -3785,6 +3820,13 @@
       "target": "检测到的动作数：      {detection_count}",
       "files": [
         "action_recognition.py"
+      ]
+    },
+    {
+      "source": "Actions detected: {', '.join(action_names[:5])}",
+      "target": "检测到的动作：{', '.join(action_names[:5])}",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -4535,6 +4577,13 @@
       ]
     },
     {
+      "source": "Athletic activity",
+      "target": "运动活动",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "Audio",
       "target": "音频",
       "files": [
@@ -4979,6 +5028,20 @@
       ]
     },
     {
+      "source": "base_url     {manifest['base_url']}",
+      "target": "基础地址     {manifest['base_url']}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "base_url  {manifest.get('base_url')}",
+      "target": "基础地址  {manifest.get('base_url')}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "Basic",
       "target": "基础",
       "files": [
@@ -5099,7 +5162,7 @@
     },
     {
       "source": "blobs        {len(seen)} distinct ({linked} linked, {copied} copied,",
-      "target": "blobs        {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，",
+      "target": "内容块       {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，",
       "files": [
         "tools/publish_release.py"
       ]
@@ -5130,6 +5193,13 @@
       "target": "增加分数：+{boost_amount:.1f}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "bootstrap folder missing: {BOOTSTRAP}",
+      "target": "缺少引导安装目录：{BOOTSTRAP}",
+      "files": [
+        "tools/build_bootstrap_zip.py"
       ]
     },
     {
@@ -5275,7 +5345,7 @@
     },
     {
       "source": "bytes        {total / (1024 ** 2):.1f} MB in the release,",
-      "target": "bytes        发行版共 {total / (1024 ** 2):.1f} MB，",
+      "target": "大小         发行版共 {total / (1024 ** 2):.1f} MB，",
       "files": [
         "tools/publish_release.py"
       ]
@@ -7692,6 +7762,20 @@
       ]
     },
     {
+      "source": "Detected {pair[0]} and {pair[1]} in close succession",
+      "target": "连续检测到 {pair[0]} 和 {pair[1]}",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
+      "source": "Detected {pattern['name']} pattern: {pattern['description']}",
+      "target": "检测到 {pattern['name']} 模式：{pattern['description']}",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "Detecting audio peaks…",
       "target": "正在检测音频峰值…",
       "files": [
@@ -8424,10 +8508,24 @@
       ]
     },
     {
+      "source": "edition   {manifest.get('edition')}",
+      "target": "版本类型  {manifest.get('edition')}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "edition, not this one.",
       "target": "与当前版本不匹配。",
       "files": [
         "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "edition={edition} tag={tag} repo={config['repo']}",
+      "target": "版本类型={edition} 标签={tag} 仓库={config['repo']}",
+      "files": [
+        "tools/build_bootstrap_zip.py"
       ]
     },
     {
@@ -8568,6 +8666,13 @@
       "target": "编码器：{enc}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Encoding features",
+      "target": "正在编码特征",
+      "files": [
+        "model_training/shared/feature_cache.py"
       ]
     },
     {
@@ -8965,6 +9070,13 @@
       "target": "期望后端 {args.expect!r}，实际解析为 {backend!r}",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "expected str or number, got {type(token).__name__}",
+      "target": "预期为字符串或数字，实际为 {type(token).__name__}",
+      "files": [
+        "modules/segments/manual_avoid.py"
       ]
     },
     {
@@ -9473,6 +9585,13 @@
       ]
     },
     {
+      "source": "feature dim = {cache_data['feature_dim']},",
+      "target": "特征维度 = {cache_data['feature_dim']}，",
+      "files": [
+        "model_training/shared/feature_cache.py"
+      ]
+    },
+    {
       "source": "Feature dimension: {feature_dim}",
       "target": "特征维度：{feature_dim}",
       "files": [
@@ -9512,6 +9631,13 @@
       "target": "ffmpeg 生成的 WAV 文件无法读取：{path!r}",
       "files": [
         "modules/audio/music_analysis.py"
+      ]
+    },
+    {
+      "source": "Fight sequence",
+      "target": "打斗过程",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -9579,7 +9705,7 @@
     },
     {
       "source": "files     {len(files)} ({total / (1024 ** 2):.1f} MB)",
-      "target": "files     {len(files)} 个文件（{total / (1024 ** 2):.1f} MB）",
+      "target": "文件      {len(files)} 个（{total / (1024 ** 2):.1f} MB）",
       "files": [
         "tools/publish_release.py"
       ]
@@ -9979,6 +10105,13 @@
       ]
     },
     {
+      "source": "Found {matches}/{len(pattern['pattern'])} actions in pattern",
+      "target": "在模式中匹配到 {matches}/{len(pattern['pattern'])} 个动作",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "Found {objects_found} objects so far ({seconds_to_mmss(sec)})",
       "target": "目前已找到 {objects_found} 个物体（{seconds_to_mmss(sec)}）",
       "files": [
@@ -10109,6 +10242,13 @@
       "target": "片段旁白依赖画面，",
       "files": [
         "modules/narration/story_run.py"
+      ]
+    },
+    {
+      "source": "Free (public GitHub) or Pro (pinned tag; LS for customers).",
+      "target": "Free（公开 GitHub）或 Pro（固定标签；面向客户）。",
+      "files": [
+        "tools/build_bootstrap_zip.py"
       ]
     },
     {
@@ -10622,6 +10762,13 @@
       "target": "高（70%）",
       "files": [
         "video_ai_editor/filter_dialogs.py"
+      ]
+    },
+    {
+      "source": "High activity moment with {action_count} simultaneous actions",
+      "target": "高活动时刻：同时出现 {action_count} 个动作",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -11194,6 +11341,13 @@
       ]
     },
     {
+      "source": "Intense {cat} sequence",
+      "target": "高强度同类动作过程",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "Intense, comedy or music-heavy",
       "target": "高强度 / 喜剧 / 强音乐",
       "files": [
@@ -11541,6 +11695,13 @@
       "target": "标签：{bar.label}",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Label: {label} | sample_rate: {sample_rate}",
+      "target": "标签：{label} | 采样率：{sample_rate}",
+      "files": [
+        "model_training/shared/visualization.py"
       ]
     },
     {
@@ -12130,6 +12291,13 @@
       ]
     },
     {
+      "source": "local packs.json (default: <base>/packs.json)",
+      "target": "本地 packs.json（默认：<base>/packs.json）",
+      "files": [
+        "tools/write_packs_lock.py"
+      ]
+    },
+    {
       "source": "Log Output:",
       "target": "日志输出：",
       "files": [
@@ -12239,6 +12407,13 @@
       "target": "请确认 signal_timeline_viewer.py 位于同一目录。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "manifest     {prefix}/{MANIFEST_FILENAME}",
+      "target": "清单         {prefix}/{MANIFEST_FILENAME}",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -12591,7 +12766,7 @@
     },
     {
       "source": "min       {manifest['min_version']} (older installs get the download)",
-      "target": "min       {manifest['min_version']}（更旧版本将获取完整下载）",
+      "target": "最低版本  {manifest['min_version']}（更旧版本将获取完整下载）",
       "files": [
         "tools/publish_release.py"
       ]
@@ -12667,6 +12842,13 @@
       ]
     },
     {
+      "source": "missing bootstrap files: {', '.join(missing)}",
+      "target": "缺少引导安装文件：{', '.join(missing)}",
+      "files": [
+        "tools/build_bootstrap_zip.py"
+      ]
+    },
+    {
       "source": "missing: {source.path}",
       "target": "缺少文件：{source.path}",
       "files": [
@@ -12699,6 +12881,13 @@
       "target": "混合（{len(custom_labels)} 个自定义 + {len(intel_labels)} 个 Kinetics-400，{len(overlap)} 个重叠，共 {len(action_labels)} 个）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Mixed activity period",
+      "target": "混合活动时段",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -12917,6 +13106,13 @@
       "target": "模型：{label_for(active_model)}…",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Moderate activity with {action_count} simultaneous actions",
+      "target": "中等活动强度：同时出现 {action_count} 个动作",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -13561,6 +13757,13 @@
       "target": "暂无剪辑片段——可从上方信号时间线拖入片段，",
       "files": [
         "video_ai_editor/edit_timeline.py"
+      ]
+    },
+    {
+      "source": "no committed config for {edition}: {path}",
+      "target": "{edition} 没有已提交的配置：{path}",
+      "files": [
+        "tools/build_bootstrap_zip.py"
       ]
     },
     {
@@ -14752,6 +14955,20 @@
       ]
     },
     {
+      "source": "OK {out} ({size_kb:.1f} KB)",
+      "target": "完成 {out}（{size_kb:.1f} KB）",
+      "files": [
+        "tools/build_bootstrap_zip.py"
+      ]
+    },
+    {
+      "source": "OK {path} (tag={tag})",
+      "target": "完成 {path}（标签={tag}）",
+      "files": [
+        "tools/build_bootstrap_zip.py"
+      ]
+    },
+    {
       "source": "OK:embedded in {_MODULE_PATH}",
       "target": "OK: 已嵌入 {_MODULE_PATH}",
       "files": [
@@ -15449,6 +15666,13 @@
       ]
     },
     {
+      "source": "Output zip path (00- prefix keeps it first on the release Assets list).",
+      "target": "输出 zip 路径（00- 前缀可使其排在 Release 资源列表首位）。",
+      "files": [
+        "tools/build_bootstrap_zip.py"
+      ]
+    },
+    {
       "source": "Output {list(out.shape)} does not match {n} labels (expected [1, {n}]).",
       "target": "输出 {list(out.shape)} 与 {n} 个标签不匹配（预期为 [1, {n}]）。",
       "files": [
@@ -15554,6 +15778,13 @@
       ]
     },
     {
+      "source": "packs.json lists no packs",
+      "target": "packs.json 中没有资源包",
+      "files": [
+        "tools/write_packs_lock.py"
+      ]
+    },
+    {
       "source": "Page URL",
       "target": "页面网址",
       "files": [
@@ -15565,6 +15796,13 @@
       "target": "页面网址：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Parameters: {total:,}",
+      "target": "参数量：{total:,}",
+      "files": [
+        "model_training/intel/model.py"
       ]
     },
     {
@@ -15845,6 +16083,13 @@
       "target": "保存前请至少放置一个关键点，或将一个关键点标记为遮挡。",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "platform  {manifest.get('platform', 'windows')}",
+      "target": "平台      {manifest.get('platform', 'windows')}",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -16354,6 +16599,13 @@
       ]
     },
     {
+      "source": "Prolonged {actions[0]} activity",
+      "target": "持续的 {actions[0]} 活动",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "prompt_eval={pe_ms:5.0f}ms ({pe_n}t @ {pe_rate:5.1f}t/s)",
       "target": "提示词计算={pe_ms:5.0f}ms（{pe_n}t @ {pe_rate:5.1f}t/s）",
       "files": [
@@ -16658,6 +16910,13 @@
       ]
     },
     {
+      "source": "range dict missing start/end: {item!r}",
+      "target": "区间数据缺少 start/end：{item!r}",
+      "files": [
+        "modules/segments/manual_avoid.py"
+      ]
+    },
+    {
       "source": "Range duration: {range_duration//60}:{int(range_duration%60):02d} ({range_duration:.1f}s)",
       "target": "范围时长：{range_duration//60}:{int(range_duration%60):02d}（{range_duration:.1f} 秒）",
       "files": [
@@ -16683,6 +16942,13 @@
       "target": "范围 {start_time:.2f}秒–{end_time:.2f}秒",
       "files": [
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Rapid action sequence with multiple activities",
+      "target": "包含多种活动的快速动作过程",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -17052,6 +17318,20 @@
       "target": "发布日期（默认：今天）。",
       "files": [
         "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "release download URL of the packs tag, e.g.",
+      "target": "资源包标签的 Release 下载 URL，例如",
+      "files": [
+        "tools/write_packs_lock.py"
+      ]
+    },
+    {
+      "source": "Release tag, e.g. 0.9.0 or 0.9.0-Pro. Defaults to version.py.",
+      "target": "Release 标签，例如 0.9.0 或 0.9.0-Pro；默认取自 version.py。",
+      "files": [
+        "tools/build_bootstrap_zip.py"
       ]
     },
     {
@@ -18543,6 +18823,13 @@
       ]
     },
     {
+      "source": "seq len = {cache_data['sequence_length']}",
+      "target": "序列长度 = {cache_data['sequence_length']}",
+      "files": [
+        "model_training/shared/feature_cache.py"
+      ]
+    },
+    {
       "source": "Sequence start:",
       "target": "序列起始时间：",
       "files": [
@@ -19260,10 +19547,31 @@
       ]
     },
     {
+      "source": "Social interaction sequence",
+      "target": "社交互动过程",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "Soft edge",
       "target": "柔边",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "Someone arrives and stops",
+      "target": "有人到达并停下",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
+      "source": "Someone leaves after being present",
+      "target": "有人在停留后离开",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -19762,6 +20070,13 @@
       ]
     },
     {
+      "source": "string range missing separator: {item!r}",
+      "target": "字符串区间缺少分隔符：{item!r}",
+      "files": [
+        "modules/segments/manual_avoid.py"
+      ]
+    },
+    {
       "source": "Subfolder for this card",
       "target": "此存储卡的子文件夹",
       "files": [
@@ -19830,6 +20145,13 @@
       "target": "持续（秒）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Sustained {cat} activity",
+      "target": "持续的同类动作",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -20391,6 +20713,20 @@
       "target": "该素材开头已经干净，无需额外处理。",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "This indicates a change in activity",
+      "target": "这表明活动发生了变化",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
+      "source": "This is a peak of activity",
+      "target": "这是一个活动峰值",
+      "files": [
+        "llm/llm_reasoning.py"
       ]
     },
     {
@@ -21105,6 +21441,13 @@
       ]
     },
     {
+      "source": "Transition from {pair[0]} to {pair[1]}",
+      "target": "动作从 {pair[0]} 转变为 {pair[1]}",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "Transition length in seconds",
       "target": "转场时长（秒）",
       "files": [
@@ -21276,6 +21619,13 @@
       ]
     },
     {
+      "source": "Unknown decoder_type '{decoder_type}'. Use 'mlp' or 'lstm'.",
+      "target": "未知 decoder_type '{decoder_type}'。请使用 'mlp' 或 'lstm'。",
+      "files": [
+        "model_training/intel/model.py"
+      ]
+    },
+    {
       "source": "unknown easing {easing!r} — expected one of",
       "target": "未知缓动方式 {easing!r}——应为以下之一：",
       "files": [
@@ -21421,6 +21771,20 @@
       "target": "下载后无法读取：{exc}",
       "files": [
         "modules/update/update_download.py"
+      ]
+    },
+    {
+      "source": "unrecognised range entry: {item!r}",
+      "target": "无法识别的区间条目：{item!r}",
+      "files": [
+        "modules/segments/manual_avoid.py"
+      ]
+    },
+    {
+      "source": "unrecognised time token: {token!r}",
+      "target": "无法识别的时间值：{token!r}",
+      "files": [
+        "modules/segments/manual_avoid.py"
       ]
     },
     {
@@ -21982,6 +22346,20 @@
       ]
     },
     {
+      "source": "version      {manifest.get('version')} {manifest.get('edition', '')}",
+      "target": "版本         {manifest.get('version')} {manifest.get('edition', '')}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "version   {manifest.get('version')}",
+      "target": "版本      {manifest.get('version')}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "Version ${info.version} — free & open source (AGPLv3)",
       "target": "版本 ${info.version} — 免费开源（AGPLv3）",
       "files": [
@@ -22401,6 +22779,13 @@
       "target": "用带标签的检测框显示已检测物体",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Visualizing",
+      "target": "正在生成可视化",
+      "files": [
+        "model_training/shared/visualization.py"
       ]
     },
     {
@@ -23282,6 +23667,20 @@
       ]
     },
     {
+      "source": "{action_count} actions detected simultaneously",
+      "target": "同时检测到 {action_count} 个动作",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
+      "source": "{action_count} actions occurring together",
+      "target": "有 {action_count} 个动作同时发生",
+      "files": [
+        "llm/llm_reasoning.py"
+      ]
+    },
+    {
       "source": "{action_name}: {len(action_list)} detections →",
       "target": "{action_name}：{len(action_list)} 个检测 →",
       "files": [
@@ -23331,10 +23730,24 @@
       ]
     },
     {
+      "source": "{args.out}: {', '.join(p['name'] for p in packs)} from {lock['tag']}",
+      "target": "{args.out}：{', '.join(p['name'] for p in packs)}，来源标签 {lock['tag']}",
+      "files": [
+        "tools/write_packs_lock.py"
+      ]
+    },
+    {
       "source": "{base_name}: {len(debug_files)} debug images",
       "target": "{base_name}：{len(debug_files)} 张调试图片",
       "files": [
         "modules/crop/actions.py"
+      ]
+    },
+    {
+      "source": "{cache_data['num_samples']} samples,",
+      "target": "{cache_data['num_samples']} 个样本，",
+      "files": [
+        "model_training/shared/feature_cache.py"
       ]
     },
     {
@@ -23595,6 +24008,13 @@
       "target": "{ident['id'][:8]}  名称={ident['name']}  出现次数={ident['count']}",
       "files": [
         "video_ai_editor/identity_tagging.py"
+      ]
+    },
+    {
+      "source": "{info['num_samples']} samples, feature dim = {info['feature_dim']}",
+      "target": "{info['num_samples']} 个样本，特征维度 = {info['feature_dim']}",
+      "files": [
+        "model_training/shared/feature_cache.py"
       ]
     },
     {
@@ -24394,6 +24814,20 @@
       "target": "{root} 中没有 {', '.join(SPLITS)} 中的任何数据划分",
       "files": [
         "modules/teach/benchmark.py"
+      ]
+    },
+    {
+      "source": "{row.get('name', '?')}: missing {', '.join(missing)}",
+      "target": "{row.get('name', '?')}：缺少 {', '.join(missing)}",
+      "files": [
+        "tools/write_packs_lock.py"
+      ]
+    },
+    {
+      "source": "{row['name']}: sha256 is not a SHA-256",
+      "target": "{row['name']}：sha256 不是有效的 SHA-256",
+      "files": [
+        "tools/write_packs_lock.py"
       ]
     },
     {
@@ -26865,6 +27299,13 @@
       ]
     },
     {
+      "source": "⚠️  Decoder: EncoderLSTM (will fall back to CPU at inference — consider 'mlp')",
+      "target": "⚠️ 解码器：EncoderLSTM（推理阶段将退回 CPU；建议考虑 'mlp'）",
+      "files": [
+        "model_training/intel/model.py"
+      ]
+    },
+    {
       "source": "⚠️  Error processing frame {frame_count}: {e}",
       "target": "⚠️  处理第 {frame_count} 帧时出错：{e}",
       "files": [
@@ -26876,6 +27317,13 @@
       "target": "⚠️  检查点加载失败——将从头开始训练",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️  Frame {frame_count}: {e}",
+      "target": "⚠️ 第 {frame_count} 帧：{e}",
+      "files": [
+        "model_training/shared/visualization.py"
       ]
     },
     {
@@ -28000,6 +28448,13 @@
       ]
     },
     {
+      "source": "⚠️ Encoder would not compile on {self.device} ({e}); using CPU",
+      "target": "⚠️ 编码器无法在 {self.device} 上编译（{e}）；将使用 CPU",
+      "files": [
+        "model_training/intel/model.py"
+      ]
+    },
+    {
       "source": "⚠️ Enter a listing URL (http:// or https://) first",
       "target": "⚠️ 请先输入列表页面网址（http:// 或 https://）",
       "files": [
@@ -28729,6 +29184,13 @@
       ]
     },
     {
+      "source": "⚠️ No detections for calibration, using default 480p",
+      "target": "⚠️ 校准时没有检测结果，将使用默认 480p",
+      "files": [
+        "modules/crop/track.py"
+      ]
+    },
+    {
       "source": "⚠️ No edit timeline available",
       "target": "⚠️ 没有可用的剪辑时间线",
       "files": [
@@ -28859,6 +29321,13 @@
       "target": "⚠️ 未检测到语音片段",
       "files": [
         "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ No standard resolution match found for {target_w}x{target_h}",
+      "target": "⚠️ 未找到与 {target_w}x{target_h} 匹配的标准分辨率",
+      "files": [
+        "modules/crop/track.py"
       ]
     },
     {
@@ -30444,6 +30913,13 @@
       ]
     },
     {
+      "source": "✅ Decoder: EncoderMLP (GPU-compatible at inference)",
+      "target": "✅ 解码器：EncoderMLP（推理阶段兼容 GPU）",
+      "files": [
+        "model_training/intel/model.py"
+      ]
+    },
+    {
       "source": "✅ Detected {best_k} speakers (silhouette={best_score:.2f})",
       "target": "✅ 检测到 {best_k} 位说话人（轮廓系数={best_score:.2f}）",
       "files": [
@@ -30546,6 +31022,20 @@
       "target": "✅ 回退方案 2 成功：{os.path.basename(filename_fb)}",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "✅ Feature cache loaded: {cache_path}",
+      "target": "✅ 特征缓存已加载：{cache_path}",
+      "files": [
+        "model_training/shared/feature_cache.py"
+      ]
+    },
+    {
+      "source": "✅ Feature cache saved: {cache_path} ({size_mb:.1f} MB)",
+      "target": "✅ 特征缓存已保存：{cache_path}（{size_mb:.1f} MB）",
+      "files": [
+        "model_training/shared/feature_cache.py"
       ]
     },
     {
@@ -31167,6 +31657,13 @@
       ]
     },
     {
+      "source": "✅ Rounded to standard: {target_w}x{target_h}",
+      "target": "✅ 已调整到标准分辨率：{target_w}x{target_h}",
+      "files": [
+        "modules/crop/track.py"
+      ]
+    },
+    {
       "source": "✅ Save completed successfully!",
       "target": "✅ 保存成功！",
       "files": [
@@ -31528,6 +32025,13 @@
       "target": "✅ 有 {len(hits)} 帧高于阈值 {threshold:.2f}",
       "files": [
         "sidecar/worker.py"
+      ]
+    },
+    {
+      "source": "✅ {ok_frames}/{frame_count} frames ({pct:.1f}%) → {output_path}",
+      "target": "✅ {ok_frames}/{frame_count} 帧（{pct:.1f}%）→ {output_path}",
+      "files": [
+        "model_training/shared/visualization.py"
       ]
     },
     {
@@ -32385,6 +32889,13 @@
       ]
     },
     {
+      "source": "❌ Could not init video writer",
+      "target": "❌ 无法初始化视频写入器",
+      "files": [
+        "model_training/shared/visualization.py"
+      ]
+    },
+    {
       "source": "❌ Could not initialize cache: {e}",
       "target": "❌ 无法初始化缓存：{e}",
       "files": [
@@ -32404,6 +32915,13 @@
       "files": [
         "llm/clip_prefilter.py",
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "❌ Could not open: {video_path}",
+      "target": "❌ 无法打开：{video_path}",
+      "files": [
+        "model_training/shared/visualization.py"
       ]
     },
     {
@@ -32845,6 +33363,13 @@
       "target": "❌ 未检测到姿态 → 将默认使用下半身区域",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "❌ No samples",
+      "target": "❌ 没有可用样本",
+      "files": [
+        "model_training/shared/visualization.py"
       ]
     },
     {
@@ -33908,6 +34433,13 @@
       ]
     },
     {
+      "source": "🎯 Initialized default boxes for all {self.max_actions} positions",
+      "target": "🎯 已为全部 {self.max_actions} 个位置初始化默认框",
+      "files": [
+        "modules/crop/track.py"
+      ]
+    },
+    {
       "source": "🎯 Keypoints",
       "target": "🎯 关键点",
       "files": [
@@ -33940,6 +34472,13 @@
       "target": "🎯 实时叠加模式——缓存中有 {count} 个检测结果",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "🎯 Locked Action idx={action_idx} ({positions[active_actions_indicies.index(action_idx)]})",
+      "target": "🎯 已锁定动作区域 idx={action_idx}（{positions[active_actions_indicies.index(action_idx)]}）",
+      "files": [
+        "modules/crop/track.py"
       ]
     },
     {
@@ -36285,6 +36824,13 @@
       ]
     },
     {
+      "source": "🔧 Raw calibration: {target_w}x{target_h} (aspect: {aspect:.2f})",
+      "target": "🔧 原始校准尺寸：{target_w}x{target_h}（宽高比：{aspect:.2f}）",
+      "files": [
+        "modules/crop/track.py"
+      ]
+    },
+    {
       "source": "🔬 Frame {idx}: Split detected! 2→{split_corrected_count} ({split_reason})",
       "target": "🔬 帧 {idx}：检测到人物拆分误判！2→{split_corrected_count}（{split_reason}）",
       "files": [
@@ -36310,6 +36856,13 @@
       "target": "🔬 姿态：原始骨架={raw_pose_count}，聚类后={cluster_count} → 使用 {pose_count}",
       "files": [
         "modules/crop/people.py"
+      ]
+    },
+    {
+      "source": "🔮 Predicted position for {positions[slot_i]} (no detection)",
+      "target": "🔮 已预测 {positions[slot_i]} 的位置（当前无检测结果）",
+      "files": [
+        "modules/crop/track.py"
       ]
     },
     {
@@ -36465,6 +37018,13 @@
       "files": [
         "model_training/intel/train.py",
         "model_training/r3d/train.py"
+      ]
+    },
+    {
+      "source": "🗑️  Deleted old feature cache",
+      "target": "🗑️ 已删除旧特征缓存",
+      "files": [
+        "model_training/shared/feature_cache.py"
       ]
     },
     {

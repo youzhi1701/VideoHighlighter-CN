@@ -3482,8 +3482,23 @@ class SignalTimelineWindow(QMainWindow):
         
         self.layer_checkboxes = {}
         any_hidden = False
+        layer_names_zh = {
+            "events": "事件",
+            "transcript": "转录文本",
+            "actions": "动作",
+            "objects": "物体",
+            "visual_search": "视觉搜索",
+            "scenes": "场景",
+            "motion_events": "运动事件",
+            "motion_peaks": "运动峰值",
+            "audio_peaks": "音频峰值",
+            "highlights": "最终高光",
+            "filmstrip": "胶片条",
+            "waveform": "音频波形",
+        }
         for layer_name in self.signal_scene.visible_layers.keys():
-            display_name = layer_name.replace('_', ' ').title()
+            display_name = layer_names_zh.get(
+                layer_name, layer_name.replace('_', ' ').title())
             has_data = self.signal_scene.layer_has_data(layer_name)
             checkbox = QCheckBox(display_name)
             # Start empty signal types unchecked + hidden to reduce clutter.

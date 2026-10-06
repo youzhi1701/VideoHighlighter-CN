@@ -25,20 +25,20 @@ def build_tracking_model(model_size="n", log_fn=print, device="GPU"):
     if not model_xml and not getattr(sys, "frozen", False):
         try:
             from modules.vision import yolox_models
-            log_fn("⬇️ First run: fetching the YOLOX person detector (Apache-2.0)…")
+            log_fn("⬇️ 首次运行：正在获取 YOLOX 人物检测器（Apache-2.0）…")
             yolox_models.install(log=log_fn)
             model_xml = resolve_yolox_ir(model_size)
         except Exception as exc:
-            log_fn(f"⚠️ Could not fetch the YOLOX detector: {exc}")
+            log_fn(f"⚠️ 无法获取 YOLOX 检测器：{exc}")
     if not model_xml:
-        log_fn("⚠️ No YOLOX IR for tracking — run tools/get_yolox_model.py")
+        log_fn("⚠️ 未找到用于追踪的 YOLOX IR，请运行 tools/get_yolox_model.py")
         return None
     try:
         tracker = YoloxPersonTracker(model_xml=model_xml, model_size=model_size, device=device)
-        log_fn(f"✅ Person tracker ready (YOLOX): {model_xml}")
+        log_fn(f"✅ 人物追踪器已就绪（YOLOX）：{model_xml}")
         return tracker
     except Exception as exc:
-        log_fn(f"⚠️ Person tracker failed to load: {exc}")
+        log_fn(f"⚠️ 人物追踪器加载失败：{exc}")
         return None
 
 
@@ -103,8 +103,8 @@ def _entries_load(path, log_fn):
     try:
         with open(path, "r", encoding="utf-8") as f:
             entries = json.load(f)
-        log_fn(f"🚫 Avoid: reusing cached face-tagging entries ({len(entries)} frame(s)) — "
-               f"no re-scan needed")
+        log_fn(f"🚫 人物排除：正在复用缓存的人脸标记结果（{len(entries)} 帧），"
+               f"无需重新扫描")
         return entries
     except Exception:
         return None
@@ -116,7 +116,7 @@ def _entries_save(path, entries, log_fn):
         with open(path, "w", encoding="utf-8") as f:
             json.dump(entries, f)
     except Exception as e:
-        log_fn(f"⚠️ Avoid: could not write entries cache: {e}")
+        log_fn(f"⚠️ 人物排除：无法写入标记结果缓存：{e}")
 
 
 def _cache_load(path, log_fn):
@@ -126,7 +126,7 @@ def _cache_load(path, log_fn):
         ranges = [tuple(r) for r in data.get("forbidden_ranges", [])]
         boxes = {int(k): [tuple(b) for b in v]
                  for k, v in data.get("forbidden_boxes_by_frame", {}).items()}
-        log_fn(f"🚫 Avoid: loaded cached tagging ({len(boxes)} frame(s), {len(ranges)} range(s))")
+        log_fn(f"🚫 人物排除：已加载缓存标记（{len(boxes)} 帧，{len(ranges)} 个区间）")
         return ranges, boxes
     except Exception:
         return None
@@ -142,7 +142,7 @@ def _cache_save(path, ranges, boxes, log_fn):
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f)
     except Exception as e:
-        log_fn(f"⚠️ Avoid: could not write cache: {e}")
+        log_fn(f"⚠️ 人物排除：无法写入缓存：{e}")
 
 
 def tag_entries(video_path, bank, yolo_model=None, model_size="n",
@@ -171,12 +171,12 @@ def tag_entries(video_path, bank, yolo_model=None, model_size="n",
 
     def _progress(i, msg):
         if cancel_flag is not None and getattr(cancel_flag, "is_set", lambda: False)():
-            raise RuntimeError("cancelled during identity tagging")
+            raise RuntimeError("人物身份标记期间已取消")
         if i % 150 == 0:
-            log_fn(f"🚫 Avoid: {msg}")
+            log_fn(f"🚫 人物排除：{msg}")
 
     dev = track_device()
-    log_fn(f"🚫 Avoid: tracking on device={dev}")
+    log_fn(f"🚫 人物排除：正在设备 {dev} 上追踪")
     entries = tag_video_with_identities(
         video_path, bank,
         model=yolo_model,
@@ -214,7 +214,7 @@ def compute_forbidden(video_path, bank, avoid_ids, fps,
     H = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or 0)
     cap.release()
     if W == 0 or H == 0:
-        log_fn("⚠️ compute_forbidden: could not read frame size — skipping exclusion")
+        log_fn("⚠️ 人物排除：无法读取画面尺寸，已跳过排除处理")
         return [], {}
 
     # Shared, avoid-independent pass: reuses the dry-run scan's cached entries if present.
@@ -245,8 +245,8 @@ def compute_forbidden(video_path, bank, avoid_ids, fps,
             forbidden_boxes_by_frame.setdefault(frame_idx, []).extend(boxes_here)
 
     forbidden_ranges = _merge_seconds(forbidden_seconds, merge_gap=merge_gap)
-    log_fn(f"🚫 Avoid: avoided identity present in {len(forbidden_boxes_by_frame)} frame(s), "
-           f"{len(forbidden_ranges)} merged range(s)")
+    log_fn(f"🚫 人物排除：需排除的身份出现在 {len(forbidden_boxes_by_frame)} 帧中，"
+           f"合并为 {len(forbidden_ranges)} 个区间")
 
     if use_cache:
         _cache_save(cache_path, forbidden_ranges, forbidden_boxes_by_frame, log_fn)
@@ -257,7 +257,7 @@ def compute_forbidden(video_path, bank, avoid_ids, fps,
 if __name__ == "__main__":
     import sys
     if len(sys.argv) < 4:
-        print("Usage: python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]")
+        print("用法：python compute_forbidden.py <video> <face_db.json> <avoid_id> [avoid_id...]")
         sys.exit(1)
     from video_ai_editor.face_identity import FaceIdentityBank
     video, db = sys.argv[1], sys.argv[2]
@@ -267,7 +267,7 @@ if __name__ == "__main__":
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     cap.release()
     ranges, boxes = compute_forbidden(video, bank, avoid_ids, fps)
-    print(f"\nforbidden_ranges ({len(ranges)}):")
+    print(f"\n排除区间（{len(ranges)}）：")
     for a, b in ranges[:20]:
         print(f"  {a:.1f}s – {b:.1f}s")
     print(f"forbidden_boxes_by_frame: {len(boxes)} frame(s)")

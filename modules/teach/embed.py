@@ -82,7 +82,7 @@ class FrameEncoderBackend:
             from modules.vision import frame_encoder
             encoder = frame_encoder.load(self._backend)
             if encoder is None:
-                raise RuntimeError("the frame encoder is not installed or cannot run here")
+                raise RuntimeError("帧编码器未安装或无法在当前环境运行")
             self._encoder = encoder
         return self._encoder
 

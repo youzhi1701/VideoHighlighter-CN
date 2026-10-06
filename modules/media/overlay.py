@@ -524,13 +524,12 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,
     try:
         from PIL import Image  # noqa: F401
     except Exception:
-        log_fn("⚠️ Pillow is not available, so the graphics were skipped")
+        log_fn("⚠️ Pillow 不可用，已跳过图形叠加")
         shutil.copy2(src, dst)
         return dst
 
     names = ", ".join(getattr(e, "label", type(e).__name__) for e in elements)
-    log_fn(f"🎨 Drawing {names} over {scene.duration:.0f}s at "
-           f"{scene.width}x{scene.height}")
+    log_fn(f"🎨 正在以 {scene.width}x{scene.height} 在 {scene.duration:.0f} 秒画面上绘制：{names}")
 
     command = [
         ffmpeg_exe(), "-y", "-v", "error",
@@ -559,7 +558,7 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,
 
     if process.returncode != 0 or not os.path.exists(dst) or os.path.getsize(dst) == 0:
         detail = (stderr or b"").decode("utf-8", "replace").strip()[-300:]
-        log_fn(f"⚠️ Could not draw the graphics ({detail or 'unknown error'}); "
-               f"the reel keeps its picture")
+        log_fn(f"⚠️ 无法绘制图形（{detail or '未知错误'}）；"
+               f"成片将保留原始画面")
         shutil.copy2(src, dst)
     return dst

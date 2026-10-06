@@ -127,7 +127,7 @@ class YoloxPersonTracker:
         model_xml = model_xml or resolve_yolox_ir(model_size)
         if not model_xml:
             raise FileNotFoundError(
-                "No YOLOX IR found for tracking. Run: python tools/get_yolox_model.py"
+                "跟踪功能未找到 YOLOX IR 模型。请运行：python tools/get_yolox_model.py"
             )
         self.model_xml = model_xml
         self.person_conf = float(person_conf)
@@ -147,7 +147,7 @@ class YoloxPersonTracker:
         conf = self.person_conf if person_conf is None else float(person_conf)
         cap = cv2.VideoCapture(video_path)
         if not cap.isOpened():
-            raise FileNotFoundError(f"Cannot open video: {video_path}")
+            raise FileNotFoundError(f"无法打开视频：{video_path}")
 
         frame_idx = 0
         processed = 0

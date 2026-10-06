@@ -5080,12 +5080,12 @@ class SignalTimelineWindow(QMainWindow):
 
                         if proc.returncode == 0 and os.path.exists(output_path):
                             size_mb = os.path.getsize(output_path) / (1024 * 1024)
-                            msg = (f"✅ Highlight video rendered!\n\n"
-                                   f"File: {os.path.basename(output_path)}\n"
-                                   f"Clips: {len(clips)}\n"
-                                   f"Duration: {total_dur:.1f}s\n"
-                                   f"Size: {size_mb:.1f} MB\n"
-                                   f"Encoder: {enc}")
+                            msg = (f"✅ 高光视频渲染完成！\n\n"
+                                   f"文件：{os.path.basename(output_path)}\n"
+                                   f"片段数：{len(clips)}\n"
+                                   f"时长：{total_dur:.1f} 秒\n"
+                                   f"大小：{size_mb:.1f} MB\n"
+                                   f"编码器：{enc}")
                             self.render_finished.emit(True, msg)
                             return
 

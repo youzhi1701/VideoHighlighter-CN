@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  # 中文源码发生变化后，由此工作流同步规则库与翻译记忆。
   contents: write
 
 jobs:

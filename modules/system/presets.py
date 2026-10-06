@@ -36,7 +36,7 @@ def safe_preset_name(name: str) -> str:
 def preset_path(name: str, config_file: str | None = None) -> str:
     safe = safe_preset_name(name)
     if not safe:
-        raise ValueError("preset name is empty")
+        raise ValueError("预设名称不能为空")
     return os.path.join(presets_dir(config_file), safe + ".yaml")
 
 
@@ -57,7 +57,7 @@ def list_presets(config_file: str | None = None) -> list[str]:
 def save_preset(name: str, data: dict, config_file: str | None = None) -> str:
     """Write ``data`` (the same mapping ``save_config`` builds). Returns the path."""
     if not isinstance(data, dict):
-        raise ValueError("preset data must be a mapping")
+        raise ValueError("预设数据必须是映射结构")
     path = preset_path(name, config_file)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as handle:
@@ -70,7 +70,7 @@ def load_preset(name: str, config_file: str | None = None) -> dict:
     with open(path, encoding="utf-8") as handle:
         data = yaml.safe_load(handle) or {}
     if not isinstance(data, dict):
-        raise ValueError("preset is not a mapping")
+        raise ValueError("预设内容不是有效的映射结构")
     return data
 
 

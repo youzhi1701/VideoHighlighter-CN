@@ -129,7 +129,7 @@ def main(argv=None) -> int:
     bboxes = (read_cache(args.video) or {}).get("object_bboxes") or []
     picks = pick(bboxes, args.cls, args.frames)
     if not picks:
-        print(f"No {args.cls!r} detections cached for this video; run object detection first.")
+        print(f"该视频没有缓存 {args.cls!r} 的检测结果；请先运行对象检测。")
         return 1
     result = compare(args.video, picks, make_outliner(args.a), make_outliner(args.b),
                      args.out)

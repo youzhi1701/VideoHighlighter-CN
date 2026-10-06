@@ -474,9 +474,9 @@ def tell(report: Mapping,
     previous = None
     for position, entry in enumerate(segments, start=1):
         if cancel_fn is not None and cancel_fn():
-            log_fn(f"⏹️ Stopped after {position - 1} of {len(segments)} clips.")
+            log_fn(f"⏹️ 已停止：完成 {position - 1}/{len(segments)} clips.")
             break
-        log_fn(f"🖼️ Reading clip {position} of {len(segments)}"
+        log_fn(f"🖼️ 正在读取片段 {position}/{len(segments)}"
                f" ({entry.get('range', '')})…")
         images = None
         if frames_fn is not None:
@@ -487,7 +487,7 @@ def tell(report: Mapping,
                 print(f"⚠️ Frames for clip {position} failed: {exc}")
         seen = _frames_delivered(llm, images)
         if not seen:
-            log_fn(f"⚠️ Clip {position} has no frames to read; skipped.")
+            log_fn(f"⚠️ 片段 {position} 没有可读取的画面，已跳过。")
             continue
         try:
             text = (_read_one(llm,
@@ -495,13 +495,13 @@ def tell(report: Mapping,
                                           frame_count=seen),
                               images, system) or "").strip()
         except Exception as exc:
-            log_fn(f"⚠️ Clip {position} could not be read: {exc}")
+            log_fn(f"⚠️ 无法读取片段 {position}：{exc}")
             continue
         if not text:
             continue
         trimmed = trim_repetition(text)
         if len(trimmed) < len(text):
-            log_fn(f"✂️ Clip {position} repeated itself; kept what came before.")
+            log_fn(f"✂️ 片段 {position} 出现重复内容，已保留此前结果。")
             text = trimmed
         entry["story"] = text
         previous = text

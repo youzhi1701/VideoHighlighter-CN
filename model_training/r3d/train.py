@@ -214,8 +214,8 @@ def train_r3d(train_loader, val_loader, num_classes, label_to_idx, idx_to_label)
     patience_ctr = 0
     clip_norm = CONFIG.get("gradient_clip_norm", 1.0)
 
-    print(f"\n🏋️ Training R3D ({CONFIG['model_variant']}) for {max_epochs - start_epoch} epochs")
-    print(f"   AMP: {use_amp} | Device: {device}")
+    print(f"\n🏋️ 正在训练 R3D（{CONFIG['model_variant']}），共 {max_epochs - start_epoch} 轮")
+    print(f"   AMP：{use_amp} | 设备：{device}")
 
     for epoch in range(start_epoch, max_epochs):
         model.train()
@@ -224,7 +224,7 @@ def train_r3d(train_loader, val_loader, num_classes, label_to_idx, idx_to_label)
 
         run_loss, correct, total = 0.0, 0, 0
 
-        pbar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{max_epochs}")
+        pbar = tqdm(train_loader, desc=f"训练轮次 {epoch + 1}/{max_epochs}")
         for clips, labels in pbar:
             clips, labels = clips.to(device), labels.to(device)
 
@@ -251,18 +251,18 @@ def train_r3d(train_loader, val_loader, num_classes, label_to_idx, idx_to_label)
             total += labels.size(0)
             run_loss += loss.item() * clips.size(0)
 
-            pbar.set_postfix(loss=f"{loss.item():.4f}", acc=f"{correct / total:.4f}")
+            pbar.set_postfix(损失=f"{loss.item():.4f}", 准确率=f"{correct / total:.4f}")
 
         scheduler.step()
         t_loss = run_loss / total if total else float("inf")
         t_acc = correct / total if total else 0.0
         lrs = [f"{g['lr']:.6f}" for g in optimizer.param_groups]
-        print(f"\n  Train Loss: {t_loss:.4f} | Acc: {t_acc:.4f} | LR: {', '.join(lrs)}")
+        print(f"\n  训练损失：{t_loss:.4f} | 准确率：{t_acc:.4f} | 学习率：{', '.join(lrs)}")
 
         # Validation
         if len(val_loader) > 0:
             v_loss, v_acc, pc_acc, _ = validate(model, val_loader, device, criterion, use_amp)
-            print(f"  Val   Loss: {v_loss:.4f} | Acc: {v_acc:.4f}")
+            print(f"  验证损失：{v_loss:.4f} | 准确率：{v_acc:.4f}")
             for li in sorted(pc_acc):
                 s = "✓" if pc_acc[li] > 0 else "⚠️"
                 print(f"    {s} {idx_to_label[li]}: {pc_acc[li]:.4f}")
@@ -271,12 +271,12 @@ def train_r3d(train_loader, val_loader, num_classes, label_to_idx, idx_to_label)
                 best_loss, best_acc = v_loss, v_acc
                 best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
                 patience_ctr = 0
-                print("   ⭐ Improved!")
+                print("   ⭐ 结果有提升！")
             else:
                 patience_ctr += 1
-                print(f"   No improvement ({patience_ctr}/{CONFIG['early_stopping_patience']})")
+                print(f"   暂无提升（{patience_ctr}/{CONFIG['early_stopping_patience']}）")
                 if patience_ctr >= CONFIG["early_stopping_patience"]:
-                    print("\n🛑 Early stopping")
+                    print("\n🛑 已提前停止训练")
                     break
 
         # Checkpoint
@@ -304,7 +304,7 @@ def train_r3d(train_loader, val_loader, num_classes, label_to_idx, idx_to_label)
     if best_state:
         model.load_state_dict(best_state)
         model.to(device)
-        print(f"\n✅ Best model loaded (loss={best_loss:.4f}, acc={best_acc:.4f})")
+        print(f"\n✅ 已加载最佳模型（损失={best_loss:.4f}，准确率={best_acc:.4f}）")
 
     # Save
     wrapped = ActionRecognitionModel(
@@ -406,7 +406,7 @@ def main():
 
     set_seed(42)
     print("=" * 60)
-    print(f"🎮 R3D TRAINING — {CONFIG['model_variant'].upper()}")
+    print(f"🎮 R3D 训练 —— {CONFIG['model_variant'].upper()}")
     print("=" * 60)
 
     # Datasets (R3D-specific: returns (C, T, H, W))
@@ -415,10 +415,10 @@ def main():
     val_ds = R3DVideoDataset(os.path.join(data_path, "val"), CONFIG)
 
     if len(train_ds) == 0:
-        print("❌ No training samples")
+        print("❌ 没有可用的训练样本")
         sys.exit(1)
 
-    print(f"\n📁 Train: {len(train_ds)} | Val: {len(val_ds)}")
+    print(f"\n📁 训练集：{len(train_ds)} | 验证集：{len(val_ds)}")
 
     ok, valid_actions, new_train, new_val = validate_and_split_dataset(train_ds, val_ds, CONFIG)
     if not ok:
@@ -426,7 +426,7 @@ def main():
     apply_dataset_split(train_ds, val_ds, valid_actions, new_train, new_val)
 
     label_to_idx, idx_to_label = train_ds.get_label_mapping()
-    print(f"\n📝 Labels: {label_to_idx}")
+    print(f"\n📝 标签：{label_to_idx}")
 
     # ==============================
     # PRE-COMPUTE ROI CACHE (one-time cost, massive speedup per epoch)
@@ -459,7 +459,7 @@ def main():
             )
             if os.path.exists(cache_file):
                 os.remove(cache_file)
-                print(f"🗑️  Deleted old cache: {cache_file}")
+                print(f"🗑️  已删除旧缓存：{cache_file}")
 
         roi_cache = precompute_roi_cache(all_samples_ds, CONFIG, pose_extractor=pose_ext)
 
@@ -467,7 +467,7 @@ def main():
         train_ds.roi_cache = roi_cache
         val_ds.roi_cache = roi_cache
     else:
-        print("\n⚠️  ROI cache DISABLED — training will be slow (the person detector runs every epoch)")
+        print("\n⚠️  ROI 缓存已禁用——训练会变慢（每轮都会运行人物检测器）")
 
     # ==============================
     # DataLoaders
@@ -479,8 +479,8 @@ def main():
     pf = CONFIG.get("prefetch_factor", 2) if nw > 0 else None
     pw = CONFIG.get("persistent_workers", True) and nw > 0
 
-    print(f"\n📊 DataLoader: {nw} workers, pin_memory={pin}, "
-          f"prefetch={pf}, persistent={pw}")
+    print(f"\n📊 DataLoader：{nw} 个工作进程，pin_memory={pin}，"
+          f"prefetch={pf}，persistent={pw}")
 
     train_loader = DataLoader(
         train_ds, batch_size=CONFIG["batch_size"], shuffle=True,
@@ -505,7 +505,7 @@ def main():
         )
 
     # Train
-    print(f"\n🚀 Training...\n")
+    print("\n🚀 正在训练…\n")
     wrapped, raw_model = train_r3d(
         train_loader, val_loader,
         num_classes=len(valid_actions),
@@ -544,7 +544,7 @@ def main():
             CONFIG["model_save_path"], base_keep,
             per_class_acc=per_class_acc, suffix="",
         )
-        print(f"\n  Base mapping: removed {len(base_remove)} classes with 0% accuracy:")
+        print(f"\n  基础映射：已移除 {len(base_remove)} 个准确率为 0% 的类别：")
         for ri in base_remove:
             print(f"    ❌ {wrapped.idx_to_label.get(ri, f'class_{ri}')}")
 
@@ -575,12 +575,12 @@ def main():
                 "train_clips": len(train_ds),
             }, fh, indent=2)
 
-    print(f"\n✅ Done!")
-    print(f"  Weights:             {CONFIG['model_save_path']} ({len(wrapped.label_to_idx)} classes total)")
-    print(f"  Base mapping:        {CONFIG['model_save_path'].replace('.pth', '_mapping.json')} "
-          f"({len(base_keep)} classes, 0% removed)")
-    print(f"  Production mapping:  {prod_path} "
-          f"({len(keep)} classes, <{CONFIG.get('min_production_accuracy', 0.3):.0%} removed)")
+    print("\n✅ 训练完成！")
+    print(f"  权重：               {CONFIG['model_save_path']}（共 {len(wrapped.label_to_idx)} 个类别）")
+    print(f"  基础映射：           {CONFIG['model_save_path'].replace('.pth', '_mapping.json')} "
+          f"（{len(base_keep)} 个类别，已移除准确率为 0% 的类别）")
+    print(f"  生产映射：           {prod_path} "
+          f"（{len(keep)} 个类别，已移除准确率低于 {CONFIG.get('min_production_accuracy', 0.3):.0%} 的类别）")
 
     # Cleanup
     gc.collect()

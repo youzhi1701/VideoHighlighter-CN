@@ -132,6 +132,10 @@ def clean(text: str) -> str:
 
 def visible_candidate(text: str, allow: set[str]) -> bool:
     t = clean(text)
+    # Template expressions are runtime values, not literal English UI text.
+    # Without stripping them, strings such as `✖ ${e.message}` are falsely
+    # classified as untranslated because the variable name contains letters.
+    t = re.sub(r"\$\{[^{}]*\}", "{…}", t)
     if not t or t in allow or CJK_RE.search(t) or not EN_RE.search(t):
         return False
     if t.startswith(("http://", "https://")):
@@ -146,6 +150,12 @@ def visible_candidate(text: str, allow: set[str]) -> bool:
         if re.search(r"[_.:/{}<>+*=@%#\\-]", t) or any(ch.isdigit() for ch in t):
             return False
     if t.lower() in {"true", "false", "none", "null", "utf8", "utf-8", "rb", "wb"}:
+        return False
+    # Inno Setup expressions and symbolic task IDs are implementation details,
+    # even though they appear inside quoted script fragments.
+    if re.fullmatch(r"\+\s*[A-Za-z_][A-Za-z0-9_]*(?:\([^)]*\))?\s*\+", t):
+        return False
+    if t.lower() in {"desktopicon", "quicklaunchicon"}:
         return False
     if TECH_RE.match(t) and len(t.split()) <= 4:
         return False

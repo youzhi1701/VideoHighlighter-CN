@@ -294,14 +294,14 @@ def _main(argv=None) -> int:
 
     parser = argparse.ArgumentParser(
         prog="python -m modules.vision.face_scan",
-        description="Find expressions in a video, with or without a highlight.")
+        description="在视频中查找表情，可限定或不限定高光片段。")
     parser.add_argument("--video", required=True)
     parser.add_argument("--interval", type=float, default=DEFAULT_INTERVAL)
     parser.add_argument("--cache-dir", default="./cache")
     parser.add_argument("--rescan", action="store_true",
-                        help="ignore any cached scan")
+                        help="忽略已有扫描缓存")
     parser.add_argument("--label", choices=EMOTION_LABELS,
-                        help="list the moments matching this expression")
+                        help="列出匹配此表情的时间点")
     parser.add_argument("--min-confidence", type=float, default=0.0)
     parser.add_argument("--top", type=int, default=25)
     args = parser.parse_args(argv)

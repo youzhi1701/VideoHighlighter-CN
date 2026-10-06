@@ -37,18 +37,17 @@ def next_step(project: Project) -> dict:
     scored = [s for s in project.samples if s.scores]
 
     if not names:
-        return _step(project, "judge", "Say what to find: add a class (name + a few "
-                     "words describing it). `check-name` first if unsure what to call it.",
+        return _step(project, "judge", "请先说明要查找什么：添加一个类别（名称 + 几个描述词）。如果不确定如何命名，"
+                     "可先运行 `check-name`。",
                      "add-class", "<name>", "--description", "<what it looks like>")
     if not project.sources:
-        return _step(project, "judge", "Give it footage: a few videos where the classes "
-                     "appear. A URL is downloaded; a file is used in place.",
+        return _step(project, "judge", "请提供素材：加入几个会出现这些类别的视频。URL 会自动下载，本地文件则直接使用。",
                      "add-video", "<path or url>")
     if any(not s.cut for s in project.sources):
-        return _step(project, "auto", "Cut the new footage into samples.", "cut")
+        return _step(project, "auto", "将新素材切分为样本。", "cut")
     if (project.task == "actions" and project.settings.focus
             and any(not s.focus_tried for s in project.samples)):
-        return _step(project, "auto", "Crop samples to the people in them.", "focus")
+        return _step(project, "auto", "将样本裁剪到其中的人物区域。", "focus")
     # An object class someone drew a box around is found region by region
     # (``find``): its samples are decided by answering its boxes, so the
     # whole-frame sort and the sample review are only for classes in words.
@@ -60,11 +59,11 @@ def next_step(project: Project) -> dict:
 
     unsorted = [s for s in project.samples if not s.scores and not s.unreadable]
     if by_words and (not scored or unsorted):
-        return _step(project, "auto", "Score every sample against every class.", "sort")
+        return _step(project, "auto", "对每个样本与每个类别进行评分。", "sort")
     if drawn:
         from modules.teach.find import needed
         if needed(project):
-            return _step(project, "auto", "Look for what was shown in every sample.", "find")
+            return _step(project, "auto", "在每个样本中查找已示教的目标。", "find")
 
     no_examples = [n for n in by_words if counts[n]["accepted"] == 0 and not
                    project.get_class(n).examples]
@@ -72,9 +71,8 @@ def next_step(project: Project) -> dict:
             and all(counts[n]["accepted"] == 0 for n in by_words)):
         # Words alone sort weakly. One reviewed sheet turns into examples, and
         # every sort after it uses them.
-        return _step(project, "judge", "Check the first guesses: accepted samples become "
-                     "examples and every later sort sharpens. Or add example clips you "
-                     "already have with `add-example`.", "review")
+        return _step(project, "judge", "检查第一批模型判断：接受的样本会成为示例，使后续排序更准确。"
+                     "也可以用 `add-example` 添加已有示例片段。", "review")
 
     short = [n for n in by_words if counts[n]["accepted"] < counts[n]["target"]]
     ready = [n for n in names if counts[n]["accepted"] >= MIN_TO_TRAIN]
@@ -85,59 +83,54 @@ def next_step(project: Project) -> dict:
             pass    # enough to train again; reviewing more is optional below
         else:
             return _step(project, "judge",
-                         f"Review guesses: {worst!r} has {c['accepted']} of "
-                         f"{c['target']}. Re-run `sort` after a few sheets so accepted "
-                         "samples sharpen the next guesses.", "review")
+                         f"检查模型判断：{worst!r} 已接受 {c['accepted']}/{c['target']} 个样本。"
+                         "检查几批后重新运行 `sort`，已接受样本会帮助下一轮判断更准确。", "review")
 
     if project.task == OBJECTS:
         from modules.teach.boxes import labeler_worklist, retryable, store
         labels = store(project)
         if labels.pending():
-            return _step(project, "judge", f"Check {len(labels.pending())} proposed boxes.",
+            return _step(project, "judge", f"检查 {len(labels.pending())} 个候选检测框。",
                          "boxes", "review")
         todo = labeler_worklist(project)
         if any(not s.boxes_tried for s in project.accepted()):
-            return _step(project, "auto", "Propose boxes on accepted samples.",
+            return _step(project, "auto", "为已接受样本生成候选检测框。",
                          "boxes", "propose")
         retry = retryable(project, labels)
         if retry:
-            return _step(project, "auto", f"Try again on {len(retry)} frames whose boxes "
-                         "were rejected, now matching what accepted boxes look like.",
+            return _step(project, "auto", f"重新处理 {len(retry)} 个检测框曾被拒绝的画面，并参考已接受检测框的外观进行匹配。",
                          "boxes", "propose")
         if len(todo) > len(project.accepted()) // 2:
-            return _step(project, "judge", f"{len(todo)} accepted samples have no good box. "
-                         "Draw them in tools/labeler.py, then import the exports.",
+            return _step(project, "judge", f"{len(todo)} 个已接受样本仍没有合适的检测框。"
+                         "请在 tools/labeler.py 中标注，然后导入导出结果。",
                          "boxes", "worklist")
 
     if len(ready) < len(names):
         missing = [n for n in names if n not in ready]
-        more = (" Or `seed` another box around it, from a different side or "
-                "video: each one widens what is found." if drawn & set(missing) else "")
-        return _step(project, "judge", f"Need at least {MIN_TO_TRAIN} accepted samples of "
-                     f"{', '.join(repr(n) for n in missing)}. Add footage where they "
-                     "appear more, or review further." + more,
+        more = (" 也可以从不同角度或其他视频使用 `seed` 再添加一个检测框；"
+                "每增加一个示例都能扩大可查找范围。" if drawn & set(missing) else "")
+        return _step(project, "judge", f"{', '.join(repr(n) for n in missing)} 至少需要 {MIN_TO_TRAIN} 个已接受样本。"
+                     "请添加更多包含这些目标的素材，或继续检查现有样本。" + more,
                      "add-video", "<path or url>")
 
     from modules.teach import autolabel
     audits = {n: autolabel.audits_needed(project, n) for n in names + ["_none"]}
     owed = {n: k for n, k in audits.items() if k}
     if owed:
-        listed = ", ".join(f"{k} of {n!r}" for n, k in owed.items())
-        return _step(project, "judge", f"Spot-check what was auto-accepted before training "
-                     f"on it ({listed}); review sheets include them.", "review")
+        listed = "，".join(f"{n!r} 还需 {k} 个" for n, k in owed.items())
+        return _step(project, "judge", f"训练前请抽查自动接受的样本（{listed}）；检查批次中会包含这些样本。", "review")
 
     from modules.teach.build import built_signature, dataset_signature
 
     signature = dataset_signature(project)
     if built_signature(project) != signature:
-        return _step(project, "auto", "Build the dataset from what was accepted.", "build")
+        return _step(project, "auto", "根据已接受的样本构建数据集。", "build")
     if not any(r.get("dataset") == signature for r in project.rounds):
-        return _step(project, "auto", "Train a round (GPU minutes to hours; runs "
-                     "unattended, and installs the model only if it beats the last).",
+        return _step(project, "auto", "开始一轮训练（GPU 通常需要数分钟到数小时，可无人值守运行；"
+                     "只有效果优于上一版时才会安装新模型）。",
                      "train")
-    return _step(project, "judge", "Trained on everything accepted. To improve it: add a "
-                 "video it has not seen, then cut, sort and review; its mistakes there "
-                 "are the most useful labels there are.", "add-video", "<path or url>")
+    return _step(project, "judge", "已使用全部接受样本完成训练。若要继续提升：添加模型没见过的视频，"
+                 "再进行切分、排序和检查；模型在新素材上的错误最有价值。", "add-video", "<path or url>")
 
 
 def report(project: Project) -> dict:

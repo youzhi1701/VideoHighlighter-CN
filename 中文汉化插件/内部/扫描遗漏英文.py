@@ -24,10 +24,10 @@ REPORT = INTERNAL_DIR / "报告" / "遗漏英文扫描.json"
 CJK_RE = re.compile(r"[\u3400-\u9fff]")
 EN_RE = re.compile(r"[A-Za-z]{2,}")
 STYLE_RE = re.compile(
-    r"(?:Q[A-Za-z0-9_]+(?:[:#][A-Za-z0-9_]+)?\\s*\\{|"
+    r"(?:Q[A-Za-z0-9_]+(?:[:#][A-Za-z0-9_]+)?\s*\{|"
     r"(?:background(?:-color)?|color|border(?:-[a-z]+)?|padding|margin|"
     r"font(?:-[a-z]+)?|min-width|max-width|min-height|max-height|"
-    r"selection-color|selection-background-color)\\s*:)",
+    r"selection-color|selection-background-color)\s*:)",
     re.I,
 )
 TECH_RE = re.compile(
@@ -59,7 +59,7 @@ UI_CALLS = {
 # English even after every static button/label looked translated.
 USER_TEXT_CALLBACKS = {
     "log_fn", "progress_fn", "status_fn", "message_fn", "detail_fn",
-    "log", "progress_cb", "status_cb", "message_cb", "detail_cb",
+    "log", "progress", "progress_cb", "status_cb", "message_cb", "detail_cb",
 }
 UI_NAME_RE = re.compile(
     r"(?:text|title|label|button|btn|tooltip|tip|status|message|msg|caption|"
@@ -210,6 +210,22 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 for kw in node.keywords:
                     add(hits, rel, kw.value, "python-user-runtime-callback",
                         "high", string_value(kw.value), allow)
+            elif name == "print":
+                # Standalone tools and worker processes still surface these
+                # lines directly in the console/log pane.
+                for arg in node.args:
+                    add(hits, rel, arg, "python-console-text", "medium",
+                        string_value(arg), allow)
+            elif name == "ArgumentParser":
+                for kw in node.keywords:
+                    if kw.arg == "description":
+                        add(hits, rel, kw.value, "python-cli-help", "medium",
+                            string_value(kw.value), allow)
+            elif name == "add_argument":
+                for kw in node.keywords:
+                    if kw.arg == "help":
+                        add(hits, rel, kw.value, "python-cli-help", "medium",
+                            string_value(kw.value), allow)
 
         elif isinstance(node, (ast.Assign, ast.AnnAssign)):
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]

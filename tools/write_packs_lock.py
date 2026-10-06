@@ -58,6 +58,12 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
-    from modules.system.debug_console import force_utf8_stdio
-    force_utf8_stdio()
+    # Keep this release helper self-contained. When Python executes a script by
+    # path (python tools/write_packs_lock.py), sys.path[0] is tools/, so importing
+    # the app's top-level modules package is not reliable on clean CI runners.
+    # Configure UTF-8 directly instead of depending on application code.
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8", errors="replace")
     sys.exit(main())

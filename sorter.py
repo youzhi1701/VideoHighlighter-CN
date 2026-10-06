@@ -44,7 +44,7 @@ SEQUENCE_LENGTH = 16
 # =============================
 def load_custom_labels():
     if not CUSTOM_MAPPING_PATH.exists():
-        raise FileNotFoundError(f"Label mapping not found: {CUSTOM_MAPPING_PATH}")
+        raise FileNotFoundError(f"未找到标签映射：{CUSTOM_MAPPING_PATH}")
 
     with open(CUSTOM_MAPPING_PATH, "r") as f:
         data = json.load(f)
@@ -52,7 +52,7 @@ def load_custom_labels():
     idx_to_label = {int(k): v for k, v in data["idx_to_label"].items()}
     label_to_idx = {v: k for k, v in idx_to_label.items()}
 
-    print(f"✓ Loaded {len(idx_to_label)} action labels")
+    print(f"✓ 已加载 {len(idx_to_label)} 个动作标签")
     return idx_to_label, label_to_idx
 
 
@@ -111,7 +111,7 @@ def load_video_clip(video_path):
 
 
 def load_models():
-    print("🔧 Loading models...")
+    print("🔧 正在加载模型…")
     ie = Core()
 
     encoder_model = ie.read_model(ENCODER_XML, ENCODER_BIN)
@@ -194,7 +194,7 @@ def auto_sort_clips(
     for ext in ("*.mp4", "*.avi", "*.mov", "*.mkv"):
         videos.extend(Path(input_folder).glob(ext))
 
-    print(f"\n🔍 Sorting {len(videos)} clips\n")
+    print(f"\n🔍 正在整理 {len(videos)} 个片段\n")
 
     for i, v in enumerate(videos, 1):
         action, conf, _, probs = classify_clip(
@@ -234,13 +234,13 @@ def auto_sort_clips(
         )
 
         if debug:
-            print(f"\n   🔎 Top-5 → {top5_str}")
+            print(f"\n   🔎 前 5 项 → {top5_str}")
 
         shutil.copy2(v, dest)
 
     csv_file.close()
-    print("\n\n✅ Done")
-    print(f"📝 Confidence log: {csv_path}")
+    print("\n\n✅ 完成")
+    print(f"📝 置信度日志：{csv_path}")
 
 
 # =============================

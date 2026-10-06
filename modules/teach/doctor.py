@@ -39,11 +39,11 @@ def _opencv() -> Check:
         import cv2
         version = getattr(cv2, "__version__", "")
         if not hasattr(cv2, "VideoCapture") or not version:
-            raise ImportError("not a usable OpenCV")
+            raise ImportError("当前 OpenCV 不可用")
         return Check("opencv", True, REQUIRED, f"OpenCV {version}")
     except Exception as exc:
         return Check("opencv", False, REQUIRED, str(exc),
-                     "pip install opencv-python (or run from the installed app)")
+                     "请运行 pip install opencv-python，或直接使用已安装版应用")
 
 
 def _ffmpeg() -> Check:
@@ -52,8 +52,8 @@ def _ffmpeg() -> Check:
     found = os.path.isfile(exe) or shutil.which(exe)
     if found:
         return Check("ffmpeg", True, REQUIRED, exe)
-    return Check("ffmpeg", False, REQUIRED, "no ffmpeg found",
-                 "pip install imageio-ffmpeg, or put ffmpeg on PATH")
+    return Check("ffmpeg", False, REQUIRED, "未找到 ffmpeg",
+                 "请运行 pip install imageio-ffmpeg，或将 ffmpeg 加入 PATH")
 
 
 def _clip() -> Check:
@@ -64,7 +64,7 @@ def _clip() -> Check:
         problem = f"{type(exc).__name__}: {exc}"
     if problem:
         return Check("clip", False, REQUIRED, problem,
-                     "Install the CLIP pack from the app (visual search), or "
+                     "请在应用内安装 CLIP 组件包（视觉搜索），或运行 "
                      "pip install transformers torch")
     return Check("clip", True, REQUIRED, "CLIP stack imports")
 
@@ -75,12 +75,11 @@ def _torch_device() -> Check:
         device = resolve_device("AUTO")
     except Exception as exc:          # noqa: BLE001
         return Check("training device", False, TRAINING, str(exc),
-                     "Install PyTorch (the NVIDIA pack in the app, or pip install torch)")
+                     "请安装 PyTorch（应用内 NVIDIA 组件包，或运行 pip install torch）")
     if device == "cpu":
         return Check("training device", True, TRAINING,
-                     "CPU only: training works but takes hours rather than minutes",
-                     "An NVIDIA card with the NVIDIA pack, or an Intel Arc, trains "
-                     "far faster")
+                     "仅检测到 CPU：可以训练，但可能需要数小时而不是数分钟",
+                     "使用已安装 NVIDIA 组件包的 NVIDIA 显卡，或 Intel Arc，可显著加快训练")
     return Check("training device", True, TRAINING, device)
 
 
@@ -91,12 +90,11 @@ def _detector() -> Check:
     except Exception as exc:          # noqa: BLE001
         found, why = None, str(exc)
     else:
-        why = "no YOLOX model installed"
+        why = "未安装 YOLOX 模型"
     if found:
         return Check("object detector", True, OPTIONAL, str(found))
     return Check("object detector", False, OPTIONAL,
-                 f"{why}: object projects cannot propose boxes, and focus cannot "
-                 "find people", "python tools/get_yolox_model.py")
+                 f"{why}：物体项目无法自动建议检测框，“聚焦人物”也无法识别人", "python tools/get_yolox_model.py")
 
 
 def _pose() -> Check:
@@ -108,17 +106,17 @@ def _pose() -> Check:
     if found:
         return Check("pose model", True, OPTIONAL, str(found))
     return Check("pose model", False, OPTIONAL,
-                 "not installed yet: it's fetched the first time focus needs it")
+                 "尚未安装：首次使用人物聚焦时会自动获取")
 
 
 def _window() -> Check:
     try:
         import importlib
         importlib.import_module("PySide6.QtWidgets")
-        return Check("review window", True, OPTIONAL, "PySide6 available")
+        return Check("review window", True, OPTIONAL, "PySide6 可用")
     except Exception as exc:          # noqa: BLE001
         return Check("review window", False, OPTIONAL, str(exc),
-                     "Use `review` (contact sheet image) and `verdict` instead")
+                     "可改用 `review`（联系表图片）和 `verdict` 命令")
 
 
 def _disk(root: str) -> Check:
@@ -131,10 +129,10 @@ def _disk(root: str) -> Check:
         return Check("disk space", False, REQUIRED, str(exc))
     if free < MIN_FREE_GB:
         return Check("disk space", False, REQUIRED,
-                     f"{free:.1f} GB free where the project lives",
-                     "Free up space or put the project elsewhere (--project <folder>); "
-                     "cut samples need a few GB per hour of footage")
-    return Check("disk space", True, REQUIRED, f"{free:.0f} GB free")
+                     f"项目所在磁盘剩余 {free:.1f} GB",
+                     "请释放磁盘空间或将项目放到其他位置（--project <文件夹>）；"
+                     "每小时素材切分样本通常需要数 GB 空间")
+    return Check("disk space", True, REQUIRED, f"剩余 {free:.0f} GB")
 
 
 CHECKS: tuple = (_opencv, _ffmpeg, _clip, _torch_device, _detector, _pose, _window)
@@ -154,4 +152,4 @@ def require(root: str, run_checks: Optional[Callable] = None) -> None:
         return
     lines = [f"{c['name']}: {c['detail']} -> {c['fix']}" for c in report["checks"]
              if not c["ok"] and c["level"] == REQUIRED]
-    raise RuntimeError("not ready to teach: " + " | ".join(lines))
+    raise RuntimeError("当前环境尚未满足训练要求：" + " | ".join(lines))

@@ -250,7 +250,17 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     for node in ast.walk(tree):
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
             attr = node.func.attr
-            if attr == "emit" or attr.startswith("set"):
+            # Only text-bearing setters belong in the deep runtime pass.
+            # Generic set* previously treated setObjectName("splashCard"),
+            # setProperty("vrMode", ...) and stylesheet identifiers as visible UI.
+            runtime_text_setters = {
+                "setText", "setTitle", "setWindowTitle", "setToolTip",
+                "setStatusTip", "setPlaceholderText", "setWhatsThis",
+                "setAccessibleName", "setAccessibleDescription", "setLabelText",
+                "setCancelButtonText", "setOkButtonText", "setTabText",
+                "setPrefix", "setSuffix", "setSpecialValueText",
+            }
+            if attr == "emit" or attr in runtime_text_setters:
                 for arg in node.args[:4]:
                     value = string_value(arg)
                     if value and visible_candidate(value, allow):
@@ -290,8 +300,14 @@ def scan_ts(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     for kind, priority, pattern in TSX_PATTERNS + runtime_patterns:
         for m in pattern.finditer(text):
             value = m.group(1) if kind == "tsx-text" else m.group(2)
+            cleaned = clean(value)
+            # JSX ternary/control-flow fragments can sit between tag delimiters
+            # and superficially look like English text (e.g. ") : paused ? (").
+            if kind == "tsx-text" and re.fullmatch(r"[()?:\sA-Za-z_$.-]+", cleaned):
+                if any(tok in cleaned for tok in (" ? ", ") :", " : ", "? (")):
+                    continue
             if visible_candidate(value, allow):
-                hits.append(Hit(rel, text.count("\n", 0, m.start()) + 1, kind, priority, clean(value)))
+                hits.append(Hit(rel, text.count("\n", 0, m.start()) + 1, kind, priority, cleaned))
     return hits
 
 

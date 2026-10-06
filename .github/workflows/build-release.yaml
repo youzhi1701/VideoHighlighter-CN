@@ -874,6 +874,9 @@ jobs:
           tag: ${{ needs.version.outputs.cn_version }}
           name: VideoHighlighter-CN 中文版 v${{ needs.version.outputs.cn_version }}
           draft: true
+          allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: true
           bodyFile: release-notes.md
           artifacts: "windows-installer/*,windows-build/*,web-windows-build/*,mac-build/*,bootstrap-zip/*"
           token: ${{ secrets.GITHUB_TOKEN }}

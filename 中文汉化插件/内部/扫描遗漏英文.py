@@ -75,7 +75,8 @@ USER_TEXT_CALLBACKS = {
 UI_NAME_RE = re.compile(
     r"(?:text|title|label|button|btn|tooltip|tip|status|message|msg|caption|"
     r"description|desc|placeholder|prompt|heading|header|menu|action|empty|"
-    r"warning|error|success|progress|help|hint)$",
+    r"warning|error|success|progress|help|hint|option|options|choice|choices|"
+    r"item|items|column|columns|tab|tabs)$",
     re.I,
 )
 UI_KEY_RE = re.compile(
@@ -258,6 +259,22 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 for arg in node.args:
                     add(hits, rel, arg, "python-console-text", "medium",
                         string_value(arg), allow)
+            elif name in {"info", "warning", "error", "critical", "exception"}:
+                # Logger output is visible in the desktop debug/log surfaces and
+                # in packaged diagnostic consoles. Keep this medium priority to
+                # avoid treating internal debug chatter like primary UI.
+                for arg in node.args[:2]:
+                    add(hits, rel, arg, "python-log-text", "medium",
+                        string_value(arg), allow)
+            elif name in {
+                "ValueError", "RuntimeError", "FileNotFoundError",
+                "PermissionError", "TimeoutError",
+            }:
+                # These exception messages are frequently propagated unchanged
+                # through API responses into visible error banners/dialogs.
+                for arg in node.args[:1]:
+                    add(hits, rel, arg, "python-exception-text", "medium",
+                        string_value(arg), allow)
             elif name == "ArgumentParser":
                 for kw in node.keywords:
                     if kw.arg == "description":
@@ -325,7 +342,8 @@ TSX_PATTERNS = [
     ("tsx-text", "high", re.compile(r">\s*([^<>{}\n]*[A-Za-z][^<>{}\n]*)\s*<")),
     ("tsx-expression-text", "high", re.compile(r">\s*\{\s*([\"'])([^\"']*[A-Za-z][^\"']*)\1\s*\}\s*<")),
     ("tsx-attr", "high", re.compile(r"\b(?:title|placeholder|aria-label|alt|label|tooltip|description)=([\"'])(.*?)\1", re.I)),
-    ("tsx-object-ui", "medium", re.compile(r"\b(?:label|title|description|text|placeholder|tooltip|message|emptyText)\s*:\s*([\"'])(.*?)\1", re.I)),
+    ("tsx-object-ui", "medium", re.compile(r"\b(?:label|title|description|text|placeholder|tooltip|message|emptyText|help|hint|caption|name)\s*:\s*([\"'\x60])(.*?)\1", re.I | re.S)),
+    ("tsx-template-ui", "medium", re.compile(r"\b(?:setStatus|setMessage|setError|setTitle|setLabel|setHint|appendLog|alert|confirm)\(\s*(\x60)(.*?)\1", re.I | re.S)),
 ]
 
 
@@ -359,8 +377,10 @@ ISS_HINTS = (
 
 
 QML_PATTERNS = [
-    ("qml-text", "high", re.compile(r"""\b(?:text|title|placeholderText|toolTip|accessibleName)\s*:\s*(["'])(.*?)\1""", re.I)),
+    ("qml-text", "high", re.compile(r"""\b(?:text|title|placeholderText|toolTip|accessibleName|accessibleDescription)\s*:\s*(["'])(.*?)\1""", re.I)),
     ("qml-menu", "high", re.compile(r"""\b(?:label|name|description|message|hint)\s*:\s*(["'])(.*?)\1""", re.I)),
+    ("qml-qstr", "high", re.compile(r"""\b(?:qsTr|qsTranslate)\(\s*(["'])(.*?)\1""", re.I)),
+    ("qml-runtime", "medium", re.compile(r"""\b(?:showMessage|setText|setTitle)\(\s*(["'])(.*?)\1""", re.I)),
 ]
 
 

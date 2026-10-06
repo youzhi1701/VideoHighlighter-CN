@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "d5a64b19453d86a33e152bf5bc03fd7c0c59b339"
+    "head_commit": "0a02d7b0f8d12415cefd9aec03a59f313732fb7f"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [

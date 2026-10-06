@@ -413,37 +413,37 @@ def build_auto_segments(
     all_regions = []
 
     r = _regions_from_actions(action_sequences, score)
-    log_fn(f"   Actions  → {len(r)} regions")
+    log_fn(f"   动作 → {len(r)} 个区间")
     all_regions.extend(r)
 
     r = _regions_from_scenes(scenes, score)
-    log_fn(f"   Scenes   → {len(r)} regions")
+    log_fn(f"   场景 → {len(r)} 个区间")
     all_regions.extend(r)
 
     r = _regions_from_keywords(keyword_matches, score)
-    log_fn(f"   Keywords → {len(r)} regions")
+    log_fn(f"   关键词 → {len(r)} 个区间")
     all_regions.extend(r)
 
     r = _regions_from_objects(object_detections, scenes, score)
-    log_fn(f"   Objects  → {len(r)} regions")
+    log_fn(f"   物体 → {len(r)} 个区间")
     all_regions.extend(r)
 
     r = _regions_from_point_signals(motion_events, "motion_event", scenes, score,
                                      max_gap=2.0, min_pad=0.5, max_pad=2.0)
-    log_fn(f"   Motion events → {len(r)} regions")
+    log_fn(f"   运动事件 → {len(r)} 个区间")
     all_regions.extend(r)
 
     r = _regions_from_point_signals(motion_peaks, "motion_peak", scenes, score,
                                      max_gap=2.0, min_pad=0.5, max_pad=2.0)
-    log_fn(f"   Motion peaks  → {len(r)} regions")
+    log_fn(f"   运动峰值 → {len(r)} 个区间")
     all_regions.extend(r)
 
     r = _regions_from_point_signals(audio_peaks, "audio_peak", scenes, score,
                                      max_gap=2.0, min_pad=1.0, max_pad=3.0)
-    log_fn(f"   Audio peaks   → {len(r)} regions")
+    log_fn(f"   音频峰值 → {len(r)} 个区间")
     all_regions.extend(r)
 
-    log_fn(f"   Total raw regions: {len(all_regions)}")
+    log_fn(f"   原始区间总数：{len(all_regions)}")
 
     if not all_regions:
         log_fn("⚠️ 未找到兴趣区间，将回退为空分段")
@@ -451,20 +451,20 @@ def build_auto_segments(
 
     # --- Step 2: Merge overlapping / adjacent regions ---
     merged = merge_regions(all_regions, gap_tolerance=merge_gap)
-    log_fn(f"   After merge: {len(merged)} regions")
+    log_fn(f"   合并后：{len(merged)} 个区间")
 
     # --- Step 3: Enforce min/max duration constraints ---
     constrained = constrain_regions(merged, score, video_duration,
                                      min_dur=min_clip, max_dur=max_clip)
-    log_fn(f"   After constrain: {len(constrained)} regions "
-           f"(min={min_clip}s, max={max_clip}s)")
+    log_fn(f"   约束后：{len(constrained)} 个区间 "
+           f"（最短={min_clip} 秒，最长={max_clip} 秒）")
 
     # --- Step 4: Select best non-overlapping regions within budget ---
     segments, selected_regions = select_regions(constrained, target_duration, duration_mode)
 
     total_dur = sum(e - s for s, e in segments)
-    log_fn(f"   Selected {len(segments)} segments, total {total_dur:.1f}s "
-           f"(target: {target_duration}s, mode: {duration_mode})")
+    log_fn(f"   已选择 {len(segments)} 个片段，总时长 {total_dur:.1f} 秒 "
+           f"（目标：{target_duration} 秒，模式：{duration_mode}）")
 
     # --- Debug: show what was selected ---
     from collections import Counter
@@ -472,7 +472,7 @@ def build_auto_segments(
         s_mm = f"{int(reg.start)//60:02d}:{int(reg.start)%60:02d}"
         e_mm = f"{int(reg.end)//60:02d}:{int(reg.end)%60:02d}"
         src = ", ".join(f"{name} ×{n}" for name, n in Counter(reg.sources).most_common())
-        log_fn(f"   Segment {i+1}: {s_mm}-{e_mm} ({reg.duration:.1f}s) "
-               f"score={reg.score:.1f} sources=[{src}]")
+        log_fn(f"   片段 {i+1}：{s_mm}-{e_mm}（{reg.duration:.1f} 秒）"
+               f"评分={reg.score:.1f}，来源=[{src}]")
 
     return segments, selected_regions

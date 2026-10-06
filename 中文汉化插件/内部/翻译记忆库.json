@@ -101,6 +101,13 @@
       ]
     },
     {
+      "source": "(confused with: {', '.join(confused_names[:2])})",
+      "target": "（易混淆为：{', '.join(confused_names[:2])}）",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "(Could not determine duration: {e})",
       "target": "（无法确定时长：{e}）",
       "files": [
@@ -168,6 +175,13 @@
       "target": "（第 {fa}-{fb} 帧）",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "(from {labels_path})\\n",
+      "target": "（来自 {labels_path}）\\n",
+      "files": [
+        "training/train_yolox.py"
       ]
     },
     {
@@ -287,6 +301,13 @@
       "target": "（没有最近使用的模型 — 请使用“浏览”）",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "(no torch: {e} — routing only, no tensors will run)",
+      "target": "（未安装 torch：{e}——仅检查路由，不会运行张量）",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -438,10 +459,24 @@
       ]
     },
     {
+      "source": "(the DirectML branch will probably not be reached)",
+      "target": "（这样通常不会进入 DirectML 分支）",
+      "files": [
+        "tools/simulate_directml.py"
+      ]
+    },
+    {
       "source": "(the model only, never your footage)",
       "target": "（只分享模型，不会上传你的素材）",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "(the Speed section is simulation noise — the 'GPU' here IS",
+      "target": "（“速度”部分只是模拟噪声——这里的“GPU”实际就是",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -512,6 +547,20 @@
       "target": "（{'节拍' if unit < 2.0 else '小节'}）",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "({'HEVC' if hi_res else 'H.264'}), GPU={vendor or 'unknown'} ->",
+      "target": "（{'HEVC' if hi_res else 'H.264'}），GPU={vendor or '未知'} →",
+      "files": [
+        "modules/system/encoder_select.py"
+      ]
+    },
+    {
+      "source": "({'HEVC' if hi_res else 'H.264'}), mode=cpu ->",
+      "target": "（{'HEVC' if hi_res else 'H.264'}），模式=CPU →",
+      "files": [
+        "modules/system/encoder_select.py"
       ]
     },
     {
@@ -606,10 +655,31 @@
       ]
     },
     {
+      "source": "({len(base_keep)} classes, 0% removed)",
+      "target": "（{len(base_keep)} 个类别，已移除准确率为 0% 的类别）",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "({len(cut_list.cuts)} cuts, {cut_list.duration:.0f}s)",
       "target": "（{len(cut_list.cuts)} 个剪切，{cut_list.duration:.0f} 秒）",
       "files": [
         "modules/segments/auto_pipeline.py"
+      ]
+    },
+    {
+      "source": "({len(filtered_l2i)} active / {len(self.label_to_idx)} total)",
+      "target": "（启用 {len(filtered_l2i)} / 总计 {len(self.label_to_idx)}）",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
+      "source": "({len(keep)} classes, <{CONFIG.get('min_production_accuracy', 0.3):.0%} removed)",
+      "target": "（{len(keep)} 个类别，已移除准确率低于 {CONFIG.get('min_production_accuracy', 0.3):.0%} 的类别）",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -638,6 +708,13 @@
       "target": "（{named}{f'，柔边 {softest:.0%}' if softest else ''}）",
       "files": [
         "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "({per:.1f} ms/frame incl. decode) on {pf.device}",
+      "target": "平均 {per:.1f} 毫秒/帧（含解码），设备 {pf.device}",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -673,6 +750,13 @@
       "target": "（{type(e).__name__}：{e}），改用 CPU",
       "files": [
         "action_recognition.py"
+      ]
+    },
+    {
+      "source": "(~{max(0, (total - start_frame)) // step} frames)",
+      "target": "约 {max(0, (total - start_frame)) // step} 帧",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -1244,6 +1328,20 @@
       ]
     },
     {
+      "source": "--allow-unsigned to stage it for signing later.",
+      "target": "--allow-unsigned，仅暂存并稍后签名。",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "--base-url (or {BASE_URL_ENV}) naming the update host.",
+      "target": "--base-url（或 {BASE_URL_ENV}）指定更新主机。",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "--timeline needs an existing video path (got {video!r})",
       "target": "--timeline 需要一个已存在的视频路径（当前为 {video!r}）",
       "files": [
@@ -1269,6 +1367,13 @@
       "target": "→ {state.final or '（无输出）'}",
       "files": [
         "modules/segments/auto_pipeline.py"
+      ]
+    },
+    {
+      "source": "...or a CUDA torch build from pytorch.org  (NVIDIA)",
+      "target": "NVIDIA：或从 pytorch.org 安装支持 CUDA 的 torch 构建",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -1692,6 +1797,13 @@
       ]
     },
     {
+      "source": "[thinking] '{self.model}' reasons before answering;",
+      "target": "[思考模型] '{self.model}' 会先进行推理再回答；",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "[train] could not record training speed: {exc}",
       "target": "[训练] 无法记录训练速度：{exc}",
       "files": [
@@ -1797,6 +1909,13 @@
       ]
     },
     {
+      "source": "\\n   Keep: {len(keep)} | Remove: {len(remove)}",
+      "target": "\\n   保留：{len(keep)} | 移除：{len(remove)}",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "\\n   segment {i} error: {str(e)[:80]}",
       "target": "\\n   分片 {i} 错误：{str(e)[:80]}",
       "files": [
@@ -1818,10 +1937,38 @@
       ]
     },
     {
+      "source": "\\n  -- real tensors on the simulated device --",
+      "target": "\\n  -- 在模拟设备上运行真实张量 --",
+      "files": [
+        "tools/simulate_directml.py"
+      ]
+    },
+    {
+      "source": "\\n  -- tools/check_directml.py, under the simulation --",
+      "target": "\\n  -- 在模拟环境下运行 tools/check_directml.py --",
+      "files": [
+        "tools/simulate_directml.py"
+      ]
+    },
+    {
       "source": "\\n  Additionally removed for production (<{min_prod_acc:.0%}):",
       "target": "\\n  生产模型额外移除（低于 {min_prod_acc:.0%}）：",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "\\n  Base mapping: removed {len(base_remove)} classes with 0% accuracy:",
+      "target": "\\n  基础映射：已移除 {len(base_remove)} 个准确率为 0% 的类别：",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
+      "source": "\\n  diagnostic exit code: {code}",
+      "target": "\\n  诊断退出码：{code}",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -1843,6 +1990,13 @@
       "target": "\\n  已从基础模型移除（准确率 0%）：",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "\\n  Train Loss: {t_loss:.4f} | Acc: {t_acc:.4f} | LR: {', '.join(lrs)}",
+      "target": "\\n  训练损失：{t_loss:.4f} | 准确率：{t_acc:.4f} | 学习率：{', '.join(lrs)}",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -1934,6 +2088,13 @@
       "target": "\\n${prettyName(cut.transition)} ${cut.transition_duration.toFixed(2)} 秒",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "\\n--- top {min(topk, len(results))} candidate timestamps ---",
+      "target": "\\n--- 分数最高的 {min(topk, len(results))} 个候选时间点 ---",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -2091,6 +2252,13 @@
       ]
     },
     {
+      "source": "\\nOther scenarios: {', '.join(k for k in sorted(BY_KEY) if k != args.scenario)}",
+      "target": "\\n其他场景：{', '.join(k for k in sorted(BY_KEY) if k != args.scenario)}",
+      "files": [
+        "tools/simulate_directml.py"
+      ]
+    },
+    {
       "source": "\\nrequested {requested!r} -> backend={backend!r} device={device!r}",
       "target": "\\n请求 {requested!r} -> 后端={backend!r} 设备={device!r}",
       "files": [
@@ -2168,6 +2336,13 @@
       ]
     },
     {
+      "source": "\\n{'Action':<30} {'Acc':<10} {'Decision'}",
+      "target": "\\n{'动作':<30} {'准确率':<10} {'决定'}",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "\\n{'class':{width}}  clips +pair videos recall precision   threshold",
       "target": "\\n{'类别':{width}}  片段 +动作对 视频数 召回率 精确率   阈值",
       "files": [
@@ -2186,6 +2361,13 @@
       "target": "\\n⏩ 正在定位到 {timestamp:.1f} 秒（{int(timestamp)//60}:{int(timestamp)%60:02d}）",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "\\n⏱  Scanned {n_scored} frames in {elapsed:.1f}s",
+      "target": "\\n⏱  已扫描 {n_scored} 帧，用时 {elapsed:.1f} 秒，",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -2259,6 +2441,13 @@
       ]
     },
     {
+      "source": "\\n⚖️  Class weights (inverse frequency):",
+      "target": "\\n⚖️  类别权重（按频率反比）：",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "\\n⚖️  Class weights computed (inverse frequency):",
       "target": "\\n⚖️  已计算类别权重（频率倒数）：",
       "files": [
@@ -2270,6 +2459,13 @@
       "target": "\\n⚠️  ROI 缓存已禁用——训练会变慢（人物检测器每轮都会运行）",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "\\n⚠️  ROI cache DISABLED — training will be slow (the person detector runs every epoch)",
+      "target": "\\n⚠️  ROI 缓存已禁用——训练会变慢（每轮都会运行人物检测器）",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -2367,7 +2563,8 @@
       "source": "\\n✅ Best model loaded (loss={best_loss:.4f}, acc={best_acc:.4f})",
       "target": "\\n✅ 已加载最佳模型（损失={best_loss:.4f}，准确率={best_acc:.4f}）",
       "files": [
-        "model_training/intel/train.py"
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -2417,6 +2614,13 @@
       "target": "\\n✅ 完成！",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "\\n✅ Done!",
+      "target": "\\n✅ 训练完成！",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -2616,6 +2820,13 @@
       ]
     },
     {
+      "source": "\\n🏋️ Training R3D ({CONFIG['model_variant']}) for {max_epochs - start_epoch} epochs",
+      "target": "\\n🏋️ 正在训练 R3D（{CONFIG['model_variant']}），共 {max_epochs - start_epoch} 轮",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "\\n🏗️  Building decoder: '{decoder_type}' | feature_dim={feature_dim}",
       "target": "\\n🏗️  正在构建解码器：'{decoder_type}' | 特征维度={feature_dim}",
       "files": [
@@ -2645,6 +2856,13 @@
     },
     {
       "source": "\\n📁 Train: {len(train_ds)} | Val: {len(val_ds)}",
+      "target": "\\n📁 训练集：{len(train_ds)} | 验证集：{len(val_ds)}",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
+      "source": "\\n📁 Train: {len(train_ds)} | Val: {len(val_ds)}",
       "target": "\\n📁 训练：{len(train_ds)} | 验证：{len(val_ds)}",
       "files": [
         "model_training/intel/train.py"
@@ -2669,6 +2887,13 @@
       "target": "\\n📊 DataLoader：{nw} 个工作进程，pin_memory={pin}",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "\\n📊 DataLoader: {nw} workers, pin_memory={pin},",
+      "target": "\\n📊 DataLoader：{nw} 个工作进程，pin_memory={pin}，",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -2787,7 +3012,8 @@
       "source": "\\n📝 Labels: {label_to_idx}",
       "target": "\\n📝 标签：{label_to_idx}",
       "files": [
-        "model_training/intel/train.py"
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -2847,10 +3073,24 @@
       ]
     },
     {
+      "source": "\\n🔍 PRODUCTION MODEL FILTERING",
+      "target": "\\n🔍 生产模型筛选",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "\\n🔍 Seeking every {interval}s looking for: {target_description}",
       "target": "\\n🔍 每隔 {interval} 秒搜索一次：{target_description}",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "\\n🔎 {q!r} — scored {len(idx)} frames in {ms:.1f} ms",
+      "target": "\\n🔎 {q!r} —— 已为 {len(idx)} 帧评分，用时 {ms:.1f} 毫秒",
+      "files": [
+        "llm/clip_index.py"
       ]
     },
     {
@@ -2917,10 +3157,18 @@
       ]
     },
     {
+      "source": "\\n🚀 Training...\\n",
+      "target": "\\n🚀 正在训练…\\n",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "\\n🛑 Early stopping",
       "target": "\\n🛑 已提前停止训练",
       "files": [
-        "model_training/intel/train.py"
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -2977,6 +3225,13 @@
       "target": "来自手表或手机的 .gpx 文件",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "A class needs a name.",
+      "target": "类别需要一个名称。",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -3057,6 +3312,13 @@
       ]
     },
     {
+      "source": "A name becomes a folder; leave out / \\\\ : * ? \\\" < > |.",
+      "target": "类别名称会用于文件夹名，请不要包含 / \\\\ : * ? \\\" < > |。",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
       "source": "A name, or a folder. Projects live in your user data.",
       "target": "输入名称或选择文件夹。项目保存在用户数据目录。",
       "files": [
@@ -3068,6 +3330,13 @@
       "target": "新项目必须指定 --task actions 或 --task objects",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "A number is not a name: say what it is.",
+      "target": "纯数字不能作为类别名称，请说明它是什么。",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -3407,6 +3676,13 @@
       ]
     },
     {
+      "source": "add a class first",
+      "target": "请先添加一个类别",
+      "files": [
+        "modules/teach/sort.py"
+      ]
+    },
+    {
       "source": "Add a clip at the current playhead time",
       "target": "在当前播放头位置添加片段",
       "files": [
@@ -3418,6 +3694,13 @@
       "target": "添加基于每秒测量值的条件，例如 vocal_density_pct 或",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "add a description, or use words.",
+      "target": "请添加描述或改用自然语言。",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -3755,6 +4038,20 @@
       ]
     },
     {
+      "source": "Also re-hash every file on disk.",
+      "target": "同时重新计算磁盘上每个文件的哈希。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "also run tools/check_directml.py under the simulation",
+      "target": "同时在模拟环境中运行 tools/check_directml.py",
+      "files": [
+        "tools/simulate_directml.py"
+      ]
+    },
+    {
       "source": "Also write each scored segment as its own file under\\n",
       "target": "除了合并后的高光视频外，还会将每个得分片段分别导出到\\n",
       "files": [
@@ -3769,10 +4066,24 @@
       ]
     },
     {
+      "source": "AMP: {use_amp} | Device: {device}",
+      "target": "AMP：{use_amp} | 设备：{device}",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "An 'operator is not currently implemented' message here is",
       "target": "如果这里出现“operator is not currently implemented”，表示 DirectML",
       "files": [
         "tools/check_directml.py"
+      ]
+    },
+    {
+      "source": "an actual AMD card.",
+      "target": "真实 AMD 显卡进行验证。",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -3850,6 +4161,13 @@
       "target": "只有优于上一版本时才安装）",
       "files": [
         "model_training/r3d/train.py"
+      ]
+    },
+    {
+      "source": "and not an Ollama tag - see docs/INTEL-GPU.md.",
+      "target": "请参阅 docs/INTEL-GPU.md。",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -4181,6 +4499,13 @@
       ]
     },
     {
+      "source": "auto_accept is off",
+      "target": "自动接受已关闭",
+      "files": [
+        "modules/teach/autolabel.py"
+      ]
+    },
+    {
       "source": "Automatic (match my hardware)",
       "target": "自动（匹配当前硬件）",
       "files": [
@@ -4221,6 +4546,13 @@
       "files": [
         "packaging/installer/videohighlighter-packs.iss",
         "packaging/installer/videohighlighter.iss"
+      ]
+    },
+    {
+      "source": "Available: {models}\\n",
+      "target": "可用模型：{models}\\n",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -4324,6 +4656,13 @@
       ]
     },
     {
+      "source": "backend needs a converted model (OpenVINO IR), not a GGUF",
+      "target": "此后端需要已转换的 OpenVINO IR 模型，不支持 GGUF 或 Ollama 标签；",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "Backend resolution",
       "target": "后端解析",
       "files": [
@@ -4374,6 +4713,13 @@
       ]
     },
     {
+      "source": "background_class {name!r}:",
+      "target": "背景类别 {name!r}：",
+      "files": [
+        "modules/teach/build.py"
+      ]
+    },
+    {
       "source": "bad arguments",
       "target": "参数错误",
       "files": [
@@ -4406,6 +4752,13 @@
       "target": "基础映射：           {base_mapping}（{len(base_keep)} 个类别）",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "Base mapping:        {CONFIG['model_save_path'].replace('.pth', '_mapping.json')}",
+      "target": "基础映射：           {CONFIG['model_save_path'].replace('.pth', '_mapping.json')}",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -4493,6 +4846,13 @@
       ]
     },
     {
+      "source": "best_val_acc={ckpt.get('best_val_acc', 0):.4f})",
+      "target": "最佳验证准确率={ckpt.get('best_val_acc', 0):.4f}）",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "between them (the caller chose the held-out set)",
       "target": "（留出集由调用方决定）",
       "files": [
@@ -4518,6 +4878,13 @@
       "target": "整个画面会进行混合或滑动，没有可单独柔化的边缘。",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "blobs        {len(seen)} distinct ({linked} linked, {copied} copied,",
+      "target": "blobs        {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -4570,6 +4937,13 @@
       ]
     },
     {
+      "source": "boxes {number}: is the yellow box around the named thing, and tight?",
+      "target": "检测框批次 {number}：黄色框是否准确且紧密地包围了目标？",
+      "files": [
+        "modules/teach/boxes.py"
+      ]
+    },
+    {
       "source": "Browse & Select…",
       "target": "浏览并选择…",
       "files": [
@@ -4606,6 +4980,13 @@
       ]
     },
     {
+      "source": "Build the dataset from what was accepted.",
+      "target": "根据已接受的样本构建数据集。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
       "source": "build_timeline() called",
       "target": "已调用 build_timeline()",
       "files": [
@@ -4634,6 +5015,13 @@
       ]
     },
     {
+      "source": "Built bundle directory.",
+      "target": "已构建的软件包目录。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "Built index: {len(self._timestamp_index)} time buckets",
       "target": "已建立索引：{len(self._timestamp_index)} 个时间区块",
       "files": [
@@ -4645,6 +5033,20 @@
       "target": "（运动峰值和响度）寻找精彩片段，并生成高光成片",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "by the name, so use words that describe it.",
+      "target": "请使用更具描述性的词语。",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
+      "source": "bytes        {total / (1024 ** 2):.1f} MB in the release,",
+      "target": "bytes        发行版共 {total / (1024 ** 2):.1f} MB，",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -4725,6 +5127,27 @@
       ]
     },
     {
+      "source": "Call load() and set_query() before scoring.",
+      "target": "评分前请先调用 load() 和 set_query()。",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
+      "source": "Call load() first.",
+      "target": "请先调用 load()。",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "Call set_query() first.",
+      "target": "请先调用 set_query()。",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
       "source": "Calm scenic or emotional",
       "target": "舒缓风景 / 情绪",
       "files": [
@@ -4792,6 +5215,13 @@
       "target": "正在取消…",
       "files": [
         "video_ai_editor/search_panel.py"
+      ]
+    },
+    {
+      "source": "Cannot connect to Ollama at",
+      "target": "无法连接到 Ollama：",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -4946,6 +5376,13 @@
       "target": "检查当前电脑",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Check {len(labels.pending())} proposed boxes.",
+      "target": "检查 {len(labels.pending())} 个候选检测框。",
+      "files": [
+        "modules/teach/status.py"
       ]
     },
     {
@@ -5365,6 +5802,13 @@
       ]
     },
     {
+      "source": "CLIP stack imports",
+      "target": "CLIP 组件导入正常",
+      "files": [
+        "modules/teach/doctor.py"
+      ]
+    },
+    {
       "source": "Clip time",
       "target": "片段时长",
       "files": [
@@ -5503,6 +5947,13 @@
       "files": [
         "frontend/src/components/ui/dialog.tsx",
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "COCO annotations missing — running convert_yolo_to_coco.py …",
+      "target": "缺少 COCO 标注，正在运行 convert_yolo_to_coco.py…",
+      "files": [
+        "training/train_yolox.py"
       ]
     },
     {
@@ -5694,6 +6145,13 @@
       "target": "构图规则",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "compressed blob ended early",
+      "target": "压缩 blob 提前结束",
+      "files": [
+        "modules/update/update_download.py"
       ]
     },
     {
@@ -6080,6 +6538,7 @@
       "source": "Could not open video: {video_path}",
       "target": "无法打开视频：{video_path}",
       "files": [
+        "llm/clip_index.py",
         "sidecar/worker.py"
       ]
     },
@@ -6193,6 +6652,13 @@
       "target": "无法显示输出文件",
       "files": [
         "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "could not stage: {exc}",
+      "target": "无法暂存：{exc}",
+      "files": [
+        "modules/update/update_download.py"
       ]
     },
     {
@@ -6310,6 +6776,13 @@
       ]
     },
     {
+      "source": "Create the release signing keypair.",
+      "target": "创建发行版签名密钥对。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "Created {len(chunks)} chunks",
       "target": "已创建 {len(chunks)} 个分块",
       "files": [
@@ -6387,6 +6860,13 @@
       ]
     },
     {
+      "source": "Crop samples to the people in them.",
+      "target": "将样本裁剪到其中的人物区域。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
       "source": "Crop them out (experimental)",
       "target": "裁掉这些内容（实验性）",
       "files": [
@@ -6420,6 +6900,20 @@
       "target": "CUDA 构建  {torch.version.cuda or '（无——这是 CPU/XPU wheel）'}",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "CUDA check failed ({type(e).__name__}: {e})",
+      "target": "CUDA 检查失败（{type(e).__name__}：{e}）",
+      "files": [
+        "modules/system/cuda_check.py"
+      ]
+    },
+    {
+      "source": "CUDA is present but a test operation on it failed ({e})",
+      "target": "已检测到 CUDA，但测试运算失败（{e}）",
+      "files": [
+        "modules/system/cuda_check.py"
       ]
     },
     {
@@ -6582,6 +7076,13 @@
       "target": "每小时素材切分样本通常需要数 GB 空间",
       "files": [
         "modules/teach/doctor.py"
+      ]
+    },
+    {
+      "source": "Cut the new footage into samples.",
+      "target": "将新素材切分为样本。",
+      "files": [
+        "modules/teach/status.py"
       ]
     },
     {
@@ -6995,6 +7496,13 @@
       ]
     },
     {
+      "source": "DirectML device {device!r} is no longer available:",
+      "target": "DirectML 设备 {device!r} 已不可用：",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "DirectML is NOT usable as configured",
       "target": "按当前配置 DirectML 不可用",
       "files": [
@@ -7085,6 +7593,13 @@
       "target": "距离与爬升",
       "files": [
         "modules/media/overlay.py"
+      ]
+    },
+    {
+      "source": "do not hide this machine's CUDA/XPU/OpenVINO devices",
+      "target": "不要隐藏当前机器的 CUDA/XPU/OpenVINO 设备",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -7412,6 +7927,13 @@
       ]
     },
     {
+      "source": "Draw them in tools/labeler.py, then import the exports.",
+      "target": "请在 tools/labeler.py 中标注，然后导入导出结果。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
       "source": "Draw time:            {draw_time:.1f}s ({draw_time / total_time * 100:.1f}%)",
       "target": "绘制耗时：            {draw_time:.1f} 秒（{draw_time / total_time * 100:.1f}%）",
       "files": [
@@ -7545,6 +8067,13 @@
       ]
     },
     {
+      "source": "each box is one of them.",
+      "target": "每个检测框对应一个物体。",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
       "source": "Edit duration: 0.0s",
       "target": "剪辑时长：0.0 秒",
       "files": [
@@ -7584,6 +8113,13 @@
       "target": "海拔曲线",
       "files": [
         "modules/media/overlay.py"
+      ]
+    },
+    {
+      "source": "Embed the public key in {_MODULE_PATH}.",
+      "target": "将公钥嵌入 {_MODULE_PATH}。",
+      "files": [
+        "tools/build_manifest.py"
       ]
     },
     {
@@ -7809,7 +8345,8 @@
       "source": "Epoch {epoch + 1}/{max_epochs}",
       "target": "训练轮次 {epoch + 1}/{max_epochs}",
       "files": [
-        "model_training/intel/train.py"
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -7894,6 +8431,13 @@
       "target": "错误：{str(e)[:110]}",
       "files": [
         "tools/probe_player.py"
+      ]
+    },
+    {
+      "source": "eval={ev_ms:4.0f}ms ({ev_n}t @ {ev_rate:5.1f}t/s)",
+      "target": "生成={ev_ms:4.0f}ms（{ev_n}t @ {ev_rate:5.1f}t/s）",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -8071,6 +8615,13 @@
       "target": "期望加载到 {args.expect!r}，实际为 {emb.backend!r}",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "Expected {train_json} after conversion",
+      "target": "转换后仍未找到预期文件：{train_json}",
+      "files": [
+        "training/train_yolox.py"
       ]
     },
     {
@@ -8261,6 +8812,125 @@
       "target": "如果未选择此后端则失败（用于 CI/自动化）",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "FAIL:changed: {entry['path']}",
+      "target": "FAIL: 已变化：{entry['path']}",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "FAIL:could not fetch {source}: {exc}",
+      "target": "FAIL: 无法获取 {source}：{exc}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:could not patch {_MODULE_PATH}; paste the key by hand.",
+      "target": "FAIL: 无法修改 {_MODULE_PATH}；请手动写入公钥。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "FAIL:manifest has no base_url — the updater would not know where",
+      "target": "FAIL: manifest 缺少 base_url，更新器无法确定下载位置",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:missing: {entry['path']}",
+      "target": "FAIL: 缺少：{entry['path']}",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "FAIL:no manifest in {root}",
+      "target": "FAIL: {root} 中没有 manifest",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:not a directory: {root}",
+      "target": "FAIL: 不是目录：{root}",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "FAIL:say which manifest: --manifest <file>, or --version with",
+      "target": "FAIL: 请指定 manifest：使用 --manifest <文件>，或同时使用 --version 与",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:SIGNATURE INVALID — this manifest would be rejected by the app.",
+      "target": "FAIL: 签名无效——应用会拒绝此 manifest。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "FAIL:the app would reject this signature — is this the key whose",
+      "target": "FAIL: 应用会拒绝此签名——请确认使用的私钥是否对应",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:the channel already announces {previous.get('version')},",
+      "target": "FAIL: 频道当前已发布 {previous.get('version')}，",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:the signature does not verify against the public key this",
+      "target": "FAIL: 签名无法通过当前发行版内置公钥验证，",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:{args.out} exists. --force to overwrite.",
+      "target": "FAIL: {args.out} 已存在。使用 --force 可覆盖。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "FAIL:{missing} missing, {wrong} modified",
+      "target": "FAIL: 缺少 {missing} 个，修改 {wrong} 个",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "FAIL:{SIGNATURE_FILENAME} missing — an unsigned release is",
+      "target": "FAIL: 缺少 {SIGNATURE_FILENAME}，未签名的发行版",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:{source} describes {manifest.get('version')}, not {args.version}",
+      "target": "FAIL: {source} 描述的是版本 {manifest.get('version')}，不是 {args.version}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "FAIL:{source} is not a release manifest ({exc})",
+      "target": "FAIL: {source} 不是有效的发行版 manifest（{exc}）",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -8516,6 +9186,13 @@
       ]
     },
     {
+      "source": "files     {len(files)} ({total / (1024 ** 2):.1f} MB)",
+      "target": "files     {len(files)} 个文件（{total / (1024 ** 2):.1f} MB）",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "files, folders or URLs",
       "target": "文件、文件夹或网址",
       "files": [
@@ -8660,6 +9337,13 @@
       "target": "在视频中查找表情，可限定或不限定高光片段。",
       "files": [
         "modules/vision/face_scan.py"
+      ]
+    },
+    {
+      "source": "find is for object projects",
+      "target": "find 仅适用于物体项目",
+      "files": [
+        "modules/teach/find.py"
       ]
     },
     {
@@ -9226,6 +9910,13 @@
       ]
     },
     {
+      "source": "GGUF model not found: {self.model_path}",
+      "target": "未找到 GGUF 模型：{self.model_path}",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "GGUF Models (*.gguf);;All Files (*)",
       "target": "GGUF 模型 (*.gguf);;所有文件 (*)",
       "files": [
@@ -9353,10 +10044,31 @@
       ]
     },
     {
+      "source": "Hash a built bundle into a manifest.",
+      "target": "为已构建的软件包计算哈希并生成 manifest。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "hash mismatch",
+      "target": "哈希校验不一致",
+      "files": [
+        "modules/update/update_download.py"
+      ]
+    },
+    {
       "source": "have not touched the app for a couple of minutes, and keeps a few",
       "target": "只保留少量",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "headers_in={headers_ms:5.0f}ms",
+      "target": "收到响应头={headers_ms:5.0f}ms",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -10013,6 +10725,13 @@
       ]
     },
     {
+      "source": "installed copies verify against the OLD public key.",
+      "target": "已安装客户端仍会使用旧公钥进行验证。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "Installed {model.manifest.display_name}.",
       "target": "已安装 {model.manifest.display_name}。",
       "files": [
@@ -10174,6 +10893,13 @@
       ]
     },
     {
+      "source": "its replies are uncapped and will take longer.",
+      "target": "当前不限制输出预算，因此耗时会更长。",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "its shots will start at the top of the clip",
       "target": "该素材的镜头将从片段开头开始",
       "files": [
@@ -10244,6 +10970,13 @@
       ]
     },
     {
+      "source": "Keep it under {MAX_LENGTH} characters;",
+      "target": "名称请控制在 {MAX_LENGTH} 个字符以内；",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
       "source": "Keep named / avoided",
       "target": "保留已命名 / 已排除",
       "files": [
@@ -10283,6 +11016,13 @@
       "target": "将保留无音乐版本的成片",
       "files": [
         "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "keeping {prefix}",
+      "target": "保留 {prefix}",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -10693,6 +11433,13 @@
       ]
     },
     {
+      "source": "LLM not loaded. Call load() first.",
+      "target": "LLM 尚未加载，请先调用 load()",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "LLM only",
       "target": "仅大模型",
       "files": [
@@ -10898,6 +11645,13 @@
       ]
     },
     {
+      "source": "Loading shared weights only (transfer learning)",
+      "target": "仅加载共享权重（迁移学习）",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "Loading the assistant…",
       "target": "正在加载智能助手…",
       "files": [
@@ -10991,6 +11745,13 @@
       ]
     },
     {
+      "source": "Look for what was shown in every sample.",
+      "target": "在每个样本中查找已示教的目标。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
       "source": "Looking for camera cards…",
       "target": "正在查找相机存储卡…",
       "files": [
@@ -11051,6 +11812,27 @@
       "target": "请确认 signal_timeline_viewer.py 位于同一目录。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "manifest fetches from {base or 'nowhere'},",
+      "target": "manifest 的下载地址为 {base or '未设置'}，",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "manifest is the {manifest.get('edition')} edition, not {args.edition}",
+      "target": "manifest 版本类型为 {manifest.get('edition')}，不是 {args.edition}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "manifest is {manifest.get('version')}, not {args.version}",
+      "target": "manifest 版本为 {manifest.get('version')}，不是 {args.version}",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -11374,6 +12156,13 @@
       ]
     },
     {
+      "source": "min       {manifest['min_version']} (older installs get the download)",
+      "target": "min       {manifest['min_version']}（更旧版本将获取完整下载）",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "Min clip length (s):",
       "target": "最短片段（秒）：",
       "files": [
@@ -11399,6 +12188,13 @@
       "target": "每个动作最少验证视频数：{min_val}",
       "files": [
         "model_training/shared/dataset.py"
+      ]
+    },
+    {
+      "source": "Min validation accuracy: {min_val_accuracy:.1%}",
+      "target": "最低验证准确率：{min_val_accuracy:.1%}",
+      "files": [
+        "model_training/shared/training_utils.py"
       ]
     },
     {
@@ -11522,6 +12318,13 @@
       ]
     },
     {
+      "source": "Model '{self.model}' not found in Ollama.",
+      "target": "Ollama 中未找到模型 '{self.model}'。",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "model file — the exported .onnx/.xml carries no names of its own:",
       "target": "导出的 .onnx/.xml 本身不包含类别名称：",
       "files": [
@@ -11554,6 +12357,13 @@
       "target": "模型未安装",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Model not loaded. Call load() first.",
+      "target": "模型尚未加载，请先调用 load()",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -12032,10 +12842,24 @@
       ]
     },
     {
+      "source": "negatives: {pf._labels[1:]}",
+      "target": "负向提示词：{pf._labels[1:]}",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "never include clips, images, audio or training data)",
       "target": "绝不能包含视频片段、图片、音频或训练数据）",
       "files": [
         "model_hub/package.py"
+      ]
+    },
+    {
+      "source": "newer than {manifest['version']}.",
+      "target": "它比 {manifest['version']} 更新。",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -12236,10 +13060,24 @@
       ]
     },
     {
+      "source": "no CUDA device",
+      "target": "未检测到 CUDA 设备",
+      "files": [
+        "modules/system/cuda_check.py"
+      ]
+    },
+    {
       "source": "No cut list at that path yet — run the Auto tab first",
       "target": "该路径下还没有剪辑列表 — 请先运行“自动”页。",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "no dataset yet; run build first",
+      "target": "尚未构建数据集，请先运行 build",
+      "files": [
+        "modules/teach/train.py"
       ]
     },
     {
@@ -12282,6 +13120,13 @@
       "target": "此信号类型没有检测结果",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "no device to exercise — skipped",
+      "target": "没有可测试的设备——已跳过",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -12372,7 +13217,8 @@
       "source": "No improvement ({patience_ctr}/{CONFIG['early_stopping_patience']})",
       "target": "暂无提升（{patience_ctr}/{CONFIG['early_stopping_patience']}）",
       "files": [
-        "model_training/intel/train.py"
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -12464,6 +13310,13 @@
       "target": "Ollama 服务{where}无响应——请输入模型名，或启动服务后",
       "files": [
         "modules/ui/model_dialog.py"
+      ]
+    },
+    {
+      "source": "No OpenVINO model directory at {self.model_path}. This",
+      "target": "在 {self.model_path} 未找到 OpenVINO 模型目录。",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -12940,10 +13793,24 @@
       ]
     },
     {
+      "source": "not referenced by the {len(result['kept_releases'])} kept release(s);",
+      "target": "未被保留的 {len(result['kept_releases'])} 个发行版引用；",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "Not saved",
       "target": "未保存",
       "files": [
         "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "not the update host {args.base_url}",
+      "target": "不是更新主机 {args.base_url}",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -12958,6 +13825,13 @@
       "target": "与当前 {encoder.encoder_id} 不一致，已跳过动作识别",
       "files": [
         "modules/vision/action_siglip.py"
+      ]
+    },
+    {
+      "source": "note: --run-diagnostic needs real tensors; ignoring --no-tensors",
+      "target": "提示：--run-diagnostic 需要真实张量，因此将忽略 --no-tensors",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -13000,6 +13874,20 @@
       "target": "没有可复用内容",
       "files": [
         "frontend/src/components/tabs/AutoTab.tsx"
+      ]
+    },
+    {
+      "source": "nothing to draw",
+      "target": "没有可绘制的内容",
+      "files": [
+        "modules/teach/review.py"
+      ]
+    },
+    {
+      "source": "nothing to look for yet: draw a box around it first (seed)",
+      "target": "目前还没有可查找的目标：请先用 seed 为目标绘制一个检测框",
+      "files": [
+        "modules/teach/find.py"
       ]
     },
     {
@@ -13163,6 +14051,13 @@
       ]
     },
     {
+      "source": "Objects are named in the singular,",
+      "target": "物体类别请使用单数形式，例如",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
       "source": "Objects detected: {object_detections[idx]}",
       "target": "检测到的对象：{object_detections[idx]}",
       "files": [
@@ -13247,6 +14142,62 @@
       ]
     },
     {
+      "source": "OK:embedded in {_MODULE_PATH}",
+      "target": "OK: 已嵌入 {_MODULE_PATH}",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "OK:every file on disk matches the manifest",
+      "target": "OK: 磁盘上的所有文件都与 manifest 一致",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "OK:private key: {args.out}  (NEVER commit; back it up offline)",
+      "target": "OK: 私钥：{args.out}（绝不要提交到仓库；请离线备份）",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "OK:signature (also written to {out}):",
+      "target": "OK: 签名完成（同时已写入 {out}）：",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "OK:signature valid: {manifest['version']} {manifest.get('edition', '')},",
+      "target": "OK: 签名有效：{manifest['version']} {manifest.get('edition', '')}，",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "OK:signed {os.path.basename(manifest_path)} ({len(raw)} bytes)",
+      "target": "OK: 已签名 {os.path.basename(manifest_path)}（{len(raw)} 字节）",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "OK:{len(result['delete'])} blob(s), {result['bytes'] / 2**20:.1f} MB,",
+      "target": "OK: {len(result['delete'])} 个 blob，共 {result['bytes'] / 2**20:.1f} MB，",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "Oldest version that may update to this one in place.",
+      "target": "允许原地更新到此版本的最旧版本号。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "Ollama (local server)",
       "target": "Ollama（本地服务）",
       "files": [
@@ -13259,6 +14210,13 @@
       "target": "Ollama 地址：",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "ollama: load={load_ms:4.0f}ms",
+      "target": "Ollama：加载={load_ms:4.0f}ms",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -13287,6 +14245,13 @@
       "target": "在已参与训练的帧上（目前没有留出的验证帧）",
       "files": [
         "modules/vision/training_preview.py"
+      ]
+    },
+    {
+      "source": "on the host; re-run the build's staging step",
+      "target": "请重新运行构建的暂存步骤",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -13329,6 +14294,13 @@
       "target": "一个核心想法或一个强烈瞬间",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "One line shown in the update banner.",
+      "target": "显示在更新横幅中的单行说明。",
+      "files": [
+        "tools/build_manifest.py"
       ]
     },
     {
@@ -13565,6 +14537,13 @@
       ]
     },
     {
+      "source": "OpenVINO backend used before load()",
+      "target": "OpenVINO 后端尚未加载，请先调用 load()",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "OpenVINO device (AUTO, CPU, GPU)",
       "target": "OpenVINO 设备（AUTO、CPU、GPU）",
       "files": [
@@ -13611,6 +14590,13 @@
       "target": "已在“{step_name}”阶段取消操作",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "operator coverage, speed and real VRAM behaviour are settled only by",
+      "target": "算子覆盖、速度和真实显存行为只能通过",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -13688,6 +14674,13 @@
       "target": "或点击选择文件 · 支持 mp4、mov、mkv、avi",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "or say how they differ in the descriptions.",
+      "target": "或在描述中明确两者区别。",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -13878,6 +14871,13 @@
       "target": "叠加视频：{label}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Overwriting invalidates every manifest already published:",
+      "target": "覆盖密钥会使所有已发布的 manifest 失效：",
+      "files": [
+        "tools/build_manifest.py"
       ]
     },
     {
@@ -14611,13 +15611,6 @@
       ]
     },
     {
-      "source": "processor and be much slower.",
-      "target": "处理器训练，速度会明显较慢。",
-      "files": [
-        "modules/ui/training_panel.py"
-      ]
-    },
-    {
       "source": "Processor only",
       "target": "仅处理器",
       "files": [
@@ -14629,6 +15622,13 @@
       "target": "生产映射：           {prod_mapping}（{len(prod_keep)} 个类别）",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "Production mapping:  {prod_path}",
+      "target": "生产映射：           {prod_path}",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -14674,6 +15674,20 @@
       ]
     },
     {
+      "source": "prompt_eval={pe_ms:5.0f}ms ({pe_n}t @ {pe_rate:5.1f}t/s)",
+      "target": "提示词计算={pe_ms:5.0f}ms（{pe_n}t @ {pe_rate:5.1f}t/s）",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "Propose boxes on accepted samples.",
+      "target": "为已接受样本生成候选检测框。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
       "source": "psutil available",
       "target": "psutil 可用",
       "files": [
@@ -14688,6 +15702,27 @@
       ]
     },
     {
+      "source": "public half is RELEASE_PUBLIC_KEY_HEX in modules/update/update_manifest.py?",
+      "target": "modules/update/update_manifest.py 中的 RELEASE_PUBLIC_KEY_HEX 公钥。",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "public key:  {public_hex}",
+      "target": "公钥：      {public_hex}",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "Publish it once the GitHub release is out:",
+      "target": "GitHub Release 发布后，请运行以下命令发布更新：",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "Published (commit {commit.oid[:8]}).",
       "target": "发布完成（提交 {commit.oid[:8]}）。",
       "files": [
@@ -14699,6 +15734,13 @@
       "target": "禁止使用其游戏内容进行 AI 训练；如果不确定，请不要分享。",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "put the detail in the description.",
+      "target": "更多细节请写在描述中。",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -14727,6 +15769,13 @@
       "target": "NVIDIA 显卡所需的 PyTorch 仅下载一次，后续软件更新不会重复下载。",
       "files": [
         "packaging/installer/videohighlighter-packs.iss"
+      ]
+    },
+    {
+      "source": "PyTorch is not installed",
+      "target": "未安装 PyTorch",
+      "files": [
+        "modules/system/cuda_check.py"
       ]
     },
     {
@@ -15283,6 +16332,20 @@
       ]
     },
     {
+      "source": "rejected by every installed copy. Sign it, or pass",
+      "target": "会被所有已安装客户端拒绝。请先签名，或传入",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "relabel {entry!r}: say which class, like 8=<class>",
+      "target": "重新标记 {entry!r}：请指定类别，例如 8=<类别>",
+      "files": [
+        "modules/teach/review.py"
+      ]
+    },
+    {
       "source": "Relation",
       "target": "关系",
       "files": [
@@ -15291,8 +16354,22 @@
       ]
     },
     {
+      "source": "Release date (default: today).",
+      "target": "发布日期（默认：今天）。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "Release to sign, fetched from the host.",
       "target": "要签名的发行版本号，将从更新主机获取。",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "release was built with. Nothing was published.",
+      "target": "因此不会发布任何内容。",
       "files": [
         "tools/publish_release.py"
       ]
@@ -15692,6 +16769,13 @@
       ]
     },
     {
+      "source": "routing decisions only; do not move real tensors",
+      "target": "仅检查路由决策，不移动真实张量",
+      "files": [
+        "tools/simulate_directml.py"
+      ]
+    },
+    {
       "source": "rule {name!r}: unknown relation",
       "target": "规则 {name!r}：未知关系",
       "files": [
@@ -15717,6 +16801,13 @@
       "target": "请运行启用了检测框绘制与保存的检测流程，\\n",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "run every scenario",
+      "target": "运行所有模拟场景",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -15787,6 +16878,20 @@
       "target": "对于左右并排的 VR/3D 视频，仅分析画面左半部分。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Run: ollama pull {self.model}",
+      "target": "请运行：ollama pull {self.model}",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "run: python tools/build_manifest.py generate --root <bundle> ...",
+      "target": "请运行：python tools/build_manifest.py generate --root <bundle> ...",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -16038,6 +17143,20 @@
       ]
     },
     {
+      "source": "Say what to find: add a class (name + a few",
+      "target": "请先说明要查找什么：添加一个类别（名称 + 几个描述词）。如果不确定如何命名，",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
+      "source": "say which class it is (relabel) instead of accepting",
+      "target": "不要直接接受",
+      "files": [
+        "modules/teach/review.py"
+      ]
+    },
+    {
       "source": "scan entire video",
       "target": "扫描完整视频",
       "files": [
@@ -16162,6 +17281,13 @@
       "target": "评分计算完成",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "Score every sample against every class.",
+      "target": "对每个样本与每个类别进行评分。",
+      "files": [
+        "modules/teach/status.py"
       ]
     },
     {
@@ -16688,10 +17814,24 @@
       ]
     },
     {
+      "source": "serialize={t_serialize_ms:5.0f}ms",
+      "target": "序列化={t_serialize_ms:5.0f}ms",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "Served at (optional):",
       "target": "服务地址（可选）：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "server_unaccounted (ttfb − total) = {server_unaccounted_ms:5.0f}ms",
+      "target": "服务端未计入耗时（ttfb − total）={server_unaccounted_ms:5.0f}ms",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -16825,6 +17965,13 @@
       "target": "清晰度阈值",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx"
+      ]
+    },
+    {
+      "source": "sheet {number} has no tile {n}",
+      "target": "检查批次 {number} 中没有编号 {n} 的项目",
+      "files": [
+        "modules/teach/review.py"
       ]
     },
     {
@@ -17136,6 +18283,13 @@
       ]
     },
     {
+      "source": "Sign a manifest.",
+      "target": "为 manifest 签名。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "Sign a staged release manifest (offline key).",
       "target": "使用离线密钥为已暂存的发行清单签名。",
       "files": [
@@ -17185,10 +18339,24 @@
       ]
     },
     {
+      "source": "Signing {source}",
+      "target": "正在签名：{source}",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "Simple view",
       "target": "简洁视图",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Simulated DirectML. This exercises the app's plumbing, not DirectML:",
+      "target": "DirectML 模拟模式：这里只验证应用内部连接与路由，不验证 DirectML 本身：",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -17505,6 +18673,13 @@
       ]
     },
     {
+      "source": "spot checks overturned {wrong} of {done}",
+      "target": "抽查的 {done} 个样本中有 {wrong} 个被推翻",
+      "files": [
+        "modules/teach/autolabel.py"
+      ]
+    },
+    {
       "source": "Square 1:1",
       "target": "方形 1:1",
       "files": [
@@ -17523,6 +18698,13 @@
       "target": "暂不签名，仅暂存，稍后再签名。",
       "files": [
         "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "staged file missing: {relative}",
+      "target": "缺少暂存文件：{relative}",
+      "files": [
+        "modules/update/update_apply.py"
       ]
     },
     {
@@ -17809,6 +18991,13 @@
       ]
     },
     {
+      "source": "Store blobs gzip-compressed on the host (files/<sha>.gz).",
+      "target": "在主机上以 gzip 压缩形式存储 blob（files/<sha>.gz）。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "story fits into ({reel.duration:.0f}s is the least it can be)",
       "target": "（最短约需 {reel.duration:.0f} 秒）",
       "files": [
@@ -17957,6 +19146,13 @@
       ]
     },
     {
+      "source": "task must be one of {TASKS}, not {task!r}",
+      "target": "训练类型必须是 {TASKS} 之一，不能是 {task!r}",
+      "files": [
+        "modules/teach/project.py"
+      ]
+    },
+    {
       "source": "Teach a model",
       "target": "训练模型",
       "files": [
@@ -17996,6 +19192,20 @@
       "target": "让应用学会识别随时间发生的动作，",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "teach.sort: model could not read {sample.id}: {exc}",
+      "target": "教学排序：模型无法读取 {sample.id}：{exc}",
+      "files": [
+        "modules/teach/sort.py"
+      ]
+    },
+    {
+      "source": "teach.sort: round {record.get('round')} model unusable: {exc}",
+      "target": "教学排序：第 {record.get('round')} 轮模型不可用：{exc}",
+      "files": [
+        "modules/teach/sort.py"
       ]
     },
     {
@@ -18094,6 +19304,13 @@
       "target": "将保留该片段的原始画面",
       "files": [
         "modules/media/motion.py"
+      ]
+    },
+    {
+      "source": "the CPU, so a sub-1x speedup and a red verdict are correct)",
+      "target": "CPU，因此低于 1 倍的加速和红色结论都属于正常现象）",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -18364,6 +19581,13 @@
       ]
     },
     {
+      "source": "There is already a class {name!r}.",
+      "target": "已经存在类别 {name!r}。",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
       "source": "these / undecided; right-click to say which class it really is;",
       "target": "右键可指定真实类别；",
       "files": [
@@ -18417,6 +19641,13 @@
       "target": "这会导致大模型缺少依据并产生幻觉。\\n",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "This looks like a code. CLIP cannot sort by it;",
+      "target": "这个名称看起来像代码。CLIP 无法仅靠代码进行排序；",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -18511,6 +19742,34 @@
       ]
     },
     {
+      "source": "tile {n} was a guess of {sample.proposed!r};",
+      "target": "编号 {n} 原判断为 {sample.proposed!r}；请使用重新标记指定真实类别，",
+      "files": [
+        "modules/teach/review.py"
+      ]
+    },
+    {
+      "source": "tile {n} was given two verdicts",
+      "target": "编号 {n} 被重复设置了两个判断结果",
+      "files": [
+        "modules/teach/review.py"
+      ]
+    },
+    {
+      "source": "tile {n}: sample {by_n[n]['sample']} is gone",
+      "target": "编号 {n}：样本 {by_n[n]['sample']} 已不存在",
+      "files": [
+        "modules/teach/review.py"
+      ]
+    },
+    {
+      "source": "tile {n}: {exc}",
+      "target": "编号 {n}：{exc}",
+      "files": [
+        "modules/teach/review.py"
+      ]
+    },
+    {
       "source": "Time between sampled frames. Type seconds (60) or mm:ss (1:00).",
       "target": "采样帧之间的时间间隔。可输入秒数（60）或 mm:ss（1:00）。",
       "files": [
@@ -18595,6 +19854,13 @@
       ]
     },
     {
+      "source": "to fetch files. Re-generate with --base-url <public URL>.",
+      "target": "请使用 --base-url <公开 URL> 重新生成。",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "Toggle theme",
       "target": "切换主题",
       "files": [
@@ -18648,6 +19914,13 @@
       "target": "torch 设备：{device}（实验性，详见 docs/AMD-GPU.md）",
       "files": [
         "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "torch unavailable ({e}) — skipped",
+      "target": "torch 不可用（{e}）——已跳过",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -18756,6 +20029,13 @@
       ]
     },
     {
+      "source": "total={total_ms:5.0f}ms",
+      "target": "总计={total_ms:5.0f}ms",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "touches",
       "target": "接触",
       "files": [
@@ -18817,6 +20097,13 @@
       "target": "训练一轮模型",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "Train a round (GPU minutes to hours; runs",
+      "target": "开始一轮训练（GPU 通常需要数分钟到数小时，可无人值守运行；",
+      "files": [
+        "modules/teach/status.py"
       ]
     },
     {
@@ -18890,15 +20177,15 @@
       ]
     },
     {
-      "source": "Training hardware:",
-      "target": "训练硬件：",
+      "source": "training failed (exit {code}); see {log_path}",
+      "target": "训练失败（退出码 {code}）；请查看 {log_path}",
       "files": [
-        "modules/ui/training_panel.py"
+        "modules/teach/train.py"
       ]
     },
     {
-      "source": "Training hardware: no GPU found - training will use the",
-      "target": "训练 hardware: no GPU found - training will use the",
+      "source": "Training hardware:",
+      "target": "训练硬件：",
       "files": [
         "modules/ui/training_panel.py"
       ]
@@ -19145,6 +20432,13 @@
       ]
     },
     {
+      "source": "unattended, and installs the model only if it beats the last).",
+      "target": "只有效果优于上一版时才会安装新模型）。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
       "source": "undecided",
       "target": "未决定",
       "files": [
@@ -19193,6 +20487,13 @@
       "target": "未知运行后端：{backend}",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "Unknown backend: {backend}. Use 'ollama' or 'llama-cpp'.",
+      "target": "未知的大模型后端：{backend}。请使用 'ollama'、'llama-cpp' 或 'openvino'。",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -19295,6 +20596,34 @@
       ]
     },
     {
+      "source": "unreadable after download: {exc}",
+      "target": "下载后无法读取：{exc}",
+      "files": [
+        "modules/update/update_download.py"
+      ]
+    },
+    {
+      "source": "unsafe path",
+      "target": "路径不安全",
+      "files": [
+        "modules/update/update_download.py"
+      ]
+    },
+    {
+      "source": "unsafe path in staged set: {relative!r}",
+      "target": "暂存集合中包含不安全路径：{relative!r}",
+      "files": [
+        "modules/update/update_apply.py"
+      ]
+    },
+    {
+      "source": "unsupported blob compression {compression!r}",
+      "target": "不支持的 blob 压缩格式：{compression!r}",
+      "files": [
+        "modules/update/update_download.py"
+      ]
+    },
+    {
       "source": "Unsupported input type {inp.type}.",
       "target": "不支持的输入类型：{inp.type}。",
       "files": [
@@ -19313,6 +20642,13 @@
       "target": "不支持的清单版本：{data.get('version')!r}",
       "files": [
         "modules/media/gopro_ingest.py"
+      ]
+    },
+    {
+      "source": "unsupported project format {data.get('format')!r}",
+      "target": "不支持的项目格式：{data.get('format')!r}",
+      "files": [
+        "modules/teach/project.py"
       ]
     },
     {
@@ -19361,6 +20697,13 @@
       ]
     },
     {
+      "source": "update_apply: could not restore {original}",
+      "target": "更新应用：无法恢复 {original}",
+      "files": [
+        "modules/update/update_apply.py"
+      ]
+    },
+    {
       "source": "update_apply: sweep failed ({e})",
       "target": "更新清理失败（{e}）",
       "files": [
@@ -19375,10 +20718,38 @@
       ]
     },
     {
+      "source": "update_check: could not save state: {exc}",
+      "target": "更新检查：无法保存状态：{exc}",
+      "files": [
+        "modules/update/update_check.py"
+      ]
+    },
+    {
+      "source": "update_check: no manifest at {url}",
+      "target": "更新检查：{url} 没有可用的 manifest",
+      "files": [
+        "modules/update/update_check.py"
+      ]
+    },
+    {
       "source": "update_check: {info.version} available (running {__version__})",
       "target": "发现可用更新：{info.version}（当前运行 {__version__}）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "update_check: {url} is not a JSON object; ignoring",
+      "target": "更新检查：{url} 返回的不是 JSON 对象，已忽略",
+      "files": [
+        "modules/update/update_check.py"
+      ]
+    },
+    {
+      "source": "update_download: {relative}: {type(exc).__name__}:",
+      "target": "更新下载：{relative}：{type(exc).__name__}：",
+      "files": [
+        "modules/update/update_download.py"
       ]
     },
     {
@@ -19393,6 +20764,62 @@
       "target": "更新安装发生意外错误（{type(e).__name__}：{e}）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "update_manifest: cannot verify ({type(exc).__name__}: {exc})",
+      "target": "更新清单：无法验证（{type(exc).__name__}：{exc}）",
+      "files": [
+        "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "update_manifest: manifest has no file list; refusing.",
+      "target": "更新清单：manifest 中没有文件列表，已拒绝。",
+      "files": [
+        "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "update_manifest: no release public key embedded; refusing.",
+      "target": "更新清单：未内置发行版公钥，已拒绝。",
+      "files": [
+        "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "update_manifest: signature does not match; refusing.",
+      "target": "更新清单：签名不匹配，已拒绝。",
+      "files": [
+        "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "update_manifest: signed but unreadable ({exc})",
+      "target": "更新清单：已签名但无法读取（{exc}）",
+      "files": [
+        "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "update_manifest: unsafe path in manifest: {entry!r}",
+      "target": "更新清单：manifest 中包含不安全路径：{entry!r}",
+      "files": [
+        "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "update_manifest: unsupported blob compression; refusing.",
+      "target": "更新清单：不支持的 blob 压缩格式，已拒绝。",
+      "files": [
+        "modules/update/update_manifest.py"
+      ]
+    },
+    {
+      "source": "update_manifest: unsupported manifest format; refusing.",
+      "target": "更新清单：不支持的 manifest 格式，已拒绝。",
+      "files": [
+        "modules/update/update_manifest.py"
       ]
     },
     {
@@ -19543,6 +20970,13 @@
       ]
     },
     {
+      "source": "Use {normalize_name(name)!r}: lowercase,",
+      "target": "请使用 {normalize_name(name)!r}：使用小写字母，",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
       "source": "Used only when clip time is 0.",
       "target": "仅在“片段时长”为 0 时生效。",
       "files": [
@@ -19616,7 +21050,8 @@
       "source": "Val   Loss: {v_loss:.4f} | Acc: {v_acc:.4f}",
       "target": "验证损失：{v_loss:.4f} | 准确率：{v_acc:.4f}",
       "files": [
-        "model_training/intel/train.py"
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -19684,10 +21119,24 @@
       ]
     },
     {
+      "source": "verdict must be one of {VERDICTS}",
+      "target": "判断结果必须是 {VERDICTS} 之一",
+      "files": [
+        "modules/teach/project.py"
+      ]
+    },
+    {
       "source": "Verified",
       "target": "已验证",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Verify a manifest against the embedded key.",
+      "target": "使用内置公钥验证 manifest。",
+      "files": [
+        "tools/build_manifest.py"
       ]
     },
     {
@@ -19800,6 +21249,13 @@
       "target": "找不到视频文件：{video_path}",
       "files": [
         "modules/media/video_cache.py"
+      ]
+    },
+    {
+      "source": "Video file not found: {video_path}",
+      "target": "未找到视频文件：{video_path}",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -20185,6 +21641,13 @@
       ]
     },
     {
+      "source": "wall={wall_ms:5.0f}ms",
+      "target": "总耗时={wall_ms:5.0f}ms",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "Warm-up",
       "target": "预热",
       "files": [
@@ -20238,6 +21701,13 @@
       "target": "权重文件：           {CONFIG['model_save_path']}",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "Weights:             {CONFIG['model_save_path']} ({len(wrapped.label_to_idx)} classes total)",
+      "target": "权重：               {CONFIG['model_save_path']}（共 {len(wrapped.label_to_idx)} 个类别）",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -20367,6 +21837,13 @@
       ]
     },
     {
+      "source": "Where the individual files will be served from.",
+      "target": "各个文件对外提供下载的基础地址。",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "Where the model is listed: lowercase words, up to three",
       "target": "模型在社区中的分类路径：使用小写英文，最多三级。",
       "files": [
@@ -20385,6 +21862,13 @@
       "target": "选择哪些示例的随机种子",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "which machine to pretend to be",
+      "target": "选择要模拟的机器场景",
+      "files": [
+        "tools/simulate_directml.py"
       ]
     },
     {
@@ -20483,6 +21967,20 @@
       "target": "对于已经分析过的视频，这个过程通常很快。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "words describing it). `check-name` first if unsure what to call it.",
+      "target": "可先运行 `check-name`。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
+      "source": "words separated by single spaces.",
+      "target": "单词之间只保留一个空格。",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -21075,6 +22573,13 @@
       ]
     },
     {
+      "source": "{duration/60:.1f} min, {fps:.1f} fps, sampling every {interval}s",
+      "target": "时长 {duration/60:.1f} 分钟，{fps:.1f} fps，每 {interval} 秒采样一次，",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "{duration:.0f}s once the transitions overlap",
       "target": "{duration:.0f} 秒",
       "files": [
@@ -21100,6 +22605,13 @@
       "target": "{emb.device}：总计 {elapsed:.2f} 秒，{per:.1f} 毫秒/帧，",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "{exc}; retrying",
+      "target": "{exc}；正在重试",
+      "files": [
+        "modules/update/update_download.py"
       ]
     },
     {
@@ -21167,6 +22679,13 @@
       ]
     },
     {
+      "source": "{have} of {settings.auto_min_checked} checked",
+      "target": "目前已检查 {have}/{settings.auto_min_checked} 个样本",
+      "files": [
+        "modules/teach/autolabel.py"
+      ]
+    },
+    {
       "source": "{hours:.1f} hours",
       "target": "{hours:.1f} 小时",
       "files": [
@@ -21206,6 +22725,14 @@
       "target": "物理尺寸 {int(size.width() * ratio)}x{int(size.height() * ratio)}，",
       "files": [
         "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "{int(ts)//60:>3d}:{int(ts)%60:02d}  ({ts:7.1f}s)   score={sc:.3f}",
+      "target": "{int(ts)//60:>3d}:{int(ts)%60:02d}  ({ts:7.1f}秒)   分数={sc:.3f}",
+      "files": [
+        "llm/clip_index.py",
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -21335,6 +22862,13 @@
       ]
     },
     {
+      "source": "{len(files)} files, {total / (1024 ** 3):.2f} GB",
+      "target": "{len(files)} 个文件，共 {total / (1024 ** 3):.2f} GB",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
       "source": "{len(filtered)} of {len(self.all_labels)} labels shown",
       "target": "已显示 {len(filtered)} / {len(self.all_labels)} 个标签",
       "files": [
@@ -21402,6 +22936,20 @@
       "target": "{len(identities)} 人 · {named} 个已命名 · {len(bank.avoided_ids())} 个已排除",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{len(manifest['files'])} files",
+      "target": "{len(manifest['files'])} 个文件",
+      "files": [
+        "tools/build_manifest.py"
+      ]
+    },
+    {
+      "source": "{len(manifest['files'])} files all on the host",
+      "target": "{len(manifest['files'])} 个文件均已在主机上",
+      "files": [
+        "tools/publish_release.py"
       ]
     },
     {
@@ -21482,13 +23030,6 @@
       ]
     },
     {
-      "source": "{len(segments)} clip(s) of '{label}'",
-      "target": "“{label}”共有 {len(segments)} 个片段",
-      "files": [
-        "video_ai_editor/search_panel.py"
-      ]
-    },
-    {
       "source": "{len(segs)} segments -> {out}",
       "target": "{len(segs)} 个分片 -> {out}",
       "files": [
@@ -21559,6 +23100,27 @@
       ]
     },
     {
+      "source": "{len(timestamps)} timestamps vs {len(emb)} embeddings",
+      "target": "时间戳数量 {len(timestamps)} 与嵌入数量 {len(emb)} 不一致",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "{len(timestamps)} timestamps vs {len(embeddings)} embeddings",
+      "target": "时间戳数量 {len(timestamps)} 与嵌入数量 {len(embeddings)} 不一致",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "{len(todo)} accepted samples have no good box.",
+      "target": "{len(todo)} 个已接受样本仍没有合适的检测框。",
+      "files": [
+        "modules/teach/status.py"
+      ]
+    },
+    {
       "source": "{len(unique_speakers)} speakers",
       "target": "{len(unique_speakers)} 位说话人",
       "files": [
@@ -21587,6 +23149,13 @@
       ]
     },
     {
+      "source": "{manifest.get('platform', 'windows')}: signature valid,",
+      "target": "{manifest.get('platform', 'windows')}：签名有效，",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "{minutes} minute{'s' if minutes != 1 else ''}",
       "target": "{minutes} 分钟",
       "files": [
@@ -21601,6 +23170,13 @@
       ]
     },
     {
+      "source": "{missing} blob(s) missing and {wrong} the wrong size",
+      "target": "主机上缺少 {missing} 个 blob，另有 {wrong} 个大小不正确；",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "{mod:<12} not importable — {type(e).__name__}{note}",
       "target": "{mod:<12} 无法导入——{type(e).__name__}{note}",
       "files": [
@@ -21612,6 +23188,13 @@
       "target": "{mod:<12} {getattr(m, '__version__', '（无 __version__）')}",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "{mod} import failed: {type(e).__name__}: {e}",
+      "target": "{mod} 导入失败：{type(e).__name__}：{e}",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -21633,6 +23216,20 @@
       "target": "{n_obj} 个物体 | {n_act} 个动作 | {n_trans} 条转录{tl_status}{analyzer_status}",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "{name!r} does not say what it is. CLIP sorts",
+      "target": "{name!r} 无法明确说明目标是什么。CLIP 会根据名称排序，",
+      "files": [
+        "modules/teach/naming.py"
+      ]
+    },
+    {
+      "source": "{name!r} reads as the same as {other!r}. One class,",
+      "target": "{name!r} 与 {other!r} 看起来是同一个类别。请合并为一个类别，",
+      "files": [
+        "modules/teach/naming.py"
       ]
     },
     {
@@ -21710,6 +23307,13 @@
       "target": "{name}：已接受 {c['accepted']} / {c['target']}",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "{name}: {count} samples, weight {w:.4f}",
+      "target": "{name}：{count} 个样本，权重 {w:.4f}",
+      "files": [
+        "model_training/shared/training_utils.py"
       ]
     },
     {
@@ -21811,6 +23415,13 @@
       ]
     },
     {
+      "source": "{project.root} already holds a project",
+      "target": "{project.root} 已经包含一个项目",
+      "files": [
+        "modules/teach/project.py"
+      ]
+    },
+    {
       "source": "{record['sheet']} --accept 1-4 --reject 5, or --accept-rest.",
       "target": "{record['sheet']} --accept 1-4 --reject 5；也可以使用 --accept-rest。",
       "files": [
@@ -21853,6 +23464,20 @@
       ]
     },
     {
+      "source": "{result['too_new']} too new to judge",
+      "target": "另有 {result['too_new']} 个因过新暂不判断",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
+      "source": "{sample.id}: no class {label!r} to accept it as",
+      "target": "{sample.id}：不存在类别 {label!r}，无法按此类别接受",
+      "files": [
+        "modules/teach/project.py"
+      ]
+    },
+    {
       "source": "{screen.logicalDotsPerInch():.0f} logical DPI,",
       "target": "逻辑 DPI {screen.logicalDotsPerInch():.0f}，",
       "files": [
@@ -21885,6 +23510,13 @@
       "target": "{seconds} 秒",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "{self.base_url}. Is it running?\\n",
+      "target": "{self.base_url}。请检查服务是否正在运行。\\n",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -21930,6 +23562,13 @@
       ]
     },
     {
+      "source": "{skipped} already prepared)",
+      "target": "已准备 {skipped}）",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "{snap.false_alarms} false alarm(s), train loss",
       "target": "{snap.false_alarms} 个误报，训练损失",
       "files": [
@@ -21972,10 +23611,31 @@
       ]
     },
     {
+      "source": "{stored_bytes / (1024 ** 2):.1f} MB as stored",
+      "target": "实际存储 {stored_bytes / (1024 ** 2):.1f} MB",
+      "files": [
+        "tools/publish_release.py"
+      ]
+    },
+    {
       "source": "{sum(1 for i in bank.all_identities() if i['name'])} named ·",
       "target": "{sum(1 for i in bank.all_identities() if i['name'])} 个已命名 ·",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{time.perf_counter() - t0:.1f}s, {'bundled IR' if ov_dir else self.model_id})",
+      "target": "{time.perf_counter() - t0:.1f} 秒，{'内置 IR' if ov_dir else self.model_id}）",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
+      "source": "{time.perf_counter() - t0:.1f}s, {self.model_id})",
+      "target": "{time.perf_counter() - t0:.1f} 秒，{self.model_id}）",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -23177,6 +24837,13 @@
       ]
     },
     {
+      "source": "← likely image preprocess if >>0",
+      "target": "← 若明显大于 0，通常来自图像预处理",
+      "files": [
+        "llm/llm_module.py"
+      ]
+    },
+    {
       "source": "→ Better duration found in iframe: {duration:.1f}s",
       "target": "→ 在 iframe 中找到更可靠的时长：{duration:.1f} 秒",
       "files": [
@@ -23454,6 +25121,13 @@
       "target": "⏰ 下载超时",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "⏱  body={body_kb:5.0f}KB",
+      "target": "⏱  请求体={body_kb:5.0f}KB",
+      "files": [
+        "llm/llm_module.py"
       ]
     },
     {
@@ -24138,6 +25812,34 @@
       ]
     },
     {
+      "source": "⚠️  Class mismatch: checkpoint={saved_classes}, current={current_classes}",
+      "target": "⚠️  类别数量不一致：检查点={saved_classes}，当前={current_classes}",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️  CLIP index: could not cache ({e})",
+      "target": "⚠️  CLIP 索引：无法写入缓存（{e}）",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "⚠️  CLIP index: unreadable cache ({e}); rebuilding",
+      "target": "⚠️  CLIP 索引：无法读取缓存（{e}），正在重建",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "⚠️  CLIP load on device={device} failed ({e}); using CPU.",
+      "target": "⚠️  CLIP 在设备 {device} 上加载失败（{e}）；将改用 CPU。",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "⚠️  CLIP memo unavailable ({e}); scanning without it",
       "target": "⚠️ CLIP 记忆缓存不可用（{e}）；将不使用缓存继续扫描",
       "files": [
@@ -24152,6 +25854,27 @@
       ]
     },
     {
+      "source": "⚠️  CLIP memo: unreadable cache ({e}); starting fresh",
+      "target": "⚠️  CLIP 缓存：无法读取缓存（{e}），将重新开始",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "⚠️  CLIP: CUDA probe failed ({type(e).__name__}: {e})",
+      "target": "⚠️  CLIP：CUDA 检测失败（{type(e).__name__}：{e}）",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
+      "source": "⚠️  CLIP: DirectML probe failed ({type(e).__name__}: {e})",
+      "target": "⚠️  CLIP：DirectML 检测失败（{type(e).__name__}：{e}）",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "⚠️  could not build CPU reference ({type(e).__name__}: {e})",
       "target": "⚠️  无法建立 CPU 参考模型（{type(e).__name__}：{e}）",
       "files": [
@@ -24162,6 +25885,7 @@
       "source": "⚠️  Could not load optimizer state: {e}",
       "target": "⚠️  无法加载优化器状态：{e}",
       "files": [
+        "model_training/shared/training_utils.py",
         "training/train_action_recognition.py"
       ]
     },
@@ -24219,6 +25943,34 @@
       "target": "⚠️ 另外还有 {len(failed) - 10} 个片段无法读取，已跳过",
       "files": [
         "model_training/action_head/features.py"
+      ]
+    },
+    {
+      "source": "⚠️ [directml] could not build device {index}: {e}",
+      "target": "⚠️ [DirectML] 无法创建设备 {index}：{e}",
+      "files": [
+        "modules/system/directml_device.py"
+      ]
+    },
+    {
+      "source": "⚠️ [encoder_select] could not probe ffmpeg encoders: {e}",
+      "target": "⚠️ [编码器选择] 无法探测 ffmpeg 编码器：{e}",
+      "files": [
+        "modules/system/encoder_select.py"
+      ]
+    },
+    {
+      "source": "⚠️ [encoder_select] device probe failed: {e}",
+      "target": "⚠️ [编码器选择] 设备探测失败：{e}",
+      "files": [
+        "modules/system/encoder_select.py"
+      ]
+    },
+    {
+      "source": "⚠️ [encoder_select] ffprobe size probe failed: {e}",
+      "target": "⚠️ [编码器选择] ffprobe 分辨率探测失败：{e}",
+      "files": [
+        "modules/system/encoder_select.py"
       ]
     },
     {
@@ -24488,6 +26240,13 @@
       ]
     },
     {
+      "source": "⚠️ Chapter breakdown skipped: {exc}",
+      "target": "⚠️ 已跳过章节拆解：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "⚠️ Chapter {index} could not be told: {exc}",
       "target": "⚠️ 无法讲述章节 {index}：{exc}",
       "files": [
@@ -24499,6 +26258,27 @@
       "target": "⚠️ 已跳过章节分析：{_ce}",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Clip expression peak skipped: {exc}",
+      "target": "⚠️ 已跳过片段表情峰值分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
+      "source": "⚠️ Clip loudness peak skipped: {exc}",
+      "target": "⚠️ 已跳过片段响度峰值分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
+      "source": "⚠️ Clip sections skipped: {exc}",
+      "target": "⚠️ 已跳过片段分段分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -24520,6 +26300,13 @@
       "target": "⚠️ 未找到 COCO 标签：{coco_labels_file}",
       "files": [
         "modules/vision/detection_backend.py"
+      ]
+    },
+    {
+      "source": "⚠️ Combination rate skipped: {exc}",
+      "target": "⚠️ 已跳过组合命中率分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -24555,6 +26342,13 @@
       "target": "⚠️ 人物排除：无法读取画面尺寸，已跳过排除处理",
       "files": [
         "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "⚠️ Conclusion skipped: {exc}",
+      "target": "⚠️ 已跳过结论生成：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -24731,6 +26525,13 @@
       "target": "⚠️ 无法初始化推理引擎：{e}",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not list display adapters: {type(e).__name__}: {e}",
+      "target": "⚠️ 无法列出显示适配器：{type(e).__name__}：{e}",
+      "files": [
+        "modules/system/ort_directml.py"
       ]
     },
     {
@@ -25217,6 +27018,13 @@
       ]
     },
     {
+      "source": "⚠️ Expression arc skipped: {exc}",
+      "target": "⚠️ 已跳过表情变化曲线分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "⚠️ Expression scan skipped: {_fe}",
       "target": "⚠️ 已跳过表情扫描：{_fe}",
       "files": [
@@ -25539,6 +27347,13 @@
       ]
     },
     {
+      "source": "⚠️ Level-by-class summary skipped: {exc}",
+      "target": "⚠️ 已跳过按类别分级汇总：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "⚠️ librosa backend unavailable ({exc}); using numpy",
       "target": "⚠️ librosa 后端不可用（{exc}），改用 numpy",
       "files": [
@@ -25579,6 +27394,13 @@
       "files": [
         "action_recognition.py",
         "object_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️ LiveFaceWorker error: {e}",
+      "target": "⚠️ 实时人脸处理线程出错：{e}",
+      "files": [
+        "video_ai_editor/live_face.py"
       ]
     },
     {
@@ -26114,6 +27936,13 @@
       ]
     },
     {
+      "source": "⚠️ Pending checks skipped: {exc}",
+      "target": "⚠️ 已跳过待检查项分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "⚠️ Person tracker failed to load: {exc}",
       "target": "⚠️ 人物追踪器加载失败：{exc}",
       "files": [
@@ -26485,6 +28314,13 @@
       ]
     },
     {
+      "source": "⚠️ Spoken evidence skipped: {exc}",
+      "target": "⚠️ 已跳过口述证据分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "⚠️ SRT parse error: {e}",
       "target": "⚠️ SRT 解析错误：{e}",
       "files": [
@@ -26517,6 +28353,13 @@
       "target": "⚠️ 有充分证据表明为 3 人：bbox={bbox_3_pct:.0%}，pose={pose_3_pct:.0%}，综合={combined_3_pct:.0%}",
       "files": [
         "modules/crop/people.py"
+      ]
+    },
+    {
+      "source": "⚠️ Subject comparison skipped: {exc}",
+      "target": "⚠️ 已跳过主体对比：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -26618,6 +28461,13 @@
       ]
     },
     {
+      "source": "⚠️ Transcript summary skipped: {exc}",
+      "target": "⚠️ 已跳过转录摘要：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "⚠️ Transcript txt parse error: {e}",
       "target": "⚠️ 转录 TXT 解析错误：{e}",
       "files": [
@@ -26695,6 +28545,13 @@
       ]
     },
     {
+      "source": "⚠️ Unmeasured claims skipped: {exc}",
+      "target": "⚠️ 已跳过未测量声明分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
+      ]
+    },
+    {
       "source": "⚠️ Update: {result.message}",
       "target": "⚠️ 更新：{result.message}",
       "files": [
@@ -26706,6 +28563,13 @@
       "target": "⚠️ 网址必须以 http:// 或 https:// 开头",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ vframe_to_bgr raw-plane path failed ({e}), falling back to toImage()",
+      "target": "⚠️ vframe_to_bgr 原始平面路径失败（{e}），正在回退到 toImage()",
+      "files": [
+        "video_ai_editor/live_face.py"
       ]
     },
     {
@@ -26769,6 +28633,13 @@
       "target": "⚠️ VideoAnalysisCache 不可用，将保存到备用路径",
       "files": [
         "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "⚠️ Vocabulary gap skipped: {exc}",
+      "target": "⚠️ 已跳过词汇差异分析：{exc}",
+      "files": [
+        "modules/report/highlight_report.py"
       ]
     },
     {
@@ -27164,6 +29035,13 @@
       ]
     },
     {
+      "source": "✅ Checkpoint loaded (epoch {ckpt['epoch'] + 1},",
+      "target": "✅ 检查点已加载（第 {ckpt['epoch'] + 1} 轮，",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "✅ Checkpoint loaded successfully!",
       "target": "✅ 检查点加载成功！",
       "files": [
@@ -27203,6 +29081,20 @@
       "target": "✅ 已清除 '{query}' 的 {before - after} 条查找结果",
       "files": [
         "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "✅ CLIP prefilter ready on {device}",
+      "target": "✅ CLIP 预筛选已就绪：{device}",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
+      "source": "✅ CLIP prefilter ready on {device} (OpenVINO,",
+      "target": "✅ CLIP 预筛选已就绪：{device}（OpenVINO，",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -27599,6 +29491,13 @@
       ]
     },
     {
+      "source": "✅ KEEP",
+      "target": "✅ 保留",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "✅ Live overlay loaded ({self.realtime_preview.get_detection_count()} detections)",
       "target": "✅ 实时叠加已加载（{self.realtime_preview.get_detection_count()} 个检测结果）",
       "files": [
@@ -27652,6 +29551,13 @@
       "target": "✅ 已从缓存 waveform_data 字段加载波形（{len(waveform_data)} 个采样点）",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✅ Loaded {len(filtered)} shared layers",
+      "target": "✅ 已加载 {len(filtered)} 个共享层",
+      "files": [
+        "model_training/shared/training_utils.py"
       ]
     },
     {
@@ -27719,6 +29625,13 @@
     },
     {
       "source": "✅ Mapping saved: {mapping_path}",
+      "target": "✅ 映射已保存：{mapping_path}",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
+      "source": "✅ Mapping saved: {mapping_path}",
       "target": "✅ 标签映射已保存：{mapping_path}",
       "files": [
         "training/train_action_recognition.py"
@@ -27742,6 +29655,7 @@
       "source": "✅ Model saved: {path}",
       "target": "✅ 模型已保存：{path}",
       "files": [
+        "model_training/shared/training_utils.py",
         "training/train_action_recognition.py"
       ]
     },
@@ -29181,6 +31095,20 @@
       ]
     },
     {
+      "source": "❌ Checkpoint not found: {checkpoint_path}",
+      "target": "❌ 未找到检查点：{checkpoint_path}",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
+      "source": "❌ CLIP unavailable — {reason}",
+      "target": "❌ CLIP 不可用——{reason}",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "❌ Command error: {e}",
       "target": "❌ 命令执行出错：{e}",
       "files": [
@@ -29212,6 +31140,7 @@
       "source": "❌ Could not open video: {video_path}",
       "target": "❌ 无法打开视频：{video_path}",
       "files": [
+        "llm/clip_prefilter.py",
         "training/train_action_recognition.py"
       ]
     },
@@ -29664,6 +31593,13 @@
       ]
     },
     {
+      "source": "❌ No training samples",
+      "target": "❌ 没有可用的训练样本",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "❌ No training samples found",
       "target": "❌ 未找到训练样本",
       "files": [
@@ -29753,6 +31689,13 @@
       "files": [
         "downloader.py",
         "main.py"
+      ]
+    },
+    {
+      "source": "❌ REMOVE{confused}",
+      "target": "❌ 移除{confused}",
+      "files": [
+        "model_training/shared/training_utils.py"
       ]
     },
     {
@@ -30020,6 +31963,13 @@
       "target": "⭐ 指标已提升！",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "⭐ Improved!",
+      "target": "⭐ 结果有提升！",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -30553,6 +32503,13 @@
       "target": "🎬 {title}：{len(cuts)} 个镜头，{reel.duration:.0f} 秒，",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "🎮 R3D TRAINING — {CONFIG['model_variant'].upper()}",
+      "target": "🎮 R3D 训练 —— {CONFIG['model_variant'].upper()}",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -31096,6 +33053,13 @@
       ]
     },
     {
+      "source": "💾 Checkpoint saved: {checkpoint_path} (epoch {epoch + 1})",
+      "target": "💾 检查点已保存：{checkpoint_path}（第 {epoch + 1} 轮）",
+      "files": [
+        "model_training/shared/training_utils.py"
+      ]
+    },
+    {
       "source": "💾 Checkpoint saved: {checkpoint_path} (epoch {epoch+1})",
       "target": "💾 检查点已保存：{checkpoint_path}（第 {epoch+1} 轮）",
       "files": [
@@ -31282,6 +33246,7 @@
       "source": "📂 Loading checkpoint: {checkpoint_path}",
       "target": "📂 正在加载检查点：{checkpoint_path}",
       "files": [
+        "model_training/shared/training_utils.py",
         "training/train_action_recognition.py"
       ]
     },
@@ -32687,6 +34652,13 @@
       ]
     },
     {
+      "source": "🔍 Query: '{query}'  (positive prompt: '{pf._labels[0]}')",
+      "target": "🔍 查询：'{query}'（正向提示词：'{pf._labels[0]}'）",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "🔍 Rules need {', '.join(absent)} — detecting",
       "target": "🔍 规则需要 {', '.join(absent)}，正在检测",
       "files": [
@@ -32932,6 +34904,20 @@
       ]
     },
     {
+      "source": "🔧 CLIP source: torch weights {self.model_id} ->",
+      "target": "🔧 CLIP 来源：torch 权重 {self.model_id} →",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
+      "source": "🔧 CLIP source: {'bundled IR ' + ov_dir if ov_dir else 'runtime export ' + src}",
+      "target": "🔧 CLIP 来源：{'内置 IR ' + ov_dir if ov_dir else '运行时导出 ' + src}",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "🔧 CLIP_TIME=0 → using auto-segmentation (variable-length clips)",
       "target": "🔧 CLIP_TIME=0 → 使用自动分段（可变长度片段）",
       "files": [
@@ -33145,7 +35131,8 @@
       "source": "🗑️  Deleted old cache: {cache_file}",
       "target": "🗑️  已删除旧缓存：{cache_file}",
       "files": [
-        "model_training/intel/train.py"
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -33674,10 +35661,45 @@
       ]
     },
     {
+      "source": "🧠 CLIP index: cache stale (video/settings changed), rebuilding",
+      "target": "🧠 CLIP 索引：缓存已过期（视频或设置已变化），正在重建",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "🧠 CLIP index: reusing {len(idx)} cached frames",
+      "target": "🧠 CLIP 索引：复用 {len(idx)} 个缓存帧",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "🧠 CLIP index: {len(timestamps)} frames in {elapsed:.1f}s ({per:.1f} ms/frame)",
+      "target": "🧠 CLIP 索引：{len(timestamps)} 帧，用时 {elapsed:.1f} 秒（{per:.1f} 毫秒/帧）",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
+      "source": "🧠 CLIP memo: cache is for different video/model, starting fresh",
+      "target": "🧠 CLIP 缓存：缓存对应其他视频或模型，将重新开始",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
       "source": "🧠 CLIP memo: saved {len(self._clip_memo)} frames",
       "target": "🧠 CLIP 记忆缓存：已保存 {len(self._clip_memo)} 帧",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🧠 CLIP memo: {len(memo)} frames already embedded",
+      "target": "🧠 CLIP 缓存：已有 {len(memo)} 帧完成嵌入",
+      "files": [
+        "llm/clip_index.py"
       ]
     },
     {

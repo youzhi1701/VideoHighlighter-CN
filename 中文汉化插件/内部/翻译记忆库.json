@@ -809,6 +809,13 @@
       ]
     },
     {
+      "source": "({stats['excluded'] * 100 // n}% cleanly excluded)",
+      "target": "（{stats['excluded'] * 100 // n}% 成功排除）",
+      "files": [
+        "modules/crop/avoid.py"
+      ]
+    },
+    {
       "source": "({t0:.2f}s → {t1:.2f}s)",
       "target": "（{t0:.2f} 秒 → {t1:.2f} 秒）",
       "files": [
@@ -4297,6 +4304,13 @@
       ]
     },
     {
+      "source": "also phrase the findings with a local model",
+      "target": "同时使用本地模型整理这些发现",
+      "files": [
+        "modules/report/advisor.py"
+      ]
+    },
+    {
       "source": "Also re-hash every file on disk.",
       "target": "同时重新计算磁盘上每个文件的哈希。",
       "files": [
@@ -4553,6 +4567,13 @@
       "target": "你可以询问这次剪辑的任何问题。回答将依据这些分析结果和",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "ask something specific instead of the summary",
+      "target": "提出具体问题，而不是生成摘要",
+      "files": [
+        "modules/report/advisor.py"
       ]
     },
     {
@@ -4833,6 +4854,13 @@
       "files": [
         "packaging/installer/videohighlighter-packs.iss",
         "packaging/installer/videohighlighter.iss"
+      ]
+    },
+    {
+      "source": "Available: {list(BACKBONES.keys())}",
+      "target": "可用选项：{list(BACKBONES.keys())}",
+      "files": [
+        "model_training/intel/gpu_encoder.py"
       ]
     },
     {
@@ -9087,6 +9115,13 @@
       ]
     },
     {
+      "source": "excluded {stats['excluded']} | clear {stats['clear']} |",
+      "target": "已排除 {stats['excluded']} | 无冲突 {stats['clear']} |",
+      "files": [
+        "modules/crop/avoid.py"
+      ]
+    },
+    {
       "source": "expected [1, anchors, 5+C], got shape {tuple(output.shape)}",
       "target": "预期形状 [1, anchors, 5+C]，实际为 {tuple(output.shape)}",
       "files": [
@@ -10217,6 +10252,13 @@
       ]
     },
     {
+      "source": "frame {frame_idx}/{total}",
+      "target": "帧 {frame_idx}/{total}",
+      "files": [
+        "modules/crop/avoid.py"
+      ]
+    },
+    {
       "source": "Frame {idx+1}/{len(frame_indices)}: bbox={bbox_count}, pose={pose_count}, combined={combined_count}{filter_info}",
       "target": "帧 {idx+1}/{len(frame_indices)}：边界框={bbox_count}，姿态={pose_count}，综合={combined_count}{filter_info}",
       "files": [
@@ -11078,6 +11120,13 @@
       "target": "import_error({requested!r}) -> {err or '无（依赖栈导入正常）'}",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "impossible {stats['impossible']} | dropped {stats['dropped']}",
+      "target": "无法排除 {stats['impossible']} | 丢弃 {stats['dropped']}",
+      "files": [
+        "modules/crop/avoid.py"
       ]
     },
     {
@@ -15974,6 +16023,13 @@
       ]
     },
     {
+      "source": "people count",
+      "target": "人数",
+      "files": [
+        "modules/crop/actions.py"
+      ]
+    },
+    {
       "source": "People you name in the Timeline Viewer (right-click a face → Name)",
       "target": "你在时间线查看器中命名的人物（右键点击人脸 → 命名）",
       "files": [
@@ -16314,6 +16370,13 @@
       "target": "加分及表情选择：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Pose 3+ in {pose_3plus_share:.0%} of frames",
+      "target": "3+ 姿态占比={pose_3plus_share:.0%}",
+      "files": [
+        "modules/crop/actions.py"
       ]
     },
     {
@@ -18243,6 +18306,13 @@
       ]
     },
     {
+      "source": "Say why a highlight came out the way it did.",
+      "target": "说明高光成片为何会得到当前结果。",
+      "files": [
+        "modules/report/advisor.py"
+      ]
+    },
+    {
       "source": "scan entire video",
       "target": "扫描完整视频",
       "files": [
@@ -20147,6 +20217,13 @@
       ]
     },
     {
+      "source": "strategy",
+      "target": "策略",
+      "files": [
+        "modules/crop/actions.py"
+      ]
+    },
+    {
       "source": "Stream segments actually fetched (proves playback happened):",
       "target": "实际获取到的流片段（可证明播放已发生）：",
       "files": [
@@ -20438,7 +20515,8 @@
       "source": "the *_why.json written beside a cut",
       "target": "剪辑文件旁生成的 *_why.json 报告",
       "files": [
-        "modules/narration/clip_story.py"
+        "modules/narration/clip_story.py",
+        "modules/report/advisor.py"
       ]
     },
     {
@@ -21686,6 +21764,20 @@
       "files": [
         "video_ai_editor/face_identity.py",
         "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Unknown backbone '{backbone}'.",
+      "target": "未知主干网络 '{backbone}'。",
+      "files": [
+        "model_training/intel/gpu_encoder.py"
+      ]
+    },
+    {
+      "source": "Unknown backbone '{name}'. Available: {list(BACKBONES.keys())}",
+      "target": "未知主干网络 '{name}'。可用选项：{list(BACKBONES.keys())}",
+      "files": [
+        "model_training/intel/gpu_encoder.py"
       ]
     },
     {
@@ -32154,6 +32246,13 @@
       ]
     },
     {
+      "source": "✅ {backbone} ready — feature_dim={self.feature_dim}",
+      "target": "✅ {backbone} 已就绪——特征维度={self.feature_dim}",
+      "files": [
+        "model_training/intel/gpu_encoder.py"
+      ]
+    },
+    {
       "source": "✅ {filename} downloaded and processed successfully",
       "target": "✅ {filename} 下载并处理成功",
       "files": [
@@ -35353,6 +35452,13 @@
       ]
     },
     {
+      "source": "📊 Corner check: Low YOLO frames={low_yolo_frames:.0%}, Pose max={pose_max},",
+      "target": "📊 边角情况检查：低 YOLO 检出帧={low_yolo_frames:.0%}，姿态最大人数={pose_max}，",
+      "files": [
+        "modules/crop/actions.py"
+      ]
+    },
+    {
       "source": "📊 CPU cores: {cpu_count} (threads: {cpu_count})",
       "target": "📊 CPU 核心数：{cpu_count}（线程数：{cpu_count}）",
       "files": [
@@ -36961,6 +37067,13 @@
       "target": "🔧 正在加载模型…",
       "files": [
         "sorter.py"
+      ]
+    },
+    {
+      "source": "🔧 Loading {backbone} on {device} (dtype={self.dtype})",
+      "target": "🔧 正在 {device} 上加载 {backbone}（dtype={self.dtype}）",
+      "files": [
+        "model_training/intel/gpu_encoder.py"
       ]
     },
     {

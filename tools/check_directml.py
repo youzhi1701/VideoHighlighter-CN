@@ -66,30 +66,29 @@ def report_env() -> bool:
     """Environment and install. False if DirectML cannot be used at all."""
     _hr("Environment")
     print(f"python         {platform.python_version()} ({platform.machine()})")
-    print(f"os             {platform.system()} {platform.release()}")
+    print(f"操作系统       {platform.system()} {platform.release()}")
 
     try:
         import torch
         print(f"torch          {torch.__version__}")
     except Exception as e:
-        print(f"torch          NOT IMPORTABLE ({type(e).__name__}: {e})")
+        print(f"torch          无法导入（{type(e).__name__}：{e}）")
         return False
 
     try:
         import torch_directml
-        print(f"torch-directml {getattr(torch_directml, '__version__', '(unknown)')}")
+        print(f"torch-directml {getattr(torch_directml, '__version__', '（未知）')}")
     except Exception as e:
-        print(f"torch-directml NOT INSTALLED ({type(e).__name__}: {e})")
+        print(f"torch-directml 未安装（{type(e).__name__}：{e}）")
         print("\n  pip install torch-directml")
-        print("  Note there is no torch-directml>=1.13 - releases are dated dev")
-        print("  builds (0.2.5.dev240914), so a normal-looking version floor")
-        print("  matches nothing. Install it in its own virtualenv: it pins an")
-        print("  exact torch and pip will replace a +xpu or +cu128 build with a")
-        print("  stock wheel to satisfy that, silently removing Arc/CUDA support.")
+        print("  注意：不存在 torch-directml>=1.13；发布版本采用日期式 dev 版本号")
+        print("  （例如 0.2.5.dev240914），因此常规版本下限会匹配不到。")
+        print("  建议安装在独立虚拟环境中：它会固定特定 torch 版本，pip 可能会")
+        print("  用标准 wheel 替换 +xpu 或 +cu128 版本，从而悄悄移除 Arc/CUDA 支持。")
         return False
 
     print(f"{dml.MODE_ENV:<14} {os.environ.get(dml.MODE_ENV, '(not set)')} "
-          f"-> mode={dml.mode()}")
+          f"-> 模式={dml.mode()}")
     print(f"{dml.FP16_ENV:<14} {os.environ.get(dml.FP16_ENV, '(not set)')} "
           f"-> fp16={dml.prefer_float16()}")
     return True
@@ -100,7 +99,7 @@ def report_adapters() -> bool:
     _hr("Adapters")
     probe = dml.probe(refresh=True)
     if not probe.available:
-        print(f"unusable: {probe.reason}")
+        print(f"不可用：{probe.reason}")
         return False
 
     for i, name in enumerate(probe.names):
@@ -110,11 +109,10 @@ def report_adapters() -> bool:
         print(f"  [{i}] {name}{marker}")
 
     if probe.preferred_index != 0:
-        print("\n  Note: adapter 0 is a software renderer and is skipped. That is")
-        print("  the intended behaviour — running on it would be slower than the")
-        print("  CPU path it replaced, with nothing reporting a fault.")
+        print("\n  注意：适配器 0 是软件渲染器，已跳过。这是预期行为；")
+        print("  使用它会比被替代的 CPU 路径更慢，而且不会报告硬件故障。")
 
-    print(f"\ntorch device   {probe.device_string()} (backend {probe.backend!r})")
+    print(f"\ntorch 设备     {probe.device_string()}（后端 {probe.backend!r}）")
     return True
 
 
@@ -144,11 +142,11 @@ def report_memory() -> None:
             break
         mb *= 2
     if largest:
-        print(f"largest single fp32 allocation that succeeded: ~{largest} MB")
+        print(f"成功分配的最大单块 fp32 内存：约 {largest} MB")
     else:
-        print("could not allocate even 64 MB - the device is not really usable")
-    print("Compare with the card's advertised VRAM. A figure far below it means")
-    print("DirectML is working in a fraction of the memory and will swap.")
+        print("连 64 MB 都无法分配——该设备实际上不可用")
+    print("请与显卡标称显存比较；如果数值远低于标称值，说明 DirectML 只能使用部分内存，")
+    print("运行时可能频繁发生内存交换。")
 
 
 def check_forward(size: int) -> bool:
@@ -165,20 +163,20 @@ def check_forward(size: int) -> bool:
     try:
         got = (a.to(device) @ b.to(device)).cpu().flatten()
     except Exception as e:
-        print(f"FAILED: the matmul did not run ({type(e).__name__}: {e})")
-        print("An 'operator is not currently implemented' message here is")
-        print("DirectML's operator coverage, not a bug in the app.")
+        print(f"失败：矩阵乘法未能运行（{type(e).__name__}：{e}）")
+        print("如果这里出现“operator is not currently implemented”，表示 DirectML")
+        print("尚未覆盖该算子，并非应用程序本身的错误。")
         return False
 
     if not torch.isfinite(got).all():
-        print("FAILED: the result contains inf/nan")
+        print("失败：结果中包含 inf/nan")
         return False
 
     cosine = float(torch.nn.functional.cosine_similarity(
         got.double().unsqueeze(0), reference.double().unsqueeze(0)).item())
     verdict = "ok" if cosine >= AGREEMENT_MIN else "FAILED"
-    print(f"cosine vs fp32 CPU reference: {cosine:.6f}  ({verdict}, "
-          f"need >= {AGREEMENT_MIN})")
+    print(f"与 fp32 CPU 参考结果的余弦相似度：{cosine:.6f}（{verdict}，"
+          f"要求 >= {AGREEMENT_MIN}）")
     return cosine >= AGREEMENT_MIN
 
 
@@ -208,21 +206,21 @@ def benchmark(size: int, iterations: int) -> bool:
     # completion measures how fast Python can submit, not how fast the GPU runs.
     dml_s = timed(da, db, lambda: (da @ db).cpu())
 
-    print(f"matmul {size}x{size}, {iterations} iterations")
-    print(f"  cpu        {cpu_s * 1000:8.1f} ms")
-    print(f"  directml   {dml_s * 1000:8.1f} ms")
+    print(f"矩阵乘法 {size}x{size}，{iterations} 次迭代")
+    print(f"  CPU        {cpu_s * 1000:8.1f} ms")
+    print(f"  DirectML   {dml_s * 1000:8.1f} ms")
     speedup = cpu_s / dml_s if dml_s else 0.0
-    print(f"  speedup    {speedup:8.2f}x  (need >= {SPEEDUP_MIN:.1f}x to be worth it)")
+    print(f"  加速比     {speedup:8.2f}x（达到 >= {SPEEDUP_MIN:.1f}x 才值得启用）")
     if speedup < SPEEDUP_MIN:
-        print("\n  DirectML is not beating the CPU here. That is a legitimate")
-        print(f"  outcome on a weak card - set {dml.MODE_ENV}=off and lose nothing.")
+        print("\n  当前 DirectML 性能没有超过 CPU。这在性能较弱的显卡上是正常结果；")
+        print(f"  可以设置 {dml.MODE_ENV}=off 关闭它，不会损失性能。")
     return speedup >= SPEEDUP_MIN
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--size", type=int, default=1024,
-                    help="matmul edge length for the correctness and speed checks")
+                    help="用于正确性和速度检查的矩阵乘法边长")
     ap.add_argument("--iterations", type=int, default=10)
     ap.add_argument("--skip-benchmark", action="store_true")
     ap.add_argument("--skip-memory", action="store_true")
@@ -239,7 +237,7 @@ def main(argv=None) -> int:
         ok = benchmark(args.size, args.iterations)
 
     _hr("Verdict")
-    print("DirectML is usable" if ok else "DirectML is NOT usable as configured")
+    print("DirectML 可用" if ok else "按当前配置 DirectML 不可用")
     return 0 if ok else 1
 
 

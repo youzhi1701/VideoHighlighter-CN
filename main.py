@@ -4213,7 +4213,7 @@ class VideoHighlighterGUI(QWidget):
 
                     self.append_log("⚠️ 处理已完成，但没有生成高光视频（或文件缺失/为空）")
                     self.append_log(f"{'='*60}\n")
-                    return {'success': False, 'error': 'No highlight generated'}
+                    return {'success': False, 'error': '未生成高光视频'}
 
                 except Exception as e:
                     self.append_log(f"❌ 处理错误：{e}")
@@ -4680,7 +4680,7 @@ class VideoHighlighterGUI(QWidget):
         if has("highlights", "export_separate_clips"):
             self.export_clips_chk.setChecked(bool(get("highlights", "export_separate_clips")))
             self.export_clips_chk.setText(
-                "Export clips: ON" if self.export_clips_chk.isChecked() else "Export clips: OFF")
+                "导出独立片段：开" if self.export_clips_chk.isChecked() else "导出独立片段：关")
         self._set_combo_data(self.render_mode_combo, get("highlights", "render_mode") if has("highlights", "render_mode") else None)
         if has("highlights", "use_time_range"):
             self.use_time_range_chk.setChecked(bool(get("highlights", "use_time_range")))
@@ -4832,9 +4832,9 @@ class VideoHighlighterGUI(QWidget):
             return
         if delete_preset(name, CONFIG_FILE):
             self._refresh_presets()
-            self.append_log(f"🗑 Deleted preset '{name}'. config.yaml was not changed.")
+            self.append_log(f"🗑 已删除预设“{name}”，config.yaml 未修改。")
         else:
-            self.append_log(f"⚠️ Preset '{name}' is not on disk.")
+            self.append_log(f"⚠️ 磁盘上不存在预设“{name}”。")
 
     # --- Config persistence ---
     def load_config(self):
@@ -5425,7 +5425,7 @@ class VideoHighlighterGUI(QWidget):
             if self.use_time_range_chk.isChecked():
                 range_pct = end_pct - start_pct
                 self.selection_info_label.setText(
-                    f"Selection: {start_pct}% to {end_pct}% ({range_pct}% of video)"
+                    f"选择范围：{start_pct}% 至 {end_pct}%（占视频 {range_pct}%）"
                 )
                 self.selection_info_label.setStyleSheet("color: #2f81f7; font-weight: bold; font-size: 10pt;")
             else:
@@ -5447,7 +5447,7 @@ class VideoHighlighterGUI(QWidget):
         
         if self.use_time_range_chk.isChecked():
             self.selection_info_label.setText(
-                f"Selection: {self.format_time(duration)} ({percentage}% of video)"
+                f"选择范围：{self.format_time(duration)}（占视频 {percentage}%）"
             )
             self.selection_info_label.setStyleSheet("color: #2f81f7; font-weight: bold; font-size: 10pt;")
         else:
@@ -5474,7 +5474,7 @@ class VideoHighlighterGUI(QWidget):
                 
                 # Update labels
                 self.video_duration_label.setText(
-                    f"Video duration: {self.format_time(duration)} ({duration}s)"
+                    f"视频时长：{self.format_time(duration)}（{duration} 秒）"
                 )
                 self.video_duration_label.setStyleSheet("color: #4CAF50; font-style: italic;")
                 
@@ -5826,9 +5826,8 @@ class VideoHighlighterGUI(QWidget):
         self._show_progress(True)
         self.append_log("=== 开始运行 Video Highlighter 处理流水线 ===")
         if self._simple_run:
-            self.append_log("Simple view: default scoring (motion peaks + loudness), "
-                            "reel + separate clips, highlight length from this page. "
-                            "Detailed knobs unchanged.")
+            self.append_log("简洁模式：使用默认评分（运动峰值 + 响度），生成成片和独立片段；"
+                            "高光时长以本页设置为准，详细参数保持不变。")
         self.append_log(f"📁 输入：{video_paths}")
         self.append_log(f"📁 输出：{config.get('output_file', 'highlight.mp4')}")
         if config.get('draw_object_boxes') or config.get('draw_action_labels'):
@@ -6176,7 +6175,7 @@ class VideoHighlighterGUI(QWidget):
     def force_worker_cleanup(self):
         """Force cleanup if worker doesn't stop gracefully"""
         if self.worker and self.worker.isRunning():
-            self.append_log("⚠️ Forcing pipeline termination...")
+            self.append_log("⚠️ 正在强制终止处理流水线…")
             self.worker.terminate()
             self.worker.wait(3000)  # Wait up to 3 seconds
             self.pipeline_cleanup()
@@ -6186,7 +6185,7 @@ class VideoHighlighterGUI(QWidget):
         """Refresh the analyzed-videos counter label (lifetime + this session)."""
         total = analysis_stats.get_analyzed_count()
         self.analyzed_counter_label.setText(
-            f"📈 Analyzed videos: {total} (session: {self.session_analyzed_count})"
+            f"📈 已分析视频：{total}（本次会话：{self.session_analyzed_count}）"
         )
 
     def pipeline_done(self, output_file):
@@ -6199,7 +6198,7 @@ class VideoHighlighterGUI(QWidget):
             
             # Handle both single file (string) and multiple files (list of tuples)
             if isinstance(output_file, list):
-                self.append_log(f"🎬 Processed {len(output_file)} videos:")
+                self.append_log(f"🎬 已处理 {len(output_file)} 个视频：")
                 
                 highlight_files = []  # Track valid highlight files
                 
@@ -6221,9 +6220,9 @@ class VideoHighlighterGUI(QWidget):
                         transcript_file = f"{base_name}_transcript.txt"
                         
                         if os.path.exists(srt_file): 
-                            self.append_log(f"     📝 Subtitle: {srt_file}")
+                            self.append_log(f"     📝 字幕：{srt_file}")
                         if os.path.exists(transcript_file): 
-                            self.append_log(f"     📄 Transcript: {transcript_file}")
+                            self.append_log(f"     📄 转录文本：{transcript_file}")
                     else:
                         self.append_log("   ❌ 处理失败")
                 
@@ -6240,7 +6239,7 @@ class VideoHighlighterGUI(QWidget):
                     combined_file = self.combine_highlights(highlight_files, combined_output)
                     
                     if combined_file:
-                        self.append_log(f"🎉 All highlights combined into: {combined_file}")
+                        self.append_log(f"🎉 所有高光片段已合并到：{combined_file}")
                         
                         # Calculate and display total duration
                         try:
@@ -6265,9 +6264,9 @@ class VideoHighlighterGUI(QWidget):
                 transcript_file = f"{base_name}_transcript.txt"
                 
                 if os.path.exists(srt_file): 
-                    self.append_log(f"📝 Subtitle file: {srt_file}")
+                    self.append_log(f"📝 字幕文件：{srt_file}")
                 if os.path.exists(transcript_file): 
-                    self.append_log(f"📄 Transcript file: {transcript_file}")
+                    self.append_log(f"📄 转录文件：{transcript_file}")
                 
             newly_analyzed = len(highlight_files) if isinstance(output_file, list) else 1
             if newly_analyzed:
@@ -6275,13 +6274,13 @@ class VideoHighlighterGUI(QWidget):
                 total_analyzed = analysis_stats.increment_analyzed(newly_analyzed)
                 self.update_analyzed_counter()
                 self.append_log(
-                    f"📈 Analyzed videos: +{newly_analyzed} this run — lifetime total: {total_analyzed}"
+                    f"📈 本次新增分析 {newly_analyzed} 个视频 — 累计：{total_analyzed}"
                 )
 
             self.task_label.setText("✅ 已完成！")
             self.task_label.setStyleSheet("color: #4CAF50; font-weight: bold;")
         elif not was_cancelled:
-            self.append_log("\n⚠️ === PIPELINE COMPLETED WITH ERRORS ===")
+            self.append_log("\n⚠️ === 处理流水线已完成，但存在错误 ===")
             self.append_log("❌ 没有生成输出文件，请检查日志中的错误信息。")
             self.task_label.setText("❌ 失败")
             self.task_label.setStyleSheet("color: #f44336; font-weight: bold;")
@@ -6299,7 +6298,7 @@ class VideoHighlighterGUI(QWidget):
                 
                 if cache_data:
                     self.llm_chat.set_analysis_data(cache_data, video_path)
-                    self.append_log("🤖 LLM chat context updated with analysis data")
+                    self.append_log("🤖 大模型聊天上下文已更新分析数据")
             except Exception as e:
                 self.append_log(f"⚠️ 无法更新大模型上下文：{e}")
 
@@ -6328,7 +6327,7 @@ class VideoHighlighterGUI(QWidget):
                     cache_data = cache.load(video_path, params=analysis_params)
                     if cache_data:
                         self.llm_chat.set_analysis_data(cache_data, video_path)
-                        self.append_log("🤖 LLM chat context updated with analysis data")
+                        self.append_log("🤖 大模型聊天上下文已更新分析数据")
             except Exception as e:
                 self.append_log(f"⚠️ 无法更新大模型上下文：{e}")
 
@@ -6337,7 +6336,7 @@ class VideoHighlighterGUI(QWidget):
     def pipeline_cancelled(self):
         """Handle pipeline cancellation"""
         self.status_timer.stop()
-        self.append_log("\n⏹️ === PIPELINE CANCELLED ===")
+        self.append_log("\n⏹️ === 处理流水线已取消 ===")
         self.task_label.setText("⏹️ 已取消")
         self.task_label.setStyleSheet("color: #ff9800; font-weight: bold;")
         self.pipeline_cleanup()
@@ -6471,14 +6470,13 @@ class VideoHighlighterGUI(QWidget):
                 self.append_log("⚠️ 请先添加视频——报告会保存在对应高光文件旁边。")
                 return
             self.append_log(
-                "⚠️ No report found yet. Run the highlighter with “Write a highlight "
-                "report” enabled (Advanced tab) — it is written before the video is "
-                "encoded, so it appears early in the run.")
+                "⚠️ 暂未找到报告。请在“高级”选项卡中启用“写入高光报告”后运行处理；"
+                "报告会在视频编码前生成，因此通常会在处理早期出现。")
             return
 
         newest = max(found, key=lambda p: os.path.getmtime(p))
         if QDesktopServices.openUrl(QUrl.fromLocalFile(newest)):
-            self.append_log(f"📄 Opened report: {os.path.basename(newest)}")
+            self.append_log(f"📄 已打开报告：{os.path.basename(newest)}")
         else:
             # No browser association is plausible on a stripped Windows install;
             # the path is more useful than a silent failure.
@@ -6592,9 +6590,9 @@ class VideoHighlighterGUI(QWidget):
         model = (entry or {}).get("model", "llama3")
         mmproj = (entry or {}).get("mmproj")
         self.append_log(
-            f"🤖 Asking {backend}/{model} to "
-            f"{'read what happens in this cut' if reading else 'summarise the report'}… "
-            "this takes a moment.")
+            f"🤖 正在让 {backend}/{model} "
+            f"{'读取这个剪辑中发生的内容' if reading else '总结报告'}… "
+            "这需要一点时间。")
         # The call blocks; without this the window looks hung rather than busy.
         self.ai_summary_btn.setEnabled(False)
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -6603,8 +6601,8 @@ class VideoHighlighterGUI(QWidget):
             llm = advisor.load_llm(backend, model, mmproj=mmproj)
             if llm is None:
                 self.append_log(
-                    f"⚠️ Could not reach {backend}/{model}. The report's findings "
-                    "are there without it — only the summary needs a model.")
+                    f"⚠️ 无法连接 {backend}/{model}。报告中的分析结果仍然可用，"
+                    "只有生成摘要需要模型。")
                 return
             from modules.narration.llm_models import label_for
             text = advisor.summarise_report_file(
@@ -6618,7 +6616,7 @@ class VideoHighlighterGUI(QWidget):
             self.ai_summary_btn.setEnabled(True)
 
         if not text:
-            self.append_log("⚠️ The model returned nothing; report unchanged.")
+            self.append_log("⚠️ 模型未返回内容，报告保持不变。")
             return
         self.append_log(f"💡 {text}")
         html_path = os.path.splitext(json_path)[0] + ".html"
@@ -6665,8 +6663,8 @@ class VideoHighlighterGUI(QWidget):
         name = (entry or {}).get("model", "llama3")
         mmproj = (entry or {}).get("mmproj")
         self.append_log(
-            f"📖 Asking {backend}/{name} to tell {len(chapters)} chapters — "
-            "one call each, so this takes minutes, not seconds.")
+            f"📖 正在让 {backend}/{name} 讲述 {len(chapters)} 个章节 — "
+            "每个章节都需要单独调用一次模型，因此可能需要几分钟。")
         self.ai_summary_btn.setEnabled(False)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         QApplication.processEvents()
@@ -6674,8 +6672,8 @@ class VideoHighlighterGUI(QWidget):
             llm = advisor.load_llm(backend, name, mmproj=mmproj, vision=True)
             if llm is None:
                 self.append_log(
-                    f"⚠️ Could not reach {backend}/{name}. The chapters keep "
-                    "their measurements — only the telling needs a model.")
+                    f"⚠️ 无法连接 {backend}/{name}。章节的分析数据仍会保留，"
+                    "只有生成讲述内容需要模型。")
                 return
 
             def progress(line):
@@ -6695,9 +6693,9 @@ class VideoHighlighterGUI(QWidget):
             self.ai_summary_btn.setEnabled(True)
 
         if not told:
-            self.append_log("⚠️ The model returned nothing; report unchanged.")
+            self.append_log("⚠️ 模型未返回内容，报告保持不变。")
             return
-        self.append_log(f"📖 Told {told} of {len(chapters)} chapters.")
+        self.append_log(f"📖 已完成 {told}/{len(chapters)} 个章节的讲述。")
         html_path = os.path.splitext(json_path)[0] + ".html"
         if os.path.exists(html_path):
             QDesktopServices.openUrl(QUrl.fromLocalFile(html_path))
@@ -6941,8 +6939,8 @@ class VideoHighlighterGUI(QWidget):
             return
 
         findings = report.get("advice") or []
-        self.append_log(f"💡 Re-read with '{picked}' in mind — "
-                        f"{len(findings)} suggestion(s):")
+        self.append_log(f"💡 已按“{picked}”重新审阅 — "
+                        f"共 {len(findings)} 条建议：")
         for finding in findings[:3]:
             self.append_log(f"   • {finding.get('title', '')}")
 

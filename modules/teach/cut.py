@@ -100,7 +100,7 @@ def cut_project(project: Project, *, run: Optional[Callable] = None,
         if source.cut:
             continue
         if not os.path.exists(source.path):
-            failed.append({"source": source.id, "error": f"missing: {source.path}"})
+            failed.append({"source": source.id, "error": f"缺少文件：{source.path}"})
             continue
         source.duration = source.duration or duration_of(source.path)
         plan = plan_segments(source.duration, settings.clip_seconds,

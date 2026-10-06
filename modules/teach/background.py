@@ -107,15 +107,15 @@ def run_once(root: str, *, train: bool = True, run_cli: Optional[Callable] = Non
 def summary(report: dict) -> str:
     """One line for the panel."""
     if report.get("error"):
-        return f"Background: stopped ({report['error']})"
+        return f"后台改进：已停止（{report['error']}）"
     import os
 
-    ran = ", ".join(report.get("ran") or []) or "nothing new"
+    ran = ", ".join(report.get("ran") or []) or "暂无新操作"
     if report.get("root"):
         ran = f"{os.path.basename(report['root'])}: {ran}"
     n = report.get("questions", 0)
-    ask = f"; {n} question{'s' if n != 1 else ''} waiting" if n else ""
-    return f"Background: {ran}{ask}. Next: {report.get('next', {}).get('why', '')}"
+    ask = f"；有 {n} 个问题等待确认" if n else ""
+    return f"后台改进：{ran}{ask}。下一步：{report.get('next', {}).get('why', '')}"
 
 
 try:

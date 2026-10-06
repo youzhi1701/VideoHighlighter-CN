@@ -63,8 +63,8 @@ class _DefaultDeviceWatcher(QObject):
                 continue
             alive.append(audio_output)
         self._outputs = alive
-        print(f"[audio] default output is now {device.description()!r} "
-              f"({len(alive)} player(s) re-pointed)")
+        print(f"[音频] 默认输出已切换为 {device.description()!r} "
+              f"（已重新指向 {len(alive)} 个播放器）")
 
 
 _watcher = None
@@ -83,5 +83,5 @@ def follow_system_default(audio_output):
             _watcher = _DefaultDeviceWatcher()
         _watcher.add(audio_output)
     except Exception as e:
-        print(f"[audio] cannot track default output device: {e}")
+        print(f"[音频] 无法跟随系统默认输出设备：{e}")
     return audio_output

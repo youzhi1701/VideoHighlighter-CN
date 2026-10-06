@@ -90,10 +90,10 @@ def apply_update(root: str, staging_dir: str, staged_paths: list,
     try:
         for relative in staged_paths:
             if not is_safe_relpath(relative):
-                raise ValueError(f"unsafe path in staged set: {relative!r}")
+                raise ValueError(f"暂存集合中包含不安全路径：{relative!r}")
             source = local_path(staging_dir, relative)
             if not os.path.exists(source):
-                raise FileNotFoundError(f"staged file missing: {relative}")
+                raise FileNotFoundError(f"缺少暂存文件：{relative}")
 
             _displace(root, relative, journal)
             target = local_path(root, relative)
@@ -137,7 +137,7 @@ def _rollback(journal: list, placed: list) -> None:
         except OSError:
             # Nothing better is available here; the file is still in the trash
             # folder, and the next update will re-download it from the manifest.
-            print(f"update_apply: could not restore {original}")
+            print(f"更新应用：无法恢复 {original}")
 
 
 def sweep_old(root: str) -> int:

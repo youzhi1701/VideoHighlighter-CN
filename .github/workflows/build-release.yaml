@@ -1,6 +1,9 @@
 name: Build & Release
 
 on:
+  push:
+    paths:
+      - ".github/release-cn.trigger"
   workflow_dispatch:
     inputs:
       release_version:

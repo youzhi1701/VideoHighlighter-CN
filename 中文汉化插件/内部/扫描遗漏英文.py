@@ -37,6 +37,17 @@ TECH_RE = re.compile(
     re.I,
 )
 
+TK_WIDGET_CALLS = {
+    "Label", "Button", "Checkbutton", "Radiobutton", "LabelFrame",
+    "Menubutton", "Menu",
+}
+TK_MESSAGE_CALLS = {
+    "showerror", "showwarning", "showinfo", "askyesno", "askokcancel",
+    "askretrycancel", "askquestion",
+}
+TK_FILE_CALLS = {"askopenfilename", "asksaveasfilename", "askdirectory"}
+
+
 UI_CALLS = {
     "QLabel", "QPushButton", "QCheckBox", "QRadioButton", "QGroupBox", "QAction",
     "QMenu", "QTabWidget", "QMessageBox", "QToolButton", "QCommandLinkButton",
@@ -163,7 +174,8 @@ def assignment_names(node: ast.AST) -> list[str]:
 def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     hits: list[Hit] = []
     try:
-        tree = ast.parse(path.read_text(encoding="utf-8"))
+        source_text = path.read_text(encoding="utf-8")
+        tree = ast.parse(source_text)
     except SyntaxError as exc:
         # A broken localized string is more serious than untranslated text.
         # Never silently skip the file: surface the parser error and make CI fail.
@@ -183,6 +195,8 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
             clean(str(exc)),
         )]
 
+    tkinter_file = ("import tkinter" in source_text or "from tkinter" in source_text)
+
     docstring_nodes: set[int] = set()
     for owner in ast.walk(tree):
         if isinstance(owner, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
@@ -200,6 +214,34 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 for kw in node.keywords:
                     if kw.arg and UI_KEY_RE.search(kw.arg):
                         add(hits, rel, kw.value, "python-ui-keyword", "high", string_value(kw.value), allow)
+            elif tkinter_file and name in TK_WIDGET_CALLS:
+                for kw in node.keywords:
+                    if kw.arg == "text":
+                        add(hits, rel, kw.value, "python-tk-ui", "high",
+                            string_value(kw.value), allow)
+            elif tkinter_file and name in TK_MESSAGE_CALLS:
+                for arg in node.args[:3]:
+                    add(hits, rel, arg, "python-tk-dialog", "high",
+                        string_value(arg), allow)
+            elif tkinter_file and name in TK_FILE_CALLS:
+                for kw in node.keywords:
+                    if kw.arg in {"title", "filetypes"}:
+                        add(hits, rel, kw.value, "python-tk-file-dialog", "high",
+                            string_value(kw.value), allow)
+            elif tkinter_file and name == "StringVar":
+                for kw in node.keywords:
+                    if kw.arg == "value":
+                        add(hits, rel, kw.value, "python-tk-ui", "high",
+                            string_value(kw.value), allow)
+            elif tkinter_file and name in {"title", "set"}:
+                for arg in node.args[:1]:
+                    add(hits, rel, arg, "python-tk-runtime", "high",
+                        string_value(arg), allow)
+            elif tkinter_file and name in {"config", "configure"}:
+                for kw in node.keywords:
+                    if kw.arg == "text":
+                        add(hits, rel, kw.value, "python-tk-runtime", "high",
+                            string_value(kw.value), allow)
             elif name in USER_TEXT_CALLBACKS:
                 # These callbacks are wired into the visible task/log panels.
                 # Scan every string argument because progress_fn commonly uses
@@ -245,7 +287,6 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     # Deep pass: runtime/user-facing strings emitted indirectly from GUI files.
     # This catches status/error/progress signals and helper-returned text that
     # does not sit directly inside a QLabel/QPushButton constructor.
-    source_text = path.read_text(encoding="utf-8", errors="ignore")
     gui_file = ("PySide6" in source_text or "PyQt" in source_text)
     for node in ast.walk(tree):
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):

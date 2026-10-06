@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "77fdc94c2b3e2e5e5bd8aeece19a4a992189f50e"
+    "head_commit": "e2c72ecac7f8bccd6c1af5b201c30dcb3b41dd24"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -35013,6 +35013,78 @@
       "after": "",
       "hunk": "@@ -217,7 +217,7 @@ def cmd_add_example(args, project):",
       "id": "modules/teach/cli.py#56"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "                self._trip(f\"process tree reached {total:.0f} MB \"\n                           f\"(ceiling {self.max_tree_mb:.0f} MB)\", children)",
+      "target": "                self._trip(f\"进程树内存达到 {total:.0f} MB \"\n                           f\"（上限 {self.max_tree_mb:.0f} MB）\", children)",
+      "before": "            if total > self.max_tree_mb:",
+      "after": "            elif len(children) > self.max_children:",
+      "hunk": "@@ -100,11 +100,11 @@ def _run(self):",
+      "id": "modules/system/smoke_test.py#1"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "                self._trip(f\"{len(children)} child processes \"\n                           f\"(ceiling {self.max_children})\", children)",
+      "target": "                self._trip(f\"子进程数量达到 {len(children)} 个 \"\n                           f\"（上限 {self.max_children} 个）\", children)",
+      "before": "            elif len(children) > self.max_children:",
+      "after": "",
+      "hunk": "@@ -100,11 +100,11 @@ def _run(self):",
+      "id": "modules/system/smoke_test.py#2"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "        print(f\"🛑 smoke: {reason} — killing the children\")",
+      "target": "        print(f\"🛑 冒烟测试：{reason}——正在终止子进程\")",
+      "before": "        self.tripped = reason",
+      "after": "        for child in children:",
+      "hunk": "@@ -116,7 +116,7 @@ def _trip(self, reason, children):",
+      "id": "modules/system/smoke_test.py#3"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "        print(f\"{'✅' if ok else '❌'} smoke: {name}\" + (f\" — {detail}\" if detail else \"\"))",
+      "target": "        print(f\"{'✅' if ok else '❌'} 冒烟测试：{name}\" + (f\"——{detail}\" if detail else \"\"))",
+      "before": "        checks[name] = {\"ok\": bool(ok), \"detail\": detail}",
+      "after": "",
+      "hunk": "@@ -138,7 +138,7 @@ def main(argv) -> int:",
+      "id": "modules/system/smoke_test.py#4"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "                print(f\"⚠️ smoke: could not write the report: {e}\")\n        print(f\"{'✅ smoke test passed' if report['ok'] else '❌ smoke test FAILED'}\"\n              f\" in {report['seconds']}s\")",
+      "target": "                print(f\"⚠️ 冒烟测试：无法写入报告：{e}\")\n        print(f\"{'✅ 冒烟测试通过' if report['ok'] else '❌ 冒烟测试失败'}\"\n              f\"，耗时 {report['seconds']} 秒\")",
+      "before": "            except Exception as e:",
+      "after": "        return 0 if report[\"ok\"] else 1",
+      "hunk": "@@ -148,24 +148,24 @@ def finish() -> int:",
+      "id": "modules/system/smoke_test.py#5"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "        checks[\"finished in time\"] = {\"ok\": False, \"detail\": f\"over {timeout_s:.0f}s\"}\n        print(f\"❌ smoke: still running after {timeout_s:.0f}s\")",
+      "target": "        checks[\"finished in time\"] = {\"ok\": False, \"detail\": f\"超过 {timeout_s:.0f} 秒\"}\n        print(f\"❌ 冒烟测试：运行超过 {timeout_s:.0f} 秒仍未结束\")",
+      "before": "    def _deadline():",
+      "after": "        code = finish()",
+      "hunk": "@@ -148,24 +148,24 @@ def finish() -> int:",
+      "id": "modules/system/smoke_test.py#6"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "        check(\"video exists\", False, repr(video))",
+      "target": "        check(\"视频存在\", False, repr(video))",
+      "before": "    if not video or not os.path.exists(video):",
+      "after": "        return finish()",
+      "hunk": "@@ -148,24 +148,24 @@ def finish() -> int:",
+      "id": "modules/system/smoke_test.py#7"
+    },
+    {
+      "file": "modules/system/smoke_test.py",
+      "source": "        check(\"psutil available\", False, f\"{type(e).__name__}: {e}\")",
+      "target": "        check(\"psutil 可用\", False, f\"{type(e).__name__}: {e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return finish()",
+      "hunk": "@@ -175,7 +175,7 @@ def _deadline():",
+      "id": "modules/system/smoke_test.py#8"
     }
   ]
 }

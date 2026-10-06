@@ -151,7 +151,7 @@ class LabelStore:
                 data = json.load(fh)
             self.boxes = [LabelledBox.from_json(d) for d in data.get("boxes", [])]
         except Exception as exc:
-            print(f"[labels] unreadable store ({exc}); starting empty")
+            print(f"[标签] 无法读取标签存储（{exc}），将从空数据开始")
         return self
 
     def save(self) -> None:
@@ -363,7 +363,7 @@ def build_dataset(store: LabelStore, out_dir: str,
 
     class_names = store.class_names()
     if not class_names:
-        raise ValueError("No accepted labels — nothing to build a dataset from")
+        raise ValueError("没有已接受的标签，无法构建数据集")
 
     usable = store.accepted() + store.negatives()
     train_groups, val_groups = split_segments(
@@ -422,16 +422,16 @@ def build_dataset(store: LabelStore, out_dir: str,
             "annotations": len(document["annotations"]),
         }
 
-    print(f"[labels] dataset at {out_dir}: "
-          + ", ".join(f"{k} {v['images']} images / {v['annotations']} boxes"
-                      for k, v in summary["splits"].items()))
+    print(f"[标签] 数据集已生成于 {out_dir}："
+          + "，".join(f"{k}：{v['images']} 张图像 / {v['annotations']} 个检测框"
+                     for k, v in summary["splits"].items()))
     if not summary["splits"].get("val", {}).get("images"):
         # Said out loud, because everything downstream quietly degrades: there
         # is no score to compare rounds by, and "never promote a worse model"
         # has nothing to test. Usually means the labels all sit inside one
         # segment — spread them across the footage, or lower max_span.
-        print("[labels] WARNING: the validation split is empty. Training will "
-              "report no validation loss, and rounds cannot be compared.")
+        print("[标签] 警告：验证集为空。训练将无法报告验证损失，"
+              "也无法比较不同训练轮次。")
     return summary
 
 
@@ -470,7 +470,7 @@ def from_labeler_export(path: str, box_fraction: float = 0.12,
     width = float(data.get("frame_width") or 0.0)
     height = float(data.get("frame_height") or 0.0)
     if width <= 0 or height <= 0:
-        raise ValueError(f"{path} has no frame size; cannot normalise its points")
+        raise ValueError(f"{path} 缺少画面尺寸，无法归一化标注点")
 
     out = []
     for frame in data.get("keyframes", []):

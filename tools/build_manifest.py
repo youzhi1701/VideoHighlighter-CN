@@ -1,4 +1,4 @@
-"""Generate, sign and verify the per-file release manifest.
+"""生成、签名并验证逐文件发行清单。
 
 Why per-file
 ------------
@@ -90,7 +90,7 @@ def _walk(root: str):
 def generate(args) -> int:
     root = os.path.abspath(args.root)
     if not os.path.isdir(root):
-        print(f"FAIL:not a directory: {root}")
+        print(f"FAIL: 不是目录：{root}")
         return 1
 
     files, total = [], 0
@@ -133,7 +133,7 @@ def generate(args) -> int:
         handle.write("\n")
 
     print(f"OK:{out}")
-    print(f"  {len(files)} files, {total / (1024 ** 3):.2f} GB")
+    print(f"  {len(files)} 个文件，共 {total / (1024 ** 3):.2f} GB")
     return 0
 
 
@@ -151,9 +151,9 @@ def keygen(args) -> int:
     )
 
     if os.path.exists(args.out) and not args.force:
-        print(f"FAIL:{args.out} exists. --force to overwrite.")
-        print("  Overwriting invalidates every manifest already published:")
-        print("  installed copies verify against the OLD public key.")
+        print(f"FAIL: {args.out} 已存在。使用 --force 可覆盖。")
+        print("  覆盖密钥会使所有已发布的 manifest 失效：")
+        print("  已安装客户端仍会使用旧公钥进行验证。")
         return 1
 
     private = Ed25519PrivateKey.generate()
@@ -165,8 +165,8 @@ def keygen(args) -> int:
     public_hex = private.public_key().public_bytes(
         Encoding.Raw, PublicFormat.Raw).hex()
 
-    print(f"OK:private key: {args.out}  (NEVER commit; back it up offline)")
-    print(f"  public key:  {public_hex}")
+    print(f"OK: 私钥：{args.out}（绝不要提交到仓库；请离线备份）")
+    print(f"  公钥：      {public_hex}")
 
     if args.update_module:
         with open(_MODULE_PATH, "r", encoding="utf-8") as handle:
@@ -176,11 +176,11 @@ def keygen(args) -> int:
             f'RELEASE_PUBLIC_KEY_HEX = "{public_hex}"',
             source, count=1)
         if count != 1:
-            print(f"FAIL:could not patch {_MODULE_PATH}; paste the key by hand.")
+            print(f"FAIL: 无法修改 {_MODULE_PATH}；请手动写入公钥。")
             return 1
         with open(_MODULE_PATH, "w", encoding="utf-8") as handle:
             handle.write(patched)
-        print(f"OK:embedded in {_MODULE_PATH}")
+        print(f"OK: 已嵌入 {_MODULE_PATH}")
     return 0
 
 
@@ -197,7 +197,7 @@ def sign(args) -> int:
     with open(out, "w", encoding="ascii") as handle:
         handle.write(encoded + "\n")
 
-    print(f"OK:signed {os.path.basename(manifest_path)} ({len(raw)} bytes)")
+    print(f"OK: 已签名 {os.path.basename(manifest_path)}（{len(raw)} 字节）")
     print(f"  {out}")
     return 0
 
@@ -212,10 +212,10 @@ def verify(args) -> int:
 
     manifest = verify_manifest(raw, signature)
     if manifest is None:
-        print("FAIL:SIGNATURE INVALID — this manifest would be rejected by the app.")
+        print("FAIL: 签名无效——应用会拒绝此 manifest。")
         return 1
-    print(f"OK:signature valid: {manifest['version']} {manifest.get('edition', '')}, "
-          f"{len(manifest['files'])} files")
+    print(f"OK: 签名有效：{manifest['version']} {manifest.get('edition', '')}，"
+          f"{len(manifest['files'])} 个文件")
 
     if args.check_files:
         root = os.path.abspath(args.root)
@@ -223,15 +223,15 @@ def verify(args) -> int:
         for entry in manifest["files"]:
             absolute = os.path.join(root, entry["path"].replace("/", os.sep))
             if not os.path.exists(absolute):
-                print(f"  FAIL:missing: {entry['path']}")
+                print(f"  FAIL: 缺少：{entry['path']}")
                 missing += 1
             elif hash_file(absolute) != entry["sha256"]:
-                print(f"  FAIL:changed: {entry['path']}")
+                print(f"  FAIL: 已变化：{entry['path']}")
                 wrong += 1
         if missing or wrong:
-            print(f"FAIL:{missing} missing, {wrong} modified")
+            print(f"FAIL: 缺少 {missing} 个，修改 {wrong} 个")
             return 1
-        print("OK:every file on disk matches the manifest")
+        print("OK: 磁盘上的所有文件都与 manifest 一致")
     return 0
 
 
@@ -239,43 +239,43 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_gen = sub.add_parser("generate", help="Hash a built bundle into a manifest.")
-    p_gen.add_argument("--root", required=True, help="Built bundle directory.")
+    p_gen = sub.add_parser("generate", help="为已构建的软件包计算哈希并生成 manifest。")
+    p_gen.add_argument("--root", required=True, help="已构建的软件包目录。")
     p_gen.add_argument("--version", required=True)
     p_gen.add_argument("--edition", default="Pro")
     p_gen.add_argument("--platform", default="windows",
                        choices=("windows", "macos", "linux"))
     p_gen.add_argument("--compression", choices=("gzip",),
-                       help="Store blobs gzip-compressed on the host (files/<sha>.gz).")
+                       help="在主机上以 gzip 压缩形式存储 blob（files/<sha>.gz）。")
     p_gen.add_argument("--min-version", dest="min_version",
-                       help="Oldest version that may update to this one in place.")
-    p_gen.add_argument("--date", help="Release date (default: today).")
-    p_gen.add_argument("--notes", help="One line shown in the update banner.")
+                       help="允许原地更新到此版本的最旧版本号。")
+    p_gen.add_argument("--date", help="发布日期（默认：今天）。")
+    p_gen.add_argument("--notes", help="显示在更新横幅中的单行说明。")
     p_gen.add_argument("--base-url", dest="base_url",
-                       help="Where the individual files will be served from.")
+                       help="各个文件对外提供下载的基础地址。")
     p_gen.add_argument("--out")
     p_gen.set_defaults(func=generate)
 
-    p_key = sub.add_parser("keygen", help="Create the release signing keypair.")
+    p_key = sub.add_parser("keygen", help="创建发行版签名密钥对。")
     p_key.add_argument("--out", default=DEFAULT_KEY_PATH)
     p_key.add_argument("--update-module", action="store_true",
-                       help=f"Embed the public key in {_MODULE_PATH}.")
+                       help=f"将公钥嵌入 {_MODULE_PATH}。")
     p_key.add_argument("--force", action="store_true")
     p_key.set_defaults(func=keygen)
 
-    p_sign = sub.add_parser("sign", help="Sign a manifest.")
+    p_sign = sub.add_parser("sign", help="为 manifest 签名。")
     p_sign.add_argument("--root", default=".")
     p_sign.add_argument("--manifest")
     p_sign.add_argument("--key", default=DEFAULT_KEY_PATH)
     p_sign.add_argument("--out")
     p_sign.set_defaults(func=sign)
 
-    p_ver = sub.add_parser("verify", help="Verify a manifest against the embedded key.")
+    p_ver = sub.add_parser("verify", help="使用内置公钥验证 manifest。")
     p_ver.add_argument("--root", default=".")
     p_ver.add_argument("--manifest")
     p_ver.add_argument("--sig")
     p_ver.add_argument("--check-files", action="store_true",
-                       help="Also re-hash every file on disk.")
+                       help="同时重新计算磁盘上每个文件的哈希。")
     p_ver.set_defaults(func=verify)
 
     args = parser.parse_args(argv)

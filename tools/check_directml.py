@@ -103,9 +103,9 @@ def report_adapters() -> bool:
         return False
 
     for i, name in enumerate(probe.names):
-        marker = "  <- the app would use this one" if i == probe.preferred_index else ""
+        marker = "  ← 应用将使用此适配器" if i == probe.preferred_index else ""
         if dml._is_software_adapter(name):
-            marker += "  (software renderer, not a GPU)"
+            marker += "  （软件渲染器，不是 GPU）"
         print(f"  [{i}] {name}{marker}")
 
     if probe.preferred_index != 0:
@@ -174,7 +174,7 @@ def check_forward(size: int) -> bool:
 
     cosine = float(torch.nn.functional.cosine_similarity(
         got.double().unsqueeze(0), reference.double().unsqueeze(0)).item())
-    verdict = "ok" if cosine >= AGREEMENT_MIN else "FAILED"
+    verdict = "通过" if cosine >= AGREEMENT_MIN else "失败"
     print(f"与 fp32 CPU 参考结果的余弦相似度：{cosine:.6f}（{verdict}，"
           f"要求 >= {AGREEMENT_MIN}）")
     return cosine >= AGREEMENT_MIN

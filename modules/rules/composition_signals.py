@@ -139,7 +139,7 @@ def vocal_curves(video_path: str,
         # few of them and they describe a handful of samples rather than a
         # voice. Saying so beats letting a rule fire on a normalisation nobody
         # would trust.
-        log_fn(f"ℹ️ 人声信号：仅检测到 {result.get('vocal_seconds', 0)} vocal "
+        log_fn(f"ℹ️ 人声信号：仅检测到 {result.get('vocal_seconds', 0)} 秒人声 "
                "second(s) — brightness and onset are not normalised, so "
                "rules using them will not fire.")
     try:

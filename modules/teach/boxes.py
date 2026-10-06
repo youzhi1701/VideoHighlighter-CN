@@ -132,7 +132,7 @@ def propose(project: Project, detector, embedder, *,
             read_at: Optional[Callable] = None, model_detector=None) -> dict:
     """Propose boxes for accepted samples' frames that have none yet."""
     if project.task != OBJECTS:
-        raise ValueError("boxes are for object projects")
+        raise ValueError("检测框仅适用于物体项目")
     read_at = read_at or _read_at
     labels = store(project)
     done = _labelled_keys(labels)

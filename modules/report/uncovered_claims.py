@@ -265,6 +265,6 @@ def ensure(report: dict) -> dict:
     try:
         report["unmeasured"] = summarise(report)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Unmeasured claims skipped: {exc}")
+        print(f"⚠️ 已跳过无法测量的陈述：{exc}")
         report["unmeasured"] = {}
     return report["unmeasured"]

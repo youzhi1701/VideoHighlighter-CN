@@ -236,7 +236,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
 
     chunks = split_audio(video_file, chunk_length=chunk_length,
                          should_cancel=should_cancel)
-    log_fn(f"已创建 {len(chunks)} chunks")
+    log_fn(f"已创建 {len(chunks)} 个分块")
 
     CHUNKS_FROM, CHUNKS_TO = 5, 90
 
@@ -266,7 +266,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
             report(idx, 0.0)
             abort_if_cancelled()
 
-            log_fn(f"➡️ 正在转录片段 {idx+1}/{len(chunks)}: {chunk}")
+            log_fn(f"➡️ 正在转录片段 {idx+1}/{len(chunks)}：{chunk}")
 
             # Prepare transcription parameters
             transcribe_params = {

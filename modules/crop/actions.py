@@ -617,8 +617,8 @@ def _run_batch(ask_delete=False):
             # own. Ask for the same share count_people_in_video() wants for 3.
             pose_3plus_share = sum(1 for c in pose_counts if c >= 3) / len(pose_counts)
 
-            print(f"   📊 Corner check: Low YOLO frames={low_yolo_frames:.0%}, Pose max={pose_max}, "
-                  f"Pose 3+ in {pose_3plus_share:.0%} of frames")
+            print(f"   📊 边角情况检查：低 YOLO 检出帧={low_yolo_frames:.0%}，姿态最大人数={pose_max}，"
+                  f"3+ 姿态占比={pose_3plus_share:.0%}")
 
         largest = people_info.get('largest_box_areas', [])
         closeup = bool(CLOSEUP_AREA_RATIO and largest
@@ -760,7 +760,7 @@ def _run_batch(ask_delete=False):
                 people_info=people_info,
             )
         else:
-            reason = "strategy" if crop_count == 0 else "people count"
+            reason = "策略" if crop_count == 0 else "人数"
             print(f"   📋 原样复制 {filename}（原因：{reason}，策略：{strategy}）")
             
             # Copy the video

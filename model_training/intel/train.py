@@ -401,7 +401,7 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
         feature_dim = dummy.shape[-1]
 
     decoder_type = CONFIG.get("decoder_type", "mlp")
-    print(f"\n🏗️  Building decoder: '{decoder_type}' | feature_dim={feature_dim}")
+    print(f"\n🏗️  正在构建解码器：'{decoder_type}' | 特征维度={feature_dim}")
 
     model = build_decoder(
         decoder_type=decoder_type,
@@ -423,7 +423,7 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
     # LR
     is_resuming = CONFIG.get("checkpoint_path") and os.path.exists(CONFIG["checkpoint_path"])
     lr = CONFIG["finetune_learning_rate"] if is_resuming else CONFIG["base_learning_rate"]
-    print(f"{'🔄 Resume' if is_resuming else '🆕 Fresh'} LR: {lr}")
+    print(f"{'🔄 继续训练' if is_resuming else '🆕 全新训练'} 学习率：{lr}")
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
 
@@ -433,9 +433,9 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
         try:
             model, optimizer = ipex.optimize(model, optimizer=optimizer, dtype=torch.bfloat16)
             use_amp = True
-            print("✅ IPEX optimizations applied (bfloat16)")
+            print("✅ 已应用 IPEX 优化（bfloat16）")
         except Exception as e:
-            print(f"⚠️  IPEX optimize failed: {e}")
+            print(f"⚠️  IPEX 优化失败：{e}")
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=CONFIG.get("base_epochs", 25), eta_min=1e-6
@@ -464,7 +464,7 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
         model.train()
         run_loss, correct, total = 0.0, 0, 0
 
-        pbar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{max_epochs}")
+        pbar = tqdm(train_loader, desc=f"训练轮次 {epoch + 1}/{max_epochs}")
         for frames, labels in pbar:
             labels = labels.to(device)
 
@@ -496,14 +496,14 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
         scheduler.step()
         t_loss = run_loss / total if total else float("inf")
         t_acc = correct / total if total else 0
-        print(f"\n  Train Loss: {t_loss:.4f} | Acc: {t_acc:.4f} | LR: {optimizer.param_groups[0]['lr']:.6f}")
+        print(f"\n  训练损失：{t_loss:.4f} | 准确率：{t_acc:.4f} | 学习率：{optimizer.param_groups[0]['lr']:.6f}")
 
         # Validation
         if len(val_loader) > 0:
             v_loss, v_acc, pc_acc, _ = validate_live(
                 encoder, model, val_loader, device, criterion, use_amp=use_amp
             )
-            print(f"  Val   Loss: {v_loss:.4f} | Acc: {v_acc:.4f}")
+            print(f"  验证损失：{v_loss:.4f} | 准确率：{v_acc:.4f}")
             for li in sorted(pc_acc):
                 print(f"    {'✓' if pc_acc[li] > 0 else '⚠️'} {idx_to_label[li]}: {pc_acc[li]:.4f}")
 
@@ -511,12 +511,12 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
                 best_loss, best_acc = v_loss, v_acc
                 best_state = model.state_dict().copy()
                 patience_ctr = 0
-                print("   ⭐ Improved!")
+                print("   ⭐ 指标已提升！")
             else:
                 patience_ctr += 1
-                print(f"   No improvement ({patience_ctr}/{CONFIG['early_stopping_patience']})")
+                print(f"   暂无提升（{patience_ctr}/{CONFIG['early_stopping_patience']}）")
                 if patience_ctr >= CONFIG["early_stopping_patience"]:
-                    print("\n🛑 Early stopping")
+                    print("\n🛑 已提前停止训练")
                     break
 
         # Checkpoint
@@ -536,7 +536,7 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,
 
     if best_state:
         model.load_state_dict(best_state)
-        print(f"\n✅ Best model loaded (loss={best_loss:.4f}, acc={best_acc:.4f})")
+        print(f"\n✅ 已加载最佳模型（损失={best_loss:.4f}，准确率={best_acc:.4f}）")
 
     wrapped = ActionRecognitionModel(
         model=model, label_to_idx=label_to_idx, idx_to_label=idx_to_label,
@@ -606,26 +606,26 @@ def main():
     # ---- Device selection ----
     if args.force_cpu:
         CONFIG["device"] = "cpu"
-        print("🎯 Forced CPU training")
+        print("🎯 已强制使用 CPU 训练")
     elif HAS_INTEL_GPU:
         CONFIG["device"] = "xpu"
-        print("✅ Decoder will train on Intel GPU (XPU)")
+        print("✅ 解码器将在 Intel GPU（XPU）上训练")
     elif torch.cuda.is_available():
         CONFIG["device"] = "cuda"
-        print(f"✅ Using CUDA: {torch.cuda.get_device_name(0)}")
+        print(f"✅ 正在使用 CUDA：{torch.cuda.get_device_name(0)}")
     else:
         CONFIG["device"] = "cpu"
-        print("🎯 Training on CPU")
+        print("🎯 正在使用 CPU 训练")
 
     # ---- Decoder type warning ----
     decoder_type = CONFIG.get("decoder_type", "mlp")
     if decoder_type == "lstm":
-        print("\n⚠️  WARNING: LSTM decoder selected.")
-        print("   The trained model will fall back to CPU at inference time")
-        print("   (OpenVINO GPU plugin does not support LSTMSequence ops).")
-        print("   Use '--decoder mlp' for GPU-compatible inference.\n")
+        print("\n⚠️  警告：当前选择了 LSTM 解码器。")
+        print("   训练后的模型在推理时将回退到 CPU")
+        print("   （OpenVINO GPU 插件不支持 LSTMSequence 运算）。")
+        print("   如需 GPU 兼容推理，请使用 '--decoder mlp'。\n")
     else:
-        print(f"\n✅ Decoder: {decoder_type} (GPU-compatible at inference)")
+        print(f"\n✅ 解码器：{decoder_type}（推理阶段兼容 GPU）")
 
     set_seed(42)
     print("=" * 60)
@@ -635,13 +635,13 @@ def main():
         _enc_dev = _encoder_device(_Core())
     except Exception:
         _enc_dev = "CPU"
-    print(f"🧠 INTEL ENCODER ({_enc_dev}) → {decoder_type.upper()} "
+    print(f"🧠 INTEL 编码器（{_enc_dev}）→ {decoder_type.upper()} "
           f"TRAINING ({CONFIG['device'].upper()})")
     print("=" * 60)
 
     # Check encoder
     if not os.path.exists(CONFIG["encoder_xml"]):
-        print(f"❌ Encoder not found: {CONFIG['encoder_xml']}")
+        print(f"❌ 找不到编码器：{CONFIG['encoder_xml']}")
         sys.exit(1)
 
     # Datasets
@@ -650,10 +650,10 @@ def main():
     val_ds = VideoDataset(os.path.join(data_path, "val"), CONFIG)
 
     if len(train_ds) == 0:
-        print("❌ No training samples found")
+        print("❌ 未找到训练样本")
         sys.exit(1)
 
-    print(f"\n📁 Train: {len(train_ds)} | Val: {len(val_ds)}")
+    print(f"\n📁 训练：{len(train_ds)} | 验证：{len(val_ds)}")
 
     ok, valid_actions, new_train, new_val = validate_and_split_dataset(train_ds, val_ds, CONFIG)
     if not ok:
@@ -661,7 +661,7 @@ def main():
     apply_dataset_split(train_ds, val_ds, valid_actions, new_train, new_val)
 
     label_to_idx, idx_to_label = train_ds.get_label_mapping()
-    print(f"\n📝 Labels: {label_to_idx}")
+    print(f"\n📝 标签：{label_to_idx}")
 
     # ==============================
     # PRE-COMPUTE ROI CACHE
@@ -691,13 +691,13 @@ def main():
             )
             if os.path.exists(cache_file):
                 os.remove(cache_file)
-                print(f"🗑️  Deleted old cache: {cache_file}")
+                print(f"🗑️  已删除旧缓存：{cache_file}")
 
         roi_cache = precompute_roi_cache(all_ds, CONFIG, pose_extractor=pose_ext)
         train_ds.roi_cache = roi_cache
         val_ds.roi_cache = roi_cache
     else:
-        print("\n⚠️  ROI cache DISABLED — training will be slow (the person detector runs every epoch)")
+        print("\n⚠️  ROI 缓存已禁用——训练会变慢（人物检测器每轮都会运行）")
 
     # ==============================
     # Sample Visualizations
@@ -721,19 +721,19 @@ def main():
 
     if use_feature_cache:
         print("\n" + "=" * 60)
-        print("📦 FEATURE CACHING")
+        print("📦 特征缓存")
         print("=" * 60)
 
         cache_dir = CONFIG.get("checkpoint_dir", "checkpoints_intel")
         force_rebuild = args.rebuild_feature_cache
 
-        print("\n--- Training set ---")
+        print("\n--- 训练集 ---")
         train_cache_path = precompute_feature_cache(
             train_ds, encoder, CONFIG,
             cache_dir=cache_dir, force_rebuild=force_rebuild,
         )
 
-        print("\n--- Validation set ---")
+        print("\n--- 验证集 ---")
         val_cache_path = precompute_feature_cache(
             val_ds, encoder, CONFIG,
             cache_dir=cache_dir, force_rebuild=force_rebuild,
@@ -755,7 +755,7 @@ def main():
         pf = CONFIG.get("prefetch_factor", 2) if nw > 0 else None
         pw = CONFIG.get("persistent_workers", True) and nw > 0
 
-        print(f"\n📊 Cached DataLoader: {nw} workers, pin_memory={pin}")
+        print(f"\n📊 缓存 DataLoader：{nw} 个工作进程，pin_memory={pin}")
 
         train_loader = DataLoader(train_cached, batch_size=CONFIG["batch_size"],
                                   shuffle=True, num_workers=nw, pin_memory=pin,
@@ -764,7 +764,7 @@ def main():
                                 shuffle=False, num_workers=nw, pin_memory=pin,
                                 prefetch_factor=pf, persistent_workers=pw)
 
-        print(f"\n🚀 Training from cached features ({decoder_type.upper()} decoder)...\n")
+        print(f"\n🚀 正在使用缓存特征训练（{decoder_type.upper()} 解码器）…\n")
         wrapped, use_amp = train_classifier_cached(
             train_loader, val_loader,
             feature_dim=feature_dim,
@@ -787,7 +787,7 @@ def main():
         pf = CONFIG.get("prefetch_factor", 2) if nw > 0 else None
         pw = CONFIG.get("persistent_workers", True) and nw > 0
 
-        print(f"\n📊 DataLoader: {nw} workers, pin_memory={pin}")
+        print(f"\n📊 DataLoader：{nw} 个工作进程，pin_memory={pin}")
 
         train_loader = DataLoader(train_ds, batch_size=CONFIG["batch_size"],
                                   shuffle=True, num_workers=nw, pin_memory=pin,
@@ -796,7 +796,7 @@ def main():
                                 shuffle=False, num_workers=nw, pin_memory=pin,
                                 prefetch_factor=pf, persistent_workers=pw)
 
-        print(f"\n🚀 Training (live encoding, {decoder_type.upper()} decoder)...\n")
+        print(f"\n🚀 正在训练（实时编码，{decoder_type.upper()} 解码器）…\n")
         wrapped, use_amp = train_classifier_live(
             encoder, train_loader, val_loader,
             num_classes=len(valid_actions),
@@ -816,7 +816,7 @@ def main():
     # POST-TRAINING: Create filtered mappings
     # ==============================================================
     print("\n" + "=" * 70)
-    print("📋 BASE MODEL FILTERING (remove 0% accuracy)")
+    print("📋 基础模型筛选（移除准确率为 0% 的类别）")
     print("=" * 70)
     base_keep, base_remove, per_class_acc = create_production_model(
         wrapped, _val_fn, min_val_accuracy=0.001,
@@ -834,8 +834,8 @@ def main():
     prod_remove = [idx for idx in sorted(wrapped.idx_to_label.keys())
                    if per_class_acc.get(idx, 0.0) < min_prod_acc]
 
-    print(f"\n📋 PRODUCTION FILTERING (remove <{min_prod_acc:.0%} accuracy)")
-    print(f"   Keep: {len(prod_keep)} | Remove: {len(prod_remove)}")
+    print(f"\n📋 生产模型筛选（移除准确率低于 {min_prod_acc:.0%} 的类别）")
+    print(f"   保留：{len(prod_keep)} | 移除：{len(prod_remove)}")
 
     wrapped.save_filtered_mapping(
         CONFIG["model_save_path"], prod_keep,
@@ -845,24 +845,24 @@ def main():
     base_mapping = CONFIG["model_save_path"].replace(".pth", "_mapping.json")
     prod_mapping = CONFIG["model_save_path"].replace(".pth", "_production_mapping.json")
 
-    print(f"\n✅ Done!")
-    print(f"  Decoder type:        {decoder_type}")
-    print(f"  Weights:             {CONFIG['model_save_path']}")
-    print(f"  Base mapping:        {base_mapping} ({len(base_keep)} classes)")
-    print(f"  Production mapping:  {prod_mapping} ({len(prod_keep)} classes)")
+    print("\n✅ 完成！")
+    print(f"  解码器类型：         {decoder_type}")
+    print(f"  权重文件：           {CONFIG['model_save_path']}")
+    print(f"  基础映射：           {base_mapping}（{len(base_keep)} 个类别）")
+    print(f"  生产映射：           {prod_mapping}（{len(prod_keep)} 个类别）")
     if decoder_type == "mlp":
-        print(f"\n  ✅ This model will compile on OpenVINO GPU at inference time.")
+        print("\n  ✅ 此模型在推理阶段可在 OpenVINO GPU 上编译运行。")
     else:
-        print(f"\n  ⚠️  This model will fall back to CPU at inference time (LSTM).")
+        print("\n  ⚠️  此模型在推理阶段将回退到 CPU（LSTM）。")
 
     if base_remove:
-        print(f"\n  Removed from base (0% accuracy):")
+        print("\n  已从基础模型移除（准确率 0%）：")
         for ri in base_remove:
             print(f"    ❌ {wrapped.idx_to_label.get(ri, f'class_{ri}')}")
     if len(prod_remove) > len(base_remove):
         extra_removed = [ri for ri in prod_remove if ri not in base_remove]
         if extra_removed:
-            print(f"\n  Additionally removed for production (<{min_prod_acc:.0%}):")
+            print(f"\n  生产模型额外移除（低于 {min_prod_acc:.0%}）：")
             for ri in extra_removed:
                 acc = per_class_acc.get(ri, 0.0)
                 print(f"    ❌ {wrapped.idx_to_label.get(ri, f'class_{ri}')} ({acc:.1%})")

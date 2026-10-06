@@ -31,7 +31,7 @@ STYLE_RE = re.compile(
     re.I,
 )
 TECH_RE = re.compile(
-    r"^(?:VideoHighlighter|AI|CPU|GPU|CUDA|CLIP|ONNX|OpenVINO|FFmpeg|GGUF|Ollama|"
+    r"^(?:Video ?Highlighter|AI|CPU|GPU|CUDA|CLIP|ONNX|OpenVINO|FFmpeg|GGUF|Ollama|"
     r"PyTorch|YOLOX|AGPLv3|FCPXML|EDL|CSV|JSON|HTTP|HTTPS|NVIDIA|Intel|AMD|"
     r"Python|Qt|PySide6|Hugging ?Face|Whisper|SigLIP|RTMPose)(?:\b|$)",
     re.I,
@@ -490,6 +490,14 @@ def main() -> int:
     print("high-priority samples:")
     for h in [x for x in hits if x.priority == "high"][:500]:
         print(f"  {h.file}:{h.line} [{h.kind}] {h.text}")
+    print("medium-priority samples from top files:")
+    for file, _count in counts.most_common(15):
+        samples = [x for x in hits if x.file == file and x.priority == "medium"][:12]
+        if not samples:
+            continue
+        print(f"  -- {file} --")
+        for h in samples:
+            print(f"  {h.file}:{h.line} [{h.kind}] {h.text}")
     print(f"report: {args.report}")
     if syntax_errors:
         print(f"Python syntax/decode errors: {len(syntax_errors)}")

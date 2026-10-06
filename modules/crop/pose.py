@@ -100,7 +100,7 @@ def get_pose_keypoints_for_frame(rgb_frame, pose_model, conf=0.15, person_boxes=
 
         return poses
     except Exception as e:
-        print(f"⚠️ Pose estimation failed: {e}")
+        print(f"⚠️ 姿态估计失败：{e}")
         return []
 
 

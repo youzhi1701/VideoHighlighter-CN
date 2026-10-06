@@ -46,9 +46,9 @@ def _hr(title: str) -> None:
 
 
 def report_env() -> None:
-    _hr("Environment")
+    _hr("环境")
     print(f"python       {platform.python_version()} ({platform.machine()})")
-    print(f"os           {platform.system()} {platform.release()}")
+    print(f"操作系统     {platform.system()} {platform.release()}")
 
     try:
         import torch
@@ -56,35 +56,35 @@ def report_env() -> None:
         print(f"torch        {torch.__version__}")
         print(f"  cuda build {torch.version.cuda or '(none — this is a CPU/XPU wheel)'}")
         avail = torch.cuda.is_available()
-        print(f"  available  {avail}")
+        print(f"  是否可用   {avail}")
         if avail:
             for i in range(torch.cuda.device_count()):
                 p = torch.cuda.get_device_properties(i)
-                print(f"  device {i}   {p.name} ({p.total_memory / 1024**3:.1f} GB, "
+                print(f"  设备 {i}    {p.name} ({p.total_memory / 1024**3:.1f} GB, "
                       f"sm_{p.major}{p.minor})")
     except Exception as e:
-        print(f"torch        UNAVAILABLE — {type(e).__name__}: {e}")
+        print(f"torch        不可用——{type(e).__name__}：{e}")
 
     for mod in ("transformers", "optimum.intel", "openvino"):
         try:
             m = __import__(mod, fromlist=["__version__"])
-            print(f"{mod:<12} {getattr(m, '__version__', '(no __version__)')}")
+            print(f"{mod:<12} {getattr(m, '__version__', '（无 __version__）')}")
         except Exception as e:
-            note = "  (not needed for CUDA)" if mod.startswith("optimum") else ""
-            print(f"{mod:<12} not importable — {type(e).__name__}{note}")
+            note = "  （CUDA 不需要）" if mod.startswith("optimum") else ""
+            print(f"{mod:<12} 无法导入——{type(e).__name__}{note}")
 
 
 def report_resolution(requested: str) -> tuple[str, str]:
-    _hr("Backend resolution")
+    _hr("后端解析")
     probe = cp.cuda_device()
     print(f"cuda_device() -> {probe!r}")
     for req in ("AUTO", "GPU", "CUDA", "CPU"):
         print(f"  {req:<5} -> {cp.resolve_device(req)}")
 
     backend, device = cp.resolve_device(requested)
-    print(f"\nrequested {requested!r} -> backend={backend!r} device={device!r}")
+    print(f"\n请求 {requested!r} -> 后端={backend!r} 设备={device!r}")
     err = cp.ClipFramePrefilter.import_error(requested)
-    print(f"import_error({requested!r}) -> {err or 'None (stack imports cleanly)'}")
+    print(f"import_error({requested!r}) -> {err or '无（依赖栈导入正常）'}")
     return backend, device
 
 
@@ -113,7 +113,7 @@ def cpu_reference(model_id: str) -> ClipEmbedder | None:
         ref._processor = CLIPProcessor.from_pretrained(cp._bundled_ov_dir() or model_id)
         return ref
     except Exception as e:
-        print(f"⚠️  could not build CPU reference ({type(e).__name__}: {e})")
+        print(f"⚠️  无法建立 CPU 参考模型（{type(e).__name__}：{e}）")
         return None
 
 
@@ -121,12 +121,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--device", default="AUTO", help="AUTO/GPU/CUDA/cuda:N/CPU/...")
-    ap.add_argument("--frames", type=int, default=48, help="frames to benchmark")
+    ap.add_argument("--frames", type=int, default=48, help="用于基准测试的帧数")
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--expect", default=None, choices=["torch", "openvino"],
-                    help="fail unless this backend is chosen (for CI/automation)")
+                    help="如果未选择此后端则失败（用于 CI/自动化）")
     ap.add_argument("--skip-reference", action="store_true",
-                    help="skip the CPU agreement check (saves a second model load)")
+                    help="跳过 CPU 一致性检查（可省去第二次模型加载）")
     args = ap.parse_args()
 
     report_env()
@@ -136,87 +136,86 @@ def main() -> int:
     if err is not None:
         # Stop here rather than let load() raise: a missing dep is a setup
         # problem with a known fix, and a traceback buries it.
-        print(f"\n❌ FAIL — the {backend!r} backend's stack is incomplete:\n   {err}")
+        print(f"\n❌ 失败——{backend!r} 后端的依赖栈不完整：\n   {err}")
         if backend == "torch":
-            print("\n   Install a CUDA torch:\n"
+            print("\n   请安装 CUDA 版 torch：\n"
                   "     pip install torch --index-url https://download.pytorch.org/whl/cu128")
         else:
-            print('\n   Install the OpenVINO stack:\n'
+            print('\n   请安装 OpenVINO 依赖栈：\n'
                   '     pip install "optimum[openvino]" optimum-intel')
-        print("   ...plus: pip install transformers pillow opencv-python numpy")
+        print("   另外还需：pip install transformers pillow opencv-python numpy")
         return 1
 
     failures: list[str] = []
     if args.expect and backend != args.expect:
-        failures.append(f"expected backend {args.expect!r}, resolved {backend!r}")
+        failures.append(f"期望后端 {args.expect!r}，实际解析为 {backend!r}")
 
-    _hr("Load")
+    _hr("加载")
     emb = ClipEmbedder(device=args.device)
     emb.load()
-    print(f"loaded: backend={emb.backend!r} device={emb.device!r} dtype={emb._dtype}")
+    print(f"已加载：后端={emb.backend!r} 设备={emb.device!r} dtype={emb._dtype}")
     if args.expect and emb.backend != args.expect:
-        failures.append(f"expected to LOAD on {args.expect!r}, got {emb.backend!r} "
-                        f"(it fell back — see the warning above for why)")
+        failures.append(f"期望加载到 {args.expect!r}，实际为 {emb.backend!r} "
+                        f"（发生了回退，原因请查看上方警告）")
 
-    _hr("Correctness")
+    _hr("正确性")
     frames = make_frames(args.frames)
     img = emb.embed_frames_bgr(frames[:4])
-    print(f"image_embeds  shape={img.shape} dtype={img.dtype}")
+    print(f"图像嵌入     shape={img.shape} dtype={img.dtype}")
     if img.shape != (4, 512):
-        failures.append(f"bad embedding shape {img.shape}")
+        failures.append(f"嵌入形状异常 {img.shape}")
     if not np.all(np.isfinite(img)):
-        failures.append("non-finite values in image embeddings")
+        failures.append("图像嵌入中存在非有限值")
     norms = np.linalg.norm(img, axis=1)
-    print(f"unit norms    {np.round(norms, 5)}")
+    print(f"单位范数      {np.round(norms, 5)}")
     if not np.allclose(norms, 1.0, atol=1e-3):
-        failures.append(f"embeddings are not unit-norm: {norms}")
+        failures.append(f"嵌入不是单位范数：{norms}")
 
     txt = emb.embed_texts(["a red photo", "a blue photo"])
-    print(f"text_embeds   shape={txt.shape}")
-    print(f"logit_scale   {emb.logit_scale:.2f}  (CLIP's published value is 100.0)")
+    print(f"文本嵌入     shape={txt.shape}")
+    print(f"logit_scale   {emb.logit_scale:.2f}（CLIP 公布值为 100.0）")
 
     # The calibrated-score path, which is what the app thresholds on.
     emb.set_query("a red photo", negatives=["a blue photo"])
     scores = emb.score_frames_bgr(frames[:4])
     print(f"scores        {[round(s, 4) for s in scores]}")
     if not all(np.isfinite(scores)):
-        failures.append("non-finite score from score_frames_bgr")
+        failures.append("score_frames_bgr 返回了非有限分数")
 
     if not args.skip_reference:
-        _hr("Agreement with fp32 CPU reference")
+        _hr("与 fp32 CPU 参考结果的一致性")
         ref = cpu_reference(emb.model_id)
         if ref is not None:
             ref_img = ref.embed_frames_bgr(frames[:4])
             agree = np.abs((img * ref_img).sum(1))
-            print(f"cosine/frame  {np.round(agree, 6)}")
+            print(f"每帧余弦值   {np.round(agree, 6)}")
             worst = float(agree.min())
-            print(f"worst         {worst:.6f}  (threshold {AGREEMENT_MIN})")
+            print(f"最差值       {worst:.6f}（阈值 {AGREEMENT_MIN}）")
             if worst < AGREEMENT_MIN:
-                failures.append(f"backend disagrees with CPU reference (worst {worst:.6f}) "
-                                f"— embeddings would be wrong, and cached indexes "
-                                f"from other machines incompatible")
+                failures.append(f"后端与 CPU 参考结果不一致（最差 {worst:.6f}），"
+                                f"嵌入结果会不正确，且与其他机器生成的缓存索引不兼容")
             else:
-                print("→ same numbers as the CPU: indexes stay portable across machines.")
+                print("→ 与 CPU 结果一致：索引可在不同机器之间通用。")
 
-    _hr(f"Benchmark ({args.frames} frames, batch {args.batch})")
+    _hr(f"基准测试（{args.frames} 帧，批大小 {args.batch}）")
     emb.embed_frames_bgr(frames[:args.batch])          # warm up kernels/caches
     t0 = time.perf_counter()
     for i in range(0, len(frames), args.batch):
         emb.embed_frames_bgr(frames[i:i + args.batch])
     elapsed = time.perf_counter() - t0
     per = elapsed / len(frames) * 1000
-    print(f"{emb.device}: {elapsed:.2f}s total, {per:.1f} ms/frame, "
-          f"{len(frames) / elapsed:.1f} frames/s")
-    print("(encode only — a real scan adds video decode)")
+    print(f"{emb.device}：总计 {elapsed:.2f} 秒，{per:.1f} 毫秒/帧，"
+          f"{len(frames) / elapsed:.1f} 帧/秒")
+    print("（这里只测试编码；实际扫描还会包含视频解码）")
 
-    _hr("Verdict")
+    _hr("结论")
     if failures:
-        print(f"❌ FAIL ({len(failures)})")
+        print(f"❌ 失败（{len(failures)} 项）")
         for f in failures:
             print(f"   - {f}")
         return 1
-    print(f"✅ PASS — CLIP works on {emb.device!r} via the {emb.backend!r} backend "
-          f"at {per:.1f} ms/frame.")
+    print(f"✅ 通过——CLIP 正在 {emb.device!r} 上通过 {emb.backend!r} 后端运行，"
+          f"速度为 {per:.1f} 毫秒/帧。")
     return 0
 
 

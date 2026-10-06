@@ -269,7 +269,7 @@ def main(argv=None) -> int:
     in_val = np.array([c.split == "val" for c in clips], bool) & single
     val_scores = None
     if in_train.any() and in_val.any():
-        log("\nScoring val/ as the dataset defines it (training on train/ only)")
+        log("\n正在按数据集定义对 val/ 评分（仅使用 train/ 训练）")
         model = H.train_head(x[in_train], targets[in_train], len(classes), steps=steps,
                              seed=args.seed)
         val_pred = H.predict_proba(model, x[in_val]).argmax(1)
@@ -278,7 +278,7 @@ def main(argv=None) -> int:
                       "accuracy": round(float(np.mean(val_pred == targets[in_val].argmax(1))), 4),
                       "clips_sharing_a_video_with_train": int(shared.sum())}
 
-    log(f"\nTraining the saved head on all {len(clips)} clips ({steps} steps)")
+    log(f"\n正在使用全部 {len(clips)} 个片段训练最终保存的分类头（{steps} 步）")
     model = H.train_head(x, targets, len(classes), steps=steps, seed=args.seed)
     out = args.out or default_out(args.name)
     os.makedirs(out, exist_ok=True)
@@ -345,7 +345,7 @@ def main(argv=None) -> int:
     log(f"可信动作：{sum(t is not None for t in thresholds)}/{len(classes)}；"
         f"可信动作对：{sum(t is not None for t in pair_th)}/{len(pairs)} 个已示教动作对")
     width = max(len(c) for c in classes)
-    log(f"\n{'class':{width}}  clips +pair videos recall precision   threshold")
+    log(f"\n{'类别':{width}}  片段 +动作对 视频数 召回率 精确率   阈值")
     for name, row in sorted(per_class.items(), key=lambda kv: -kv[1]["clips"]):
         rec = "-" if row["heldout_recall"] is None else f"{row['heldout_recall']:.2f}"
         prec = ("-" if row["heldout_detected_precision"] is None
@@ -353,7 +353,7 @@ def main(argv=None) -> int:
         th = "不可信" if row["trust_threshold"] is None else f"{row['trust_threshold']:.2f}"
         log(f"{name:{width}}  {row['clips']:5} {row['clips_with_another_action']:5} "
             f"{row['videos']:6} {rec:>6} {prec:>9} {th:>11}")
-    log(f"\n✅ Saved {head_path} and {META_FILE} ({time.time() - started:.0f} s)")
+    log(f"\n✅ 已保存 {head_path} 和 {META_FILE}（{time.time() - started:.0f} 秒）")
     return 0
 
 

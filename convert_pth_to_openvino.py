@@ -101,10 +101,10 @@ class EncoderLSTM(nn.Module):
 
 def inspect_checkpoint():
     """Inspect the checkpoint to understand its structure"""
-    print("🔍 Inspecting checkpoint...")
+    print("🔍 正在检查检查点…")
     checkpoint = torch.load(CHECKPOINT_PATH, map_location='cpu', weights_only=False)
     
-    print("\nCheckpoint keys:")
+    print("\n检查点键：")
     for key in checkpoint.keys():
         print(f"  - {key}: {checkpoint[key].shape}")
     
@@ -118,7 +118,7 @@ def convert_current_model():
     mapping_path = MAPPING_PATH
     
     if not os.path.exists(mapping_path):
-        print(f"\n❌ Error: Mapping file {mapping_path} not found!")
+        print(f"\n❌ 错误：未找到映射文件 {mapping_path}！")
         return
     
     with open(mapping_path, 'r') as f:
@@ -131,12 +131,12 @@ def convert_current_model():
     hidden_dim = mapping_data.get('hidden_dim', 256)
     num_layers = mapping_data.get('num_layers', 2)
     
-    print(f"\n📋 Model parameters from mapping file:")
-    print(f"  - Feature dimension: {feature_dim}")
-    print(f"  - Hidden dimension: {hidden_dim}")
-    print(f"  - Sequence length: {sequence_length}")
-    print(f"  - Number of layers: {num_layers}")
-    print(f"  - Number of classes: {num_classes}")
+    print("\n📋 映射文件中的模型参数：")
+    print(f"  - 特征维度：{feature_dim}")
+    print(f"  - 隐藏层维度：{hidden_dim}")
+    print(f"  - 序列长度：{sequence_length}")
+    print(f"  - 层数：{num_layers}")
+    print(f"  - 类别数：{num_classes}")
     
     # Verify dimensions from checkpoint
     lstm_weight_shape = checkpoint['lstm.weight_ih_l0'].shape
@@ -146,29 +146,29 @@ def convert_current_model():
     classifier_weight_shape = checkpoint['classifier.3.weight'].shape
     output_dim = classifier_weight_shape[0]
     
-    print(f"\n📊 Checkpoint structure:")
-    print(f"  - Feature dimension: {feature_dim_from_checkpoint}")
-    print(f"  - Hidden dimension: {hidden_dim_from_checkpoint}")
-    print(f"  - Output classes: {output_dim}")
+    print("\n📊 检查点结构：")
+    print(f"  - 特征维度：{feature_dim_from_checkpoint}")
+    print(f"  - 隐藏层维度：{hidden_dim_from_checkpoint}")
+    print(f"  - 输出类别数：{output_dim}")
     
     # Verify dimensions match
     if feature_dim_from_checkpoint != feature_dim:
-        print(f"\n⚠️  Warning: Checkpoint feature_dim ({feature_dim_from_checkpoint}) != mapping file ({feature_dim})")
-        print(f"   Using checkpoint feature_dim: {feature_dim_from_checkpoint}")
+        print(f"\n⚠️  警告：检查点 feature_dim（{feature_dim_from_checkpoint}）与映射文件（{feature_dim}）不一致")
+        print(f"   将使用检查点 feature_dim：{feature_dim_from_checkpoint}")
         feature_dim = feature_dim_from_checkpoint
     
     if hidden_dim_from_checkpoint != hidden_dim:
-        print(f"\n⚠️  Warning: Checkpoint hidden_dim ({hidden_dim_from_checkpoint}) != mapping file ({hidden_dim})")
-        print(f"   Using checkpoint hidden_dim: {hidden_dim_from_checkpoint}")
+        print(f"\n⚠️  警告：检查点 hidden_dim（{hidden_dim_from_checkpoint}）与映射文件（{hidden_dim}）不一致")
+        print(f"   将使用检查点 hidden_dim：{hidden_dim_from_checkpoint}")
         hidden_dim = hidden_dim_from_checkpoint
     
     if output_dim != num_classes:
-        print(f"\n⚠️  Warning: Checkpoint output dim ({output_dim}) != num_classes ({num_classes})")
-        print(f"   Using checkpoint output dim: {output_dim}")
+        print(f"\n⚠️  警告：检查点输出维度（{output_dim}）与 num_classes（{num_classes}）不一致")
+        print(f"   将使用检查点输出维度：{output_dim}")
         num_classes = output_dim
     
     # Create the correct model architecture
-    print("\n🔨 Creating EncoderLSTM model...")
+    print("\n🔨 正在创建 EncoderLSTM 模型…")
     model = EncoderLSTM(
         feature_dim=feature_dim,
         hidden_dim=hidden_dim,
@@ -181,16 +181,16 @@ def convert_current_model():
     model.load_state_dict(checkpoint)
     model.eval()
     
-    print("✓ Model loaded successfully!")
-    print("\nModel architecture:")
+    print("✓ 模型加载成功！")
+    print("\n模型结构：")
     print(model)
     
     # Create dummy input matching the checkpoint's expected input
     # Shape: [batch_size, sequence_length, feature_dim]
     dummy_input = torch.randn(1, sequence_length, feature_dim)
     
-    print(f"\n🔄 Converting to ONNX...")
-    print(f"  - Input shape: [batch_size, {sequence_length}, {feature_dim}]")
+    print("\n🔄 正在转换为 ONNX…")
+    print(f"  - 输入形状：[batch_size, {sequence_length}, {feature_dim}]")
     
     # The ONNX is kept, not deleted. It used to be a scratch file on the way to
     # OpenVINO IR, which is Intel-only; ONNX Runtime's DirectML provider runs
@@ -216,7 +216,7 @@ def convert_current_model():
     )
     
     # Convert ONNX to OpenVINO
-    print("🔄 Converting to OpenVINO format...")
+    print("🔄 正在转换为 OpenVINO 格式…")
     ov_model = ov.convert_model(onnx_path)
     
     # Save the model
@@ -224,13 +224,13 @@ def convert_current_model():
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     ov.save_model(ov_model, output_path)
     
-    print("\n✅ Conversion successful!")
-    print(f"✓ Architecture: 2-layer BiLSTM with Attention")
-    print(f"✓ Input shape: [batch_size, {sequence_length}, {feature_dim}]")
-    print(f"✓ Hidden dimension: {hidden_dim}")
-    print(f"✓ Number of classes: {num_classes}")
-    print(f"✓ Model saved as: {output_path}")
-    print(f"✓ ONNX kept for DirectML/ONNX Runtime: {onnx_path}")
+    print("\n✅ 转换成功！")
+    print("✓ 架构：双层带注意力机制的 BiLSTM")
+    print(f"✓ 输入形状：[batch_size, {sequence_length}, {feature_dim}]")
+    print(f"✓ 隐藏层维度：{hidden_dim}")
+    print(f"✓ 类别数：{num_classes}")
+    print(f"✓ 模型已保存为：{output_path}")
+    print(f"✓ 已保留供 DirectML/ONNX Runtime 使用的 ONNX：{onnx_path}")
     
     # Update mapping file with correct dimensions
     mapping_data['model_feature_dim'] = feature_dim
@@ -240,10 +240,10 @@ def convert_current_model():
     with open(mapping_path, 'w') as f:
         json.dump(mapping_data, f, indent=2)
     
-    print(f"✓ Updated mapping file with model dimensions")
+    print("✓ 已将模型维度写入映射文件")
     
     # Print class labels for reference
-    print(f"\n📝 Class labels ({num_classes} classes):")
+    print(f"\n📝 类别标签（{num_classes} 个类别）：")
     idx_to_label = mapping_data['idx_to_label']
     for idx in sorted([int(k) for k in idx_to_label.keys()]):
         label = idx_to_label[str(idx)]
@@ -253,7 +253,7 @@ def convert_current_model():
 
 def test_converted_model(feature_dim, sequence_length, num_classes):
     """Test the converted OpenVINO model"""
-    print("\n🧪 Testing converted model...")
+    print("\n🧪 正在测试转换后的模型…")
     
     # Load the mapping file
     mapping_path = MAPPING_PATH
@@ -271,10 +271,10 @@ def test_converted_model(feature_dim, sequence_length, num_classes):
     result = compiled_model([test_input])
     output = result[0]
     
-    print(f"✓ Model test successful!")
-    print(f"✓ Input shape: {test_input.shape}")
-    print(f"✓ Output shape: {output.shape}")
-    print(f"✓ Output range: [{output.min():.4f}, {output.max():.4f}]")
+    print("✓ 模型测试成功！")
+    print(f"✓ 输入形状：{test_input.shape}")
+    print(f"✓ 输出形状：{output.shape}")
+    print(f"✓ 输出范围：[{output.min():.4f}, {output.max():.4f}]")
     
     # Apply softmax to get probabilities
     exp_output = np.exp(output - np.max(output))
@@ -285,12 +285,12 @@ def test_converted_model(feature_dim, sequence_length, num_classes):
     class_name = mapping_data['idx_to_label'][str(predicted_class)]
     confidence = probs[0][predicted_class]
     
-    print(f"✓ Test prediction: {class_name} (class {predicted_class})")
-    print(f"✓ Confidence: {confidence:.4f}")
+    print(f"✓ 测试预测：{class_name}（类别 {predicted_class}）")
+    print(f"✓ 置信度：{confidence:.4f}")
     
     # Show top 3 predictions
     top3_indices = np.argsort(output[0])[-3:][::-1]
-    print(f"\n🏆 Top 3 predictions:")
+    print("\n🏆 预测结果 TOP 3：")
     for i, idx in enumerate(top3_indices, 1):
         label = mapping_data['idx_to_label'][str(idx)]
         score = probs[0][idx]
@@ -300,8 +300,8 @@ if __name__ == "__main__":
     try:
         feature_dim, sequence_length, num_classes = convert_current_model()
         test_converted_model(feature_dim, sequence_length, num_classes)
-        print("\n✅ All done! Your model is ready to use.")
+        print("\n✅ 全部完成！模型已可使用。")
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n❌ 错误：{e}")
         import traceback
         traceback.print_exc()

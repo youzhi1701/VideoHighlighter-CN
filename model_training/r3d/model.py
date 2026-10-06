@@ -27,7 +27,7 @@ def build_r3d_model(num_classes, config):
     pretrained = config.get("pretrained", True)
 
     weights = "DEFAULT" if pretrained else None
-    print(f"🚀 Loading {variant} (pretrained={pretrained})...")
+    print(f"🚀 正在加载 {variant}（预训练={pretrained}）…")
 
     if variant == "r3d_18":
         model = video_models.r3d_18(weights=weights)
@@ -36,7 +36,7 @@ def build_r3d_model(num_classes, config):
     elif variant == "r2plus1d_18":
         model = video_models.r2plus1d_18(weights=weights)
     else:
-        raise ValueError(f"Unknown variant: {variant}. Use r3d_18 / mc3_18 / r2plus1d_18")
+        raise ValueError(f"未知模型变体：{variant}。请使用 r3d_18 / mc3_18 / r2plus1d_18")
 
     # Replace FC head
     in_features = model.fc.in_features
@@ -45,7 +45,7 @@ def build_r3d_model(num_classes, config):
         nn.Dropout(dropout),
         nn.Linear(in_features, num_classes),
     )
-    print(f"   FC head: {in_features} → Dropout({dropout}) → {num_classes}")
+    print(f"   全连接头：{in_features} → Dropout({dropout}) → {num_classes}")
 
     # Freeze backbone if requested
     if config.get("freeze_backbone", False):
@@ -57,7 +57,7 @@ def build_r3d_model(num_classes, config):
 
     total = sum(p.numel() for p in model.parameters())
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f"   Params: {total:,} total, {trainable:,} trainable")
+    print(f"   参数量：总计 {total:,}，可训练 {trainable:,}")
 
     return model
 
@@ -67,14 +67,14 @@ def freeze_backbone(model):
     for name, param in model.named_parameters():
         if "fc" not in name:
             param.requires_grad = False
-    print("   ❄️  Backbone frozen — only FC head is trainable")
+    print("   ❄️  主干网络已冻结——仅训练全连接头")
 
 
 def unfreeze_backbone(model):
     """Unfreeze all parameters."""
     for param in model.parameters():
         param.requires_grad = True
-    print("   🔓 Backbone unfrozen — all layers trainable")
+    print("   🔓 主干网络已解冻——所有层均可训练")
 
 
 def freeze_batchnorm(model):
@@ -113,7 +113,7 @@ def get_parameter_groups(model, config):
         groups.append({"params": backbone_params, "lr": base_lr * backbone_factor})
     groups.append({"params": head_params, "lr": base_lr})
 
-    print(f"   Optimizer groups: backbone LR={base_lr * backbone_factor:.6f}, head LR={base_lr:.6f}")
+    print(f"   优化器参数组：主干学习率={base_lr * backbone_factor:.6f}，头部学习率={base_lr:.6f}")
     return groups
 
 
@@ -130,7 +130,7 @@ def export_onnx(model, num_classes, config, output_path="r3d_finetuned.onnx"):
     h, w = config.get("crop_size", (112, 112))
     dummy = torch.randn(1, 3, seq_len, h, w)
 
-    print(f"📦 Exporting ONNX: {output_path}")
+    print(f"📦 正在导出 ONNX：{output_path}")
     torch.onnx.export(
         model, dummy, output_path,
         input_names=["input"],
@@ -138,5 +138,5 @@ def export_onnx(model, num_classes, config, output_path="r3d_finetuned.onnx"):
         dynamic_axes={"input": {0: "batch"}, "output": {0: "batch"}},
         opset_version=14,
     )
-    print(f"✅ ONNX saved: {output_path}")
+    print(f"✅ ONNX 已保存：{output_path}")
     return output_path

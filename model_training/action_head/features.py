@@ -90,7 +90,7 @@ class FeatureCache:
                         and int(z["frames"]) == frames and z["features"].shape[2:] == (dims,)):
                     self.items = dict(zip(z["keys"].tolist(), z["features"]))
             except Exception as e:  # noqa: BLE001 - a bad cache is rebuilt, not fatal
-                print(f"⚠️ Feature cache {path} unreadable ({e}); encoding again")
+                print(f"⚠️ 特征缓存 {path} 无法读取（{e}），将重新编码")
 
     def __contains__(self, key):
         return key in self.items
@@ -130,8 +130,8 @@ def encode_clips(paths: Sequence[str], root: str, encoder, cache: FeatureCache,
         else:
             todo.append((i, p, key))
     if todo:
-        log(f"Encoding {len(todo)} clips ({len(paths) - len(todo)} cached) "
-            f"with {encoder.encoder_id} on {encoder.label}")
+        log(f"正在编码 {len(todo)} 个片段（已缓存 {len(paths) - len(todo)} 个），"
+            f"使用 {encoder.encoder_id}，设备 {encoder.label}")
     start, failed = time.time(), []
     for n, (i, p, key) in enumerate(todo, 1):
         if should_stop and should_stop():
@@ -146,8 +146,8 @@ def encode_clips(paths: Sequence[str], root: str, encoder, cache: FeatureCache,
         if n % save_every == 0 or n == len(todo):
             cache.save()
             rate = n / max(time.time() - start, 1e-6)
-            log(f"  {n}/{len(todo)} clips, {rate:.1f}/s, about "
-                f"{(len(todo) - n) / rate / 60:.1f} min left")
+            log(f"  {n}/{len(todo)} 个片段，{rate:.1f} 个/秒，预计剩余 "
+                f"{(len(todo) - n) / rate / 60:.1f} 分钟")
     if todo:
         cache.save()
     for p in failed[:10]:

@@ -53,7 +53,7 @@ def _relation(value) -> str:
     silently fall back to ``inside`` and fire on the wrong thing."""
     relation = str(value or "inside").strip().lower()
     if relation not in RELATIONS:
-        raise ValueError(f"relation must be one of {RELATIONS}, not {value!r}")
+        raise ValueError(f"关系类型必须为 {RELATIONS} 之一，不能是 {value!r}")
     return relation
 
 
@@ -237,7 +237,7 @@ class CompositionEngine:
             raw = yaml.safe_load(f) or {}
         name = str(raw.get('outliner') or 'grabcut').strip().lower()
         if name not in ('grabcut', 'sam'):
-            raise ValueError(f"outliner must be 'grabcut' or 'sam', not {name!r}")
+            raise ValueError(f"轮廓算法必须为 'grabcut' 或 'sam'，不能是 {name!r}")
         return name
 
     @property

@@ -380,7 +380,7 @@ def normalise_kind(kind: str) -> str:
     key = (kind or "").strip().lower().replace("-", "_").replace(" ", "_")
     if key not in TRANSITIONS:
         raise ValueError(
-            f"unknown transition {kind!r} — expected one of "
+            f"未知转场类型 {kind!r}——应为以下之一："
             f"{', '.join(sorted(TRANSITIONS))}")
     return key
 
@@ -389,7 +389,7 @@ def normalise_easing(easing: str) -> str:
     """Accept an easing name, or raise with the real ones."""
     key = (easing or "linear").strip().lower().replace("-", "_").replace(" ", "_")
     if key not in EASINGS:
-        raise ValueError(f"unknown easing {easing!r} — expected one of "
+        raise ValueError(f"未知缓动方式 {easing!r}——应为以下之一："
                          f"{', '.join(sorted(EASINGS))}")
     return key
 
@@ -400,10 +400,10 @@ def normalise_feather(feather) -> float:
     try:
         value = float(feather or 0.0)
     except (TypeError, ValueError):
-        raise ValueError(f"feather must be a number between 0 and 1, got "
+        raise ValueError(f"羽化值必须是 0 到 1 之间的数字，实际为 "
                          f"{feather!r}") from None
     if value != value or value < 0 or value > MAX_FEATHER:
-        raise ValueError(f"feather must be between 0 and {MAX_FEATHER:g}, got "
+        raise ValueError(f"羽化值必须位于 0 到 {MAX_FEATHER:g} 之间，实际为 "
                          f"{feather!r}")
     return 0.0 if value < MIN_FEATHER else value
 
@@ -648,8 +648,8 @@ def _normalize_filled(src: str, dst: str, width: int, height: int, fps: int,
     result = subprocess.run(cmd, capture_output=True, text=True,
                             encoding="utf-8", errors="replace", timeout=900)
     if result.returncode != 0 or not os.path.exists(dst) or os.path.getsize(dst) == 0:
-        err = (result.stderr or "").strip()[-500:] or "unknown error"
-        raise RuntimeError(f"Normalization failed for {os.path.basename(src)}: {err}")
+        err = (result.stderr or "").strip()[-500:] or "未知错误"
+        raise RuntimeError(f"{os.path.basename(src)} 标准化失败：{err}")
 
 
 def _font_path() -> str:
@@ -856,7 +856,7 @@ def burn_text(src: str, dst: str, text: str, *, height: int, width: int = 0,
         capture_output=True, text=True, encoding="utf-8", errors="replace",
         timeout=900)
     if result.returncode != 0 or not os.path.exists(dst):
-        tail = (result.stderr or "").strip().splitlines()[-1:] or ["unknown error"]
+        tail = (result.stderr or "").strip().splitlines()[-1:] or ["未知错误"]
         log_fn(f"⚠️ 无法绘制文字（{tail[0]}）；片段将保留原始画面")
         shutil.copy2(src, dst)
     return dst
@@ -895,8 +895,8 @@ def _join_run(paths: list[str], out: str, fps: int) -> str:
         capture_output=True, text=True, encoding="utf-8", errors="replace",
         timeout=1800)
     if result.returncode != 0 or not os.path.exists(out):
-        err = (result.stderr or "").strip()[-400:] or "unknown error"
-        raise RuntimeError(f"joining a run of cuts failed: {err}")
+        err = (result.stderr or "").strip()[-400:] or "未知错误"
+        raise RuntimeError(f"合并连续硬切片段失败：{err}")
     return out
 
 

@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "8b0b0cf9975e59c7b41662ee00dafcddf3806e29"
+    "head_commit": "a07ae54f44375db98f4fc339a988e258b55c8bf3"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -17657,6 +17657,177 @@
       "hunk": "@@ -345,27 +345,27 @@ def main():"
     },
     {
+      "id": "model_training/shared/dataset.py#1",
+      "file": "model_training/shared/dataset.py",
+      "source": "        print(f\"📦 Loading ROI cache: {cache_path}\")",
+      "target": "        print(f\"📦 正在加载 ROI 缓存：{cache_path}\")",
+      "before": "    if os.path.exists(cache_path):",
+      "after": "        with open(cache_path, \"rb\") as f:",
+      "hunk": "@@ -90,26 +90,26 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#2",
+      "file": "model_training/shared/dataset.py",
+      "source": "            print(f\"   ✅ Cache valid ({len(cache)} videos)\")",
+      "target": "            print(f\"   ✅ 缓存有效（{len(cache)} 个视频）\")",
+      "before": "        if hits == len(sample_paths):",
+      "after": "            return cache",
+      "hunk": "@@ -90,26 +90,26 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#3",
+      "file": "model_training/shared/dataset.py",
+      "source": "            print(f\"   ⚠️  Cache stale ({hits}/{len(sample_paths)} matched) — rebuilding\")",
+      "target": "            print(f\"   ⚠️  缓存已过期（匹配 {hits}/{len(sample_paths)}），正在重建\")",
+      "before": "        else:",
+      "after": "",
+      "hunk": "@@ -90,26 +90,26 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#4",
+      "file": "model_training/shared/dataset.py",
+      "source": "    print(f\"\\n🔍 PRE-COMPUTING ROIs for {len(dataset.samples)} videos...\")\n    print(f\"   This runs YOLOX + optional pose ONCE so training epochs are fast.\")\n    print(f\"   Cache: {cache_path}\\n\")",
+      "target": "    print(f\"\\n🔍 正在为 {len(dataset.samples)} 个视频预计算 ROI…\")\n    print(\"   YOLOX 与可选姿态检测只运行一次，以加快后续训练轮次。\")\n    print(f\"   缓存：{cache_path}\\n\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -90,26 +90,26 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#5",
+      "file": "model_training/shared/dataset.py",
+      "source": "    for video_path, _ in tqdm(dataset.samples, desc=\"Caching ROIs\"):",
+      "target": "    for video_path, _ in tqdm(dataset.samples, desc=\"缓存 ROI\"):",
+      "before": "",
+      "after": "        cap = cv2.VideoCapture(video_path)",
+      "hunk": "@@ -90,26 +90,26 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#6",
+      "file": "model_training/shared/dataset.py",
+      "source": "    print(f\"\\n✅ ROI cache saved: {cache_path} ({size_mb:.1f} MB, {len(cache)} videos)\")",
+      "target": "    print(f\"\\n✅ ROI 缓存已保存：{cache_path}（{size_mb:.1f} MB，{len(cache)} 个视频）\")",
+      "before": "    size_mb = os.path.getsize(cache_path) / 1e6",
+      "after": "    return cache",
+      "hunk": "@@ -186,7 +186,7 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#7",
+      "file": "model_training/shared/dataset.py",
+      "source": "            print(f\"⚠️  Dataset path {root} does not exist\")",
+      "target": "            print(f\"⚠️  数据集路径不存在：{root}\")",
+      "before": "        if not os.path.exists(root):",
+      "after": "            self.labels = []",
+      "hunk": "@@ -390,7 +390,7 @@ class VideoDataset(Dataset):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#8",
+      "file": "model_training/shared/dataset.py",
+      "source": "        print(f\"📊 Detected {len(self.labels)} action classes:\")",
+      "target": "        print(f\"📊 检测到 {len(self.labels)} 个动作类别：\")",
+      "before": "",
+      "after": "        for label, idx in self.label_to_idx.items():",
+      "hunk": "@@ -403,7 +403,7 @@ class VideoDataset(Dataset):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#9",
+      "file": "model_training/shared/dataset.py",
+      "source": "        print(f\"✅ Found {video_count} videos\")",
+      "target": "        print(f\"✅ 找到 {video_count} 个视频\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -419,7 +419,7 @@ class VideoDataset(Dataset):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#10",
+      "file": "model_training/shared/dataset.py",
+      "source": "    print(f\"\\n📊 Validating dataset sizes...\")\n    print(f\"  Min train videos/action: {min_train}\")\n    print(f\"  Min val videos/action:   {min_val}\")",
+      "target": "    print(\"\\n📊 正在验证数据集规模…\")\n    print(f\"  每个动作最少训练视频数：{min_train}\")\n    print(f\"  每个动作最少验证视频数：{min_val}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -479,9 +479,9 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#11",
+      "file": "model_training/shared/dataset.py",
+      "source": "            print(f\"  ❌ '{action}': {t_cnt} train (need {min_train}) — SKIPPED\")",
+      "target": "            print(f\"  ❌ '{action}'：训练集 {t_cnt} 个（需要 {min_train} 个）——已跳过\")",
+      "before": "        if t_cnt < min_train:",
+      "after": "            continue",
+      "hunk": "@@ -508,7 +508,7 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#12",
+      "file": "model_training/shared/dataset.py",
+      "source": "                print(f\"  ⚠️  '{action}': {total} total (need {min_train + min_val}) — SKIPPED\")",
+      "target": "                print(f\"  ⚠️  '{action}'：总计 {total} 个（需要 {min_train + min_val} 个）——已跳过\")",
+      "before": "            if total < min_train + min_val:",
+      "after": "                continue",
+      "hunk": "@@ -518,13 +518,13 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#13",
+      "file": "model_training/shared/dataset.py",
+      "source": "                f\"{v_cnt} val\" if v_cnt < min_val\n                else f\"{current_val_ratio:.0%} val ratio < {min_val_ratio:.0%}\"",
+      "target": "                f\"验证集 {v_cnt} 个\" if v_cnt < min_val\n                else f\"验证集比例 {current_val_ratio:.0%} < {min_val_ratio:.0%}\"",
+      "before": "            reason = (",
+      "after": "            )",
+      "hunk": "@@ -518,13 +518,13 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#14",
+      "file": "model_training/shared/dataset.py",
+      "source": "            print(f\"  🔄 '{action}': {t_cnt} train, {v_cnt} val → AUTO-SPLITTING ({reason})\")",
+      "target": "            print(f\"  🔄 '{action}'：训练 {t_cnt}，验证 {v_cnt} → 自动重新划分（{reason}）\")",
+      "before": "            )",
+      "after": "            all_vids = t_vids + v_vids",
+      "hunk": "@@ -518,13 +518,13 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#15",
+      "file": "model_training/shared/dataset.py",
+      "source": "            print(f\"     ✓ {len(split_train)} train, {len(split_val)} val\")",
+      "target": "            print(f\"     ✓ 训练 {len(split_train)}，验证 {len(split_val)}\")",
+      "before": "            valid_actions.append(action)",
+      "after": "        else:",
+      "hunk": "@@ -534,20 +534,20 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#16",
+      "file": "model_training/shared/dataset.py",
+      "source": "            print(f\"  ✅ '{action}': {t_cnt} train, {v_cnt} val — OK\")",
+      "target": "            print(f\"  ✅ '{action}'：训练 {t_cnt}，验证 {v_cnt}——正常\")",
+      "before": "        else:",
+      "after": "            new_train.extend(t_vids)",
+      "hunk": "@@ -534,20 +534,20 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#17",
+      "file": "model_training/shared/dataset.py",
+      "source": "        print(\"\\n❌ No actions meet minimum requirements.\")",
+      "target": "        print(\"\\n❌ 没有任何动作类别满足最低要求。\")",
+      "before": "    if not valid_actions:",
+      "after": "        return False, [], [], []",
+      "hunk": "@@ -534,20 +534,20 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#18",
+      "file": "model_training/shared/dataset.py",
+      "source": "    print(f\"\\n✅ Validation complete: {len(valid_actions)} valid actions\")\n    print(f\"  Training samples:   {len(new_train)}\")\n    print(f\"  Validation samples: {len(new_val)}\")",
+      "target": "    print(f\"\\n✅ 验证完成：{len(valid_actions)} 个有效动作类别\")\n    print(f\"  训练样本：{len(new_train)}\")\n    print(f\"  验证样本：{len(new_val)}\")",
+      "before": "",
+      "after": "    return True, valid_actions, new_train, new_val",
+      "hunk": "@@ -534,20 +534,20 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):"
+    },
+    {
+      "id": "model_training/shared/dataset.py#19",
+      "file": "model_training/shared/dataset.py",
+      "source": "    print(f\"\\n✅ Datasets updated:\")\n    print(f\"  Train: {len(train_dataset.samples)} | Val: {len(val_dataset.samples)}\")\n    print(f\"  Classes: {valid_actions}\")",
+      "target": "    print(\"\\n✅ 数据集已更新：\")\n    print(f\"  训练：{len(train_dataset.samples)} | 验证：{len(val_dataset.samples)}\")\n    print(f\"  类别：{valid_actions}\")",
+      "before": "",
+      "after": null,
+      "hunk": "@@ -579,6 +579,6 @@ def apply_dataset_split(train_dataset, val_dataset, valid_actions,"
+    },
+    {
       "id": "modules/audio/music_analysis.py#1",
       "file": "modules/audio/music_analysis.py",
       "source": "            raise RuntimeError(\"ffmpeg could not decode the music file:\\n\"",
@@ -18201,20 +18372,182 @@
     {
       "id": "modules/audio/transcript_srt.py#1",
       "file": "modules/audio/transcript_srt.py",
+      "source": "        print(\"⚠️ Could not detect FPS, using 25.0\")",
+      "target": "        print(\"⚠️ 无法检测 FPS，将使用 25.0\")",
+      "before": "    except:",
+      "after": "        return 25.0",
+      "hunk": "@@ -16,7 +16,7 @@ def get_video_fps(video_path: str) -> float:"
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#2",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(f\"⚠️ LLM translation failed: {e}\")",
+      "target": "        print(f\"⚠️ LLM 翻译失败：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "",
+      "hunk": "@@ -351,7 +351,7 @@ def translate_with_llm(text, source_lang=\"en\", target_lang=\"pl\", model=\"llama3\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#3",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(f\"  🦙 Batch {batch_num}/{total_batches} ({len(batch)} segments)...\")",
+      "target": "        print(f\"  🦙 批次 {batch_num}/{total_batches}（{len(batch)} 个片段）…\")",
+      "before": "        total_batches = (total + batch_size - 1) // batch_size",
+      "after": "        if progress_fn:",
+      "hunk": "@@ -372,10 +372,10 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#4",
+      "file": "modules/audio/transcript_srt.py",
       "source": "            progress_fn(i, total, \"Translation\",\n                        f\"Batch {batch_num}/{total_batches}\")",
       "target": "            progress_fn(i, total, \"翻译\",\n                        f\"批次 {batch_num}/{total_batches}\")",
       "before": "        if progress_fn:",
       "after": "",
-      "hunk": "@@ -374,8 +374,8 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+      "hunk": "@@ -372,10 +372,10 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
     },
     {
-      "id": "modules/audio/transcript_srt.py#2",
+      "id": "modules/audio/transcript_srt.py#5",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "                    print(f\"  ⚠️ Batch returned {len(parsed)} lines, expected {len(batch)}, falling back to individual\")",
+      "target": "                    print(f\"  ⚠️ 批量翻译返回 {len(parsed)} 行，应为 {len(batch)} 行，将回退为逐条翻译\")",
+      "before": "                else:",
+      "after": "        except Exception as e:",
+      "hunk": "@@ -424,9 +424,9 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#6",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "            print(f\"  ⚠️ Batch LLM translation failed: {e}\")",
+      "target": "            print(f\"  ⚠️ 批量 LLM 翻译失败：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "",
+      "hunk": "@@ -424,9 +424,9 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#7",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "                print(f\"  ⚠️ LLM failed for segment {i+j+1}, keeping original\")",
+      "target": "                print(f\"  ⚠️ 第 {i+j+1} 个片段 LLM 翻译失败，将保留原文\")",
+      "before": "            else:",
+      "after": "                results.append(text)",
+      "hunk": "@@ -436,11 +436,11 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#8",
       "file": "modules/audio/transcript_srt.py",
       "source": "        progress_fn(total, total, \"Translation\", f\"{total} segments\")",
       "target": "        progress_fn(total, total, \"翻译\", f\"{total} 个片段\")",
       "before": "    if progress_fn:",
       "after": "    return results",
-      "hunk": "@@ -440,7 +440,7 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+      "hunk": "@@ -436,11 +436,11 @@ def translate_batch_with_llm(texts, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#9",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(\"No segments to translate\")",
+      "target": "        print(\"没有需要翻译的片段\")",
+      "before": "    if not segments:",
+      "after": "        return []",
+      "hunk": "@@ -455,23 +455,23 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#10",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(\"No translation needed (same language)\")",
+      "target": "        print(\"源语言与目标语言相同，无需翻译\")",
+      "before": "    if source_lang == target_lang:",
+      "after": "        return segments",
+      "hunk": "@@ -455,23 +455,23 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#11",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "    print(f\"⏳ Translating {len(segments)} segments from {source_lang} to {target_lang}...\")",
+      "target": "    print(f\"⏳ 正在将 {len(segments)} 个片段从 {source_lang} 翻译为 {target_lang}…\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -455,23 +455,23 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#12",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(f\"🦙 Using local LLM ({llm_backend}) for translation (better quality)\")",
+      "target": "        print(f\"🦙 正在使用本地 LLM（{llm_backend}）翻译（质量更佳）\")",
+      "before": "    if llm_backend:",
+      "after": "        ",
+      "hunk": "@@ -455,23 +455,23 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#13",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "            print(f\"  🔍 DEBUG: '{seg['text'][:40]}' | gender={seg.get('gender', 'MISSING')} | speaker={seg.get('speaker_label', 'MISSING')}\")",
+      "target": "            print(f\"  🔍 调试：'{seg['text'][:40]}' | 性别={seg.get('gender', 'MISSING')} | 说话人={seg.get('speaker_label', 'MISSING')}\")",
+      "before": "        for seg in segments[:5]:",
+      "after": "        ",
+      "hunk": "@@ -455,23 +455,23 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#14",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "            print(f\"✅ Translated {len(translated_segments)} segments via LLM\")",
+      "target": "            print(f\"✅ 已通过 LLM 翻译 {len(translated_segments)} 个片段\")",
+      "before": "",
+      "after": "            return translated_segments",
+      "hunk": "@@ -494,16 +494,16 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#15",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "            print(f\"⚠️ LLM returned {len(translated_texts)} translations for {len(segments)} segments — keeping the originals\")",
+      "target": "            print(f\"⚠️ LLM 为 {len(segments)} 个片段返回了 {len(translated_texts)} 条翻译，将保留原文\")",
+      "before": "        else:",
+      "after": "",
+      "hunk": "@@ -494,16 +494,16 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#16",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "    print(\"❌ No translation backend available — subtitles left untranslated.\")\n    print(\"   Install ollama and pull a model to enable translation.\")",
+      "target": "    print(\"❌ 没有可用的翻译后端——字幕将保持原语言。\")\n    print(\"   请安装 Ollama 并拉取模型以启用翻译。\")",
+      "before": "    # untranslated SRT is otherwise indistinguishable from a working run.",
+      "after": "    return segments",
+      "hunk": "@@ -494,16 +494,16 @@ def translate_segments(segments, source_lang=\"en\", target_lang=\"pl\","
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#17",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(f\"Translating subtitles from {source_lang} to {target_lang}...\")",
+      "target": "        print(f\"正在将字幕从 {source_lang} 翻译为 {target_lang}…\")",
+      "before": "    if target_lang and target_lang != source_lang:",
+      "after": "        segments = translate_segments(segments, source_lang, target_lang,",
+      "hunk": "@@ -514,7 +514,7 @@ def create_srt_file(segments, output_path, source_lang=\"en\", target_lang=None,"
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#18",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "    print(f\"SRT file saved: {output_path}\")    ",
+      "target": "    print(f\"SRT 文件已保存：{output_path}\")    ",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -523,7 +523,7 @@ def create_srt_file(segments, output_path, source_lang=\"en\", target_lang=None,"
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#19",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(f\"✅ Highlight subtitles saved: {output_path}\")",
+      "target": "        print(f\"✅ 高光字幕已保存：{output_path}\")",
+      "before": "            f.write(srt_content)",
+      "after": "    else:",
+      "hunk": "@@ -552,6 +552,6 @@ def create_highlight_subtitles(original_segments: List[Dict], highlight_segments"
+    },
+    {
+      "id": "modules/audio/transcript_srt.py#20",
+      "file": "modules/audio/transcript_srt.py",
+      "source": "        print(\"⚠️ No subtitle segments overlap with highlights\")",
+      "target": "        print(\"⚠️ 没有字幕片段与高光区间重叠\")",
+      "before": "    else:",
+      "after": null,
+      "hunk": "@@ -552,6 +552,6 @@ def create_highlight_subtitles(original_segments: List[Dict], highlight_segments"
     },
     {
       "id": "modules/crop/actions.py#1",
@@ -18829,6 +19162,150 @@
       "before": "    except Exception as e:",
       "after": "        import traceback",
       "hunk": "@@ -892,43 +892,43 @@ def _run_batch(ask_delete=False):"
+    },
+    {
+      "id": "modules/crop/people.py#1",
+      "file": "modules/crop/people.py",
+      "source": "                    print(f\"  🔬 Frame {idx}: Split detected! 2→{split_corrected_count} ({split_reason})\")",
+      "target": "                    print(f\"  🔬 帧 {idx}：检测到人物拆分误判！2→{split_corrected_count}（{split_reason}）\")",
+      "before": "                if idx % 10 == 0:",
+      "after": "",
+      "hunk": "@@ -306,7 +306,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#2",
+      "file": "modules/crop/people.py",
+      "source": "                print(f\"    🔬 Pose: raw_skeletons={raw_pose_count}, clustered={cluster_count} → using {pose_count}\")",
+      "target": "                print(f\"    🔬 姿态：原始骨架={raw_pose_count}，聚类后={cluster_count} → 使用 {pose_count}\")",
+      "before": "            if raw_pose_count != cluster_count:",
+      "after": "",
+      "hunk": "@@ -340,7 +340,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#3",
+      "file": "modules/crop/people.py",
+      "source": "                    print(f\"  🔍 Frame {idx}: Adjacency bonus - likely 3rd person\")",
+      "target": "                    print(f\"  🔍 帧 {idx}：相邻检测加成——可能存在第 3 人\")",
+      "before": "                ):",
+      "after": "                    combined_count = 3",
+      "hunk": "@@ -366,7 +366,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#4",
+      "file": "modules/crop/people.py",
+      "source": "            filter_info = f\", filtered={filtered_by_pose}\" if filtered_by_pose > 0 else \"\"\n            print(f\"  Frame {idx+1}/{len(frame_indices)}: bbox={bbox_count}, pose={pose_count}, combined={combined_count}{filter_info}\")",
+      "target": "            filter_info = f\"，已过滤={filtered_by_pose}\" if filtered_by_pose > 0 else \"\"\n            print(f\"  帧 {idx+1}/{len(frame_indices)}：边界框={bbox_count}，姿态={pose_count}，综合={combined_count}{filter_info}\")",
+      "before": "        if idx % 10 == 0:",
+      "after": "",
+      "hunk": "@@ -385,8 +385,8 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#5",
+      "file": "modules/crop/people.py",
+      "source": "    print(f\"  📊 Detection summary:\")\n    print(f\"     BBox counts: {bbox_counts}\")\n    print(f\"     Pose counts: {pose_counts}\")\n    print(f\"     Combined counts: {combined_counts}\")",
+      "target": "    print(\"  📊 检测摘要：\")\n    print(f\"     边界框计数：{bbox_counts}\")\n    print(f\"     姿态计数：{pose_counts}\")\n    print(f\"     综合计数：{combined_counts}\")",
+      "before": "    total_filtered = sum(pose_filtered_counts)",
+      "after": "    if total_filtered > 0:",
+      "hunk": "@@ -397,12 +397,12 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#6",
+      "file": "modules/crop/people.py",
+      "source": "        print(f\"     🔬 Pose validation filtered {total_filtered} false positives across all frames\")",
+      "target": "        print(f\"     🔬 姿态验证在全部帧中共过滤 {total_filtered} 个误检\")",
+      "before": "    if total_filtered > 0:",
+      "after": "",
+      "hunk": "@@ -397,12 +397,12 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#7",
+      "file": "modules/crop/people.py",
+      "source": "    print(f\"  Statistics: mean={mean_count:.1f}, median={median_count}, max={max_count}\")\n    print(f\"  Most common: {most_common}\")",
+      "target": "    print(f\"  统计：均值={mean_count:.1f}，中位数={median_count}，最大值={max_count}\")\n    print(f\"  最常见计数：{most_common}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -413,8 +413,8 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#8",
+      "file": "modules/crop/people.py",
+      "source": "    print(f\"  📊 Mode: {mode_count} (appears {mode_freq:.0%} of frames)\")",
+      "target": "    print(f\"  📊 众数：{mode_count}（出现在 {mode_freq:.0%} 的帧中）\")",
+      "before": "    ",
+      "after": "    ",
+      "hunk": "@@ -423,16 +423,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#9",
+      "file": "modules/crop/people.py",
+      "source": "        print(f\"  ✅ Using mode (strong): {final_count}\")",
+      "target": "        print(f\"  ✅ 使用众数（证据充分）：{final_count}\")",
+      "before": "        final_count = mode_count",
+      "after": "    else:",
+      "hunk": "@@ -423,16 +423,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#10",
+      "file": "modules/crop/people.py",
+      "source": "        print(f\"  ✅ Using median (no strong mode): {final_count}\")",
+      "target": "        print(f\"  ✅ 使用中位数（无明显众数）：{final_count}\")",
+      "before": "        final_count = int(round(median_count))",
+      "after": "    ",
+      "hunk": "@@ -423,16 +423,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#11",
+      "file": "modules/crop/people.py",
+      "source": "            print(f\"  ⬆️ Upgraded 1→2: bbox_2+={bbox_2plus:.0%}, pose_2+={pose_2plus:.0%}\")",
+      "target": "            print(f\"  ⬆️ 从 1 人提升为 2 人：bbox_2+={bbox_2plus:.0%}，pose_2+={pose_2plus:.0%}\")",
+      "before": "            final_count = 2",
+      "after": "        else:",
+      "hunk": "@@ -441,9 +441,9 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#12",
+      "file": "modules/crop/people.py",
+      "source": "            print(f\"  ℹ️ Staying at 1: bbox_2+={bbox_2plus:.0%}, pose_2+={pose_2plus:.0%} (need both ≥30%)\")",
+      "target": "            print(f\"  ℹ️ 保持 1 人：bbox_2+={bbox_2plus:.0%}，pose_2+={pose_2plus:.0%}（两者都需 ≥30%）\")",
+      "before": "        else:",
+      "after": "",
+      "hunk": "@@ -441,9 +441,9 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#13",
+      "file": "modules/crop/people.py",
+      "source": "        print(f\"  📊 3+ frequency: bbox={bbox_3_pct:.0%} ({bbox_3plus}/{total}), pose={pose_3_pct:.0%} ({pose_3plus}/{total}), combined={combined_3_pct:.0%} ({combined_3plus}/{total})\")",
+      "target": "        print(f\"  📊 3+ 人出现频率：bbox={bbox_3_pct:.0%}（{bbox_3plus}/{total}），pose={pose_3_pct:.0%}（{pose_3plus}/{total}），综合={combined_3_pct:.0%}（{combined_3plus}/{total}）\")",
+      "before": "        ",
+      "after": "        ",
+      "hunk": "@@ -456,7 +456,7 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#14",
+      "file": "modules/crop/people.py",
+      "source": "            print(f\"  ⚠️ Strong evidence of 3: bbox={bbox_3_pct:.0%}, pose={pose_3_pct:.0%}, combined={combined_3_pct:.0%}\")",
+      "target": "            print(f\"  ⚠️ 有充分证据表明为 3 人：bbox={bbox_3_pct:.0%}，pose={pose_3_pct:.0%}，综合={combined_3_pct:.0%}\")",
+      "before": "        if both_agree or combined_strong:",
+      "after": "            final_count = max(final_count, 3)",
+      "hunk": "@@ -464,16 +464,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#15",
+      "file": "modules/crop/people.py",
+      "source": "            print(f\"  ℹ️ Max=3 but insufficient agreement: bbox={bbox_3_pct:.0%}, pose={pose_3_pct:.0%}, combined={combined_3_pct:.0%}\")",
+      "target": "            print(f\"  ℹ️ 最大计数为 3，但一致性不足：bbox={bbox_3_pct:.0%}，pose={pose_3_pct:.0%}，综合={combined_3_pct:.0%}\")",
+      "before": "        else:",
+      "after": "",
+      "hunk": "@@ -464,16 +464,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
+    },
+    {
+      "id": "modules/crop/people.py#16",
+      "file": "modules/crop/people.py",
+      "source": "        print(f\"  ⚠️ Overriding to 3: mean={mean_count:.1f}, max={max_count}, freq={combined_3_freq:.0%}\")",
+      "target": "        print(f\"  ⚠️ 修正为 3 人：均值={mean_count:.1f}，最大值={max_count}，频率={combined_3_freq:.0%}\")",
+      "before": "    if mean_count >= 2.3 and max_count >= 3 and final_count < 3 and combined_3_freq >= 0.10:",
+      "after": "        final_count = 3",
+      "hunk": "@@ -464,16 +464,16 @@ def count_people_in_video(video_path, yolo_model, pose_model=None, sample_frames"
     },
     {
       "id": "modules/crop/zones.py#1",
@@ -22631,6 +23108,33 @@
       "before": "",
       "after": "            window = SignalTimelineWindow(...)",
       "hunk": "@@ -336,7 +336,7 @@ class splash:"
+    },
+    {
+      "id": "modules/teach/background.py#1",
+      "file": "modules/teach/background.py",
+      "source": "        return f\"Background: stopped ({report['error']})\"",
+      "target": "        return f\"后台改进：已停止（{report['error']}）\"",
+      "before": "    if report.get(\"error\"):",
+      "after": "    import os",
+      "hunk": "@@ -107,15 +107,15 @@ def run_once(root: str, *, train: bool = True, run_cli: Optional[Callable] = Non"
+    },
+    {
+      "id": "modules/teach/background.py#2",
+      "file": "modules/teach/background.py",
+      "source": "    ran = \", \".join(report.get(\"ran\") or []) or \"nothing new\"",
+      "target": "    ran = \", \".join(report.get(\"ran\") or []) or \"暂无新操作\"",
+      "before": "",
+      "after": "    if report.get(\"root\"):",
+      "hunk": "@@ -107,15 +107,15 @@ def run_once(root: str, *, train: bool = True, run_cli: Optional[Callable] = Non"
+    },
+    {
+      "id": "modules/teach/background.py#3",
+      "file": "modules/teach/background.py",
+      "source": "    ask = f\"; {n} question{'s' if n != 1 else ''} waiting\" if n else \"\"\n    return f\"Background: {ran}{ask}. Next: {report.get('next', {}).get('why', '')}\"",
+      "target": "    ask = f\"；有 {n} 个问题等待确认\" if n else \"\"\n    return f\"后台改进：{ran}{ask}。下一步：{report.get('next', {}).get('why', '')}\"",
+      "before": "    n = report.get(\"questions\", 0)",
+      "after": "",
+      "hunk": "@@ -107,15 +107,15 @@ def run_once(root: str, *, train: bool = True, run_cli: Optional[Callable] = Non"
     },
     {
       "id": "modules/teach/cli.py#1",
@@ -36431,6 +36935,123 @@
       "before": "        if self.train_frames + self.val_frames < MIN_USEFUL_FRAMES:",
       "after": "        return text",
       "hunk": "@@ -204,12 +204,12 @@ class Estimate:"
+    },
+    {
+      "id": "training/train_yolox.py#1",
+      "file": "training/train_yolox.py",
+      "source": "    parser = argparse.ArgumentParser(description=\"Prepare + print YOLOX training commands\")",
+      "target": "    parser = argparse.ArgumentParser(description=\"准备并输出 YOLOX 训练命令\")",
+      "before": "def main(argv: list[str] | None = None) -> int:",
+      "after": "    parser.add_argument(\"--dataset\", type=Path, default=REPO_ROOT / \"yolox_dataset\")",
+      "hunk": "@@ -152,20 +152,20 @@ class Exp(MyExp):"
+    },
+    {
+      "id": "training/train_yolox.py#2",
+      "file": "training/train_yolox.py",
+      "source": "                        help=\"Path to cloned Megvii-BaseDetection/YOLOX repo \"\n                             \"(not needed with --write-labels-only)\")",
+      "target": "                        help=\"已克隆的 Megvii-BaseDetection/YOLOX 仓库路径\"\n                             \"（使用 --write-labels-only 时不需要）\")",
+      "before": "    parser.add_argument(\"--yolox-dir\", type=Path,",
+      "after": "    parser.add_argument(\"--size\", choices=(\"nano\", \"tiny\", \"s\", \"m\", \"l\", \"x\"), default=\"s\")",
+      "hunk": "@@ -152,20 +152,20 @@ class Exp(MyExp):"
+    },
+    {
+      "id": "training/train_yolox.py#3",
+      "file": "training/train_yolox.py",
+      "source": "    parser.add_argument(\"--dry-run\", action=\"store_true\", help=\"Only write exp file, don't print train cmd\")",
+      "target": "    parser.add_argument(\"--dry-run\", action=\"store_true\", help=\"只写入 exp 文件，不输出训练命令\")",
+      "before": "    parser.add_argument(\"--batch-size\", type=int, default=8)",
+      "after": "    parser.add_argument(\"--write-labels-only\", type=Path, metavar=\"OUT_PATH\",",
+      "hunk": "@@ -152,20 +152,20 @@ class Exp(MyExp):"
+    },
+    {
+      "id": "training/train_yolox.py#4",
+      "file": "training/train_yolox.py",
+      "source": "                        help=\"Backfill labels.json for an ALREADY-exported model — \"\n                             \"e.g. --write-labels-only models/custom/labels.json. \"\n                             \"Reads class names from --dataset's coco_train.json; \"\n                             \"does not need --yolox-dir or touch training at all.\")",
+      "target": "                        help=\"为已经导出的模型补写 labels.json，例如 \"\n                             \"--write-labels-only models/custom/labels.json。\"\n                             \"类别名称从 --dataset 的 coco_train.json 读取；\"\n                             \"不需要 --yolox-dir，也不会启动训练。\")",
+      "before": "    parser.add_argument(\"--write-labels-only\", type=Path, metavar=\"OUT_PATH\",",
+      "after": "    args = parser.parse_args(argv)",
+      "hunk": "@@ -152,20 +152,20 @@ class Exp(MyExp):"
+    },
+    {
+      "id": "training/train_yolox.py#5",
+      "file": "training/train_yolox.py",
+      "source": "            print(f\"No categories in {train_json} — check dataset labels.\")",
+      "target": "            print(f\"{train_json} 中没有类别，请检查数据集标注。\")",
+      "before": "        if not names:",
+      "after": "            return 1",
+      "hunk": "@@ -174,28 +174,28 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#6",
+      "file": "training/train_yolox.py",
+      "source": "        print(f\"✅ Wrote {len(names)} class name(s) → {out}\")",
+      "target": "        print(f\"✅ 已写入 {len(names)} 个类别名称 → {out}\")",
+      "before": "        out = write_labels_json(names, args.write_labels_only.resolve())",
+      "after": "        print(f\"   {names}\")",
+      "hunk": "@@ -174,28 +174,28 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#7",
+      "file": "training/train_yolox.py",
+      "source": "        print(\"--yolox-dir is required unless --write-labels-only is given.\")",
+      "target": "        print(\"除非使用 --write-labels-only，否则必须提供 --yolox-dir。\")",
+      "before": "    if not args.yolox_dir:",
+      "after": "        return 1",
+      "hunk": "@@ -174,28 +174,28 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#8",
+      "file": "training/train_yolox.py",
+      "source": "        print(f\"YOLOX repo not found: {yolox_dir}\")\n        print(\"Clone: git clone https://github.com/Megvii-BaseDetection/YOLOX.git\")",
+      "target": "        print(f\"未找到 YOLOX 仓库：{yolox_dir}\")\n        print(\"请克隆：git clone https://github.com/Megvii-BaseDetection/YOLOX.git\")",
+      "before": "    if not yolox_dir.is_dir():",
+      "after": "        return 1",
+      "hunk": "@@ -174,28 +174,28 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#9",
+      "file": "training/train_yolox.py",
+      "source": "        print(\"No categories in COCO JSON — check dataset labels.\")",
+      "target": "        print(\"COCO JSON 中没有类别，请检查数据集标注。\")",
+      "before": "    if num_classes == 0:",
+      "after": "        return 1",
+      "hunk": "@@ -174,28 +174,28 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#10",
+      "file": "training/train_yolox.py",
+      "source": "    print(f\"\\n✅ Wrote YOLOX experiment: {exp_path}\")\n    print(f\"   Classes: {num_classes}  Size: YOLOX-{args.size}  Input: {input_size}\\n\")\n    print(f\"✅ Wrote class names: {labels_path}\")",
+      "target": "    print(f\"\\n✅ 已写入 YOLOX 实验配置：{exp_path}\")\n    print(f\"   类别数：{num_classes}  大小：YOLOX-{args.size}  输入：{input_size}\\n\")\n    print(f\"✅ 已写入类别名称：{labels_path}\")",
+      "before": "",
+      "after": "    print(f\"   {names}\\n\")",
+      "hunk": "@@ -215,22 +215,22 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#11",
+      "file": "training/train_yolox.py",
+      "source": "    print(\"Run training from the YOLOX repo root:\\n\")",
+      "target": "    print(\"请在 YOLOX 仓库根目录运行训练：\\n\")",
+      "before": "    print(f\"   {names}\\n\")",
+      "after": "    print(f\"  cd {yolox_dir}\")",
+      "hunk": "@@ -215,22 +215,22 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#12",
+      "file": "training/train_yolox.py",
+      "source": "    print(\"\\nAfter training, export ONNX (no decode_in_inference) and convert:\\n\")",
+      "target": "    print(\"\\n训练完成后，导出 ONNX（不使用 decode_in_inference）并进行转换：\\n\")",
+      "before": "          f\"--fp16 -o -c path/to/yolox_{args.size}.pth\")",
+      "after": "    print(f\"  python tools/export_onnx.py --output-name yolox_{args.size}.onnx \"",
+      "hunk": "@@ -215,22 +215,22 @@ def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "id": "training/train_yolox.py#13",
+      "file": "training/train_yolox.py",
+      "source": "    print(f\"  python {REPO_ROOT / 'tools' / 'get_yolox_model.py'}  # or openvino.convert_model on the ONNX\")\n    print(f\"\\nThe app reads class names from a labels.json sitting NEXT TO the \"\n          f\"model file — the exported .onnx/.xml carries no names of its own:\")\n    print(f\"  Copy IR   → {REPO_ROOT / 'models' / 'custom' / f'yolox_{args.size}.xml'}\")\n    print(f\"  Copy names → {REPO_ROOT / 'models' / 'custom' / 'labels.json'}  \"",
+      "target": "    print(f\"  python {REPO_ROOT / 'tools' / 'get_yolox_model.py'}  # 或对 ONNX 使用 openvino.convert_model\")\n    print(f\"\\n应用会从模型文件旁边的 labels.json 读取类别名称——\"\n          f\"导出的 .onnx/.xml 本身不包含类别名称：\")\n    print(f\"  复制 IR   → {REPO_ROOT / 'models' / 'custom' / f'yolox_{args.size}.xml'}\")\n    print(f\"  复制名称   → {REPO_ROOT / 'models' / 'custom' / 'labels.json'}  \"",
+      "before": "          f\"-f {exp_module} -c YOLOX_outputs/.../best_ckpt.pth\")",
+      "after": "          f\"(from {labels_path})\\n\")",
+      "hunk": "@@ -215,22 +215,22 @@ def main(argv: list[str] | None = None) -> int:"
     },
     {
       "id": "training/train_yolox_dataset.py#1",

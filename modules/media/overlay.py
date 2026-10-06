@@ -255,7 +255,7 @@ class ElevationProfile(Element):
     are placed along it, it doubles as a progress bar that means something.
     """
     key = "elevation"
-    label = "Elevation profile"
+    label = "海拔曲线"
 
     def build(self, scene: Scene) -> list:
         heights = scene.elevations
@@ -312,7 +312,7 @@ class RouteMap(Element):
     to fill a wide box is a different shape, and the shape is the whole point.
     """
     key = "route"
-    label = "Route map"
+    label = "路线地图"
 
     # (latitude, longitude) per track point — set by build_scene.
     path: list = field(default_factory=list)
@@ -361,7 +361,7 @@ class Readout(Element):
     covered, and a figure that simply sits there reads as a caption.
     """
     key = "readout"
-    label = "Distance and climb"
+    label = "距离与爬升"
 
     show: tuple = ("distance", "climb")
 
@@ -395,7 +395,7 @@ class Ticker(Element):
     cuts are keeping.
     """
     key = "ticker"
-    label = "Cut ticker"
+    label = "剪辑节奏条"
 
     def draw(self, draw, scene: Scene, t: float) -> None:
         if not scene.duration:

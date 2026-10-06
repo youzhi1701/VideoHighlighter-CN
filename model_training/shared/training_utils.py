@@ -45,11 +45,11 @@ def compute_class_weights(dataset):
         count = label_counts.get(idx, 1)
         weights.append(total / (num_classes * count))
 
-    print(f"\n⚖️  Class weights (inverse frequency):")
+    print("\n⚖️  类别权重（按频率反比）：")
     for idx, w in enumerate(weights):
         name = dataset.idx_to_label.get(idx, f"Class_{idx}")
         count = label_counts.get(idx, 0)
-        print(f"   {name}: {count} samples, weight {w:.4f}")
+        print(f"   {name}：{count} 个样本，权重 {w:.4f}")
 
     return torch.FloatTensor(weights)
 
@@ -79,7 +79,7 @@ def save_checkpoint(model, optimizer, epoch, best_val_acc, label_to_idx,
 
     os.makedirs(os.path.dirname(os.path.abspath(checkpoint_path)), exist_ok=True)
     torch.save(ckpt, checkpoint_path)
-    print(f"💾 Checkpoint saved: {checkpoint_path} (epoch {epoch + 1})")
+    print(f"💾 检查点已保存：{checkpoint_path}（第 {epoch + 1} 轮）")
 
 
 def load_checkpoint(checkpoint_path, model, optimizer=None, device="cpu"):
@@ -90,10 +90,10 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, device="cpu"):
     copies all shared layers and reinitialises the final classifier.
     """
     if not os.path.exists(checkpoint_path):
-        print(f"❌ Checkpoint not found: {checkpoint_path}")
+        print(f"❌ 未找到检查点：{checkpoint_path}")
         return None
 
-    print(f"📂 Loading checkpoint: {checkpoint_path}")
+    print(f"📂 正在加载检查点：{checkpoint_path}")
     ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
 
     saved_classes = ckpt.get("num_classes", 0)
@@ -104,8 +104,8 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, device="cpu"):
     current_classes = _count_output_classes(model, final_keys)
 
     if saved_classes != current_classes and saved_classes > 0:
-        print(f"⚠️  Class mismatch: checkpoint={saved_classes}, current={current_classes}")
-        print("   Loading shared weights only (transfer learning)")
+        print(f"⚠️  类别数量不一致：检查点={saved_classes}，当前={current_classes}")
+        print("   仅加载共享权重（迁移学习）")
 
         state = ckpt["model_state_dict"]
         model_dict = model.state_dict()
@@ -118,7 +118,7 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, device="cpu"):
         }
         model_dict.update(filtered)
         model.load_state_dict(model_dict)
-        print(f"   ✅ Loaded {len(filtered)} shared layers")
+        print(f"   ✅ 已加载 {len(filtered)} 个共享层")
         return {
             "epoch": -1,
             "best_val_acc": 0.0,
@@ -133,10 +133,10 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, device="cpu"):
         try:
             optimizer.load_state_dict(ckpt["optimizer_state_dict"])
         except Exception as e:
-            print(f"⚠️  Could not load optimizer state: {e}")
+            print(f"⚠️  无法加载优化器状态：{e}")
 
-    print(f"✅ Checkpoint loaded (epoch {ckpt['epoch'] + 1}, "
-          f"best_val_acc={ckpt.get('best_val_acc', 0):.4f})")
+    print(f"✅ 检查点已加载（第 {ckpt['epoch'] + 1} 轮，"
+          f"最佳验证准确率={ckpt.get('best_val_acc', 0):.4f}）")
     return ckpt
 
 
@@ -196,8 +196,8 @@ class ActionRecognitionModel:
         data.update(self.extra_meta)
         with open(mapping_path, "w") as f:
             json.dump(data, f, indent=2)
-        print(f"✅ Model saved: {path}")
-        print(f"✅ Mapping saved: {mapping_path}")
+        print(f"✅ 模型已保存：{path}")
+        print(f"✅ 映射已保存：{mapping_path}")
 
     def save_filtered_mapping(self, path, classes_to_keep, per_class_acc=None, suffix=""):
         """
@@ -239,8 +239,8 @@ class ActionRecognitionModel:
 
         with open(mapping_path, "w") as f:
             json.dump(data, f, indent=2)
-        print(f"✅ Mapping saved: {mapping_path} "
-              f"({len(filtered_l2i)} active / {len(self.label_to_idx)} total)")
+        print(f"✅ 映射已保存：{mapping_path} "
+              f"（启用 {len(filtered_l2i)} / 总计 {len(self.label_to_idx)}）")
 
     @staticmethod
     def load_mapping(path):
@@ -267,15 +267,15 @@ def create_production_model(model_wrapper, val_fn, min_val_accuracy=0.3):
         (classes_to_keep: list[int], classes_to_remove: list[int],
          per_class_acc: dict)
     """
-    print(f"\n🔍 PRODUCTION MODEL FILTERING")
-    print(f"   Min validation accuracy: {min_val_accuracy:.1%}")
+    print("\n🔍 生产模型筛选")
+    print(f"   最低验证准确率：{min_val_accuracy:.1%}")
     print("=" * 70)
 
     per_class_acc, class_predictions = val_fn()
 
     keep, remove = [], []
 
-    print(f"\n{'Action':<30} {'Acc':<10} {'Decision'}")
+    print(f"\n{'动作':<30} {'准确率':<10} {'决定'}")
     print("-" * 70)
 
     for cls_idx in sorted(per_class_acc.keys()):
@@ -284,7 +284,7 @@ def create_production_model(model_wrapper, val_fn, min_val_accuracy=0.3):
 
         if acc >= min_val_accuracy:
             keep.append(cls_idx)
-            decision = "✅ KEEP"
+            decision = "✅ 保留"
         else:
             remove.append(cls_idx)
             confused = ""
@@ -296,12 +296,12 @@ def create_production_model(model_wrapper, val_fn, min_val_accuracy=0.3):
                     for i, _ in common if i != cls_idx
                 ]
                 if confused_names:
-                    confused = f" (confused with: {', '.join(confused_names[:2])})"
-            decision = f"❌ REMOVE{confused}"
+                    confused = f"（易混淆为：{', '.join(confused_names[:2])}）"
+            decision = f"❌ 移除{confused}"
 
         print(f"{name:<30} {acc:<10.4f} {decision}")
 
-    print(f"\n   Keep: {len(keep)} | Remove: {len(remove)}")
+    print(f"\n   保留：{len(keep)} | 移除：{len(remove)}")
     return keep, remove, per_class_acc
 
 

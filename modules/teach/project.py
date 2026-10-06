@@ -214,10 +214,10 @@ class Project:
     @classmethod
     def create(cls, root: str, task: str, name: str = "") -> "Project":
         if task not in TASKS:
-            raise ValueError(f"task must be one of {TASKS}, not {task!r}")
+            raise ValueError(f"训练类型必须是 {TASKS} 之一，不能是 {task!r}")
         project = cls(root)
         if project.exists:
-            raise FileExistsError(f"{project.root} already holds a project")
+            raise FileExistsError(f"{project.root} 已经包含一个项目")
         project.task = task
         project.name = name or project.name
         project.created = time.time()
@@ -231,7 +231,7 @@ class Project:
         with open(project.path(PROJECT_FILE), "r", encoding="utf-8") as handle:
             data = json.load(handle)
         if data.get("format") != FORMAT:
-            raise ValueError(f"unsupported project format {data.get('format')!r}")
+            raise ValueError(f"不支持的项目格式：{data.get('format')!r}")
         project.name = data.get("name") or project.name
         project.task = data["task"]
         project.created = float(data.get("created", 0.0))
@@ -343,11 +343,11 @@ class Project:
                by: str = "") -> None:
         """Record a verdict. ACCEPTED needs a class; the others clear it."""
         if verdict not in VERDICTS:
-            raise ValueError(f"verdict must be one of {VERDICTS}")
+            raise ValueError(f"判断结果必须是 {VERDICTS} 之一")
         if verdict == ACCEPTED:
             label = label or sample.proposed
             if self.get_class(label) is None:
-                raise ValueError(f"{sample.id}: no class {label!r} to accept it as")
+                raise ValueError(f"{sample.id}：不存在类别 {label!r}，无法按此类别接受")
             sample.label = label
         else:
             sample.label = ""

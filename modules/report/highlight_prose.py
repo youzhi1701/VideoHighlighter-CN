@@ -525,7 +525,7 @@ def clip_sections(entry: Mapping,
     # that signal's finding rather than as the relation between them.
     summary = summarise_clip(entry, peer_scores)
     if summary:
-        sections.append(("Summary", summary))
+        sections.append(("摘要", summary))
     return sections
 
 
@@ -2084,7 +2084,7 @@ def conclude(report: Mapping) -> list:
 
     summary = _section_summary(report)
     if summary:
-        sections.append({"heading": "Summary", "lines": summary})
+        sections.append({"heading": "摘要", "lines": summary})
     return sections
 
 

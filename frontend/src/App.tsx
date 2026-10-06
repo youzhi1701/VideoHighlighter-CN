@@ -565,7 +565,7 @@ export default function App() {
                   : "bg-destructive"
               }`}
             />
-            {online === null ? "connecting" : online ? "引擎就绪" : "引擎离线"}
+            {online === null ? "正在连接" : online ? "引擎就绪" : "引擎离线"}
           </span>
         </div>
         <Button variant="ghost" size="icon" onClick={toggle} title="切换主题">

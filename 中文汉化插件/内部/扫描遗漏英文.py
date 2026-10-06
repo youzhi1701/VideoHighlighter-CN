@@ -167,6 +167,10 @@ def visible_candidate(text: str, allow: set[str]) -> bool:
     # Strip tags before testing for English so fragments such as </span><br>
     # do not become false positives merely because HTML tag names use letters.
     t = re.sub(r"<[^>]+>", " ", t)
+    # AST string fragments can stop mid-tag (for example '<a href="' with no
+    # closing '>'). Strip an unfinished trailing tag too; it is markup syntax,
+    # not text a user can read.
+    t = re.sub(r"<[^>]*$", " ", t)
     t = html.unescape(t)
     t = clean(t)
     if not t or t in allow or CJK_RE.search(t) or not EN_RE.search(t):

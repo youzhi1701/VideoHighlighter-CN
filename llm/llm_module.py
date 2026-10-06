@@ -239,9 +239,9 @@ class _OllamaBackend(_LLMBackend):
             matched = any(self.model in m for m in models)
             if not matched:
                 raise RuntimeError(
-                    f"Model '{self.model}' not found in Ollama. "
-                    f"Available: {models}\n"
-                    f"Run: ollama pull {self.model}"
+                    f"Ollama 中未找到模型 '{self.model}'。"
+                    f"可用模型：{models}\n"
+                    f"请运行：ollama pull {self.model}"
                 )
             self._loaded = True
 
@@ -268,16 +268,16 @@ class _OllamaBackend(_LLMBackend):
             if capabilities is not None:
                 self._thinks = "thinking" in capabilities
                 if self._thinks:
-                    print(f"[thinking] '{self.model}' reasons before answering; "
-                          f"its replies are uncapped and will take longer.")
+                    print(f"[思考模型] '{self.model}' 会先进行推理再回答；"
+                          f"当前不限制输出预算，因此耗时会更长。")
         except requests.ConnectionError:
             # A remote server that refuses the connection has almost always
             # been started bound to localhost, which is the default and is
             # invisible from any other machine. "Is it running?" sends the
             # user there to check the one thing that is already true.
             raise RuntimeError(
-                "Cannot connect to Ollama at "
-                f"{self.base_url}. Is it running?\n" + _unreachable_hint(self.base_url)
+                "无法连接到 Ollama："
+                f"{self.base_url}。请检查服务是否正在运行。\n" + _unreachable_hint(self.base_url)
             )
 
     def is_loaded(self) -> bool:
@@ -390,21 +390,21 @@ class _OllamaBackend(_LLMBackend):
             server_unaccounted_ms = ttfb_ms - total_ms
 
             print(
-                f"   ⏱  body={body_kb:5.0f}KB  "
-                f"serialize={t_serialize_ms:5.0f}ms  "
-                f"headers_in={headers_ms:5.0f}ms  "
+                f"   ⏱  请求体={body_kb:5.0f}KB  "
+                f"序列化={t_serialize_ms:5.0f}ms  "
+                f"收到响应头={headers_ms:5.0f}ms  "
                 f"ttfb={ttfb_ms:5.0f}ms  "
-                f"wall={wall_ms:5.0f}ms"
+                f"总耗时={wall_ms:5.0f}ms"
             )
             print(
-                f"      ollama: load={load_ms:4.0f}ms  "
-                f"prompt_eval={pe_ms:5.0f}ms ({pe_n}t @ {pe_rate:5.1f}t/s)  "
-                f"eval={ev_ms:4.0f}ms ({ev_n}t @ {ev_rate:5.1f}t/s)  "
-                f"total={total_ms:5.0f}ms"
+                f"      Ollama：加载={load_ms:4.0f}ms  "
+                f"提示词计算={pe_ms:5.0f}ms（{pe_n}t @ {pe_rate:5.1f}t/s）  "
+                f"生成={ev_ms:4.0f}ms（{ev_n}t @ {ev_rate:5.1f}t/s）  "
+                f"总计={total_ms:5.0f}ms"
             )
             print(
-                f"      server_unaccounted (ttfb − total) = {server_unaccounted_ms:5.0f}ms  "
-                f"← likely image preprocess if >>0"
+                f"      服务端未计入耗时（ttfb − total）={server_unaccounted_ms:5.0f}ms  "
+                f"← 若明显大于 0，通常来自图像预处理"
             )
 
         raw = "".join(full_text)
@@ -422,9 +422,8 @@ class _OllamaBackend(_LLMBackend):
 
             if max_tokens != THINKING_BUDGET:
                 self._thinks = True
-                print(f"[thinking] '{self.model}' spent all {max_tokens} "
-                      f"tokens reasoning; retrying with no cap, and leaving it "
-                      f"uncapped for the rest of this run.")
+                print(f"[思考模型] '{self.model}' 已将 {max_tokens} 个 token 全部用于推理；"
+                      f"正在取消上限后重试，本轮后续调用也将保持不限额。")
                 # Terminates: the retry is made with THINKING_BUDGET, so this
                 # branch cannot be taken twice for the same call.
                 return self.generate(
@@ -434,10 +433,8 @@ class _OllamaBackend(_LLMBackend):
                     cancellation_token=cancellation_token)
 
             raise RuntimeError(
-                f"'{self.model}' reasoned for {thought_n} characters without "
-                f"an answer, uncapped, so it ran out of context rather than of "
-                f"budget. Reasoning scales with what it was asked to satisfy: "
-                f"a shorter brief leaves room for the reply.")
+                f"'{self.model}' 在未限制预算的情况下推理了 {thought_n} 个字符，但没有给出答案；"
+                f"这说明耗尽的是上下文而不是输出预算。请缩短要求，让模型为最终回答保留空间。")
 
         return sanitize_response(raw)
 
@@ -499,9 +496,9 @@ class _OpenVINOBackend(_LLMBackend):
     def load(self, **kwargs):
         if not os.path.isdir(self.model_path):
             raise FileNotFoundError(
-                f"No OpenVINO model directory at {self.model_path}. This "
-                f"backend needs a converted model (OpenVINO IR), not a GGUF "
-                f"and not an Ollama tag - see docs/INTEL-GPU.md.")
+                f"在 {self.model_path} 未找到 OpenVINO 模型目录。"
+                f"此后端需要已转换的 OpenVINO IR 模型，不支持 GGUF 或 Ollama 标签；"
+                f"请参阅 docs/INTEL-GPU.md。")
         import openvino_genai as ov_genai
 
         template = os.path.join(self.model_path, "chat_template.jinja")
@@ -511,9 +508,8 @@ class _OpenVINOBackend(_LLMBackend):
         except OSError:
             self._thinks = False
 
-        print(f"[OpenVINO] loading {os.path.basename(self.model_path)} on "
-              f"{self.device}"
-              + (" (reasons before answering)" if self._thinks else ""))
+        print(f"[OpenVINO] 正在将 {os.path.basename(self.model_path)} 加载到 {self.device}"
+              + ("（回答前会先推理）" if self._thinks else ""))
         self._pipe = ov_genai.VLMPipeline(self.model_path, self.device)
 
     def is_loaded(self) -> bool:
@@ -556,7 +552,7 @@ class _OpenVINOBackend(_LLMBackend):
                  cancellation_token: Optional[CancellationToken] = None,
                  seed: Optional[int] = None) -> str:
         if self._pipe is None:
-            raise RuntimeError("OpenVINO backend used before load()")
+            raise RuntimeError("OpenVINO 后端尚未加载，请先调用 load()")
         import openvino_genai as ov_genai
 
         config = ov_genai.GenerationConfig()
@@ -617,10 +613,8 @@ class _OpenVINOBackend(_LLMBackend):
 
         if not answer and self._thinks and text.strip():
             raise RuntimeError(
-                f"'{os.path.basename(self.model_path)}' reasoned for "
-                f"{len(text)} characters without an answer. Reasoning scales "
-                f"with what it was asked to satisfy: a shorter brief leaves "
-                f"room for the reply.")
+                f"'{os.path.basename(self.model_path)}' 推理了 {len(text)} 个字符但没有给出答案。"
+                f"请缩短要求，为最终回答保留足够上下文空间。")
 
         return sanitize_response(answer)
 
@@ -649,7 +643,7 @@ class _LlamaCppBackend(_LLMBackend):
 
     def load(self, **kwargs):
         if not os.path.isfile(self.model_path):
-            raise FileNotFoundError(f"GGUF model not found: {self.model_path}")
+            raise FileNotFoundError(f"未找到 GGUF 模型：{self.model_path}")
         
         from llama_cpp import Llama
         
@@ -701,7 +695,7 @@ class _LlamaCppBackend(_LLMBackend):
                 images: list[str] | None = None,
                 cancellation_token: Optional[CancellationToken] = None) -> str:
         if not self._model:
-            raise RuntimeError("Model not loaded. Call load() first.")
+            raise RuntimeError("模型尚未加载，请先调用 load()")
 
         if images and self.mmproj_path:
             return self._generate_vision(prompt, system, images, max_tokens, 
@@ -1218,7 +1212,7 @@ class LLMModule:
                 will interrupt generation even mid-token for GGUF vision models.
         """
         if not self._backend.is_loaded():
-            raise RuntimeError("LLM not loaded. Call load() first.")
+            raise RuntimeError("LLM 尚未加载，请先调用 load()")
         
         print("🔍 已调用 query()：")
         print(f"   frame_base64：{'有（' + str(len(frame_base64)) + ' 个字符）' if frame_base64 else '无'}")
@@ -1429,7 +1423,7 @@ class VideoSeekAnalyzer:
             )
         
         if not os.path.exists(video_path):
-            raise FileNotFoundError(f"Video file not found: {video_path}")
+            raise FileNotFoundError(f"未找到视频文件：{video_path}")
         
         self.video_path = video_path
         self.llm = llm

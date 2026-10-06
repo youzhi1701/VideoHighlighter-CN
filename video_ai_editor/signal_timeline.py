@@ -79,7 +79,7 @@ class SignalTimelineScene(QGraphicsScene):
         # (cached path) or from set_waveform_data (extraction path)
         self.waveform_colors = self.generate_waveform_colors()
 
-        print(f"🎵 SignalTimelineScene init: waveform={len(self.waveform)} points")
+        print(f"🎵 信号时间线场景初始化：波形={len(self.waveform)} 个点")
       
         # Dynamic zoom for short videos
         if video_duration < 30:
@@ -238,7 +238,7 @@ class SignalTimelineScene(QGraphicsScene):
             # Recompute colors with current opacity
             self.waveform_colors = self.generate_waveform_colors()
 
-            print(f"✅ SignalTimelineScene.set_waveform_data: {len(self.waveform)} points, visible={has_data}")
+            print(f"✅ 已设置时间线波形数据：{len(self.waveform)} 个点，可见={has_data}")
 
             # Rebuild timeline to include waveform
             self.build_timeline()
@@ -250,7 +250,7 @@ class SignalTimelineScene(QGraphicsScene):
             # IMPORTANT: Return the SAME y_pos when not drawing
             return y_pos  # Don't add any height
         
-        print(f"🎵 draw_waveform_layer: Drawing at y={y_pos} with height={height}, {len(self.waveform)} points")
+        print(f"🎵 正在绘制波形层：y={y_pos}，高度={height}，{len(self.waveform)} 个点")
         
         # Draw waveform background
         waveform_y = y_pos
@@ -868,8 +868,8 @@ class SignalTimelineScene(QGraphicsScene):
             self._build_timeline()
 
     def _build_timeline(self):
-        print(f"🔄 SignalTimelineScene.build_timeline() called")
-        print(f"   - Waveform data: {self.waveform is not None}, length: {len(self.waveform)}")
+        print("🔄 正在重建信号时间线…")
+        print(f"   - 波形数据：{self.waveform is not None}，长度：{len(self.waveform)}")
 
         # Which references into the scene are still backed by a live C++ object
         # *before* clear() runs. Anything reported dangling here outlived a
@@ -1050,7 +1050,7 @@ class SignalTimelineScene(QGraphicsScene):
                 # Zoom changed — re-pick the ruler interval for it.
                 self.draw_time_markers()
 
-        print(f"✅ Timeline rebuilt successfully, "
+        print(f"✅ 时间线重建成功，"
               f"{len(self.row_labels)} lanes, final height={self.sceneRect().height()}")
         self.timeline_rebuilt.emit()
 
@@ -1075,7 +1075,7 @@ class SignalTimelineScene(QGraphicsScene):
             # placeholder until something else happens to invalidate it.
             self._thumb_cache.thumbnail_ready.connect(self._on_thumbnail_ready)
         except Exception as e:
-            print(f"⚠️ Filmstrip disabled — no thumbnail source: {e}")
+            print(f"⚠️ 胶片条已禁用——没有可用的缩略图来源：{e}")
             self._thumb_cache = None
         return self._thumb_cache
 
@@ -2162,7 +2162,7 @@ class SignalTimelineScene(QGraphicsScene):
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
         except Exception as e:
-            print(f"⚠️ Could not save timeline filters: {e}")
+            print(f"⚠️ 无法保存时间线筛选设置：{e}")
 
     def load_filters(self):
         path = self._filters_path()
@@ -2191,7 +2191,7 @@ class SignalTimelineScene(QGraphicsScene):
         except FileNotFoundError:
             pass
         except Exception as e:
-            print(f"⚠️ Could not load timeline filters: {e}")
+            print(f"⚠️ 无法加载时间线筛选设置：{e}")
     
     def should_show_action(self, action_data):
         action_name = action_data.get('action_name') or action_data.get('action') or '未知'

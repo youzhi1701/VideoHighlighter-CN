@@ -325,7 +325,13 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
             if value_node is None:
                 continue
             names = [n for t in targets for n in assignment_names(t)]
-            if any(UI_NAME_RE.search(n) for n in names):
+            # Model-control prompt/task/template constants are not UI labels.
+            # Translating them changes model behaviour rather than localization.
+            model_control = any(
+                re.search(r"(?:^|_)(?:SYSTEM_)?PROMPT$|(?:^|_)(?:TASK|TEMPLATE|INSTRUCTIONS)$", n, re.I)
+                for n in names
+            )
+            if any(UI_NAME_RE.search(n) for n in names) and not model_control:
                 add(hits, rel, value_node, "python-ui-assignment", "medium", string_value(value_node), allow)
 
         elif isinstance(node, ast.Dict):

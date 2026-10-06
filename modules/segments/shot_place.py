@@ -294,13 +294,13 @@ def read_track(path: str, *, log_fn=print) -> Track:
         points.sort(key=lambda p: p[0])
         track.points = points
         if points:
-            log_fn(f"🗺️ 轨迹：{len(points)} points, "
-                   f"{points[0][0]:%H:%M} to {points[-1][0]:%H:%M} UTC")
+            log_fn(f"🗺️ 轨迹：{len(points)} 个点，"
+                   f"{points[0][0]:%H:%M} 至 {points[-1][0]:%H:%M} UTC")
         else:
-            log_fn(f"⚠️ {os.path.basename(path)} has no timed track points")
+            log_fn(f"⚠️ {os.path.basename(path)} 中没有带时间信息的轨迹点")
     except Exception as exc:
-        log_fn(f"⚠️ 无法读取 GPS 轨迹（{exc}); "
-               f"clips will be placed by what they carry themselves")
+        log_fn(f"⚠️ 无法读取 GPS 轨迹（{exc}）；"
+               f"将改用各片段自身携带的位置/时间信息")
     return track
 
 
@@ -411,14 +411,13 @@ def locate(paths, *, track: Track = None, log_fn=print) -> dict:
                 place.source = "track"
                 filled += 1
         if filled:
-            log_fn(f"🗺️ 已定位 {filled} 个片段) on the track that carried no "
-                   f"GPS of their own")
+            log_fn(f"🗺️ 已通过轨迹为 {filled} 个原本没有 GPS 信息的片段补充位置")
 
     located = sum(1 for p in places.values() if p.located)
     timed = sum(1 for p in places.values() if p.when is not None)
     if places:
-        log_fn(f"📍 已定位 {located}/{len(places)} clip(s) have a position, "
-               f"{timed} have a time")
+        log_fn(f"📍 {len(places)} 个片段中，{located} 个有位置信息，"
+               f"{timed} 个有时间信息")
     return places
 
 

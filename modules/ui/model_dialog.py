@@ -204,7 +204,7 @@ class ModelDialog(QDialog):
         try:
             found = list(self._list_models(refresh=refresh) or [])
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Could not list models: {exc}")
+            print(f"⚠️ 无法列出模型：{exc}")
             found = []
         self.tag.clear()
         self.tag.addItems(found)
@@ -213,10 +213,10 @@ class ModelDialog(QDialog):
             asked = self._host()
         except Exception:                          # pragma: no cover - defensive
             asked = ""
-        where = f" at {asked}" if asked else ""
+        where = f"（地址：{asked}）" if asked else ""
         self.status.setText(
-            f"Ollama 服务{where}上找到 {len(found)} 个模型。" if found else
-            f"Ollama 服务{where}无响应——请输入模型名，或启动服务后"
+            f"Ollama 服务{where}找到 {len(found)} 个模型。" if found else
+            f"Ollama 服务{where}无响应——请输入模型名，或启动服务后
             "点击刷新。")
 
     def _refresh_tags(self):
@@ -226,7 +226,7 @@ class ModelDialog(QDialog):
         try:
             found = list(self._list_recent() or [])
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Could not list recent models: {exc}")
+            print(f"⚠️ 无法列出最近使用的模型：{exc}")
             found = []
         self.recent.clear()
         for path in found:
@@ -319,7 +319,7 @@ class ModelDialog(QDialog):
         try:
             self._remember_fn(path)
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Could not remember the GGUF path: {exc}")
+            print(f"⚠️ 无法记住 GGUF 路径：{exc}")
         self._fill_recent()
 
     def _remove_selected(self):

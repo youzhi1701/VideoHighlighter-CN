@@ -204,7 +204,7 @@ class ReviewWindow(QWidget):
 
         self.resort = QCheckBox("进入下一批前，使用刚刚确认的结果重新排序")
         self.resort.setChecked(make_embedder is not None or frame_reader is None)
-        self.save_next = QPushButton("保存并进入下一批（Enter）")
+        self.save_next = QPushButton("保存并进入下一批（回车）")
         self.save_next.clicked.connect(lambda: self.save(and_next=True))
         self.save_close = QPushButton("保存并关闭")
         self.save_close.clicked.connect(lambda: self.save(and_next=False))

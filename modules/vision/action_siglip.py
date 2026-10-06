@@ -73,9 +73,9 @@ def read_head_meta(folder: str) -> dict:
     with open(os.path.join(folder, HEAD_META), encoding="utf-8") as fh:
         meta = json.load(fh)
     if meta.get("kind") != HEAD_KIND:
-        raise ValueError(f"{HEAD_META} is not an action head (kind={meta.get('kind')!r})")
+        raise ValueError(f"{HEAD_META} 不是动作识别头（kind={meta.get('kind')!r}）")
     if not os.path.isfile(os.path.join(folder, HEAD_MODEL)):
-        raise ValueError(f"{HEAD_MODEL} is missing")
+        raise ValueError(f"缺少文件：{HEAD_MODEL}")
     return meta
 
 

@@ -193,7 +193,7 @@ def _clip_facts(report: Mapping, entry: Mapping) -> list:
                 lines.append(f"{heading}: {sentence}")
         return lines
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Clip facts skipped: {exc}")
+        print(f"⚠️ 已跳过片段事实信息：{exc}")
         return []
 
 
@@ -263,7 +263,7 @@ def _notes_here(report: Mapping, entry: Mapping) -> list:
         return [" ".join(str(e.get("text") or "").split())
                 for e in inside[:MAX_NOTES]]
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Narration notes skipped: {exc}")
+        print(f"⚠️ 已跳过旁白备注：{exc}")
         return []
 
 
@@ -423,7 +423,7 @@ def _read_one(llm, prompt: str, images: Sequence[str],
     """
     frames = [i for i in (images or []) if i]
     if not frames:
-        raise ValueError("no frames to read")
+        raise ValueError("没有可读取的画面")
     system = system or CLIP_SYSTEM_PROMPT
     if hasattr(llm, "generate"):
         return llm.generate(prompt, system=system,
@@ -484,7 +484,7 @@ def tell(report: Mapping,
                 images = frames_fn(float(entry.get("start") or 0.0),
                                    float(entry.get("end") or 0.0))
             except Exception as exc:
-                print(f"⚠️ Frames for clip {position} failed: {exc}")
+                print(f"⚠️ 片段 {position} 的画面读取失败：{exc}")
         seen = _frames_delivered(llm, images)
         if not seen:
             log_fn(f"⚠️ 片段 {position} 没有可读取的画面，已跳过。")
@@ -609,8 +609,8 @@ def _main(argv=None) -> int:
 
     parser = argparse.ArgumentParser(
         prog="python -m modules.narration.clip_story",
-        description="Describe each kept clip of a report from its own frames.")
-    parser.add_argument("report", help="the *_why.json written beside a cut")
+        description="根据各片段自身画面描述报告中保留的片段。")
+    parser.add_argument("report", help="剪辑文件旁生成的 *_why.json 报告")
     parser.add_argument("--backend", default="ollama",
                         choices=("ollama", "llama-cpp"))
     # Was llava-llama3, which is a generation behind and fails this job rather
@@ -636,11 +636,11 @@ def _main(argv=None) -> int:
     read = tell_report_file(args.report, llm=llm,
                             model_name=f"{args.backend}/{args.model}")
     if not read:
-        print("Nothing was read; the report is unchanged.")
+        print("未读取到任何内容；报告保持不变。")
         return 1
     with open(args.report, encoding="utf-8") as fh:
         total = len(json.load(fh).get("segments") or [])
-    print(f"Read {read} of {total} clips.")
+    print(f"已读取 {read}/{total} 个片段。")
     return 0
 
 

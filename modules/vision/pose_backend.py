@@ -153,7 +153,7 @@ class RTMPoseOpenVINOEstimator:
         model_xml = model_xml or find_default_rtmpose_ir()
         if not model_xml:
             raise FileNotFoundError(
-                "No RTMPose IR found. Run: python tools/get_rtmpose_model.py"
+                "未找到 RTMPose IR 模型。请运行：python tools/get_rtmpose_model.py"
             )
         import openvino as ov  # lazy, as in detection_backend
 
@@ -243,12 +243,12 @@ def build_pose_estimator(device: str = "GPU", prefer: str = "large",
             rtmpose_models.install()
             ir = find_default_rtmpose_ir(prefer=prefer)
         except Exception as e:
-            print(f"⚠️ RTMPose install failed: {e}")
+            print(f"⚠️ RTMPose 安装失败：{e}")
             return None
     if ir is None:
         return None
     try:
         return RTMPoseOpenVINOEstimator(ir, device=device)
     except Exception as e:
-        print(f"⚠️ RTMPose unavailable: {e}")
+        print(f"⚠️ RTMPose 不可用：{e}")
         return None

@@ -251,10 +251,10 @@ class _VisualSearchWorker(QObject):
         self.frame_analyzed.emit(timestamp, result["timestamp_str"],
                                  analysis_text, starts_with_yes, 1.0)
         t_total = time.perf_counter() - frame_t0
-        print(f"[t={timestamp:6.1f}s] {frame_dims} {b64_kb:5.0f}KB Δ={scene_diff:5.1f} | "
-              f"encode={t_encode*1000:5.0f}ms  llm={t_llm*1000:6.0f}ms  "
-              f"confirm={t_confirm*1000:6.0f}ms  TOTAL={t_total*1000:6.0f}ms "
-              f"({'YES' if starts_with_yes else 'no '})")
+        print(f"[时间={timestamp:6.1f}秒] {frame_dims} {b64_kb:5.0f}KB Δ={scene_diff:5.1f} | "
+              f"编码={t_encode*1000:5.0f}ms  大模型={t_llm*1000:6.0f}ms  "
+              f"确认={t_confirm*1000:6.0f}ms  总计={t_total*1000:6.0f}ms "
+              f"({'是' if starts_with_yes else '否'})")
         return result
 
     def _print_summary(self, stage_totals, n_skipped):
@@ -501,8 +501,8 @@ class _VisualSearchWorker(QObject):
         if scored is None:
             return
         top = scored[:self.top_k]
-        print(f"CLIP: top {len(top)} of {len(scored)} frames "
-              f"(scores {top[0][1]:.2f}..{top[-1][1]:.2f})" if top else "CLIP: no frames")
+        print(f"CLIP：从 {len(scored)} 帧中选出前 {len(top)} 帧 "
+              f"（评分 {top[0][1]:.2f}..{top[-1][1]:.2f}）" if top else "CLIP：没有可用帧")
         results = []
         for ts, score in sorted(top, key=lambda x: x[0]):  # chronological for playback
             tstr = f"{int(ts)//60}:{int(ts)%60:02d}"

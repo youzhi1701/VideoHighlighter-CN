@@ -137,7 +137,7 @@ def apply(config: dict | None, log=print) -> Optional[str]:
         # A config carried over from another kind of machine — "cuda" from a
         # PC on a Mac. The settings screen cannot show it, so publishing it
         # would leave a run choosing something the user cannot see.
-        log(f"ℹ️ Compute backend {label_for(backend)!r} from the settings does "
+        log(f"ℹ️ 计算后端 {label_for(backend)!r} from the settings does "
             f"not exist on this platform — using automatic")
         return None
     return _publish(backend, log, note="")
@@ -173,5 +173,5 @@ def _publish(backend: str, log, note: str) -> str:
         os.environ.pop(directml_device.MODE_ENV, None)
 
     if backend != AUTO:
-        log(f"🎛️ Compute backend: {label_for(backend)}{note}")
+        log(f"🎛️ 计算后端：{label_for(backend)}{note}")
     return backend

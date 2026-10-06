@@ -240,7 +240,7 @@ def build_prompt(report: Mapping,
             blocks.append((3, "## The kept clips, one line each\n"
                               + "\n".join(clips)))
     except Exception as exc:                # narration must survive this
-        print(f"⚠️ Footage context skipped: {exc}")
+        print(f"⚠️ 已跳过素材上下文：{exc}")
 
     # Where in the video the cut came from. Worth the tokens because it answers
     # a question the findings cannot: a cut drawn entirely from one stretch of a
@@ -263,7 +263,7 @@ def build_prompt(report: Mapping,
                 4, "## How the video divides, and where the clips came from\n"
                    + "\n".join(lines)))
         except Exception as exc:            # narration must survive this
-            print(f"⚠️ Chapter context skipped: {exc}")
+            print(f"⚠️ 已跳过章节上下文：{exc}")
 
     # What was actually said, when a transcript was run. Priority 0 — ahead of
     # everything optional including the documentation — because it is the only
@@ -299,7 +299,7 @@ def build_prompt(report: Mapping,
                        "are the ones each chapter used and the others did not — "
                        "arithmetic, not a reading.\n" + "\n".join(said)))
         except Exception as exc:            # narration must survive this
-            print(f"⚠️ Transcript context skipped: {exc}")
+            print(f"⚠️ 已跳过转录文本上下文：{exc}")
 
     docs = knowledge_for(findings, knowledge_dir)
     if docs:
@@ -377,7 +377,7 @@ def narrate(report: Mapping,
         text = _generate(llm, prompt, system or SYSTEM_PROMPT, max_tokens,
                          temperature)
     except Exception as exc:            # a missing model must not break the run
-        print(f"⚠️ Advisor narration failed: {exc}")
+        print(f"⚠️ 建议说明生成失败：{exc}")
         return None
     return (text or "").strip() or None
 
@@ -486,15 +486,13 @@ def load_llm(backend: str = "ollama", model: str = "llama3",
     try:
         from llm.llm_module import LLMModule
     except Exception as exc:
-        print(f"⚠️ No LLM stack available: {exc}")
+        print(f"⚠️ 没有可用的大模型运行环境：{exc}")
         return None
     try:
         if backend == "llama-cpp":
             if mmproj and not vision:
-                print("ℹ Ignoring the vision projector for a text-only "
-                      "summary — attaching it would replace this model's chat "
-                      "template with LLaVA's, and the answer would come back "
-                      "empty.")
+                print("ℹ 文本摘要将忽略视觉投影器；附加它会把当前模型的聊天"
+                      "模板替换为 LLaVA 模板，导致返回空答案。")
             llm = LLMModule(backend=backend, model_path=model,
                             mmproj_path=(mmproj if vision else None),
                             n_ctx=n_ctx)
@@ -509,7 +507,7 @@ def load_llm(backend: str = "ollama", model: str = "llama3",
         llm.load()
         return llm
     except Exception as exc:
-        print(f"⚠️ Could not load {backend}/{model}: {exc}")
+        print(f"⚠️ 无法加载 {backend}/{model}：{exc}")
         return None
 
 

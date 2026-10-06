@@ -28,7 +28,7 @@ if __name__ == "__main__":
 # failed with "[Errno 30] Read-only file system: 'cache'". Do this before
 # anything opens a file.
 from modules.system.app_paths import use_writable_cwd
-print(f"📂 Working directory: {use_writable_cwd()}")
+print(f"📂 工作目录：{use_writable_cwd()}")
 
 # Interface size, if the user set one. Qt reads QT_SCALE_FACTOR when the
 # QApplication is constructed and never again, so this has to happen before the
@@ -760,7 +760,7 @@ class SignalRunWorker(QThread):
                                        target_lang=p.get("target_lang"),
                                        progress=progress, cancel=c, log=self.log.emit)
             return {"transcript": result}
-        raise ValueError(f"unknown signal kind: {self.kind}")
+        raise ValueError(f"未知信号类型：{self.kind}")
 
     def cancel(self):
         if self._is_running:
@@ -2536,7 +2536,7 @@ class VideoHighlighterGUI(QWidget):
 
         def _comp_kind_of(row):
             combo = self.comp_table.cellWidget(row, 1)
-            return (combo.currentText() if combo else "Spatial").strip()
+            return str((combo.currentData() if combo and combo.currentData() is not None else (combo.currentText() if combo else "Spatial"))).strip()
 
         def _comp_apply_kind(row):
             """Grey the cells the chosen kind does not use.
@@ -2662,7 +2662,7 @@ class VideoHighlighterGUI(QWidget):
             self.comp_table.setCellWidget(r, 11, per_spin)
 
             rel_combo = QComboBox()
-            rel_combo.addItems(["inside", "overlaps", "touches"])
+            rel_combo.addItem("内部", "inside")\n            rel_combo.addItem("重叠", "overlaps")\n            rel_combo.addItem("接触", "touches")
             # Normalised the way the engine reads it, so `Touches` in the file
             # shows as touches instead of falling back to inside and being
             # dropped on the next save.
@@ -2821,12 +2821,12 @@ class VideoHighlighterGUI(QWidget):
                     yaml.dump(out, _f, allow_unicode=True, sort_keys=False, default_flow_style=False)
                 self._comp_saved_state = out
                 if not quiet:
-                    self.append_log(f"✅ Composition rules saved → {save_path}")
+                    self.append_log(f"✅ 构图规则已保存 → {save_path}")
                 return True
             except Exception as _e:
                 # Never quiet: this is the one outcome the user has to know
                 # about, and on close it is their last chance to.
-                self.append_log(f"❌ Could not save composition rules: {_e}")
+                self.append_log(f"❌ 无法保存构图规则：{_e}")
                 return False
 
 
@@ -3873,7 +3873,7 @@ class VideoHighlighterGUI(QWidget):
                                                Qt.SmoothTransformation))
             rl.addWidget(thumb)
 
-            display = ident["名称"] or f"Person {ident['id'][:8]}"
+            display = ident["名称"] or f"人物 {ident['id'][:8]}"
             if ident["名称"]:
                 named += 1
             name_label = QLabel(
@@ -3908,7 +3908,7 @@ class VideoHighlighterGUI(QWidget):
         bank.save()
         name = bank.name_for(identity_id)
         self.append_log(f"{'🚫 正在排除' if checked else '✅ 已允许'} {name} "
-                        f"({len(bank.avoided_ids())} avoided)")
+                        f"（当前已排除 {len(bank.avoided_ids())} 人）")
         self.avoid_count_label.setText(
             f"{len(bank.all_identities())} 人 · "
             f"{sum(1 for i in bank.all_identities() if i['name'])} 个已命名 · "
@@ -4024,56 +4024,56 @@ class VideoHighlighterGUI(QWidget):
             start_pct = self.range_slider.start()
             end_pct = self.range_slider.end()
             if end_pct <= start_pct:
-                self.append_log("⚠️ Invalid time range - end must be greater than start")
+                self.append_log("⚠️ 时间范围无效：结束时间必须晚于开始时间")
                 return
             time_range = (float(start_pct), float(end_pct))
             use_percentages = True
-            self.append_log(f"⏱️ Downloading percentage range: {start_pct}% - {end_pct}%")
+            self.append_log(f"⏱️ 正在下载百分比范围：{start_pct}% - {end_pct}%")
         elif mode == "specific":
             start_s = self.download_start_input.value()
             end_s = self.download_end_input.value()
             if end_s <= start_s:
-                self.append_log("⚠️ Invalid range - end must be greater than start")
+                self.append_log("⚠️ 范围无效：结束位置必须大于开始位置")
                 return
             time_range = (float(start_s), float(end_s))
             use_percentages = False
-            self.append_log(f"⏱️ Downloading seconds range: {start_s}s - {end_s}s")
+            self.append_log(f"⏱️ 正在下载时间范围：{start_s} 秒 - {end_s} 秒")
         else:  # "full"
             download_full = True
-            self.append_log("📥 Downloading full videos")
+            self.append_log("📥 正在下载完整视频")
         
         # Validation
         if not url:
-            self.append_log("⚠️ Please enter a URL")
+            self.append_log("⚠️ 请输入网址")
             return
         
         if not save_dir:
-            self.append_log("⚠️ Please enter a save directory")
+            self.append_log("⚠️ 请选择保存目录")
             return
         
         # Check if URL is valid
         if not url.startswith(("http://", "https://")):
-            self.append_log("⚠️ URL must start with http:// or https://")
+            self.append_log("⚠️ 网址必须以 http:// 或 https:// 开头")
             return
         
         # Check if already running
         if hasattr(self, 'download_worker') and self.download_worker and self.download_worker.isRunning():
-            self.append_log("⚠️ Download already in progress!")
+            self.append_log("⚠️ 下载任务正在进行中！")
             return
         
         # Clear log and start
         self.log_output.clear()
         self._show_progress(True)
-        self.append_log("=== Starting Video Download ===")
-        self.append_log(f"🌐 URL: {url}")
-        self.append_log(f"📁 Save directory: {save_dir}")
-        self.append_log("🔍 Link pattern: auto-detect")
+        self.append_log("=== 开始下载视频 ===")
+        self.append_log(f"🌐 网址：{url}")
+        self.append_log(f"📁 保存目录：{save_dir}")
+        self.append_log("🔍 链接模式：自动检测")
         
         if immediate_processing:
-            self.append_log(f"⚡ Mode: Immediate processing after each download")
-            self.append_log(f"   Concurrent downloads: {max_concurrent}")
+            self.append_log("⚡ 模式：每个视频下载完成后立即处理")
+            self.append_log(f"   并发下载数：{max_concurrent}")
         else:
-            self.append_log("📦 Mode: Batch download (process all videos at once)")
+            self.append_log("📦 模式：批量下载（全部下载完成后统一处理）")
         
         # (Range already logged per-mode above.)
 
@@ -4112,7 +4112,7 @@ class VideoHighlighterGUI(QWidget):
 
                 # Header in log
                 self.append_log(f"\n{'='*60}")
-                self.append_log(f"🎬 IMMEDIATE PROCESSING: {filename}")
+                self.append_log(f"🎬 立即处理：{filename}")
                 self.append_log(f"{'='*60}")
 
                 # Auto-add downloaded video to file list (GUI-thread safe)
@@ -4124,7 +4124,7 @@ class VideoHighlighterGUI(QWidget):
                             Qt.QueuedConnection,
                             Q_ARG(str, filepath)
                         )
-                        self.append_log(f"📋 Added to file list: {filename}")
+                        self.append_log(f"📋 已添加到文件列表：{filename}")
 
                 # --- SKIP if highlight already exists ---
                 if skip_existing and os.path.exists(output_file) and os.path.getsize(output_file) > 0:

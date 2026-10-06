@@ -391,9 +391,9 @@ class _VisualSearchWorker(QObject):
 
         elapsed = time.perf_counter() - t0
         encoded = self._clip_memo_added
-        print(f"\nCLIP 扫描：{len(scored)} 帧，用时 {elapsed:.1f} 秒 
-              f"({elapsed/max(1,len(scored))*1000:.1f} ms/frame) on {self._clip.device} "
-              f"— {len(scored) - encoded} from memo, {encoded} newly encoded")
+        print(f"\nCLIP 扫描：{len(scored)} 帧，用时 {elapsed:.1f} 秒 "
+              f"（{elapsed/max(1,len(scored))*1000:.1f} 毫秒/帧），设备 {self._clip.device}，"
+              f"缓存命中 {len(scored) - encoded} 帧，新编码 {encoded} 帧")
         self._save_clip_memo()
         scored.sort(key=lambda x: -x[1])
         return scored

@@ -213,6 +213,13 @@
       ]
     },
     {
+      "source": "(modules/teach trains each round into its own folder",
+      "target": "（modules/teach 会将每轮训练写入独立文件夹，",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "(Needs a re-analysis to populate the full list.)",
       "target": "若要获得完整动作列表，需要重新分析。",
       "files": [
@@ -3643,6 +3650,13 @@
       ]
     },
     {
+      "source": "and installs it only if it beats the last)",
+      "target": "只有优于上一版本时才安装）",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "and pack.json at its top).",
       "target": "和 pack.json）。",
       "files": [
@@ -3942,6 +3956,14 @@
       ]
     },
     {
+      "source": "AUTO/GPU (NVIDIA if present, else Intel GPU, else CPU),",
+      "target": "AUTO/GPU（有 NVIDIA 时优先使用，否则 Intel GPU，再否则 CPU），",
+      "files": [
+        "llm/clip_index.py",
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "auto: {' '.join(args)}",
       "target": "自动流程：{' '.join(args)}",
       "files": [
@@ -4205,6 +4227,13 @@
       ]
     },
     {
+      "source": "between them (the caller chose the held-out set)",
+      "target": "（留出集由调用方决定）",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "between {len(manual)} manual anchors",
       "target": "位于 {len(manual)} 个手动锚点之间",
       "files": [
@@ -4301,6 +4330,13 @@
       "target": "浏览…",
       "files": [
         "modules/ui/model_dialog.py"
+      ]
+    },
+    {
+      "source": "Build a CLIP frame index and query it.",
+      "target": "构建 CLIP 视频帧索引并进行查询。",
+      "files": [
+        "llm/clip_index.py"
       ]
     },
     {
@@ -4999,10 +5035,24 @@
       ]
     },
     {
+      "source": "CLIP prefilter — rank video frames by a query",
+      "target": "CLIP 预筛选——按查询对视频帧排序",
+      "files": [
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "CLIP ready on {pf.device}",
       "target": "CLIP 已在 {pf.device} 上就绪",
       "files": [
         "sidecar/worker.py"
+      ]
+    },
+    {
+      "source": "CLIP sampling interval, seconds",
+      "target": "CLIP 采样间隔（秒）",
+      "files": [
+        "modules/segments/chapters.py"
       ]
     },
     {
@@ -5207,6 +5257,13 @@
       "target": "正在合并成片",
       "files": [
         "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "source": "comma-separated contrastive negatives. Describe the OTHER",
+      "target": "用逗号分隔的对比负样本。描述视频中的其他内容，",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -5907,6 +5964,14 @@
       ]
     },
     {
+      "source": "Create sample visualizations before training",
+      "target": "训练前创建样本可视化",
+      "files": [
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "Create subtitles:",
       "target": "生成字幕：",
       "files": [
@@ -6013,6 +6078,21 @@
       ]
     },
     {
+      "source": "cuda | xpu | cpu (default: best available)",
+      "target": "cuda | xpu | cpu（默认：使用最佳可用设备）",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
+      "source": "CUDA, cuda:N, CPU, or any OpenVINO device string",
+      "target": "也可使用 CUDA、cuda:N、CPU 或任意 OpenVINO 设备字符串",
+      "files": [
+        "llm/clip_index.py",
+        "llm/clip_prefilter.py"
+      ]
+    },
+    {
       "source": "Current model: {current_num_classes} classes",
       "target": "当前模型：{current_num_classes} 个类别",
       "files": [
@@ -6090,6 +6170,13 @@
       ]
     },
     {
+      "source": "Cut a video into chapters.",
+      "target": "将视频划分为章节。",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "cut footage into samples",
       "target": "将素材切分为样本",
       "files": [
@@ -6150,6 +6237,13 @@
       "target": "每小时素材切分样本通常需要数 GB 空间",
       "files": [
         "modules/teach/doctor.py"
+      ]
+    },
+    {
+      "source": "Cut ticker",
+      "target": "剪辑节奏条",
+      "files": [
+        "modules/media/overlay.py"
       ]
     },
     {
@@ -6258,6 +6352,20 @@
       ]
     },
     {
+      "source": "DataLoader workers (default: 4)",
+      "target": "DataLoader 工作进程数（默认：4）",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
+      "source": "DataLoader workers (default: 4, 0 = single-process)",
+      "target": "DataLoader 工作进程数（默认：4，0 = 单进程）",
+      "files": [
+        "model_training/intel/train.py"
+      ]
+    },
+    {
       "source": "dated automatically",
       "target": "自动按日期命名",
       "files": [
@@ -6317,6 +6425,13 @@
     {
       "source": "Decoder type:        {decoder_type}",
       "target": "解码器类型：         {decoder_type}",
+      "files": [
+        "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "Decoder type: mlp (default, GPU-compatible) or lstm (CPU-only at inference)",
+      "target": "解码器类型：mlp（默认，兼容 GPU）或 lstm（推理时仅 CPU）",
       "files": [
         "model_training/intel/train.py"
       ]
@@ -6556,10 +6671,25 @@
       ]
     },
     {
+      "source": "Disable feature caching (encode every epoch)",
+      "target": "禁用特征缓存（每个训练轮次都重新编码）",
+      "files": [
+        "model_training/intel/train.py"
+      ]
+    },
+    {
       "source": "Disable FP16 for R3D on CUDA (use FP32)",
       "target": "在 CUDA 上禁用 R3D 的 FP16，改用 FP32",
       "files": [
         "action_recognition.py"
+      ]
+    },
+    {
+      "source": "Disable ROI cache (slow — runs the person detector every epoch)",
+      "target": "禁用 ROI 缓存（较慢——每个训练轮次都会运行人物检测器）",
+      "files": [
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -6596,6 +6726,13 @@
       "files": [
         "frontend/src/components/CompositionRules.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Distance and climb",
+      "target": "距离与爬升",
+      "files": [
+        "modules/media/overlay.py"
       ]
     },
     {
@@ -7081,6 +7218,13 @@
       "target": "EDL 已导出到：{os.path.basename(result)}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Elevation profile",
+      "target": "海拔曲线",
+      "files": [
+        "modules/media/overlay.py"
       ]
     },
     {
@@ -7661,6 +7805,13 @@
       ]
     },
     {
+      "source": "Exporting {clip_count} clips, total duration: {duration:.1f}s.",
+      "target": "正在导出 {clip_count} 个片段，总时长：{duration:.1f} 秒。",
+      "files": [
+        "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
       "source": "Extra-Large (most accurate, slowest)",
       "target": "Extra-Large（最准确，最慢）",
       "files": [
@@ -7834,6 +7985,13 @@
       "target": "FCPXML 已导出到：{os.path.basename(result)}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "FCPXML keeps every frame.",
+      "target": "FCPXML 会保留每一帧。",
+      "files": [
+        "video_ai_editor/timeline_export.py"
       ]
     },
     {
@@ -8096,6 +8254,13 @@
       ]
     },
     {
+      "source": "Find expressions in a video, with or without a highlight.",
+      "target": "在视频中查找表情，可限定或不限定高光片段。",
+      "files": [
+        "modules/vision/face_scan.py"
+      ]
+    },
+    {
       "source": "Finding loudness bursts...",
       "target": "正在查找响度突增…",
       "files": [
@@ -8255,6 +8420,28 @@
       "target": "用于临时文件",
       "files": [
         "packaging/installer/videohighlighter.iss"
+      ]
+    },
+    {
+      "source": "Force CPU training (skip Intel GPU)",
+      "target": "强制使用 CPU 训练（跳过 Intel GPU）",
+      "files": [
+        "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "Force rebuild feature cache",
+      "target": "强制重建特征缓存",
+      "files": [
+        "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "Force rebuild ROI cache even if one exists",
+      "target": "即使已有 ROI 缓存也强制重建",
+      "files": [
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -9087,6 +9274,13 @@
       ]
     },
     {
+      "source": "ignore any cached scan",
+      "target": "忽略已有扫描缓存",
+      "files": [
+        "modules/vision/face_scan.py"
+      ]
+    },
+    {
       "source": "Import a labeller export",
       "target": "导入标注工具数据",
       "files": [
@@ -9407,6 +9601,13 @@
       "target": "Intel Kinetics-400（{self._intel_count} 个类别）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Intel OpenVINO encoder → decoder training",
+      "target": "Intel OpenVINO 编码器 → 解码器训练",
+      "files": [
+        "model_training/intel/train.py"
       ]
     },
     {
@@ -9933,6 +10134,13 @@
       ]
     },
     {
+      "source": "list the moments matching this expression",
+      "target": "列出匹配此表情的时间点",
+      "files": [
+        "modules/vision/face_scan.py"
+      ]
+    },
+    {
       "source": "listed in VideoHighlighter's community models.",
       "target": "并列入 VideoHighlighter 社区模型列表。",
       "files": [
@@ -10405,6 +10613,20 @@
       "target": "标记为“已验证”才表示经过 VideoHighlighter 团队审核。",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "marker",
+      "target": "标记",
+      "files": [
+        "video_ai_editor/timeline_export.py"
+      ]
+    },
+    {
+      "source": "markers",
+      "target": "标记",
+      "files": [
+        "video_ai_editor/timeline_export.py"
       ]
     },
     {
@@ -11044,6 +11266,13 @@
       "files": [
         "frontend/src/components/tabs/AdvancedTab.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Motion x{count} ({avg_conf:.0%})",
+      "target": "运动 x{count}（{avg_conf:.0%}）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -13151,6 +13380,13 @@
       ]
     },
     {
+      "source": "path to .npz index cache",
+      "target": ".npz 索引缓存路径",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
       "source": "path to a .edl.yaml",
       "target": "选择 .edl.yaml 文件路径",
       "files": [
@@ -13981,6 +14217,13 @@
       ]
     },
     {
+      "source": "R3D 3D-CNN fine-tuning",
+      "target": "R3D 3D-CNN 微调训练",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "R3D device:           {device_name}",
       "target": "R3D 设备：            {device_name}",
       "files": [
@@ -14105,6 +14348,13 @@
       "target": "区间开始",
       "files": [
         "frontend/src/components/tabs/AvoidTab.tsx"
+      ]
+    },
+    {
+      "source": "Range {start_time:.2f}s–{end_time:.2f}s",
+      "target": "范围 {start_time:.2f}秒–{end_time:.2f}秒",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -14619,6 +14869,13 @@
       ]
     },
     {
+      "source": "repeatable; each is scored against the same index",
+      "target": "可重复指定；每个查询都针对同一索引评分",
+      "files": [
+        "llm/clip_index.py"
+      ]
+    },
+    {
       "source": "Replace clip audio",
       "target": "替换片段音频",
       "files": [
@@ -14759,6 +15016,13 @@
       ]
     },
     {
+      "source": "roughly how many chapters to produce",
+      "target": "大致生成多少个章节",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "Round {self.epoch} of {self.total_epochs}: found",
       "target": "第 {self.epoch}/{self.total_epochs} 轮：",
       "files": [
@@ -14784,6 +15048,13 @@
       "target": "训练轮数：",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "Route map",
+      "target": "路线地图",
+      "files": [
+        "modules/media/overlay.py"
       ]
     },
     {
@@ -16294,10 +16565,25 @@
       ]
     },
     {
+      "source": "skip CLIP and partition on shot structure alone",
+      "target": "跳过 CLIP，仅按镜头结构划分",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "skip replaying the review loop",
       "target": "跳过审核流程回放",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "Skip sample visualizations before training",
+      "target": "训练前跳过样本可视化",
+      "files": [
+        "model_training/intel/train.py",
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -16918,6 +17204,13 @@
       ]
     },
     {
+      "source": "Summary",
+      "target": "摘要",
+      "files": [
+        "modules/report/highlight_prose.py"
+      ]
+    },
+    {
       "source": "Summary options — ask a question,",
       "target": "摘要选项 — 提问、",
       "files": [
@@ -17132,6 +17425,13 @@
       "target": "下载失败：{e}",
       "files": [
         "modules/packs/pack_ui.py"
+      ]
+    },
+    {
+      "source": "The EDL is counted at {timebase.edl_fps} fps.",
+      "target": "EDL 按 {timebase.edl_fps} fps 计数。",
+      "files": [
+        "video_ai_editor/timeline_export.py"
       ]
     },
     {
@@ -17392,6 +17692,13 @@
       "target": "右键可指定真实类别；",
       "files": [
         "modules/teach/review_window.py"
+      ]
+    },
+    {
+      "source": "things in the video so CLIP discriminates the target act,",
+      "target": "帮助 CLIP 区分目标动作，例如",
+      "files": [
+        "llm/clip_prefilter.py"
       ]
     },
     {
@@ -18476,6 +18783,13 @@
       ]
     },
     {
+      "source": "Use train/ and val/ exactly as given: never move clips",
+      "target": "严格按给定的 train/ 和 val/ 使用：不在两者之间移动片段",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "Use transcript:",
       "target": "启用转录：",
       "files": [
@@ -19447,6 +19761,20 @@
       ]
     },
     {
+      "source": "write an ffmpeg chapter file here",
+      "target": "将 ffmpeg 章节文件写入此处",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
+      "source": "Write per-class validation accuracy here as JSON",
+      "target": "将每个类别的验证准确率以 JSON 写入此处",
+      "files": [
+        "model_training/r3d/train.py"
+      ]
+    },
+    {
       "source": "write permission at huggingface.co/settings/tokens.",
       "target": "创建具有写入权限的新 Token。",
       "files": [
@@ -19461,10 +19789,24 @@
       ]
     },
     {
+      "source": "write the chapter list here",
+      "target": "将章节列表写入此处",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "write the dataset",
       "target": "生成训练数据集",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "Write the model here instead of models/actions/",
+      "target": "将模型写入此处，而不是 models/actions/",
+      "files": [
+        "model_training/r3d/train.py"
       ]
     },
     {
@@ -20796,6 +21138,13 @@
       "target": "{sum(1 for i in bank.all_identities() if i['name'])} 个已命名 ·",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{timebase.describe()}. {markers} {mark}.",
+      "target": "{timebase.describe()}。{markers} 个{mark}。",
+      "files": [
+        "video_ai_editor/timeline_export.py"
       ]
     },
     {
@@ -25148,6 +25497,13 @@
       "target": "⚠️ 起始时间（{RANGE_START} 秒）超过视频时长（{video_duration:.1f} 秒）",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Startup splash unavailable: {e}",
+      "target": "⚠️ 启动画面不可用：{e}",
+      "files": [
+        "modules/system/startup_splash.py"
       ]
     },
     {

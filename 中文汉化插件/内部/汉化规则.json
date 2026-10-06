@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "4386516ed8951e3ced9f1618edabd1d887969bb4"
+    "head_commit": "78772f2c9f92425522e4c189e677f594653ec572"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -7737,6 +7737,60 @@
       "before": "    multiple: false,",
       "after": "  })",
       "hunk": "@@ -84,12 +84,12 @@ export async function pickScriptFile(): Promise<string | null> {"
+    },
+    {
+      "id": "llm/clip_index.py#1",
+      "file": "llm/clip_index.py",
+      "source": "    ap = argparse.ArgumentParser(description=\"Build a CLIP frame index and query it.\")",
+      "target": "    ap = argparse.ArgumentParser(description=\"构建 CLIP 视频帧索引并进行查询。\")",
+      "before": "",
+      "after": "    ap.add_argument(\"--video\", required=True)",
+      "hunk": "@@ -426,16 +426,16 @@ def load_or_build(video_path: str, cache_path: str, interval: float = 1.0,"
+    },
+    {
+      "id": "llm/clip_index.py#2",
+      "file": "llm/clip_index.py",
+      "source": "                    help=\"repeatable; each is scored against the same index\")",
+      "target": "                    help=\"可重复指定；每个查询都针对同一索引评分\")",
+      "before": "    ap.add_argument(\"--query\", action=\"append\", default=[],",
+      "after": "    ap.add_argument(\"--interval\", type=float, default=1.0)",
+      "hunk": "@@ -426,16 +426,16 @@ def load_or_build(video_path: str, cache_path: str, interval: float = 1.0,"
+    },
+    {
+      "id": "llm/clip_index.py#3",
+      "file": "llm/clip_index.py",
+      "source": "                    help=\"AUTO/GPU (NVIDIA if present, else Intel GPU, else CPU), \"\n                         \"CUDA, cuda:N, CPU, or any OpenVINO device string\")\n    ap.add_argument(\"--cache\", default=None, help=\"path to .npz index cache\")",
+      "target": "                    help=\"AUTO/GPU（有 NVIDIA 时优先使用，否则 Intel GPU，再否则 CPU），\"\n                         \"也可使用 CUDA、cuda:N、CPU 或任意 OpenVINO 设备字符串\")\n    ap.add_argument(\"--cache\", default=None, help=\".npz 索引缓存路径\")",
+      "before": "    ap.add_argument(\"--device\", default=\"AUTO\",",
+      "after": "    args = ap.parse_args()",
+      "hunk": "@@ -426,16 +426,16 @@ def load_or_build(video_path: str, cache_path: str, interval: float = 1.0,"
+    },
+    {
+      "id": "llm/clip_prefilter.py#1",
+      "file": "llm/clip_prefilter.py",
+      "source": "    ap = argparse.ArgumentParser(description=\"CLIP prefilter — rank video frames by a query\")",
+      "target": "    ap = argparse.ArgumentParser(description=\"CLIP 预筛选——按查询对视频帧排序\")",
+      "before": "    import argparse",
+      "after": "    ap.add_argument(\"--video\", required=True)",
+      "hunk": "@@ -562,20 +562,20 @@ def scan_video(video_path: str, query: str, interval: float = 1.0,"
+    },
+    {
+      "id": "llm/clip_prefilter.py#2",
+      "file": "llm/clip_prefilter.py",
+      "source": "                    help=\"AUTO/GPU (NVIDIA if present, else Intel GPU, else CPU), \"\n                         \"CUDA, cuda:N, CPU, or any OpenVINO device string\")",
+      "target": "                    help=\"AUTO/GPU（有 NVIDIA 时优先使用，否则 Intel GPU，再否则 CPU），\"\n                         \"也可使用 CUDA、cuda:N、CPU 或任意 OpenVINO 设备字符串\")",
+      "before": "    ap.add_argument(\"--device\", default=\"AUTO\",",
+      "after": "    ap.add_argument(\"--start\", type=float, default=0.0)",
+      "hunk": "@@ -562,20 +562,20 @@ def scan_video(video_path: str, query: str, interval: float = 1.0,"
+    },
+    {
+      "id": "llm/clip_prefilter.py#3",
+      "file": "llm/clip_prefilter.py",
+      "source": "                    help=\"comma-separated contrastive negatives. Describe the OTHER \"\n                         \"things in the video so CLIP discriminates the target act, \"\n                         \"e.g. \\\"a closeup of a face,two people talking,a solo scene\\\"\")",
+      "target": "                    help=\"用逗号分隔的对比负样本。描述视频中的其他内容，\"\n                         \"帮助 CLIP 区分目标动作，例如 \"\n                         \"\\\"a closeup of a face,two people talking,a solo scene\\\"\")",
+      "before": "    ap.add_argument(\"--negatives\", default=None,",
+      "after": "    args = ap.parse_args()",
+      "hunk": "@@ -562,20 +562,20 @@ def scan_video(video_path: str, query: str, interval: float = 1.0,"
     },
     {
       "id": "llm/llm_chat_widget.py#1",
@@ -17182,6 +17236,96 @@
     {
       "id": "model_training/intel/train.py#25",
       "file": "model_training/intel/train.py",
+      "source": "    parser = argparse.ArgumentParser(description=\"Intel OpenVINO encoder → decoder training\")",
+      "target": "    parser = argparse.ArgumentParser(description=\"Intel OpenVINO 编码器 → 解码器训练\")",
+      "before": "def main():",
+      "after": "    parser.add_argument(\"--data-path\", type=str, default=None)",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#26",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Decoder type: mlp (default, GPU-compatible) or lstm (CPU-only at inference)\")",
+      "target": "                        help=\"解码器类型：mlp（默认，兼容 GPU）或 lstm（推理时仅 CPU）\")",
+      "before": "    parser.add_argument(\"--decoder\", type=str, default=None, choices=[\"mlp\", \"lstm\"],",
+      "after": "    parser.add_argument(\"--no-viz\", action=\"store_true\",",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#27",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Skip sample visualizations before training\")",
+      "target": "                        help=\"训练前跳过样本可视化\")",
+      "before": "    parser.add_argument(\"--no-viz\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--viz\", action=\"store_true\",",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#28",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Create sample visualizations before training\")",
+      "target": "                        help=\"训练前创建样本可视化\")",
+      "before": "    parser.add_argument(\"--viz\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--no-cache\", action=\"store_true\",",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#29",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Disable ROI cache (slow — runs the person detector every epoch)\")",
+      "target": "                        help=\"禁用 ROI 缓存（较慢——每个训练轮次都会运行人物检测器）\")",
+      "before": "    parser.add_argument(\"--no-cache\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--rebuild-cache\", action=\"store_true\",",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#30",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Force rebuild ROI cache even if one exists\")",
+      "target": "                        help=\"即使已有 ROI 缓存也强制重建\")",
+      "before": "    parser.add_argument(\"--rebuild-cache\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--no-feature-cache\", action=\"store_true\",",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#31",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Disable feature caching (encode every epoch)\")",
+      "target": "                        help=\"禁用特征缓存（每个训练轮次都重新编码）\")",
+      "before": "    parser.add_argument(\"--no-feature-cache\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--rebuild-feature-cache\", action=\"store_true\",",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#32",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Force rebuild feature cache\")",
+      "target": "                        help=\"强制重建特征缓存\")",
+      "before": "    parser.add_argument(\"--rebuild-feature-cache\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--num-workers\", type=int, default=None,",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#33",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"DataLoader workers (default: 4, 0 = single-process)\")",
+      "target": "                        help=\"DataLoader 工作进程数（默认：4，0 = 单进程）\")",
+      "before": "    parser.add_argument(\"--num-workers\", type=int, default=None,",
+      "after": "    parser.add_argument(\"--force-cpu\", action=\"store_true\",",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#34",
+      "file": "model_training/intel/train.py",
+      "source": "                        help=\"Force CPU training (skip Intel GPU)\")",
+      "target": "                        help=\"强制使用 CPU 训练（跳过 Intel GPU）\")",
+      "before": "    parser.add_argument(\"--force-cpu\", action=\"store_true\",",
+      "after": "    args = parser.parse_args()",
+      "hunk": "@@ -557,30 +557,30 @@ def train_classifier_live(encoder, train_loader, val_loader, num_classes,"
+    },
+    {
+      "id": "model_training/intel/train.py#35",
+      "file": "model_training/intel/train.py",
       "source": "        print(\"🎯 Forced CPU training\")",
       "target": "        print(\"🎯 已强制使用 CPU 训练\")",
       "before": "        CONFIG[\"device\"] = \"cpu\"",
@@ -17189,7 +17333,7 @@
       "hunk": "@@ -606,26 +606,26 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#26",
+      "id": "model_training/intel/train.py#36",
       "file": "model_training/intel/train.py",
       "source": "        print(\"✅ Decoder will train on Intel GPU (XPU)\")",
       "target": "        print(\"✅ 解码器将在 Intel GPU（XPU）上训练\")",
@@ -17198,7 +17342,7 @@
       "hunk": "@@ -606,26 +606,26 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#27",
+      "id": "model_training/intel/train.py#37",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"✅ Using CUDA: {torch.cuda.get_device_name(0)}\")",
       "target": "        print(f\"✅ 正在使用 CUDA：{torch.cuda.get_device_name(0)}\")",
@@ -17207,7 +17351,7 @@
       "hunk": "@@ -606,26 +606,26 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#28",
+      "id": "model_training/intel/train.py#38",
       "file": "model_training/intel/train.py",
       "source": "        print(\"🎯 Training on CPU\")",
       "target": "        print(\"🎯 正在使用 CPU 训练\")",
@@ -17216,7 +17360,7 @@
       "hunk": "@@ -606,26 +606,26 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#29",
+      "id": "model_training/intel/train.py#39",
       "file": "model_training/intel/train.py",
       "source": "        print(\"\\n⚠️  WARNING: LSTM decoder selected.\")\n        print(\"   The trained model will fall back to CPU at inference time\")\n        print(\"   (OpenVINO GPU plugin does not support LSTMSequence ops).\")\n        print(\"   Use '--decoder mlp' for GPU-compatible inference.\\n\")",
       "target": "        print(\"\\n⚠️  警告：当前选择了 LSTM 解码器。\")\n        print(\"   训练后的模型在推理时将回退到 CPU\")\n        print(\"   （OpenVINO GPU 插件不支持 LSTMSequence 运算）。\")\n        print(\"   如需 GPU 兼容推理，请使用 '--decoder mlp'。\\n\")",
@@ -17225,7 +17369,7 @@
       "hunk": "@@ -606,26 +606,26 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#30",
+      "id": "model_training/intel/train.py#40",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n✅ Decoder: {decoder_type} (GPU-compatible at inference)\")",
       "target": "        print(f\"\\n✅ 解码器：{decoder_type}（推理阶段兼容 GPU）\")",
@@ -17234,7 +17378,7 @@
       "hunk": "@@ -606,26 +606,26 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#31",
+      "id": "model_training/intel/train.py#41",
       "file": "model_training/intel/train.py",
       "source": "    print(f\"🧠 INTEL ENCODER ({_enc_dev}) → {decoder_type.upper()} \"",
       "target": "    print(f\"🧠 INTEL 编码器（{_enc_dev}）→ {decoder_type.upper()} \"",
@@ -17243,7 +17387,7 @@
       "hunk": "@@ -635,13 +635,13 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#32",
+      "id": "model_training/intel/train.py#42",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"❌ Encoder not found: {CONFIG['encoder_xml']}\")",
       "target": "        print(f\"❌ 找不到编码器：{CONFIG['encoder_xml']}\")",
@@ -17252,7 +17396,7 @@
       "hunk": "@@ -635,13 +635,13 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#33",
+      "id": "model_training/intel/train.py#43",
       "file": "model_training/intel/train.py",
       "source": "        print(\"❌ No training samples found\")",
       "target": "        print(\"❌ 未找到训练样本\")",
@@ -17261,7 +17405,7 @@
       "hunk": "@@ -650,10 +650,10 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#34",
+      "id": "model_training/intel/train.py#44",
       "file": "model_training/intel/train.py",
       "source": "    print(f\"\\n📁 Train: {len(train_ds)} | Val: {len(val_ds)}\")",
       "target": "    print(f\"\\n📁 训练：{len(train_ds)} | 验证：{len(val_ds)}\")",
@@ -17270,7 +17414,7 @@
       "hunk": "@@ -650,10 +650,10 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#35",
+      "id": "model_training/intel/train.py#45",
       "file": "model_training/intel/train.py",
       "source": "    print(f\"\\n📝 Labels: {label_to_idx}\")",
       "target": "    print(f\"\\n📝 标签：{label_to_idx}\")",
@@ -17279,7 +17423,7 @@
       "hunk": "@@ -661,7 +661,7 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#36",
+      "id": "model_training/intel/train.py#46",
       "file": "model_training/intel/train.py",
       "source": "                print(f\"🗑️  Deleted old cache: {cache_file}\")",
       "target": "                print(f\"🗑️  已删除旧缓存：{cache_file}\")",
@@ -17288,7 +17432,7 @@
       "hunk": "@@ -691,13 +691,13 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#37",
+      "id": "model_training/intel/train.py#47",
       "file": "model_training/intel/train.py",
       "source": "        print(\"\\n⚠️  ROI cache DISABLED — training will be slow (the person detector runs every epoch)\")",
       "target": "        print(\"\\n⚠️  ROI 缓存已禁用——训练会变慢（人物检测器每轮都会运行）\")",
@@ -17297,7 +17441,7 @@
       "hunk": "@@ -691,13 +691,13 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#38",
+      "id": "model_training/intel/train.py#48",
       "file": "model_training/intel/train.py",
       "source": "        print(\"📦 FEATURE CACHING\")",
       "target": "        print(\"📦 特征缓存\")",
@@ -17306,7 +17450,7 @@
       "hunk": "@@ -721,19 +721,19 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#39",
+      "id": "model_training/intel/train.py#49",
       "file": "model_training/intel/train.py",
       "source": "        print(\"\\n--- Training set ---\")",
       "target": "        print(\"\\n--- 训练集 ---\")",
@@ -17315,7 +17459,7 @@
       "hunk": "@@ -721,19 +721,19 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#40",
+      "id": "model_training/intel/train.py#50",
       "file": "model_training/intel/train.py",
       "source": "        print(\"\\n--- Validation set ---\")",
       "target": "        print(\"\\n--- 验证集 ---\")",
@@ -17324,7 +17468,7 @@
       "hunk": "@@ -721,19 +721,19 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#41",
+      "id": "model_training/intel/train.py#51",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n📊 Cached DataLoader: {nw} workers, pin_memory={pin}\")",
       "target": "        print(f\"\\n📊 缓存 DataLoader：{nw} 个工作进程，pin_memory={pin}\")",
@@ -17333,7 +17477,7 @@
       "hunk": "@@ -755,7 +755,7 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#42",
+      "id": "model_training/intel/train.py#52",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n🚀 Training from cached features ({decoder_type.upper()} decoder)...\\n\")",
       "target": "        print(f\"\\n🚀 正在使用缓存特征训练（{decoder_type.upper()} 解码器）…\\n\")",
@@ -17342,7 +17486,7 @@
       "hunk": "@@ -764,7 +764,7 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#43",
+      "id": "model_training/intel/train.py#53",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n📊 DataLoader: {nw} workers, pin_memory={pin}\")",
       "target": "        print(f\"\\n📊 DataLoader：{nw} 个工作进程，pin_memory={pin}\")",
@@ -17351,7 +17495,7 @@
       "hunk": "@@ -787,7 +787,7 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#44",
+      "id": "model_training/intel/train.py#54",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n🚀 Training (live encoding, {decoder_type.upper()} decoder)...\\n\")",
       "target": "        print(f\"\\n🚀 正在训练（实时编码，{decoder_type.upper()} 解码器）…\\n\")",
@@ -17360,7 +17504,7 @@
       "hunk": "@@ -796,7 +796,7 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#45",
+      "id": "model_training/intel/train.py#55",
       "file": "model_training/intel/train.py",
       "source": "    print(\"📋 BASE MODEL FILTERING (remove 0% accuracy)\")",
       "target": "    print(\"📋 基础模型筛选（移除准确率为 0% 的类别）\")",
@@ -17369,7 +17513,7 @@
       "hunk": "@@ -816,7 +816,7 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#46",
+      "id": "model_training/intel/train.py#56",
       "file": "model_training/intel/train.py",
       "source": "    print(f\"\\n📋 PRODUCTION FILTERING (remove <{min_prod_acc:.0%} accuracy)\")\n    print(f\"   Keep: {len(prod_keep)} | Remove: {len(prod_remove)}\")",
       "target": "    print(f\"\\n📋 生产模型筛选（移除准确率低于 {min_prod_acc:.0%} 的类别）\")\n    print(f\"   保留：{len(prod_keep)} | 移除：{len(prod_remove)}\")",
@@ -17378,7 +17522,7 @@
       "hunk": "@@ -834,8 +834,8 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#47",
+      "id": "model_training/intel/train.py#57",
       "file": "model_training/intel/train.py",
       "source": "    print(f\"\\n✅ Done!\")\n    print(f\"  Decoder type:        {decoder_type}\")\n    print(f\"  Weights:             {CONFIG['model_save_path']}\")\n    print(f\"  Base mapping:        {base_mapping} ({len(base_keep)} classes)\")\n    print(f\"  Production mapping:  {prod_mapping} ({len(prod_keep)} classes)\")",
       "target": "    print(\"\\n✅ 完成！\")\n    print(f\"  解码器类型：         {decoder_type}\")\n    print(f\"  权重文件：           {CONFIG['model_save_path']}\")\n    print(f\"  基础映射：           {base_mapping}（{len(base_keep)} 个类别）\")\n    print(f\"  生产映射：           {prod_mapping}（{len(prod_keep)} 个类别）\")",
@@ -17387,7 +17531,7 @@
       "hunk": "@@ -845,24 +845,24 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#48",
+      "id": "model_training/intel/train.py#58",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n  ✅ This model will compile on OpenVINO GPU at inference time.\")",
       "target": "        print(\"\\n  ✅ 此模型在推理阶段可在 OpenVINO GPU 上编译运行。\")",
@@ -17396,7 +17540,7 @@
       "hunk": "@@ -845,24 +845,24 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#49",
+      "id": "model_training/intel/train.py#59",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n  ⚠️  This model will fall back to CPU at inference time (LSTM).\")",
       "target": "        print(\"\\n  ⚠️  此模型在推理阶段将回退到 CPU（LSTM）。\")",
@@ -17405,7 +17549,7 @@
       "hunk": "@@ -845,24 +845,24 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#50",
+      "id": "model_training/intel/train.py#60",
       "file": "model_training/intel/train.py",
       "source": "        print(f\"\\n  Removed from base (0% accuracy):\")",
       "target": "        print(\"\\n  已从基础模型移除（准确率 0%）：\")",
@@ -17414,13 +17558,103 @@
       "hunk": "@@ -845,24 +845,24 @@ def main():"
     },
     {
-      "id": "model_training/intel/train.py#51",
+      "id": "model_training/intel/train.py#61",
       "file": "model_training/intel/train.py",
       "source": "            print(f\"\\n  Additionally removed for production (<{min_prod_acc:.0%}):\")",
       "target": "            print(f\"\\n  生产模型额外移除（低于 {min_prod_acc:.0%}）：\")",
       "before": "        if extra_removed:",
       "after": "            for ri in extra_removed:",
       "hunk": "@@ -845,24 +845,24 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#1",
+      "file": "model_training/r3d/train.py",
+      "source": "    parser = argparse.ArgumentParser(description=\"R3D 3D-CNN fine-tuning\")",
+      "target": "    parser = argparse.ArgumentParser(description=\"R3D 3D-CNN 微调训练\")",
+      "before": "def main():",
+      "after": "    parser.add_argument(\"--data-path\", type=str, default=None)",
+      "hunk": "@@ -333,7 +333,7 @@ def train_r3d(train_loader, val_loader, num_classes, label_to_idx, idx_to_label)"
+    },
+    {
+      "id": "model_training/r3d/train.py#2",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"Disable ROI cache (slow — runs the person detector every epoch)\")",
+      "target": "                        help=\"禁用 ROI 缓存（较慢——每个训练轮次都会运行人物检测器）\")",
+      "before": "    parser.add_argument(\"--no-cache\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--device\", type=str, default=None,",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#3",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"cuda | xpu | cpu (default: best available)\")",
+      "target": "                        help=\"cuda | xpu | cpu（默认：使用最佳可用设备）\")",
+      "before": "    parser.add_argument(\"--device\", type=str, default=None,",
+      "after": "    parser.add_argument(\"--num-workers\", type=int, default=None,",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#4",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"DataLoader workers (default: 4)\")",
+      "target": "                        help=\"DataLoader 工作进程数（默认：4）\")",
+      "before": "    parser.add_argument(\"--num-workers\", type=int, default=None,",
+      "after": "    parser.add_argument(\"--rebuild-cache\", action=\"store_true\",",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#5",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"Force rebuild ROI cache even if one exists\")",
+      "target": "                        help=\"即使已有 ROI 缓存也强制重建\")",
+      "before": "    parser.add_argument(\"--rebuild-cache\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--no-viz\", action=\"store_true\",",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#6",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"Skip sample visualizations before training\")",
+      "target": "                        help=\"训练前跳过样本可视化\")",
+      "before": "    parser.add_argument(\"--no-viz\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--viz\", action=\"store_true\",",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#7",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"Create sample visualizations before training\")",
+      "target": "                        help=\"训练前创建样本可视化\")",
+      "before": "    parser.add_argument(\"--viz\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--model-save-path\", type=str, default=None,",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#8",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"Write the model here instead of models/actions/ \"\n                             \"(modules/teach trains each round into its own folder \"\n                             \"and installs it only if it beats the last)\")",
+      "target": "                        help=\"将模型写入此处，而不是 models/actions/ \"\n                             \"（modules/teach 会将每轮训练写入独立文件夹，\"\n                             \"只有优于上一版本时才安装）\")",
+      "before": "    parser.add_argument(\"--model-save-path\", type=str, default=None,",
+      "after": "    parser.add_argument(\"--checkpoint-dir\", type=str, default=None)",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#9",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"Write per-class validation accuracy here as JSON\")",
+      "target": "                        help=\"将每个类别的验证准确率以 JSON 写入此处\")",
+      "before": "    parser.add_argument(\"--metrics-out\", type=str, default=None,",
+      "after": "    parser.add_argument(\"--keep-split\", action=\"store_true\",",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
+    },
+    {
+      "id": "model_training/r3d/train.py#10",
+      "file": "model_training/r3d/train.py",
+      "source": "                        help=\"Use train/ and val/ exactly as given: never move clips \"\n                             \"between them (the caller chose the held-out set)\")",
+      "target": "                        help=\"严格按给定的 train/ 和 val/ 使用：不在两者之间移动片段 \"\n                             \"（留出集由调用方决定）\")",
+      "before": "    parser.add_argument(\"--keep-split\", action=\"store_true\",",
+      "after": "    args = parser.parse_args()",
+      "hunk": "@@ -345,27 +345,27 @@ def main():"
     },
     {
       "id": "modules/audio/music_analysis.py#1",
@@ -19224,6 +19458,42 @@
     {
       "id": "modules/media/overlay.py#1",
       "file": "modules/media/overlay.py",
+      "source": "    label = \"Elevation profile\"",
+      "target": "    label = \"海拔曲线\"",
+      "before": "    key = \"elevation\"",
+      "after": "",
+      "hunk": "@@ -255,7 +255,7 @@ class ElevationProfile(Element):"
+    },
+    {
+      "id": "modules/media/overlay.py#2",
+      "file": "modules/media/overlay.py",
+      "source": "    label = \"Route map\"",
+      "target": "    label = \"路线地图\"",
+      "before": "    key = \"route\"",
+      "after": "",
+      "hunk": "@@ -312,7 +312,7 @@ class RouteMap(Element):"
+    },
+    {
+      "id": "modules/media/overlay.py#3",
+      "file": "modules/media/overlay.py",
+      "source": "    label = \"Distance and climb\"",
+      "target": "    label = \"距离与爬升\"",
+      "before": "    key = \"readout\"",
+      "after": "",
+      "hunk": "@@ -361,7 +361,7 @@ class Readout(Element):"
+    },
+    {
+      "id": "modules/media/overlay.py#4",
+      "file": "modules/media/overlay.py",
+      "source": "    label = \"Cut ticker\"",
+      "target": "    label = \"剪辑节奏条\"",
+      "before": "    key = \"ticker\"",
+      "after": "",
+      "hunk": "@@ -395,7 +395,7 @@ class Ticker(Element):"
+    },
+    {
+      "id": "modules/media/overlay.py#5",
+      "file": "modules/media/overlay.py",
       "source": "        log_fn(\"⚠️ Pillow is not available, so the graphics were skipped\")",
       "target": "        log_fn(\"⚠️ Pillow 不可用，已跳过图形叠加\")",
       "before": "    except Exception:",
@@ -19231,7 +19501,7 @@
       "hunk": "@@ -524,13 +524,12 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,"
     },
     {
-      "id": "modules/media/overlay.py#2",
+      "id": "modules/media/overlay.py#6",
       "file": "modules/media/overlay.py",
       "source": "    log_fn(f\"🎨 Drawing {names} over {scene.duration:.0f}s at \"\n           f\"{scene.width}x{scene.height}\")",
       "target": "    log_fn(f\"🎨 正在以 {scene.width}x{scene.height} 在 {scene.duration:.0f} 秒画面上绘制：{names}\")",
@@ -19240,7 +19510,7 @@
       "hunk": "@@ -524,13 +524,12 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,"
     },
     {
-      "id": "modules/media/overlay.py#3",
+      "id": "modules/media/overlay.py#7",
       "file": "modules/media/overlay.py",
       "source": "        log_fn(f\"⚠️ Could not draw the graphics ({detail or 'unknown error'}); \"\n               f\"the reel keeps its picture\")",
       "target": "        log_fn(f\"⚠️ 无法绘制图形（{detail or '未知错误'}）；\"\n               f\"成片将保留原始画面\")",
@@ -20725,6 +20995,24 @@
       "hunk": "@@ -212,82 +173,58 @@ ROUTES: tuple = ("
     },
     {
+      "id": "modules/report/highlight_prose.py#1",
+      "file": "modules/report/highlight_prose.py",
+      "source": "        sections.append((\"Summary\", summary))",
+      "target": "        sections.append((\"摘要\", summary))",
+      "before": "    if summary:",
+      "after": "    return sections",
+      "hunk": "@@ -525,7 +525,7 @@ def clip_sections(entry: Mapping,"
+    },
+    {
+      "id": "modules/report/highlight_prose.py#2",
+      "file": "modules/report/highlight_prose.py",
+      "source": "        sections.append({\"heading\": \"Summary\", \"lines\": summary})",
+      "target": "        sections.append({\"heading\": \"摘要\", \"lines\": summary})",
+      "before": "    if summary:",
+      "after": "    return sections",
+      "hunk": "@@ -2084,7 +2084,7 @@ def conclude(report: Mapping) -> list:"
+    },
+    {
       "id": "modules/rules/compose_events.py#1",
       "file": "modules/rules/compose_events.py",
       "source": "            log_fn(f\"⚠️ Composition rules could not be loaded: {exc}\")",
@@ -21263,6 +21551,42 @@
       "before": "",
       "after": "    return chapters",
       "hunk": "@@ -363,7 +363,7 @@ def chapterize(duration: float,"
+    },
+    {
+      "id": "modules/segments/chapters.py#3",
+      "file": "modules/segments/chapters.py",
+      "source": "    ap = argparse.ArgumentParser(description=\"Cut a video into chapters.\")",
+      "target": "    ap = argparse.ArgumentParser(description=\"将视频划分为章节。\")",
+      "before": "",
+      "after": "    ap.add_argument(\"--video\", required=True)",
+      "hunk": "@@ -526,21 +526,21 @@ def main():"
+    },
+    {
+      "id": "modules/segments/chapters.py#4",
+      "file": "modules/segments/chapters.py",
+      "source": "                    help=\"CLIP sampling interval, seconds\")",
+      "target": "                    help=\"CLIP 采样间隔（秒）\")",
+      "before": "    ap.add_argument(\"--interval\", type=float, default=1.0,",
+      "after": "    ap.add_argument(\"--target\", type=int, default=None,",
+      "hunk": "@@ -526,21 +526,21 @@ def main():"
+    },
+    {
+      "id": "modules/segments/chapters.py#5",
+      "file": "modules/segments/chapters.py",
+      "source": "                    help=\"roughly how many chapters to produce\")",
+      "target": "                    help=\"大致生成多少个章节\")",
+      "before": "    ap.add_argument(\"--target\", type=int, default=None,",
+      "after": "    ap.add_argument(\"--min-chapter\", type=float, default=DEFAULT_MIN_CHAPTER_SECONDS)",
+      "hunk": "@@ -526,21 +526,21 @@ def main():"
+    },
+    {
+      "id": "modules/segments/chapters.py#6",
+      "file": "modules/segments/chapters.py",
+      "source": "                    help=\"skip CLIP and partition on shot structure alone\")\n    ap.add_argument(\"--ffmetadata\", help=\"write an ffmpeg chapter file here\")\n    ap.add_argument(\"--json\", help=\"write the chapter list here\")",
+      "target": "                    help=\"跳过 CLIP，仅按镜头结构划分\")\n    ap.add_argument(\"--ffmetadata\", help=\"将 ffmpeg 章节文件写入此处\")\n    ap.add_argument(\"--json\", help=\"将章节列表写入此处\")",
+      "before": "    ap.add_argument(\"--no-visual\", action=\"store_true\",",
+      "after": "    args = ap.parse_args()",
+      "hunk": "@@ -526,21 +526,21 @@ def main():"
     },
     {
       "id": "modules/segments/compute_forbidden.py#1",
@@ -22094,6 +22418,15 @@
     },
     {
       "id": "modules/system/startup_splash.py#2",
+      "file": "modules/system/startup_splash.py",
+      "source": "        print(f\"⚠️ Startup splash unavailable: {e}\")",
+      "target": "        print(f\"⚠️ 启动画面不可用：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        _current = None",
+      "hunk": "@@ -260,7 +260,7 @@ def begin(title: str, subtitle: str = \"\", steps: int = 6, parent=None):"
+    },
+    {
+      "id": "modules/system/startup_splash.py#3",
       "file": "modules/system/startup_splash.py",
       "source": "        with splash(\"Opening timeline viewer\", steps=6, parent=self):",
       "target": "        with splash(\"正在打开时间线查看器\", steps=6, parent=self):",
@@ -25307,6 +25640,33 @@
       "before": "                   classify_fn=classifier.classify)",
       "after": "           f\"in {time.time() - started:.1f}s\")",
       "hunk": "@@ -283,7 +283,7 @@ def scan_video(video_path: str,"
+    },
+    {
+      "id": "modules/vision/face_scan.py#3",
+      "file": "modules/vision/face_scan.py",
+      "source": "        description=\"Find expressions in a video, with or without a highlight.\")",
+      "target": "        description=\"在视频中查找表情，可限定或不限定高光片段。\")",
+      "before": "        prog=\"python -m modules.vision.face_scan\",",
+      "after": "    parser.add_argument(\"--video\", required=True)",
+      "hunk": "@@ -294,14 +294,14 @@ def _main(argv=None) -> int:"
+    },
+    {
+      "id": "modules/vision/face_scan.py#4",
+      "file": "modules/vision/face_scan.py",
+      "source": "                        help=\"ignore any cached scan\")",
+      "target": "                        help=\"忽略已有扫描缓存\")",
+      "before": "    parser.add_argument(\"--rescan\", action=\"store_true\",",
+      "after": "    parser.add_argument(\"--label\", choices=EMOTION_LABELS,",
+      "hunk": "@@ -294,14 +294,14 @@ def _main(argv=None) -> int:"
+    },
+    {
+      "id": "modules/vision/face_scan.py#5",
+      "file": "modules/vision/face_scan.py",
+      "source": "                        help=\"list the moments matching this expression\")",
+      "target": "                        help=\"列出匹配此表情的时间点\")",
+      "before": "    parser.add_argument(\"--label\", choices=EMOTION_LABELS,",
+      "after": "    parser.add_argument(\"--min-confidence\", type=float, default=0.0)",
+      "hunk": "@@ -294,14 +294,14 @@ def _main(argv=None) -> int:"
     },
     {
       "id": "modules/vision/frame_encoder.py#1",
@@ -37517,14 +37877,23 @@
     {
       "id": "video_ai_editor/signal_timeline.py#29",
       "file": "video_ai_editor/signal_timeline.py",
+      "source": "                bar_label = f\"Motion x{count} ({avg_conf:.0%})\"",
+      "target": "                bar_label = f\"运动 x{count}（{avg_conf:.0%}）\"",
+      "before": "                avg_conf = meta.get('avg_confidence', 0)",
+      "after": "            else:",
+      "hunk": "@@ -1538,10 +1537,10 @@ class SignalTimelineScene(QGraphicsScene):"
+    },
+    {
+      "id": "video_ai_editor/signal_timeline.py#30",
+      "file": "video_ai_editor/signal_timeline.py",
       "source": "                bar_label = f\"Motion ({conf:.0%})\" if conf else \"Motion\"",
       "target": "                bar_label = f\"Motion ({conf:.0%})\" if conf else \"运动\"",
       "before": "                conf = meta.get('confidence', 0)",
       "after": "",
-      "hunk": "@@ -1541,7 +1540,7 @@ class SignalTimelineScene(QGraphicsScene):"
+      "hunk": "@@ -1538,10 +1537,10 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#30",
+      "id": "video_ai_editor/signal_timeline.py#31",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        self.row_labels.append((\"MOTION PEAKS\", y_pos))",
       "target": "        self.row_labels.append((\"运动峰值\", y_pos))",
@@ -37533,7 +37902,7 @@
       "hunk": "@@ -1557,11 +1556,11 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#31",
+      "id": "video_ai_editor/signal_timeline.py#32",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            intervals.append((timestamp, timestamp + 0.5, {'label': 'Peak'}))",
       "target": "            intervals.append((timestamp, timestamp + 0.5, {'label': '峰值'}))",
@@ -37542,7 +37911,7 @@
       "hunk": "@@ -1557,11 +1556,11 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#32",
+      "id": "video_ai_editor/signal_timeline.py#33",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                bar_label = \"Peak\"",
       "target": "                bar_label = \"峰值\"",
@@ -37551,7 +37920,7 @@
       "hunk": "@@ -1571,7 +1570,7 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#33",
+      "id": "video_ai_editor/signal_timeline.py#34",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        self.row_labels.append((\"AUDIO PEAKS\", y_pos))",
       "target": "        self.row_labels.append((\"音频峰值\", y_pos))",
@@ -37560,7 +37929,7 @@
       "hunk": "@@ -1589,11 +1588,11 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#34",
+      "id": "video_ai_editor/signal_timeline.py#35",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            intervals.append((timestamp, timestamp + 0.5, {'label': 'Audio'}))",
       "target": "            intervals.append((timestamp, timestamp + 0.5, {'label': '音频'}))",
@@ -37569,7 +37938,7 @@
       "hunk": "@@ -1589,11 +1588,11 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#35",
+      "id": "video_ai_editor/signal_timeline.py#36",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                bar_label = \"Audio\"",
       "target": "                bar_label = \"音频\"",
@@ -37578,7 +37947,7 @@
       "hunk": "@@ -1603,7 +1602,7 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#36",
+      "id": "video_ai_editor/signal_timeline.py#37",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        self.row_labels.append((\"HIGHLIGHTS\", y_pos))",
       "target": "        self.row_labels.append((\"高光\", y_pos))",
@@ -37587,7 +37956,7 @@
       "hunk": "@@ -1621,7 +1620,7 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#37",
+      "id": "video_ai_editor/signal_timeline.py#38",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                label = f\"Highlight {i + 1} ({duration:.1f}s, score {score:.2f})\"",
       "target": "                label = f\"高光 {i + 1}（{duration:.1f} 秒，得分 {score:.2f}）\"",
@@ -37596,7 +37965,7 @@
       "hunk": "@@ -1667,9 +1666,9 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#38",
+      "id": "video_ai_editor/signal_timeline.py#39",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                label = f\"Highlight {i + 1} ({duration:.1f}s)\"",
       "target": "                label = f\"高光 {i + 1}（{duration:.1f} 秒）\"",
@@ -37605,7 +37974,7 @@
       "hunk": "@@ -1667,9 +1666,9 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#39",
+      "id": "video_ai_editor/signal_timeline.py#40",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            f\"Label: {bar.label}\",",
       "target": "            f\"标签：{bar.label}\",",
@@ -37614,7 +37983,7 @@
       "hunk": "@@ -1828,7 +1827,7 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#40",
+      "id": "video_ai_editor/signal_timeline.py#41",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                tooltip_lines.append(f\"Confidence: {bar.confidence:.0%}\")",
       "target": "                tooltip_lines.append(f\"置信度：{bar.confidence:.0%}\")",
@@ -37623,7 +37992,7 @@
       "hunk": "@@ -1836,9 +1835,9 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#41",
+      "id": "video_ai_editor/signal_timeline.py#42",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                tooltip_lines.append(f\"Confidence: {bar.confidence:.1f}/10\")",
       "target": "                tooltip_lines.append(f\"置信度：{bar.confidence:.1f}/10\")",
@@ -37632,7 +38001,7 @@
       "hunk": "@@ -1836,9 +1835,9 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#42",
+      "id": "video_ai_editor/signal_timeline.py#43",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        text = f\"{fmt(t0)} → {fmt(t1)}  ({duration:.2f}s)  — drag to add\"",
       "target": "        text = f\"{fmt(t0)} → {fmt(t1)}（{duration:.2f} 秒）— 拖动可添加\"",
@@ -37641,7 +38010,7 @@
       "hunk": "@@ -2048,7 +2047,7 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#43",
+      "id": "video_ai_editor/signal_timeline.py#44",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            print(f\"⚠️ Could not save timeline filters: {e}\")",
       "target": "            print(f\"⚠️ 无法保存时间线筛选设置：{e}\")",
@@ -37650,7 +38019,7 @@
       "hunk": "@@ -2163,7 +2162,7 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#44",
+      "id": "video_ai_editor/signal_timeline.py#45",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            print(f\"⚠️ Could not load timeline filters: {e}\")",
       "target": "            print(f\"⚠️ 无法加载时间线筛选设置：{e}\")",
@@ -37659,7 +38028,7 @@
       "hunk": "@@ -2192,10 +2191,10 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#45",
+      "id": "video_ai_editor/signal_timeline.py#46",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        action_name = action_data.get('action_name') or action_data.get('action') or 'Unknown'",
       "target": "        action_name = action_data.get('action_name') or action_data.get('action') or '未知'",
@@ -37668,7 +38037,7 @@
       "hunk": "@@ -2192,10 +2191,10 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#46",
+      "id": "video_ai_editor/signal_timeline.py#47",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        self.row_labels.append((\"VISUAL SEARCH\", y_pos))",
       "target": "        self.row_labels.append((\"视觉搜索\", y_pos))",
@@ -37677,7 +38046,7 @@
       "hunk": "@@ -2361,7 +2360,7 @@ class SignalTimelineScene(QGraphicsScene):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#47",
+      "id": "video_ai_editor/signal_timeline.py#48",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        act_one = menu.addAction(\"➕  Add this clip to edit timeline\")",
       "target": "        act_one = menu.addAction(\"➕  将此片段加入剪辑时间线\")",
@@ -37686,7 +38055,7 @@
       "hunk": "@@ -2713,18 +2712,18 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#48",
+      "id": "video_ai_editor/signal_timeline.py#49",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            act_all = menu.addAction(f\"➕  Add all “{group_name}” clips  ({len(row_clips)})\")",
       "target": "            act_all = menu.addAction(f\"➕  将“{group_name}”全部片段加入剪辑时间线（{len(row_clips)}）\")",
@@ -37695,7 +38064,7 @@
       "hunk": "@@ -2713,18 +2712,18 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#49",
+      "id": "video_ai_editor/signal_timeline.py#50",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "            act_swap = menu.addAction(\"🔀  Swap for the next best moment\")\n            act_undo = menu.addAction(\"↩  Undo last swap\")",
       "target": "            act_swap = menu.addAction(\"🔀  替换为下一个最佳时刻\")\n            act_undo = menu.addAction(\"↩  撤销上次替换\")",
@@ -37704,7 +38073,7 @@
       "hunk": "@@ -2713,18 +2712,18 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#50",
+      "id": "video_ai_editor/signal_timeline.py#51",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        act_avoid = menu.addAction(\"🚫  Avoid this range in highlights\")\n        act_clear = menu.addAction(\"Clear all avoid ranges\")",
       "target": "        act_avoid = menu.addAction(\"🚫  从高光中排除此区间\")\n        act_clear = menu.addAction(\"清空全部排除区间\")",
@@ -37713,7 +38082,7 @@
       "hunk": "@@ -2742,8 +2741,8 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#51",
+      "id": "video_ai_editor/signal_timeline.py#52",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "        act_remove = menu.addAction(\"🗑  Remove this avoid range\")\n        act_clear = menu.addAction(\"Clear all avoid ranges\")",
       "target": "        act_remove = menu.addAction(\"🗑  移除此排除区间\")\n        act_clear = menu.addAction(\"清空全部排除区间\")",
@@ -37722,13 +38091,22 @@
       "hunk": "@@ -2790,8 +2789,8 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
-      "id": "video_ai_editor/signal_timeline.py#52",
+      "id": "video_ai_editor/signal_timeline.py#53",
       "file": "video_ai_editor/signal_timeline.py",
       "source": "                                f\"Selected {duration:.2f}s  \"\n                                f\"({t0:.2f}s → {t1:.2f}s)  \"\n                                \"— drag selection into edit timeline to add\",",
       "target": "                                f\"已选择 {duration:.2f} 秒  \"\n                                f\"（{t0:.2f} 秒 → {t1:.2f} 秒）  \"\n                                \"— 可将所选区间拖入编辑时间线以添加片段\",",
       "before": "                            parent.statusBar().showMessage(",
       "after": "                                0",
       "hunk": "@@ -3042,9 +3041,9 @@ class SignalTimelineView(QGraphicsView):"
+    },
+    {
+      "id": "video_ai_editor/signal_timeline.py#54",
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "            'label':      f\"Range {start_time:.2f}s–{end_time:.2f}s\",",
+      "target": "            'label':      f\"范围 {start_time:.2f}秒–{end_time:.2f}秒\",",
+      "before": "            'duration':   end_time - start_time,",
+      "after": "            'metadata':   {'source': 'range_selection'}",
+      "hunk": "@@ -3089,7 +3088,7 @@ class SignalTimelineView(QGraphicsView):"
     },
     {
       "id": "video_ai_editor/timeline_bars.py#1",
@@ -37738,6 +38116,33 @@
       "before": "        duration = self.bar.end_time - self.bar.start_time",
       "after": "        ",
       "hunk": "@@ -197,7 +197,7 @@ class DraggableTimelineBar(QGraphicsRectItem):"
+    },
+    {
+      "id": "video_ai_editor/timeline_export.py#1",
+      "file": "video_ai_editor/timeline_export.py",
+      "source": "    mark = \"marker\" if markers == 1 else \"markers\"",
+      "target": "    mark = \"标记\" if markers == 1 else \"标记\"",
+      "before": "    \"\"\"The info line under the format combo.\"\"\"",
+      "after": "    text = (",
+      "hunk": "@@ -1016,15 +1016,15 @@ def count_markers(sequence: Sequence) -> int:"
+    },
+    {
+      "id": "video_ai_editor/timeline_export.py#2",
+      "file": "video_ai_editor/timeline_export.py",
+      "source": "        f\"Exporting {clip_count} clips, total duration: {duration:.1f}s. \"\n        f\"{timebase.describe()}. {markers} {mark}.\"",
+      "target": "        f\"正在导出 {clip_count} 个片段，总时长：{duration:.1f} 秒。\"\n        f\"{timebase.describe()}。{markers} 个{mark}。\"",
+      "before": "    text = (",
+      "after": "    )",
+      "hunk": "@@ -1016,15 +1016,15 @@ def count_markers(sequence: Sequence) -> int:"
+    },
+    {
+      "id": "video_ai_editor/timeline_export.py#3",
+      "file": "video_ai_editor/timeline_export.py",
+      "source": "            f\" FCPXML keeps every frame. \"\n            f\"The EDL is counted at {timebase.edl_fps} fps.\"",
+      "target": "            f\" FCPXML 会保留每一帧。\"\n            f\"EDL 按 {timebase.edl_fps} fps 计数。\"",
+      "before": "        text += (",
+      "after": "        )",
+      "hunk": "@@ -1016,15 +1016,15 @@ def count_markers(sequence: Sequence) -> int:"
     },
     {
       "id": "video_ai_editor/transcript_panel.py#1",

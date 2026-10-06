@@ -129,6 +129,13 @@
       ]
     },
     {
+      "source": "(encode only — a real scan adds video decode)",
+      "target": "（这里只测试编码；实际扫描还会包含视频解码）",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "(exit code {proc.returncode}). {' '.join(tail)}",
       "target": "（退出代码 {proc.returncode}）。 {' '.join(tail)}",
       "files": [
@@ -189,6 +196,13 @@
       "target": "模型托管在 Hugging Face，安装前会进行安全与兼容性检查。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "(it fell back — see the warning above for why)",
+      "target": "（发生了回退，原因请查看上方警告）",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -287,6 +301,13 @@
       "target": "（暂无，请使用“浏览”选择）",
       "files": [
         "modules/ui/model_dialog.py"
+      ]
+    },
+    {
+      "source": "(not needed for CUDA)",
+      "target": "（CUDA 不需要）",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -624,6 +645,13 @@
       "target": "（{self._detection_count} 个检测结果可用）",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "({self._src_w}x{self._src_h}) — leaving the slot empty",
+      "target": "（{self._src_w}x{self._src_h}），将保留空位，",
+      "files": [
+        "video_ai_editor/thumbnail_cache.py"
       ]
     },
     {
@@ -1223,6 +1251,13 @@
       ]
     },
     {
+      "source": "...plus: pip install transformers pillow opencv-python numpy",
+      "target": "另外还需：pip install transformers pillow opencv-python numpy",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": ".0 hours",
       "target": ".0 小时",
       "files": [
@@ -1720,6 +1755,20 @@
       ]
     },
     {
+      "source": "\\n   Install a CUDA torch:\\n",
+      "target": "\\n   请安装 CUDA 版 torch：\\n",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "\\n   Install the OpenVINO stack:\\n",
+      "target": "\\n   请安装 OpenVINO 依赖栈：\\n",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "\\n   segment {i} error: {str(e)[:80]}",
       "target": "\\n   分片 {i} 错误：{str(e)[:80]}",
       "files": [
@@ -2007,6 +2056,13 @@
       ]
     },
     {
+      "source": "\\nrequested {requested!r} -> backend={backend!r} device={device!r}",
+      "target": "\\n请求 {requested!r} -> 后端={backend!r} 设备={device!r}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "\\nScoring val/ as the dataset defines it (training on train/ only)",
       "target": "\\n正在按数据集定义对 val/ 评分（仅使用 train/ 训练）",
       "files": [
@@ -2280,6 +2336,13 @@
       ]
     },
     {
+      "source": "\\n✅ Dataset ready under:",
+      "target": "\\n✅ 数据集已准备完成，位置：",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "\\n✅ Dataset validation complete!",
       "target": "\\n✅ 数据集验证完成！",
       "files": [
@@ -2375,6 +2438,13 @@
       "target": "\\n❌ 错误：{e}",
       "files": [
         "convert_pth_to_openvino.py"
+      ]
+    },
+    {
+      "source": "\\n❌ FAIL — the {backend!r} backend's stack is incomplete:\\n   {err}",
+      "target": "\\n❌ 失败——{backend!r} 后端的依赖栈不完整：\\n   {err}",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -2522,6 +2592,13 @@
       "target": "\\n📊 DataLoader：{nw} 个工作进程，pin_memory={pin}",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "\\n📊 Dataset stats:",
+      "target": "\\n📊 数据集统计：",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -3030,6 +3107,20 @@
       ]
     },
     {
+      "source": "Action consistency: {action_consistency:.0%}",
+      "target": "动作持续性：{action_consistency:.0%}",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
+      "source": "Action density: {action_density:.2f}",
+      "target": "动作密度：{action_density:.2f}",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "action head {siglip[0]} ({len(action_labels)} classes)",
       "target": "动作头 {siglip[0]}（{len(action_labels)} 个类别）",
       "files": [
@@ -3439,6 +3530,13 @@
       ]
     },
     {
+      "source": "Agreement with fp32 CPU reference",
+      "target": "与 fp32 CPU 参考结果的一致性",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "AI Summary",
       "target": "AI 摘要",
       "files": [
@@ -3534,6 +3632,13 @@
       "target": "所有视频都已完成！\\n将重新加载第一个视频。",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "All zones have action - people packed together",
+      "target": "所有区域都有动作——人员较为密集",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -3818,6 +3923,13 @@
       ]
     },
     {
+      "source": "at {per:.1f} ms/frame.",
+      "target": "速度为 {per:.1f} 毫秒/帧。",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Audio",
       "target": "音频",
       "files": [
@@ -3999,6 +4111,13 @@
       ]
     },
     {
+      "source": "available  {avail}",
+      "target": "是否可用   {avail}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Available OpenVINO devices: {available_devices}",
       "target": "可用的 OpenVINO 设备：{available_devices}",
       "files": [
@@ -4032,6 +4151,13 @@
       "target": "平均检测框：{bbox_avg:.1f}，平均姿态数：{pose_avg:.1f}",
       "files": [
         "modules/crop/actions.py"
+      ]
+    },
+    {
+      "source": "Avg people: {avg_people:.1f}",
+      "target": "平均人数：{avg_people:.1f}",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -4107,6 +4233,13 @@
       ]
     },
     {
+      "source": "Backend resolution",
+      "target": "后端解析",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Backend:",
       "target": "后端：",
       "files": [
@@ -4133,6 +4266,13 @@
       "target": "参数错误",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "bad embedding shape {img.shape}",
+      "target": "嵌入形状异常 {img.shape}",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -4203,6 +4343,13 @@
       "target": "分享前确认",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "Benchmark ({args.frames} frames, batch {args.batch})",
+      "target": "基准测试（{args.frames} 帧，批大小 {args.batch}）",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -4694,6 +4841,13 @@
       "target": "正在检查新版本…",
       "files": [
         "modules/update/update_install.py"
+      ]
+    },
+    {
+      "source": "Checking zone activity...",
+      "target": "正在检查区域活动…",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -5651,6 +5805,7 @@
       "source": "Correctness",
       "target": "正确性",
       "files": [
+        "tools/check_clip_device.py",
         "tools/check_directml.py"
       ]
     },
@@ -5659,6 +5814,13 @@
       "target": "与 fp32 CPU 参考结果的余弦相似度：{cosine:.6f}（{verdict}，",
       "files": [
         "tools/check_directml.py"
+      ]
+    },
+    {
+      "source": "cosine/frame  {np.round(agree, 6)}",
+      "target": "每帧余弦值   {np.round(agree, 6)}",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -5986,6 +6148,13 @@
       ]
     },
     {
+      "source": "Created {len(stems)} labeled samples",
+      "target": "已创建 {len(stems)} 个已标注样本",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Creating clip: {clip_path}",
       "target": "正在创建片段：{clip_path}",
       "files": [
@@ -6075,6 +6244,13 @@
       "target": "Ctrl+单击 / Shift+单击 / Ctrl+A 可多选，按 Delete 删除",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "cuda build {torch.version.cuda or '(none — this is a CPU/XPU wheel)'}",
+      "target": "CUDA 构建  {torch.version.cuda or '（无——这是 CPU/XPU wheel）'}",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -6619,6 +6795,13 @@
       "target": "此设置仅作用于本次运行，并覆盖主窗口保存的语言设置。",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "device {i}   {p.name} ({p.total_memory / 1024**3:.1f} GB,",
+      "target": "设备 {i}    {p.name} ({p.total_memory / 1024**3:.1f} GB,",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -7235,6 +7418,13 @@
       ]
     },
     {
+      "source": "embeddings are not unit-norm: {norms}",
+      "target": "嵌入不是单位范数：{norms}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "empty = <video>_highlight.mp4",
       "target": "留空 = <视频名>_highlight.mp4",
       "files": [
@@ -7435,6 +7625,7 @@
       "source": "Environment",
       "target": "环境",
       "files": [
+        "tools/check_clip_device.py",
         "tools/check_directml.py"
       ]
     },
@@ -7693,6 +7884,20 @@
       ]
     },
     {
+      "source": "expected backend {args.expect!r}, resolved {backend!r}",
+      "target": "期望后端 {args.expect!r}，实际解析为 {backend!r}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "expected to LOAD on {args.expect!r}, got {emb.backend!r}",
+      "target": "期望加载到 {args.expect!r}，实际为 {emb.backend!r}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "explosion, person, car, etc.",
       "target": "爆炸、人物、汽车等",
       "files": [
@@ -7777,6 +7982,13 @@
       ]
     },
     {
+      "source": "Export labels from labeler.py, then re-run.",
+      "target": "请先从 labeler.py 导出标注，然后重新运行。",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Export Successful",
       "target": "导出成功",
       "files": [
@@ -7820,6 +8032,13 @@
       ]
     },
     {
+      "source": "Extracting frames",
+      "target": "提取视频帧",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "f <sec>       - Move forward N seconds",
       "target": "f <秒数>      - 向前移动 N 秒",
       "files": [
@@ -7859,6 +8078,13 @@
       "target": "人脸识别",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "fail unless this backend is chosen (for CI/automation)",
+      "target": "如果未选择此后端则失败（用于 CI/自动化）",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -8459,6 +8685,13 @@
       ]
     },
     {
+      "source": "Found keypoints in {len(video_frames)} videos",
+      "target": "在 {len(video_frames)} 个视频中找到关键点",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Found per round:",
       "target": "每轮识别结果：",
       "files": [
@@ -8470,6 +8703,13 @@
       "target": "找到 {len(iframes)} 个 iframe",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "Found {len(label_files)} label files",
+      "target": "找到 {len(label_files)} 个标注文件",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -8596,6 +8836,13 @@
       "target": "已处理帧数：{frame_count}",
       "files": [
         "modules/crop/actions.py"
+      ]
+    },
+    {
+      "source": "frames to benchmark",
+      "target": "用于基准测试的帧数",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -8906,6 +9153,13 @@
       "target": "h             - 显示此帮助",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "Has action: {'✓' if zone_action_potential[zone]['has_action'] else '✗'}",
+      "target": "是否有动作：{'✓' if zone_action_potential[zone]['has_action'] else '✗'}",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -9281,6 +9535,13 @@
       ]
     },
     {
+      "source": "image_embeds  shape={img.shape} dtype={img.dtype}",
+      "target": "图像嵌入     shape={img.shape} dtype={img.dtype}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Import a labeller export",
       "target": "导入标注工具数据",
       "files": [
@@ -9320,6 +9581,13 @@
       "target": "导入时：标注器中的点位已人工确认",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "import_error({requested!r}) -> {err or 'None (stack imports cleanly)'}",
+      "target": "import_error({requested!r}) -> {err or '无（依赖栈导入正常）'}",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -10266,7 +10534,8 @@
       "source": "Load",
       "target": "加载",
       "files": [
-        "main.py"
+        "main.py",
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -10382,6 +10651,13 @@
       ]
     },
     {
+      "source": "loaded: backend={emb.backend!r} device={emb.device!r} dtype={emb._dtype}",
+      "target": "已加载：后端={emb.backend!r} 设备={emb.device!r} dtype={emb._dtype}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Loaded: {len(names)} videos",
       "target": "已加载：{len(names)} 个视频",
       "files": [
@@ -10487,6 +10763,13 @@
       "target": "日志输出：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "logit_scale   {emb.logit_scale:.2f}  (CLIP's published value is 100.0)",
+      "target": "logit_scale   {emb.logit_scale:.2f}（CLIP 公布值为 100.0）",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -10684,6 +10967,13 @@
       "files": [
         "frontend/src/components/CompositionRules.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Max activity: {max_activity:.2f}",
+      "target": "最大活动量：{max_activity:.2f}",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -10940,13 +11230,6 @@
       "target": "通常需要数分钟。",
       "files": [
         "modules/narration/story_run.py"
-      ]
-    },
-    {
-      "source": "MISSING",
-      "target": "缺失",
-      "files": [
-        "modules/teach/teach_panel.py"
       ]
     },
     {
@@ -11571,6 +11854,13 @@
       "target": "下一步：",
       "files": [
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "Next: clone YOLOX and run training/train_yolox.py --yolox-dir <path>",
+      "target": "下一步：克隆 YOLOX，然后运行 training/train_yolox.py --yolox-dir <path>",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -12234,6 +12524,20 @@
       ]
     },
     {
+      "source": "non-finite score from score_frames_bgr",
+      "target": "score_frames_bgr 返回了非有限分数",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "non-finite values in image embeddings",
+      "target": "图像嵌入中存在非有限值",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "none",
       "target": "无",
       "files": [
@@ -12408,13 +12712,6 @@
       "target": "与当前 {encoder.encoder_id} 不一致，已跳过动作识别",
       "files": [
         "modules/vision/action_siglip.py"
-      ]
-    },
-    {
-      "source": "note",
-      "target": "提示",
-      "files": [
-        "modules/teach/teach_panel.py"
       ]
     },
     {
@@ -12694,13 +12991,6 @@
       "target": "关闭 — 仅显示原始视频，不显示叠加层\\n",
       "files": [
         "signal_timeline_viewer.py"
-      ]
-    },
-    {
-      "source": "OK",
-      "target": "正常",
-      "files": [
-        "modules/teach/teach_panel.py"
       ]
     },
     {
@@ -13176,6 +13466,13 @@
       ]
     },
     {
+      "source": "os           {platform.system()} {platform.release()}",
+      "target": "操作系统     {platform.system()} {platform.release()}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Out",
       "target": "出点",
       "files": [
@@ -13391,6 +13688,13 @@
       "target": "选择 .edl.yaml 文件路径",
       "files": [
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "Path to cloned Megvii-BaseDetection/YOLOX repo (required to train)",
+      "target": "已克隆的 Megvii-BaseDetection/YOLOX 仓库路径（训练必需）",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -13797,6 +14101,13 @@
       "target": "优先使用：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Prepare dataset and launch YOLOX training",
+      "target": "准备数据集并启动 YOLOX 训练",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -14358,6 +14669,13 @@
       ]
     },
     {
+      "source": "rather than decoding the whole frame",
+      "target": "避免解码完整大帧",
+      "files": [
+        "video_ai_editor/thumbnail_cache.py"
+      ]
+    },
+    {
       "source": "rather than something visible in a single frame.\\n",
       "target": "而不是只识别单帧中可见的物体。\\n",
       "files": [
@@ -14369,6 +14687,13 @@
       "target": "像素比 {screen.devicePixelRatio():g}，",
       "files": [
         "modules/system/display_info.py"
+      ]
+    },
+    {
+      "source": "Re-export from the updated labeler or labels will be misaligned.",
+      "target": "请使用更新后的标注工具重新导出，否则标注会发生错位。",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -14435,6 +14760,13 @@
       ]
     },
     {
+      "source": "Reading labels",
+      "target": "读取标注",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Reading the analysis cache…",
       "target": "正在读取分析缓存…",
       "files": [
@@ -14496,6 +14828,13 @@
       "target": "实时检测框叠加测试（内存优化）",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "realistically a few hundred). Label more frames first.",
+      "target": "请先标注更多帧。",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -15552,6 +15891,13 @@
       ]
     },
     {
+      "source": "scores        {[round(s, 4) for s in scores]}",
+      "target": "分数          {[round(s, 4) for s in scores]}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Scores clips by variance-of-Laplacian sharpness; blurry ones are penalized so they lose to sharp clips of equal interest.",
       "target": "根据拉普拉斯方差评估清晰度；模糊片段会被降权，在兴趣度相同时优先选择更清晰的片段。",
       "files": [
@@ -16594,6 +16940,13 @@
       ]
     },
     {
+      "source": "skip the CPU agreement check (saves a second model load)",
+      "target": "跳过 CPU 一致性检查（可省去第二次模型加载）",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Skip this version",
       "target": "跳过此版本",
       "files": [
@@ -17379,6 +17732,13 @@
       ]
     },
     {
+      "source": "text_embeds   shape={txt.shape}",
+      "target": "文本嵌入     shape={txt.shape}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "That export contains no labelled points.",
       "target": "该导出文件中没有已标注的点。",
       "files": [
@@ -17947,6 +18307,13 @@
       ]
     },
     {
+      "source": "torch        UNAVAILABLE — {type(e).__name__}: {e}",
+      "target": "torch        不可用——{type(e).__name__}：{e}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "torch also sees the GPU through Metal (MPS); nothing uses it yet",
       "target": "torch 也可通过 Metal（MPS）识别 GPU，但当前尚无模块使用它",
       "files": [
@@ -18052,6 +18419,13 @@
       ]
     },
     {
+      "source": "Total: {stats['total']} samples",
+      "target": "总计：{stats['total']} 个样本",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Total: {total_videos} | ✅ Success: {successful} | ❌ Failed: {total_videos - successful}",
       "target": "总数：{total_videos} | ✅ 成功：{successful} | ❌ 失败：{total_videos - successful}",
       "files": [
@@ -18148,6 +18522,20 @@
       "target": "训练损失：{train_loss:.4f} | 训练准确率：{train_acc:.4f}",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "Train: {len(train_stems)} samples",
+      "target": "训练集：{len(train_stems)} 个样本",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
+      "source": "Train: {stats['train']} samples",
+      "target": "训练集：{stats['train']} 个样本",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -18424,6 +18812,13 @@
       "target": "不到 1 分钟",
       "files": [
         "training/train_estimate.py"
+      ]
+    },
+    {
+      "source": "unit norms    {np.round(norms, 5)}",
+      "target": "单位范数      {np.round(norms, 5)}",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -18783,6 +19178,13 @@
       ]
     },
     {
+      "source": "Use TASK='detect' for object classes, or add RTMPose later for keypoints.",
+      "target": "对象类别请使用 TASK='detect'；关键点训练可后续接入 RTMPose。",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Use train/ and val/ exactly as given: never move clips",
       "target": "严格按给定的 train/ 和 val/ 使用：不在两者之间移动片段",
       "files": [
@@ -18839,6 +19241,13 @@
       ]
     },
     {
+      "source": "Using class names from labels: {KEYPOINT_NAMES}",
+      "target": "正在使用标注中的类别名称：{KEYPOINT_NAMES}",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Using codec: {codec}",
       "target": "使用编码器：{codec}",
       "files": [
@@ -18874,6 +19283,20 @@
       ]
     },
     {
+      "source": "Val:   {len(val_stems)} samples",
+      "target": "验证集：{len(val_stems)} 个样本",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
+      "source": "Val:   {stats['val']} samples",
+      "target": "验证集：{stats['val']} 个样本",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "Valid actions: {len(valid_actions)}/{len(train_dataset.labels)}",
       "target": "有效动作：{len(valid_actions)}/{len(train_dataset.labels)}",
       "files": [
@@ -18905,6 +19328,7 @@
       "source": "Verdict",
       "target": "结论",
       "files": [
+        "tools/check_clip_device.py",
         "tools/check_directml.py"
       ]
     },
@@ -19754,6 +20178,13 @@
       ]
     },
     {
+      "source": "worst         {worst:.6f}  (threshold {AGREEMENT_MIN})",
+      "target": "最差值       {worst:.6f}（阈值 {AGREEMENT_MIN}）",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "Write a highlight report",
       "target": "生成高光报告",
       "files": [
@@ -19866,6 +20297,13 @@
       ]
     },
     {
+      "source": "YOLO max: {yolo_max}, Pose max: {pose_max}",
+      "target": "YOLO 最大人数：{yolo_max}，Pose 最大人数：{pose_max}",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "YOLO model not loaded. Please check installation.",
       "target": "YOLO 模型尚未加载，请检查安装情况。",
       "files": [
@@ -19912,6 +20350,13 @@
       "target": "未找到 YOLOX IR（{model_xml!r}）。",
       "files": [
         "action_recognition.py"
+      ]
+    },
+    {
+      "source": "YOLOX model size",
+      "target": "YOLOX 模型大小",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -20045,13 +20490,6 @@
       "target": "{'✅' if ok else '⚠️'} 任务 {state.job_id} 已完成，用时 {seconds:.0f} 秒",
       "files": [
         "modules/segments/auto_pipeline.py"
-      ]
-    },
-    {
-      "source": "{'✅' if ok else '❌'} smoke: {name}",
-      "target": "{'✅' if ok else '❌'} 冒烟测试：{name}",
-      "files": [
-        "modules/system/smoke_test.py"
       ]
     },
     {
@@ -20244,6 +20682,13 @@
       ]
     },
     {
+      "source": "{data['coordinate_space']!r} (expected 'video_pixels').",
+      "target": "{data['coordinate_space']!r}（应为 'video_pixels'）。",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "{dml.FP16_ENV:<14} {os.environ.get(dml.FP16_ENV, '(not set)')}",
       "target": "{dml.FP16_ENV:<14} {os.environ.get(dml.FP16_ENV, '（未设置）')}",
       "files": [
@@ -20283,6 +20728,13 @@
       "target": "{edl.duration:.0f} 秒，{len(edl.cuts)} 个镜头，",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "{emb.device}: {elapsed:.2f}s total, {per:.1f} ms/frame,",
+      "target": "{emb.device}：总计 {elapsed:.2f} 秒，{per:.1f} 毫秒/帧，",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -20560,6 +21012,13 @@
       ]
     },
     {
+      "source": "{len(frames) / elapsed:.1f} frames/s",
+      "target": "{len(frames) / elapsed:.1f} 帧/秒",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "{len(grouped_by_action[action_name])} sequences",
       "target": "{len(grouped_by_action[action_name])} 个序列",
       "files": [
@@ -20774,6 +21233,20 @@
       "target": "{missing_models}。这些动作将产生 0 个检测结果。",
       "files": [
         "action_recognition.py"
+      ]
+    },
+    {
+      "source": "{mod:<12} not importable — {type(e).__name__}{note}",
+      "target": "{mod:<12} 无法导入——{type(e).__name__}{note}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "{mod:<12} {getattr(m, '__version__', '(no __version__)')}",
+      "target": "{mod:<12} {getattr(m, '__version__', '（无 __version__）')}",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -21208,6 +21681,13 @@
       "target": "{yolo_workers} 个工作线程，跳帧：{yolo_skip_frames}）",
       "files": [
         "action_recognition.py"
+      ]
+    },
+    {
+      "source": "{zone.capitalize()} has no action",
+      "target": "{ZONE_NAMES_ZH.get(zone, zone)}区域没有动作",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -22136,6 +22616,13 @@
       ]
     },
     {
+      "source": "ℹ️ Not a corner case - zones lack consistent action",
+      "target": "ℹ️ 不是特殊情况——各区域缺少持续动作",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "ℹ️ Not in action head {head.name}: {', '.join(unknown)}",
       "target": "ℹ️ 动作分类头 {head.name} 中不存在：{', '.join(unknown)}",
       "files": [
@@ -22343,6 +22830,13 @@
       "target": "→ 在 {current_context} 中获取到时长：{duration:.1f} 秒",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "→ same numbers as the CPU: indexes stay portable across machines.",
+      "target": "→ 与 CPU 结果一致：索引可在不同机器之间通用。",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -23251,6 +23745,13 @@
       ]
     },
     {
+      "source": "⚠️  could not build CPU reference ({type(e).__name__}: {e})",
+      "target": "⚠️  无法建立 CPU 参考模型（{type(e).__name__}：{e}）",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
       "source": "⚠️  Could not load optimizer state: {e}",
       "target": "⚠️  无法加载优化器状态：{e}",
       "files": [
@@ -23896,6 +24397,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not open: {video_path}",
+      "target": "⚠️ 无法打开：{video_path}",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not parse filename; finding newest file...",
       "target": "⚠️ 无法解析文件名，正在查找最新文件…",
       "files": [
@@ -23949,6 +24457,13 @@
       "target": "⚠️ 无法读取 {timestamp:.1f} 秒处的视频帧",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not read keypoint_names from labels: {_e}",
+      "target": "⚠️ 无法从标注中读取 keypoint_names：{_e}",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -24870,6 +25385,13 @@
       ]
     },
     {
+      "source": "⚠️ No persistent thumbnail decoder: {e}",
+      "target": "⚠️ 没有可用的持久缩略图解码器：{e}",
+      "files": [
+        "video_ai_editor/thumbnail_cache.py"
+      ]
+    },
+    {
       "source": "⚠️ No player bound!",
       "target": "⚠️ 尚未绑定播放器！",
       "files": [
@@ -24923,6 +25445,13 @@
       "target": "⚠️ 没有可用的节拍信息——保留原始剪切位置",
       "files": [
         "modules/media/edl.py"
+      ]
+    },
+    {
+      "source": "⚠️ No thumbnail at {time_ms / 1000:.1f}s",
+      "target": "⚠️ {time_ms / 1000:.1f} 秒处没有缩略图",
+      "files": [
+        "video_ai_editor/thumbnail_cache.py"
       ]
     },
     {
@@ -25570,6 +26099,20 @@
       ]
     },
     {
+      "source": "⚠️ ThumbnailCache disk write failed: {e}",
+      "target": "⚠️ 缩略图缓存写入磁盘失败：{e}",
+      "files": [
+        "video_ai_editor/thumbnail_cache.py"
+      ]
+    },
+    {
+      "source": "⚠️ ThumbnailCache extract failed: {e}",
+      "target": "⚠️ 缩略图缓存提取失败：{e}",
+      "files": [
+        "video_ai_editor/thumbnail_cache.py"
+      ]
+    },
+    {
       "source": "⚠️ ThumbnailCache init failed: {e} — filmstrip disabled",
       "target": "⚠️ 缩略图缓存初始化失败：{e}——胶片带已禁用",
       "files": [
@@ -25714,6 +26257,13 @@
       "target": "⚠️ 视频没有音频流 → 无法生成波形",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ Video not found: {video_name}",
+      "target": "⚠️ 未找到视频：{video_name}",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -26256,6 +26806,13 @@
       ]
     },
     {
+      "source": "✅ Dataset YAML saved: {yaml_path}",
+      "target": "✅ 数据集 YAML 已保存：{yaml_path}",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "✅ Debug video saved",
       "target": "✅ 调试视频已保存",
       "files": [
@@ -26792,6 +27349,13 @@
       "target": "✅ 输出：{output_path}",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "✅ PASS — CLIP works on {emb.device!r} via the {emb.backend!r} backend",
+      "target": "✅ 通过——CLIP 正在 {emb.device!r} 上通过 {emb.backend!r} 后端运行，",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -28125,6 +28689,13 @@
       ]
     },
     {
+      "source": "❌ Dataset build produced no samples — aborting.",
+      "target": "❌ 数据集构建没有生成任何样本——已中止。",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "❌ Download completed but file not found",
       "target": "❌ 下载流程已结束，但没有找到输出文件",
       "files": [
@@ -28269,6 +28840,13 @@
       "target": "❌ 人脸扫描失败：{e}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "❌ FAIL ({len(failures)})",
+      "target": "❌ 失败（{len(failures)} 项）",
+      "files": [
+        "tools/check_clip_device.py"
       ]
     },
     {
@@ -28447,6 +29025,13 @@
       ]
     },
     {
+      "source": "❌ Labels folder '{LABELS_DIR}' not found.\\n",
+      "target": "❌ 未找到标注文件夹 '{LABELS_DIR}'。\\n",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "❌ LLM query error: {e}",
       "target": "❌ 大模型查询出错：{e}",
       "files": [
@@ -28475,10 +29060,24 @@
       ]
     },
     {
+      "source": "❌ No class names found in label JSON ('keypoint_names' field).",
+      "target": "❌ 标注 JSON 中未找到类别名称（'keypoint_names' 字段）。",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "❌ No ffmpeg found. It normally comes with the app's requirements",
       "target": "❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装",
       "files": [
         "modules/media/ffmpeg_tools.py"
+      ]
+    },
+    {
+      "source": "❌ No JSON files found in {self.labels_dir}",
+      "target": "❌ 在 {self.labels_dir} 中未找到 JSON 文件",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -28524,6 +29123,13 @@
       ]
     },
     {
+      "source": "❌ No usable labeled frames found.",
+      "target": "❌ 未找到可用的已标注帧。",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "❌ No video files found in {INPUT_FOLDER}",
       "target": "❌ 在 {INPUT_FOLDER} 中未找到视频文件",
       "files": [
@@ -28545,6 +29151,13 @@
       ]
     },
     {
+      "source": "❌ Only {len(stems)} valid sample(s) — need at least 2 (and",
+      "target": "❌ 只有 {len(stems)} 个有效样本——至少需要 2 个，实际训练通常需要数百个。",
+      "files": [
+        "training/train_yolox_dataset.py"
+      ]
+    },
+    {
       "source": "❌ PIL/Pillow not installed. Run: pip install pillow",
       "target": "❌ 未安装 PIL/Pillow。请运行：pip install pillow",
       "files": [
@@ -28563,6 +29176,13 @@
       "target": "❌ 请输入要搜索的内容",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ Pose/keypoint training is not available (YOLOX is detection-only).",
+      "target": "❌ 当前不支持姿态/关键点训练（YOLOX 仅用于对象检测）。",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -28760,6 +29380,13 @@
       "target": "➡️ 正在转录片段 {idx+1}/{len(chunks)}：{chunk}",
       "files": [
         "modules/audio/transcript.py"
+      ]
+    },
+    {
+      "source": "➡️ Using 3 crops to capture all activity",
+      "target": "➡️ 使用 3 个裁剪区域覆盖全部活动",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -29402,6 +30029,13 @@
       ]
     },
     {
+      "source": "🎯 All zones active - using 3 crops",
+      "target": "🎯 所有区域都有活动——使用 3 个裁剪",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "🎯 Annotated",
       "target": "🎯 已标注",
       "files": [
@@ -29441,6 +30075,20 @@
       "target": "🎯 检测框",
       "files": [
         "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "🎯 But second zone also active → 2 crops: {top_two}",
+      "target": "🎯 第二个区域也有活动 → 使用 2 个裁剪：{[ZONE_NAMES_ZH.get(z, z) for z in top_two]}",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
+      "source": "🎯 Clear hotspot winner: {top_zone} (score {sorted_zones[0][1]:.3f})",
+      "target": "🎯 明确的热点区域：{ZONE_NAMES_ZH.get(top_zone, top_zone)}（得分 {sorted_zones[0][1]:.3f}）",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -29542,6 +30190,13 @@
       ]
     },
     {
+      "source": "🎯 Single action zone: {zone}",
+      "target": "🎯 单一动作区域：{ZONE_NAMES_ZH.get(zone, zone)}",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "🎯 Target format: {width}x{height} @ {fps}fps",
       "target": "🎯 目标格式：{width}x{height} @ {fps}fps",
       "files": [
@@ -29549,10 +30204,31 @@
       ]
     },
     {
+      "source": "🎯 Three action zones detected",
+      "target": "🎯 检测到三个动作区域",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "🎯 Training on CPU",
       "target": "🎯 正在使用 CPU 训练",
       "files": [
         "model_training/intel/train.py"
+      ]
+    },
+    {
+      "source": "🎯 Two action zones: {action_zones}",
+      "target": "🎯 两个动作区域：{[ZONE_NAMES_ZH.get(z, z) for z in action_zones]}",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
+      "source": "🎯 Two strong hotspots: {top_two}",
+      "target": "🎯 两个明显热点：{[ZONE_NAMES_ZH.get(z, z) for z in top_two]}",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -29588,6 +30264,13 @@
       "target": "🎯 YOLO 跟踪当前段",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "🎯 Zones with action: {len(action_zones)} ({action_zones})",
+      "target": "🎯 有动作的区域：{len(action_zones)}（{[ZONE_NAMES_ZH.get(z, z) for z in action_zones]}）",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -29743,6 +30426,13 @@
       "target": "👤 关键点：上半身={upper_body_kpts}，下半身={lower_body_kpts}，髋部={hip_kpts}",
       "files": [
         "training/train_action_recognition.py"
+      ]
+    },
+    {
+      "source": "👤 Single person detected - NO CROP (would split body parts)",
+      "target": "👤 检测到单人——不裁剪（否则可能切开身体部位）",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -30118,10 +30808,24 @@
       ]
     },
     {
+      "source": "📊 ACTION Zone analysis:",
+      "target": "📊 动作区域分析：",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "📊 BATCH PROCESSING SUMMARY",
       "target": "📊 批量处理汇总",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "📊 Building YOLO keypoint dataset...",
+      "target": "📊 正在构建 YOLO 关键点数据集…",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {
@@ -30335,6 +31039,13 @@
       ]
     },
     {
+      "source": "📊 {zone} combined: {combined_scores[zone]:.3f} (activity={activity_score:.3f}, hotspot={hotspot_score:.3f})",
+      "target": "📊 {ZONE_NAMES_ZH.get(zone, zone)}综合得分：{combined_scores[zone]:.3f}（活动={activity_score:.3f}，热点={hotspot_score:.3f}）",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "📋 Added to file list: {filename}",
       "target": "📋 已添加到文件列表：{filename}",
       "files": [
@@ -30367,6 +31078,13 @@
       "target": "📋 原样复制 {filename}（原因：{reason}，策略：{strategy}）",
       "files": [
         "modules/crop/actions.py"
+      ]
+    },
+    {
+      "source": "📋 No clear action - using presence-based zones: {best2}",
+      "target": "📋 没有明确动作——按人物分布选择区域：{[ZONE_NAMES_ZH.get(z, z) for z in best2]}",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -31196,6 +31914,13 @@
       ]
     },
     {
+      "source": "🔍 Analyzing ACTION zones (not just people)...",
+      "target": "🔍 正在分析动作区域（不只是人物位置）…",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "🔍 Analyzing input videos...",
       "target": "🔍 正在分析输入视频…",
       "files": [
@@ -31553,6 +32278,20 @@
       ]
     },
     {
+      "source": "🔥 {zone} action hot spot: x={hot_x:.0f}, y={hot_y:.0f}, spread={spread_x:.0f}",
+      "target": "🔥 {ZONE_NAMES_ZH.get(zone, zone)}动作热点：x={hot_x:.0f}，y={hot_y:.0f}，扩散={spread_x:.0f}",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
+      "source": "🔥 {zone} hotspot score: {hotspot_scores[zone]:.3f} ({num_points} points, spread={spread:.0f})",
+      "target": "🔥 {ZONE_NAMES_ZH.get(zone, zone)}热点得分：{hotspot_scores[zone]:.3f}（{num_points} 个点，扩散={spread:.0f}）",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "🔧 [DEBUG] __init__ complete\\n",
       "target": "🔧 [调试] __init__ 完成\\n",
       "files": [
@@ -31903,10 +32642,24 @@
       ]
     },
     {
+      "source": "🚨 CORNER CASE CONFIRMED: Dense crowd with activity in all zones",
+      "target": "🚨 已确认特殊情况：密集人群在所有区域都有活动",
+      "files": [
+        "modules/crop/zones.py"
+      ]
+    },
+    {
       "source": "🚨 CORNER CASE DETECTED: YOLO sees 0-1, Pose sees up to {pose_max}",
       "target": "🚨 检测到特殊情况：YOLO 仅识别 0-1 人，但姿态最多识别 {pose_max} 人",
       "files": [
         "modules/crop/actions.py"
+      ]
+    },
+    {
+      "source": "🚨 POTENTIAL CORNER CASE: YOLO max={yolo_max}, Pose max={pose_max}",
+      "target": "🚨 可能的特殊情况：YOLO 最大人数={yolo_max}，Pose 最大人数={pose_max}",
+      "files": [
+        "modules/crop/zones.py"
       ]
     },
     {
@@ -32334,6 +33087,13 @@
       "target": "🧭 槽位规划：",
       "files": [
         "modules/crop/actions.py"
+      ]
+    },
+    {
+      "source": "🧭 Task: {TASK} (YOLOX object detection)",
+      "target": "🧭 任务：{TASK}（YOLOX 对象检测）",
+      "files": [
+        "training/train_yolox_dataset.py"
       ]
     },
     {

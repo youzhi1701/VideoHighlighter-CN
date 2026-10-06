@@ -35,7 +35,7 @@ ZIP_MEMBERS = (
     "config.json",
 )
 
-FREE_REPO = "Aseiel/VideoHighlighter"
+FREE_REPO = "youzhi1701/VideoHighlighter-CN"
 PRO_REPO = "Aseiel/VideoHighlighter-pro"
 
 # The committed configs, one per edition. These are what someone gets when they
@@ -70,8 +70,8 @@ def _windows_assets(tag: str, *, pro: bool) -> tuple[str, ...]:
             f"VideoHighlighter-Windows-{tag}.7z.002",
         )
     return (
-        f"VideoHighlighter-Windows-{tag}.7z.001",
-        f"VideoHighlighter-Windows-{tag}.7z.002",
+        f"VideoHighlighter-CN-v{tag}-Windows.7z.001",
+        f"VideoHighlighter-CN-v{tag}-Windows.7z.002",
     )
 
 
@@ -80,11 +80,11 @@ def make_config(*, edition: str, tag: str) -> dict:
     repo = PRO_REPO if pro else FREE_REPO
     assets = list(_windows_assets(tag, pro=pro))
     return {
-        "product_name": "VideoHighlighter",
+        "product_name": "VideoHighlighter-CN 中文版",
         "edition": "Pro" if pro else "Free",
         "repo": repo,
         "use_latest": not pro,
-        "asset_pattern": r"^VideoHighlighter-Windows-.*\.7z\.\d{3}$",
+        "asset_pattern": r"^VideoHighlighter-CN-v.*-Windows\.7z\.\d{3}$",
         "tag": tag,
         "assets": assets,
         "base_url": f"https://github.com/{repo}/releases/download/{tag}",

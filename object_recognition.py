@@ -44,7 +44,7 @@ def progress_monitor(progress_queue, total_frames, progress_fn):
         processed_frames += item
         progress = min(processed_frames / total_frames, 0.99) # Cap at 99% until complete
         # Call the progress function with current progress and status
-        progress_fn(progress, f"Processing frames: {processed_frames}/{total_frames}")
+        progress_fn(progress, f"正在处理帧：{processed_frames}/{total_frames}")
 
 # ---------------- Utilities ----------------
 def seconds_to_mmss(sec):
@@ -298,12 +298,12 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
         tuple: (sec_objects dict, object_bboxes_cache list)
     """
     if model is None:
-        log_fn("⚠️ No object detector available, skipping object detection")
+        log_fn("⚠️ 没有可用的物体检测器，跳过物体检测")
         return {}, []
 
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        log_fn(f"❌ Failed to open video: {video_path}")
+        log_fn(f"❌ 无法打开视频：{video_path}")
         return {}, []
 
     fps_local = cap.get(cv2.CAP_PROP_FPS) or 25.0
@@ -311,7 +311,7 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
     total_seconds = int(total_frames_local / fps_local) if fps_local else 0
 
     if total_seconds <= 0:
-        log_fn("⚠️ Could not determine video duration")
+        log_fn("⚠️ 无法确定视频时长")
         cap.release()
         return {}, []
 
@@ -322,10 +322,10 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
         frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         video_writer = cv2.VideoWriter(annotated_output, fourcc, fps_local, (frame_width, frame_height))
-        log_fn(f"🎨 Creating object detection annotated video: {annotated_output}")
+        log_fn(f"🎨 正在创建物体检测标注视频：{annotated_output}")
 
     if progress_fn:
-        progress_fn(0, total_seconds, "Object Detection",
+        progress_fn(0, total_seconds, "物体检测",
                      f"Analyzing {seconds_to_mmss(total_seconds)} of video (conf≥{confidence_threshold})")
 
     sec_objects = {}
@@ -339,7 +339,7 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
     try:
         while True:
             if cancel_flag and cancel_flag.is_set():
-                log_fn("⏹️ Object detection cancelled")
+                log_fn("⏹️ 物体检测已取消")
                 break
 
             ret, frame = cap.read()
@@ -350,11 +350,11 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
                 sec = int(frame_idx / fps_local)
                 if sec > current_second:
                     if cancel_flag and cancel_flag.is_set():
-                        log_fn("⏹️ Object detection cancelled")
+                        log_fn("⏹️ 物体检测已取消")
                         break
 
                     if progress_fn:
-                        progress_fn(sec, total_seconds, "Object Detection",
+                        progress_fn(sec, total_seconds, "物体检测",
                                     f"Found {objects_found} objects so far ({seconds_to_mmss(sec)})")
                     current_second = sec
 
@@ -418,28 +418,28 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
                                     # preview nobody ever fed.
                                     if not _preview_failed:
                                         _preview_failed = True
-                                        log_fn(f"⚠️ Live preview frame failed "
-                                               f"(reported once per run): {e}")
+                                        log_fn(f"⚠️ 实时预览帧处理失败 "
+                                               f"（每次运行仅报告一次）: {e}")
 
                     except Exception as e:
-                        log_fn(f"⚠️ Error in object detection at frame {frame_idx}: {e}")
+                        log_fn(f"⚠️ 第 {frame_idx} 帧物体检测出错：{e}")
 
             frame_idx += 1
 
     except Exception as e:
-        log_fn(f"❌ Object detection error: {e}")
+        log_fn(f"❌ 物体检测出错：{e}")
     finally:
         cap.release()
         if video_writer:
             video_writer.release()
             if draw_boxes:
-                log_fn(f"✅ Object detection annotated video saved: {annotated_output}")
+                log_fn(f"✅ 物体检测标注视频已保存：{annotated_output}")
 
         if not (cancel_flag and cancel_flag.is_set()):
             if progress_fn:
-                progress_fn(total_seconds, total_seconds, "Object Detection",
-                            f"Complete - {objects_found} objects found")
-            log_fn(f"✅ Object detection complete: {objects_found} total objects detected")
+                progress_fn(total_seconds, total_seconds, "物体检测",
+                            f"完成 - 共找到 {objects_found} 个物体")
+            log_fn(f"✅ 物体检测完成：共检测到 {objects_found} 个物体")
 
         # Optional CSV output
         if csv_output:
@@ -449,9 +449,9 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
                     writer.writerow(["timestamp_mmss", "timestamp_seconds", "Objects"])
                     for sec, objs in sorted(sec_objects.items()):
                         writer.writerow([seconds_to_mmss(sec), sec, ";".join(objs)])
-                log_fn(f"✅ CSV saved to {csv_output}")
+                log_fn(f"✅ CSV 已保存到：{csv_output}")
             except Exception as e:
-                log_fn(f"⚠️ Failed to save CSV: {e}")
+                log_fn(f"⚠️ CSV 保存失败：{e}")
 
     # Build cache-ready bbox list
     object_bboxes_cache = []
@@ -517,16 +517,16 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
     # A custom .onnx/.xml detector when one is given, else the stock YOLOX
     model_path = yolo_pt_path if yolo_pt_path and os.path.exists(yolo_pt_path) else None
     if model_path:
-        log_fn(f"🎯 Using custom model: {model_path}")
+        log_fn(f"🎯 正在使用自定义模型：{model_path}")
     else:
-        log_fn(f"🎯 Using YOLOX detector (size: {yolo_model_size})")
+        log_fn(f"🎯 正在使用 YOLOX 检测器（尺寸：{yolo_model_size})")
     openvino_folder = None
     # Fetch the stock models once here, not in four workers at the same time
     if load_detector(model_path, yolo_model_size, log=log_fn) is None:
-        log_fn("⚠️ No object detector available, skipping object detection")
+        log_fn("⚠️ 没有可用的物体检测器，跳过物体检测")
         return {}, []
 
-    log_fn(f"🔍 Confidence threshold: {confidence_threshold}")
+    log_fn(f"🔍 置信度阈值：{confidence_threshold}")
 
     segments, fps, total_frames = get_video_segments(video_path, NUM_WORKERS)
     manager = Manager()
@@ -535,10 +535,10 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
     progress_queue = manager.Queue() if progress_fn else None
     processes = []
 
-    log_fn(f"🎬 Processing video with {NUM_WORKERS} workers, FPS: {fps:.2f}")
-    log_fn(f"🔍 Looking for: {highlight_objects}")
+    log_fn(f"🎬 正在使用 {NUM_WORKERS} 个工作线程处理视频，FPS：{fps:.2f}")
+    log_fn(f"🔍 正在查找：{highlight_objects}")
     if draw_boxes:
-        log_fn(f"🎨 Bounding box visualization enabled")
+        log_fn(f"🎨 已启用检测框可视化")
 
     # Start progress monitoring
     progress_process = None
@@ -548,7 +548,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
             args=(progress_queue, total_frames, progress_fn)
         )
         progress_process.start()
-        progress_fn(0.0, "Starting object detection workers...")
+        progress_fn(0.0, "正在启动物体检测工作线程…")
 
     worker_annotated_path = None
     if draw_boxes and annotated_output:
@@ -576,7 +576,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
         progress_process.join()
 
     if progress_fn:
-        progress_fn(0.95, "Merging detection results...")
+        progress_fn(0.95, "正在合并检测结果…")
 
     # Merge results from all workers
     all_frame_objects = []
@@ -610,7 +610,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
 
     # Merge worker videos if bounding boxes were drawn
     if draw_boxes and worker_videos and annotated_output:
-        log_fn(f"🎬 Merging {len(worker_videos)} annotated video segments...")
+        log_fn(f"🎬 正在合并 {len(worker_videos)} annotated video segments...")
         merge_worker_videos(worker_videos, annotated_output, fps)
 
     # Write CSV
@@ -619,15 +619,15 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
             writer = csv.writer(f)
             writer.writerow(["timestamp_mmss", "frame_id", "label", "confidence", "timestamp_seconds"])
             writer.writerows(all_frame_objects)
-        log_fn(f"✅ CSV created: {csv_file} with {len(all_frame_objects)} detections")
+        log_fn(f"✅ 已创建 CSV：{csv_file}，包含 {len(all_frame_objects)} detections")
     else:
-        log_fn("❌ No objects detected - CSV file not created")
+        log_fn("❌ 未检测到物体，因此未创建 CSV 文件")
 
     total_detections = sum(len(v) for v in final_objects.values())
-    log_fn(f"✅ Total seconds with objects: {len(final_objects)}, total detections: {total_detections}")
+    log_fn(f"✅ 检测到物体的总秒数：{len(final_objects))}, total detections: {total_detections}")
 
     if progress_fn:
-        progress_fn(1.0, f"Completed: {total_detections} detections found")
+        progress_fn(1.0, f"已完成：共找到 {total_detections} 个检测结果")
 
     return final_objects, object_bboxes_cache
 

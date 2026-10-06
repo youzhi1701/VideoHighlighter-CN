@@ -74,7 +74,7 @@ class YoloxDatasetBuilder:
         """Extract specific frames from video"""
         cap = cv2.VideoCapture(str(video_path))
         if not cap.isOpened():
-            print(f"⚠️ Could not open: {video_path}")
+            print(f"⚠️ 无法打开：{video_path}")
             return []
         
         extracted = []
@@ -192,18 +192,18 @@ class YoloxDatasetBuilder:
         frames straight out of the videos, writes YOLO label .txt files, and
         splits everything into images/labels train+val folders.
         """
-        print("📊 Building YOLO keypoint dataset...")
+        print("📊 正在构建 YOLO 关键点数据集…")
 
         label_files = list(self.labels_dir.rglob("*.json"))
         if not label_files:
-            print(f"❌ No JSON files found in {self.labels_dir}")
+            print(f"❌ 在 {self.labels_dir} 中未找到 JSON 文件")
             return None
 
-        print(f"   Found {len(label_files)} label files")
+        print(f"   找到 {len(label_files)} 个标注文件")
 
         # Group labeled frames by their source video
         video_frames = {}
-        for label_file in tqdm(label_files, desc="Reading labels"):
+        for label_file in tqdm(label_files, desc="读取标注"):
             with open(label_file, 'r') as f:
                 data = json.load(f)
 
@@ -213,14 +213,14 @@ class YoloxDatasetBuilder:
 
             video_path = self._find_video(video_name)
             if video_path is None:
-                print(f"⚠️ Video not found: {video_name}")
+                print(f"⚠️ 未找到视频：{video_name}")
                 continue
 
             # Sanity check: labeler should export native video-pixel coords
             if data.get('coordinate_space') and data['coordinate_space'] != 'video_pixels':
-                print(f"⚠️ {label_file.name}: coordinate_space="
-                      f"{data['coordinate_space']!r} (expected 'video_pixels'). "
-                      f"Re-export from the updated labeler or labels will be misaligned.")
+                print(f"⚠️ {label_file.name}：coordinate_space="
+                      f"{data['coordinate_space']!r}（应为 'video_pixels'）。"
+                      f"请使用更新后的标注工具重新导出，否则标注会发生错位。")
 
             for frame_info in data.get('keyframes', []):
                 frame_idx = frame_info.get('frame')
@@ -234,10 +234,10 @@ class YoloxDatasetBuilder:
                 })
 
         if not video_frames:
-            print("❌ No usable labeled frames found.")
+            print("❌ 未找到可用的已标注帧。")
             return None
 
-        print(f"   Found keypoints in {len(video_frames)} videos")
+        print(f"   在 {len(video_frames)} 个视频中找到关键点")
 
         # Stage extracted frames + labels, then split into train/val
         stage_img = self.output_dir / 'images' / '_staging'
@@ -247,10 +247,10 @@ class YoloxDatasetBuilder:
 
         stems = []
         seen_stems = set()
-        for video_path, frames in tqdm(video_frames.items(), desc="Extracting frames"):
+        for video_path, frames in tqdm(video_frames.items(), desc="提取视频帧"):
             cap = cv2.VideoCapture(str(video_path))
             if not cap.isOpened():
-                print(f"⚠️ Could not open: {video_path}")
+                print(f"⚠️ 无法打开：{video_path}")
                 continue
             total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
@@ -280,13 +280,13 @@ class YoloxDatasetBuilder:
             cap.release()
 
         if len(stems) < 2:
-            print(f"❌ Only {len(stems)} valid sample(s) — need at least 2 (and "
-                  f"realistically a few hundred). Label more frames first.")
+            print(f"❌ 只有 {len(stems)} 个有效样本——至少需要 2 个，实际训练通常需要数百个。"
+                  f"请先标注更多帧。")
             shutil.rmtree(stage_img, ignore_errors=True)
             shutil.rmtree(stage_lbl, ignore_errors=True)
             return None
 
-        print(f"   Created {len(stems)} labeled samples")
+        print(f"   已创建 {len(stems)} 个已标注样本")
 
         train_stems, val_stems = train_test_split(
             stems, test_size=1 - train_ratio, random_state=42
@@ -304,8 +304,8 @@ class YoloxDatasetBuilder:
         shutil.rmtree(stage_img, ignore_errors=True)
         shutil.rmtree(stage_lbl, ignore_errors=True)
 
-        print(f"   Train: {len(train_stems)} samples")
-        print(f"   Val:   {len(val_stems)} samples")
+        print(f"   训练集：{len(train_stems)} 个样本")
+        print(f"   验证集：{len(val_stems)} 个样本")
 
         self.create_dataset_yaml()
 

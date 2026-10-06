@@ -26,6 +26,9 @@ from modules.crop.config import (
     POSE_VALIDATION_CONF_THRESHOLD,
 )
 
+# 仅用于日志显示；内部区域键始终保持 left/center/right。
+ZONE_NAMES_ZH = {"left": "左侧", "center": "中间", "right": "右侧"}
+
 
 def analyze_region_activity(video_path, yolo_model, pose_model, sample_frames=20):
     """
@@ -294,7 +297,7 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
                     
                     if not has_action:
                         all_zones_active = False
-                        print(f"      {{'left': '左侧', 'center': '中间', 'right': '右侧'}}.get(zone, zone) + '区域没有动作'")
+                        print(f"      {ZONE_NAMES_ZH.get(zone, zone)}区域没有动作")
                 else:
                     all_zones_active = False
             
@@ -345,7 +348,7 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
                     'num_points': len(all_points)
                 }
                 
-                print(f"   🔥 {{'left': '左侧', 'center': '中间', 'right': '右侧'}}.get(zone, zone) 动作热点：x={hot_x:.0f}，y={hot_y:.0f}，扩散={spread_x:.0f}")
+                print(f"   🔥 {ZONE_NAMES_ZH.get(zone, zone)}动作热点：x={hot_x:.0f}，y={hot_y:.0f}，扩散={spread_x:.0f}")
     
     # ===== Calculate zone action potential =====
     print("   📊 动作区域分析：")
@@ -377,18 +380,18 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
                 'has_action': action_consistency >= 0.15 or max_activity >= 0.25
             }
             
-            print(f"      {{'left': '左侧', 'center': '中间', 'right': '右侧'}}.get(zone, zone) + '：'")
-            print(f"        Max activity: {max_activity:.2f}")
-            print(f"        Action consistency: {action_consistency:.0%}")
-            print(f"        Action density: {action_density:.2f}")
-            print(f"        Avg people: {avg_people:.1f}")
-            print(f"        Has action: {'✓' if zone_action_potential[zone]['has_action'] else '✗'}")
+            print(f"      {ZONE_NAMES_ZH.get(zone, zone)}：")
+            print(f"        最大活动量：{max_activity:.2f}")
+            print(f"        动作持续性：{action_consistency:.0%}")
+            print(f"        动作密度：{action_density:.2f}")
+            print(f"        平均人数：{avg_people:.1f}")
+            print(f"        是否有动作：{'✓' if zone_action_potential[zone]['has_action'] else '✗'}")
     
     # Count zones with significant action
     action_zones = [zone for zone in ['left', 'center', 'right'] 
                     if zone in zone_action_potential and zone_action_potential[zone]['has_action']]
     
-    print(f"   🎯 Zones with action: {len(action_zones)} ({action_zones})")
+    print(f"   🎯 有动作的区域：{len(action_zones)}（{[ZONE_NAMES_ZH.get(z, z) for z in action_zones]}）")
     
     # ===== NEW: Use hotspots to refine decisions =====
     # Calculate hotspot scores for each zone
@@ -405,7 +408,7 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
             # Higher score for more points and tighter clusters
             if num_points > 0:
                 hotspot_scores[zone] = num_points / (spread + 50)  # +50 to avoid division by zero
-                print(f"   🔥 {zone} hotspot score: {hotspot_scores[zone]:.3f} ({num_points} points, spread={spread:.0f})")
+                print(f"   🔥 {ZONE_NAMES_ZH.get(zone, zone)}热点得分：{hotspot_scores[zone]:.3f}（{num_points} 个点，扩散={spread:.0f}）")
             else:
                 hotspot_scores[zone] = 0
         else:
@@ -421,7 +424,7 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
         combined_scores[zone] = activity_score * 0.7 + hotspot_score * 0.3
         
         if combined_scores[zone] > 0:
-            print(f"   📊 {zone} combined: {combined_scores[zone]:.3f} (activity={activity_score:.3f}, hotspot={hotspot_score:.3f})")
+            print(f"   📊 {ZONE_NAMES_ZH.get(zone, zone)}综合得分：{combined_scores[zone]:.3f}（活动={activity_score:.3f}，热点={hotspot_score:.3f}）")
     
     # Sort zones by combined score
     sorted_zones = sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)
@@ -432,13 +435,13 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
     # Case 1: Clear winner (top score much higher than others)
     if len(sorted_zones) >= 2 and sorted_zones[0][1] > sorted_zones[1][1] * 1.5 and sorted_zones[0][1] > 0.1:
         top_zone = sorted_zones[0][0]
-        print(f"   🎯 Clear hotspot winner: {top_zone} (score {sorted_zones[0][1]:.3f})")
+        print(f"   🎯 明确的热点区域：{ZONE_NAMES_ZH.get(top_zone, top_zone)}（得分 {sorted_zones[0][1]:.3f}）")
         
         # Check if single crop is enough or if we need multiple
         if people_count >= 3 and sorted_zones[1][1] > 0.05:
             # Second zone still has significant action
             top_two = [z[0] for z in sorted_zones[:2]]
-            print(f"   🎯 But second zone also active → 2 crops: {top_two}")
+            print(f"   🎯 第二个区域也有活动 → 使用 2 个裁剪：{[ZONE_NAMES_ZH.get(z, z) for z in top_two]}")
             return 2, sort_positions(top_two), f"hotspot-2-{top_two[0]}-{top_two[1]}", action_hotspots
         else:
             return 1, [top_zone], f"hotspot-single-{top_zone}", action_hotspots
@@ -446,12 +449,12 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
     # Case 2: Two strong hotspots
     elif len(sorted_zones) >= 2 and sorted_zones[1][1] > 0.1:
         top_two = [z[0] for z in sorted_zones[:2]]
-        print(f"   🎯 Two strong hotspots: {top_two}")
+        print(f"   🎯 两个明显热点：{[ZONE_NAMES_ZH.get(z, z) for z in top_two]}")
         return 2, sort_positions(top_two), f"hotspot-two-{top_two[0]}-{top_two[1]}", action_hotspots
     
     # Case 3: All zones have hotspots
     elif len([z for z in combined_scores if combined_scores[z] > 0.05]) >= 3:
-        print(f"   🎯 All zones active - using 3 crops")
+        print("   🎯 所有区域都有活动——使用 3 个裁剪")
         return 3, ['left', 'center', 'right'], "hotspot-all-three", action_hotspots
     
     # ===== FALLBACK TO ORIGINAL LOGIC =====
@@ -472,24 +475,24 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
         
         best2 = pick_best_zones_by_presence(zone_people, zone_activity, k=2)
         best2 = sort_positions(best2)
-        print(f"   📋 No clear action - using presence-based zones: {best2}")
+        print(f"   📋 没有明确动作——按人物分布选择区域：{[ZONE_NAMES_ZH.get(z, z) for z in best2]}")
         return 2, best2, f"no-action-presence-{best2[0]}-{best2[1]}", action_hotspots
     
     # Case: Single action zone
     elif len(action_zones) == 1:
         zone = action_zones[0]
-        print(f"   🎯 Single action zone: {zone}")
+        print(f"   🎯 单一动作区域：{ZONE_NAMES_ZH.get(zone, zone)}")
         return 1, [zone], f"single-action-{zone}", action_hotspots
     
     # Case: Two action zones
     elif len(action_zones) == 2:
         action_zones = sort_positions(action_zones)
-        print(f"   🎯 Two action zones: {action_zones}")
+        print(f"   🎯 两个动作区域：{[ZONE_NAMES_ZH.get(z, z) for z in action_zones]}")
         return 2, action_zones, f"two-action-{action_zones[0]}-{action_zones[1]}", action_hotspots
     
     # Case: Three action zones
     else:
-        print(f"   🎯 Three action zones detected")
+        print("   🎯 检测到三个动作区域")
         return 3, ['left', 'center', 'right'], "three-action-zones", action_hotspots
 
 

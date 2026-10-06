@@ -137,11 +137,11 @@ def directml_detector(prefer="large", log=print):
             return None
         session = ort_directml.session(onnx_path)
         detector = YoloxOnnxRuntimeDetector(session, names)
-        log(f"✅ Object detector: YOLOX on {ort_directml.session_backend(session)} "
-            f"({os.path.basename(onnx_path)})")
+        log(f"✅ 对象检测器：YOLOX，运行于 {ort_directml.session_backend(session)} "
+            f"（{os.path.basename(onnx_path)}）")
         return detector
     except Exception as e:
-        log(f"⚠️ GPU detector (ONNX Runtime) unavailable, using OpenVINO: {e}")
+        log(f"⚠️ GPU 检测器（ONNX Runtime）不可用，改用 OpenVINO：{e}")
         return None
 
 

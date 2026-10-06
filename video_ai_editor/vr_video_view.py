@@ -66,18 +66,18 @@ class VRVideoView(QWidget):
                                     "VRVideoOutput.qml")
             quick.setSource(QUrl.fromLocalFile(qml_path))
             for err in quick.errors():
-                print(f"⚠️ VRVideoView QML error: {err.toString()}")
+                print(f"⚠️ VRVideoView QML 错误：{err.toString()}")
             if quick.status() == QQuickWidget.Status.Error or quick.rootObject() is None:
-                print("⚠️ VRVideoView: QML surface failed to load; falling back to "
-                      "a plain QVideoWidget (VR left-eye crop disabled).")
+                print("⚠️ VRVideoView：QML 界面加载失败，正在回退到普通 QVideoWidget "
+                      "（VR 左眼裁剪已禁用）。")
                 quick.deleteLater()
                 return False
             self._quick = quick
             layout.addWidget(quick)
             return True
         except Exception as e:  # noqa: BLE001 — any QtQuick/QML problem -> fall back
-            print(f"⚠️ VRVideoView: QML unavailable ({e}); falling back to a plain "
-                  f"QVideoWidget (VR left-eye crop disabled).")
+            print(f"⚠️ VRVideoView：QML 不可用（{e}），正在回退到普通 "
+                  f"QVideoWidget（VR 左眼裁剪已禁用）。")
             return False
 
     def _init_fallback(self, layout) -> None:

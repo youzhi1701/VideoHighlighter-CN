@@ -333,7 +333,7 @@ def train_r3d(train_loader, val_loader, num_classes, label_to_idx, idx_to_label)
 # =============================
 
 def main():
-    parser = argparse.ArgumentParser(description="R3D 3D-CNN fine-tuning")
+    parser = argparse.ArgumentParser(description="R3D 3D-CNN 微调训练")
     parser.add_argument("--data-path", type=str, default=None)
     parser.add_argument("--model", type=str, default=None,
                         choices=["r3d_18", "mc3_18", "r2plus1d_18"])
@@ -345,27 +345,27 @@ def main():
     parser.add_argument("--no-amp", action="store_true")
     parser.add_argument("--no-onnx", action="store_true")
     parser.add_argument("--no-cache", action="store_true",
-                        help="Disable ROI cache (slow — runs the person detector every epoch)")
+                        help="禁用 ROI 缓存（较慢——每个训练轮次都会运行人物检测器）")
     parser.add_argument("--device", type=str, default=None,
-                        help="cuda | xpu | cpu (default: best available)")
+                        help="cuda | xpu | cpu（默认：使用最佳可用设备）")
     parser.add_argument("--num-workers", type=int, default=None,
-                        help="DataLoader workers (default: 4)")
+                        help="DataLoader 工作进程数（默认：4）")
     parser.add_argument("--rebuild-cache", action="store_true",
-                        help="Force rebuild ROI cache even if one exists")
+                        help="即使已有 ROI 缓存也强制重建")
     parser.add_argument("--no-viz", action="store_true",
-                        help="Skip sample visualizations before training")
+                        help="训练前跳过样本可视化")
     parser.add_argument("--viz", action="store_true",
-                        help="Create sample visualizations before training")
+                        help="训练前创建样本可视化")
     parser.add_argument("--model-save-path", type=str, default=None,
-                        help="Write the model here instead of models/actions/ "
-                             "(modules/teach trains each round into its own folder "
-                             "and installs it only if it beats the last)")
+                        help="将模型写入此处，而不是 models/actions/ "
+                             "（modules/teach 会将每轮训练写入独立文件夹，"
+                             "只有优于上一版本时才安装）")
     parser.add_argument("--checkpoint-dir", type=str, default=None)
     parser.add_argument("--metrics-out", type=str, default=None,
-                        help="Write per-class validation accuracy here as JSON")
+                        help="将每个类别的验证准确率以 JSON 写入此处")
     parser.add_argument("--keep-split", action="store_true",
-                        help="Use train/ and val/ exactly as given: never move clips "
-                             "between them (the caller chose the held-out set)")
+                        help="严格按给定的 train/ 和 val/ 使用：不在两者之间移动片段 "
+                             "（留出集由调用方决定）")
     args = parser.parse_args()
 
     # Override config

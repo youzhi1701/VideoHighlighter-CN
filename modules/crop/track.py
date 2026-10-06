@@ -465,7 +465,7 @@ class MultiActionTracker:
             self.initialized = True
 
             if frame_idx < 10:  # Only print once at beginning
-                print(f"🎯 Initialized default boxes for all {self.max_actions} positions")
+                print(f"🎯 已为全部 {self.max_actions} 个位置初始化默认框")
 
         # 1) Normalize positions
         if positions:
@@ -590,7 +590,7 @@ class MultiActionTracker:
                         assigned_per_slot[slot_i] = predicted_box
                         
                         if frame_idx % 30 == 0:  # Print occasionally
-                            print(f"🔮 Predicted position for {positions[slot_i]} (no detection)")
+                            print(f"🔮 已预测 {positions[slot_i]} 的位置（当前无检测结果）")
 
         # Map into action-index boxes
         action_boxes = [None] * self.max_actions
@@ -623,7 +623,7 @@ class MultiActionTracker:
                     self.histories[action_idx], action_idx, (h, w)
                 )
                 self.actions_confirmed[action_idx] = True
-                print(f"🎯 Locked Action idx={action_idx} ({positions[active_actions_indicies.index(action_idx)]})")
+                print(f"🎯 已锁定动作区域 idx={action_idx}（{positions[active_actions_indicies.index(action_idx)]}）")
 
         # 7) Return current regions
         regions = []
@@ -984,7 +984,7 @@ def get_multi_calibration(video_path, detector, num_frames=40, crop_count=3, pla
         # Calculate aspect ratio
         aspect = target_w / max(target_h, 1)
         
-        print(f"🔧 Raw calibration: {target_w}x{target_h} (aspect: {aspect:.2f})")
+        print(f"🔧 原始校准尺寸：{target_w}x{target_h}（宽高比：{aspect:.2f}）")
         
         # Find the closest standard resolution
         best_res = None
@@ -1012,7 +1012,7 @@ def get_multi_calibration(video_path, detector, num_frames=40, crop_count=3, pla
         
         # If no good match found, use the calculated size but round to nearest standard
         if best_res is None:
-            print(f"⚠️ No standard resolution match found for {target_w}x{target_h}")
+            print(f"⚠️ 未找到与 {target_w}x{target_h} 匹配的标准分辨率")
             
             # Round to nearest standard width/height separately
             std_widths = [480, 640, 720, 854, 960]
@@ -1041,11 +1041,11 @@ def get_multi_calibration(video_path, detector, num_frames=40, crop_count=3, pla
         target_w = max(target_w, 400)
         target_h = max(target_h, 400)
         
-        print(f"✅ Rounded to standard: {target_w}x{target_h}")
+        print(f"✅ 已调整到标准分辨率：{target_w}x{target_h}")
         return (target_w, target_h)
 
     # Fallback to standard 480p if no detection
-    print("⚠️ No detections for calibration, using default 480p")
+    print("⚠️ 校准时没有检测结果，将使用默认 480p")
     return (854, 480)
 
 

@@ -199,7 +199,7 @@ def _record_speed(result, size: str, extract_per_frame=None, fixed_seconds=None)
                      result.train_images_per_second, result.val_images_per_second)
         store.record_overheads(extract_per_frame, fixed_seconds)
         store.save()
-        print(f"[训练] 实测训练速度 {result.train_images_per_second:.1f} 张/秒，
+        print(f"[训练] 实测训练速度 {result.train_images_per_second:.1f} 张/秒，"
               f"验证速度 {result.val_images_per_second:.1f} 张/秒，设备 {result.device}")
     except Exception as exc:                    # noqa: BLE001
         print(f"[训练] 无法记录训练速度：{exc}")

@@ -615,7 +615,7 @@ def build_report(*,
         from modules.segments.highlight_compare import build_distributions, compare_segment
         distributions = build_distributions(bbox_cache, expressions)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Subject comparison skipped: {exc}")
+        print(f"⚠️ 已跳过主体对比：{exc}")
         distributions = compare_segment = None
 
     def detail_for(sec: int) -> dict:
@@ -671,7 +671,7 @@ def build_report(*,
                 if loud:
                     entry["loudest"] = loud
             except Exception as exc:               # pragma: no cover - defensive
-                print(f"⚠️ Clip loudness peak skipped: {exc}")
+                print(f"⚠️ 已跳过片段响度峰值分析：{exc}")
 
         # What arrived on screen inside this clip, if anything did. Named by the
         # user's own categories where a run has them, which is why it is the
@@ -698,7 +698,7 @@ def build_report(*,
                     reading["at_cut"] = at_cut(cut_times, reading.get("second"))
                     entry["expression_peak"] = reading
             except Exception as exc:               # pragma: no cover - defensive
-                print(f"⚠️ Clip expression peak skipped: {exc}")
+                print(f"⚠️ 已跳过片段表情峰值分析：{exc}")
         if amps_per_second:
             lo = int(start * amps_per_second)
             hi = max(lo + 1, int(end * amps_per_second))
@@ -744,7 +744,7 @@ def build_report(*,
             if combination:
                 entry["combination"] = combination
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Combination rate skipped: {exc}")
+        print(f"⚠️ 已跳过组合命中率分析：{exc}")
 
     near_misses = []
     if near_miss_count > 0 and len(score):
@@ -782,7 +782,7 @@ def build_report(*,
                 classes=(list(composed_event_names) if composed_event_names
                          else None))
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Level-by-class summary skipped: {exc}")
+            print(f"⚠️ 已跳过按类别分级汇总：{exc}")
 
     # How the expression reading moves across the whole file, when there is one.
     # A property of the video rather than of any clip, so it sits beside the
@@ -794,7 +794,7 @@ def build_report(*,
             arc = analyse(expressions, video_duration, segments=segments,
                           detections=object_detections)
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Expression arc skipped: {exc}")
+            print(f"⚠️ 已跳过表情变化曲线分析：{exc}")
 
     # Where each clip sits in the video's own structure, and how the stretches
     # differ from one another. Defensive like the arc above: a chapter list is
@@ -816,7 +816,7 @@ def build_report(*,
                 if number:
                     entry["chapter"] = int(number)
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Chapter breakdown skipped: {exc}")
+            print(f"⚠️ 已跳过章节拆解：{exc}")
             chapter_rows = []
 
     # What was said, if a transcript was run. Layered on top of the chapter
@@ -841,7 +841,7 @@ def build_report(*,
                 if said:
                     entry["speech"] = said
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Transcript summary skipped: {exc}")
+            print(f"⚠️ 已跳过转录摘要：{exc}")
             speech_summary = {}
 
     # What was talked about that nothing was watching for, and what an earlier
@@ -858,7 +858,7 @@ def build_report(*,
                                  composed_event_names or ()),
                 list(composed_event_names or ()))
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Vocabulary gap skipped: {exc}")
+            print(f"⚠️ 已跳过词汇差异分析：{exc}")
         # The other half of the same comparison: what was talked about that this
         # run *did* measure. The gap says which claims nobody could check; this
         # says what the answer is for the ones somebody can — and it is the half
@@ -876,7 +876,7 @@ def build_report(*,
                 detected_seconds=int((distributions or {})
                                      .get("detected_seconds") or 0))
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Spoken evidence skipped: {exc}")
+            print(f"⚠️ 已跳过口述证据分析：{exc}")
     # The third side of the same comparison. The gap reports words a stretch
     # repeats; the evidence reports what was measured about the ones a class
     # covers; this reports whole lines the page is already printing that nothing
@@ -892,7 +892,7 @@ def build_report(*,
                                       "vocabulary": vocabulary,
                                       "speech": speech_summary})
         except Exception as exc:                   # pragma: no cover - defensive
-            print(f"⚠️ Unmeasured claims skipped: {exc}")
+            print(f"⚠️ 已跳过未测量声明分析：{exc}")
 
     try:
         from modules.rules.rule_proposal import load_checks, settle_checks
@@ -901,7 +901,7 @@ def build_report(*,
             checks = settle_checks(pending, object_detections,
                                    list(composed_event_names or ()))
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Pending checks skipped: {exc}")
+        print(f"⚠️ 已跳过待检查项分析：{exc}")
 
     kept_duration = sum(e - s for s, e in segments)
     # A caller that already hashed the file (a batch walking a folder) passes it
@@ -1034,7 +1034,7 @@ def _conclusion(report: Mapping) -> list:
         from modules.report.highlight_prose import conclude
         return conclude(report)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Conclusion skipped: {exc}")
+        print(f"⚠️ 已跳过结论生成：{exc}")
         return []
 
 
@@ -2399,7 +2399,7 @@ def _clip_sections(entry: Mapping, readings: Mapping,
         return clip_sections(entry, readings.get(entry.get("index")),
                              video_valence, peer_scores)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Clip sections skipped: {exc}")
+        print(f"⚠️ 已跳过片段分段分析：{exc}")
         return []
 
 

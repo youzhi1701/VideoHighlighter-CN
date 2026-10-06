@@ -27,6 +27,8 @@ permissions:
   contents: write
 
 env:
+  PYTHONUTF8: "1"
+  PYTHONIOENCODING: "utf-8"
   # The published packs (publish-packs.yaml): PyTorch for NVIDIA and for CPU,
   # and CLIP. Built once per torch version, reused by every release. A new
   # pack is published under a new tag, and this line moves to it.

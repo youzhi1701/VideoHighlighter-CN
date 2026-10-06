@@ -387,6 +387,16 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 if isinstance(parent, (ast.Dict, ast.Compare, ast.Subscript)):
                     continue
 
+                # Regex literals are behavior/protocol, not display text. This
+                # includes natural-language-looking command recognizers in the
+                # chat parser; translating them would make English commands stop
+                # matching rather than localize the UI.
+                if isinstance(parent, ast.Call) and call_name(parent.func) in {
+                    "compile", "search", "match", "fullmatch", "findall",
+                    "finditer", "sub", "subn", "split",
+                }:
+                    continue
+
                 # Prompt/instruction/task templates are model-control text, not
                 # application UI. Translating them would change model behaviour,
                 # which is explicitly outside localization scope. Direct UI

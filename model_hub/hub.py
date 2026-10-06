@@ -181,7 +181,7 @@ def fetch_blocklist(url: str = BLOCKLIST_URL, timeout: float = 10.0) -> set[str]
         with urllib.request.urlopen(url, timeout=timeout) as resp:
             return parse_blocklist(json.loads(resp.read(1_000_000).decode("utf-8")))
     except Exception as exc:  # noqa: BLE001
-        print(f"[model_hub] blocklist unavailable ({exc}); listing without it")
+        print(f"[模型中心] 无法获取屏蔽列表（{exc}）；将继续显示可获取的模型")
         return set()
 
 

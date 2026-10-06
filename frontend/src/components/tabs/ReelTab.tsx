@@ -920,7 +920,7 @@ function ShotStrip({ plan }: { plan: ReelPlan }) {
       <div className="flex flex-wrap items-center gap-2">
         {Object.entries(tint).map(([name, cls]) => (
           <span key={name} className="flex items-center gap-1 text-[10px] text-muted-foreground">
-            <span className={`inline-block size-2 rounded-sm ${cls}`} /> {name}
+            <span className={`inline-block size-2 rounded-sm ${cls}`} /> {sectionLabels[name] ?? name}
           </span>
         ))}
         {(plan.trimmed ?? 0) > 0 && (

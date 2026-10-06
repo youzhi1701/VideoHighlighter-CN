@@ -44,7 +44,8 @@ jobs:
   version:
     runs-on: ubuntu-latest
     outputs:
-      slug: ${{ steps.compute.outputs.slug }}        # e.g. 0.9.0
+      slug: ${{ steps.compute.outputs.slug }}        # core/updater version, e.g. 0.13.1
+      cn_version: ${{ steps.compute.outputs.cn_version }}  # localized release, e.g. 0.13.1-cn.1
     steps:
       - uses: actions/checkout@v4
       - id: compute
@@ -53,6 +54,7 @@ jobs:
         run: |
           RAW="$OVERRIDE"
           PY=$(python3 -c "import version; print(version.__version__)")
+          CN=$(python3 -c "import version; print(version.__cn_version__)")
           if [ -z "$RAW" ]; then
             RAW="$PY"
           elif [ "${RAW%% *}" != "$PY" ]; then
@@ -67,17 +69,19 @@ jobs:
             exit 1
           fi
           echo "slug=${RAW// /-}" >> "$GITHUB_OUTPUT"
-          echo "Release version: ${RAW// /-}"
+          echo "cn_version=$CN" >> "$GITHUB_OUTPUT"
+          echo "Core version: ${RAW// /-}"
+          echo "Chinese release: VideoHighlighter-CN v$CN"
       - name: Refuse to re-release an existing version
         # A dry run publishes nothing, so it may rebuild a released version.
         if: ${{ !inputs.dry_run }}
         # checkout is shallow and fetches no tags, so ask the remote directly
         # rather than looking for a local ref that is never there.
         env:
-          SLUG: ${{ steps.compute.outputs.slug }}
+          SLUG: ${{ steps.compute.outputs.cn_version }}
         run: |
           if git ls-remote --exit-code --tags origin "refs/tags/$SLUG" >/dev/null 2>&1; then
-            echo "::error::Tag $SLUG already exists. Bump __version__ in version.py and commit before releasing."
+            echo "::error::Tag $SLUG already exists. Bump __cn_revision__ in version.py and commit before releasing."
             exit 1
           fi
           echo "Tag $SLUG is free."
@@ -310,8 +314,9 @@ jobs:
           $clip = $packs | Where-Object { $_.name -eq "models-clip" }
           $installedMB = [int][math]::Ceiling(((Get-ChildItem dist/VideoHighlighter, build-packs/torch-cpu -Recurse -File | Measure-Object Length -Sum).Sum) / 1MB)
           & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /Q `
-            "/DAppVersion=${{ needs.version.outputs.slug }}" `
-            "/DOutputName=00-VideoHighlighter-Windows-Setup" `
+            "/DAppVersion=${{ needs.version.outputs.cn_version }}" `
+            "/DAppName=VideoHighlighter-CN 中文版" `
+            "/DOutputName=00-VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows-Setup" `
             "/DDistDir=$((Resolve-Path dist/VideoHighlighter).Path)" `
             "/DCpuPackDir=$((Resolve-Path build-packs/torch-cpu).Path)" `
             "/DPackBase=$env:PACKS_BASE" `
@@ -327,7 +332,7 @@ jobs:
             "/O$((Resolve-Path out).Path)" `
             packaging/installer/videohighlighter-packs.iss
           if ($LASTEXITCODE -ne 0) { throw "ISCC failed ($LASTEXITCODE)" }
-          $exe = Get-Item out/00-VideoHighlighter-Windows-Setup.exe
+          $exe = Get-Item "out/00-VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows-Setup.exe"
           Write-Host ("installer: {0} MB (installs {1} MB)" -f [math]::Round($exe.Length / 1MB), $installedMB)
       - name: Install silently and smoke-test the installed app
         # What a customer's machine gets, rather than the build folder. Both
@@ -338,7 +343,7 @@ jobs:
         timeout-minutes: 30
         run: |
           $dir = "$env:RUNNER_TEMP\vh-installed"
-          $p = Start-Process out/00-VideoHighlighter-Windows-Setup.exe -Wait -PassThru -ArgumentList @(
+          $p = Start-Process "out/00-VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows-Setup.exe" -Wait -PassThru -ArgumentList @(
                  "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/DIR=$dir",
                  "/MERGETASKS=!desktopicon,clip,nvidia", "/LOG=$PWD\setup.log")
           Write-Host "setup exit code: $($p.ExitCode)"
@@ -417,7 +422,7 @@ jobs:
         with:
           name: windows-installer
           if-no-files-found: error
-          path: out/00-VideoHighlighter-Windows-Setup.exe
+          path: "out/00-VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows-Setup.exe"
           compression-level: 0
           retention-days: 7
       - name: Create the portable archive
@@ -428,15 +433,15 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force dist/VideoHighlighter/packs | Out-Null
           Copy-Item -Recurse build-packs/torch-cpu dist/VideoHighlighter/packs/torch-cpu
-          7z a -t7z -mx=9 -v1900m "VideoHighlighter-Windows-${{ needs.version.outputs.slug }}.7z" ./dist/VideoHighlighter | Out-Null
-          Get-ChildItem "VideoHighlighter-Windows-${{ needs.version.outputs.slug }}.7z.*" |
+          7z a -t7z -mx=9 -v1900m "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows.7z" ./dist/VideoHighlighter | Out-Null
+          Get-ChildItem "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows.7z.*" |
             ForEach-Object { Write-Host ("{0,8} MB  {1}" -f [math]::Round($_.Length / 1MB), $_.Name) }
       - name: Upload portable artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-build
           if-no-files-found: error
-          path: "VideoHighlighter-Windows-${{ needs.version.outputs.slug }}.7z*"
+          path: "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows.7z*"
           compression-level: 0
           retention-days: 7
 
@@ -529,14 +534,14 @@ jobs:
           $size = (Get-ChildItem -Recurse $stage | Measure-Object -Property Length -Sum).Sum / 1GB
           Write-Host "Portable app size: $([math]::Round($size, 2)) GB"
       - name: Create archive
-        run: 7z a -t7z -mx=9 -v1900m "VideoHighlighter-Web-Windows-${{ needs.version.outputs.slug }}.7z" ./dist-web/VideoHighlighter
+        run: 7z a -t7z -mx=9 -v1900m "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Web-Windows.7z" ./dist-web/VideoHighlighter
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: web-windows-build
           # Fail loudly rather than uploading nothing if the path drifts again.
           if-no-files-found: error
-          path: "VideoHighlighter-Web-Windows-${{ needs.version.outputs.slug }}.7z*"
+          path: "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Web-Windows.7z*"
           retention-days: 7
 
   build-mac:
@@ -747,17 +752,17 @@ jobs:
       - name: Create DMG
         run: |
           create-dmg \
-            --volname "VideoHighlighter" \
+            --volname "VideoHighlighter-CN 中文版" \
             --window-size 600 400 \
             --icon "VideoHighlighter.app" 150 200 \
             --app-drop-link 450 200 \
-            "VideoHighlighter-${{ needs.version.outputs.slug }}.dmg" \
+            "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-macOS.dmg" \
             "dist/VideoHighlighter.app"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: mac-build
-          path: VideoHighlighter-${{ needs.version.outputs.slug }}.dmg
+          path: VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-macOS.dmg
           retention-days: 7
 
   bootstrap:
@@ -772,8 +777,8 @@ jobs:
         run: |
           python tools/build_bootstrap_zip.py \
             --edition free \
-            --tag "${{ needs.version.outputs.slug }}" \
-            --out packaging/bootstrap/00-VideoHighlighter-Windows-Setup.zip
+            --tag "${{ needs.version.outputs.cn_version }}" \
+            --out "packaging/bootstrap/00-VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows-Setup.zip"
       - name: Upload bootstrap artifact
         uses: actions/upload-artifact@v4
         with:
@@ -781,7 +786,7 @@ jobs:
           # Leading 00- so GitHub's alphabetical Assets list puts the installer
           # first. Without it, Setup.zip sank below the multi-GB .7z parts and
           # the .dmg, and people clicked the wrong file.
-          path: packaging/bootstrap/00-VideoHighlighter-Windows-Setup.zip
+          path: "packaging/bootstrap/00-VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows-Setup.zip"
           retention-days: 7
 
   release:
@@ -804,7 +809,7 @@ jobs:
         uses: actions/download-artifact@v4
       - name: Write the release notes
         env:
-          SLUG: ${{ needs.version.outputs.slug }}
+          SLUG: ${{ needs.version.outputs.cn_version }}
           REPO: ${{ github.repository }}
           WEB: ${{ inputs.web_ui }}
         run: |
@@ -814,6 +819,8 @@ jobs:
           python3 tools/release_notes.py --out release-notes.md
           cat release-notes.md >> "$GITHUB_STEP_SUMMARY"
           dl="https://github.com/$REPO/releases/download/$SLUG"
+          setup="00-VideoHighlighter-CN-v$SLUG-Windows-Setup.exe"
+          bootstrap="00-VideoHighlighter-CN-v$SLUG-Windows-Setup.zip"
           portable=""
           for f in windows-build/*.7z.*; do
             n=$(basename "$f"); portable="$portable [.7z.${n##*.7z.}]($dl/$n)"
@@ -822,7 +829,7 @@ jobs:
             echo ""
             echo "## Download"
             echo ""
-            echo "### [Install VideoHighlighter for Windows]($dl/00-VideoHighlighter-Windows-Setup.exe)"
+            echo "### [安装 VideoHighlighter-CN 中文版 v$SLUG]($dl/$setup)"
             echo ""
             echo "One file. Run it, click through, done. It installs the app with"
             echo "PyTorch for the processor, and downloads NVIDIA GPU acceleration"
@@ -832,7 +839,7 @@ jobs:
             echo ""
             echo "|  | Installer | Portable |"
             echo "|---|---|---|"
-            echo "| Windows (desktop app) | [Setup .exe]($dl/00-VideoHighlighter-Windows-Setup.exe) |$portable |"
+            echo "| Windows（中文版桌面应用） | [安装包 .exe]($dl/$setup) |$portable |"
             if [ "$WEB" = "true" ]; then
               web=""
               for f in web-windows-build/*.7z.*; do
@@ -840,7 +847,7 @@ jobs:
               done
               echo "| Windows (web UI) | — |$web |"
             fi
-            echo "| macOS | — | [.dmg]($dl/VideoHighlighter-$SLUG.dmg) |"
+            echo "| macOS（中文版） | — | [.dmg]($dl/VideoHighlighter-CN-v$SLUG-macOS.dmg) |"
             echo ""
             echo "The installer is not signed yet, so Windows SmartScreen shows"
             echo "\"Windows protected your PC\" on first run — **More info → Run anyway**."
@@ -863,8 +870,8 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ needs.version.outputs.slug }}
-          name: VideoHighlighter ${{ needs.version.outputs.slug }}
+          tag: ${{ needs.version.outputs.cn_version }}
+          name: VideoHighlighter-CN 中文版 v${{ needs.version.outputs.cn_version }}
           draft: true
           bodyFile: release-notes.md
           artifacts: "windows-installer/*,windows-build/*,web-windows-build/*,mac-build/*,bootstrap-zip/*"
@@ -876,7 +883,7 @@ jobs:
         # bootstrap installer went on handing out the previous version, and
         # nothing in the run said so. Now it does.
         env:
-          SLUG: ${{ needs.version.outputs.slug }}
+          SLUG: ${{ needs.version.outputs.cn_version }}
           UPDATE_BASE_URL: ${{ vars.UPDATE_BASE_URL }}
         run: |
           {

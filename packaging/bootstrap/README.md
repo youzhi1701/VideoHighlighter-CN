@@ -10,8 +10,9 @@ GitHub Release assets are capped at **2 GB**. The Windows build is larger, so
 it ships as split 7z (`.001` + `.002`). ChatGPT-driven users often download
 only the first part → ~100 failed installs on Free 0.9.0 (269 vs 156 downloads).
 
-This folder is a **thin downloader + extractor**: one small zip / script that
-fetches both parts and unpacks them.
+This folder is a **legacy/internal thin downloader + extractor** used for
+compatibility testing and source-maintenance scenarios. It is not the primary
+public installation path.
 
 ## Layout
 
@@ -67,18 +68,16 @@ python tools/build_bootstrap_zip.py --edition free --write-config
 - No CUDA / pip-in-app component downloads (Flowframes-style — later)
 - No code signing of the bootstrap itself
 
-## Shipping later (separate decision)
+## Public shipping policy
 
-The recommended public download is now the Inno Setup installer
-(`00-VideoHighlighter-Windows-Setup.exe`) built in the Windows release job —
-see `packaging/installer/`. This bootstrap zip remains attached as a fallback.
+The public Windows download is the Inno Setup installer
+(`00-VideoHighlighter-CN-v<version>-Windows-Setup.exe`) built by the release
+workflow. The bootstrap ZIP is no longer attached to public Releases and is not
+presented as an end-user installation option.
 
-When using the zip path:
-
-1. CI still builds `00-VideoHighlighter-Windows-Setup.zip` (`tools/build_bootstrap_zip.py`).
-2. Filename must stay constant so
-   `/releases/latest/download/00-VideoHighlighter-Windows-Setup.zip` works.
-3. Keep the `.7z.001` / `.7z.002` assets — bootstrap downloads them.
+The bootstrap files remain only for internal compatibility testing and
+maintenance. Public users should install the signed/packaged release artifact
+directly instead of running BAT/CMD/PowerShell bootstrap scripts.
 
 Pro customers use Lemon Squeezy (offline Setup.exe); see `docs/LS-PRODUCT-SETUP.md`
 in the Pro repo.

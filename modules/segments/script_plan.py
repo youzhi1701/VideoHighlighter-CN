@@ -615,7 +615,7 @@ def load_script(path: str, log_fn=print) -> Script:
     except ScriptError as exc:
         raise ScriptError(f"{name}: {exc}") from exc
 
-    log_fn(f"📜 脚本 {script.title!r}：{len(script.beats)} beat(s), "
+    log_fn(f"📜 脚本 {script.title!r}：{len(script.beats)} 个节拍节点，"
            f"{script.clip_count} clip(s), target {script.target_duration:.0f}s")
     for warning in validate_script(script):
         log_fn(f"⚠️ {warning}")

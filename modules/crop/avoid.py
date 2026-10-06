@@ -254,7 +254,7 @@ def process_video_avoiding(input_path, output_folder, yolo_model,
     out_path = os.path.join(output_folder, output_name or f"{base}_avoided.mp4")
 
     target = _calibrate_avoid(input_path, yolo_model, forbidden_boxes_by_frame)
-    print(f"🚫 Avoid crop target size: {target[0]}x{target[1]}")
+    print(f"🚫 排除裁剪目标尺寸：{target[0]}x{target[1]}")
 
     cap = cv2.VideoCapture(input_path)
     fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
@@ -322,7 +322,7 @@ def process_video_avoiding(input_path, output_folder, yolo_model,
     writer.release()
 
     n = max(1, frame_idx)
-    print(f"✅ Avoid crop done: {os.path.basename(out_path)}")
+    print(f"✅ 排除裁剪完成：{os.path.basename(out_path)}")
     print(f"   excluded {stats['excluded']} | clear {stats['clear']} | "
           f"impossible {stats['impossible']} | dropped {stats['dropped']} "
           f"({stats['excluded'] * 100 // n}% cleanly excluded)")

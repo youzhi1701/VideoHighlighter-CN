@@ -230,7 +230,7 @@ def save(seconds: Mapping, path: str, *, video_path: str = "",
         os.replace(temporary, path)
         return True
     except OSError as exc:
-        print(f"⚠️ Could not save face scan: {exc}")
+        print(f"⚠️ 无法保存人脸扫描结果：{exc}")
         return False
 
 
@@ -242,7 +242,7 @@ def load(path: str) -> Optional[dict]:
         with open(path, encoding="utf-8") as fh:
             payload = json.load(fh)
     except (OSError, ValueError) as exc:
-        print(f"⚠️ Could not read face scan: {exc}")
+        print(f"⚠️ 无法读取人脸扫描结果：{exc}")
         return None
     return {int(k): v for k, v in (payload.get("seconds") or {}).items()}
 
@@ -266,7 +266,7 @@ def scan_video(video_path: str,
     if use_cache:
         cached = load(path)
         if cached is not None:
-            log_fn(f"ℹ 正在使用缓存的人脸扫描结果（{len(cached)} second(s))")
+            log_fn(f"ℹ 正在使用缓存的人脸扫描结果（{len(cached)} 秒）")
             return cached
 
     from video_ai_editor.face_identity import FaceIdentityBank
@@ -283,8 +283,8 @@ def scan_video(video_path: str,
                                progress_fn=progress_fn)
     seconds = scan(frames, detect_fn=detector.detect_faces,
                    classify_fn=classifier.classify)
-    log_fn(f"✅ 人脸扫描完成：{len(seconds)} second(s) with a readable expression "
-           f"in {time.time() - started:.1f}s")
+    log_fn(f"✅ 人脸扫描完成：检测到 {len(seconds)} 秒可识别表情，"
+           f"用时 {time.time() - started:.1f} 秒")
     save(seconds, path, video_path=video_path, interval=interval)
     return seconds
 
@@ -317,11 +317,11 @@ def _main(argv=None) -> int:
     if args.label:
         hits = moments_for(seconds, args.label,
                            min_confidence=args.min_confidence)
-        print(f"\n{len(hits)} second(s) of '{args.label}':")
+        print(f"\n表情“{args.label}”共匹配 {len(hits)} 秒：")
         for sec, confidence in hits[:args.top]:
             print(f"  {stamp(sec):>8}   {confidence:.2f}")
     else:
-        print("\nseconds by expression:")
+        print("\n各表情对应秒数：")
         for label, count in sorted(label_counts(seconds).items(),
                                    key=lambda kv: -kv[1]):
             print(f"  {label:<9} {count:>5}")

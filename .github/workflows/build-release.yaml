@@ -548,227 +548,6 @@ jobs:
           path: "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Web-Windows.7z*"
           retention-days: 7
 
-  build-mac:
-    needs: version
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install system deps
-        run: brew install ffmpeg create-dmg hwloc
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          # YOLOX (Apache-2.0) for training detectors in the app. --no-deps:
-          # its declared requirements would let pip replace the torch above.
-          # --no-build-isolation: yolox ships an sdist only, and off Windows its
-          # setup.py asserts torch is importable, then pre-compiles
-          # FastCOCOEvalOp. An isolated build env never has torch no matter what
-          # is installed here, so this is the one job where the build has to see
-          # this environment. Windows skips that branch entirely
-          # (`if sys.platform != "win32"`), which is why only mac needs it.
-          # setuptools/wheel go in first because pip cannot provision build
-          # dependencies once isolation is off.
-          pip install setuptools wheel
-          pip install yolox==0.3.0 --no-deps --no-build-isolation
-          pip install pyinstaller
-      - name: Fetch YOLOX detector models (Apache-2.0)
-        # models/yolox/ is gitignored (downloaded, not committed). Without this
-        # the packaged app has no object detector, and a frozen build never
-        # downloads one itself. Bundled via --add-data "models;models".
-        run: python tools/get_yolox_model.py
-      - name: Pre-convert CLIP to OpenVINO IR
-        run: python -m tools.export_clip_ov
-      - name: Give OpenVINO a libtbb that codesign accepts
-        # libtbb.12.dylib was deleted from the bundle in March because it could
-        # not be ad-hoc signed. OpenVINO links against it, so `_pyopenvino` then
-        # failed to load with "Library not loaded: @rpath/libtbb.12.dylib",
-        # which took the whole pipeline with it — action_recognition imports
-        # openvino at module scope. Deleting it is not an option; making it
-        # signable is the job.
-        #
-        # The wheel's copies make codesign fail with "internal error in Code
-        # Signing subsystem" while *replacing an existing signature*, and
-        # PyInstaller signs every binary it collects, so the build dies rather
-        # than the app. Two steps, in order of how little they change:
-        #
-        #   1. strip the signature and prove the file can be signed at all;
-        #   2. if it cannot, substitute Homebrew's build of the same library —
-        #      same oneTBB soname, an ordinary Mach-O that signs cleanly.
-        #
-        # Either way the file is left UNSIGNED, so PyInstaller signs it fresh
-        # rather than replacing anything, which is the operation that failed.
-        #
-        # Every dylib here gets that treatment, not just libtbb. Narrowing it to
-        # one file is how the second attempt failed: libtbb.12 passed and
-        # libtbbmalloc.2 — which kept the wheel's signature — died in exactly
-        # the same place.
-        #
-        # libtbbbind and libhwloc stay deleted: tbbbind is TBB's optional NUMA
-        # layer and links Homebrew's libhwloc by absolute path, which no user
-        # has. TBB runs without it.
-        run: |
-          OV_LIBS=$(python -c "import openvino; import os; print(os.path.join(os.path.dirname(openvino.__file__), 'libs'))")
-          rm -f "$OV_LIBS"/libtbbbind*
-          rm -f "$OV_LIBS"/libhwloc*
-          # The unversioned symlink is not what anything links against, and a
-          # symlink is one more thing for the bundler to get wrong.
-          rm -f "$OV_LIBS"/libtbb.dylib
-          xattr -cr "$OV_LIBS" || true
-
-          for lib in "$OV_LIBS"/*.dylib; do
-            base=$(basename "$lib")
-            codesign --remove-signature "$lib" || true
-            if codesign --force --sign - "$lib"; then
-              # It signs. Hand PyInstaller an unsigned file anyway: it signs
-              # what it collects, and replacing a signature is what errors.
-              codesign --remove-signature "$lib" || true
-              continue
-            fi
-            echo "::warning::$base cannot be ad-hoc signed; trying Homebrew's"
-            brew install tbb
-            replacement="$(brew --prefix tbb)/lib/$base"
-            if [ ! -f "$replacement" ]; then
-              echo "::error::no replacement for $base, and OpenVINO needs it"
-              exit 1
-            fi
-            cp -f "$replacement" "$lib"
-            xattr -c "$lib" || true
-            codesign --remove-signature "$lib" || true
-          done
-
-          echo "Remaining libs:"
-          ls -la "$OV_LIBS"
-      - name: Clear PyInstaller cache
-        run: rm -rf ~/Library/Application\ Support/pyinstaller
-      - name: Build APP
-        run: |
-          pyinstaller --name "VideoHighlighter" \
-            --windowed \
-            --noconfirm \
-            --add-data "config.yaml:." \
-            --add-data "yolo_objects_labels.json:." \
-            --add-data "kinetics_400_labels.json:." \
-            --add-data "assets:assets" \
-            --add-data "modules:modules" \
-            --add-data "models:models" \
-            --add-data "video_ai_editor/VRVideoOutput.qml:video_ai_editor" \
-            --add-data "video_ai_editor/models:video_ai_editor/models" \
-            --hidden-import action_recognition \
-            --hidden-import convert_pth_to_openvino \
-            --hidden-import crop_actions \
-            --hidden-import downloader \
-            --hidden-import object_recognition \
-            --hidden-import pipeline \
-            --hidden-import signal_timeline_viewer \
-            --hidden-import sorter \
-            --hidden-import video_picker_dialog \
-            --hidden-import transcript \
-            --hidden-import transcript_srt \
-            --hidden-import PySide6.QtCore \
-            --hidden-import PySide6.QtGui \
-            --hidden-import PySide6.QtWidgets \
-            --hidden-import PySide6.QtQml \
-            --hidden-import PySide6.QtQuick \
-            --hidden-import PySide6.QtQuickWidgets \
-            --hidden-import PySide6.QtMultimedia \
-            --collect-submodules whisper \
-            --collect-submodules yolox \
-            --collect-submodules model_hub \
-            --collect-submodules huggingface_hub \
-            --collect-submodules keyring \
-            --copy-metadata keyring \
-            --collect-all openvino \
-            --collect-all onnxruntime \
-            --collect-data whisper \
-            --collect-binaries imageio_ffmpeg \
-            --hidden-import llm.clip_prefilter \
-            --hidden-import modules.system.smoke_test \
-            --hidden-import psutil \
-            --additional-hooks-dir packaging/pyinstaller-hooks \
-            --exclude-module nncf \
-            --collect-submodules optimum \
-            --collect-submodules transformers \
-            --collect-data transformers \
-            --copy-metadata transformers \
-            --copy-metadata tokenizers \
-            --copy-metadata huggingface-hub \
-            --copy-metadata safetensors \
-            --copy-metadata regex \
-            main.py
-      # TODO(mac): ad-hoc is not shippable. `--sign -` produces no Developer ID,
-      # so Gatekeeper quarantines the download and the first launch fails with
-      # "VideoHighlighter is damaged and can't be opened" — the README currently
-      # talks the user through clearing the quarantine flag, which is fine for a
-      # free build and not fine for a paid one. Supporting macOS means an Apple
-      # Developer Program identity in secrets, `--options runtime --timestamp`
-      # signing against it, then `xcrun notarytool submit --wait` and
-      # `xcrun stapler staple` on the DMG.
-      - name: Ad-hoc sign the app
-        run: |
-          codesign --force --deep --sign - "dist/VideoHighlighter.app"
-          codesign --verify --verbose "dist/VideoHighlighter.app"
-      - name: Smoke-test the app
-        # Nobody on the project has a Mac, and the first mac build a tester ran
-        # filled his memory until the machine had to be restarted: every
-        # multiprocessing child loaded the whole app. This runs the signed .app
-        # without a window — imports, a spawned child, object detection's
-        # workers, the thumbnail decoder — under a memory ceiling that kills the
-        # process tree rather than the runner. modules/system/smoke_test.py has
-        # the checks. A failure stops the release.
-        #
-        # The clips are generated, never real footage: what is measured is how
-        # many processes start and what each loads, and that does not depend on
-        # what is in the frame. Two codecs because they take different decode
-        # paths — H.264 through videotoolbox, and 1080p ProRes in a .mov, which
-        # is what the tester was editing when the memory ran out.
-        timeout-minutes: 30
-        run: |
-          ffmpeg -hide_banner -loglevel error -y \
-            -f lavfi -i testsrc2=size=1280x720:rate=30 \
-            -f lavfi -i sine=frequency=440:sample_rate=48000 \
-            -t 30 -c:v libx264 -pix_fmt yuv420p -c:a aac smoke-h264.mp4
-          ffmpeg -hide_banner -loglevel error -y \
-            -f lavfi -i testsrc2=size=1920x1080:rate=25 \
-            -f lavfi -i sine=frequency=440:sample_rate=48000 \
-            -t 30 -c:v prores_ks -profile:v 2 -c:a pcm_s16le smoke-prores.mov
-          status=0
-          for clip in smoke-h264.mp4 smoke-prores.mov; do
-            echo "::group::smoke test on $clip"
-            "dist/VideoHighlighter.app/Contents/MacOS/VideoHighlighter" \
-              --smoke-test "$PWD/$clip" \
-              --smoke-report "$PWD/smoke-report-${clip%.*}.json" || status=1
-            echo "::endgroup::"
-          done
-          exit $status
-      - name: Upload smoke-test report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: mac-smoke-test
-          path: |
-            smoke-report-*.json
-            ~/Library/Application Support/VideoHighlighter/*.log
-          if-no-files-found: ignore
-          retention-days: 7
-      - name: Create DMG
-        run: |
-          create-dmg \
-            --volname "VideoHighlighter-CN 中文版" \
-            --window-size 600 400 \
-            --icon "VideoHighlighter.app" 150 200 \
-            --app-drop-link 450 200 \
-            "VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-macOS.dmg" \
-            "dist/VideoHighlighter.app"
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: mac-build
-          path: VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-macOS.dmg
-          retention-days: 7
-
   bootstrap:
     needs: version
     runs-on: ubuntu-latest
@@ -788,8 +567,7 @@ jobs:
         with:
           name: bootstrap-zip
           # Leading 00- so GitHub's alphabetical Assets list puts the installer
-          # first. Without it, Setup.zip sank below the multi-GB .7z parts and
-          # the .dmg, and people clicked the wrong file.
+          # first. Without it, Setup.zip can sink below the multi-GB .7z parts.
           path: "packaging/bootstrap/00-VideoHighlighter-CN-v${{ needs.version.outputs.cn_version }}-Windows-Setup.zip"
           retention-days: 7
 
@@ -799,7 +577,7 @@ jobs:
     # that does not depend on it, which would publish an untagged release.
     # build-web-windows is opt-in: a skipped web build must not skip the
     # release, a failed one must stop it.
-    needs: [version, build-windows, build-web-windows, build-mac]
+    needs: [version, build-windows, build-web-windows]
     if: ${{ !inputs.dry_run && !cancelled() && !contains(needs.*.result, 'failure') }}
     runs-on: ubuntu-latest
     steps:
@@ -850,7 +628,6 @@ jobs:
               done
               echo "| Windows (web UI) | — |$web |"
             fi
-            echo "| macOS（中文版） | — | [.dmg]($dl/VideoHighlighter-CN-v$SLUG-macOS.dmg) |"
             echo ""
             echo "The installer is not signed yet, so Windows SmartScreen shows"
             echo "\"Windows protected your PC\" on first run — **More info → Run anyway**."
@@ -878,7 +655,7 @@ jobs:
           removeArtifacts: true
           replacesArtifacts: true
           bodyFile: release-notes.md
-          artifacts: "windows-installer/*,windows-build/*,web-windows-build/*,mac-build/*"
+          artifacts: "windows-installer/*,windows-build/*,web-windows-build/*"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Confirm published release
         env:

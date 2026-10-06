@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "2b321f590967883b38b4639ee3d271f28922b5b9"
+    "head_commit": "eac18a2411c9a80ad03cc331f60f651fd039c16f"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -29830,6 +29830,78 @@
       "after": "        # Held so the row can be hidden: it belongs to the 3D CNN only, and a",
       "hunk": "@@ -964,7 +964,7 @@ def _build_ui(self) -> None:",
       "id": "modules/ui/training_panel.py#109"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "        print(f\"🎵 SignalTimelineScene init: waveform={len(self.waveform)} points\")",
+      "target": "        print(f\"🎵 信号时间线场景初始化：波形={len(self.waveform)} 个点\")",
+      "before": "",
+      "after": "      ",
+      "hunk": "@@ -79,7 +79,7 @@ def __init__(self, cache_data, video_duration, parent=None, waveform=None,",
+      "id": "video_ai_editor/signal_timeline.py#45"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "            print(f\"✅ SignalTimelineScene.set_waveform_data: {len(self.waveform)} points, visible={has_data}\")",
+      "target": "            print(f\"✅ 已设置时间线波形数据：{len(self.waveform)} 个点，可见={has_data}\")",
+      "before": "",
+      "after": "",
+      "hunk": "@@ -238,7 +238,7 @@ def set_waveform_data(self, waveform_data):",
+      "id": "video_ai_editor/signal_timeline.py#46"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "        print(f\"🎵 draw_waveform_layer: Drawing at y={y_pos} with height={height}, {len(self.waveform)} points\")",
+      "target": "        print(f\"🎵 正在绘制波形层：y={y_pos}，高度={height}，{len(self.waveform)} 个点\")",
+      "before": "        ",
+      "after": "        ",
+      "hunk": "@@ -250,7 +250,7 @@ def draw_waveform_layer(self, y_pos, height):",
+      "id": "video_ai_editor/signal_timeline.py#47"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "        print(f\"🔄 SignalTimelineScene.build_timeline() called\")\n        print(f\"   - Waveform data: {self.waveform is not None}, length: {len(self.waveform)}\")",
+      "target": "        print(\"🔄 正在重建信号时间线…\")\n        print(f\"   - 波形数据：{self.waveform is not None}，长度：{len(self.waveform)}\")",
+      "before": "    def _build_timeline(self):",
+      "after": "",
+      "hunk": "@@ -868,8 +868,8 @@ def build_timeline(self):",
+      "id": "video_ai_editor/signal_timeline.py#48"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "        print(f\"✅ Timeline rebuilt successfully, \"",
+      "target": "        print(f\"✅ 时间线重建成功，\"",
+      "before": "",
+      "after": "              f\"{len(self.row_labels)} lanes, final height={self.sceneRect().height()}\")",
+      "hunk": "@@ -1050,7 +1050,7 @@ def _build_timeline(self):",
+      "id": "video_ai_editor/signal_timeline.py#49"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "            print(f\"⚠️ Filmstrip disabled — no thumbnail source: {e}\")",
+      "target": "            print(f\"⚠️ 胶片条已禁用——没有可用的缩略图来源：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "            self._thumb_cache = None",
+      "hunk": "@@ -1075,7 +1075,7 @@ def _ensure_thumb_cache(self):",
+      "id": "video_ai_editor/signal_timeline.py#50"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "            print(f\"⚠️ Could not save timeline filters: {e}\")",
+      "target": "            print(f\"⚠️ 无法保存时间线筛选设置：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "",
+      "hunk": "@@ -2162,7 +2162,7 @@ def save_filters(self):",
+      "id": "video_ai_editor/signal_timeline.py#51"
+    },
+    {
+      "file": "video_ai_editor/signal_timeline.py",
+      "source": "            print(f\"⚠️ Could not load timeline filters: {e}\")",
+      "target": "            print(f\"⚠️ 无法加载时间线筛选设置：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "    ",
+      "hunk": "@@ -2191,7 +2191,7 @@ def load_filters(self):",
+      "id": "video_ai_editor/signal_timeline.py#52"
     }
   ]
 }

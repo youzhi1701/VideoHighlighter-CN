@@ -114,13 +114,13 @@ def _vad_energy(audio_path: str, min_speech_duration: float,
     try:
         import librosa
     except ImportError:
-        log_fn("⚠️ librosa not installed — cannot run VAD")
+        log_fn("⚠️ 未安装 librosa，无法运行 VAD")
         return None
 
     try:
         y, sr = librosa.load(audio_path, sr=16000, mono=True)
     except Exception as e:
-        log_fn(f"⚠️ Could not load audio: {e}")
+        log_fn(f"⚠️ 无法加载音频：{e}")
         return None
 
     frame_length = int(0.025 * sr)
@@ -182,28 +182,28 @@ def extract_speaker_embeddings(audio_path: str,
     try:
         from resemblyzer import VoiceEncoder, preprocess_wav
     except ImportError:
-        log_fn("⚠️ resemblyzer not installed — cannot extract speaker embeddings")
+        log_fn("⚠️ 未安装 resemblyzer，无法提取说话人嵌入")
         log_fn("   Install: pip install resemblyzer")
         return None
 
     try:
         import librosa
     except ImportError:
-        log_fn("⚠️ librosa not installed — needed for audio loading")
+        log_fn("⚠️ 未安装 librosa，加载音频需要该组件")
         return None
 
     try:
         log_fn("  🧠 Loading speaker embedding model (GE2E)...")
         encoder = VoiceEncoder(device="cpu")
     except Exception as e:
-        log_fn(f"⚠️ Could not load embedding model: {e}")
+        log_fn(f"⚠️ 无法加载嵌入模型：{e}")
         return None
 
     try:
         # Load audio as float32 mono 16kHz (resemblyzer expects this)
         y, sr = librosa.load(audio_path, sr=16000, mono=True)
     except Exception as e:
-        log_fn(f"⚠️ Could not load audio: {e}")
+        log_fn(f"⚠️ 无法加载音频：{e}")
         return None
 
     # Subsample if too many segments
@@ -239,7 +239,7 @@ def extract_speaker_embeddings(audio_path: str,
             continue
 
     if not embeddings:
-        log_fn("⚠️ No valid embeddings extracted")
+        log_fn("⚠️ 未提取到有效嵌入")
         return None
 
     log_fn(f"  ✅ Extracted {len(embeddings)} speaker embeddings")
@@ -374,14 +374,14 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],
     try:
         import librosa
     except ImportError:
-        log_fn("⚠️ librosa not installed — skipping gender estimation")
+        log_fn("⚠️ 未安装 librosa，跳过性别估计")
         log_fn("   Install: pip install librosa")
         return {}
 
     try:
         y, sr = librosa.load(audio_path, sr=16000, mono=True)
     except Exception as e:
-        log_fn(f"⚠️ Could not load audio for gender estimation: {e}")
+        log_fn(f"⚠️ 无法加载用于性别估计的音频：{e}")
         return {}
 
     speaker_ranges: Dict[str, List[Tuple[float, float]]] = {}
@@ -439,7 +439,7 @@ def estimate_gender_by_pitch(audio_path: str, diarization: List[Dict],
                 'median_f0': round(median_f0, 1)
             }
             log_fn(f"  🎤 {speaker}: median F0={median_f0:.1f}Hz → {gender} "
-                   f"(confidence: {confidence})")
+                   f"（置信度：{confidence})")
         else:
             gender_map[speaker] = {
                 'gender': 'unknown',
@@ -515,10 +515,10 @@ def extract_full_audio(video_path: str, output_dir: Optional[str] = None,
             "-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le",
             "-y", audio_path
         ], check=True)
-        log_fn(f"🎵 Extracted audio: {audio_path}")
+        log_fn(f"🎵 已提取音频：{audio_path}")
         return audio_path
     except Exception as e:
-        log_fn(f"⚠️ Audio extraction failed: {e}")
+        log_fn(f"⚠️ 音频提取失败：{e}")
         return None
 
 
@@ -559,21 +559,21 @@ def enrich_segments_with_speakers(video_path: str,
     # Step 1: Extract audio
     audio_path = extract_full_audio(video_path, log_fn=log_fn)
     if not audio_path:
-        log_fn("ℹ️ Proceeding without speaker identification")
+        log_fn("ℹ️ 将在不进行说话人识别的情况下继续")
         return whisper_segments
 
     try:
         # Step 2: Voice Activity Detection
-        log_fn("🎙️ Running speaker diarization (Resemblyzer)...")
+        log_fn("🎙️ 正在运行说话人分离（Resemblyzer)...")
         speech_segments = detect_speech_segments(audio_path, log_fn=log_fn)
         if not speech_segments:
-            log_fn("⚠️ No speech segments detected")
+            log_fn("⚠️ 未检测到语音片段")
             return whisper_segments
 
         # Step 3: Extract speaker embeddings
         result = extract_speaker_embeddings(audio_path, speech_segments, log_fn=log_fn)
         if result is None:
-            log_fn("ℹ️ Proceeding without speaker identification")
+            log_fn("ℹ️ 将在不进行说话人识别的情况下继续")
             return whisper_segments
 
         embeddings, valid_segments = result
@@ -626,17 +626,17 @@ def enrich_segments_with_speakers(video_path: str,
             log_fn(f"  📋 {label}: {gender} (F0: {f0}Hz, conf: {conf}, segments: {seg_count})")
         log_fn(f"  {'─' * 45}\n")
 
-        log_fn(f"✅ Speaker enrichment complete: {len(speaker_labels)} speakers identified")
+        log_fn(f"✅ 说话人信息补充完成：{len(speaker_labels)} speakers identified")
         return enriched
 
     except ImportError as e:
-        log_fn(f"⚠️ Missing dependency: {e}")
+        log_fn(f"⚠️ 缺少依赖：{e}")
         log_fn("   Install: pip install resemblyzer librosa scikit-learn")
         log_fn("   Proceeding without speaker identification")
         return whisper_segments
 
     except Exception as e:
-        log_fn(f"⚠️ Speaker diarization failed: {e}")
+        log_fn(f"⚠️ 说话人分离失败：{e}")
         log_fn("   Proceeding without speaker identification")
         return whisper_segments
 
@@ -644,6 +644,6 @@ def enrich_segments_with_speakers(video_path: str,
         if cleanup_audio and audio_path and os.path.exists(audio_path):
             try:
                 os.remove(audio_path)
-                log_fn(f"🧹 Cleaned up: {audio_path}")
+                log_fn(f"🧹 已清理：{audio_path}")
             except OSError:
                 pass

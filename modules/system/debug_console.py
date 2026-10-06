@@ -210,8 +210,8 @@ def install() -> None:
 
     if _log_fh is not None:
         banner = (
-            f"\n===== VideoHighlighter session {time.strftime('%Y-%m-%d %H:%M:%S')} "
-            f"(frozen={bool(getattr(sys, 'frozen', False))}, child={is_child}) =====\n"
+            f"\n===== VideoHighlighter 会话 {time.strftime('%Y-%m-%d %H:%M:%S')} "
+            f"（打包运行={bool(getattr(sys, 'frozen', False))}，子进程={is_child}）=====\n"
         )
         _log_fh.write(banner)
         try:
@@ -225,7 +225,7 @@ def install() -> None:
     def _hook(exc_type, exc, tb):
         import traceback
         try:
-            sys.stderr.write("UNCAUGHT EXCEPTION:\n"
+            sys.stderr.write("未捕获异常：\n"
                              + "".join(traceback.format_exception(exc_type, exc, tb)))
         except Exception:
             pass

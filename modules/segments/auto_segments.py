@@ -407,7 +407,7 @@ def build_auto_segments(
     action_sequences = action_sequences or []
     keyword_matches = keyword_matches or []
 
-    log_fn("🔧 Auto-segmentation: building interest regions from signals...")
+    log_fn("🔧 自动分段：正在根据信号构建兴趣区间…")
 
     # --- Step 1: Build raw regions from each signal type ---
     all_regions = []
@@ -446,7 +446,7 @@ def build_auto_segments(
     log_fn(f"   Total raw regions: {len(all_regions)}")
 
     if not all_regions:
-        log_fn("⚠️ No interest regions found — falling back to empty segments")
+        log_fn("⚠️ 未找到兴趣区间，将回退为空分段")
         return [], []
 
     # --- Step 2: Merge overlapping / adjacent regions ---

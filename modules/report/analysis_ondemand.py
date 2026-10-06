@@ -438,7 +438,7 @@ def run_objects(video_path: str, objects: list, *, progress: ProgressFn = None,
     """
     objects = [o.strip() for o in (objects or []) if o and o.strip()]
     if not objects:
-        raise ValueError("No object classes given — type at least one (e.g. person, car).")
+        raise ValueError("未提供物体类别——请至少输入一个，例如 person、car。")
 
     from object_recognition import run_object_detection_single
     from modules.system.device_utils import detect_best_device
@@ -447,8 +447,8 @@ def run_objects(video_path: str, objects: list, *, progress: ProgressFn = None,
     model = _load_yolo(d, log, devices=detect_best_device(log_fn=log))
     if model is None:
         raise RuntimeError(
-            "Object detector unavailable — no usable model "
-            "(run tools/get_yolox_model.py, or import a custom model).")
+            "物体检测器不可用——没有可用模型"
+            "（请运行 tools/get_yolox_model.py，或导入自定义模型）。")
 
     det_by_sec, _bboxes = run_object_detection_single(
         video_path, model, objects,
@@ -669,7 +669,7 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
     rules_path = composition_rules_path()
     if not rules_path:
         raise RuntimeError(
-            "No composition_rules.yaml found — add rules in the Advanced tab first.")
+            "未找到 composition_rules.yaml——请先在“高级”选项卡中添加规则。")
 
     from modules.rules import composition_signals
 
@@ -680,7 +680,7 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
     engine = CompositionEngine(rules_path)
     known = set(engine.event_names)
     if not known:
-        raise RuntimeError(f"No events defined in {rules_path}.")
+        raise RuntimeError(f"{rules_path} 中没有定义事件。")
 
     # What the enabled rules read, and what of it is not here yet. Asked of the
     # rules rather than of the user: the file already says which classes the
@@ -697,13 +697,12 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
     # behind the slowest, a full detection pass whose output those rules would
     # then ignore.
     if not cache and not needed and not (absent and detect_fn):
-        raise RuntimeError("No analysis cache for this video — run an analysis "
-                           "first, or use rules with signal conditions, which "
-                           "need none.")
+        raise RuntimeError("该视频没有分析缓存——请先运行分析，"
+                           "或使用带信号条件的规则（这类规则无需已有缓存）。")
     if not bboxes and not needed and not (absent and detect_fn):
         raise RuntimeError(
-            "No object boxes in the cache — run object detection first "
-            "(the rules match against its boxes).")
+            "缓存中没有物体检测框——请先运行物体检测"
+            "（规则会根据这些检测框进行匹配）。")
 
     # Detection first: it is the long half, and the bar should be showing it
     # rather than sitting at zero through the audio measurement.

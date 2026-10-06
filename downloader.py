@@ -1229,7 +1229,7 @@ def dump_listing_cards(url: str, pattern: str, count: int = 3,
         if shown >= count:
             break
     if shown == 0:
-        print("No matching cards found to dump.")
+        print("没有找到可导出的匹配卡片。")
 
 
 def extract_video_links(url: str, pattern: Optional[str] = None, log_fn: Callable = print) -> List[str]:
@@ -2606,27 +2606,27 @@ def download_videos_with_immediate_processing(
         results.append(metadata)
         
         if success and filepath:
-            log_fn(f"✅ Video {idx}/{total} completed")
+            log_fn(f"✅ 视频 {idx}/{total} 下载完成")
             if metadata.get("processed"):
-                log_fn("✅ Video processed immediately")
+                log_fn("✅ 视频已立即处理")
         else:
-            log_fn(f"❌ Video {idx}/{total} failed")
+            log_fn(f"❌ 视频 {idx}/{total} 下载失败")
         
         if progress_fn:
-            status = "Processed" if metadata.get("processed") else "Downloaded"
-            progress_fn(idx, total, "Downloading Videos", f"{status} {idx}/{total} videos")
+            status = "已处理" if metadata.get("processed") else "已下载"
+            progress_fn(idx, total, "正在下载视频", f"{status} {idx}/{total} 个视频")
     
     log_fn(f"\n{'='*60}")
     successful = sum(1 for r in results if r.get("success"))
     processed = sum(1 for r in results if r.get("processed", False))
-    log_fn("📊 Download Summary:")
-    log_fn(f"   Total videos: {total}")
-    log_fn(f"   Successful downloads: {successful}")
-    log_fn(f"   Processed: {processed}")
-    log_fn(f"   Save location: {save_dir}")
+    log_fn("📊 下载汇总：")
+    log_fn(f"   视频总数：{total}")
+    log_fn(f"   下载成功：{successful}")
+    log_fn(f"   已处理：{processed}")
+    log_fn(f"   保存位置：{save_dir}")
     
     if progress_fn:
-        progress_fn(total, total, "Download Complete", f"Downloaded {successful}/{total} videos")
+        progress_fn(total, total, "下载完成", f"已下载 {successful}/{total} 个视频")
     
     return results
 
@@ -2634,7 +2634,7 @@ def download_videos_with_immediate_processing(
 # Example processing callback + test
 # -----------------------------
 def example_process_callback(filepath: str, metadata: Dict) -> Dict:
-    print(f"🔧 Processing video: {os.path.basename(filepath)}")
+    print(f"🔧 正在处理视频：{os.path.basename(filepath)}")
     time.sleep(1)
     return {
         "processed_at": time.time(),
@@ -2647,18 +2647,18 @@ def test_downloader():
     def test_log(text):
         print(text)
     def test_progress(current, total, status, message):
-        print(f"[Progress {current}/{total}] {status}: {message}")
+        print(f"[进度 {current}/{total}] {status}：{message}")
     def mock_process_callback(filepath, metadata):
-        print(f"🎬 MOCK PROCESSING: {os.path.basename(filepath)}")
-        print(f"   Size: {metadata.get('file_size', 0):.2f} MB")
-        print(f"   Download time: {metadata.get('download_time', 0):.1f}s")
+        print(f"🎬 模拟处理：{os.path.basename(filepath)}")
+        print(f"   大小：{metadata.get('file_size', 0):.2f} MB")
+        print(f"   下载用时：{metadata.get('download_time', 0):.1f} 秒")
         return {"status": "mock_processed"}
     
     if len(sys.argv) > 1:
         url = sys.argv[1]
         save_dir = "test_downloads"
         os.makedirs(save_dir, exist_ok=True)
-        print(f"Testing enhanced downloader with URL: {url}")
+        print(f"正在测试增强下载器，网址：{url}")
         print(f"{'='*60}\n")
         success, filepath, metadata = download_video(
             url,
@@ -2670,12 +2670,12 @@ def test_downloader():
             process_callback=mock_process_callback,
         )
         print(f"\n{'='*60}")
-        print("RESULT:")
-        print(f"Success: {success}")
-        print(f"File: {filepath}")
-        print(f"Metadata: {metadata}")
+        print("结果：")
+        print(f"成功：{success}")
+        print(f"文件：{filepath}")
+        print(f"元数据：{metadata}")
     else:
-        print("Usage: python video_downloader.py <video_url>")
+        print("用法：python video_downloader.py <视频网址>")
 
 # -----------------------------
 # Yandex preview extraction
@@ -2697,11 +2697,11 @@ def extract_yandex_video_url(url: str, log_fn: Callable = print) -> Optional[str
             )
             
             page = browser.new_page()
-            log_fn("  • Loading page...")
+            log_fn("  • 正在加载页面…")
             page.goto(url, wait_until="networkidle", timeout=60000)
             
             # CRITICAL: Wait for and click the actual play button
-            log_fn("  • Looking for play button to click...")
+            log_fn("  • 正在查找播放按钮…")
             
             # Try multiple selectors for the play button
             play_selectors = [
@@ -2721,14 +2721,14 @@ def extract_yandex_video_url(url: str, log_fn: Callable = print) -> Optional[str
                     play_button = page.wait_for_selector(selector, timeout=5000)
                     if play_button and play_button.is_visible():
                         play_button.click()
-                        log_fn(f"  ✓ Clicked play button: {selector}")
+                        log_fn(f"  ✓ 已点击播放按钮：{selector}")
                         play_clicked = True
                         break
                 except:
                     continue
             
             if not play_clicked:
-                log_fn("  ⚠ No play button found, trying to force video load...")
+                log_fn("  ⚠ 未找到播放按钮，正在尝试强制加载视频…")
                 page.evaluate("""
                     document.querySelectorAll('video').forEach(v => {
                         v.play().catch(() => {});
@@ -2739,7 +2739,7 @@ def extract_yandex_video_url(url: str, log_fn: Callable = print) -> Optional[str
             page.wait_for_timeout(5000)
             
             # Now look for the iframe (it should be loaded)
-            log_fn("  • Looking for video player iframe...")
+            log_fn("  • 正在查找视频播放器 iframe…")
             
             # Wait specifically for the video-player iframe
             iframe_element = page.wait_for_selector(
@@ -2751,14 +2751,14 @@ def extract_yandex_video_url(url: str, log_fn: Callable = print) -> Optional[str
             iframe = page.frame_locator("iframe[src*='video-player'], iframe[src*='yastatic.net']")
             
             # Wait for video element inside iframe
-            log_fn("  • Waiting for video in iframe...")
+            log_fn("  • 正在等待 iframe 内的视频加载…")
             iframe.locator("video").first.wait_for(timeout=10000)
             
             # Get video duration to verify it's the real video
             duration = iframe.locator("video").first.evaluate("el => el.duration")
             
             if duration and duration > 60:  # Real videos are longer than 60s
-                log_fn(f"  ✓ Found video with duration: {duration:.1f}s")
+                log_fn(f"  ✓ 找到视频，时长：{duration:.1f} 秒")
                 
                 # Get video source
                 video_url = iframe.locator("video").first.evaluate("""
@@ -2772,11 +2772,11 @@ def extract_yandex_video_url(url: str, log_fn: Callable = print) -> Optional[str
                 """)
                 
                 if video_url and not any(x in video_url.lower() for x in ['preview', 'thumbnail']):
-                    log_fn(f"  ✓ Found real video URL: {video_url[:100]}...")
+                    log_fn(f"  ✓ 找到真实视频 URL：{video_url[:100]}…")
                     return video_url
             
             # If iframe approach fails, try network capture after play click
-            log_fn("  • Trying network capture after play...")
+            log_fn("  • 正在尝试播放后的网络捕获…")
             
             # Clear existing requests and capture new ones
             video_urls = set()
@@ -2798,11 +2798,11 @@ def extract_yandex_video_url(url: str, log_fn: Callable = print) -> Optional[str
                           and 'gfxdn.pics' not in url]
             
             if real_videos:
-                log_fn(f"  ✓ Found real video via network: {real_videos[0][:100]}...")
+                log_fn(f"  ✓ 通过网络请求找到真实视频：{real_videos[0][:100]}…")
                 return real_videos[0]
             
     except Exception as e:
-        log_fn(f"  ✗ Extraction failed: {e}")
+        log_fn(f"  ✗ 提取失败：{e}")
     
     return None
 
@@ -2978,9 +2978,9 @@ def _pick_playable(ranked: List[str], captured: Dict[str, Dict[str, str]],
         elif size:
             desc = f"{size / 1048576:.1f} MB"
         else:
-            desc = "length unknown"
+            desc = "时长未知"
         if _looks_like_advert(secs, size):
-            log_fn(f"  ⏭️ {desc} — looks like an advert/preview, skipping: {u[:90]}...")
+            log_fn(f"  ⏭️ {desc}——疑似广告/预览，已跳过：{u[:90]}…")
             if fallback is None:
                 fallback = u          # finite, so usable as a last resort
             continue
@@ -2990,7 +2990,7 @@ def _pick_playable(ranked: List[str], captured: Dict[str, Dict[str, str]],
         log_fn("  ⚠ Every candidate measured advert-short; using the best finite "
                "one — check the result before trusting it")
         return fallback
-    log_fn("  ✗ No usable media: every candidate was a live stream or unreachable")
+    log_fn("  ✗ 没有可用媒体：所有候选源均为直播流或无法访问")
     return None
 
 
@@ -3007,7 +3007,7 @@ def extract_video_source_via_browser(
     request. Those MUST be replayed when downloading, or hotlink-protected CDNs
     (pvvstream.pro, etc.) answer 403. Returns None if nothing usable is found.
     """
-    log_fn("🔍 Trying browser-based video URL extraction...")
+    log_fn("🔍 正在尝试通过浏览器提取视频 URL…")
 
     try:
         from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
@@ -3281,7 +3281,7 @@ def extract_video_source_via_browser(
                             deadline = hard_deadline
 
                     # Also read any <video>.currentSrc that resolved to a real URL.
-                    log_fn("  • Checking <video> elements...")
+                    log_fn("  • 正在检查 <video> 元素…")
                     try:
                         srcs = page.evaluate("""
                             () => {
@@ -3306,7 +3306,7 @@ def extract_video_source_via_browser(
                     for s in srcs:
                         if _looks_like_media_url(s) and s not in captured:
                             captured[s] = {"referer": page.url, "user-agent": ua}
-                            log_fn(f"  ✓ <video> src: {s[:120]}...")
+                            log_fn(f"  ✓ <video> 来源：{s[:120]}…")
 
                     if captured:
                         # Rank by (format, capture order). Capture order matters:
@@ -3315,7 +3315,7 @@ def extract_video_source_via_browser(
                         order = {u: i for i, u in enumerate(captured)}
                         sort_key = lambda u: (_media_fmt_rank(u), order[u])
                         ranked = sorted(captured, key=sort_key)
-                        log_fn(f"  • {len(captured)} media URL(s); top candidates:")
+                        log_fn(f"  • 捕获到 {len(captured)} 个媒体 URL；最佳候选：")
                         for i, u in enumerate(ranked[:3], 1):
                             log_fn(f"      {i}. {u[:120]}...")
                         # A pre-roll is requested *before* the feature, so capture
@@ -3325,7 +3325,7 @@ def extract_video_source_via_browser(
                         if not best:
                             # Nothing downloadable here — fall through to the next
                             # user agent rather than fetching an endless stream.
-                            log_fn("  • No usable media with this UA")
+                            log_fn("  • 使用当前 UA 未找到可用媒体")
                             context.close()
                             continue
                         hdrs = dict(captured[best] or {})
@@ -3345,31 +3345,31 @@ def extract_video_source_via_browser(
                                         f"{c['name']}={c['value']}" for c in jar)
                             except Exception:
                                 pass
-                        log_fn(f"  ✓ Selected: {best[:120]}...")
+                        log_fn(f"  ✓ 已选择：{best[:120]}…")
                         if hdrs.get("referer"):
-                            log_fn(f"  🔑 Replay Referer: {hdrs['referer'][:80]}")
+                            log_fn(f"  🔑 重放 Referer：{hdrs['referer'][:80]}")
                         if hdrs.get("cookie"):
-                            log_fn(f"  🍪 Replay Cookie: {len(hdrs['cookie'])} chars")
+                            log_fn(f"  🍪 重放 Cookie：{len(hdrs['cookie'])} 个字符")
                         context.close()
                         return best, hdrs
 
-                    log_fn("  • Nothing captured with this UA")
+                    log_fn("  • 使用当前 UA 未捕获到媒体")
 
                 except Exception as e:
-                    log_fn(f"  ⚠ Error with UA {ua[:30]}: {str(e)[:100]}")
+                    log_fn(f"  ⚠ 使用 UA {ua[:30]} 时出错：{str(e)[:100]}")
                 finally:
                     context.close()
 
-            log_fn("  ✗ No video source found with any user agent")
+            log_fn("  ✗ 使用所有 User-Agent 均未找到视频源")
             log_fn("  💡 The player may need a real click or a login; try opening it "
                    "in a visible browser and copying the .m3u8 from DevTools → Network.")
             return None
 
     except ImportError:
-        log_fn("  ⚠ Playwright not installed. Run: pip install playwright && playwright install")
+        log_fn("  ⚠ 未安装 Playwright。请运行：pip install playwright && playwright install")
         return None
     except Exception as e:
-        log_fn(f"  ✗ Playwright extraction failed: {str(e)[:120]}")
+        log_fn(f"  ✗ Playwright 提取失败：{str(e)[:120]}")
         return None
 
 def extract_yandex_preview_source(url: str, log_fn: Callable = print) -> Optional[str]:
@@ -3381,7 +3381,7 @@ def extract_yandex_preview_source(url: str, log_fn: Callable = print) -> Optiona
 def _try_extract_video_src(driver, log_fn, context):
     try:
         WebDriverWait(driver, 10).until(lambda d: d.execute_script("return !!document.querySelector('video')"))
-        log_fn(f"    ✓ <video> in {context}")
+        log_fn(f"    ✓ 在 {context} 中找到 <video>")
         
         driver.execute_script("""
             let v = document.querySelector('video');
@@ -3395,17 +3395,17 @@ def _try_extract_video_src(driver, log_fn, context):
         
         src = driver.execute_script("return document.querySelector('video')?.currentSrc || '';")
         if src and any(x in src.lower() for x in [".mp4", ".m3u8", ".ts"]):
-            log_fn(f"    ✓ Source from {context}: {src[:120]}...")
+            log_fn(f"    ✓ 从 {context} 获取来源：{src[:120]}…")
             return src
         
         sources = driver.find_elements(By.CSS_SELECTOR, "video source")
         for s in sources:
             src = s.get_attribute("src") or ""
             if src and any(x in src.lower() for x in [".mp4", ".m3u8"]):
-                log_fn(f"    ✓ <source> from {context}: {src[:120]}...")
+                log_fn(f"    ✓ 从 {context} 获取 <source>：{src[:120]}…")
                 return src
     except Exception as e:
-        log_fn(f"    ⚠ Extraction in {context} failed: {str(e)[:100]}")
+        log_fn(f"    ⚠ 在 {context} 中提取失败：{str(e)[:100]}")
     return None
 
 def _capture_yandex_network_media(driver, log_fn):
@@ -3423,19 +3423,19 @@ def _capture_yandex_network_media(driver, log_fn):
                     u = msg["params"]["request"]["url"].lower()
                     if any(x in u for x in [".mp4", ".m3u8", ".ts", "master.m3u8", "videoplayback", "mycdn.me"]):
                         full_u = msg["params"]["request"]["url"]
-                        log_fn(f"    • Captured: {full_u[:140]}...")
+                        log_fn(f"    • 已捕获：{full_u[:140]}…")
                         media.add(full_u)
             except:
                 continue
     except Exception as e:
-        log_fn(f"    ⚠ Network capture failed: {e}")
+        log_fn(f"    ⚠ 网络捕获失败：{e}")
     
     if not media:
         return None
     
     candidates = sorted(media, key=lambda x: ("master.m3u8" in x.lower(), ".m3u8" in x.lower(), len(x)), reverse=True)
     best = candidates[0]
-    log_fn(f"    ✓ Best media URL: {best[:140]}...")
+    log_fn(f"    ✓ 最佳媒体 URL：{best[:140]}…")
     return best
 
 def download_via_browser_session(
@@ -3463,7 +3463,7 @@ def download_via_browser_session(
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        log_fn("⚠️ Playwright not installed — cannot download in-session")
+        log_fn("⚠️ 未安装 Playwright——无法在浏览器会话内下载")
         return None
 
     out_path = re.sub(r"\.%\(ext\)s$", ".mp4", output_template)
@@ -3476,7 +3476,7 @@ def download_via_browser_session(
     chunk = 8 * 1024 * 1024
     written = 0
 
-    log_fn("🌐 Retrying inside the browser session (Cloudflare-safe)...")
+    log_fn("🌐 正在浏览器会话内重试（兼容 Cloudflare）…")
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(
@@ -3493,14 +3493,14 @@ def download_via_browser_session(
                 page.goto(page_url, wait_until="domcontentloaded", timeout=45000)
                 page.wait_for_timeout(4000)      # let the clearance cookie land
             except Exception as e:
-                log_fn(f"  ⚠ Page load: {str(e)[:100]}")
+                log_fn(f"  ⚠ 页面加载异常：{str(e)[:100]}")
 
             total: Optional[int] = None
             try:
                 with open(out_path, "wb") as f:
                     while True:
                         if _flag_is_cancelled(cancel_flag):
-                            log_fn("⏹️ Cancelled during in-session download")
+                            log_fn("⏹️ 已取消浏览器会话内下载")
                             break
                         r = context.request.get(
                             media_url,
@@ -3510,7 +3510,7 @@ def download_via_browser_session(
                         )
                         if r.status not in (200, 206):
                             if written == 0:
-                                log_fn(f"  ✗ Session fetch refused: HTTP {r.status}")
+                                log_fn(f"  ✗ 浏览器会话请求被拒绝：HTTP {r.status}")
                             break
                         body = r.body()
                         if not body:
@@ -3539,10 +3539,10 @@ def download_via_browser_session(
                 except Exception:
                     pass
     except Exception as e:
-        log_fn(f"  ✗ In-session download failed: {type(e).__name__}: {str(e)[:110]}")
+        log_fn(f"  ✗ 浏览器会话内下载失败：{type(e).__name__}：{str(e)[:110]}")
 
     if written > 0 and os.path.exists(out_path):
-        log_fn(f"✅ In-session download complete: {written / 1048576:.1f} MB")
+        log_fn(f"✅ 浏览器会话内下载完成：{written / 1048576:.1f} MB")
         return out_path
     try:
         if os.path.exists(out_path) and os.path.getsize(out_path) == 0:
@@ -3560,13 +3560,13 @@ def download_from_extracted_source(
     download_full: bool = True,
     http_headers: Optional[Dict[str, str]] = None,
 ) -> Tuple[bool, Optional[str]]:
-    log_fn(f"📥 Downloading extracted source: {source_url[:100]}...")
+    log_fn(f"📥 正在下载已提取的视频源：{source_url[:100]}…")
 
     http_headers = http_headers or {}
     referer = http_headers.get("referer")
     user_agent = http_headers.get("user-agent")
     if referer:
-        log_fn(f"🔑 Using Referer: {referer[:80]}")
+        log_fn(f"🔑 使用 Referer：{referer[:80]}")
 
     # Preflight: a quick ranged GET with the replayed headers. Catches dead /
     # forbidden sources in seconds instead of letting yt-dlp stall for minutes
@@ -3587,7 +3587,7 @@ def download_from_extracted_source(
             ctype = r.headers.get("Content-Type", "")
             r.close()
         except requests.RequestException as e:
-            log_fn(f"  ⚠ Preflight error: {str(e)[:80]}")
+            log_fn(f"  ⚠ 预检失败：{str(e)[:80]}")
             return False
         if code in (200, 206):
             return True
@@ -3640,10 +3640,10 @@ def download_from_extracted_source(
                 filename = line.split("Destination:")[1].strip()
                 break
         if filename and os.path.exists(filename):
-            log_fn(f"✅ Direct download success: {filename}")
+            log_fn(f"✅ 直接下载成功：{filename}")
             return True, filename
     except Exception as e:
-        log_fn(f"⚠ yt-dlp direct failed: {e}")
+        log_fn(f"⚠ yt-dlp 直接下载失败：{e}")
 
     # ffmpeg fallback for HLS
     if ".m3u8" in source_url.lower():
@@ -3679,10 +3679,10 @@ def download_from_extracted_source(
         try:
             subprocess.run(cmd, check=True, timeout=400)
             if os.path.exists(final_path):
-                log_fn(f"✅ ffmpeg success: {final_path}")
+                log_fn(f"✅ ffmpeg 下载成功：{final_path}")
                 return True, final_path
         except Exception as e:
-            log_fn(f"⚠ ffmpeg failed: {e}")
+            log_fn(f"⚠ ffmpeg 下载失败：{e}")
 
     return False, None
 

@@ -1016,15 +1016,15 @@ def count_markers(sequence: Sequence) -> int:
 def export_summary(clip_count: int, duration: float, timebase: Timebase,
                    markers: int) -> str:
     """The info line under the format combo."""
-    mark = "marker" if markers == 1 else "markers"
+    mark = "标记" if markers == 1 else "标记"
     text = (
-        f"Exporting {clip_count} clips, total duration: {duration:.1f}s. "
-        f"{timebase.describe()}. {markers} {mark}."
+        f"正在导出 {clip_count} 个片段，总时长：{duration:.1f} 秒。"
+        f"{timebase.describe()}。{markers} 个{mark}。"
     )
     if timebase.coarsened:
         text += (
-            f" FCPXML keeps every frame. "
-            f"The EDL is counted at {timebase.edl_fps} fps."
+            f" FCPXML 会保留每一帧。"
+            f"EDL 按 {timebase.edl_fps} fps 计数。"
         )
     return text
 

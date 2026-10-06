@@ -375,7 +375,7 @@ var
 begin
   Target := ExpandConstant('{app}\packs\{#CudaPackName}');
   Staging := Target + '.partial';
-  WizardForm.StatusLabel.Caption := 'Unpacking NVIDIA GPU acceleration (this takes a few minutes)...';
+  WizardForm.StatusLabel.Caption := '正在解压 NVIDIA GPU 加速组件（可能需要几分钟）…';
   WizardForm.Refresh;
 
   if Unpack('{#CudaPackAsset}', Staging) then
@@ -388,8 +388,8 @@ begin
     end;
     DelTree(Staging, True, True, True);
   end;
-  MsgBox('Could not install NVIDIA GPU acceleration. VideoHighlighter is '
-    + 'installed and will run on the processor; run Setup again to retry.',
+  MsgBox('无法安装 NVIDIA GPU 加速组件。VideoHighlighter 已安装完成，'
+    + '当前将使用 CPU 运行；如需重试，请重新运行安装程序。',
     mbError, MB_OK);
 end;
 
@@ -401,7 +401,7 @@ var
 begin
   Staging := ExpandConstant('{app}\models\.clip.partial');
   Target := ExpandConstant('{app}\models\{#ClipDirName}');
-  WizardForm.StatusLabel.Caption := 'Unpacking the visual search model...';
+  WizardForm.StatusLabel.Caption := '正在解压视觉搜索模型…';
   WizardForm.Refresh;
 
   ForceDirectories(ExpandConstant('{app}\models'));
@@ -415,8 +415,8 @@ begin
     end;
     DelTree(Staging, True, True, True);
   end;
-  MsgBox('Could not install the visual search model. Everything else works; '
-    + 'run Setup again to add it.', mbError, MB_OK);
+  MsgBox('无法安装视觉搜索模型，其他功能仍可正常使用；'
+    + '如需添加该模型，请重新运行安装程序。', mbError, MB_OK);
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);

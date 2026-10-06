@@ -85,8 +85,8 @@ def prepare(args) -> int:
     manifest_path = os.path.join(root, MANIFEST_FILENAME)
 
     if not os.path.exists(manifest_path):
-        print(f"FAIL:no manifest in {root}")
-        print("  run: python tools/build_manifest.py generate --root <bundle> ...")
+        print(f"FAIL: {root} 中没有 manifest")
+        print("  请运行：python tools/build_manifest.py generate --root <bundle> ...")
         return 1
 
     with open(manifest_path, "rb") as handle:
@@ -94,15 +94,15 @@ def prepare(args) -> int:
     manifest = json.loads(raw.decode("utf-8"))
 
     if not manifest.get("base_url"):
-        print("FAIL:manifest has no base_url — the updater would not know where")
-        print("  to fetch files. Re-generate with --base-url <public URL>.")
+        print("FAIL: manifest 缺少 base_url，更新器无法确定下载位置")
+        print("  请使用 --base-url <公开 URL> 重新生成。")
         return 1
 
     signature_path = os.path.join(root, SIGNATURE_FILENAME)
     if not os.path.exists(signature_path) and not args.allow_unsigned:
-        print(f"FAIL:{SIGNATURE_FILENAME} missing — an unsigned release is")
-        print("  rejected by every installed copy. Sign it, or pass")
-        print("  --allow-unsigned to stage it for signing later.")
+        print(f"FAIL: 缺少 {SIGNATURE_FILENAME}，未签名的发行版")
+        print("  会被所有已安装客户端拒绝。请先签名，或传入")
+        print("  --allow-unsigned，仅暂存并稍后签名。")
         return 1
 
     blobs = os.path.join(out, "files")
@@ -155,11 +155,11 @@ def prepare(args) -> int:
           f"{manifest.get('platform', 'windows')}")
     print(f"  base_url     {manifest['base_url']}")
     print(f"  manifest     {prefix}/{MANIFEST_FILENAME}")
-    print(f"  blobs        {len(seen)} distinct ({linked} linked, {copied} copied, "
-          f"{skipped} already prepared)")
-    print(f"  bytes        {total / (1024 ** 2):.1f} MB in the release, "
-          f"{stored_bytes / (1024 ** 2):.1f} MB as stored"
-          + (" (gzip)" if gz else ""))
+    print(f"  blobs        {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，"
+          f"已准备 {skipped}）")
+    print(f"  bytes        发行版共 {total / (1024 ** 2):.1f} MB，"
+          f"实际存储 {stored_bytes / (1024 ** 2):.1f} MB"
+          + ("（gzip）" if gz else ""))
     if args.github_output:
         with open(args.github_output, "a", encoding="utf-8") as handle:
             handle.write(f"prefix={prefix}\n")
@@ -206,8 +206,8 @@ def sign(args) -> int:
     else:
         base = (args.base_url or os.environ.get(BASE_URL_ENV, "")).rstrip("/")
         if not base or not args.version:
-            print("FAIL:say which manifest: --manifest <file>, or --version with")
-            print(f"  --base-url (or {BASE_URL_ENV}) naming the update host.")
+            print("FAIL: 请指定 manifest：使用 --manifest <文件>，或同时使用 --version 与")
+            print(f"  --base-url（或 {BASE_URL_ENV}）指定更新主机。")
             return 1
         from version import __edition__
         stub = {"edition": args.edition or __edition__,
@@ -216,29 +216,29 @@ def sign(args) -> int:
         try:
             raw = _fetch(source)
         except Exception as exc:
-            print(f"FAIL:could not fetch {source}: {exc}")
+            print(f"FAIL: 无法获取 {source}：{exc}")
             return 1
 
     try:
         manifest = json.loads(raw.decode("utf-8"))
         files = manifest["files"]
     except (ValueError, KeyError, TypeError, UnicodeDecodeError) as exc:
-        print(f"FAIL:{source} is not a release manifest ({exc})")
+        print(f"FAIL: {source} 不是有效的发行版 manifest（{exc}）")
         return 1
 
     if args.version and str(manifest.get("version")) != args.version:
-        print(f"FAIL:{source} describes {manifest.get('version')}, not {args.version}")
+        print(f"FAIL: {source} 描述的是版本 {manifest.get('version')}，不是 {args.version}")
         return 1
 
     total = sum(int(e.get("size", 0)) for e in files)
-    print(f"Signing {source}")
+    print(f"正在签名：{source}")
     print(f"  version   {manifest.get('version')}")
     print(f"  edition   {manifest.get('edition')}")
     print(f"  platform  {manifest.get('platform', 'windows')}")
     print(f"  base_url  {manifest.get('base_url')}")
-    print(f"  files     {len(files)} ({total / (1024 ** 2):.1f} MB)")
+    print(f"  files     {len(files)} 个文件（{total / (1024 ** 2):.1f} MB）")
     if manifest.get("min_version"):
-        print(f"  min       {manifest['min_version']} (older installs get the download)")
+        print(f"  min       {manifest['min_version']}（更旧版本将获取完整下载）")
 
     with open(args.key, "rb") as handle:
         private = load_pem_private_key(handle.read(), password=None)
@@ -247,8 +247,8 @@ def sign(args) -> int:
     # The same check every installed copy will make. A key that does not match
     # the embedded public one signs something nobody can install.
     if verify_manifest(raw, encoded) is None:
-        print("FAIL:the app would reject this signature — is this the key whose")
-        print("  public half is RELEASE_PUBLIC_KEY_HEX in modules/update/update_manifest.py?")
+        print("FAIL: 应用会拒绝此签名——请确认使用的私钥是否对应")
+        print("  modules/update/update_manifest.py 中的 RELEASE_PUBLIC_KEY_HEX 公钥。")
         return 1
 
     out = args.out or f"manifest-{manifest.get('version')}.json.sig"
@@ -256,10 +256,10 @@ def sign(args) -> int:
         handle.write(encoded + "\n")
 
     print()
-    print(f"OK:signature (also written to {out}):")
+    print(f"OK: 签名完成（同时已写入 {out}）：")
     print(f"  {encoded}")
     print()
-    print("Publish it once the GitHub release is out:")
+    print("GitHub Release 发布后，请运行以下命令发布更新：")
     print(f"  gh workflow run publish-update.yaml -f version={manifest.get('version')} "
           f"-f signature={encoded}")
     return 0
@@ -315,8 +315,8 @@ def channel(args) -> int:
     # that nothing is newer, and everyone else to fetch an older one.
     if isinstance(previous, dict) and is_newer(str(previous.get("version", "")),
                                                str(manifest["version"])):
-        print(f"FAIL:the channel already announces {previous.get('version')}, "
-              f"newer than {manifest['version']}.")
+        print(f"FAIL: 频道当前已发布 {previous.get('version')}，"
+              f"它比 {manifest['version']} 更新。")
         return 1
 
     base = str(manifest.get("base_url") or "").rstrip("/")
@@ -348,19 +348,19 @@ def check(args) -> int:
 
     manifest = verify_manifest(raw, signature)
     if manifest is None:
-        print("FAIL:the signature does not verify against the public key this")
-        print("  release was built with. Nothing was published.")
+        print("FAIL: 签名无法通过当前发行版内置公钥验证，")
+        print("  因此不会发布任何内容。")
         return 1
 
     problems = []
     if str(manifest.get("version")) != args.version:
-        problems.append(f"manifest is {manifest.get('version')}, not {args.version}")
+        problems.append(f"manifest 版本为 {manifest.get('version')}，不是 {args.version}")
     if args.edition and channel_name(manifest.get("edition", "")) != channel_name(args.edition):
-        problems.append(f"manifest is the {manifest.get('edition')} edition, not {args.edition}")
+        problems.append(f"manifest 版本类型为 {manifest.get('edition')}，不是 {args.edition}")
     base = str(manifest.get("base_url") or "").rstrip("/")
     if base != args.base_url.rstrip("/"):
-        problems.append(f"manifest fetches from {base or 'nowhere'}, "
-                        f"not the update host {args.base_url}")
+        problems.append(f"manifest 的下载地址为 {base or '未设置'}，"
+                        f"不是更新主机 {args.base_url}")
 
     with open(args.listing, "r", encoding="utf-8") as handle:
         listing = json.load(handle) or []
@@ -377,16 +377,16 @@ def check(args) -> int:
             # still checked by every client, against the file's own hash.
             wrong += 1
     if missing or wrong:
-        problems.append(f"{missing} blob(s) missing and {wrong} the wrong size "
-                        "on the host; re-run the build's staging step")
+        problems.append(f"主机上缺少 {missing} 个 blob，另有 {wrong} 个大小不正确；"
+                        "请重新运行构建的暂存步骤")
 
     if problems:
         for problem in problems:
             print(f"FAIL:{problem}")
         return 1
     print(f"OK:{manifest['version']} {manifest.get('edition')} "
-          f"{manifest.get('platform', 'windows')}: signature valid, "
-          f"{len(manifest['files'])} files all on the host")
+          f"{manifest.get('platform', 'windows')}：签名有效，"
+          f"{len(manifest['files'])} 个文件均已在主机上")
     return 0
 
 
@@ -489,11 +489,11 @@ def gc(args) -> int:
                   encoding="utf-8") as handle:
             json.dump({"Objects": [{"Key": k} for k in keys[start:start + 1000]],
                        "Quiet": True}, handle)
-    print(f"OK:{len(result['delete'])} blob(s), {result['bytes'] / 2**20:.1f} MB, "
-          f"not referenced by the {len(result['kept_releases'])} kept release(s); "
-          f"{result['too_new']} too new to judge")
+    print(f"OK: {len(result['delete'])} 个 blob，共 {result['bytes'] / 2**20:.1f} MB，"
+          f"未被保留的 {len(result['kept_releases'])} 个发行版引用；"
+          f"另有 {result['too_new']} 个因过新暂不判断")
     for prefix in result["kept_releases"]:
-        print(f"  keeping {prefix}")
+        print(f"  保留 {prefix}")
     return 0
 
 

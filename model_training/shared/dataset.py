@@ -90,26 +90,26 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):
 
     # Check existing cache
     if os.path.exists(cache_path):
-        print(f"📦 Loading ROI cache: {cache_path}")
+        print(f"📦 正在加载 ROI 缓存：{cache_path}")
         with open(cache_path, "rb") as f:
             cache = pickle.load(f)
         # Quick validation
         sample_paths = [vp for vp, _ in dataset.samples[:5]]
         hits = sum(1 for p in sample_paths if p in cache)
         if hits == len(sample_paths):
-            print(f"   ✅ Cache valid ({len(cache)} videos)")
+            print(f"   ✅ 缓存有效（{len(cache)} 个视频）")
             return cache
         else:
-            print(f"   ⚠️  Cache stale ({hits}/{len(sample_paths)} matched) — rebuilding")
+            print(f"   ⚠️  缓存已过期（匹配 {hits}/{len(sample_paths)}），正在重建")
 
-    print(f"\n🔍 PRE-COMPUTING ROIs for {len(dataset.samples)} videos...")
-    print(f"   This runs YOLOX + optional pose ONCE so training epochs are fast.")
-    print(f"   Cache: {cache_path}\n")
+    print(f"\n🔍 正在为 {len(dataset.samples)} 个视频预计算 ROI…")
+    print("   YOLOX 与可选姿态检测只运行一次，以加快后续训练轮次。")
+    print(f"   缓存：{cache_path}\n")
 
     yolox_model = get_yolox_people_model()
     cache = {}
 
-    for video_path, _ in tqdm(dataset.samples, desc="Caching ROIs"):
+    for video_path, _ in tqdm(dataset.samples, desc="缓存 ROI"):
         cap = cv2.VideoCapture(video_path)
         if not cap.isOpened():
             cache[video_path] = {}
@@ -186,7 +186,7 @@ def precompute_roi_cache(dataset, config, cache_path=None, pose_extractor=None):
         pickle.dump(cache, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     size_mb = os.path.getsize(cache_path) / 1e6
-    print(f"\n✅ ROI cache saved: {cache_path} ({size_mb:.1f} MB, {len(cache)} videos)")
+    print(f"\n✅ ROI 缓存已保存：{cache_path}（{size_mb:.1f} MB，{len(cache)} 个视频）")
     return cache
 
 
@@ -390,7 +390,7 @@ class VideoDataset(Dataset):
         self.samples = []
 
         if not os.path.exists(root):
-            print(f"⚠️  Dataset path {root} does not exist")
+            print(f"⚠️  数据集路径不存在：{root}")
             self.labels = []
             self.label_to_idx = {}
             self.idx_to_label = {}
@@ -403,7 +403,7 @@ class VideoDataset(Dataset):
         self.idx_to_label = {idx: label for label, idx in self.label_to_idx.items()}
         self.labels = class_folders
 
-        print(f"📊 Detected {len(self.labels)} action classes:")
+        print(f"📊 检测到 {len(self.labels)} 个动作类别：")
         for label, idx in self.label_to_idx.items():
             print(f"  {idx}: {label}")
 
@@ -419,7 +419,7 @@ class VideoDataset(Dataset):
                 self.samples.append((vp, self.label_to_idx[label]))
                 video_count += 1
 
-        print(f"✅ Found {video_count} videos")
+        print(f"✅ 找到 {video_count} 个视频")
 
     def __len__(self):
         return len(self.samples)
@@ -479,9 +479,9 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):
     min_train = config.get("min_train_per_action", 5)
     min_val = config.get("min_val_per_action", 2)
 
-    print(f"\n📊 Validating dataset sizes...")
-    print(f"  Min train videos/action: {min_train}")
-    print(f"  Min val videos/action:   {min_val}")
+    print("\n📊 正在验证数据集规模…")
+    print(f"  每个动作最少训练视频数：{min_train}")
+    print(f"  每个动作最少验证视频数：{min_val}")
 
     # Each split numbers its classes from its own folder list, so the same index
     # names different classes whenever val lacks a folder train has. Every
@@ -508,7 +508,7 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):
         total = t_cnt + v_cnt
 
         if t_cnt < min_train:
-            print(f"  ❌ '{action}': {t_cnt} train (need {min_train}) — SKIPPED")
+            print(f"  ❌ '{action}'：训练集 {t_cnt} 个（需要 {min_train} 个）——已跳过")
             continue
 
         # Enforce minimum val ratio (default 20%)
@@ -518,13 +518,13 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):
 
         if needs_resplit:
             if total < min_train + min_val:
-                print(f"  ⚠️  '{action}': {total} total (need {min_train + min_val}) — SKIPPED")
+                print(f"  ⚠️  '{action}'：总计 {total} 个（需要 {min_train + min_val} 个）——已跳过")
                 continue
             reason = (
-                f"{v_cnt} val" if v_cnt < min_val
-                else f"{current_val_ratio:.0%} val ratio < {min_val_ratio:.0%}"
+                f"验证集 {v_cnt} 个" if v_cnt < min_val
+                else f"验证集比例 {current_val_ratio:.0%} < {min_val_ratio:.0%}"
             )
-            print(f"  🔄 '{action}': {t_cnt} train, {v_cnt} val → AUTO-SPLITTING ({reason})")
+            print(f"  🔄 '{action}'：训练 {t_cnt}，验证 {v_cnt} → 自动重新划分（{reason}）")
             all_vids = t_vids + v_vids
             val_ratio = max(min_val / total, min_val_ratio)
             val_ratio = min(val_ratio, 0.3)
@@ -534,20 +534,20 @@ def validate_and_split_dataset(train_dataset, val_dataset, config):
             new_train.extend(split_train)
             new_val.extend(split_val)
             valid_actions.append(action)
-            print(f"     ✓ {len(split_train)} train, {len(split_val)} val")
+            print(f"     ✓ 训练 {len(split_train)}，验证 {len(split_val)}")
         else:
-            print(f"  ✅ '{action}': {t_cnt} train, {v_cnt} val — OK")
+            print(f"  ✅ '{action}'：训练 {t_cnt}，验证 {v_cnt}——正常")
             new_train.extend(t_vids)
             new_val.extend(v_vids)
             valid_actions.append(action)
 
     if not valid_actions:
-        print("\n❌ No actions meet minimum requirements.")
+        print("\n❌ 没有任何动作类别满足最低要求。")
         return False, [], [], []
 
-    print(f"\n✅ Validation complete: {len(valid_actions)} valid actions")
-    print(f"  Training samples:   {len(new_train)}")
-    print(f"  Validation samples: {len(new_val)}")
+    print(f"\n✅ 验证完成：{len(valid_actions)} 个有效动作类别")
+    print(f"  训练样本：{len(new_train)}")
+    print(f"  验证样本：{len(new_val)}")
     return True, valid_actions, new_train, new_val
 
 
@@ -579,6 +579,6 @@ def apply_dataset_split(train_dataset, val_dataset, valid_actions,
         ds.label_to_idx = new_label_to_idx.copy()
         ds.idx_to_label = new_idx_to_label.copy()
 
-    print(f"\n✅ Datasets updated:")
-    print(f"  Train: {len(train_dataset.samples)} | Val: {len(val_dataset.samples)}")
-    print(f"  Classes: {valid_actions}")
+    print("\n✅ 数据集已更新：")
+    print(f"  训练：{len(train_dataset.samples)} | 验证：{len(val_dataset.samples)}")
+    print(f"  类别：{valid_actions}")

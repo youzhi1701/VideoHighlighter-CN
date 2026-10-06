@@ -5027,10 +5027,10 @@ class VideoHighlighterGUI(QWidget):
                     else:
                         return list(data.keys())
                 else:
-                    self.append_log(f"⚠️ Unexpected JSON format in {filepath}")
+                    self.append_log(f"⚠️ {filepath} 中的 JSON 格式不符合预期")
                     return []
             except Exception as e:
-                self.append_log(f"❌ Failed to load labels from {filepath}: {e}")
+                self.append_log(f"❌ 无法从 {filepath} 加载标签：{e}")
                 return []
 
     def object_detector_choice(self):
@@ -5265,7 +5265,7 @@ class VideoHighlighterGUI(QWidget):
             completer = MultiCompleter(action_labels, self)
             completer.setMaxVisibleItems(10)
             self.actions_input.setCompleter(completer)
-            print(f"🔤 Actions auto-complete: {source}")
+            print(f"🔤 动作自动补全：{source}")
         else:
             self.actions_input.setCompleter(None)
 
@@ -5504,7 +5504,7 @@ class VideoHighlighterGUI(QWidget):
     def set_slider_preset(self, preset_type):
         """Set quick preset time ranges using sliders"""
         if self.current_video_duration == 0:
-            self.append_log("⚠️ No video loaded")
+            self.append_log("⚠️ 尚未加载视频")
             return
         
         duration = self.current_video_duration
@@ -5539,7 +5539,7 @@ class VideoHighlighterGUI(QWidget):
 
         start_time = int((start_pct / 100) * duration)
         end_time = int((end_pct / 100) * duration)
-        self.append_log(f"✅ Preset '{preset_type}': {self.format_time(start_time)} to {self.format_time(end_time)}")
+        self.append_log(f"✅ 预设“{preset_type}”：{self.format_time(start_time)} 至 {self.format_time(end_time)}")
 
 
     def _position_preview_window(self):
@@ -5626,10 +5626,10 @@ class VideoHighlighterGUI(QWidget):
             n = len(boxes or [])
             cap = f"t={sec//60:d}:{sec%60:02d}"
             if n:
-                cap += f"  •  {n} object{'s' if n != 1 else ''}"
+                cap += f"  •  {n} 个物体"
             self.preview_window.set_frame(pix, caption=cap)
         except Exception as e:
-            print(f"⚠️ preview draw error: {e}")
+            print(f"⚠️ 预览绘制错误：{e}")
 
     def run_pipeline(self, report_only: bool = False, simple: bool = False):
         from pipeline import run_highlighter
@@ -5648,19 +5648,19 @@ class VideoHighlighterGUI(QWidget):
         video_paths = self.get_file_list()
         
         if not video_paths:
-            self.append_log("⚠️ No videos selected!")
+            self.append_log("⚠️ 尚未选择视频！")
             return
 
         # Check if all files exist
         missing_files = [p for p in video_paths if not os.path.exists(p)]
         if missing_files:
-            self.append_log(f"⚠️ Video file(s) not found:")
+            self.append_log("⚠️ 未找到以下视频文件：")
             for f in missing_files:
                 self.append_log(f"  - {f}")
             return
 
         if self.worker and self.worker.isRunning():
-            self.append_log("⚠️ Pipeline already running!")
+            self.append_log("⚠️ 处理流水线已经在运行！")
             return
         
         # --- Validate scoring points ---
@@ -5699,22 +5699,22 @@ class VideoHighlighterGUI(QWidget):
                        + face_points)
         
         if total_points == 0 and not self._simple_run:
-            self.append_log("❌ ERROR: All scoring points are set to 0!")
+            self.append_log("❌ 错误：所有评分项的分值都设置为 0！")
             self.append_log("")
-            self.append_log("Please configure at least one scoring point:")
-            self.append_log("  • Scene points")
-            self.append_log("  • Motion event points")
-            self.append_log("  • Motion peak points")
-            self.append_log("  • Audio peak points")
-            self.append_log("  • Object points")
-            self.append_log("  • Action points")
+            self.append_log("请至少配置一个评分项：")
+            self.append_log("  • 场景分值")
+            self.append_log("  • 运动事件分值")
+            self.append_log("  • 运动峰值分值")
+            self.append_log("  • 音频峰值分值")
+            self.append_log("  • 物体分值")
+            self.append_log("  • 动作分值")
             if use_transcript:
-                self.append_log("  • Keyword points (transcript enabled)")
-                self.append_log("  • Transcript points (transcript enabled)")
+                self.append_log("  • 关键词分值（已启用转录）")
+                self.append_log("  • 转录分值（已启用转录）")
             else:
                 self.append_log("")
-                self.append_log("Note: Transcript is disabled - keyword and transcript")
-                self.append_log("points are not counted. Enable transcript to use them.")
+                self.append_log("注意：转录已禁用——关键词分值和转录分值")
+                self.append_log("不会计入总分。启用转录后才能使用这些评分项。")
             return
 
         exact_duration_val = int(self.spin_exact_duration.value())
@@ -5824,15 +5824,15 @@ class VideoHighlighterGUI(QWidget):
         # Clear previous logs
         self.log_output.clear()
         self._show_progress(True)
-        self.append_log("=== Starting Video Highlighter Pipeline ===")
+        self.append_log("=== 开始运行 Video Highlighter 处理流水线 ===")
         if self._simple_run:
             self.append_log("Simple view: default scoring (motion peaks + loudness), "
                             "reel + separate clips, highlight length from this page. "
                             "Detailed knobs unchanged.")
-        self.append_log(f"📁 Input: {video_paths}")
-        self.append_log(f"📁 Output: {config.get('output_file', 'highlight.mp4')}")
+        self.append_log(f"📁 输入：{video_paths}")
+        self.append_log(f"📁 输出：{config.get('output_file', 'highlight.mp4')}")
         if config.get('draw_object_boxes') or config.get('draw_action_labels'):
-            self.append_log("🎨 Bounding box visualization enabled for temp files")
+            self.append_log("🎨 已为临时文件启用检测框可视化")
         self.append_log("")
 
         if self.use_time_range_chk.isChecked() and self.current_video_duration > 0:
@@ -5888,7 +5888,7 @@ class VideoHighlighterGUI(QWidget):
         # Check if download is running
         if hasattr(self, 'download_worker') and self.download_worker and self.download_worker.isRunning():
             self.append_log("\n⏹️ === 已请求取消 ===")
-            self.append_log("⏹️ Stopping download...")
+            self.append_log("⏹️ 正在停止下载…")
             self.task_label.setText("⏹️ 正在取消下载…")
             self.cancel_btn.setEnabled(False)
             self.cancel_btn.setText("正在取消…")
@@ -6127,7 +6127,7 @@ class VideoHighlighterGUI(QWidget):
                 f"✅ 你的自定义检测器已安装（{names}）。"
                 f"可在“高级 → 物体模型”中选择它。")
         except Exception as e:                     # pragma: no cover - defensive
-            print(f"⚠️ Could not report the installed model: {e}")
+            print(f"⚠️ 无法报告已安装模型：{e}")
 
     def toggle_run(self, *args, simple=False):
         """Run / Pause / Resume - single button.
@@ -6195,7 +6195,7 @@ class VideoHighlighterGUI(QWidget):
         was_cancelled = bool(self.worker and self.worker.is_cancelled())
         
         if output_file and not was_cancelled:
-            self.append_log(f"\n✅ === PIPELINE COMPLETED SUCCESSFULLY ===")
+            self.append_log("\n✅ === 处理流水线已成功完成 ===")
             
             # Handle both single file (string) and multiple files (list of tuples)
             if isinstance(output_file, list):
@@ -6225,7 +6225,7 @@ class VideoHighlighterGUI(QWidget):
                         if os.path.exists(transcript_file): 
                             self.append_log(f"     📄 Transcript: {transcript_file}")
                     else:
-                        self.append_log(f"   ❌ Failed to process")
+                        self.append_log("   ❌ 处理失败")
                 
                 # Combine highlights if enabled and we have multiple files
                 if len(highlight_files) > 1 and self.auto_combine_chk.isChecked():
@@ -6249,15 +6249,15 @@ class VideoHighlighterGUI(QWidget):
                             total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
                             duration = total_frames / fps if fps else 0
                             cap.release()
-                            self.append_log(f"   Total duration: {int(duration//60)}:{int(duration%60):02d} ({duration:.1f}s)")
+                            self.append_log(f"   总时长：{int(duration//60)}:{int(duration%60):02d}（{duration:.1f} 秒）")
                         except Exception as e:
-                            self.append_log(f"   (Could not determine duration: {e})")
+                            self.append_log(f"   （无法确定时长：{e}）")
                     
                     self.append_log("=" * 60)
                 
             else:
                 # Single file
-                self.append_log(f"🎬 Output saved to: {output_file}")
+                self.append_log(f"🎬 输出已保存到：{output_file}")
                 
                 # Check for additional files
                 base_name = os.path.splitext(output_file)[0]
@@ -6282,7 +6282,7 @@ class VideoHighlighterGUI(QWidget):
             self.task_label.setStyleSheet("color: #4CAF50; font-weight: bold;")
         elif not was_cancelled:
             self.append_log("\n⚠️ === PIPELINE COMPLETED WITH ERRORS ===")
-            self.append_log("❌ No output file was generated. Check the log for errors.")
+            self.append_log("❌ 没有生成输出文件，请检查日志中的错误信息。")
             self.task_label.setText("❌ 失败")
             self.task_label.setStyleSheet("color: #f44336; font-weight: bold;")
         
@@ -6301,7 +6301,7 @@ class VideoHighlighterGUI(QWidget):
                     self.llm_chat.set_analysis_data(cache_data, video_path)
                     self.append_log("🤖 LLM chat context updated with analysis data")
             except Exception as e:
-                self.append_log(f"⚠️ Could not update LLM context: {e}")
+                self.append_log(f"⚠️ 无法更新大模型上下文：{e}")
 
         # feed cache to bot after finished pipeline
         if hasattr(self, 'llm_chat') and output_file:
@@ -6330,7 +6330,7 @@ class VideoHighlighterGUI(QWidget):
                         self.llm_chat.set_analysis_data(cache_data, video_path)
                         self.append_log("🤖 LLM chat context updated with analysis data")
             except Exception as e:
-                self.append_log(f"⚠️ Could not update LLM context: {e}")
+                self.append_log(f"⚠️ 无法更新大模型上下文：{e}")
 
         self.pipeline_cleanup()
 
@@ -6414,21 +6414,21 @@ class VideoHighlighterGUI(QWidget):
                         existing.show()
                         existing.raise_()
                         existing.activateWindow()
-                        self.append_log("📊 Reusing open timeline viewer.")
+                        self.append_log("📊 正在复用已打开的时间线查看器。")
                         return
                 except RuntimeError:
                     # Underlying C++ object was deleted — fall through.
                     self.timeline_window = None
 
             from signal_timeline_viewer import SignalTimelineWindow
-            self.append_log(f"📊 Opening timeline viewer for: {os.path.basename(video_path)}")
+            self.append_log(f"📊 正在打开时间线查看器：{os.path.basename(video_path)}")
             self.timeline_window = SignalTimelineWindow(video_path, analysis_data)
             self.timeline_window.show()
             self.llm_chat.set_timeline_window(self.timeline_window)
             self.llm_chat.set_video_path(video_path)
             self.llm_chat.load_cache_for_video(video_path)
         except Exception as e:
-            self.append_log(f"❌ Failed to open timeline viewer: {e}")
+            self.append_log(f"❌ 无法打开时间线查看器：{e}")
     def _why_report_candidates(self) -> list:
         """Where a report for the current selection could be, newest first.
 
@@ -6468,7 +6468,7 @@ class VideoHighlighterGUI(QWidget):
         found = self._why_report_candidates()
         if not found:
             if not self.get_file_list():
-                self.append_log("⚠️ Add a video first — the report sits next to its highlight.")
+                self.append_log("⚠️ 请先添加视频——报告会保存在对应高光文件旁边。")
                 return
             self.append_log(
                 "⚠️ No report found yet. Run the highlighter with “Write a highlight "
@@ -6482,7 +6482,7 @@ class VideoHighlighterGUI(QWidget):
         else:
             # No browser association is plausible on a stripped Windows install;
             # the path is more useful than a silent failure.
-            self.append_log(f"⚠️ Could not open a browser. The report is at: {newest}")
+            self.append_log(f"⚠️ 无法打开浏览器。报告位于：{newest}")
         self._offer_pro_for_report(os.path.splitext(newest)[0] + ".json")
 
     def _offer_pro_for_report(self, json_path):
@@ -6613,7 +6613,7 @@ class VideoHighlighterGUI(QWidget):
                 json_path, llm=llm, question=question or None, reading=reading,
                 model_name=label_for(entry))
         except Exception as exc:
-            self.append_log(f"⚠️ Summary failed: {exc}")
+            self.append_log(f"⚠️ 摘要生成失败：{exc}")
             return
         finally:
             QApplication.restoreOverrideCursor()
@@ -6656,10 +6656,10 @@ class VideoHighlighterGUI(QWidget):
             with open(json_path, encoding="utf-8") as fh:
                 chapters = json.load(fh).get("chapters") or []
         except Exception as exc:
-            self.append_log(f"⚠️ Could not read the report: {exc}")
+            self.append_log(f"⚠️ 无法读取报告：{exc}")
             return
         if not chapters:
-            self.append_log("⚠️ This report has no chapters to tell.")
+            self.append_log("⚠️ 此报告中没有可讲述的章节。")
             return
 
         entry = model or self._active_llm_model()
@@ -6690,7 +6690,7 @@ class VideoHighlighterGUI(QWidget):
                 json_path, llm=llm, model_name=label_for(entry),
                 log_fn=progress)
         except Exception as exc:
-            self.append_log(f"⚠️ Telling the chapters failed: {exc}")
+            self.append_log(f"⚠️ 章节讲述失败：{exc}")
             return
         finally:
             QApplication.restoreOverrideCursor()
@@ -6730,7 +6730,7 @@ class VideoHighlighterGUI(QWidget):
             with open(json_path, encoding="utf-8") as fh:
                 report = json.load(fh)
         except Exception as exc:
-            self.append_log(f"⚠️ Could not read the report: {exc}")
+            self.append_log(f"⚠️ 无法读取报告：{exc}")
             return
 
         vocabulary = report.get("vocabulary") or {}
@@ -6939,7 +6939,7 @@ class VideoHighlighterGUI(QWidget):
             with open(html_path, "w", encoding="utf-8") as fh:
                 fh.write(render_html(report))
         except Exception as exc:
-            self.append_log(f"⚠️ Could not re-read the report: {exc}")
+            self.append_log(f"⚠️ 无法重新读取报告：{exc}")
             return
 
         findings = report.get("advice") or []
@@ -7004,9 +7004,9 @@ class VideoHighlighterGUI(QWidget):
             from PySide6.QtCore import QSettings
             QSettings("VideoHighlighter", "Pro").setValue(
                 "advisor/model_chosen", dialog.chosen)
-            self.append_log(f"🤖 The report will be written with {dialog.chosen}.")
+            self.append_log(f"🤖 报告将使用 {dialog.chosen} 生成。")
         elif not dialog.models:
-            self.append_log("🤖 No model configured for the report.")
+            self.append_log("🤖 尚未为报告配置模型。")
 
     def _discuss_report_in_chat(self):
         """Open the LLM chat with this run's findings already in front of it."""
@@ -7015,12 +7015,12 @@ class VideoHighlighterGUI(QWidget):
             return
         widget = self._open_llm_chat_widget()
         if widget is None:
-            self.append_log("⚠️ The LLM chat window is not available in this build.")
+            self.append_log("⚠️ 当前版本中大模型对话功能不可用。")
             return
         try:
             widget.seed_from_report(json_path)
         except Exception as exc:
-            self.append_log(f"⚠️ Could not hand the report to the chat: {exc}")
+            self.append_log(f"⚠️ 无法将报告交给大模型对话：{exc}")
 
     def _open_llm_chat_widget(self):
         """The LLM Chat tab, brought to the front."""
@@ -7043,14 +7043,14 @@ class VideoHighlighterGUI(QWidget):
         video_paths = self.get_file_list()
         
         if not video_paths:
-            self.append_log("⚠️ No video selected. Please add a video first.")
+            self.append_log("⚠️ 尚未选择视频，请先添加一个视频。")
             return
         
         # Use the first video in the list
         video_path = video_paths[0]
         
         if not os.path.exists(video_path):
-            self.append_log(f"⚠️ Video file not found: {video_path}")
+            self.append_log(f"⚠️ 未找到视频文件：{video_path}")
             return
         
         try:
@@ -7076,13 +7076,13 @@ class VideoHighlighterGUI(QWidget):
                         # building the window did — and it blocks the GUI
                         # thread, with the old view still on screen. Without the
                         # splash, reopening looked like the app had frozen.
-                        startup_splash.begin("Reopening timeline viewer",
+                        startup_splash.begin("正在重新打开时间线查看器",
                                              os.path.basename(video_path),
                                              steps=4, parent=self)
                         try:
                             existing.refresh_from_disk()
                         except Exception as e:
-                            self.append_log(f"⚠️ Could not refresh timeline cache: {e}")
+                            self.append_log(f"⚠️ 无法刷新时间线缓存：{e}")
                         finally:
                             startup_splash.finish(existing)
                         # Un-mute (close() muted the audio outputs) and re-show
@@ -7097,7 +7097,7 @@ class VideoHighlighterGUI(QWidget):
                         existing.show()
                         existing.raise_()
                         existing.activateWindow()
-                        self.append_log("📊 Reusing open timeline viewer.")
+                        self.append_log("📊 正在复用已打开的时间线查看器。")
                         return
                 except RuntimeError:
                     # Underlying C++ object was deleted — fall through to recreate
@@ -7150,7 +7150,7 @@ class VideoHighlighterGUI(QWidget):
                     latest_file = max(matching_files, key=lambda p: p.stat().st_mtime)
                     with open(latest_file, 'r') as f:
                         cache_data = json.load(f)
-                    self.append_log(f"✅ Loaded cache: {latest_file.name}")
+                    self.append_log(f"✅ 已加载缓存：{latest_file.name}")
                 else:
                     # Check if user suppressed this warning
                     suppress = self.config_data.get("ui", {}).get("suppress_no_cache_warning", False)
@@ -7167,21 +7167,21 @@ class VideoHighlighterGUI(QWidget):
                             self.config_data["ui"]["suppress_no_cache_warning"] = True
                             self.save_config()
                     
-                    self.append_log("⚠️ Opening timeline without signal data — run pipeline to populate signals.")
+                    self.append_log("⚠️ 将在没有信号数据的情况下打开时间线——请运行处理流水线以生成信号数据。")
                     cache_data = {}
 
             
-            self.append_log(f"📊 Opening timeline viewer for: {os.path.basename(video_path)}")
+            self.append_log(f"📊 正在打开时间线查看器：{os.path.basename(video_path)}")
 
             # Building this window takes several seconds on a real analysis —
             # the signal timeline and the assistant panel are most of it — and
             # it blocks the GUI thread, so without the splash the app just
             # appears to hang. The window reports its own stages (see
             # signal_timeline_viewer.init_ui).
-            startup_splash.begin("Opening timeline viewer",
+            startup_splash.begin("正在打开时间线查看器",
                                  os.path.basename(video_path), steps=6,
                                  parent=self)
-            startup_splash.stage("Reading the analysis cache…")
+            startup_splash.stage("正在读取分析缓存…")
             window = None
             try:
                 # Create and show the timeline window
@@ -7207,10 +7207,10 @@ class VideoHighlighterGUI(QWidget):
             self.llm_chat.load_cache_for_video(video_path)
 
         except ImportError as e:
-            self.append_log(f"❌ Failed to import timeline viewer: {e}")
-            self.append_log("   Make sure signal_timeline_viewer.py is in the same directory.")
+            self.append_log(f"❌ 无法导入时间线查看器：{e}")
+            self.append_log("   请确认 signal_timeline_viewer.py 位于同一目录。")
         except Exception as e:
-            self.append_log(f"❌ Failed to open timeline viewer: {e}")
+            self.append_log(f"❌ 无法打开时间线查看器：{e}")
             import traceback
             self.append_log(traceback.format_exc())
 

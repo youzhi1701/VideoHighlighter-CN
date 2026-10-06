@@ -95,7 +95,7 @@ def _write_transcript_sidecar(video_path: str, segments: list, *,
         with open(path, "w", encoding="utf-8") as f:
             f.write(create_enhanced_transcript(segments))
     except Exception as e:
-        log(f"⚠️ Could not write transcript sidecar: {e}")
+        log(f"⚠️ 无法写入转写文本旁车文件：{e}")
 
 
 def cached_transcript(video_path: str, *, language: Optional[str] = None,
@@ -236,11 +236,10 @@ def run_subtitles(video_path: str, *, model: Optional[str] = None,
     tr = cached_transcript(video_path, language=language, log=log) if reuse_cached else None
     if tr is not None:
         n = len(tr.get("segments") or [])
-        log(f"✅ Using the transcript already in this video's cache ({n} segments) "
-            f"— no re-transcription")
+        log(f"✅ 正在复用该视频缓存中的转写结果（{n} 个片段），无需重新转写")
         if progress:
-            progress(TRANSCRIBE_TO, 100, "Subtitles",
-                     f"Reusing cached transcript ({n} segments)")
+            progress(TRANSCRIBE_TO, 100, "字幕",
+                     f"正在复用缓存转写（{n} 个片段）")
         # An older cache can predate the sidecar the Transcript tab reads, and
         # the run that would have written it is the one being skipped.
         _write_transcript_sidecar(video_path, tr.get("segments") or [],
@@ -264,9 +263,9 @@ def run_subtitles(video_path: str, *, model: Optional[str] = None,
         raise _Cancelled()
 
     if progress:
-        progress(TRANSCRIBE_TO, 100, "Subtitles",
-                 f"Translating {len(segments)} segments to {target_lang}..." if translating
-                 else f"Writing {os.path.basename(srt_path)}...")
+        progress(TRANSCRIBE_TO, 100, "字幕",
+                 f"正在将 {len(segments)} 个片段翻译为 {target_lang}..." if translating
+                 else f"正在写入 {os.path.basename(srt_path)}...")
 
     # create_srt_file translates internally when target_lang != source_lang —
     # hundreds of LLM batches for a long video, and the second place a subtitle
@@ -274,7 +273,7 @@ def run_subtitles(video_path: str, *, model: Optional[str] = None,
     create_srt_file(segments, srt_path, source_lang=src,
                     target_lang=target_lang if translating else None,
                     progress_fn=_band(progress, TRANSCRIBE_TO, 98))
-    log(f"✅ Subtitles saved: {srt_path}")
+    log(f"✅ 字幕已保存：{srt_path}")
     return tr
 
 
@@ -423,7 +422,7 @@ def _load_yolo(d: dict, log=print, devices=None):
         log=log, auto_install=True,
     )
     if detector is not None:
-        log(f"✅ Object detector: {type(detector).__name__}, {len(names)} classes")
+        log(f"✅ 对象检测器：{type(detector).__name__}，{len(names)} 个类别")
     return detector
 
 
@@ -508,17 +507,17 @@ def run_audio(video_path: str, *, progress: ProgressFn = None,
     legacy `audio_peaks` key."""
     from modules.audio.audio_peaks import extract_audio_peaks, extract_waveform_data
     if progress:
-        progress(0, 1, "Audio", "Detecting audio peaks…")
+        progress(0, 1, "音频", "正在检测音频峰值…")
     peaks = [float(t) for t in (extract_audio_peaks(video_path, cancel_flag=cancel) or [])]
     if cancel is not None and cancel.is_set():
         raise _Cancelled()
     try:
         waveform = extract_waveform_data(video_path)
     except Exception as e:
-        log(f"⚠️ Waveform extraction failed: {e}")
+        log(f"⚠️ 波形提取失败：{e}")
         waveform = None
     if progress:
-        progress(1, 1, "Audio", f"{len(peaks)} peaks")
+        progress(1, 1, "音频", f"{len(peaks)} 个峰值")
     return {
         "audio_peaks": peaks,
         "audio": {"peaks": peaks, "waveform": waveform},
@@ -730,7 +729,7 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
             fresh_objects = list((patch or {}).get("objects") or [])
             detected = True
         else:
-            log("⚠️ Detection returned no boxes — spatial rules cannot fire.")
+            log("⚠️ 检测未返回任何边界框，空间规则无法触发。")
 
     # Only what the rules mention. The vocal measurement decodes the audio, so
     # gathering it for a purely spatial rule set would put a minute onto an
@@ -760,8 +759,7 @@ def run_composition(video_path: str, *, cache_dir: str = "./cache",
             # model and a decode of the whole video, and starting one as a side
             # effect of a rule mentioning `expression` is a much longer wait
             # than anything else here does unasked.
-            log("   ↳ expression comes from a face scan — run one from the "
-                "timeline viewer first.")
+            log("   ↳ expression 来自人脸扫描，请先在时间线查看器中运行一次人脸扫描。")
 
     # The file's own length, so a closing edge guard knows where the end is.
     # Without it the engine falls back to how far the signals reach, which is
@@ -844,7 +842,7 @@ def merge_into_cache(video_path: str, patch: dict, *, seed: dict = None,
         cache_dir = Path("./cache")
         video_hash, matching = _cache_files(video_path)
         if not video_hash:
-            log("⚠️ No video_hash; analysis not persisted")
+            log("⚠️ 缺少 video_hash，分析结果未持久化保存")
             return False
 
         # Every write goes through atomic_write_json (tmp file + replace) rather
@@ -870,7 +868,7 @@ def merge_into_cache(video_path: str, patch: dict, *, seed: dict = None,
                 disk.update(patch)
                 atomic_write_json(Path(cache_file), disk)
                 wrote += 1
-            log(f"💾 Analysis merged → {wrote} cache file(s)")
+            log(f"💾 分析结果已合并到 {wrote} 个缓存文件")
             return wrote > 0
         else:
             cache_file = cache_dir / f"{video_hash}.cache.json"
@@ -889,10 +887,10 @@ def merge_into_cache(video_path: str, patch: dict, *, seed: dict = None,
             from modules.media.video_cache import holds_analysis
             disk["cache_complete"] = holds_analysis(disk)
             atomic_write_json(cache_file, disk)
-            log(f"💾 Analysis merged → {cache_file.name}")
+            log(f"💾 分析结果已合并 → {cache_file.name}")
             return True
     except Exception as e:
-        log(f"⚠️ Could not persist analysis: {e}")
+        log(f"⚠️ 无法持久化分析结果：{e}")
         return False
 
 

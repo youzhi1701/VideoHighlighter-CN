@@ -180,7 +180,7 @@ def score_regions(tile_embeddings: np.ndarray, category: CustomCategory,
         raise ValueError("tile_embeddings 必须为 [n_regions, dim]，且 n_regions >= 1")
     if len(tiles) != len(tile_embeddings):
         raise ValueError(
-            f"got {len(tiles)} regions but {len(tile_embeddings)} embeddings")
+            f"区域数量为 {len(tiles)}，但嵌入数量为 {len(tile_embeddings)}")
 
     cos = tile_embeddings @ category.vector          # [n_regions]
     best = int(np.argmax(cos))

@@ -140,7 +140,7 @@ def remember(value, settings=None) -> str:
         else:
             settings.remove(HOST_KEY)
     except Exception as exc:                            # pragma: no cover - defensive
-        print(f"⚠️ Could not store the Ollama host: {exc}")
+        print(f"⚠️ 无法保存 Ollama 主机地址：{exc}")
     return url
 
 

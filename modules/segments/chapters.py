@@ -405,7 +405,7 @@ def _chapter(number: int, start: float, end: float, shots: int,
         "timestamp": format_timestamp(start),
         # No vocabulary ships here, so the title is positional and the caller is
         # expected to overwrite it once it has something to name the span with.
-        "title": f"Chapter {number}",
+        "title": f"章节 {number}",
         "shots": shots,
         "pace": describe_pace(shots, seconds),
         # How strongly the cut that opened this chapter separated from what came
@@ -441,7 +441,7 @@ def cached_index_arrays(video_path: str, cache_dir: str = "./cache"):
     try:
         from llm.clip_index import ClipFrameIndex, cache_path_for
     except Exception as exc:
-        print(f"📖 Chapters: no CLIP stack ({exc}); using shot structure")
+        print(f"📖 章节：CLIP 环境不可用（{exc}）；将使用镜头结构")
         return None, None
 
     try:
@@ -449,14 +449,14 @@ def cached_index_arrays(video_path: str, cache_dir: str = "./cache"):
     except OSError:
         return None, None          # the video moved or vanished
     if not os.path.exists(path):
-        print("📖 Chapters: no cached visual index; using shot structure")
+        print("📖 章节：没有缓存的视觉索引；将使用镜头结构")
         return None, None
     try:
         index = ClipFrameIndex.load(path)
     except Exception as exc:
-        print(f"⚠️  Chapters: unreadable visual index ({exc}); using shot structure")
+        print(f"⚠️  章节：视觉索引无法读取（{exc}）；将使用镜头结构")
         return None, None
-    print(f"📖 Chapters: reusing {len(index)} cached frame signatures")
+    print(f"📖 章节：复用 {len(index)} 个缓存画面特征")
     return index.timestamps, index.embeddings
 
 
@@ -545,13 +545,13 @@ def main():
 
     from modules.segments.motion_scene_detect_optimized import detect_scenes_motion_optimized
 
-    print(f"🎬 Detecting shots in {os.path.basename(args.video)} ...")
+    print(f"🎬 正在检测 {os.path.basename(args.video)} 的镜头…")
     scenes, _, _ = detect_scenes_motion_optimized(args.video, debug=False)
     if not scenes:
-        print("No shots detected; nothing to chapterize.")
+        print("未检测到镜头，无法生成章节。")
         return
     duration = float(scenes[-1][1])
-    print(f"🎬 {len(scenes)} shots over {format_timestamp(duration)}")
+    print(f"🎬 共 {len(scenes)} 个镜头，总时长 {format_timestamp(duration)}")
 
     timestamps = embeddings = None
     if not args.no_visual:
@@ -562,7 +562,7 @@ def main():
                                   interval=args.interval, device=args.device)
             timestamps, embeddings = index.timestamps, index.embeddings
         except Exception as e:
-            print(f"⚠️  No visual signatures ({e}); falling back to shot structure")
+            print(f"⚠️  没有可用的视觉特征（{e}）；将退回镜头结构划分")
 
     chapters = chapterize(duration, scenes, timestamps, embeddings,
                           window=args.window, min_chapter=args.min_chapter,

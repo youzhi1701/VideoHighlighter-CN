@@ -316,16 +316,16 @@ def process_video_avoiding(input_path, output_folder, yolo_model,
 
         frame_idx += 1
         if frame_idx % 50 == 0:
-            print(f"  frame {frame_idx}/{total}")
+            print(f"  帧 {frame_idx}/{total}")
 
     cap.release()
     writer.release()
 
     n = max(1, frame_idx)
     print(f"✅ 排除裁剪完成：{os.path.basename(out_path)}")
-    print(f"   excluded {stats['excluded']} | clear {stats['clear']} | "
-          f"impossible {stats['impossible']} | dropped {stats['dropped']} "
-          f"({stats['excluded'] * 100 // n}% cleanly excluded)")
+    print(f"   已排除 {stats['excluded']} | 无冲突 {stats['clear']} | "
+          f"无法排除 {stats['impossible']} | 丢弃 {stats['dropped']} "
+          f"（{stats['excluded'] * 100 // n}% 成功排除）")
 
     return {"output": out_path, "frames": frame_idx, **stats}
 

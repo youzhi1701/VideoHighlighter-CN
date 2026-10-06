@@ -210,7 +210,7 @@ def apply_motion(src: str, dst: str, name: str, *, duration: float,
     if result.returncode != 0 or not os.path.exists(dst) \
             or os.path.getsize(dst) == 0:
         tail_line = (result.stderr or "").strip().splitlines()[-1:] or ["unknown error"]
-        log_fn(f"⚠️ Could not apply the {name} motion ({tail_line[0]}); "
-               f"the clip keeps its picture")
+        log_fn(f"⚠️ 无法应用“{name}”运动效果（{tail_line[0]}）；"
+               f"将保留该片段的原始画面")
         shutil.copy2(src, dst)
     return dst

@@ -455,8 +455,7 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
     from modules.media.video_probe import probe_video
 
     if pace not in PACES:
-        raise ValueError(f"unknown pace {pace!r} — expected one of "
-                         f"{', '.join(PACES)}")
+        raise ValueError(f"未知节奏 {pace!r}——可选值为：{', '.join(PACES)}")
     band = PACES[pace]
     scores = scores or {}
     texts = texts or {}
@@ -484,8 +483,7 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
             kinds = {p: s.kind for p, s in
                      classify_all([s.path for s in pool], log_fn=log_fn).items()}
         except Exception as exc:
-            log_fn(f"⚠️ Could not classify framing ({exc}); "
-                   f"picking on order alone")
+            log_fn(f"⚠️ 无法判断镜头景别（{exc}）；将仅按素材顺序选择")
     for source in pool:
         source.kind = str(kinds.get(source.path, "") or "")
 
@@ -499,8 +497,7 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
             from modules.segments.shot_window import profile_all
             graded = profile_all([s.path for s in pool], log_fn=log_fn)
         except Exception as exc:
-            log_fn(f"⚠️ Could not measure camera settling ({exc}); "
-                   f"shots will start at the top of each clip")
+            log_fn(f"⚠️ 无法判断相机稳定位置（{exc}）；镜头将从各片段开头开始")
     if settle:
         for source in pool:
             source.windows = graded.get(source.path)
@@ -518,8 +515,7 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
                            log_fn=log_fn)
             numbered = group(found, log_fn=log_fn)
         except Exception as exc:
-            log_fn(f"⚠️ Could not work out where the clips were shot ({exc}); "
-                   f"the reel may show the same view twice")
+            log_fn(f"⚠️ 无法判断片段拍摄位置（{exc}）；成片中可能重复出现相同视角")
     if spread:
         for source in pool:
             source.place = int(numbered.get(source.path, -1))
@@ -531,8 +527,7 @@ def plan_reel(sources, *, duration: float = 24.0, pace: str = DEFAULT_PACE,
             for source in pool:
                 source.look = appearance.get(source.path)
         except Exception as exc:
-            log_fn(f"⚠️ Could not compare how the clips look ({exc}); "
-                   f"two shots of the same view may end up side by side")
+            log_fn(f"⚠️ 无法比较片段画面相似度（{exc}）；相同视角的镜头可能连续出现")
 
     # The hook is the most striking thing available, not the earliest. With
     # scores that is what they say; without them, a close shot stops a scroll

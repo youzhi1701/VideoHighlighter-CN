@@ -515,7 +515,7 @@ def tell(report: Mapping,
     previous = None
     for index, ch in enumerate(chapters, start=1):
         if cancel_fn is not None and cancel_fn():
-            log_fn(f"⏹️ 已停止：完成 {index - 1}/{len(chapters)} chapters.")
+            log_fn(f"⏹️ 已停止：完成 {index - 1}/{len(chapters)} 个章节。")
             break
         log_fn(f"📖 正在讲述章节 {index}/{len(chapters)}"
                f" ({ch.get('timestamp', '')})…")

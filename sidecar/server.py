@@ -218,8 +218,7 @@ class RunManager:
                     self._emit({
                         "type": "error",
                         "message": (
-                            f"The processing engine stopped unexpectedly "
-                            f"(exit code {proc.exitcode}). The run was not completed."
+                            f"处理引擎意外停止（退出代码 {proc.exitcode}），本次任务未完成。"
                         ),
                     })
                 self._emit({"type": "done"})
@@ -780,7 +779,7 @@ async def get_edl(path: str) -> dict:
 
 class EdlSaveRequest(BaseModel):
     path: str
-    title: str | None = "Untitled"
+    title: str | None = "未命名"
     music: str | None = ""
     music_mode: str | None = "replace"
     music_volume: float | None = 0.8
@@ -795,7 +794,7 @@ def _edl_from_request(req: "EdlSaveRequest"):
     from modules.media.edl import Cut, Edl
 
     return Edl(
-        title=req.title or "Untitled",
+        title=req.title or "未命名",
         music=req.music or "", music_mode=req.music_mode or "replace",
         music_volume=float(req.music_volume if req.music_volume is not None else 0.8),
         width=int(req.width or 0), height=int(req.height or 0),
@@ -962,7 +961,7 @@ class ReelRequest(BaseModel):
     source_paths: list[str] | None = None
     duration: float = 24.0
     pace: str = "energetic"
-    title: str | None = "Reel"
+    title: str | None = "成片"
     music: str | None = ""
     transition: str | None = "cut"
     transition_duration: float | None = 0.25
@@ -1021,7 +1020,7 @@ def _build_reel_edl(req: "ReelRequest"):
 
     edl = plan_reel(
         sources, duration=float(req.duration), pace=req.pace or "energetic",
-        title=req.title or "Reel", music=req.music or "",
+        title=req.title or "成片", music=req.music or "",
         transition=req.transition or "cut",
         transition_duration=float(req.transition_duration or 0.25),
         easing=req.easing or "linear",
@@ -1468,8 +1467,8 @@ async def get_action_labels(backend: str = "auto", models: str = "intel_only") -
         if models == "mixed":
             custom = custom_ov or r3d_custom
             shared = set(custom) & set(intel)
-            labels = [f"{c} [custom]" if c in shared else c for c in custom]
-            labels += [f"{i} [intel]" if i in shared else i
+            labels = [f"{c} [自定义]" if c in shared else c for c in custom]
+            labels += [f"{i} [Intel]" if i in shared else i
                        for i in intel if i not in set(custom) or i in shared]
             return {"ok": True, "labels": labels, "shared": len(shared)}
         return {"ok": True, "labels": intel}

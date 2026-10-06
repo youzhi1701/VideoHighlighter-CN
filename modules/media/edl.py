@@ -157,7 +157,7 @@ class Cut:
 
 @dataclass
 class Edl:
-    title: str = "Untitled"
+    title: str = "无标题"
     cuts: list[Cut] = field(default_factory=list)
     music: str = ""
     music_mode: str = "replace"

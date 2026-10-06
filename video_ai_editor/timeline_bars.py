@@ -153,7 +153,7 @@ class DraggableTimelineBar(QGraphicsRectItem):
             }
             payload = json.dumps(bar_data, default=_json_safe)
         except Exception as e:
-            print(f"⚠️ Drag serialize failed, skipping drag: {e}")
+            print(f"⚠️ 拖拽数据序列化失败，已取消本次拖拽：{e}")
             self.mouse_press_pos = None
             return
 

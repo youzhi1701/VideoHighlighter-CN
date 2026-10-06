@@ -246,8 +246,8 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
         
         # Only do this check if we have both types of data
         if yolo_max <= 2 and pose_max >= 3:
-            print(f"   🚨 POTENTIAL CORNER CASE: YOLO max={yolo_max}, Pose max={pose_max}")
-            print(f"      Checking zone activity...")
+            print(f"   🚨 可能的特殊情况：YOLO 最大人数={yolo_max}，Pose 最大人数={pose_max}")
+            print("      正在检查区域活动…")
             
             # Get zone analysis to confirm
             zone_scores, zone_people, zone_activity, zone_positions = analyze_region_activity(
@@ -294,25 +294,25 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
                     
                     if not has_action:
                         all_zones_active = False
-                        print(f"      {zone.capitalize()} has no action")
+                        print(f"      {{'left': '左侧', 'center': '中间', 'right': '右侧'}}.get(zone, zone) + '区域没有动作'")
                 else:
                     all_zones_active = False
             
             if all_zones_active:
-                print(f"   🚨 CORNER CASE CONFIRMED: Dense crowd with activity in all zones")
-                print(f"      YOLO max: {yolo_max}, Pose max: {pose_max}")
-                print(f"      All zones have action - people packed together")
-                print(f"   ➡️ Using 3 crops to capture all activity")
+                print("   🚨 已确认特殊情况：密集人群在所有区域都有活动")
+                print(f"      YOLO 最大人数：{yolo_max}，Pose 最大人数：{pose_max}")
+                print("      所有区域都有动作——人员较为密集")
+                print("   ➡️ 使用 3 个裁剪区域覆盖全部活动")
                 return 3, ['left', 'center', 'right'], "corner-case-dense-crowd", action_hotspots
             else:
-                print(f"   ℹ️ Not a corner case - zones lack consistent action")
+                print("   ℹ️ 不是特殊情况——各区域缺少持续动作")
     
     # ===== HANDLE SINGLE PERSON EXPLICITLY =====
     if people_count == 1:
-        print(f"   👤 Single person detected - NO CROP (would split body parts)")
+        print("   👤 检测到单人——不裁剪（否则可能切开身体部位）")
         return 0, [], "single-person-no-crop", action_hotspots
     
-    print(f"   🔍 Analyzing ACTION zones (not just people)...")
+    print("   🔍 正在分析动作区域（不只是人物位置）…")
     
     # Get activity analysis
     zone_scores, zone_people, zone_activity, zone_positions = analyze_region_activity(
@@ -345,10 +345,10 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
                     'num_points': len(all_points)
                 }
                 
-                print(f"   🔥 {zone} action hot spot: x={hot_x:.0f}, y={hot_y:.0f}, spread={spread_x:.0f}")
+                print(f"   🔥 {{'left': '左侧', 'center': '中间', 'right': '右侧'}}.get(zone, zone) 动作热点：x={hot_x:.0f}，y={hot_y:.0f}，扩散={spread_x:.0f}")
     
     # ===== Calculate zone action potential =====
-    print(f"   📊 ACTION Zone analysis:")
+    print("   📊 动作区域分析：")
     
     # Calculate ACTION metrics (not people metrics)
     zone_action_potential = {}
@@ -377,7 +377,7 @@ def determine_smart_crop_strategy_v2(video_path, yolo_model, pose_model=None, sa
                 'has_action': action_consistency >= 0.15 or max_activity >= 0.25
             }
             
-            print(f"      {zone.capitalize()}:")
+            print(f"      {{'left': '左侧', 'center': '中间', 'right': '右侧'}}.get(zone, zone) + '：'")
             print(f"        Max activity: {max_activity:.2f}")
             print(f"        Action consistency: {action_consistency:.0%}")
             print(f"        Action density: {action_density:.2f}")

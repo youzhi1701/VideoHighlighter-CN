@@ -831,7 +831,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     log(f"⚠ 转录处理失败：{e}")
                     transcript_segments = []
                 except Exception as e:
-                    log(f"⚠ Transcript processing failed: {e}")
+                    log(f"⚠ 转录处理失败：{e}")
                     transcript_segments = []
 
                 if SEARCH_KEYWORDS and transcript_segments:
@@ -1011,7 +1011,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             if audio_backfill:
                 log(_describe_backfill("audio_peaks"))
                 try:
-                    check_cancellation(cancel_flag, log, "audio peak detection")
+                    check_cancellation(cancel_flag, log, "音频峰值检测")
                     audio_peaks = extract_audio_peaks(processed_video_path,
                                                       cancel_flag=cancel_flag)
                     log(f"✅ 音频峰值检测完成：{len(audio_peaks)} 个峰值")
@@ -1054,16 +1054,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                 log("ℹ️ 已跳过音频峰值检测（audio_peak_points 为 0）")
                 audio_peaks = []
                 progress.update_progress(
-                    30, 100, "Pipeline",
-                    "Audio peaks skipped (no audio scoring) — waveform computed for timeline"
+                    30, 100, "处理流水线",
+                    "已跳过音频峰值评分——已为时间线计算音频波形"
                 )
             else:
-                progress.update_progress(30, 100, "Pipeline", "Analyzing audio...")
+                progress.update_progress(30, 100, "处理流水线", "正在分析音频…")
                 log("🔹 步骤 3：正在检测音频峰值…")
                 try:
-                    check_cancellation(cancel_flag, log, "audio peak detection")
+                    check_cancellation(cancel_flag, log, "音频峰值检测")
                     audio_peaks = extract_audio_peaks(processed_video_path, cancel_flag=cancel_flag)
-                    log(f"✅ Audio peak detection done: {len(audio_peaks)} peaks")
+                    log(f"✅ 音频峰值检测完成：{len(audio_peaks)} 个峰值")
                 except RuntimeError:
                     return None
 
@@ -1665,7 +1665,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             except Exception as e:
                 log(f"⚠ 动作识别失败：{e}")
                 import traceback
-                log(f"Full error: {traceback.format_exc()}")
+                log(f"完整错误信息：{traceback.format_exc()}")
                 action_detections = []
         elif using_cache:
             log(CACHE_HIT_LOG.format(kind="action"))
@@ -1678,7 +1678,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                         (timestamp, frame_id, action_id, score, action_name)
                         for timestamp, frame_id, action_id, score, action_name, _ in action_detections
                     ]
-                    log(f"✅ Converted cached detections from 6-element to 5-element format")
+                    log("✅ 已将缓存检测结果从 6 元素格式转换为 5 元素格式")
         elif not interesting_actions:
             log("ℹ️ 未指定关注动作，已跳过动作识别")
             action_detections = []
@@ -1729,7 +1729,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             except Exception as e:
                 log(f"⚠️ 缓存保存失败：{e}")
                 import traceback
-                log(f"Full error: {traceback.format_exc()}")
+                log(f"完整错误信息：{traceback.format_exc()}")
         # ========== END CACHE SAVE ==========
 
         # ========== AVOID: locate the person(s) to avoid ==========
@@ -2019,8 +2019,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
                     score[sec] = 0.0
             log(f"🚫 排除（跳过）：已将 {len(forbidden_seconds)} 秒的评分归零")
 
-        progress.update_progress(80, 100, "Score Calculation", "Score computation complete")
-        check_cancellation(cancel_flag, log, "score computation completion")
+        progress.update_progress(80, 100, "评分计算", "评分计算完成")
+        check_cancellation(cancel_flag, log, "评分计算完成")
 
         # -------------------------
         # DEBUG: score breakdown
@@ -2452,7 +2452,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
             except Exception as e:
                 log(f"⚠️ 保存高光缓存时出错：{e}")
                 import traceback
-                log(f"Full error: {traceback.format_exc()}")
+                log(f"完整错误信息：{traceback.format_exc()}")
         # ========== END HIGHLIGHT CACHE SAVE ==========
 
 
@@ -2923,5 +2923,5 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
     except Exception as e:
         log(f"❌ 处理流水线失败：{e}")
         import traceback
-        log(f"Full error: {traceback.format_exc()}")
+        log(f"完整错误信息：{traceback.format_exc()}")
         return None

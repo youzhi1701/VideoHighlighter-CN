@@ -23,6 +23,13 @@ REPORT = INTERNAL_DIR / "报告" / "遗漏英文扫描.json"
 
 CJK_RE = re.compile(r"[\u3400-\u9fff]")
 EN_RE = re.compile(r"[A-Za-z]{2,}")
+STYLE_RE = re.compile(
+    r"(?:Q[A-Za-z0-9_]+(?:[:#][A-Za-z0-9_]+)?\\s*\\{|"
+    r"(?:background(?:-color)?|color|border(?:-[a-z]+)?|padding|margin|"
+    r"font(?:-[a-z]+)?|min-width|max-width|min-height|max-height|"
+    r"selection-color|selection-background-color)\\s*:)",
+    re.I,
+)
 TECH_RE = re.compile(
     r"^(?:VideoHighlighter|AI|CPU|GPU|CUDA|CLIP|ONNX|OpenVINO|FFmpeg|GGUF|Ollama|"
     r"PyTorch|YOLOX|AGPLv3|FCPXML|EDL|CSV|JSON|HTTP|HTTPS|NVIDIA|Intel|AMD|"
@@ -117,6 +124,8 @@ def visible_candidate(text: str, allow: set[str]) -> bool:
         return False
     if t.startswith(("http://", "https://")):
         return False
+    if STYLE_RE.search(t):
+        return False
     # Keep plain alphabetic words.  Single-word labels such as "Cancel",
     # "Save", "Search" and "Preview" are common UI text and were previously
     # filtered out here by mistake.  Only suppress identifier/path-like tokens
@@ -174,6 +183,14 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
             clean(str(exc)),
         )]
 
+    docstring_nodes: set[int] = set()
+    for owner in ast.walk(tree):
+        if isinstance(owner, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+            if owner.body and isinstance(owner.body[0], ast.Expr):
+                value = owner.body[0].value
+                if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                    docstring_nodes.add(id(value))
+
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
             name = call_name(node.func)
@@ -225,6 +242,8 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                         hits.append(Hit(rel, getattr(arg, "lineno", getattr(node, "lineno", 0)),
                                         "python-runtime-text", priority, clean(value)))
         elif gui_file and isinstance(node, (ast.Constant, ast.JoinedStr)):
+            if id(node) in docstring_nodes:
+                continue
             value = string_value(node)
             if value and len(clean(value)) >= 4 and visible_candidate(value, allow):
                 # Broad safety net for GUI-local strings. It intentionally

@@ -91,6 +91,7 @@ except Exception:
 from modules.system.app_paths import resource_path as _resource_path, data_file as _data_file, config_path
 from modules.system.app_paths import action_model_file as _action_model_file
 from version import __version__, __edition__
+EDITION_DISPLAY = "免费版" if __edition__ == "Free" else __edition__
 
 # --- Contact / support details shown in the About tab ---
 SUPPORT_EMAIL = "przkreft@gmail.com"
@@ -1027,7 +1028,7 @@ class VideoHighlighterGUI(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Video Highlighter v{__version__} {__edition__}")
+        self.setWindowTitle(f"Video Highlighter v{__version__} {EDITION_DISPLAY}")
         screen = QApplication.primaryScreen().availableGeometry()
         w = min(1000, screen.width() - 20)
         # Open as tall as the screen comfortably allows. The fixed sections
@@ -2235,11 +2236,9 @@ class VideoHighlighterGUI(QWidget):
                         import_r3d_action_model, r3d_custom_action_paths)
                     n_classes, variant = import_r3d_action_model(src, labels_src)
                     if n_classes == 0:
-                        print("⚠️ R3D model imported without a mapping file — it won't "
-                              "be usable until one is provided")
+                        print("⚠️ 已导入 R3D 模型，但缺少映射文件；提供映射文件前无法使用。")
                     elif not variant:
-                        print("⚠️ R3D mapping has no model_variant — the loader will use "
-                              "the 'R3D model variant' dropdown selection")
+                        print("⚠️ R3D 映射中没有 model_variant；加载器将使用“R3D 模型变体”下拉框中的选择。")
                     fresh = r3d_custom_action_paths()[1]
                     self._r3d_custom_count = (
                         len(self.load_labels_from_json(fresh)) if os.path.exists(fresh) else 0)
@@ -2249,8 +2248,7 @@ class VideoHighlighterGUI(QWidget):
                         import_custom_action_model, custom_action_decoder_paths)
                     n_classes = import_custom_action_model(src, labels_src)
                     if n_classes == 0:
-                        print("⚠️ Custom action decoder imported without a labels file "
-                              "— it won't be usable until one is provided")
+                        print("⚠️ 已导入自定义动作解码器，但缺少标签文件；提供标签文件前无法使用。")
                     fresh = custom_action_decoder_paths()[2]
                     self._custom_ov_count = (
                         len(self.load_labels_from_json(fresh)) if os.path.exists(fresh) else 0)
@@ -3714,7 +3712,7 @@ class VideoHighlighterGUI(QWidget):
         scroll.setWidget(content)
 
         # Header
-        title = QLabel(f"🎬 Video Highlighter ({__edition__})")
+        title = QLabel(f"🎬 Video Highlighter（{EDITION_DISPLAY}）")
         title.setStyleSheet("font-size: 16pt; font-weight: bold;")
         layout.addWidget(title)
 
@@ -7351,7 +7349,7 @@ if __name__ == "__main__":
     # Hand over from the bootloader's splash to the Qt one, which can keep
     # reporting through the window build (the remaining seconds) and follows
     # the app's theme. begin() closes the native splash once this is painted.
-    startup_splash.begin(f"VideoHighlighter {__edition__}",
+    startup_splash.begin(f"VideoHighlighter {EDITION_DISPLAY}",
                          f"版本 {__version__}", steps=2)
 
     # Reopen the live debug-log window if it was on last session (needs the

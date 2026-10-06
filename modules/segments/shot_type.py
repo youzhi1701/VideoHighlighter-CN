@@ -176,7 +176,7 @@ def classify(path: str, *, samples: int = SAMPLES, use_cache: bool = True,
 
     capture = cv2.VideoCapture(path)
     if not capture.isOpened():
-        log_fn(f"⚠️ Could not open {os.path.basename(path)} to classify it")
+        log_fn(f"⚠️ 无法打开 {os.path.basename(path)} 进行镜头分类")
         return shot
 
     try:

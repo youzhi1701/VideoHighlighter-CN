@@ -54,7 +54,7 @@ class ROIDetector:
 
         if not person_boxes or len(person_boxes) == 0:
             if self.debug:
-                print("   ⚠️  No person boxes -> no ROI")
+                print("   ⚠️  未检测到人物框 → 无可用 ROI")
             return None, 'full_body'
 
         current_poses = []
@@ -74,7 +74,7 @@ class ROIDetector:
                 roi = self._smooth_roi()
 
         if self.debug:
-            print(f"   ROI: {roi}, Focus: {focus_region}, Poses: {len(current_poses)}")
+            print(f"   ROI：{roi}，焦点区域：{focus_region}，姿态数：{len(current_poses)}")
 
         return roi, focus_region
 

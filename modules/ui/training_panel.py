@@ -1278,7 +1278,6 @@ class TrainingPanel(QWidget):
             label.setStyleSheet("color:#999;")
         else:
             label.setText(
-                "训练 hardware: no GPU found - training will use the "
-                "处理器训练，速度会明显较慢。")
+                "训练硬件：未检测到 GPU，将使用处理器训练，速度会明显较慢。")
             label.setStyleSheet(f"color:{THEME.warning};")
         return label

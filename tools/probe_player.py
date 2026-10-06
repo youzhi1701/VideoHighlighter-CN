@@ -63,8 +63,8 @@ def observe(url: str, wait_s: int, headed: bool, download_idx: Optional[int],
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        print("Playwright is not installed:  pip install playwright"
-              "  &&  playwright install chromium", file=sys.stderr)
+        print("未安装 Playwright：请运行 pip install playwright"
+              "  && playwright install chromium", file=sys.stderr)
         return 2
 
     hits: Dict[str, Dict] = {}       # url -> {t, status, ctype, size, kind}
@@ -126,14 +126,13 @@ def observe(url: str, wait_s: int, headed: bool, download_idx: Optional[int],
 
         page.on("response", on_response)
 
-        print(f"\n▶ Loading {url}")
+        print(f"\n▶ 正在加载 {url}")
         try:
             page.goto(url, timeout=60000, wait_until="domcontentloaded")
         except Exception as e:
             print(f"  page.goto: {str(e)[:120]}")
 
-        print(f"\n▶ Watching for {wait_s}s "
-              f"(letting any pre-roll play out — no seeking)\n")
+        print(f"\n▶ 正在观察 {wait_s} 秒（让片头广告自然播放，不主动跳转）\n")
 
         last_state = {}
         clicked = False
@@ -183,7 +182,7 @@ def observe(url: str, wait_s: int, headed: bool, download_idx: Optional[int],
                 page.wait_for_timeout(2000)
             except Exception as e:
                 # A popup closing or an ad frame detaching must not end the run.
-                print(f"  (watch loop: {type(e).__name__}: {str(e)[:80]})")
+                print(f"  （观察循环：{type(e).__name__}：{str(e)[:80]}）")
                 time.sleep(1)
 
         # ---- report -----------------------------------------------------
@@ -193,24 +192,24 @@ def observe(url: str, wait_s: int, headed: bool, download_idx: Optional[int],
         cands.sort(key=lambda kv: (kv[1]["kind"] != "manifest", kv[1]["t"]))
 
         if segs:
-            print("Stream segments actually fetched (proves playback happened):")
+            print("实际获取到的流片段（可证明播放已发生）：")
             for k, v in segs.items():
                 print(f"   {v['count']:4d} segments, {human(v['size'])} from "
                       f"{k.split('::')[1]}")
             print()
 
         if not cands:
-            print("No media URLs seen at all. The player never loaded a stream —\n"
-                  "try --headed to watch, or a longer --wait.")
+            print("完全没有检测到媒体 URL，播放器未加载任何流。\n"
+                  "可尝试使用 --headed 观察浏览器，或延长 --wait。")
         else:
-            print(f"{len(cands)} media candidate(s):\n")
+            print(f"{len(cands)} 个媒体候选：\n")
             for i, (u, v) in enumerate(cands, 1):
                 print(f"  [{i}] {v['kind']:<8} at {v['t']:5.1f}s  status={v['status']}"
                       f"  {human(v['size']):>7}  {v['ctype']}")
                 print(f"      {u[:110]}")
 
             # The decisive test: can the session fetch it when yt-dlp cannot?
-            print("\nIn-session reachability (Playwright APIRequestContext):")
+            print("\n会话内可访问性（Playwright APIRequestContext）：")
             for i, (u, v) in enumerate(cands, 1):
                 try:
                     r = context.request.get(u, headers={"Range": "bytes=0-0"},
@@ -219,19 +218,18 @@ def observe(url: str, wait_s: int, headed: bool, download_idx: Optional[int],
                     print(f"  [{i}] {r.status} {note}"
                           f"  ({r.headers.get('content-range') or r.headers.get('content-length') or '?'})")
                 except Exception as e:
-                    print(f"  [{i}] error: {str(e)[:90]}")
+                    print(f"  [{i}] 错误：{str(e)[:90]}")
 
         # ---- optional download through the session ----------------------
         if download_idx is not None:
             if not cands or download_idx < 1 or download_idx > len(cands):
-                print(f"\n--download {download_idx}: no such candidate.")
+                print(f"\n--download {download_idx}：没有这个候选项。")
             else:
                 target = cands[download_idx - 1][0]
                 os.makedirs(out_dir, exist_ok=True)
-                print(f"\n▶ Downloading candidate {download_idx} through the "
-                      f"browser session...")
+                print(f"\n▶ 正在通过浏览器会话下载候选项 {download_idx}…")
                 ok = session_download(context, target, out_dir)
-                print("✅ done" if ok else "❌ failed")
+                print("✅ 完成" if ok else "❌ 失败")
 
         context.close()
         browser.close()
@@ -252,7 +250,7 @@ def session_download(context, url: str, out_dir: str) -> bool:
                 return False
             text = r.text()
         except Exception as e:
-            print(f"   playlist error: {str(e)[:110]}")
+            print(f"   播放列表错误：{str(e)[:110]}")
             return False
 
         if "#EXT-X-STREAM-INF" in text:
@@ -268,48 +266,46 @@ def session_download(context, url: str, out_dir: str) -> bool:
                                 best, best_bw = urllib.parse.urljoin(url, nxt.strip()), bw
                             break
             if not best:
-                print("   master playlist had no variants")
+                print("   主播放列表中没有可用变体")
                 return False
-            print(f"   master playlist -> variant at {best_bw / 1000:.0f} kbps")
+            print(f"   主播放列表 -> 选择 {best_bw / 1000:.0f} kbps 变体")
             return session_download(context, best, out_dir)
 
         if "#EXT-X-ENDLIST" not in text:
-            print("   this is a LIVE playlist (no #EXT-X-ENDLIST) — refusing, "
-                  "it would never finish")
+            print("   这是直播播放列表（没有 #EXT-X-ENDLIST），已拒绝下载，否则不会结束")
             return False
         if "#EXT-X-KEY" in text and "METHOD=NONE" not in text:
-            print("   playlist is AES-encrypted; decryption is not implemented "
-                   "here — use the cookies with yt-dlp instead")
+            print("   播放列表使用 AES 加密；此工具未实现解密，请改用带 cookies 的 yt-dlp")
             return False
 
         segs = [urllib.parse.urljoin(url, l.strip())
                 for l in text.splitlines() if l.strip() and not l.startswith("#")]
         if not segs:
-            print("   playlist listed no segments")
+            print("   播放列表中没有列出任何分片")
             return False
         out = os.path.join(out_dir, base.replace(".m3u8", "") + ".ts")
         total = 0
-        print(f"   {len(segs)} segments -> {out}")
+        print(f"   {len(segs)} 个分片 -> {out}")
         with open(out, "wb") as f:
             for i, s in enumerate(segs, 1):
                 try:
                     rr = context.request.get(s, timeout=30000)
                     if rr.status >= 400:
-                        print(f"\n   segment {i} HTTP {rr.status} — stopping")
+                        print(f"\n   分片 {i} HTTP {rr.status}——停止")
                         break
                     body = rr.body()
                     f.write(body)
                     total += len(body)
                 except Exception as e:
-                    print(f"\n   segment {i} error: {str(e)[:80]}")
+                    print(f"\n   分片 {i} 错误：{str(e)[:80]}")
                     break
                 if i % 20 == 0 or i == len(segs):
-                    print(f"\r   {i}/{len(segs)} segments, {human(total)}",
+                    print(f"\r   {i}/{len(segs)} 个分片，{human(total)}",
                           end="", flush=True)
         print()
         if total == 0:
             return False
-        print(f"   wrote {human(total)}. Remux to mp4 with:\n"
+        print(f"   已写入 {human(total)}。可使用以下命令重新封装为 mp4：\n"
               f'   ffmpeg -i "{out}" -c copy "{out[:-3]}.mp4"')
         return True
 
@@ -323,26 +319,25 @@ def session_download(context, url: str, out_dir: str) -> bool:
         body = r.body()
         with open(out, "wb") as f:
             f.write(body)
-        print(f"   wrote {human(len(body))} -> {out}")
+        print(f"   已写入 {human(len(body))} -> {out}")
         return len(body) > 0
     except Exception as e:
-        print(f"   error: {str(e)[:110]}")
+        print(f"   错误：{str(e)[:110]}")
         return False
 
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Diagnose a video page's player and optionally download "
-                    "through the browser session.")
-    ap.add_argument("url", help="Watch-page URL")
+        description="诊断视频页面播放器，并可选择通过浏览器会话下载媒体。")
+    ap.add_argument("url", help="视频播放页 URL")
     ap.add_argument("--wait", type=int, default=75,
-                    help="Seconds to observe (default 75; raise for long ads)")
+                    help="观察秒数（默认 75；广告较长时可增大）")
     ap.add_argument("--headed", action="store_true",
-                    help="Show the browser window instead of running headless")
+                    help="显示浏览器窗口，而不是无头运行")
     ap.add_argument("--download", type=int, metavar="N",
-                    help="Download candidate N through the session")
+                    help="通过当前会话下载候选项 N")
     ap.add_argument("-o", "--out", default="downloads",
-                    help="Output directory for --download")
+                    help="--download 的输出目录")
     args = ap.parse_args()
     sys.exit(observe(args.url, args.wait, args.headed, args.download, args.out))
 

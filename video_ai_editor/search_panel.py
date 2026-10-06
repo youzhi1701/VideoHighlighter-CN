@@ -90,7 +90,7 @@ def load_identity_entries(video_path: str) -> list[dict]:
         print(f"🪪 SearchPanel: no identity entries for "
               f"'{os.path.basename(video_path)}' (key={key})")
     except Exception as e:
-        print(f"⚠️ SearchPanel.load_identity_entries failed: {e}")
+        print(f"⚠️ 人物搜索加载身份记录失败：{e}")
     return []
 
 
@@ -478,7 +478,7 @@ class SearchPanel(QWidget):
                         if rec.get("name"):
                             seen[iid]["name"] = rec["name"]
             except Exception as e:
-                print(f"⚠️ SearchPanel: face_db load error: {e}")
+                print(f"⚠️ 人物搜索：人脸库加载失败：{e}")
 
         self._identities = seen
         self._no_faces_lbl.hide()
@@ -510,9 +510,9 @@ class SearchPanel(QWidget):
             bank.load()
             bank.set_avoid(identity_id, avoided)
             if not bank.save():
-                raise IOError("face bank could not be written")
+                raise IOError("无法写入人脸库")
         except Exception as exc:                      # noqa: BLE001
-            print(f"⚠️ Could not change avoid for {identity_id}: {exc}")
+            print(f"⚠️ 无法修改人物 {identity_id} 的排除状态：{exc}")
             self._expr_status.setText(f"无法保存排除设置：{exc}")
             return
 

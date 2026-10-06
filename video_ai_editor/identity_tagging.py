@@ -84,7 +84,7 @@ def tag_video_with_identities(
         from modules.segments.compute_forbidden import build_tracking_model
         model = build_tracking_model("n", device=device or "GPU")
     if model is None:
-        print("⚠️ Identity tracking skipped — no person tracker available")
+        print("⚠️ 已跳过身份追踪——没有可用的人物追踪器")
         if save_bank:
             bank.save()
         return []
@@ -99,8 +99,8 @@ def tag_video_with_identities(
     except Exception:
         pass
     if avoid_galleries:
-        print(f"🚫 Direct avoid-match active for {len(avoid_galleries)} identit(ies), "
-              f"threshold={avoid_match_threshold}")
+        print(f"🚫 已启用直接排除匹配：{len(avoid_galleries)} 个身份，"
+              f"阈值={avoid_match_threshold}")
 
     # PASS 1 — track people, collect boxes, vote on identities per track
     # ------------------------------------------------------------------
@@ -138,7 +138,7 @@ def tag_video_with_identities(
             if progress_cb and processed % 30 == 0:
                 progress_cb(processed, f"正在追踪并识别身份… 第 {real_frame} 帧")
     else:
-        print("⚠️ Identity tracking: unknown tracker model type")
+        print("⚠️ 身份追踪：未知的追踪器模型类型")
         if save_bank:
             bank.save()
         return []
@@ -159,10 +159,10 @@ def tag_video_with_identities(
             forced += 1
         track_identity[tid] = av_iid
 
-    print(f"🪪 Resolved {len(track_identity)} track→identity mappings "
-          f"from {len(track_votes)} tracks "
-          f"({len(bank)} identities in bank)"
-          + (f" — 🚫 {forced} track(s) forced to avoided identity" if forced else ""))
+    print(f"🪪 已解析 {len(track_identity)} 个轨迹→身份映射，"
+          f"来源于 {len(track_votes)} 条轨迹"
+          f"（身份库共 {len(bank)} 个身份）"
+          + (f"——🚫 其中 {forced} 条轨迹被强制标记为排除身份" if forced else ""))
 
     # PASS 3 — emit object_bboxes shape with identity filled in
     # ------------------------------------------------------------------
@@ -247,7 +247,7 @@ if __name__ == "__main__":
     import json
 
     if len(sys.argv) < 2:
-        print("Usage: python identity_tagging.py <video> [face_db.json]")
+        print("用法：python identity_tagging.py <视频> [face_db.json]")
         sys.exit(1)
 
     from face_identity import FaceIdentityBank
@@ -268,14 +268,14 @@ if __name__ == "__main__":
         for iid in e["identity_ids"]:
             if iid:
                 seen_ids.add(iid)
-    print(f"\nFrames with boxes: {len(entries)}")
-    print(f"Distinct identities seen in video: {len(seen_ids)}")
+    print(f"\n包含检测框的帧数：{len(entries)}")
+    print(f"视频中识别到的不同身份数：{len(seen_ids)}")
     for ident in bank.all_identities():
-        print(f"  {ident['id'][:8]}  name={ident['name']}  seen={ident['count']}")
+        print(f"  {ident['id'][:8]}  名称={ident['name']}  出现次数={ident['count']}")
 
     if db:
         bank.save()
     # dump a tiny preview
     if entries:
-        print("\nFirst entry preview:")
+        print("\n首条记录预览：")
         print(json.dumps(entries[0], indent=2)[:600])

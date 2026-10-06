@@ -3477,7 +3477,7 @@ class SignalTimelineWindow(QMainWindow):
         layout.addWidget(analyze_section)
 
         # Layer visibility controls
-        layer_group = CollapsibleSection("Visible Layers", settings_key="controls/layers")
+        layer_group = CollapsibleSection("可见图层", settings_key="controls/layers")
         layer_layout = QVBoxLayout()
         
         self.layer_checkboxes = {}
@@ -3657,7 +3657,7 @@ class SignalTimelineWindow(QMainWindow):
         # Waveform peak sensitivity — controls the ◀▶ arrows + amber markers on
         # the AUDIO WAVEFORM row (jump between loud moments).
         wpeak_group = CollapsibleSection(
-            "Waveform Peaks", expanded=False, settings_key="controls/wpeaks")
+            "波形峰值", expanded=False, settings_key="controls/wpeaks")
         wpeak_layout = QVBoxLayout()
 
         wpeak_row = QHBoxLayout()

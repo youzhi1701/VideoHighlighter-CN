@@ -107,7 +107,7 @@ def train_actions(project: Project, run_dir: str, *, epochs: int,
     code = getattr(result, "returncode", 1)
     metrics_path = os.path.join(run_dir, "metrics.json")
     if code != 0 or not os.path.exists(metrics_path):
-        raise RuntimeError(f"training failed (exit {code}); see {log_path}")
+        raise RuntimeError(f"训练失败（退出码 {code}）；请查看 {log_path}")
     with open(metrics_path, "r", encoding="utf-8") as handle:
         metrics = json.load(handle)
     metrics["log"] = log_path
@@ -162,7 +162,7 @@ def train_round(project: Project, *, epochs: Optional[int] = None,
     ``install_policy``: ``"if-better"`` (default), ``"always"``, ``"never"``.
     """
     if not os.path.isdir(project.path(DATASET_DIR)):
-        raise RuntimeError("no dataset yet; run build first")
+        raise RuntimeError("尚未构建数据集，请先运行 build")
     epochs = int(epochs or project.settings.epochs)
     number, run_dir = next_round_dir(project)
     started = time.time()

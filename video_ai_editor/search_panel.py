@@ -84,11 +84,9 @@ def load_identity_entries(video_path: str) -> list[dict]:
             if os.path.exists(p):
                 with open(p, "r", encoding="utf-8") as fh:
                     entries = json.load(fh)
-                print(f"🪪 SearchPanel: loaded {len(entries)} identity-tagged "
-                      f"frame(s) from {p}")
+                print(f"🪪 人物搜索：已从 {p} 加载 {len(entries)} 个带身份标记的画面")
                 return entries or []
-        print(f"🪪 SearchPanel: no identity entries for "
-              f"'{os.path.basename(video_path)}' (key={key})")
+        print(f"🪪 人物搜索：未找到“{os.path.basename(video_path)}”的身份记录（键={key}）")
     except Exception as e:
         print(f"⚠️ 人物搜索加载身份记录失败：{e}")
     return []

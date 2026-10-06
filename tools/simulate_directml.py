@@ -215,7 +215,7 @@ class _DeviceShim:
         try:
             import torch
         except Exception as e:
-            print(f"  (no torch: {e} — routing only, no tensors will run)")
+            print(f"  （未安装 torch：{e}——仅检查路由，不会运行张量）")
             return
         import torch.nn as nn
 
@@ -469,12 +469,12 @@ def exercise_tensors(scenario: Scenario) -> None:
         import torch
         import torch.nn as nn
     except Exception as e:
-        print(f"  torch unavailable ({e}) — skipped")
+        print(f"  torch 不可用（{e}）——已跳过")
         return
 
     device = dml.device_string()
     if not device:
-        print("  no device to exercise — skipped")
+        print("  没有可测试的设备——已跳过")
         return
 
     model = nn.Sequential(nn.Linear(64, 32), nn.ReLU(), nn.Linear(32, 8))
@@ -542,12 +542,12 @@ def run_one(scenario: Scenario, args) -> None:
                   real_tensors=not args.no_tensors):
         report_routing(scenario)
         if not args.no_tensors:
-            print("\n  -- real tensors on the simulated device --")
+            print("\n  -- 在模拟设备上运行真实张量 --")
             exercise_tensors(scenario)
         if args.run_diagnostic:
-            print("\n  -- tools/check_directml.py, under the simulation --")
+            print("\n  -- 在模拟环境下运行 tools/check_directml.py --")
             code = run_diagnostic()
-            print(f"\n  diagnostic exit code: {code}")
+            print(f"\n  诊断退出码：{code}")
             # Said plainly, because a red verdict here is the expected result
             # and would otherwise be read as a finding. The simulated device is
             # the CPU plus this file's dispatch overhead, so it cannot beat the
@@ -555,22 +555,22 @@ def run_one(scenario: Scenario, args) -> None:
             # that the adapter report, the allocation probe and the correctness
             # check all execute and reach a verdict; the number they reach it
             # with is meaningless until real hardware supplies one.
-            print("  (the Speed section is simulation noise — the 'GPU' here IS")
-            print("   the CPU, so a sub-1x speedup and a red verdict are correct)")
+            print("  （“速度”部分只是模拟噪声——这里的“GPU”实际就是")
+            print("   CPU，因此低于 1 倍的加速和红色结论都属于正常现象）")
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--scenario", default="rx570", choices=sorted(BY_KEY),
-                    help="which machine to pretend to be")
-    ap.add_argument("--all", action="store_true", help="run every scenario")
+                    help="选择要模拟的机器场景")
+    ap.add_argument("--all", action="store_true", help="运行所有模拟场景")
     ap.add_argument("--run-diagnostic", action="store_true",
-                    help="also run tools/check_directml.py under the simulation")
+                    help="同时在模拟环境中运行 tools/check_directml.py")
     ap.add_argument("--no-tensors", action="store_true",
-                    help="routing decisions only; do not move real tensors")
+                    help="仅检查路由决策，不移动真实张量")
     ap.add_argument("--keep-real-gpus", action="store_true",
-                    help="do not hide this machine's CUDA/XPU/OpenVINO devices "
-                         "(the DirectML branch will probably not be reached)")
+                    help="不要隐藏当前机器的 CUDA/XPU/OpenVINO 设备"
+                         "（这样通常不会进入 DirectML 分支）")
     args = ap.parse_args(argv)
 
     # The diagnostic allocates, multiplies and benchmarks. Without the shim
@@ -578,18 +578,18 @@ def main(argv=None) -> int:
     # and it would report "not usable" about the simulation rather than about
     # anything under test — a false negative that looks exactly like a finding.
     if args.run_diagnostic and args.no_tensors:
-        print("note: --run-diagnostic needs real tensors; ignoring --no-tensors")
+        print("提示：--run-diagnostic 需要真实张量，因此将忽略 --no-tensors")
         args.no_tensors = False
 
-    print("Simulated DirectML. This exercises the app's plumbing, not DirectML:")
-    print("operator coverage, speed and real VRAM behaviour are settled only by")
-    print("an actual AMD card.")
+    print("DirectML 模拟模式：这里只验证应用内部连接与路由，不验证 DirectML 本身：")
+    print("算子覆盖、速度和真实显存行为只能通过")
+    print("真实 AMD 显卡进行验证。")
 
     for scenario in (SCENARIOS if args.all else [BY_KEY[args.scenario]]):
         run_one(scenario, args)
 
     if not args.all:
-        print(f"\nOther scenarios: {', '.join(k for k in sorted(BY_KEY) if k != args.scenario)}")
+        print(f"\n其他场景：{', '.join(k for k in sorted(BY_KEY) if k != args.scenario)}")
     return 0
 
 

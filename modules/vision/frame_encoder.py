@@ -192,11 +192,11 @@ def read_meta(folder: str) -> dict:
     with open(os.path.join(folder, META_FILE), encoding="utf-8") as fh:
         meta = json.load(fh)
     if meta.get("id") != ENCODER_ID:
-        raise ValueError(f"{META_FILE} is for {meta.get('id')!r}, this app uses {ENCODER_ID!r}")
+        raise ValueError(f"{META_FILE} 对应 {meta.get('id')!r}，当前应用使用 {ENCODER_ID!r}")
     if int(meta.get("format", 0)) > FORMAT:
-        raise ValueError(f"{META_FILE} format {meta.get('format')} is newer than this app ({FORMAT})")
+        raise ValueError(f"{META_FILE} 格式版本 {meta.get('format')} 高于当前应用支持的版本（{FORMAT}）")
     if int(meta.get("dims", 0)) != DIMS or len(meta.get("probe", [])) != DIMS:
-        raise ValueError(f"{META_FILE} does not describe {DIMS}-number vectors")
+        raise ValueError(f"{META_FILE} 描述的向量维度不是 {DIMS}")
     return meta
 
 
@@ -312,11 +312,11 @@ class _OnnxRunner:
         from modules.system import ort_directml
         if gpu:
             if not ort_directml.available():
-                raise RuntimeError(ort_directml.unavailable_reason() or "no GPU provider")
+                raise RuntimeError(ort_directml.unavailable_reason() or "没有可用的 GPU 提供程序")
             self._session = ort_directml.session(model_path)
             got = ort_directml.session_backend(self._session)
             if not ort_directml.is_gpu_provider(got):
-                raise RuntimeError(f"ONNX Runtime put the model on {got}")
+                raise RuntimeError(f"ONNX Runtime 将模型放在了 {got}")
         else:
             self._session = ort_directml.session(
                 model_path, providers_override=[ort_directml.CPU_PROVIDER])
@@ -329,7 +329,7 @@ class _OnnxRunner:
 def _open_route(route: str, model_path: str, intel_device: Optional[str]):
     if route == OPENVINO_GPU:
         if not intel_device:
-            raise RuntimeError("no Intel GPU")
+            raise RuntimeError("未检测到 Intel GPU")
         return _OpenVINORunner(model_path, intel_device)
     if route == OPENVINO_CPU:
         return _OpenVINORunner(model_path, "CPU")
@@ -337,7 +337,7 @@ def _open_route(route: str, model_path: str, intel_device: Optional[str]):
         return _OnnxRunner(model_path, gpu=True)
     if route == ONNX_CPU:
         return _OnnxRunner(model_path, gpu=False)
-    raise ValueError(f"unknown route {route!r}")
+    raise ValueError(f"未知运行路径 {route!r}")
 
 
 # ---------------------------------------------------------------------------
@@ -388,12 +388,12 @@ def _check_route(runner, meta: dict) -> None:
     """Raise unless ``runner`` reproduces encoder.json's probe vector."""
     out = runner.run(probe_pixels())
     if out.shape != (1, DIMS):
-        raise RuntimeError(f"returned shape {tuple(out.shape)}, expected (1, {DIMS})")
+        raise RuntimeError(f"返回形状为 {tuple(out.shape)}，预期为 (1, {DIMS})")
     if not np.isfinite(out).all():
-        raise RuntimeError("returned non-finite numbers")
+        raise RuntimeError("返回结果包含非有限数值")
     cos = _cosine(out[0], meta["probe"])
     if cos < PROBE_MIN_COSINE:
-        raise RuntimeError(f"does not match the reference (cosine {cos:.4f})")
+        raise RuntimeError(f"与参考结果不匹配（余弦相似度 {cos:.4f}）")
 
 
 def load(backend: Optional[str] = None, log: LogFn = print,

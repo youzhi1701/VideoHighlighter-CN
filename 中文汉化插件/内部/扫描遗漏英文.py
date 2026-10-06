@@ -32,14 +32,18 @@ TECH_RE = re.compile(
 
 UI_CALLS = {
     "QLabel", "QPushButton", "QCheckBox", "QRadioButton", "QGroupBox", "QAction",
-    "QMenu", "QTabWidget", "QMessageBox", "setWindowTitle", "setText",
+    "QMenu", "QTabWidget", "QMessageBox", "QToolButton", "QCommandLinkButton",
+    "QListWidgetItem", "QTableWidgetItem", "QTreeWidgetItem", "QStandardItem",
+    "setWindowTitle", "setText",
     "setToolTip", "setStatusTip", "setPlaceholderText", "setWhatsThis",
     "setAccessibleName", "setAccessibleDescription", "addTab", "insertTab",
     "addAction", "addMenu", "showMessage", "information", "warning", "critical",
     "question", "about", "getText", "getItem", "getOpenFileName",
     "getSaveFileName", "getExistingDirectory", "setHeaderLabels",
     "setHorizontalHeaderLabels", "setVerticalHeaderLabels", "setTitle",
-    "setLabelText", "setCancelButtonText", "setOkButtonText",
+    "setLabelText", "setCancelButtonText", "setOkButtonText", "setItemText",
+    "setTabText", "setHeaderData", "addItems", "insertItems", "setPrefix",
+    "setSuffix", "setSpecialValueText",
 }
 
 # Backend callbacks that feed the desktop UI's log/progress panes.  These used
@@ -113,7 +117,14 @@ def visible_candidate(text: str, allow: set[str]) -> bool:
         return False
     if t.startswith(("http://", "https://")):
         return False
+    # Keep plain alphabetic words.  Single-word labels such as "Cancel",
+    # "Save", "Search" and "Preview" are common UI text and were previously
+    # filtered out here by mistake.  Only suppress identifier/path-like tokens
+    # that contain structural punctuation or digits.
     if re.fullmatch(r"[A-Za-z0-9_.:/{}<>+*=@%#\\-]+", t):
+        if re.search(r"[_.:/{}<>+*=@%#\\-]", t) or any(ch.isdigit() for ch in t):
+            return False
+    if t.lower() in {"true", "false", "none", "null", "utf8", "utf-8", "rb", "wb"}:
         return False
     if TECH_RE.match(t) and len(t.split()) <= 4:
         return False
@@ -236,10 +247,10 @@ def scan_ts(path: Path, rel: str, allow: set[str]) -> list[Hit]:
     text = path.read_text(encoding="utf-8", errors="ignore")
     hits: list[Hit] = []
     runtime_patterns = [
-        ("tsx-toast", "high", re.compile(r"\\btoast\\.(?:error|success|warning|info)\\(\\s*([\\\"'])(.*?)\\1", re.I)),
-        ("tsx-log", "high", re.compile(r"\\bappendLog\\(\\s*([\\\"'\x60])(.*?)\\1", re.I)),
-        ("tsx-runtime-call", "medium", re.compile(r"\\b(?:setStatus|setMessage|setError|setTitle|setLabel|setHint)\\(\\s*([\\\"'])(.*?)\\1", re.I)),
-        ("tsx-option", "medium", re.compile(r"\\b(?:name|label|description|help|hint)\\s*:\\s*([\\\"'])(.*?)\\1", re.I)),
+        ("tsx-toast", "high", re.compile(r"\btoast\.(?:error|success|warning|info)\(\s*([\\"'])(.*?)\1", re.I)),
+        ("tsx-log", "high", re.compile(r"\bappendLog\(\s*([\\"'\x60])(.*?)\1", re.I)),
+        ("tsx-runtime-call", "medium", re.compile(r"\b(?:setStatus|setMessage|setError|setTitle|setLabel|setHint)\(\s*([\\"'])(.*?)\1", re.I)),
+        ("tsx-option", "medium", re.compile(r"\b(?:name|label|description|help|hint)\s*:\s*([\\"'])(.*?)\1", re.I)),
     ]
     for kind, priority, pattern in TSX_PATTERNS + runtime_patterns:
         for m in pattern.finditer(text):
@@ -253,6 +264,29 @@ ISS_HINTS = (
     "Description:", "MsgBox(", "SuppressibleMsgBox(", "CreateDownloadPage(",
     "ItemCaption", "Button", "Caption", "StatusLabel", "WelcomeLabel", "FinishedLabel",
 )
+
+
+QML_PATTERNS = [
+    ("qml-text", "high", re.compile(r"\\b(?:text|title|placeholderText|toolTip|accessibleName)\\s*:\\s*([\\"'])(.*?)\\1", re.I)),
+    ("qml-menu", "high", re.compile(r"\\b(?:label|name|description|message|hint)\\s*:\\s*([\\"'])(.*?)\\1", re.I)),
+]
+
+
+def scan_qml(path: Path, rel: str, allow: set[str]) -> list[Hit]:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    hits: list[Hit] = []
+    for kind, priority, pattern in QML_PATTERNS:
+        for m in pattern.finditer(text):
+            value = m.group(2)
+            if visible_candidate(value, allow):
+                hits.append(Hit(
+                    rel,
+                    text.count("\\n", 0, m.start()) + 1,
+                    kind,
+                    priority,
+                    clean(value),
+                ))
+    return hits
 
 
 def scan_iss(path: Path, rel: str, allow: set[str]) -> list[Hit]:
@@ -297,6 +331,11 @@ def main() -> int:
             if path.suffix.lower() not in {".ts", ".tsx", ".js", ".jsx"} or excluded(path, args.root):
                 continue
             hits.extend(scan_ts(path, path.relative_to(args.root).as_posix(), allow))
+
+    for path in args.root.rglob("*.qml"):
+        if excluded(path, args.root):
+            continue
+        hits.extend(scan_qml(path, path.relative_to(args.root).as_posix(), allow))
 
     installer = args.root / "packaging" / "installer"
     if installer.exists():

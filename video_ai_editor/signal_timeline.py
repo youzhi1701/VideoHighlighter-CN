@@ -145,22 +145,21 @@ class SignalTimelineScene(QGraphicsScene):
             ('filmstrip', ['胶片条']),
         ]
         
-        # Layer visibility - initialize all to visible
-        self.visible_layers = {}
-        for _, tracks in self.group_order:
-            for track in tracks:
-                key = track.lower().replace(' ', '_')
-                if 'action:' in key:
-                    key = 'actions'
-                elif 'object:' in key:
-                    key = 'objects'
-                elif 'event:' in key:
-                    key = 'events'
-                elif 'search:' in key:
-                    key = 'visual_search'
-                elif 'final highlights' in key.lower():
-                    key = 'highlights'
-                self.visible_layers[key] = True
+        # Layer visibility uses stable internal keys, never translated display text.
+        # This keeps localization from changing control/data-flow semantics.
+        self.visible_layers = {
+            'events': True,
+            'transcript': True,
+            'actions': True,
+            'objects': True,
+            'visual_search': True,
+            'scenes': True,
+            'motion_events': True,
+            'motion_peaks': True,
+            'audio_peaks': True,
+            'highlights': True,
+            'filmstrip': True,
+        }
 
         # Always make visual_search toggleable, even when no findings yet
         self.visible_layers.setdefault('visual_search', True)

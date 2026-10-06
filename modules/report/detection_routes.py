@@ -100,111 +100,72 @@ class Route:
 ROUTES: tuple = (
     Route(
         id="compose",
-        name="Compose it from classes this video already produced",
-        gives=("a label per second, exact counts, and the one thing scores "
-               "cannot express — that something is not there"),
-        effort=("minutes to write, and one re-run of object detection: a "
-                "cached detection pass skips the composition engine, so a new "
-                "rule cannot fire until detection runs again"),
+        name="用本视频已经检测出的类别组合规则",
+        gives="按秒生成标签和精确计数，还能表达评分无法表达的情况——某个对象并不存在",
+        effort="编写规则只需几分钟，但需要重新运行一次物体检测；仅复用检测缓存会跳过构图引擎，新规则无法触发",
         effort_rank=EFFORT_MINUTES,
-        confidence=("exact where it applies — counting boxes is arithmetic, "
-                    "not similarity, so there is no threshold to tune"),
+        confidence="适用时结果精确——检测框计数是确定性计算，不是相似度，因此无需调阈值",
         confidence_rank=CONFIDENCE_EXACT,
-        holds_when=("what was said is an arrangement of things this detector "
-                    "already finds — one inside another, several at once, none "
-                    "of them present"),
-        fails_when=("what was said is a thing in its own right that no class "
-                    "covers. No rule can conjure a class; it can only arrange "
-                    "the ones that exist"),
-        repeat="instant — rules read detections that are already cached",
+        holds_when="所描述的是检测器已能识别对象之间的组合关系，例如包含、同时出现或全部未出现",
+        fails_when="所描述的是当前类别完全覆盖不到的新对象。规则不能凭空创造类别，只能组合已有类别",
+        repeat="即时——规则直接读取已经缓存的检测结果",
         topic="composition",
-        needs="at least two classes detected in this video",
+        needs="本视频至少已检测到两个类别",
     ),
     Route(
         id="clip_search",
-        name="Search the video for the words that were said",
-        gives=("a score per sampled frame — how much it looks like the phrase "
-               "you typed. No box, nothing to count"),
-        effort=("minutes, and the words are already in the transcript. One "
-                "pass embeds the video; after that a query is arithmetic on a "
-                "small array and costs nothing"),
+        name="按说出的文字内容搜索视频",
+        gives="为每个采样帧给出与输入短语的视觉相似度评分；不生成检测框，因此不能直接计数",
+        effort="通常几分钟。文字已在转录中；视频只需建立一次嵌入索引，此后的查询只是小数组运算，几乎没有额外成本",
         effort_rank=EFFORT_MINUTES,
-        confidence=("uneven, and for a reason worth knowing: it matches the "
-                    "wording. A phrase the model has seen described that way "
-                    "works well; one it has not is a low score about nothing"),
+        confidence="效果不均匀，因为它依赖文字表达方式。模型熟悉的描述通常效果好，陌生表达可能只得到没有意义的低分",
         confidence_rank=CONFIDENCE_UNEVEN,
-        holds_when=("the thing can be put into plain words — and something "
-                    "said out loud on camera usually can, which is what makes "
-                    "this the first thing to try on a spoken claim"),
-        fails_when=("it is small in the frame, or the wording is unusual. The "
-                    "embedding describes the whole picture, and no threshold "
-                    "recovers a subject the model has no representation for"),
-        repeat="free — the index is built once and answers any number of queries",
+        holds_when="目标能够用自然语言清楚描述；对于视频里口头提到的内容，这是最值得优先尝试的方法",
+        fails_when="目标在画面中太小，或描述方式很特殊。嵌入描述的是整幅画面，若模型本身无法表示该目标，调阈值也无法补救",
+        repeat="无需额外分析——索引只构建一次，之后可反复查询",
         topic="training",
         module="llm.clip_index",
         probe={
-            "why": ("Before spending a session on labels, spend five minutes "
-                    "finding out whether you have to. Search the video for the "
-                    "words that were said, and for a control phrase describing "
-                    "something ordinary you know is in the shot. If the "
-                    "control finds its moments and your phrase does not, no "
-                    "threshold will fix it and a trained class is the answer. "
-                    "If both find theirs, you have just avoided the session."),
+            "why": ("在投入时间做标注前，先用几分钟确认是否真的需要训练。"
+                    "用视频中说出的文字进行搜索，同时再用一个你确定画面里存在的普通对象作为对照。"
+                    "如果对照能找到而目标短语找不到，调阈值通常也无济于事，更适合训练专用类别；"
+                    "如果两者都能找到，就可以省掉训练。"),
             "how": ('python -m llm.clip_index --video "your.mp4" --interval 2 '
                     '--query "your thing" --query "a close-up" --topk 10'),
         },
     ),
     Route(
         id="example_category",
-        name="Teach a category from example frames",
-        gives=("a score per sampled second — how much this moment looks like "
-               "the frames you pointed at. No box, so nothing to count"),
-        effort=("minutes. Point at a few frames and name them; no dataset, no "
-                "labels, no GPU. The first search over a video pays for one "
-                "embedding pass, and every later query is free"),
+        name="用示例画面教会一个类别",
+        gives="为每个采样秒给出与示例画面的相似度评分；不生成检测框，因此不能直接计数",
+        effort="通常几分钟。选几帧示例并命名即可，无需完整数据集、逐框标注或 GPU；首次搜索建立嵌入索引，之后查询几乎无额外成本",
         effort_rank=EFFORT_MINUTES,
-        confidence=("good for anything that fills a decent part of the frame, "
-                    "and the score is calibrated — a low number means the "
-                    "match is weak, not that the scale is off"),
+        confidence="当目标在画面中占比较明显时通常效果较好；评分经过校准，低分表示匹配较弱，而不是量纲偏差",
         confidence_rank=CONFIDENCE_GOOD,
-        holds_when=("you can point at frames that show it. This is the only "
-                    "route that works when you can recognise something on "
-                    "sight but cannot put it into words"),
-        fails_when=("it is small in the frame. The embedding describes the "
-                    "scene, so a few percent of the picture is drowned by "
-                    "everything around it — that case needs a detector"),
-        repeat="free — the index is built once and answers any number of queries",
+        holds_when="你能指出哪些画面展示了目标。对于“看得出来但很难准确用文字描述”的内容尤其适用",
+        fails_when="目标在画面中占比太小。整图嵌入容易被周围内容淹没，这种情况更适合使用检测器",
+        repeat="无需额外分析——索引只构建一次，之后可反复查询",
         topic="training",
         module="llm.clip_categories",
     ),
     Route(
         id="open_vocabulary",
-        name="Type the word into an open-vocabulary detector",
-        gives="real boxes and real counts, with no training at all",
-        effort=("minutes to try on a short window; around 3 seconds per "
-                "frame on CPU, so a whole video is hours rather than minutes"),
+        name="把目标名称输入开放词汇检测器",
+        gives="无需训练即可得到真实检测框和可计数结果",
+        effort="短时间窗口测试通常只需几分钟；CPU 上每帧约需数秒，因此扫描完整视频可能需要数小时",
         effort_rank=EFFORT_HOURS,
-        confidence=("uneven, and measurably so. Excellent on everyday things; "
-                    "on specialised subject matter it can be close to blind, "
-                    "and no threshold rescues that"),
+        confidence="效果差异较大。常见物体通常表现很好，但对专业或小众对象可能几乎无法识别，调阈值也无法补救",
         confidence_rank=CONFIDENCE_UNEVEN,
-        holds_when=("the thing is an ordinary object with edges, and you can "
-                    "name it in plain words"),
-        fails_when=("it is specialised, or it is an event rather than a thing. "
-                    "This detector finds objects with edges, and an event has "
-                    "none"),
-        repeat="a full re-run per query set",
+        holds_when="目标是边界明确的常见物体，并且能够用普通文字直接命名",
+        fails_when="目标过于专业，或本质上是事件而不是物体。此检测器擅长找有边界的对象，而事件没有固定边界",
+        repeat="每组新查询都需要重新完整运行一次",
         topic="training",
         module="llm.owl_detect",
         probe={
-            "why": ("Before spending a session on labels, spend five minutes "
-                    "finding out whether you have to. Run the open-vocabulary "
-                    "detector over a short window with your query and a "
-                    "control query for something ordinary you know is in the "
-                    "shot. If the control scores well and yours does not, no "
-                    "threshold will save it and the trained class is the "
-                    "answer. If both score, you have just avoided the "
-                    "session."),
+            "why": ("在投入时间做标注前，先用短时间窗口测试几分钟。"
+                    "同时输入目标查询和一个你确定画面里存在的普通对象作为对照。"
+                    "如果对照得分正常而目标始终很低，调阈值通常无法解决，更适合训练专用类别；"
+                    "如果两者都能检测到，就可以省掉训练。"),
             "how": ('python -m llm.owl_detect --video "your.mp4" '
                     '--query "your thing" --query sofa --interval 10 '
                     '--start 600 --end 720'),
@@ -212,82 +173,58 @@ ROUTES: tuple = (
     ),
     Route(
         id="action_model",
-        name="Use an action model",
-        gives="a label over a window of time rather than a single frame",
-        effort=("nothing to set up for the 400 everyday actions it already "
-                "knows; a session to train a class of your own from folders of "
-                "example clips"),
+        name="使用动作识别模型",
+        gives="对一段连续时间给出动作标签，而不是只判断单帧画面",
+        effort="内置已认识的常见动作无需额外设置；如果要训练自定义动作类别，则需要准备示例片段并完成一次训练",
         effort_rank=EFFORT_HOURS,
-        confidence=("good for anything defined by how it moves — this is the "
-                    "only engine here that sees time at all"),
+        confidence="对由运动过程定义的内容效果较好——这是这些方案中真正利用时间连续性的引擎",
         confidence_rank=CONFIDENCE_GOOD,
-        holds_when=("what was said is a movement — something that only "
-                    "exists across several seconds and is invisible in any one "
-                    "frame"),
-        fails_when=("two things you want to tell apart differ only by where "
-                    "they happen. The model is fed a cropped region, so that "
-                    "difference is gone before it votes — train one class and "
-                    "split it with a composition rule instead"),
-        repeat="a full re-run",
+        holds_when="所描述的是一个动作过程，只有跨越数秒才能成立，单独看任意一帧都无法判断",
+        fails_when="需要区分的两个动作仅发生位置不同。模型输入的是裁剪区域，位置差异在判断前已被弱化；更适合先训练同一类别，再用构图规则拆分",
+        repeat="需要完整重新运行",
         topic="training",
     ),
     Route(
         id="face_category",
-        name="Teach a face category from example crops",
-        gives="a score per face, for whatever it is about the face you mean",
-        effort=("minutes. Pick a handful of face crops; the faces themselves "
-                "are already found by the scan this run did"),
+        name="用示例人脸裁剪教会一个人脸类别",
+        gives="针对每张人脸给出类别评分，可用于你定义的任意人脸特征类别",
+        effort="通常几分钟。选择少量人脸裁剪作为示例即可；人脸本身已由本次扫描定位",
         effort_rank=EFFORT_MINUTES,
-        confidence=("good, and unlike the built-in expression classes it is "
-                    "not limited to the seven a classifier was trained on"),
+        confidence="通常表现较好，而且不像内置表情分类器那样受固定七类限制",
         confidence_rank=CONFIDENCE_GOOD,
-        holds_when=("what was said is about a face — where someone is looking, "
-                    "how they are lit, what they are doing with their features"),
-        fails_when=("nothing about it is on a face, or the faces are too small "
-                    "or too turned away for the scan to have found them"),
-        repeat="free once the video has been scanned",
+        holds_when="所描述的内容确实体现在人脸上，例如视线方向、光照状态或面部特征动作",
+        fails_when="目标特征与人脸无关，或人脸太小、偏转过大，以至于前置扫描根本没有找到",
+        repeat="视频完成一次人脸扫描后，可反复使用而无需再次扫描",
         topic="training",
-        needs="a face scan in this run",
+        needs="本次运行已完成人脸扫描",
         module="modules.vision.face_examples",
     ),
     Route(
         id="trained_class",
-        name="Train a class of your own",
-        gives=("boxes at frame rate: countable, usable in composition rules, "
-               "usable live, and reusable on every video you analyse after"),
-        effort=("a session, and a GPU. Collect frames from the conditions it "
-                "fails in, label them, train, export. A third of the set "
-                "should be frames containing whatever it will confuse for the "
-                "target, with nothing boxed"),
+        name="训练自己的专用类别",
+        gives="按帧生成可计数检测框，可用于构图规则和实时检测，并能复用于之后分析的所有视频",
+        effort="需要一次完整训练流程并建议使用 GPU：收集容易失败的场景、完成标注、训练并导出。数据集中应包含足够的负样本，尤其是容易与目标混淆但不应框选的画面",
         effort_rank=EFFORT_SESSION,
-        confidence=("the highest available here, and the only one that stays "
-                    "reliable enough to drive a rule"),
+        confidence="这些方案中通常可靠性最高，也是最适合长期稳定驱动规则的一种",
         confidence_rank=CONFIDENCE_EXACT,
-        holds_when=("it matters enough to justify the labelling, or nothing "
-                    "cheaper could see it"),
-        fails_when=("your labels do not contain the conditions it fails in. "
-                    "Ten frames of the case that breaks it beat a thousand "
-                    "more of what already works"),
-        repeat="none — a trained class runs with every future analysis",
+        holds_when="目标足够重要，值得投入标注成本，或者更轻量的方法都无法可靠识别",
+        fails_when="训练数据没有覆盖模型容易失败的场景。补充少量真正会误判/漏判的样本，往往比继续堆积已经识别正常的样本更有效",
+        repeat="无需重复训练——训练后的类别可用于之后每次分析",
         topic="training",
     ),
     Route(
         id="spoken_marker",
-        name="Score the moments where it is talked about",
-        gives=("the seconds the transcript says it, which is not the same "
-               "thing and must not be reported as if it were"),
-        effort="instant — a transcript keyword weight and a re-score, no re-analysis",
+        name="给转录中谈到它的时刻加分",
+        gives="找出转录文本谈到该内容的时间点；这只是“谈到它”，不能当成目标本身出现在画面中的证据",
+        effort="即时——调整转录关键词权重并重新评分即可，无需重新分析视频",
         effort_rank=EFFORT_INSTANT,
-        confidence=("a proxy, and a weak one. It measures the talking. A thing "
-                    "can be discussed long after it happened, or happen with "
-                    "nobody saying a word"),
+        confidence="只是一种较弱的代理信号，测量的是“是否谈到”。内容可能在发生很久后才被提及，也可能发生时无人说话",
         confidence_rank=CONFIDENCE_PROXY,
-        holds_when=("you want the moments about it now, while deciding "
-                    "whether one of the routes above is worth the time"),
-        fails_when="you need to know when the thing itself was on screen",
-        repeat="free",
+        holds_when="你现在只想先找到与它相关的讨论时刻，同时判断是否值得投入时间使用上面的更强方案",
+        fails_when="你需要准确知道目标本身何时真正出现在画面中",
+        repeat="无需额外分析",
         topic="weights",
-        needs="a transcript",
+        needs="已有转录文本",
     ),
 )
 

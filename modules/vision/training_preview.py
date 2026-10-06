@@ -259,4 +259,5 @@ def snapshot(report, frames: Sequence, history: list, draw: bool) -> RoundSnapsh
         snap.mosaic_rgb = render(
             frames, per_frame,
             caption=f"第 {snap.epoch}/{snap.total_epochs} 轮：识别到 {found}/{expected} 个目标"
+        )
     return snap

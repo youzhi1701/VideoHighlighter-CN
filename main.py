@@ -5899,8 +5899,8 @@ class VideoHighlighterGUI(QWidget):
         
         # Check if pipeline is running
         if self.worker and self.worker.isRunning():
-            self.append_log("\n⏹️ === CANCELLATION REQUESTED ===")
-            self.append_log("⏹️ Stopping pipeline...")
+            self.append_log("\n⏹️ === 已请求取消 ===")
+            self.append_log("⏹️ 正在停止处理流水线…")
             self.task_label.setText("⏹️ 正在取消处理流程…")
             self.cancel_btn.setEnabled(False)
             self.cancel_btn.setText("正在取消…")
@@ -5910,7 +5910,7 @@ class VideoHighlighterGUI(QWidget):
 
         # Check if an on-demand signal run is going
         if self._signal_worker and self._signal_worker.isRunning():
-            self.append_log("\n⏹️ === CANCELLATION REQUESTED ===")
+            self.append_log("\n⏹️ === 已请求取消 ===")
             self.append_log("⏹️ 正在停止按需任务…")
             self.task_label.setText("⏹️ 正在取消按需任务…")
             self.cancel_btn.setText("正在取消…")
@@ -6505,14 +6505,12 @@ class VideoHighlighterGUI(QWidget):
         """The JSON beside the newest report, or None with a logged reason."""
         found = self._why_report_candidates()
         if not found:
-            self.append_log("⚠️ No highlight report yet — run the highlighter "
-                            "first, the summary is written into that report.")
+            self.append_log("⚠️ 目前还没有高光报告——请先运行高光处理，摘要会写入该报告。")
             return None
         newest = max(found, key=lambda p: os.path.getmtime(p))
         json_path = os.path.splitext(newest)[0] + ".json"
         if not os.path.exists(json_path):
-            self.append_log(f"⚠️ {os.path.basename(newest)} has no .json beside "
-                            "it, so there is nothing to summarise from.")
+            self.append_log(f"⚠️ {os.path.basename(newest)} 旁边没有对应的 .json，因此没有可用于生成摘要的数据。")
             return None
         return json_path
 

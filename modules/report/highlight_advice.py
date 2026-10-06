@@ -731,7 +731,7 @@ def attach_advice(report: dict,
         from modules.report.uncovered_claims import ensure
         ensure(report)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Unmeasured claims skipped: {exc}")
+        print(f"⚠️ 已跳过无法测量的陈述：{exc}")
     report["advice"] = [f.as_dict() for f in
                         diagnose(report, rejected=rejected, concern=concern)]
     if concern:

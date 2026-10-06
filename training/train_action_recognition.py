@@ -1238,7 +1238,7 @@ def visualize_training_sample(video_path, label, pose_extractor, adaptive_detect
     
     frame_count = 0
     successful_frames = 0
-    pbar = tqdm(total=total_frames, desc="Creating visualization")
+    pbar = tqdm(total=total_frames, desc="正在创建可视化")
     
     person_tracker = PersonTracker(iou_threshold=0.3, max_lost_frames=10)
     action_detector = SmartActionDetector()
@@ -2285,7 +2285,7 @@ def train_classifier(encoder, train_loader, val_loader, num_classes, label_to_id
         total_correct = 0
         total_samples = 0
         
-        pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{max_epochs}")
+        pbar = tqdm(train_loader, desc=f"训练轮次 {epoch+1}/{max_epochs}")
         for frames, labels in pbar:
             frames, labels = frames.to(device), labels.to(device)
             

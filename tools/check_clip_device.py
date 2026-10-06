@@ -1,24 +1,23 @@
-"""Report which backend CLIP lands on, and prove that backend is actually right.
+"""报告 CLIP 实际使用的后端，并验证该后端是否真正正确可用。
 
-The CLIP stack picks its backend from what the machine has (NVIDIA -> torch/CUDA,
-Intel -> OpenVINO, else CPU), and the failure mode that matters is *silent*: a
-wrong pick still returns plausible scores, just slowly. So this answers three
-questions on whatever machine it runs on:
+CLIP 会根据本机硬件选择后端（NVIDIA -> torch/CUDA，Intel -> OpenVINO，
+否则使用 CPU）。最需要防范的是“静默回退”：选错后端仍可能得到看似正常的
+分数，只是速度明显变慢。因此本工具回答三个问题：
 
-  1. Which backend/device does CLIP resolve to, and what did it see to decide?
-  2. Does a real forward pass work there, with sane embeddings?
-  3. Does it agree with a CPU reference, and is it actually faster?
+  1. CLIP 最终解析到哪个后端/设备，依据是什么？
+  2. 在该设备上真实前向计算是否正常，嵌入结果是否合理？
+  3. 与 CPU 参考结果是否一致，而且是否确实更快？
 
     python -m tools.check_clip_device
-    python -m tools.check_clip_device --frames 96     # longer benchmark
-    python -m tools.check_clip_device --device CPU    # force a backend
-    python -m tools.check_clip_device --skip-reference   # quick, no CPU compare
+    python -m tools.check_clip_device --frames 96        # 更长的基准测试
+    python -m tools.check_clip_device --device CPU       # 强制指定后端
+    python -m tools.check_clip_device --skip-reference   # 快速模式，不比较 CPU
 
-Exits non-zero if the resolved backend is wrong, non-finite, or disagrees with
-the reference — so it works as a smoke test, not just a printout.
+如果解析出的后端错误、结果包含非有限值，或与参考结果不一致，程序会以非零
+状态退出，因此它既可作为诊断输出，也可作为冒烟测试。
 
-Needs only torch + transformers + pillow + opencv-python + numpy. The CUDA path
-does not need optimum-intel; the OpenVINO path does.
+仅需要 torch + transformers + pillow + opencv-python + numpy。
+CUDA 路径不需要 optimum-intel；OpenVINO 路径需要。
 """
 from __future__ import annotations
 
@@ -54,7 +53,7 @@ def report_env() -> None:
         import torch
 
         print(f"torch        {torch.__version__}")
-        print(f"  cuda build {torch.version.cuda or '(none — this is a CPU/XPU wheel)'}")
+        print(f"  CUDA 构建  {torch.version.cuda or '（无——这是 CPU/XPU wheel）'}")
         avail = torch.cuda.is_available()
         print(f"  是否可用   {avail}")
         if avail:
@@ -178,7 +177,7 @@ def main() -> int:
     # The calibrated-score path, which is what the app thresholds on.
     emb.set_query("a red photo", negatives=["a blue photo"])
     scores = emb.score_frames_bgr(frames[:4])
-    print(f"scores        {[round(s, 4) for s in scores]}")
+    print(f"分数          {[round(s, 4) for s in scores]}")
     if not all(np.isfinite(scores)):
         failures.append("score_frames_bgr 返回了非有限分数")
 

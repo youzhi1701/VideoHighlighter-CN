@@ -502,8 +502,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,
         keyword_matches = []
 
         target_duration = EXACT_DURATION if EXACT_DURATION else MAX_DURATION
-        duration_mode = "精确" if EXACT_DURATION else "最长"
-        log(f"🎯 时长模式：{duration_mode}，目标 {target_duration} 秒（{target_duration/60:.1f} 分钟）")
+        duration_mode = "EXACT" if EXACT_DURATION else "MAX"
+        duration_mode_label = "精确" if EXACT_DURATION else "最长"
+        log(f"🎯 时长模式：{duration_mode_label}，目标 {target_duration} 秒（{target_duration/60:.1f} 分钟）")
 
         # ── Hard gate: actions require objects but no objects configured ─────────────
         actions_require_objects = gui_config.get("actions_require_objects", False)

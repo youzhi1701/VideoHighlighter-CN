@@ -164,6 +164,13 @@
       ]
     },
     {
+      "source": "(looked in: {'; '.join(model_dir_candidates())})",
+      "target": "（已检查：{'; '.join(model_dir_candidates())}）",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
       "source": "(lower = stricter)",
       "target": "（越低越严格）",
       "files": [
@@ -245,6 +252,13 @@
       "target": "（暂无，请使用“浏览”选择）",
       "files": [
         "modules/ui/model_dialog.py"
+      ]
+    },
+    {
+      "source": "(not taught)",
+      "target": "（未参与示教）",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -333,6 +347,13 @@
       ]
     },
     {
+      "source": "(taught, scored by heads that never saw each video)",
+      "target": "（参与示教；由从未见过对应视频的分类头评分）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "(the model only, never your footage)",
       "target": "（只分享模型，不会上传你的素材）",
       "files": [
@@ -361,10 +382,24 @@
       ]
     },
     {
+      "source": "(train one, or set {HEAD_DIR_ENV})",
+      "target": "请先训练一个，或设置 {HEAD_DIR_ENV}",
+      "files": [
+        "modules/vision/action_siglip.py"
+      ]
+    },
+    {
       "source": "(translated when the target language differs). No highlights are cut.",
       "target": "当目标语言不同时会自动翻译。此操作不会剪切高光片段。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "(tried {', '.join(route_label(r) for r in order)})",
+      "target": "（已尝试：{', '.join(route_label(r) for r in order)}）",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -463,6 +498,13 @@
       "target": "（{len(loudness_bursts)} 个事件）",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "({len({d[4] for d in detections})} actions) in {len(windows)} windows",
+      "target": "涉及 {len({d[4] for d in detections})} 个动作",
+      "files": [
+        "modules/vision/action_siglip.py"
       ]
     },
     {
@@ -1152,10 +1194,38 @@
       ]
     },
     {
+      "source": "\\nScoring val/ as the dataset defines it (training on train/ only)",
+      "target": "\\n正在按数据集定义对 val/ 评分（仅使用 train/ 训练）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "\\nShared: {url}",
       "target": "\\n已分享：{url}",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "\\nTraining the saved head on all {len(clips)} clips ({steps} steps)",
+      "target": "\\n正在使用全部 {len(clips)} 个片段训练最终保存的分类头（{steps} 步）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "\\n{'class':{width}}  clips +pair videos recall precision   threshold",
+      "target": "\\n{'类别':{width}}  片段 +动作对 视频数 召回率 精确率   阈值",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "\\n{len(clips)} clips ({int((targets.sum(1) > 1).sum())} with two or more actions),",
+      "target": "\\n{len(clips)} 个片段（{int((targets.sum(1) > 1).sum())} 个包含两个或更多动作），",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -1222,6 +1292,13 @@
       ]
     },
     {
+      "source": "\\n✅ Saved {head_path} and {META_FILE} ({time.time() - started:.0f} s)",
+      "target": "\\n✅ 已保存 {head_path} 和 {META_FILE}（{time.time() - started:.0f} 秒）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "\\n🎬 **Detected Action Sequences:**",
       "target": "\\n🎬 **检测到的动作序列：**",
       "files": [
@@ -1247,6 +1324,13 @@
       "target": "\\n📊 关键词匹配详情：",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "\\rProgress: |{bar}| {progress:.1%} - {status}",
+      "target": "\\r进度：|{bar}| {progress:.1%} - {status}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -1473,6 +1557,13 @@
       "files": [
         "frontend/src/components/tabs/AdvancedTab.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "Action recognition",
+      "target": "动作识别",
+      "files": [
+        "modules/vision/action_siglip.py"
       ]
     },
     {
@@ -1820,6 +1911,13 @@
       ]
     },
     {
+      "source": "also learn from test/ (still scored only by heads that never saw each video)",
+      "target": "同时从 test/ 学习（评分仍只使用从未见过对应视频的分类头）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "Also write each scored segment as its own file under\\n",
       "target": "除了合并后的高光视频外，还会将每个得分片段分别导出到\\n",
       "files": [
@@ -2034,6 +2132,7 @@
       "target": "音频",
       "files": [
         "frontend/src/lib/files.ts",
+        "modules/report/analysis_ondemand.py",
         "signal_timeline_viewer.py",
         "video_ai_editor/signal_timeline.py"
       ]
@@ -2249,6 +2348,13 @@
       "files": [
         "llm/llm_chat_widget.py",
         "main.py"
+      ]
+    },
+    {
+      "source": "balanced {t['balanced_accuracy']:.3f}, top-3 {t['top3']:.3f}",
+      "target": "平衡准确率 {t['balanced_accuracy']:.3f}，Top-3 {t['top3']:.3f}",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -2567,6 +2673,13 @@
       ]
     },
     {
+      "source": "chapter",
+      "target": "章节",
+      "files": [
+        "modules/narration/story_run.py"
+      ]
+    },
+    {
       "source": "Chat cleared. Ready for new questions.",
       "target": "对话已清空，可以开始新的问题。",
       "files": [
@@ -2863,6 +2976,13 @@
       ]
     },
     {
+      "source": "clip",
+      "target": "片段",
+      "files": [
+        "modules/narration/story_run.py"
+      ]
+    },
+    {
       "source": "CLIP + LLM",
       "target": "CLIP + 大模型",
       "files": [
@@ -3045,6 +3165,13 @@
       ]
     },
     {
+      "source": "Close",
+      "target": "关闭",
+      "files": [
+        "frontend/src/components/ui/dialog.tsx"
+      ]
+    },
+    {
       "source": "Collecting frames",
       "target": "收集帧",
       "files": [
@@ -3176,6 +3303,13 @@
       "target": "已完成：共找到 {total_detections} 个检测结果",
       "files": [
         "object_recognition.py"
+      ]
+    },
+    {
+      "source": "Composition",
+      "target": "构图规则",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -4123,6 +4257,13 @@
       ]
     },
     {
+      "source": "Detecting audio peaks…",
+      "target": "正在检测音频峰值…",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "Detection Targets",
       "target": "检测目标",
       "files": [
@@ -4672,6 +4813,20 @@
       ]
     },
     {
+      "source": "encoder route (compute.backend value)",
+      "target": "编码器计算路线（compute.backend 的值）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "Encoding {len(todo)} clips ({len(paths) - len(todo)} cached)",
+      "target": "正在编码 {len(todo)} 个片段（已缓存 {len(paths) - len(todo)} 个），",
+      "files": [
+        "model_training/action_head/features.py"
+      ]
+    },
+    {
       "source": "End",
       "target": "结束",
       "files": [
@@ -5158,6 +5313,13 @@
       ]
     },
     {
+      "source": "feature cache file (.npz)",
+      "target": "特征缓存文件（.npz）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "Feed video analysis cache so the LLM has context.",
       "target": "将视频分析缓存提供给大模型作为上下文。",
       "files": [
@@ -5376,6 +5538,13 @@
       ]
     },
     {
+      "source": "fold {i}/{len(splits)}: {acc:.3f} on {int(one.sum())} single-action clips",
+      "target": "折 {i}/{len(splits)}：单动作片段 {int(one.sum())} 个，准确率 {acc:.3f}",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "folder with one subfolder of clips per thing",
       "target": "包含各类别片段子文件夹的目录",
       "files": [
@@ -5481,6 +5650,13 @@
       ]
     },
     {
+      "source": "frame(s) for body-part rules",
+      "target": "{stats['people']} 人",
+      "files": [
+        "modules/rules/rule_inputs.py"
+      ]
+    },
+    {
       "source": "Frames",
       "target": "帧数",
       "files": [
@@ -5506,6 +5682,13 @@
       "target": "你可以直接看到它识别到了什么。",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "frames — and the frames are the whole point of the clip pass.",
+      "target": "片段旁白依赖画面，",
+      "files": [
+        "modules/narration/story_run.py"
       ]
     },
     {
@@ -5548,6 +5731,13 @@
       "target": "从视频学习",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "from {len(bboxes)} frames",
+      "target": "来源于 {len(bboxes)} 帧",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -5777,6 +5967,20 @@
       ]
     },
     {
+      "source": "Held out (whole source videos never seen)",
+      "target": "留出集（完整源视频从未参与训练）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "held-out precision an action must reach to be trusted",
+      "target": "动作被视为可信所需达到的留出集精确率",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "helicopter, airplane",
       "target": "例如：直升机、飞机",
       "files": [
@@ -5809,6 +6013,13 @@
       "target": "已隐藏全部物体——◀ ▶ 当前没有可跳转项目",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "hidden",
+      "target": "隐藏",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -6464,6 +6675,13 @@
       ]
     },
     {
+      "source": "JSON of folder or class name -> class name (\"\" leaves it out), as teach uses",
+      "target": "文件夹或类别名 -> 类别名的 JSON 映射（\"\" 表示排除），与示教模块一致",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "Jump back to the live frame and resume following",
       "target": "跳回实时画面并继续跟随",
       "files": [
@@ -6517,6 +6735,13 @@
       "target": "将保留无音乐版本的成片",
       "files": [
         "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "keeps its measurements; only the telling needs a model.",
+      "target": "只有叙述生成需要模型。",
+      "files": [
+        "modules/narration/story_run.py"
       ]
     },
     {
@@ -7104,6 +7329,13 @@
       ]
     },
     {
+      "source": "Main window",
+      "target": "主窗口",
+      "files": [
+        "main.py"
+      ]
+    },
+    {
       "source": "Make subtitles",
       "target": "生成字幕",
       "files": [
@@ -7229,6 +7461,13 @@
       "target": "根据本机实测",
       "files": [
         "training/train_estimate.py"
+      ]
+    },
+    {
+      "source": "Measuring audio…",
+      "target": "正在测量音频…",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -7358,6 +7597,13 @@
       "target": "物体检测最低置信度阈值（越低检测越多，但误报也越多）",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "minutes rather than seconds.",
+      "target": "通常需要数分钟。",
+      "files": [
+        "modules/narration/story_run.py"
       ]
     },
     {
@@ -7689,6 +7935,13 @@
       "target": "运动",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "MP4 files (*.mp4);;All files (*.*)",
+      "target": "MP4 视频 (*.mp4);;所有文件 (*.*)",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -8419,6 +8672,20 @@
       ]
     },
     {
+      "source": "not trusted",
+      "target": "不可信",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "not {encoder.encoder_id}; skipping action recognition",
+      "target": "与当前 {encoder.encoder_id} 不一致，已跳过动作识别",
+      "files": [
+        "modules/vision/action_siglip.py"
+      ]
+    },
+    {
       "source": "note",
       "target": "提示",
       "files": [
@@ -9054,6 +9321,13 @@
       "target": "输出基础名称：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "output folder (default: models/actions/<name>)",
+      "target": "输出文件夹（默认：models/actions/<name>）",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -10371,6 +10645,13 @@
       ]
     },
     {
+      "source": "Reusing cached transcript ({n} segments)",
+      "target": "正在复用缓存转写（{n} 个片段）",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "Round {self.epoch} of {self.total_epochs}: found",
       "target": "第 {self.epoch}/{self.total_epochs} 轮：",
       "files": [
@@ -10588,6 +10869,13 @@
       "target": "保存目录：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Save Highlight Video",
+      "target": "保存高光视频",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -10826,6 +11114,13 @@
       "target": "根据拉普拉斯方差评估清晰度；模糊片段会被降权，在兴趣度相同时优先选择更清晰的片段。",
       "files": [
         "frontend/src/components/tabs/BasicTab.tsx"
+      ]
+    },
+    {
+      "source": "Scoring on unseen source videos ({len(folds)} folds)",
+      "target": "正在未见过的源视频上评分（{len(folds)} 折）",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -11653,6 +11948,13 @@
       ]
     },
     {
+      "source": "shown",
+      "target": "显示",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "SigLIP2 + your trained action head",
       "target": "SigLIP2 + 你训练的动作头",
       "files": [
@@ -11728,6 +12030,13 @@
       "target": "跳过下载…",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "Skipping it.",
+      "target": "因此已跳过。",
+      "files": [
+        "modules/narration/story_run.py"
       ]
     },
     {
@@ -11815,6 +12124,13 @@
       "target": "源语言：",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "source videos a trusted action's held-out hits must come from",
+      "target": "可信动作在留出集中的命中至少需要来自多少个源视频",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -12167,7 +12483,8 @@
       "source": "Subtitles",
       "target": "字幕",
       "files": [
-        "frontend/src/components/tabs/TranscriptTab.tsx"
+        "frontend/src/components/tabs/TranscriptTab.tsx",
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -12322,6 +12639,13 @@
       "target": "已在 CPU 上完成测试推理",
       "files": [
         "model_hub/package.py"
+      ]
+    },
+    {
+      "source": "Test video {test_video} not found.",
+      "target": "未找到测试视频 {test_video}。",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -12571,6 +12895,13 @@
       ]
     },
     {
+      "source": "them cannot fire.",
+      "target": "这些信号的规则无法触发。",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "Then",
       "target": "然后",
       "files": [
@@ -12690,6 +13021,13 @@
       ]
     },
     {
+      "source": "those rules cannot fire.",
+      "target": "这些规则无法触发。",
+      "files": [
+        "modules/rules/rule_inputs.py"
+      ]
+    },
+    {
       "source": "Time between sampled frames. Type seconds (60) or mm:ss (1:00).",
       "target": "采样帧之间的时间间隔。可输入秒数（60）或 mm:ss（1:00）。",
       "files": [
@@ -12736,6 +13074,13 @@
       "target": "包括时间线、报告和聊天。只有需要完整控制或训练模型时",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "Timeline: NOT CONNECTED",
+      "target": "时间线：未连接",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -12873,6 +13218,13 @@
       ]
     },
     {
+      "source": "Train a taught-action head on the frame encoder",
+      "target": "使用帧编码器训练已示教的动作分类头",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "train an action head (SigLIP2) to replace it",
       "target": "请训练 SigLIP2 动作头作为替代",
       "files": [
@@ -12919,6 +13271,13 @@
       "target": "训练 hardware: no GPU found - training will use the",
       "files": [
         "modules/ui/training_panel.py"
+      ]
+    },
+    {
+      "source": "training lengths to compare on held-out videos",
+      "target": "在留出视频上比较的训练步数",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -13036,6 +13395,13 @@
       ]
     },
     {
+      "source": "Translating {len(segments)} segments to {target_lang}...",
+      "target": "正在将 {len(segments)} 个片段翻译为 {target_lang}...",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "Translation",
       "target": "翻译",
       "files": [
@@ -13054,6 +13420,20 @@
       "target": "正在按所选范围裁剪视频…",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "Trusted actions: {sum(t is not None for t in thresholds)} of {len(classes)};",
+      "target": "可信动作：{sum(t is not None for t in thresholds)}/{len(classes)}；",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "trusted pairs: {sum(t is not None for t in pair_th)} of {len(pairs)} taught",
+      "target": "可信动作对：{sum(t is not None for t in pair_th)}/{len(pairs)} 个已示教动作对",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -14101,6 +14481,13 @@
       ]
     },
     {
+      "source": "with {encoder.encoder_id} on {encoder.label}",
+      "target": "使用 {encoder.encoder_id}，设备 {encoder.label}",
+      "files": [
+        "model_training/action_head/features.py"
+      ]
+    },
+    {
       "source": "Within (s)",
       "target": "范围（秒）",
       "files": [
@@ -14112,6 +14499,20 @@
       "target": "对于已经分析过的视频，这个过程通常很快。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Worker {worker_id}: loaded {type(model).__name__}",
+      "target": "工作线程 {worker_id}：已加载 {type(model).__name__}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "Worker {worker_id}: no object detector available",
+      "target": "工作线程 {worker_id}：没有可用的对象检测器",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -14155,6 +14556,13 @@
       "target": "创建具有写入权限的新 Token。",
       "files": [
         "model_hub/hub.py"
+      ]
+    },
+    {
+      "source": "Writing {os.path.basename(srt_path)}...",
+      "target": "正在写入 {os.path.basename(srt_path)}...",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -14267,6 +14675,13 @@
       "target": "{'🚫 正在排除' if checked else '✅ 已允许'} {name}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{(len(todo) - n) / rate / 60:.1f} min left",
+      "target": "{(len(todo) - n) / rate / 60:.1f} 分钟",
+      "files": [
+        "model_training/action_head/features.py"
       ]
     },
     {
@@ -14529,6 +14944,13 @@
       ]
     },
     {
+      "source": "{len(classes)} classes, {n_videos} source videos",
+      "target": "{len(classes)} 个类别，{n_videos} 个源视频",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "{len(composed)} second(s) from {len(names)} rule(s){note}",
       "target": "{hits} 个事件{note}",
       "files": [
@@ -14641,6 +15063,13 @@
       ]
     },
     {
+      "source": "{len(peaks)} peaks",
+      "target": "{len(peaks)} 个峰值",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "{len(pieces)} run(s), {lost:.1f}s absorbed, ~{sum(run_durations) - lost:.1f}s out",
       "target": "转场占用 {lost:.1f} 秒，预计输出约 {sum(run_durations) - lost:.1f} 秒",
       "files": [
@@ -14739,6 +15168,13 @@
       ]
     },
     {
+      "source": "{len(small)} classes have fewer than {min_clips} single-action clips",
+      "target": "{len(small)} 个类别的单动作片段少于 {min_clips} 个，已排除：",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "{len(unique_speakers)} speakers",
       "target": "{len(unique_speakers)} 位说话人",
       "files": [
@@ -14760,6 +15196,13 @@
       ]
     },
     {
+      "source": "{len(wanted_classes)} class(es) first",
+      "target": "{len(wanted_classes)} 个类别",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "{minutes} minute{'s' if minutes != 1 else ''}",
       "target": "{minutes} 分钟",
       "files": [
@@ -14771,6 +15214,13 @@
       "target": "{moments} 个时刻，总计 {seconds} 秒。",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "{multi} clips show two or more actions and teach them together",
+      "target": "{multi} 个片段包含两个或更多动作，将一起用于示教",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -14869,6 +15319,13 @@
       "target": "{n} 个来源可用",
       "files": [
         "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "{n}/{len(todo)} clips, {rate:.1f}/s, about",
+      "target": "{n}/{len(todo)} 个片段，{rate:.1f} 个/秒，预计剩余",
+      "files": [
+        "model_training/action_head/features.py"
       ]
     },
     {
@@ -15054,6 +15511,13 @@
       ]
     },
     {
+      "source": "{stats['frames']} frame(s), {stats['no_outline']} left as boxes",
+      "target": "{stats['no_outline']} 个保留为边界框",
+      "files": [
+        "modules/rules/rule_inputs.py"
+      ]
+    },
+    {
       "source": "{status} {idx}/{total} videos",
       "target": "{status} {idx}/{total} 个视频",
       "files": [
@@ -15065,6 +15529,20 @@
       "target": "{step:.2f} 秒 {'小节' if unit == 'bar' else '节拍'}（{60.0 / interval:.1f} BPM）",
       "files": [
         "modules/media/edl.py"
+      ]
+    },
+    {
+      "source": "{steps} steps",
+      "target": "{steps} 步",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "{steps} steps: held-out single-action accuracy {acc:.3f}",
+      "target": "{steps} 步：留出集单动作准确率 {acc:.3f}",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -15086,6 +15564,13 @@
       "target": "{title} 已安装，重启后生效。现在重启吗？",
       "files": [
         "modules/packs/pack_ui.py"
+      ]
+    },
+    {
+      "source": "{title}, single action ({t['clips']} clips): accuracy {t['accuracy']:.3f},",
+      "target": "{title}，单动作（{t['clips']} 个片段）：准确率 {t['accuracy']:.3f}，",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -15909,6 +16394,13 @@
       ]
     },
     {
+      "source": "ℹ️ Edit timeline is empty",
+      "target": "ℹ️ 编辑时间线为空",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "ℹ️ Enable bounding boxes, creates new file with extension _annotated.mp4 for debugging",
       "target": "ℹ️ 启用检测框后会生成带 _annotated.mp4 后缀的新文件，用于调试",
       "files": [
@@ -15920,6 +16412,13 @@
       "target": "ℹ️ 人脸库已经为空。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Frame encoder: {route_label(route)} skipped ({type(e).__name__}: {e})",
+      "target": "ℹ️ 帧编码器：已跳过 {route_label(route)}（{type(e).__name__}：{e}）",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -15962,6 +16461,20 @@
       "target": "ℹ️ 未指定关注动作，已跳过动作识别",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "ℹ️ No visual findings{suffix}",
+      "target": "ℹ️ 没有视觉查找结果{suffix}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Not in action head {head.name}: {', '.join(unknown)}",
+      "target": "ℹ️ 动作分类头 {head.name} 中不存在：{', '.join(unknown)}",
+      "files": [
+        "modules/vision/action_siglip.py"
       ]
     },
     {
@@ -16147,6 +16660,13 @@
       ]
     },
     {
+      "source": "↩️ Falling back to COCO object detector",
+      "target": "↩️ 正在回退到 COCO 对象检测器",
+      "files": [
+        "modules/vision/detection_backend.py"
+      ]
+    },
+    {
       "source": "↩️ Resuming job {state.job_id}",
       "target": "↩️ 正在继续任务 {state.job_id}",
       "files": [
@@ -16287,6 +16807,13 @@
       ]
     },
     {
+      "source": "⏳ Exporting {model_name} to ONNX for the GPU (one-off)…",
+      "target": "⏳ 正在将 {model_name} 一次性导出为 GPU 使用的 ONNX…",
+      "files": [
+        "modules/vision/r3d_onnx.py"
+      ]
+    },
+    {
       "source": "⏳ Generating Actions…",
       "target": "⏳ 正在生成动作标注…",
       "files": [
@@ -16325,6 +16852,7 @@
       "source": "⏸ Pause",
       "target": "⏸ 暂停",
       "files": [
+        "llm/llm_timeline_bridge.py",
         "main.py",
         "signal_timeline_viewer.py"
       ]
@@ -16580,6 +17108,7 @@
       "source": "▶ Play",
       "target": "▶ 播放",
       "files": [
+        "llm/llm_timeline_bridge.py",
         "signal_timeline_viewer.py"
       ]
     },
@@ -16838,6 +17367,13 @@
       ]
     },
     {
+      "source": "⚠️ ... and {len(failed) - 10} more clips that could not be read",
+      "target": "⚠️ 另外还有 {len(failed) - 10} 个片段无法读取，已跳过",
+      "files": [
+        "model_training/action_head/features.py"
+      ]
+    },
+    {
       "source": "⚠️ [timeline] could not persist render_mode: {e}",
       "target": "⚠️ [时间线] 无法保存 render_mode：{e}",
       "files": [
@@ -16852,10 +17388,38 @@
       ]
     },
     {
+      "source": "⚠️ Action '{name}' not found. Available: {available}",
+      "target": "⚠️ 未找到动作 '{name}'。可用项：{available}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "⚠️ Action head {head.name} was trained on {head.encoder_id},",
+      "target": "⚠️ 动作分类头 {head.name} 使用 {head.encoder_id} 训练，",
+      "files": [
+        "modules/vision/action_siglip.py"
+      ]
+    },
+    {
       "source": "⚠️ action model import failed: {e}",
       "target": "⚠️ 动作模型导入失败：{e}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Action recognition: cannot read {os.path.basename(video_path)}",
+      "target": "⚠️ 动作识别：无法读取 {os.path.basename(video_path)}",
+      "files": [
+        "modules/vision/action_siglip.py"
+      ]
+    },
+    {
+      "source": "⚠️ Action recognition: no trained action head found",
+      "target": "⚠️ 动作识别：未找到已训练的动作分类头，",
+      "files": [
+        "modules/vision/action_siglip.py"
       ]
     },
     {
@@ -16992,6 +17556,13 @@
       ]
     },
     {
+      "source": "⚠️ Cache saving not available",
+      "target": "⚠️ 当前无法保存缓存",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "⚠️ Cache saving not available in this scene",
       "target": "⚠️ 当前场景不支持保存缓存",
       "files": [
@@ -17052,6 +17623,13 @@
       "target": "⚠️ 片段 {position} 没有可读取的画面，已跳过。",
       "files": [
         "modules/narration/clip_story.py"
+      ]
+    },
+    {
+      "source": "⚠️ COCO labels not found: {coco_labels_file}",
+      "target": "⚠️ 未找到 COCO 标签：{coco_labels_file}",
+      "files": [
+        "modules/vision/detection_backend.py"
       ]
     },
     {
@@ -17223,6 +17801,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not fetch the YOLOX detector: {e}",
+      "target": "⚠️ 无法获取 YOLOX 检测器：{e}",
+      "files": [
+        "modules/vision/detection_backend.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not hand the report to the chat: {exc}",
       "target": "⚠️ 无法将报告交给大模型对话：{exc}",
       "files": [
@@ -17314,6 +17899,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not open {os.path.basename(path)} to classify it",
+      "target": "⚠️ 无法打开 {os.path.basename(path)} 进行镜头分类",
+      "files": [
+        "modules/segments/shot_type.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not open {os.path.basename(path)} to measure it",
       "target": "⚠️ 无法打开 {os.path.basename(path)} 进行测量",
       "files": [
@@ -17325,6 +17917,13 @@
       "target": "⚠️ 无法解析文件名，正在查找最新文件…",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not persist analysis: {e}",
+      "target": "⚠️ 无法持久化分析结果：{e}",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -17374,6 +17973,13 @@
       "target": "⚠️ 无法读取报告：{exc}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not read {os.path.basename(p)}; left out",
+      "target": "⚠️ 无法读取 {os.path.basename(p)}，已跳过",
+      "files": [
+        "model_training/action_head/features.py"
       ]
     },
     {
@@ -17489,10 +18095,31 @@
       ]
     },
     {
+      "source": "⚠️ Could not write transcript sidecar: {e}",
+      "target": "⚠️ 无法写入转写文本旁车文件：{e}",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "⚠️ CUDA check failed: {e}",
       "target": "⚠️ CUDA 检查失败：{e}",
       "files": [
         "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Custom object model not found: {custom_model_xml or '(none)'}",
+      "target": "⚠️ 未找到自定义对象模型：{custom_model_xml or '（未设置）'}",
+      "files": [
+        "modules/vision/detection_backend.py"
+      ]
+    },
+    {
+      "source": "⚠️ Detection returned no boxes — spatial rules cannot fire.",
+      "target": "⚠️ 检测未返回任何边界框，空间规则无法触发。",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -17559,8 +18186,22 @@
       ]
     },
     {
+      "source": "⚠️ Error in detection: {e}",
+      "target": "⚠️ 检测出错：{e}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
       "source": "⚠️ Error in object detection at frame {frame_idx}: {e}",
       "target": "⚠️ 第 {frame_idx} 帧物体检测出错：{e}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️ Error merging annotated videos: {e}",
+      "target": "⚠️ 合并标注视频出错：{e}",
       "files": [
         "object_recognition.py"
       ]
@@ -17650,6 +18291,13 @@
       ]
     },
     {
+      "source": "⚠️ Feature cache {path} unreadable ({e}); encoding again",
+      "target": "⚠️ 特征缓存 {path} 无法读取（{e}），将重新编码",
+      "files": [
+        "model_training/action_head/features.py"
+      ]
+    },
+    {
       "source": "⚠️ FFmpeg trimming with copy failed, trying with re-encoding...",
       "target": "⚠️ FFmpeg 直接复制裁剪失败，正在尝试重新编码…",
       "files": [
@@ -17685,6 +18333,27 @@
       ]
     },
     {
+      "source": "⚠️ Frame encoder in {folder} is unusable: {e}",
+      "target": "⚠️ {folder} 中的帧编码器不可用：{e}",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
+      "source": "⚠️ Frame encoder {ENCODER_ID} is not installed",
+      "target": "⚠️ 帧编码器 {ENCODER_ID} 未安装",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
+      "source": "⚠️ Frame encoder: no route could run {ENCODER_ID} here",
+      "target": "⚠️ 帧编码器：当前没有可运行 {ENCODER_ID} 的计算路线",
+      "files": [
+        "modules/vision/frame_encoder.py"
+      ]
+    },
+    {
       "source": "⚠️ frame {ts:.1f}s: {exc}",
       "target": "⚠️ 第 {ts:.1f} 秒画面：{exc}",
       "files": [
@@ -17696,6 +18365,13 @@
       "target": "⚠️ 当前文件只有 {real:.0f} 秒——更像广告而非完整视频，",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "⚠️ GPU detector (ONNX Runtime) unavailable, using OpenVINO: {e}",
+      "target": "⚠️ GPU 检测器（ONNX Runtime）不可用，改用 OpenVINO：{e}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -17724,6 +18400,20 @@
       "target": "⚠️ Intel / R3D 动作识别已弃用并将在后续移除；",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "⚠️ Invalid clip index {idx+1} (have {len(clips)} clips)",
+      "target": "⚠️ 无效的片段索引 {idx+1}（当前共 {len(clips)} 个片段）",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "⚠️ Invalid clip index: '{idx_str}'",
+      "target": "⚠️ 无效的片段索引：'{idx_str}'",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -17832,10 +18522,24 @@
       ]
     },
     {
+      "source": "⚠️ Missing clip index",
+      "target": "⚠️ 缺少片段索引",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "⚠️ Missing dependency: {e}",
       "target": "⚠️ 缺少依赖：{e}",
       "files": [
         "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Missing target description. Usage: [CMD:visual_scan interval=60 target=description]",
+      "target": "⚠️ 缺少目标描述。用法：[CMD:visual_scan interval=60 target=description]",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -17850,6 +18554,20 @@
       "target": "⚠️ 无法应用音乐，将在不加音乐的情况下重新生成",
       "files": [
         "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "⚠️ Narration skipped — could not reach {label}. The report",
+      "target": "⚠️ 已跳过旁白：无法连接 {label}。报告中的测量结果会保留，",
+      "files": [
+        "modules/narration/story_run.py"
+      ]
+    },
+    {
+      "source": "⚠️ Narration skipped — {label} could not be loaded: {exc}",
+      "target": "⚠️ 已跳过旁白：无法加载 {label}：{exc}",
+      "files": [
+        "modules/narration/story_run.py"
       ]
     },
     {
@@ -17874,6 +18592,13 @@
       ]
     },
     {
+      "source": "⚠️ No class names for custom model: {custom_model_xml}",
+      "target": "⚠️ 自定义模型缺少类别名称：{custom_model_xml}",
+      "files": [
+        "modules/vision/detection_backend.py"
+      ]
+    },
+    {
       "source": "⚠️ No clips in edit timeline",
       "target": "⚠️ 剪辑时间线中没有片段",
       "files": [
@@ -17881,10 +18606,24 @@
       ]
     },
     {
+      "source": "⚠️ No clips to export",
+      "target": "⚠️ 没有可导出的片段",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "⚠️ No custom class names found (choose a model / check labels).",
       "target": "⚠️ 未找到自定义类别名称（请选择模型或检查标签文件）。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No default YOLOX IR under models/yolox/ (run tools/get_yolox_model.py)",
+      "target": "⚠️ models/yolox/ 下没有默认 YOLOX IR（请运行 tools/get_yolox_model.py）",
+      "files": [
+        "modules/vision/detection_backend.py"
       ]
     },
     {
@@ -18021,6 +18760,13 @@
       ]
     },
     {
+      "source": "⚠️ No values for signal(s): {', '.join(missing)} — rules using",
+      "target": "⚠️ 以下信号没有可用值：{', '.join(missing)}；依赖",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "⚠️ No video links found. Page structure may have changed.",
       "target": "⚠️ 未找到视频链接，页面结构可能已经变化。",
       "files": [
@@ -18032,6 +18778,13 @@
       "target": "⚠️ 尚未加载视频",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No video player available",
+      "target": "⚠️ 没有可用的视频播放器",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -18053,6 +18806,13 @@
       "target": "⚠️ cache_data 中没有 video_hash，无法将波形保存到磁盘",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "⚠️ No video_hash; analysis not persisted",
+      "target": "⚠️ 缺少 video_hash，分析结果未持久化保存",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {
@@ -18102,6 +18862,13 @@
       "target": "⚠️ 当前没有正在运行的任务可取消",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Object '{name}' not found. Available: {available}",
+      "target": "⚠️ 未找到对象 '{name}'。可用项：{available}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -18308,6 +19075,20 @@
       ]
     },
     {
+      "source": "⚠️ Rules name body parts, but no pose model is available;",
+      "target": "⚠️ 规则引用了身体部位，但当前没有可用的姿态模型；",
+      "files": [
+        "modules/rules/rule_inputs.py"
+      ]
+    },
+    {
+      "source": "⚠️ Save failed",
+      "target": "⚠️ 保存失败",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "⚠️ Saved beat grid unusable ({exc});",
       "target": "⚠️ 已保存的节拍网格无法使用（{exc}）；",
       "files": [
@@ -18427,6 +19208,13 @@
       ]
     },
     {
+      "source": "⚠️ The {noun} narration failed: {exc}",
+      "target": "⚠️ {noun}旁白生成失败：{exc}",
+      "files": [
+        "modules/narration/story_run.py"
+      ]
+    },
+    {
       "source": "⚠️ This engine needs a connected vision model. Connect one, or use CLIP only.",
       "target": "⚠️ 此引擎需要连接视觉模型。请先连接模型，或使用“仅 CLIP”。",
       "files": [
@@ -18438,6 +19226,13 @@
       "target": "⚠️ 此报告中没有可讲述的章节。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Timeline not connected — cannot execute {cmd}",
+      "target": "⚠️ 时间线未连接，无法执行 {cmd}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -18490,10 +19285,31 @@
       ]
     },
     {
+      "source": "⚠️ Unknown command: {cmd}",
+      "target": "⚠️ 未知命令：{cmd}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "⚠️ Unknown compute backend {chosen!r} — using automatic",
       "target": "⚠️ 未知计算后端 {chosen!r}，改用自动选择",
       "files": [
         "modules/system/device_utils.py"
+      ]
+    },
+    {
+      "source": "⚠️ Unknown confidence type '{target}'. Use action, object, or both.",
+      "target": "⚠️ 未知的置信度类型 '{target}'。请使用 action、object 或 both。",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "⚠️ Unknown format: {fmt}. Use 'edl', 'fcpxml', or 'xml'",
+      "target": "⚠️ 未知格式：{fmt}。请使用 'edl'、'fcpxml' 或 'xml'",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -18596,6 +19412,13 @@
     },
     {
       "source": "⚠️ Waveform extraction failed: {e}",
+      "target": "⚠️ 波形提取失败：{e}",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
+      "source": "⚠️ Waveform extraction failed: {e}",
       "target": "⚠️ 音频波形提取失败：{e}",
       "files": [
         "pipeline.py"
@@ -18641,6 +19464,13 @@
       "target": "⚠️ {filename} 已下载，但处理失败",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ {label} has no vision half loaded, so it cannot see the",
+      "target": "⚠️ {label} 未加载视觉能力，无法查看视频帧；",
+      "files": [
+        "modules/narration/story_run.py"
       ]
     },
     {
@@ -18735,6 +19565,13 @@
       ]
     },
     {
+      "source": "✅ Action '{name}' {action}",
+      "target": "✅ 动作 '{name}'：{action}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "✅ Action detection complete: {len(all_action_detections)} detections",
       "target": "✅ 动作检测完成：{len(all_action_detections)} 个检测结果",
       "files": [
@@ -18749,6 +19586,27 @@
       ]
     },
     {
+      "source": "✅ Action recognition: {len(detections)} detections",
+      "target": "✅ 动作识别：在 {len(windows)} 个窗口中得到 {len(detections)} 次检测，",
+      "files": [
+        "modules/vision/action_siglip.py"
+      ]
+    },
+    {
+      "source": "✅ Added clip: {start:.1f}s - {end:.1f}s",
+      "target": "✅ 已添加片段：{start:.1f}s - {end:.1f}s",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "✅ All filters reset — showing everything",
+      "target": "✅ 已重置全部筛选，当前显示所有内容",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "✅ Analysis results cached (full transcript: {len(analysis_data['transcript']['segments'])} segments, language: {TRANSCRIPT_SOURCE_LANG})",
       "target": "✅ 分析结果已缓存（完整转录：{len(analysis_data['transcript']['segments'])} 个片段，语言：{TRANSCRIPT_SOURCE_LANG}）",
       "files": [
@@ -18760,6 +19618,13 @@
       "target": "✅ 分析结果已缓存（关键词筛选：{len(analysis_data['transcript']['segments'])} 个片段，语言：{TRANSCRIPT_SOURCE_LANG}）",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "✅ Annotated video saved: {output_path}",
+      "target": "✅ 标注视频已保存：{output_path}",
+      "files": [
+        "object_recognition.py"
       ]
     },
     {
@@ -18781,6 +19646,27 @@
       "target": "✅ 缓存方法成功：{d:.1f} 秒",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "✅ Cleared all {before} visual finding(s)",
+      "target": "✅ 已清除全部 {before} 条视觉查找结果",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "✅ Cleared all {count} clips",
+      "target": "✅ 已清空全部 {count} 个片段",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "✅ Cleared {before - after} finding(s) for '{query}'",
+      "target": "✅ 已清除 '{query}' 的 {before - after} 条查找结果",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -18816,6 +19702,13 @@
       "target": "✅ 构图规则已保存 → {save_path}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "✅ Confidence filter set ({', '.join(applied)}): {min_c:.2f} - {max_c:.2f}",
+      "target": "✅ 已设置置信度筛选（{', '.join(applied)}）：{min_c:.2f} - {max_c:.2f}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -18942,6 +19835,13 @@
       "target": "✅ 找到 {len(keyword_matches)} 个关键词匹配",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "✅ Frame encoder: {ENCODER_ID} on {encoder.label}",
+      "target": "✅ 帧编码器：{ENCODER_ID}，运行于 {encoder.label}",
+      "files": [
+        "modules/vision/frame_encoder.py"
       ]
     },
     {
@@ -19134,6 +20034,13 @@
       ]
     },
     {
+      "source": "✅ Object '{name}' {action}",
+      "target": "✅ 对象 '{name}'：{action}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "✅ Object detection annotated video saved: {annotated_output}",
       "target": "✅ 物体检测标注视频已保存：{annotated_output}",
       "files": [
@@ -19162,6 +20069,20 @@
       ]
     },
     {
+      "source": "✅ Object detector: YOLOX on {ort_directml.session_backend(session)}",
+      "target": "✅ 对象检测器：YOLOX，运行于 {ort_directml.session_backend(session)}",
+      "files": [
+        "object_recognition.py"
+      ]
+    },
+    {
+      "source": "✅ Object detector: {type(detector).__name__}, {len(names)} classes",
+      "target": "✅ 对象检测器：{type(detector).__name__}，{len(names)} 个类别",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "✅ Object detector: {type(yolo_model).__name__},",
       "target": "✅ 物体检测器：{type(yolo_model).__name__}，",
       "files": [
@@ -19169,10 +20090,31 @@
       ]
     },
     {
+      "source": "✅ Paused",
+      "target": "✅ 已暂停",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "✅ Person tracker ready (YOLOX): {model_xml}",
       "target": "✅ 人物追踪器已就绪（YOLOX）：{model_xml}",
       "files": [
         "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
+      "source": "✅ Playing from {current:.1f}s",
+      "target": "✅ 正在从 {current:.1f}s 开始播放",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
+      "source": "✅ Playing {start:.1f}s - {end:.1f}s",
+      "target": "✅ 正在播放 {start:.1f}s - {end:.1f}s",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -19211,6 +20153,13 @@
       ]
     },
     {
+      "source": "✅ Removed clip {idx+1} ({removed[0]:.1f}s - {removed[1]:.1f}s)",
+      "target": "✅ 已移除片段 {idx+1}（{removed[0]:.1f}s - {removed[1]:.1f}s）",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "✅ Replaced the advert with the real video",
       "target": "✅ 已用真实视频替换广告",
       "files": [
@@ -19232,6 +20181,13 @@
       ]
     },
     {
+      "source": "✅ Seeked to {t:.1f}s",
+      "target": "✅ 已定位到 {t:.1f}s",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "✅ Speaker enrichment complete: {len(speaker_labels)} speakers identified",
       "target": "✅ 说话人信息补充完成：已识别 {len(speaker_labels)} 位说话人",
       "files": [
@@ -19239,10 +20195,24 @@
       ]
     },
     {
+      "source": "✅ Subtitles saved: {srt_path}",
+      "target": "✅ 字幕已保存：{srt_path}",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "✅ Timeline exported successfully!\\n\\n{msg}",
       "target": "✅ 时间线导出成功！\\n\\n{msg}",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "✅ Timeline saved to cache",
+      "target": "✅ 时间线已保存到缓存",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -19358,10 +20328,24 @@
       ]
     },
     {
+      "source": "✅ Zoom set to {level}",
+      "target": "✅ 缩放已设为 {level}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "✅ {filename} downloaded and processed successfully",
       "target": "✅ {filename} 下载并处理成功",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "✅ {label} exported: {result}{skipped_note(result.skipped)}",
+      "target": "✅ {label} 已导出：{result}{skipped_note(result.skipped)}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -19383,6 +20367,13 @@
       "target": "✏️  为此人物命名…",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "✏️ Outlines ({stats['outliner']}): {stats['traced']} traced on",
+      "target": "✏️ 轮廓（{stats['outliner']}）：在 {stats['frames']} 帧中描绘 {stats['traced']} 个，",
+      "files": [
+        "modules/rules/rule_inputs.py"
       ]
     },
     {
@@ -19862,6 +20853,13 @@
       ]
     },
     {
+      "source": "❌ Error executing {cmd}: {e}",
+      "target": "❌ 执行 {cmd} 时出错：{e}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
+      ]
+    },
+    {
       "source": "❌ Error in load_cache_data: {e}",
       "target": "❌ 加载缓存数据时出错：{e}",
       "files": [
@@ -19880,6 +20878,13 @@
       "target": "❌ 错误：所有评分项的分值都设置为 0！",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "❌ Export failed: {exc}",
+      "target": "❌ 导出失败：{exc}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -20023,6 +21028,13 @@
       ]
     },
     {
+      "source": "❌ No class has enough single-action clips to train on",
+      "target": "❌ 没有任何类别拥有足够的单动作片段可用于训练",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
       "source": "❌ No ffmpeg found. It normally comes with the app's requirements",
       "target": "❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装",
       "files": [
@@ -20105,6 +21117,20 @@
       "target": "❌ 搜索出错：{error}",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "❌ The exported head disagrees with the trained one (max {drift:.2e})",
+      "target": "❌ 导出的分类头与训练结果不一致（最大偏差 {drift:.2e}）",
+      "files": [
+        "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "❌ The frame encoder is not available; see the lines above",
+      "target": "❌ 帧编码器不可用，请查看上方日志",
+      "files": [
+        "model_training/action_head/train.py"
       ]
     },
     {
@@ -20232,6 +21258,13 @@
       "target": "⬇️ 正在下载：{url}",
       "files": [
         "downloader.py"
+      ]
+    },
+    {
+      "source": "⬇️ First run: fetching the YOLOX object detector (Apache-2.0)…",
+      "target": "⬇️ 首次运行：正在获取 YOLOX 对象检测器（Apache-2.0）…",
+      "files": [
+        "modules/vision/detection_backend.py"
       ]
     },
     {
@@ -20846,6 +21879,20 @@
       ]
     },
     {
+      "source": "💾 Analysis merged → {cache_file.name}",
+      "target": "💾 分析结果已合并 → {cache_file.name}",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
+      "source": "💾 Analysis merged → {wrote} cache file(s)",
+      "target": "💾 分析结果已合并到 {wrote} 个缓存文件",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "💾 Cached the {filled} data - the next run reuses it.",
       "target": "💾 已缓存 {filled} 数据，下次运行将直接复用。",
       "files": [
@@ -21155,6 +22202,13 @@
       ]
     },
     {
+      "source": "📖 Narrating {noun}s with {label} — one call each, so this takes",
+      "target": "📖 正在使用 {label} 为{noun}生成旁白；每个{noun}都会单独调用模型，",
+      "files": [
+        "modules/narration/story_run.py"
+      ]
+    },
+    {
       "source": "📖 Telling chapter {index} of {len(chapters)}",
       "target": "📖 正在讲述章节 {index}/{len(chapters)}",
       "files": [
@@ -21442,6 +22496,13 @@
       ]
     },
     {
+      "source": "🔊 Energy VAD: {len(merged)} speech segments detected",
+      "target": "🔊 能量 VAD：检测到 {len(merged)} 个语音片段",
+      "files": [
+        "modules/audio/speaker_utils.py"
+      ]
+    },
+    {
       "source": "🔊 WebRTC VAD: {len(merged)} speech segments detected",
       "target": "🔊 WebRTC VAD：检测到 {len(merged)} 个语音片段",
       "files": [
@@ -21568,6 +22629,13 @@
       ]
     },
     {
+      "source": "🔍 Rules need {', '.join(absent)} — detecting",
+      "target": "🔍 规则需要 {', '.join(absent)}，正在检测",
+      "files": [
+        "modules/report/analysis_ondemand.py"
+      ]
+    },
+    {
       "source": "🔍 Scan video for faces",
       "target": "🔍 扫描视频人脸",
       "files": [
@@ -21593,6 +22661,13 @@
       "target": "🔍 按人物搜索",
       "files": [
         "video_ai_editor/search_panel.py"
+      ]
+    },
+    {
+      "source": "🔍 Starting visual scan every {interval:.0f}s looking for: {target}",
+      "target": "🔍 开始视觉扫描：每 {interval:.0f}s 查找一次：{target}",
+      "files": [
+        "llm/llm_timeline_bridge.py"
       ]
     },
     {
@@ -22163,6 +23238,13 @@
       ]
     },
     {
+      "source": "🦴 Pose: {stats['people']} people on {stats['frames']}",
+      "target": "🦴 姿态：为身体部位规则在 {stats['frames']} 帧中检测到",
+      "files": [
+        "modules/rules/rule_inputs.py"
+      ]
+    },
+    {
       "source": "🧊 Object recognition",
       "target": "🧊 物体识别",
       "files": [
@@ -22202,6 +23284,13 @@
       "target": "🧠 推理引擎已连接大模型，现在可以回答“为什么”类问题",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "🧩 Composition: {hits} event-hit(s) over {len(composed)} second(s)",
+      "target": "🧩 构图规则：{hits} 次事件命中，覆盖 {len(composed)} 秒，",
+      "files": [
+        "modules/report/analysis_ondemand.py"
       ]
     },
     {

@@ -515,9 +515,9 @@ def tell(report: Mapping,
     previous = None
     for index, ch in enumerate(chapters, start=1):
         if cancel_fn is not None and cancel_fn():
-            log_fn(f"⏹️ Stopped after {index - 1} of {len(chapters)} chapters.")
+            log_fn(f"⏹️ 已停止：完成 {index - 1}/{len(chapters)} chapters.")
             break
-        log_fn(f"📖 Telling chapter {index} of {len(chapters)}"
+        log_fn(f"📖 正在讲述章节 {index}/{len(chapters)}"
                f" ({ch.get('timestamp', '')})…")
         images = None
         if frames_fn is not None:
@@ -529,7 +529,7 @@ def tell(report: Mapping,
             text = (_tell_one(llm, chapter_prompt(report, ch, previous),
                               images, system) or "").strip()
         except Exception as exc:
-            log_fn(f"⚠️ Chapter {index} could not be told: {exc}")
+            log_fn(f"⚠️ 无法讲述章节 {index}：{exc}")
             continue
         if not text:
             continue
@@ -540,7 +540,7 @@ def tell(report: Mapping,
             # the one who can do something about it. No length floor on what
             # survives — rule 5 asks for a single short sentence when the
             # material is thin, and one of those is a legitimate paragraph.
-            log_fn(f"✂️ Chapter {index} repeated itself; kept what came before.")
+            log_fn(f"✂️ 章节 {index} 出现重复内容，已保留此前结果。")
             text = trimmed
         ch["story"] = text
         # Only a told chapter carries forward. A skipped one would otherwise

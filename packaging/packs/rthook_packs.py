@@ -111,7 +111,7 @@ def _maintain(roots):
                 continue
             try:
                 os.rename(pending, os.path.join(root, target))
-                print(f"[packs] {target}: updated")
+                print(f"[资源包] {target}：已更新")
             except OSError:
                 pass
 
@@ -128,7 +128,7 @@ def _maintain(roots):
                 continue
             if replacement and replacement != name and replacement in present:
                 if _to_trash(root, name):
-                    print(f"[packs] {name}: removed, superseded by {replacement}")
+                    print(f"[资源包] {name}：已移除，由 {replacement} 替代")
 
     for root in roots:
         shutil.rmtree(os.path.join(root, _TRASH), ignore_errors=True)
@@ -170,7 +170,7 @@ def _install_packs():
         try:
             _maintain(roots)
         except Exception as exc:  # never stop the app from starting over this
-            print(f"[packs] maintenance skipped: {exc}")
+            print(f"[资源包] 已跳过维护：{exc}")
     for _priority, name, site in _chosen_packs(roots):
         sys.path.append(site)
         # torch registers its own DLL folder on import; this only makes the
@@ -181,7 +181,7 @@ def _install_packs():
                 os.add_dll_directory(lib)
             except OSError:
                 pass
-        print(f"[packs] {name}")
+        print(f"[资源包] 已加载 {name}")
 
 
 _install_packs()

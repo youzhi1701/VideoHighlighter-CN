@@ -340,7 +340,7 @@ def chapterize(duration: float,
     else:
         sigs, keep = shot_signatures(timestamps, embeddings, scenes)
         if len(sigs) < MIN_SHOTS_FOR_STRUCTURE:
-            log_fn("📖 Chapters: too few sampled shots for visual structure")
+            log_fn("📖 章节：采样镜头过少，无法分析视觉结构")
             starts = np.asarray([s[0] for s in scenes], dtype=np.float64)
             novelty = np.zeros(len(scenes), dtype=np.float32)
             method = "shot-length"
@@ -363,7 +363,7 @@ def chapterize(duration: float,
         score = float(novelty[edges[n - 2]]) if n >= 2 and edges else 0.0
         chapters.append(_chapter(n, a, b, shots, score, method))
 
-    log_fn(f"📖 Chapters: {len(chapters)} over {format_timestamp(duration)} ({method})")
+    log_fn(f"📖 章节：在 {format_timestamp(duration)} 视频中生成 {len(chapters)} 个章节（{method}）")
     return chapters
 
 

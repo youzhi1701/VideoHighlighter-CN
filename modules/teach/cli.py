@@ -347,7 +347,7 @@ def run_auto(root: str, *, train: bool = False, max_steps: int = 20) -> dict:
             return {"ran": done, "stopped_at": step,
                     "error": result.get("error") or result.get("errors")}
     return {"ran": done, "stopped_at": next_step(Project.load(root)),
-            "message": f"已在执行 {max_steps} 个步骤后停止"
+            "message": f"已在执行 {max_steps} 个步骤后停止"}
 
 
 def cmd_auto(args, project):

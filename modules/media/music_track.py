@@ -79,13 +79,13 @@ def apply_music(video, music, out, mode="replace", music_volume=0.8,
     files, RuntimeError when ffmpeg itself fails.
     """
     if mode not in _MODES:
-        raise ValueError(f"unknown music mode: {mode!r} (expected one of {_MODES})")
+        raise ValueError(f"未知音乐模式：{mode!r}（应为 {_MODES} 之一）")
     if not video or not os.path.exists(video):
-        raise ValueError(f"video not found: {video!r}")
+        raise ValueError(f"未找到视频：{video!r}")
     if not music or not os.path.exists(music):
-        raise ValueError(f"music file not found: {music!r}")
+        raise ValueError(f"未找到音乐文件：{music!r}")
     if os.path.abspath(out) == os.path.abspath(video):
-        raise ValueError("output must not overwrite the input video")
+        raise ValueError("输出文件不能覆盖输入视频")
 
     vol = max(0.0, min(1.0, float(music_volume)))
 
@@ -132,5 +132,5 @@ def apply_music(video, music, out, mode="replace", music_volume=0.8,
     proc = subprocess.run(cmd, capture_output=True, text=True)
     if proc.returncode != 0 or not os.path.exists(out):
         tail = (proc.stderr or "").strip().splitlines()[-8:]
-        raise RuntimeError("ffmpeg music mux failed:\n" + "\n".join(tail))
+        raise RuntimeError("ffmpeg 音乐混流失败：\n" + "\n".join(tail))
     return out

@@ -681,7 +681,7 @@ class PoseExtractor:
   """
 
     def __init__(self, model_name=None, conf_threshold=0.3, device=None):
-        print("⚠️ Pose model unavailable — using person boxes for ROI.")
+        print("⚠️ 姿态模型不可用——ROI 将改用人物检测框。")
         self.model = None
         self.conf_threshold = conf_threshold
         self.device = device or "cpu"

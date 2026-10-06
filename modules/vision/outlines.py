@@ -175,7 +175,7 @@ def make_outliner(name: str = "grabcut"):
         return GrabCutOutliner()
     if name == "sam":
         return SamOutliner()
-    raise ValueError(f"outliner must be 'grabcut' or 'sam', not {name!r}")
+    raise ValueError(f"轮廓算法必须为 'grabcut' 或 'sam'，不能是 {name!r}")
 
 
 # ---------------------------------------------------------------------------

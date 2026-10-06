@@ -822,7 +822,7 @@ def burn_text(src: str, dst: str, text: str, *, height: int, width: int = 0,
         if not text.strip():
             shutil.copy2(src, dst)
             return dst
-        log_fn("⚠️ No usable font found; on-screen text skipped")
+        log_fn("⚠️ 未找到可用字体，已跳过画面文字")
         shutil.copy2(src, dst)
         return dst
 
@@ -837,8 +837,7 @@ def burn_text(src: str, dst: str, text: str, *, height: int, width: int = 0,
         shutil.copy2(src, dst)
         return dst
     if len(lines) > 1:
-        log_fn(f"🔤 Caption wrapped to {len(lines)} lines at {size}px to fit "
-               f"{width}px")
+        log_fn(f"🔤 为适应 {width}px 宽度，字幕已换行为 {len(lines)} 行，字号 {size}px")
 
     pad = max(12, int(height * 0.03))
     y = f"h-th-{pad * 3}" if position == "lower" else str(pad * 2)
@@ -858,7 +857,7 @@ def burn_text(src: str, dst: str, text: str, *, height: int, width: int = 0,
         timeout=900)
     if result.returncode != 0 or not os.path.exists(dst):
         tail = (result.stderr or "").strip().splitlines()[-1:] or ["unknown error"]
-        log_fn(f"⚠️ Could not draw text ({tail[0]}); the clip keeps its picture")
+        log_fn(f"⚠️ 无法绘制文字（{tail[0]}）；片段将保留原始画面")
         shutil.copy2(src, dst)
     return dst
 
@@ -934,9 +933,9 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
     valid = [c for c in (clips or []) if c and os.path.exists(c)]
     for c in (clips or []):
         if c and not os.path.exists(c):
-            log_fn(f"⚠️ Skipping missing input: {c}")
+            log_fn(f"⚠️ 跳过缺失的输入文件：{c}")
     if not valid:
-        raise ValueError("No valid input files to build a reel from")
+        raise ValueError("没有可用于生成成片的有效输入文件")
 
     if transitions is None:
         transitions = plan_transitions(len(valid), kind=kind, duration=duration,
@@ -963,7 +962,7 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
     plain = (not int(width) and not int(height) and not int(fps)
              and fill != "crop" and not any((texts or {}).values()))
     if plain and (len(valid) == 1 or all(t.is_cut for t in transitions)):
-        log_fn("🎬 Every join is a cut — using the stream-copy combiner")
+        log_fn("🎬 所有连接点均为直接切换，将使用流复制合并器")
         from modules.media.combine_videos import CombineCancelled, combine_videos
         try:
             return combine_videos(valid, output, log_fn=log_fn,
@@ -977,7 +976,7 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
             # Same bargain as below: keep the reel, lose the music. Retried
             # rather than salvaged because the combiner stages internally and
             # never leaves the silent reel where this function can reach it.
-            log_fn("⚠️ Music could not be applied; rebuilding without it")
+            log_fn("⚠️ 无法应用音乐，将在不加音乐的情况下重新生成")
             return combine_videos(valid, output, log_fn=log_fn,
                                   progress_fn=progress_fn,
                                   cancel_check=cancel_check, music=None)
@@ -995,8 +994,8 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
 
     named = ", ".join(sorted({t.kind for t in transitions if not t.is_cut}))
     softest = max((t.feather for t in transitions if not t.is_cut), default=0.0)
-    log_fn(f"🎬 Building a reel of {len(valid)} clips at {width}x{height} @ {fps}fps "
-           f"({named}{f', soft edge {softest:.0%}' if softest else ''})")
+    log_fn(f"🎬 正在生成 {len(valid)} 个片段的成片：{width}x{height} @ {fps}fps "
+           f"（{named}{f'，柔边 {softest:.0%}' if softest else ''}）")
 
     temp_dir = tempfile.mkdtemp(prefix="vh_reel_")
     _, ext = os.path.splitext(output)
@@ -1012,11 +1011,11 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
                 raise ReelCancelled("cancelled")
             if progress_fn:
                 try:
-                    progress_fn(i, len(valid) + 1, "Reel",
-                                f"normalizing {i + 1}/{len(valid)}")
+                    progress_fn(i, len(valid) + 1, "成片",
+                                f"正在标准化 {i + 1}/{len(valid)}")
                 except Exception:
                     pass
-            log_fn(f"⚙️ Normalizing {i + 1}/{len(valid)}: {os.path.basename(src)}")
+            log_fn(f"⚙️ 正在标准化 {i + 1}/{len(valid)}：{os.path.basename(src)}")
             dst = os.path.join(temp_dir, f"n{i:03d}.mp4")
             if fill == "crop":
                 _normalize_filled(src, dst, width, height, fps, log_fn)
@@ -1039,7 +1038,7 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
                 # scales with it rather than being resized along with the
                 # picture.
                 lettered = os.path.join(temp_dir, f"t{i:03d}.mp4")
-                log_fn(f"🔤 Text on clip {i + 1}: {caption[:48]}")
+                log_fn(f"🔤 片段 {i + 1} 的画面文字：{caption[:48]}")
                 dst = burn_text(dst, lettered, caption, height=height,
                                 width=width, log_fn=log_fn)
             normalized.append(dst)
@@ -1060,13 +1059,13 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
         pieces: list[str] = []
         for i, group in enumerate(groups):
             if len(group) > 1:
-                log_fn(f"🔗 Joining {len(group)} clips cut hard together")
+                log_fn(f"🔗 正在合并 {len(group)} 个直接切换的片段")
             pieces.append(_join_run([normalized[n] for n in group],
                                        os.path.join(temp_dir, f"run{i:03d}.mp4"), fps))
 
         if progress_fn:
             try:
-                progress_fn(len(valid), len(valid) + 1, "Reel", "blending")
+                progress_fn(len(valid), len(valid) + 1, "成片", "正在混合转场")
             except Exception:
                 pass
 
@@ -1081,12 +1080,12 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
             # size, the fill or a caption ruled out the stream-copy shortcut.
             # The single run those clips joined into is already the reel; a
             # filtergraph with nothing to blend would only re-encode it again.
-            log_fn(f"🔗 {len(valid)} clips, all cuts — no blending needed")
+            log_fn(f"🔗 共 {len(valid)} 个片段，全部为直接切换，无需混合转场")
             shutil.move(pieces[0], staged)
         else:
             lost = sum(t.duration for t in blended)
-            log_fn(f"🔗 Blending — {len(blended)} transition(s) across "
-                   f"{len(pieces)} run(s), {lost:.1f}s absorbed, ~{sum(run_durations) - lost:.1f}s out")
+            log_fn(f"🔗 正在混合：{len(blended)} 个转场，跨 {len(pieces)} 个连续片段组；"
+                   f"转场占用 {lost:.1f} 秒，预计输出约 {sum(run_durations) - lost:.1f} 秒")
             graph, _, _ = _filtergraph(blended, run_durations, fps)
             cmd = [ffmpeg_exe(), "-y", "-v", "error"]
             for path in pieces:
@@ -1104,11 +1103,11 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
                                     encoding="utf-8", errors="replace",
                                     timeout=3600)
             if result.returncode != 0:
-                err = (result.stderr or "").strip()[-800:] or "unknown error"
-                raise RuntimeError(f"Reel build failed: {err}")
+                err = (result.stderr or "").strip()[-800:] or "未知错误"
+                raise RuntimeError(f"成片生成失败：{err}")
 
         if not os.path.exists(staged) or os.path.getsize(staged) == 0:
-            raise RuntimeError("Reel build produced no output")
+            raise RuntimeError("成片生成后没有输出文件")
 
         if music and music.get("path"):
             if cancel_check is not None and cancel_check():
@@ -1125,14 +1124,14 @@ def build_reel(clips, output, *, transitions=None, kind: str = "crossfade",
             except Exception as exc:
                 if not music_optional:
                     raise
-                log_fn(f"⚠️ Music could not be applied ({exc}); "
-                       f"keeping the reel without it")
+                log_fn(f"⚠️ 无法应用音乐（{exc}）；"
+                       f"将保留无音乐版本的成片")
 
         # Only now does the user-visible path change: a cancel or a music
         # failure above leaves the previous output untouched rather than
         # replacing it with a music-less stand-in.
         shutil.move(staged, output)
-        log_fn(f"✅ Reel saved: {output}")
+        log_fn(f"✅ 成片已保存：{output}")
         return output
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)

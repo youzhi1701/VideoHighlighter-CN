@@ -397,7 +397,7 @@ class EditClipItem(QGraphicsRectItem):
                     self.start_time, self.end_time,
                     HOVER_PREVIEW_HEIGHT, HOVER_PREFETCH_SLOTS)
             except Exception as e:
-                print(f"⚠️ Hover prefetch skipped: {e}")
+                print(f"⚠️ 已跳过悬停预取：{e}")
 
         super().hoverEnterEvent(event)
 
@@ -593,14 +593,14 @@ class EditTimelineScene(QGraphicsScene):
             self.thumb_cache = ThumbnailCache(video_path)
             self.thumb_cache.thumbnail_ready.connect(self._on_thumb_ready)
         except Exception as e:
-            print(f"⚠️ ThumbnailCache init failed: {e} — filmstrip disabled")
+            print(f"⚠️ 缩略图缓存初始化失败：{e}——胶片带已禁用")
             self.thumb_cache = None
 
         # ── hover preview popup (single instance, shared by clips) ──
         try:
             self._hover_preview = HoverPreview()
         except Exception as e:
-            print(f"⚠️ HoverPreview init failed: {e}")
+            print(f"⚠️ 悬停预览初始化失败：{e}")
             self._hover_preview = None
         # Source time the popup is showing "加载中…" for, or None when it has
         # its frame. Read by _deliver_hover_frame.
@@ -829,12 +829,12 @@ class EditTimelineScene(QGraphicsScene):
             )
 
             if success:
-                print(f"✅ Saved {len(self.clips)} clips to cache")
+                print(f"✅ 已将 {len(self.clips)} 个片段保存到缓存")
                 self._saved_clips_snapshot = list(self.clips)
                 return True
             return False
         except Exception as e:
-            print(f"❌ Failed to save clips to cache: {e}")
+            print(f"❌ 保存片段到缓存失败：{e}")
             return False
 
     def has_unsaved_edits(self):
@@ -933,7 +933,7 @@ class EditTimelineScene(QGraphicsScene):
                             loaded.append((start, end))
                 if loaded:
                     self.clips = loaded
-                    print(f"✅ Loaded {len(self.clips)} segments from this run's final_segments")
+                    print(f"✅ 已从本次运行的 final_segments 加载 {len(self.clips)} 个片段")
                     return
 
             # 2. Fallback — most recent highlight version from cache history.
@@ -943,7 +943,7 @@ class EditTimelineScene(QGraphicsScene):
                     segments = history[0].get('segments', [])
                     if segments:
                         self.clips = [tuple(s) for s in segments]
-                        print(f"✅ Loaded {len(self.clips)} highlight segments from cache history")
+                        print(f"✅ 已从缓存历史加载 {len(self.clips)} 个高光片段")
                         return
 
             # 3. Nothing to load — start empty. We intentionally do NOT fabricate
@@ -955,7 +955,7 @@ class EditTimelineScene(QGraphicsScene):
 
     def build_timeline(self):
         """Build the edit timeline visualization"""
-        print("build_timeline() called")
+        print("已调用 build_timeline()")
         self.clear()
         self.clip_items = []
 
@@ -1261,7 +1261,7 @@ class EditTimelineScene(QGraphicsScene):
                     return
 
             except Exception as e:
-                print(f"Drop error: {e}")
+                print(f"拖放出错：{e}")
 
         event.ignore()
         self.is_dragging_over = False

@@ -342,7 +342,7 @@ class YoloxDatasetBuilder:
         with open(yaml_path, 'w') as f:
             yaml.dump(yaml_content, f, default_flow_style=False, sort_keys=False)
 
-        print(f"✅ Dataset YAML saved: {yaml_path}")
+        print(f"✅ 数据集 YAML 已保存：{yaml_path}")
         return yaml_path
 
 
@@ -352,11 +352,11 @@ class YoloxDatasetBuilder:
 
 if __name__ == "__main__":
     import argparse
-    _ap = argparse.ArgumentParser(description="Prepare dataset and launch YOLOX training")
+    _ap = argparse.ArgumentParser(description="准备数据集并启动 YOLOX 训练")
     _ap.add_argument("--yolox-dir", type=Path, default=None,
-                     help="Path to cloned Megvii-BaseDetection/YOLOX repo (required to train)")
+                     help="已克隆的 Megvii-BaseDetection/YOLOX 仓库路径（训练必需）")
     _ap.add_argument("--size", default="s", choices=["nano", "tiny", "s", "m", "l", "x"],
-                     help="YOLOX model size")
+                     help="YOLOX 模型大小")
     _args = _ap.parse_args()
 
     ROOT = Path(__file__).resolve().parent.parent
@@ -369,13 +369,13 @@ if __name__ == "__main__":
     BOX_FRAC = 0.12
 
     if TASK == "pose":
-        print("❌ Pose/keypoint training is not available (YOLOX is detection-only).")
-        print("   Use TASK='detect' for object classes, or add RTMPose later for keypoints.")
+        print("❌ 当前不支持姿态/关键点训练（YOLOX 仅用于对象检测）。")
+        print("   对象类别请使用 TASK='detect'；关键点训练可后续接入 RTMPose。")
         raise SystemExit(1)
 
     if not Path(LABELS_DIR).exists():
-        print(f"❌ Labels folder '{LABELS_DIR}' not found.\n"
-              f"   Export labels from labeler.py, then re-run.")
+        print(f"❌ 未找到标注文件夹 '{LABELS_DIR}'。\n"
+              f"   请先从 labeler.py 导出标注，然后重新运行。")
         raise SystemExit(1)
 
     _label_files = sorted(Path(LABELS_DIR).rglob("*.json"))
@@ -385,12 +385,12 @@ if __name__ == "__main__":
                 _names = json.load(_f).get('keypoint_names')
             if _names:
                 KEYPOINT_NAMES = _names
-                print(f"   Using class names from labels: {KEYPOINT_NAMES}")
+                print(f"   正在使用标注中的类别名称：{KEYPOINT_NAMES}")
         except Exception as _e:
-            print(f"⚠️ Could not read keypoint_names from labels: {_e}")
+            print(f"⚠️ 无法从标注中读取 keypoint_names：{_e}")
 
     if not KEYPOINT_NAMES:
-        print("❌ No class names found in label JSON ('keypoint_names' field).")
+        print("❌ 标注 JSON 中未找到类别名称（'keypoint_names' 字段）。")
         raise SystemExit(1)
 
     builder = YoloxDatasetBuilder(
@@ -402,17 +402,17 @@ if __name__ == "__main__":
         task=TASK,
         box_frac=BOX_FRAC,
     )
-    print(f"🧭 Task: {TASK} (YOLOX object detection)")
+    print(f"🧭 任务：{TASK}（YOLOX 对象检测）")
 
     stats = builder.build_dataset(train_ratio=0.8)
     if not stats:
-        print("❌ Dataset build produced no samples — aborting.")
+        print("❌ 数据集构建没有生成任何样本——已中止。")
         raise SystemExit(1)
 
-    print(f"\n📊 Dataset stats:")
-    print(f"   Train: {stats['train']} samples")
-    print(f"   Val:   {stats['val']} samples")
-    print(f"   Total: {stats['total']} samples")
+    print("\n📊 数据集统计：")
+    print(f"   训练集：{stats['train']} 个样本")
+    print(f"   验证集：{stats['val']} 个样本")
+    print(f"   总计：{stats['total']} 个样本")
 
     # Write classes.txt for COCO conversion
     classes_path = Path(OUTPUT_DIR) / "classes.txt"
@@ -422,8 +422,8 @@ if __name__ == "__main__":
     subprocess.check_call([sys.executable, str(convert_tool), OUTPUT_DIR])
 
     if _args.yolox_dir is None:
-        print("\n✅ Dataset ready under:", OUTPUT_DIR)
-        print("Next: clone YOLOX and run training/train_yolox.py --yolox-dir <path>")
+        print("\n✅ 数据集已准备完成，位置：", OUTPUT_DIR)
+        print("下一步：克隆 YOLOX，然后运行 training/train_yolox.py --yolox-dir <path>")
         raise SystemExit(0)
 
     train_yolox = ROOT / "training" / "train_yolox.py"

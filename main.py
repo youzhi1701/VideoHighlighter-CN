@@ -3347,7 +3347,7 @@ class VideoHighlighterGUI(QWidget):
 
     def _log_size(self):
         from modules.system import display_info
-        display_info.log_window_size(self, "Main window")
+        display_info.log_window_size(self, "主窗口")
 
     # --- About / Contact tab ---
     @staticmethod
@@ -5148,7 +5148,7 @@ class VideoHighlighterGUI(QWidget):
             overlap = custom_set & intel_set
             for label in sorted(custom_labels):
                 if label.lower() in overlap:
-                    tagged.append(f"{label} [custom]")
+                    tagged.append(f"{label} [自定义]")
                 else:
                     tagged.append(label)
             for label in sorted(intel_labels):

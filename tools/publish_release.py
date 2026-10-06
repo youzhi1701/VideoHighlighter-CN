@@ -151,13 +151,13 @@ def prepare(args) -> int:
 
     total = sum(int(e.get("size", 0)) for e in manifest["files"])
     print(f"OK:{out}")
-    print(f"  version      {manifest.get('version')} {manifest.get('edition', '')} "
+    print(f"  版本         {manifest.get('version')} {manifest.get('edition', '')} "
           f"{manifest.get('platform', 'windows')}")
-    print(f"  base_url     {manifest['base_url']}")
-    print(f"  manifest     {prefix}/{MANIFEST_FILENAME}")
-    print(f"  blobs        {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，"
+    print(f"  基础地址     {manifest['base_url']}")
+    print(f"  清单         {prefix}/{MANIFEST_FILENAME}")
+    print(f"  内容块       {len(seen)} 个不同内容（硬链接 {linked}，复制 {copied}，"
           f"已准备 {skipped}）")
-    print(f"  bytes        发行版共 {total / (1024 ** 2):.1f} MB，"
+    print(f"  大小         发行版共 {total / (1024 ** 2):.1f} MB，"
           f"实际存储 {stored_bytes / (1024 ** 2):.1f} MB"
           + ("（gzip）" if gz else ""))
     if args.github_output:
@@ -232,13 +232,13 @@ def sign(args) -> int:
 
     total = sum(int(e.get("size", 0)) for e in files)
     print(f"正在签名：{source}")
-    print(f"  version   {manifest.get('version')}")
-    print(f"  edition   {manifest.get('edition')}")
-    print(f"  platform  {manifest.get('platform', 'windows')}")
-    print(f"  base_url  {manifest.get('base_url')}")
-    print(f"  files     {len(files)} 个文件（{total / (1024 ** 2):.1f} MB）")
+    print(f"  版本      {manifest.get('version')}")
+    print(f"  版本类型  {manifest.get('edition')}")
+    print(f"  平台      {manifest.get('platform', 'windows')}")
+    print(f"  基础地址  {manifest.get('base_url')}")
+    print(f"  文件      {len(files)} 个（{total / (1024 ** 2):.1f} MB）")
     if manifest.get("min_version"):
-        print(f"  min       {manifest['min_version']}（更旧版本将获取完整下载）")
+        print(f"  最低版本  {manifest['min_version']}（更旧版本将获取完整下载）")
 
     with open(args.key, "rb") as handle:
         private = load_pem_private_key(handle.read(), password=None)

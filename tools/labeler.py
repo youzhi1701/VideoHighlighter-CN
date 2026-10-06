@@ -2354,7 +2354,7 @@ if __name__ == "__main__":
         print(f"✅ 姿态辅助可用（ultralytics {ultralytics.__version__}）")
     except ImportError:
         print("ℹ️ 姿态辅助已关闭——未安装 ultralytics。仍可正常手动标注，"
-              关键点将由手动放置。（可选：pip install ultralytics；"
+              "关键点将由手动放置。（可选：pip install ultralytics；"
               "AGPL，仅开发环境使用，不随发行版分发。）")
     
     root = tk.Tk()

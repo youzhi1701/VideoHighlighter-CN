@@ -112,7 +112,7 @@ def check_name(name: str, existing: Sequence[str] = (),
     if name.startswith("_") or name in {".", ".."}:
         problems.append(Problem("reserved", "以下划线 _ 开头的名称保留给排序器内部文件夹使用。", True))
     if re.search(r'[/\\:*?"<>|]', name):
-        problems.append(Problem("path", "A name becomes a folder; leave out / \\ : * ? \" < > |.",
+        problems.append(Problem("path", "类别名称会用于文件夹名，请不要包含 / \\ : * ? \" < > |。",
                                 True))
     if re.fullmatch(r"[\d\s.]+", name):
         problems.append(Problem("numeric", "纯数字不能作为类别名称，请说明它是什么。", True))

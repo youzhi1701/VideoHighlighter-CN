@@ -381,8 +381,8 @@ Example:
         scene = self._window.signal_scene
         if name in scene.visible_actions:
             scene.set_action_filter(name, show)
-            action = "shown" if show else "hidden"
-            return f"✅ Action '{name}' {action}"
+            action = "显示" if show else "隐藏"
+            return f"✅ 动作 '{name}'：{action}"
         else:
             available = ', '.join(scene.visible_actions.keys())
             return f"⚠️ 未找到动作 '{name}'。可用项：{available}"
@@ -393,8 +393,8 @@ Example:
         scene = self._window.signal_scene
         if name in scene.visible_objects:
             scene.set_object_filter(name, show)
-            action = "shown" if show else "hidden"
-            return f"✅ Object '{name}' {action}"
+            action = "显示" if show else "隐藏"
+            return f"✅ 对象 '{name}'：{action}"
         else:
             available = ', '.join(scene.visible_objects.keys())
             return f"⚠️ 未找到对象 '{name}'。可用项：{available}"

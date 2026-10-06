@@ -1284,8 +1284,8 @@ class LLMChatWidget(QWidget):
         engine_label = {"clip_llm": "CLIP+LLM", "clip": "CLIP", "llm": "LLM"}.get(engine, engine)
         extra = f", top-{top_k}" if engine in ("clip", "clip_llm") else ""
         self._append_system(
-            f"🔍 [{engine_label}{extra}] searching for '{target}' from {start_str} "
-            f"every {interval}s ({mode_str})..."
+            f"🔍 [{engine_label}{extra}] 正在从 {start_str} 开始搜索“{target}” "
+            f"每 {interval} 秒采样一次（{mode_str}）…"
         )
         self.search_progress.setText(f"正在搜索“{target}” [{engine_label}]…")
         self.search_btn.setEnabled(False)
@@ -1351,7 +1351,7 @@ class LLMChatWidget(QWidget):
         so a slow scan looked like the model running on every frame.
         """
         percent = (current / total * 100) if total else 0.0
-        head = f"{preview} — " if preview else "Searching: "
+        head = f"{preview} — " if preview else "正在搜索："
         self.search_progress.setText(
             f"{head}{current}/{total} ({percent:.1f}%)"
         )
@@ -1448,7 +1448,7 @@ class LLMChatWidget(QWidget):
         r = self._search_results[self._search_result_idx]
         self._seek_to_timestamp(r["timestamp"])
         self._append_system(
-            f"➡️ Match {self._search_result_idx + 1}/{len(self._search_results)} "
+            f"➡️ 匹配结果 {self._search_result_idx + 1}/{len(self._search_results)} "
             f"at {r['timestamp_str']}"
         )
         self._update_search_nav()
@@ -1457,7 +1457,7 @@ class LLMChatWidget(QWidget):
         """Handle found target — auto-seek preview and timeline to the found timestamp."""
         self._add_search_result(timestamp, timestamp_str, analysis)
         self._append_system(
-            f"🎯 FOUND at {timestamp_str}!\n"
+            f"🎯 在 {timestamp_str} 找到匹配！\n"
             f"   {analysis[:150]}..."
         )
         
@@ -1506,8 +1506,8 @@ class LLMChatWidget(QWidget):
             saved = self._timeline_bridge._window.save_visual_findings_to_cache()
             if saved and found_count > 0:
                 self._append_system(
-                    f"💾 Saved {found_count} '{self.search_target.text()}' "
-                    f"finding(s) to cache (will reload next session)"
+                    f"💾 已保存 {found_count} 条“{self.search_target.text()}”"
+                    f"搜索结果到缓存（下次会话会自动重新加载）"
                 )
         
         self.search_progress.setText("")
@@ -1574,7 +1574,7 @@ class LLMChatWidget(QWidget):
         cache_dir = Path(self._cache_dir)
         if not cache_dir.exists():
             self._append_system(
-                f"No cache directory at '{self._cache_dir}'. "
+                f"缓存目录不存在：‘{self._cache_dir}’。"
                 "Run pipeline first or use 'Load Cache'."
             )
             return
@@ -1594,15 +1594,15 @@ class LLMChatWidget(QWidget):
         latest = all_caches[0]
         age_sec = _time.time() - latest.stat().st_mtime
         if age_sec < 60:
-            age_str = f"{age_sec:.0f}s ago"
+            age_str = f"{age_sec:.0f} 秒前"
         elif age_sec < 3600:
-            age_str = f"{age_sec/60:.0f}m ago"
+            age_str = f"{age_sec/60:.0f} 分钟前"
         elif age_sec < 86400:
-            age_str = f"{age_sec/3600:.1f}h ago"
+            age_str = f"{age_sec/3600:.1f} 小时前"
         else:
-            age_str = f"{age_sec/86400:.1f}d ago"
+            age_str = f"{age_sec/86400:.1f} 天前"
 
-        self._append_system(f"Auto-loading latest cache: {latest.name} ({age_str})")
+        self._append_system(f"正在自动加载最新缓存：{latest.name}（{age_str}）")
         self._load_cache_file(str(latest))
 
     def _load_cache_file(self, filepath: str, video_path: str = "") -> bool:
@@ -1612,7 +1612,7 @@ class LLMChatWidget(QWidget):
                 data = json.load(f)
 
             if not isinstance(data, dict):
-                self._append_system(f"Invalid cache: expected dict, got {type(data).__name__}")
+                self._append_system(f"缓存格式无效：应为字典结构，实际为 {type(data).__name__}")
                 return False
 
             if not video_path:
@@ -1680,7 +1680,7 @@ class LLMChatWidget(QWidget):
 
         stats = QLabel(
             f"上下文：{ctx_chars:,} 字符 | {ctx_lines} 行 | "
-            f"约 {ctx_chars // 4:,} tokens（估算）\n"
+            f"约 {ctx_chars // 4:,} 个词元（估算）\n"
             f"视频：{self._video_path}\n"
             f"数据字段：{', '.join(sorted(self._analysis_data.keys()))}"
         )
@@ -2106,7 +2106,7 @@ class LLMChatWidget(QWidget):
             # Truncate clip list for small models
             lines = timeline_ctx.split('\n')
             if len(lines) > 15:
-                timeline_ctx = '\n'.join(lines[:15]) + f'\n... ({len(lines)-15} more lines)'
+                timeline_ctx = '\n'.join(lines[:15]) + f'\n…（另有 {len(lines)-15} 行）'
             timeline_ctx += '\n' + self._timeline_bridge.get_available_commands_text()
 
         # A report handed over by seed_from_report rides along with every
@@ -2156,15 +2156,15 @@ class LLMChatWidget(QWidget):
                     frame_b64 = window.capture_current_frame_base64()
                     if frame_b64:
                         self._append_system(
-                            f"📷 Frame captured at {window.current_time:.1f}s "
-                            f"({len(frame_b64)//1024}KB)"
+                            f"📷 已截取 {window.current_time:.1f} 秒处画面"
+                            f"（{len(frame_b64)//1024} KB）"
                         )
                         if has_timeline:
                             self._append_system(
-                                "ℹ️ Combining frame analysis with timeline context..."
+                                "ℹ️ 正在结合画面分析与时间线上下文…"
                             )
                     else:
-                        self._append_system("⚠️ Frame capture failed")
+                        self._append_system("⚠️ 画面截取失败")
 
         # Create worker and host thread
         _free_chat = self.free_chat_chk.isChecked()

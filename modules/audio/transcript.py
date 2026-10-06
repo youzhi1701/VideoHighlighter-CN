@@ -364,7 +364,7 @@ def get_transcript_segments(video_file, model_name="small", progress_fn=None, lo
             log_fn("   将在不进行说话人识别的情况下继续")
         except Exception as e:
             log_fn(f"⚠️ 说话人识别失败：{e}")
-            log_fn("   Proceeding without speaker identification")
+            log_fn("   将在不进行说话人识别的情况下继续")
 
     return all_segments
 

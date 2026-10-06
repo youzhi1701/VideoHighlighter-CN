@@ -247,7 +247,7 @@ def main(argv=None) -> int:
                         help=f"安装位置（默认：{DEFAULT_DEST}）")
     parser.add_argument("--name", default=None, help="输出文件基础名称")
     parser.add_argument("--no-onnx", action="store_true",
-                        help="转换完成后删除中间 ONNX 文件"
+                        help="转换完成后删除中间 ONNX 文件")
     args = parser.parse_args(argv)
 
     result = install(args.checkpoint, dest_dir=args.dest, name=args.name,

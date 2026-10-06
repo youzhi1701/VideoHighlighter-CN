@@ -404,13 +404,13 @@ def load(backend: Optional[str] = None, log: LogFn = print,
     """
     folder = model_dir or find_model_dir()
     if folder is None:
-        log(f"⚠️ Frame encoder {ENCODER_ID} is not installed "
-            f"(looked in: {'; '.join(model_dir_candidates())})")
+        log(f"⚠️ 帧编码器 {ENCODER_ID} 未安装"
+            f"（已检查：{'; '.join(model_dir_candidates())}）")
         return None
     try:
         meta = read_meta(folder)
     except Exception as e:  # noqa: BLE001
-        log(f"⚠️ Frame encoder in {folder} is unusable: {e}")
+        log(f"⚠️ {folder} 中的帧编码器不可用：{e}")
         return None
 
     if backend is None:
@@ -428,11 +428,11 @@ def load(backend: Optional[str] = None, log: LogFn = print,
             runner = _open_route(route, model_path, intel_device)
             _check_route(runner, meta)
         except Exception as e:  # noqa: BLE001 - the next route is the answer
-            print(f"ℹ️ Frame encoder: {route_label(route)} skipped ({type(e).__name__}: {e})")
+            print(f"ℹ️ 帧编码器：已跳过 {route_label(route)}（{type(e).__name__}：{e}）")
             continue
         encoder = FrameEncoder(runner, route, folder)
-        log(f"✅ Frame encoder: {ENCODER_ID} on {encoder.label}")
+        log(f"✅ 帧编码器：{ENCODER_ID}，运行于 {encoder.label}")
         return encoder
-    log(f"⚠️ Frame encoder: no route could run {ENCODER_ID} here "
-        f"(tried {', '.join(route_label(r) for r in order)})")
+    log(f"⚠️ 帧编码器：当前没有可运行 {ENCODER_ID} 的计算路线"
+        f"（已尝试：{', '.join(route_label(r) for r in order)}）")
     return None

@@ -52,15 +52,15 @@ class IntelFeatureExtractor:
         except Exception as e:
             # A GPU that OpenVINO lists can still refuse a particular model.
             # Falling back keeps the run alive rather than failing at the door.
-            print(f"⚠️ Encoder would not compile on {self.device} ({e}); using CPU")
+            print(f"⚠️ 编码器无法在 {self.device} 上编译（{e}）；将使用 CPU")
             self.device = "CPU"
             self.encoder = ie.compile_model(model, device_name="CPU")
-        print(f"[encoder] running on: {self.device}")
+        print(f"[编码器] 运行设备：{self.device}")
 
         inp = self.encoder.inputs[0]
         self.input_name = inp.get_any_name()
         self.input_shape = list(inp.get_shape())
-        print(f"[encoder] input: {self.input_name}, shape: {self.input_shape}")
+        print(f"[编码器] 输入：{self.input_name}，形状：{self.input_shape}")
 
     def encode(self, frames_batch):
         """
@@ -287,7 +287,7 @@ def build_decoder(decoder_type, feature_dim, hidden_dim, num_classes,
             sequence_length=sequence_length,
             dropout=dropout,
         )
-        print(f"✅ Decoder: EncoderMLP (GPU-compatible at inference)")
+        print("✅ 解码器：EncoderMLP（推理阶段兼容 GPU）")
     elif decoder_type == "lstm":
         model = EncoderLSTM(
             feature_dim=feature_dim,
@@ -296,10 +296,10 @@ def build_decoder(decoder_type, feature_dim, hidden_dim, num_classes,
             num_layers=num_layers,
             dropout=dropout,
         )
-        print(f"⚠️  Decoder: EncoderLSTM (will fall back to CPU at inference — consider 'mlp')")
+        print("⚠️ 解码器：EncoderLSTM（推理阶段将退回 CPU；建议考虑 'mlp'）")
     else:
-        raise ValueError(f"Unknown decoder_type '{decoder_type}'. Use 'mlp' or 'lstm'.")
+        raise ValueError(f"未知 decoder_type '{decoder_type}'。请使用 'mlp' 或 'lstm'。")
 
     total = sum(p.numel() for p in model.parameters())
-    print(f"   Parameters: {total:,}")
+    print(f"   参数量：{total:,}")
     return model

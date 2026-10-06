@@ -139,12 +139,12 @@ class FaceIdentityBank:
 
         import cv2
 
-        for path, what in ((self.det_model, "YuNet detector"),
-                           (self.rec_model, "SFace recogniser")):
+        for path, what in ((self.det_model, "YuNet 检测器"),
+                           (self.rec_model, "SFace 识别器")):
             if not os.path.exists(path):
                 raise FileNotFoundError(
-                    f"{what} model not found: {path}\n"
-                    "Expected the bundled OpenCV Zoo model under video_ai_editor/models/."
+                    f"未找到 {what} 模型：{path}\n"
+                    "应使用 video_ai_editor/models/ 下随程序附带的 OpenCV Zoo 模型。"
                 )
 
         # YuNet: (model, config, input_size, score_thr, nms_thr, top_k)
@@ -153,7 +153,7 @@ class FaceIdentityBank:
             self.det_score, 0.3, 5000,
         )
         self._recognizer = cv2.FaceRecognizerSF.create(self.rec_model, "")
-        print("✅ FaceIdentityBank: loaded YuNet + SFace (CPU, OpenCV DNN)")
+        print("✅ 人脸身份库：已加载 YuNet + SFace（CPU，OpenCV DNN）")
 
     # ── detection ─────────────────────────────────────────────────
 

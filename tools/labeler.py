@@ -66,7 +66,7 @@ def natural_sort_key(path):
 class VideoLabelerGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("🎬 Video Labeler - AI-Powered Tracking")
+        self.root.title("🎬 视频标注器 - AI 辅助跟踪")
         self.root.geometry("1200x800")
         
         # State
@@ -128,7 +128,7 @@ class VideoLabelerGUI:
         self.color_hex = {}   # '#RRGGBB' for tk widgets
         self._rebuild_keypoint_meta()
 
-        self.status_var = tk.StringVar(value="Ready. Select a keypoint, then click on the video to place it.")
+        self.status_var = tk.StringVar(value="就绪。请选择关键点，然后在视频画面中点击放置。")
         
         self.load_progress()
         self.setup_ui()
@@ -138,7 +138,7 @@ class VideoLabelerGUI:
 
         # First run (no config yet): nudge the user toward the inline editor
         if not self._keypoint_config_existed and not self.keypoint_names:
-            self.status_var.set("No keypoints yet — add them in the 🎯 Keypoints panel (➕ Add Keypoint).")
+            self.status_var.set("暂无关键点，请在 🎯 关键点面板中点击“➕ 添加关键点”。")
 
     # *************************************************************
     # *** KEYPOINT LABEL CONFIG (user-defined) ***
@@ -168,7 +168,7 @@ class VideoLabelerGUI:
             with open(self.keypoint_config_file, 'w', encoding='utf-8') as f:
                 json.dump({'keypoint_names': [_disp(n) for n in self.keypoint_names]}, f, indent=2)
         except Exception as e:
-            messagebox.showerror("Save Error", f"Could not save keypoint config:\n{e}")
+            messagebox.showerror("保存失败", f"无法保存关键点配置：\n{e}")
 
     def _rebuild_keypoint_meta(self):
         """Regenerate display names + colors. Duplicate display names share a color."""
@@ -206,7 +206,7 @@ class VideoLabelerGUI:
         if entry:
             entry.focus_set()
             entry.select_range(0, tk.END)
-        self.status_var.set(f"➕ Added '{new_name}' — type a name and press Enter")
+        self.status_var.set(f"➕ 已添加“{new_name}”，请输入名称并按 Enter")
 
     def _remove_keypoint(self, name):
         """Remove a keypoint and strip its points so data stays consistent."""
@@ -224,7 +224,7 @@ class VideoLabelerGUI:
             self.select_keypoint(self.keypoint_names[0])
         if self.cap:
             self.show_frame(self.current_frame)
-        self.status_var.set(f"🗑️ Removed keypoint '{name}'")
+        self.status_var.set(f"🗑️ 已删除关键点“{name}”")
 
     def _commit_rename(self, old, new):
         """Rename a keypoint in place, migrating any existing labeled points."""
@@ -251,7 +251,7 @@ class VideoLabelerGUI:
         self.select_keypoint(new)
         if self.cap:
             self.show_frame(self.current_frame)
-        self.status_var.set(f"✏️ Renamed '{old}' → '{new}'")
+        self.status_var.set(f"✏️ 已重命名“{old}”→“{new}”")
 
     def _populate_keypoint_buttons(self):
         """(Re)build the inline keypoint rows: select ◉ + editable name + ✕,
@@ -293,11 +293,11 @@ class VideoLabelerGUI:
                 'color': color_canvas, 'status': status_label, 'placed': False
             }
 
-        ttk.Button(self.kp_container, text="➕ Add Keypoint",
+        ttk.Button(self.kp_container, text="➕ 添加关键点",
                    command=self._add_keypoint).pack(anchor=tk.W, pady=(4, 0))
 
         if not self.keypoint_names:
-            ttk.Label(self.kp_container, text="No labels yet — click ➕ Add Keypoint.",
+            ttk.Label(self.kp_container, text="暂无标签，请点击“➕ 添加关键点”。",
                       foreground='gray', font=('Arial', 8)).pack(anchor=tk.W, pady=2)
 
         # Rebuild shortcut hints
@@ -362,12 +362,12 @@ class VideoLabelerGUI:
         """
         if YOLO is None:
             self.status_var.set(
-                "ℹ️ Pose assist off (ultralytics not installed) — place keypoints manually"
+                "ℹ️ 姿态辅助已关闭（未安装 ultralytics），请手动放置关键点"
             )
             self.yolo_model = None
             return
         try:
-            self.status_var.set("🔄 Loading YOLO model...")
+            self.status_var.set("🔄 正在加载 YOLO 模型…")
             self.root.update()
             
             # Use YOLOv8n-pose for keypoint detection
@@ -376,16 +376,16 @@ class VideoLabelerGUI:
             # Check if model exists locally, if not download
             model_path = Path(model_name)
             if not model_path.exists():
-                self.status_var.set(f"📥 Downloading {model_name}... (first time only)")
+                self.status_var.set(f"📥 正在下载 {model_name}…（仅首次需要）")
                 self.root.update()
             
             self.yolo_model = YOLO(model_name)
-            self.status_var.set(f"✅ YOLO pose model loaded: {model_name}")
+            self.status_var.set(f"✅ YOLO 姿态模型已加载：{model_name}")
             
         except Exception as e:
-            self.status_var.set(f"❌ Failed to load YOLO: {str(e)}")
-            messagebox.showerror("YOLO Error", 
-                f"Could not load YOLO model.\n\nError: {str(e)}\n\nMake sure to install ultralytics:\npip install ultralytics")
+            self.status_var.set(f"❌ YOLO 加载失败：{str(e)}")
+            messagebox.showerror("YOLO 错误", 
+                f"无法加载 YOLO 模型。\n\n错误：{str(e)}\n\n请确认已安装 ultralytics：\npip install ultralytics")
             self.yolo_model = None
     
     # ============ YOLO TRACKING METHODS ============
@@ -393,11 +393,11 @@ class VideoLabelerGUI:
     def track_with_yolo(self, start_frame=None, end_frame=None, use_manual_anchors=True):
         """Enhanced tracking using YOLO pose estimation with prediction fallback."""
         if not self.cap:
-            messagebox.showwarning("No Video", "Please load a video first")
+            messagebox.showwarning("未加载视频", "请先加载视频")
             return False
         
         if self.yolo_model is None:
-            messagebox.showwarning("No YOLO Model", "YOLO model not loaded. Please check installation.")
+            messagebox.showwarning("未加载 YOLO 模型", "YOLO 模型尚未加载，请检查安装情况。")
             return False
         
         # Determine tracking range
@@ -421,8 +421,8 @@ class VideoLabelerGUI:
             for frame_points in manual_frames.values():
                 manual_labels.update(frame_points.keys())
             if not manual_labels:
-                messagebox.showwarning("No Manual Labels", 
-                    "Please label at least one frame manually first.")
+                messagebox.showwarning("没有手动标签", 
+                    "请先至少手动标注一帧。")
                 return False
         else:
             manual_labels = set(self.keypoint_names)  # Track all
@@ -431,7 +431,7 @@ class VideoLabelerGUI:
         self.tracking_active = True
         self.track_history = defaultdict(list) 
         
-        self.status_var.set(f"🔄 YOLO Tracking frames {start_frame}-{end_frame}... (Press ESC to stop)")
+        self.status_var.set(f"🔄 YOLO 正在跟踪第 {start_frame}-{end_frame} 帧…（按 ESC 停止）")
         self.root.update()
         
         tracked_frames = []
@@ -465,7 +465,7 @@ class VideoLabelerGUI:
                     verbose=False
                 )
             except Exception as e:
-                print(f"YOLO Error at frame {frame_idx}: {e}")
+                print(f"YOLO 在第 {frame_idx} 帧出错：{e}")
                 results = None
 
                 # Handle detection results
@@ -495,7 +495,7 @@ class VideoLabelerGUI:
 
                 # Handle detection failure -> use prediction fallback
                 else:
-                    print(f"⚠️ Warning: YOLO lost track at frame {frame_idx}. Using historical data.")
+                    print(f"⚠️ 警告：YOLO 在第 {frame_idx} 帧丢失跟踪，改用历史数据。")
                     current_frame_points = self._predict_keypoints(start_frame, end_frame)
 
 
@@ -521,7 +521,7 @@ class VideoLabelerGUI:
             # Update progress (Only update status if we processed a frame)
             if frame_idx % 20 == 0 and not (start_frame <= frame_idx < end_frame):
                 progress = int((frame_idx - start_frame) / (end_frame - start_frame + 1) * 100)
-                self.status_var.set(f"🔄 Tracking: {progress}% complete (frame {frame_idx}/{end_frame})")
+                self.status_var.set(f"🔄 跟踪进度：{progress}%（第 {frame_idx}/{end_frame} 帧）")
                 self.root.update()
         
         # Update overall history and label list
@@ -531,19 +531,19 @@ class VideoLabelerGUI:
         
         # === APPLY SMOOTHING AFTER ALL FRAMES ARE POPULATED (FIXED LINE CALL) ===
         smoothed_count = self.apply_moving_average() 
-        print(f"✨ Smoothing applied across {smoothed_count} points.") # User feedback
+        print(f"✨ 已对 {smoothed_count} 个点应用平滑处理。") # User feedback
         
         self.progress_bar['value'] = len(self.labeled_frames)
 
         # Update UI
         self.progress_bar['value'] = len(self.labeled_frames)
-        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} frames")
+        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} 帧")
         
         if self.video_path:
             self.save_frame_progress()
         
         self.tracking_active = False
-        self.status_var.set(f"✅ YOLO Tracking complete! Added {len(tracked_frames)} frames (Prediction & Smoothing applied)")
+        self.status_var.set(f"✅ YOLO 跟踪完成！新增 {len(tracked_frames)} 帧（已应用预测和平滑）")
         
         # Display current frame
         self.show_frame(self.current_frame)
@@ -615,8 +615,8 @@ class VideoLabelerGUI:
         manual_frames = [f for f in self.labeled_frames if f.get('manual', False)]
         
         if len(manual_frames) < 2:
-            messagebox.showwarning("Need Manual Frames", 
-                "Please label at least 2 frames manually for reference")
+            messagebox.showwarning("需要手动标注帧", 
+                "请至少手动标注 2 帧作为参考")
             return False
         
         # Sort manual frames
@@ -629,7 +629,7 @@ class VideoLabelerGUI:
             end_frame = manual_frames[i + 1]['frame']
             
             if end_frame - start_frame > 1:
-                self.status_var.set(f"🔄 Tracking segment {i+1}/{len(manual_frames)-1}: frames {start_frame}-{end_frame}")
+                self.status_var.set(f"🔄 正在跟踪片段 {i+1}/{len(manual_frames)-1}：第 {start_frame}-{end_frame} 帧")
                 self.root.update()
                 
                 # Set the current frame to start frame for tracking
@@ -642,21 +642,21 @@ class VideoLabelerGUI:
                 if success:
                     total_tracked += (end_frame - start_frame - 1)
         
-        self.status_var.set(f"✅ Manual-assist tracking complete! Added {total_tracked} frames")
+        self.status_var.set(f"✅ 手动辅助跟踪完成！新增 {total_tracked} 帧")
         return True
     
     def hybrid_track(self):
         """Hybrid approach: YOLO + manual verification points"""
         if not self.cap:
-            messagebox.showwarning("No Video", "Please load a video first")
+            messagebox.showwarning("未加载视频", "请先加载视频")
             return
         
         # 1. Find all manual frames
         manual_frames = [f for f in self.labeled_frames if f.get('manual', False)]
         
         if len(manual_frames) < 2:
-            messagebox.showwarning("Need Manual Frames", 
-                "Please label at least 2 frames manually")
+            messagebox.showwarning("需要手动标注帧", 
+                "请至少手动标注 2 帧")
             return
         
         # 2. Remove existing tracked frames
@@ -677,7 +677,7 @@ class VideoLabelerGUI:
             self.current_frame = start['frame']
             
             # Track segment
-            self.status_var.set(f"🔄 Tracking segment: frames {start['frame']}-{end['frame']}")
+            self.status_var.set(f"🔄 正在跟踪片段：第 {start['frame']}-{end['frame']} 帧")
             self.root.update()
             
             success = self.track_with_yolo(
@@ -692,12 +692,12 @@ class VideoLabelerGUI:
         # 4. Final interpolation for any gaps
         self.smart_interpolate()
         
-        self.status_var.set(f"✅ Hybrid tracking complete! Manual + YOLO + Interpolation")
+        self.status_var.set("✅ 混合跟踪完成！手动标注 + YOLO + 插值")
         self.show_frame(self.current_frame)
     
         # === APPLY SMOOTHING AFTER ALL FRAMES ARE POPULATED ===
         smoothed_count = self.apply_moving_average() 
-        self.status_var.set(f"✅ Hybrid tracking complete! Manual + YOLO + Interpolation + Smoothing (Smoothed {smoothed_count} points)")
+        self.status_var.set(f"✅ 混合跟踪完成！手动标注 + YOLO + 插值 + 平滑（已平滑 {smoothed_count} 个点）")
 
 
     # ============ SPACEBAR HANDLING ============
@@ -726,20 +726,20 @@ class VideoLabelerGUI:
             try:
                 with open(self.progress_file, 'r') as f:
                     self.progress_data = json.load(f)
-                self.status_var.set(f"📊 Loaded progress: {len(self.progress_data)} videos tracked")
+                self.status_var.set(f"📊 已加载进度：已跟踪 {len(self.progress_data)} 个视频")
             except:
                 self.progress_data = {}
-                self.status_var.set("No valid progress file found")
+                self.status_var.set("未找到有效的进度文件")
         else:
             self.progress_data = {}
-            self.status_var.set("No progress file found - starting fresh")
+            self.status_var.set("未找到进度文件，将从头开始")
     
     def save_progress(self):
         try:
             with open(self.progress_file, 'w') as f:
                 json.dump(self.progress_data, f, indent=2)
         except Exception as e:
-            self.status_var.set(f"⚠️ Could not save progress: {e}")
+            self.status_var.set(f"⚠️ 无法保存进度：{e}")
     
     def save_frame_progress(self):
         if not self.video_path:
@@ -765,8 +765,8 @@ class VideoLabelerGUI:
             if 'labeled_frames' in data:
                 self.labeled_frames = data['labeled_frames']
                 self.progress_bar['value'] = len(self.labeled_frames)
-                self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} frames")
-                self.status_var.set(f"🔄 Restored {len(self.labeled_frames)} labeled frames")
+                self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} 帧")
+                self.status_var.set(f"🔄 已恢复 {len(self.labeled_frames)} 个已标注帧")
             return data
         return None
     
@@ -797,15 +797,15 @@ class VideoLabelerGUI:
                 if status and status.get('completed', False):
                     completed += 1
             
-            self.video_progress_label.config(text=f"📊 {completed}/{total} videos done")
-            self.root.title(f"🎬 Video Labeler - {completed}/{total} videos done")
+            self.video_progress_label.config(text=f"📊 已完成 {completed}/{total} 个视频")
+            self.root.title(f"🎬 视频标注器 - 已完成 {completed}/{total} 个视频")
         else:
             if self.video_path:
-                self.video_progress_label.config(text="📊 Single video mode")
-                self.root.title(f"🎬 Video Labeler - {os.path.basename(self.video_path)}")
+                self.video_progress_label.config(text="📊 单视频模式")
+                self.root.title(f"🎬 视频标注器 - {os.path.basename(self.video_path)}")
             else:
-                self.video_progress_label.config(text="📊 No videos loaded")
-                self.root.title("🎬 Video Labeler - AI-Powered Tracking")
+                self.video_progress_label.config(text="📊 未加载视频")
+                self.root.title("🎬 视频标注器 - AI 辅助跟踪")
     
     # ============ UI SETUP ============
     
@@ -814,7 +814,7 @@ class VideoLabelerGUI:
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # Left: Video display
-        video_frame = ttk.LabelFrame(main_frame, text="Video Player", padding=5)
+        video_frame = ttk.LabelFrame(main_frame, text="视频播放器", padding=5)
         video_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         
         self.video_panel = tk.Canvas(video_frame, bg='black')
@@ -831,7 +831,7 @@ class VideoLabelerGUI:
         
         ttk.Button(controls, text="⏮", command=self.prev_frame, width=3).pack(side=tk.LEFT, padx=2)
         ttk.Button(controls, text="⏪", command=self.prev_10, width=3).pack(side=tk.LEFT, padx=2)
-        self.play_btn = ttk.Button(controls, text="▶ Play", command=self.toggle_play, width=6)
+        self.play_btn = ttk.Button(controls, text="▶ 播放", command=self.toggle_play, width=6)
         self.play_btn.pack(side=tk.LEFT, padx=2)
         ttk.Button(controls, text="⏩", command=self.next_10, width=3).pack(side=tk.LEFT, padx=2)
         ttk.Button(controls, text="⏭", command=self.next_frame, width=3).pack(side=tk.LEFT, padx=2)
@@ -847,18 +847,18 @@ class VideoLabelerGUI:
         nav_frame = ttk.Frame(video_frame)
         nav_frame.pack(fill=tk.X, pady=2)
         
-        ttk.Button(nav_frame, text="⏮ Previous Video", 
+        ttk.Button(nav_frame, text="⏮ 上一个视频", 
                   command=self.prev_video, width=15).pack(side=tk.LEFT, padx=2)
-        ttk.Button(nav_frame, text="⏭ Next Video", 
+        ttk.Button(nav_frame, text="⏭ 下一个视频", 
                   command=self.next_video, width=15).pack(side=tk.LEFT, padx=2)
-        ttk.Button(nav_frame, text="📊 Show Progress", 
+        ttk.Button(nav_frame, text="📊 查看进度", 
                   command=self.show_progress, width=15).pack(side=tk.LEFT, padx=2)
         
-        self.video_progress_label = ttk.Label(nav_frame, text="📊 0/0 videos done", foreground='blue')
+        self.video_progress_label = ttk.Label(nav_frame, text="📊 已完成 0/0 个视频", foreground='blue')
         self.video_progress_label.pack(side=tk.RIGHT, padx=5)
 
         # Right panel (scrollable so controls never get clipped on small windows)
-        right_outer = ttk.LabelFrame(main_frame, text="Controls", padding=2)
+        right_outer = ttk.LabelFrame(main_frame, text="控制面板", padding=2)
         right_outer.pack(side=tk.RIGHT, fill=tk.Y, padx=(10, 0))
 
         right_canvas = tk.Canvas(right_outer, borderwidth=0, highlightthickness=0, width=240)
@@ -883,7 +883,7 @@ class VideoLabelerGUI:
         right_canvas.bind("<Leave>", lambda e: right_canvas.unbind_all("<MouseWheel>"))
         
         # Current video indicator — always visible, never overwritten by action logs
-        self.current_video_var = tk.StringVar(value="No video loaded")
+        self.current_video_var = tk.StringVar(value="未加载视频")
         ttk.Label(right_frame, textvariable=self.current_video_var,
                   font=('Arial', 9, 'bold'), foreground='#888888',
                   wraplength=160, justify=tk.LEFT).pack(anchor=tk.W, pady=(0, 4))
@@ -891,16 +891,16 @@ class VideoLabelerGUI:
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=6)
 
         # File controls
-        ttk.Label(right_frame, text="📁 File", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
-        ttk.Button(right_frame, text="Open Video", command=self.open_video, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="Open Folder", command=self.open_folder, width=15).pack(pady=2)
+        ttk.Label(right_frame, text="📁 文件", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
+        ttk.Button(right_frame, text="打开视频", command=self.open_video, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="打开文件夹", command=self.open_folder, width=15).pack(pady=2)
 
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
         
         # Keypoint section (select to place, edit name inline, add/remove)
-        ttk.Label(right_frame, text="🎯 Keypoints",
+        ttk.Label(right_frame, text="🎯 关键点",
                   font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0, 2))
-        ttk.Label(right_frame, text="Click ◉ to select · edit name · ✕ to remove",
+        ttk.Label(right_frame, text="点击 ◉ 选择 · 编辑名称 · ✕ 删除",
                   font=('Arial', 8), foreground='gray').pack(anchor=tk.W)
 
         # Shared selection variable + rebuildable container for the keypoint rows
@@ -912,7 +912,7 @@ class VideoLabelerGUI:
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
 
         # Quick select shortcuts (also rebuilt when keypoints change)
-        ttk.Label(right_frame, text="⌨️ Shortcuts:", font=('Arial', 9)).pack(anchor=tk.W)
+        ttk.Label(right_frame, text="⌨️ 快捷键：", font=('Arial', 9)).pack(anchor=tk.W)
         self.kp_shortcut_container = ttk.Frame(right_frame)
         self.kp_shortcut_container.pack(fill=tk.X, pady=2)
 
@@ -922,33 +922,33 @@ class VideoLabelerGUI:
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
         
         # Label actions
-        ttk.Label(right_frame, text="📝 Actions", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
+        ttk.Label(right_frame, text="📝 操作", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
 
-        ttk.Button(right_frame, text="✅ Save Frame", command=self.save_frame, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="🚫 Mark Occluded (H)", command=self.mark_occluded, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="↩️ Undo Last", command=self.undo_point, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="🗑️ Clear Frame", command=self.clear_frame, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="⏭️ Skip Frame", command=self.skip_frame, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="✅ Mark Complete", command=self.mark_current_complete, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="💾 Export Labels", command=self.export_labels, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="✅ 保存当前帧", command=self.save_frame, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="🚫 标记遮挡 (H)", command=self.mark_occluded, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="↩️ 撤销上一步", command=self.undo_point, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="🗑️ 清空标注", command=self.clear_frame, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="⏭️ 跳过当前帧", command=self.skip_frame, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="✅ 标记完成", command=self.mark_current_complete, width=15).pack(pady=2)
+        ttk.Button(right_frame, text="💾 导出标签", command=self.export_labels, width=15).pack(pady=2)
 
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
 
         # Optical Flow tracking (recommended for custom keypoints)
-        ttk.Label(right_frame, text="🌊 Optical Flow (recommended)",
+        ttk.Label(right_frame, text="🌊 光流跟踪（推荐）",
                   font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0, 2))
         ttk.Label(right_frame,
-                  text="Fills frames BETWEEN your manual\nlabels by following the real pixels.\nLands exactly on each manual frame.",
+                  text="跟随真实像素填充手动标注帧之间的画面。\n会准确衔接每个手动标注帧。",
                   font=('Arial', 8), foreground='gray', justify=tk.LEFT).pack(anchor=tk.W)
-        ttk.Button(right_frame, text="🌊 Track Between Manual (O)",
+        ttk.Button(right_frame, text="🌊 跟踪手动帧之间 (O)",
                    command=self.optical_flow_track, width=22).pack(pady=4)
 
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
 
         # YOLO Tracking controls
-        ttk.Label(right_frame, text="🤖 YOLO Tracking", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
+        ttk.Label(right_frame, text="🤖 YOLO 跟踪", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
         ttk.Label(right_frame,
-                  text="⚠️ Pre-trained pose can't detect your\ncustom points — expect drift. Use only\nafter training your own model.",
+                  text="⚠️ 预训练姿态模型无法识别自定义关键点，\n可能发生漂移。建议仅在训练自己的模型后使用。",
                   font=('Arial', 8), foreground='#aa5500', justify=tk.LEFT).pack(anchor=tk.W)
         
         tracker_frame = ttk.Frame(right_frame)
@@ -956,19 +956,19 @@ class VideoLabelerGUI:
         
         # Add checkbox for manual labels only
         self.manual_labels_only = tk.BooleanVar(value=True)
-        ttk.Checkbutton(tracker_frame, text="🎯 Only track manual labels", 
+        ttk.Checkbutton(tracker_frame, text="🎯 仅跟踪手动标签", 
                         variable=self.manual_labels_only).pack(anchor=tk.W)
 
         self.tracker_var = tk.StringVar(value="botsort")
-        ttk.Radiobutton(tracker_frame, text="BoTSORT (Balanced)", 
+        ttk.Radiobutton(tracker_frame, text="BoTSORT（均衡）", 
                        variable=self.tracker_var, value="botsort").pack(anchor=tk.W)
-        ttk.Radiobutton(tracker_frame, text="ByteTrack (Fast)", 
+        ttk.Radiobutton(tracker_frame, text="ByteTrack（快速）", 
                        variable=self.tracker_var, value="bytetrack").pack(anchor=tk.W)
         
         # YOLO confidence threshold
         conf_frame = ttk.Frame(right_frame)
         conf_frame.pack(fill=tk.X, pady=2)
-        ttk.Label(conf_frame, text="Confidence:").pack(side=tk.LEFT)
+        ttk.Label(conf_frame, text="置信度：").pack(side=tk.LEFT)
         self.conf_scale = ttk.Scale(conf_frame, from_=0.1, to=0.9, orient=tk.HORIZONTAL, length=80)
         self.conf_scale.set(0.5)
         self.conf_scale.pack(side=tk.LEFT, padx=5)
@@ -976,26 +976,26 @@ class VideoLabelerGUI:
         self.conf_label.pack(side=tk.LEFT)
         self.conf_scale.configure(command=lambda v: self.conf_label.config(text=f"{float(v):.1f}"))
         
-        ttk.Button(right_frame, text="🎯 YOLO Track Current", 
+        ttk.Button(right_frame, text="🎯 YOLO 跟踪当前段", 
                   command=self.track_with_yolo, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="🔄 Hybrid Track (Manual+YOLO)", 
+        ttk.Button(right_frame, text="🔄 混合跟踪（手动+YOLO）", 
                   command=self.hybrid_track, width=15).pack(pady=2)
-        ttk.Button(right_frame, text="📊 Track All Frames", 
+        ttk.Button(right_frame, text="📊 跟踪全部帧", 
                   command=lambda: self.track_with_yolo(0, self.total_frames-1), width=15).pack(pady=2)
-        ttk.Button(right_frame, text="🧹 Clear Tracked", 
+        ttk.Button(right_frame, text="🧹 清除自动跟踪", 
                   command=self.clear_tracked_frames, width=15).pack(pady=2)
         
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
         
         # Backup interpolation
-        ttk.Label(right_frame, text="🔄 Backup Interpolation", font=('Arial', 9)).pack(anchor=tk.W)
-        ttk.Button(right_frame, text="📐 Linear Interpolate", 
+        ttk.Label(right_frame, text="🔄 备用插值", font=('Arial', 9)).pack(anchor=tk.W)
+        ttk.Button(right_frame, text="📐 线性插值", 
                   command=self.linear_interpolate_all, width=15).pack(pady=1)
         
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
         
         # Adjustment controls
-        ttk.Label(right_frame, text="🎯 Adjust Points", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
+        ttk.Label(right_frame, text="🎯 调整关键点", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
         
         adjust_frame = ttk.Frame(right_frame)
         adjust_frame.pack(fill=tk.X, pady=2)
@@ -1008,18 +1008,18 @@ class VideoLabelerGUI:
         adjust_frame2 = ttk.Frame(right_frame)
         adjust_frame2.pack(fill=tk.X, pady=2)
         
-        ttk.Button(adjust_frame2, text="Fine ◀", command=lambda: self.adjust_point(-1, 0), width=5).pack(side=tk.LEFT, padx=1)
-        ttk.Button(adjust_frame2, text="Fine ▲", command=lambda: self.adjust_point(0, -1), width=5).pack(side=tk.LEFT, padx=1)
-        ttk.Button(adjust_frame2, text="Fine ▼", command=lambda: self.adjust_point(0, 1), width=5).pack(side=tk.LEFT, padx=1)
-        ttk.Button(adjust_frame2, text="Fine ▶", command=lambda: self.adjust_point(1, 0), width=5).pack(side=tk.LEFT, padx=1)
+        ttk.Button(adjust_frame2, text="微调 ◀", command=lambda: self.adjust_point(-1, 0), width=5).pack(side=tk.LEFT, padx=1)
+        ttk.Button(adjust_frame2, text="微调 ▲", command=lambda: self.adjust_point(0, -1), width=5).pack(side=tk.LEFT, padx=1)
+        ttk.Button(adjust_frame2, text="微调 ▼", command=lambda: self.adjust_point(0, 1), width=5).pack(side=tk.LEFT, padx=1)
+        ttk.Button(adjust_frame2, text="微调 ▶", command=lambda: self.adjust_point(1, 0), width=5).pack(side=tk.LEFT, padx=1)
         
         ttk.Separator(right_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
         
         # Progress
-        ttk.Label(right_frame, text="📊 Progress", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
+        ttk.Label(right_frame, text="📊 进度", font=('Arial', 10, 'bold')).pack(anchor=tk.W, pady=(0,5))
         self.progress_bar = ttk.Progressbar(right_frame, length=150, mode='determinate')
         self.progress_bar.pack(pady=5)
-        self.progress_label = ttk.Label(right_frame, text="0 / 0 frames")
+        self.progress_label = ttk.Label(right_frame, text="0 / 0 帧")
         self.progress_label.pack()
         
         # Status bar
@@ -1092,7 +1092,7 @@ class VideoLabelerGUI:
         for kp_name, data in self.kp_buttons.items():
             if kp_name == name:
                 data['color'].configure(bg='yellow')
-                self.status_var.set(f"Selected: {self.keypoint_display_names[name]} - Click on video to place")
+                self.status_var.set(f"已选择：{self.keypoint_display_names[name]} - 请在视频画面中点击放置")
             else:
                 if data['placed']:
                     data['color'].configure(bg='green')
@@ -1113,17 +1113,17 @@ class VideoLabelerGUI:
     
     def open_video(self):
         file_path = filedialog.askopenfilename(
-            title="Select Video",
-            filetypes=[("Video files", "*.mp4 *.avi *.mov *.mkv"), ("All files", "*.*")]
+            title="选择视频",
+            filetypes=[("视频文件", "*.mp4 *.avi *.mov *.mkv"), ("所有文件", "*.*")]
         )
         if file_path:
             self.video_files = []
             self.current_video_idx = 0
             self.load_video(file_path)
-            self.status_var.set(f"📹 Single video mode: {os.path.basename(file_path)}")
+            self.status_var.set(f"📹 单视频模式：{os.path.basename(file_path)}")
     
     def open_folder(self):
-        folder = filedialog.askdirectory(title="Select folder with videos")
+        folder = filedialog.askdirectory(title="选择包含视频的文件夹")
         if folder:
             videos = set()
             for ext in ['*.mp4', '*.avi', '*.mov', '*.mkv', '*.MP4', '*.AVI', '*.MOV', '*.MKV']:
@@ -1132,11 +1132,11 @@ class VideoLabelerGUI:
             if videos:
                 self.video_files = sorted(videos, key=natural_sort_key)
                 self.current_video_idx = 0
-                self.status_var.set(f"📁 Found {len(videos)} videos in folder")
+                self.status_var.set(f"📁 文件夹中找到 {len(videos)} 个视频")
                 self.update_video_progress()
                 self.find_first_uncompleted()
             else:
-                messagebox.showwarning("No Videos", "No video files found in this folder")
+                messagebox.showwarning("没有视频", "该文件夹中未找到视频文件")
                 self.video_files = []
                 self.current_video_idx = 0
                 self.update_video_progress()
@@ -1150,13 +1150,13 @@ class VideoLabelerGUI:
             if not status or not status.get('completed', False):
                 self.current_video_idx = i
                 self.load_video(str(video_path))
-                self.status_var.set(f"📹 Starting with: {os.path.basename(video_path)}")
+                self.status_var.set(f"📹 从此视频开始：{os.path.basename(video_path)}")
                 return
         
         self.current_video_idx = 0
         self.load_video(str(self.video_files[0]))
-        messagebox.showinfo("All Done!", "All videos completed!\nLoading first video anyway.")
-        self.status_var.set("🎉 All videos completed!")
+        messagebox.showinfo("全部完成！", "所有视频都已完成！\n将重新加载第一个视频。")
+        self.status_var.set("🎉 所有视频均已完成！")
     
     def load_video(self, path):
         self.video_path = path
@@ -1166,7 +1166,7 @@ class VideoLabelerGUI:
             self.current_video_var.set(f"🎬 {os.path.basename(path)}")
         self.cap = cv2.VideoCapture(path)
         if not self.cap.isOpened():
-            messagebox.showerror("Error", f"Could not open video:\n{path}")
+            messagebox.showerror("错误", f"无法打开视频：\n{path}")
             return
         
         self.total_frames = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -1194,30 +1194,30 @@ class VideoLabelerGUI:
         
         if saved_data:
             if saved_data.get('completed', False):
-                self.status_var.set(f"✅ Already completed: {os.path.basename(path)}")
+                self.status_var.set(f"✅ 已完成：{os.path.basename(path)}")
                 self.progress_bar['value'] = self.total_frames
-                self.progress_label.config(text=f"{self.total_frames} / {self.total_frames} frames")
+                self.progress_label.config(text=f"{self.total_frames} / {self.total_frames} 帧")
                 self.show_frame(0)
             else:
                 last_frame = saved_data.get('last_frame', 0)
                 if last_frame > 0 and last_frame < self.total_frames:
                     self.current_frame = last_frame
-                    self.status_var.set(f"🔄 Resuming from frame {last_frame}")
+                    self.status_var.set(f"🔄 从第 {last_frame} 帧继续")
                     self.show_frame(last_frame)
                 else:
                     self.show_frame(0)
         else:
             self.show_frame(0)
             self.progress_bar['value'] = 0
-            self.progress_label.config(text=f"0 / {self.total_frames} frames")
+            self.progress_label.config(text=f"0 / {self.total_frames} 帧")
         
-        self.status_var.set(f"📹 Loaded: {os.path.basename(path)} ({self.total_frames} frames)")
+        self.status_var.set(f"📹 已加载：{os.path.basename(path)}（{self.total_frames} 帧）")
         self.update_video_progress()
         
         if self.video_files:
             idx = self.current_video_idx + 1
             total = len(self.video_files)
-            self.status_var.set(f"📹 Video {idx}/{total}: {os.path.basename(path)} ({self.total_frames} frames)")
+            self.status_var.set(f"📹 视频 {idx}/{total}：{os.path.basename(path)}（{self.total_frames} 帧）")
         
         self.video_panel.focus_set()
         self.show_frame(0, update_slider=True)
@@ -1229,7 +1229,7 @@ class VideoLabelerGUI:
             return
 
         if not self.keypoint_names or self.current_kp >= len(self.keypoint_names):
-            self.status_var.set("⚠️ No keypoints defined. Use ➕ Add Keypoint in the 🎯 Keypoints panel first.")
+            self.status_var.set("⚠️ 尚未定义关键点，请先在 🎯 关键点面板中点击“➕ 添加关键点”。")
             return
 
         name = self.keypoint_names[self.current_kp]
@@ -1244,7 +1244,7 @@ class VideoLabelerGUI:
         self.kp_buttons[name]['status'].configure(text='✅', foreground='green')
 
         self.status_var.set(
-            f"✅ Placed: {self.keypoint_display_names[name]} at ({x}, {y})")
+            f"✅ 已放置：{self.keypoint_display_names[name]}，位置 ({x}, {y})")
 
         self.advance_to_next_keypoint()
         
@@ -1257,7 +1257,7 @@ class VideoLabelerGUI:
             return bool(self.points.get(name)) or name in self.occluded
 
         if all(done(name) for name in self.keypoint_names):
-            self.status_var.set("All keypoints placed/occluded! Press 'Save Frame' or Ctrl+S")
+            self.status_var.set("所有关键点均已放置或标记遮挡！请点击“保存当前帧”或按 Ctrl+S")
             return
 
         for name in self.keypoint_names:
@@ -1277,7 +1277,7 @@ class VideoLabelerGUI:
         self.kp_buttons[name]['placed'] = False
         self.kp_buttons[name]['color'].configure(bg='#663333')
         self.kp_buttons[name]['status'].configure(text='🚫', foreground='#cc7777')
-        self.status_var.set(f"🚫 {name}: occluded / inside (no box this frame)")
+        self.status_var.set(f"🚫 {name}：遮挡/位于内部（当前帧不绘制框）")
         self.advance_to_next_keypoint()
         self.slider_update = False
         self.show_frame(self.current_frame)
@@ -1391,7 +1391,7 @@ class VideoLabelerGUI:
     def toggle_play(self, event=None):
         if self.is_playing:
             self.is_playing = False
-            self.play_btn.config(text="▶ Play")
+            self.play_btn.config(text="▶ 播放")
             if hasattr(self, '_after_id'):
                 try:
                     self.root.after_cancel(self._after_id)
@@ -1399,7 +1399,7 @@ class VideoLabelerGUI:
                     pass
         else:
             self.is_playing = True
-            self.play_btn.config(text="⏸ Pause")
+            self.play_btn.config(text="⏸ 暂停")
             self.play_video()
         return "break"
     
@@ -1410,7 +1410,7 @@ class VideoLabelerGUI:
         next_frame = self.current_frame + 1
         if next_frame >= self.total_frames:
             self.is_playing = False
-            self.play_btn.config(text="▶ Play")
+            self.play_btn.config(text="▶ 播放")
             return
         
         self.show_frame(next_frame, update_slider=True)
@@ -1425,13 +1425,13 @@ class VideoLabelerGUI:
         else:
             if self.is_playing:
                 self.stop_playback()
-                self.status_var.set("🎬 End of video reached")
+                self.status_var.set("🎬 已到达视频末尾")
         return "break"
     
     def stop_playback(self):
         if self.is_playing:
             self.is_playing = False
-            self.play_btn.config(text="▶ Play")
+            self.play_btn.config(text="▶ 播放")
             if hasattr(self, '_after_id'):
                 try:
                     self.root.after_cancel(self._after_id)
@@ -1477,10 +1477,10 @@ class VideoLabelerGUI:
                     break
 
             if existing_frame:
-                self.status_var.set(f"ℹ️ Frame {self.current_frame} already has {len(existing_frame['points'])} points")
+                self.status_var.set(f"ℹ️ 第 {self.current_frame} 帧已有 {len(existing_frame['points'])} 个点")
                 return "break"
             else:
-                messagebox.showwarning("No Points", "Place a keypoint or mark one occluded before saving.")
+                messagebox.showwarning("没有关键点", "保存前请至少放置一个关键点，或将一个关键点标记为遮挡。")
                 return "break"
 
         # Save the frame with points (+ any occluded keypoints, exported as visibility 0)
@@ -1502,14 +1502,14 @@ class VideoLabelerGUI:
         
         if existing_idx is not None:
             self.labeled_frames[existing_idx] = frame_data
-            self.status_var.set(f"🔄 Updated frame {self.current_frame}")
+            self.status_var.set(f"🔄 已更新第 {self.current_frame} 帧")
         else:
             self.labeled_frames.append(frame_data)
-            self.status_var.set(f"✅ Frame {self.current_frame} saved!")
+            self.status_var.set(f"✅ 第 {self.current_frame} 帧已保存！")
         
         self.current_video_exported = False
         self.progress_bar['value'] = len(self.labeled_frames)
-        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} frames")
+        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} 帧")
         
         if self.video_path:
             self.save_frame_progress()
@@ -1549,7 +1549,7 @@ class VideoLabelerGUI:
                 self.kp_buttons[last]['status'].configure(
                     text=f'✅×{count}' if count > 1 else '✅', foreground='green')
             self.select_keypoint(last)
-            self.status_var.set(f"↩️ Undo: removed instance of {last} ({count} remaining)")
+            self.status_var.set(f"↩️ 已撤销：删除 {last} 的一个实例（剩余 {count} 个）")
             self.slider_update = False
             self.show_frame(self.current_frame)
             self.slider_update = True
@@ -1557,8 +1557,8 @@ class VideoLabelerGUI:
 
     def clear_frame(self):
         if self.labeled_frames:
-            if not messagebox.askyesno("Clear All Frames", 
-                                    f"Remove ALL {len(self.labeled_frames)} labeled frames?"):
+            if not messagebox.askyesno("清空全部标注帧", 
+                                    f"确定删除全部 {len(self.labeled_frames)} 个已标注帧吗？"):
                 return
         
         self.points = {}
@@ -1574,10 +1574,10 @@ class VideoLabelerGUI:
         if self.keypoint_names:
             self.select_keypoint(self.keypoint_names[0])
         
-        self.status_var.set("🗑️ Cleared all labels")
+        self.status_var.set("🗑️ 已清空全部标签")
         self.current_video_exported = False
         self.progress_bar['value'] = 0
-        self.progress_label.config(text=f"0 / {self.total_frames} frames")
+        self.progress_label.config(text=f"0 / {self.total_frames} 帧")
         
         self.slider_update = False
         self.show_frame(self.current_frame)
@@ -1591,7 +1591,7 @@ class VideoLabelerGUI:
         if video_key in self.progress_data:
             del self.progress_data[video_key]
             self.save_progress()
-            self.status_var.set(f"🗑️ Cleared progress for {os.path.basename(self.video_path)}")
+            self.status_var.set(f"🗑️ 已清除 {os.path.basename(self.video_path)} 的进度")
             self.update_video_progress()
 
     def skip_frame(self, event=None):
@@ -1605,7 +1605,7 @@ class VideoLabelerGUI:
         if self.keypoint_names:
             self.select_keypoint(self.keypoint_names[0])
         
-        self.status_var.set(f"⏭️ Skipped frame {self.current_frame}")
+        self.status_var.set(f"⏭️ 已跳过第 {self.current_frame} 帧")
         
         if self.is_playing:
             self.next_frame()
@@ -1618,25 +1618,25 @@ class VideoLabelerGUI:
 
     def mark_current_complete(self):
         if not self.video_path:
-            messagebox.showwarning("No Video", "No video loaded")
+            messagebox.showwarning("未加载视频", "当前未加载视频")
             return
         
         if not self.labeled_frames:
-            if not messagebox.askyesno("No Labels", "Mark as complete anyway?"):
+            if not messagebox.askyesno("没有标签", "仍要标记为完成吗？"):
                 return
         
         if self.labeled_frames and not self.current_video_exported:
-            if messagebox.askyesno("Export First?", "Export labels before marking as complete?"):
+            if messagebox.askyesno("先导出？", "标记为完成前是否先导出标签？"):
                 exported = self.export_labels()
                 if not exported:
                     return
         
         self.mark_video_complete(self.video_path)
-        self.status_var.set(f"✅ Marked {os.path.basename(self.video_path)} as complete")
+        self.status_var.set(f"✅ 已将 {os.path.basename(self.video_path)} 标记为完成")
         self.stop_playback()
         
         if self.video_files and len(self.video_files) > 1:
-            if messagebox.askyesno("Next Video", "Move to next video?"):
+            if messagebox.askyesno("下一个视频", "是否移动到下一个视频？"):
                 self._advance_to_next_video_force()
     
     # ============ INTERPOLATION METHODS ============
@@ -1644,7 +1644,7 @@ class VideoLabelerGUI:
     def smart_interpolate(self):
         """Hybrid interpolation using manual frames + tracked data"""
         if len(self.labeled_frames) < 2:
-            messagebox.showwarning("Need at least 2 labeled frames")
+            messagebox.showwarning("至少需要 2 个已标注帧")
             return
         
         # Sort by frame number
@@ -1657,7 +1657,7 @@ class VideoLabelerGUI:
         anchors = [f for f in self.labeled_frames if f.get('manual', False)]
         
         if len(anchors) < 2:
-            messagebox.showwarning("Need at least 2 manual frames for interpolation")
+            messagebox.showwarning("插值至少需要 2 个手动标注帧")
             return
         
         new_frames = []
@@ -1706,15 +1706,15 @@ class VideoLabelerGUI:
         
         # Update UI
         self.progress_bar['value'] = len(self.labeled_frames)
-        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} frames")
-        self.status_var.set(f"✅ Interpolated {len(new_frames)} frames")
+        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} 帧")
+        self.status_var.set(f"✅ 已插值 {len(new_frames)} 帧")
     
     def linear_interpolate_all(self):
         """Backup: Linear interpolation between manual frames"""
         manual_frames = [f for f in self.labeled_frames if f.get('manual', False)]
         
         if len(manual_frames) < 2:
-            messagebox.showwarning("Not Enough Labels", "Need at least 2 manual frames")
+            messagebox.showwarning("标签不足", "至少需要 2 个手动标注帧")
             return False
         
         # Remove existing interpolated frames
@@ -1767,12 +1767,12 @@ class VideoLabelerGUI:
         
         self.labeled_frames = sorted(self.labeled_frames, key=lambda x: x['frame'])
         self.progress_bar['value'] = len(self.labeled_frames)
-        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} frames")
+        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} 帧")
         
         if self.video_path:
             self.save_frame_progress()
         
-        self.status_var.set(f"✅ Interpolated {frames_added} frames")
+        self.status_var.set(f"✅ 已插值 {frames_added} 帧")
         return True
     
     # ============ OPTICAL FLOW TRACKING (recommended for custom keypoints) ============
@@ -1791,15 +1791,15 @@ class VideoLabelerGUI:
         so it works for arbitrary custom keypoints and lands exactly on both
         manual anchors (no accumulated drift between them)."""
         if not self.cap:
-            messagebox.showwarning("No Video", "Please load a video first")
+            messagebox.showwarning("未加载视频", "请先加载视频")
             return False
 
         manual = sorted([f for f in self.labeled_frames if f.get('manual', False)],
                         key=lambda x: x['frame'])
         if len(manual) < 2:
-            messagebox.showwarning("Need Manual Frames",
-                "Label at least 2 frames manually first.\n"
-                "Optical flow fills in the frames *between* your manual labels.")
+            messagebox.showwarning("需要手动标注帧",
+                "请先至少手动标注 2 帧。\n"
+                "光流会填充两个手动标注帧之间的画面。")
             return False
 
         vid_w, vid_h = self._get_video_dims()
@@ -1826,8 +1826,8 @@ class VideoLabelerGUI:
             if fb - fa <= 1:
                 continue
 
-            self.status_var.set(f"🌊 Optical flow: segment {si+1}/{total_segments} "
-                                f"(frames {fa}-{fb})")
+            self.status_var.set(f"🌊 光流跟踪：片段 {si+1}/{total_segments} "
+                                f"（第 {fa}-{fb} 帧）")
             self.root.update()
 
             # Fully skip only keypoints occluded in BOTH anchors. If occluded at
@@ -1859,12 +1859,12 @@ class VideoLabelerGUI:
         self.labeled_frames.sort(key=lambda x: x['frame'])
 
         self.progress_bar['value'] = len(self.labeled_frames)
-        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} frames")
+        self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} 帧")
         if self.video_path:
             self.save_frame_progress()
 
-        self.status_var.set(f"✅ Optical flow complete: filled {len(new_frames)} frames "
-                            f"between {len(manual)} manual anchors")
+        self.status_var.set(f"✅ 光流跟踪完成：已填充 {len(new_frames)} 帧，"
+                            f"位于 {len(manual)} 个手动锚点之间")
         self.slider_update = False
         self.show_frame(self.current_frame)
         self.slider_update = True
@@ -2014,19 +2014,19 @@ class VideoLabelerGUI:
         tracked_count = sum(1 for f in self.labeled_frames if f.get('tracked', False))
         
         if tracked_count == 0:
-            messagebox.showinfo("No Tracked Frames", "No tracked frames to clear")
+            messagebox.showinfo("没有跟踪帧", "没有可清除的自动跟踪帧")
             return
         
-        if messagebox.askyesno("Clear Tracked", f"Remove all {tracked_count} tracked frames?"):
+        if messagebox.askyesno("清除自动跟踪", f"确定删除全部 {tracked_count} 个自动跟踪帧吗？"):
             self.labeled_frames = [f for f in self.labeled_frames if not f.get('tracked', False)]
             
             self.progress_bar['value'] = len(self.labeled_frames)
-            self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} frames")
+            self.progress_label.config(text=f"{len(self.labeled_frames)} / {self.total_frames} 帧")
             
             if self.video_path:
                 self.save_frame_progress()
             
-            self.status_var.set(f"🧹 Removed {tracked_count} tracked frames")
+            self.status_var.set(f"🧹 已删除 {tracked_count} 个自动跟踪帧")
             
             self.slider_update = False
             self.show_frame(self.current_frame)
@@ -2055,7 +2055,7 @@ class VideoLabelerGUI:
                             labeled['points'][name] = new_point
                             break
                     
-                    self.status_var.set(f"🔧 Adjusted {name} to {new_point}")
+                    self.status_var.set(f"🔧 已将 {name} 调整到 {new_point}")
                     
                     # Update display
                     self.slider_update = False
@@ -2068,16 +2068,16 @@ class VideoLabelerGUI:
                     if self.video_path:
                         self.save_frame_progress()
                 else:
-                    self.status_var.set(f"⚠️ {name} not found on this frame")
+                    self.status_var.set(f"⚠️ 当前帧未找到 {name}")
             else:
-                self.status_var.set("⚠️ No points on current frame")
+                self.status_var.set("⚠️ 当前帧没有关键点")
         else:
             # Adjust points being placed
             name = self.keypoint_names[self.current_kp]
             if self.points.get(name):
                 x, y = self.points[name][-1]
                 self.points[name][-1] = (max(0, x + dx), max(0, y + dy))
-                self.status_var.set(f"🔧 Adjusted {name} instance {len(self.points[name])} to {self.points[name][-1]}")
+                self.status_var.set(f"🔧 已将 {name} 的第 {len(self.points[name])} 个实例调整到 {self.points[name][-1]}")
                 
                 self.slider_update = False
                 self.show_frame(self.current_frame)
@@ -2097,7 +2097,7 @@ class VideoLabelerGUI:
             if not status or not status.get('completed', False):
                 self.current_video_idx = i
                 self.load_video(str(video_path))
-                self.status_var.set(f"⏭ Moved to: {os.path.basename(video_path)}")
+                self.status_var.set(f"⏭ 已移动到：{os.path.basename(video_path)}")
                 return
         
         for i in range(0, self.current_video_idx + 1):
@@ -2106,17 +2106,17 @@ class VideoLabelerGUI:
             if not status or not status.get('completed', False):
                 self.current_video_idx = i
                 self.load_video(str(video_path))
-                self.status_var.set(f"⏭ Looped to: {os.path.basename(video_path)}")
+                self.status_var.set(f"⏭ 已循环到：{os.path.basename(video_path)}")
                 return
         
         self.current_video_idx = 0
         self.load_video(str(self.video_files[0]))
-        messagebox.showinfo("🎉 All Done!", "All videos completed!")
-        self.status_var.set("🎉 All videos completed!")
+        messagebox.showinfo("🎉 全部完成！", "所有视频均已完成！")
+        self.status_var.set("🎉 所有视频均已完成！")
     
     def next_video(self):
         if not self.video_files:
-            messagebox.showinfo("No Videos", "Open a folder first")
+            messagebox.showinfo("没有视频", "请先打开一个文件夹")
             return
         
         if self.labeled_frames and not self.current_video_exported:
@@ -2125,8 +2125,8 @@ class VideoLabelerGUI:
                 self._advance_to_next_video_force()
                 return
                 
-            if not messagebox.askyesno("Export Labels First", 
-                                    f"You have {len(self.labeled_frames)} labeled frames.\nExport before moving?"):
+            if not messagebox.askyesno("先导出标签", 
+                                    f"当前有 {len(self.labeled_frames)} 个已标注帧。\n移动前是否先导出？"):
                 self._advance_to_next_video_force()
                 return
             else:
@@ -2138,7 +2138,7 @@ class VideoLabelerGUI:
 
     def prev_video(self):
         if not self.video_files:
-            messagebox.showinfo("No Videos", "Open a folder first")
+            messagebox.showinfo("没有视频", "请先打开一个文件夹")
             return
         
         if self.labeled_frames and not self.current_video_exported:
@@ -2147,8 +2147,8 @@ class VideoLabelerGUI:
                 self._advance_to_prev_video_force()
                 return
                 
-            if not messagebox.askyesno("Export Labels First", 
-                                    f"You have {len(self.labeled_frames)} labeled frames.\nExport before moving?"):
+            if not messagebox.askyesno("先导出标签", 
+                                    f"当前有 {len(self.labeled_frames)} 个已标注帧。\n移动前是否先导出？"):
                 self._advance_to_prev_video_force()
                 return
             else:
@@ -2171,17 +2171,17 @@ class VideoLabelerGUI:
         if self.current_video_idx > 0:
             self.current_video_idx -= 1
             self.load_video(str(self.video_files[self.current_video_idx]))
-            self.status_var.set(f"⏮ Moved to: {os.path.basename(self.video_files[self.current_video_idx])}")
+            self.status_var.set(f"⏮ 已移动到：{os.path.basename(self.video_files[self.current_video_idx])}")
         else:
-            messagebox.showinfo("Start of Folder", "You're at the first video!")
+            messagebox.showinfo("已到文件夹开头", "当前已经是第一个视频！")
     
     def show_progress(self):
         if not self.video_files:
-            messagebox.showinfo("No Videos", "Open a folder first")
+            messagebox.showinfo("没有视频", "请先打开一个文件夹")
             return
         
         progress_window = tk.Toplevel(self.root)
-        progress_window.title("📊 Labeling Progress")
+        progress_window.title("📊 标注进度")
         progress_window.geometry("700x500")
         progress_window.transient(self.root)
         progress_window.grab_set()
@@ -2222,27 +2222,27 @@ class VideoLabelerGUI:
         
         btn_frame = ttk.Frame(progress_window)
         btn_frame.pack(pady=5)
-        ttk.Button(btn_frame, text="Close", command=progress_window.destroy).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="🔄 Reset Progress", 
+        ttk.Button(btn_frame, text="关闭", command=progress_window.destroy).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="🔄 重置进度", 
                   command=lambda: self.reset_progress(progress_window)).pack(side=tk.LEFT, padx=5)
         
         progress_window.bind('<Escape>', lambda e: progress_window.destroy())
         self.video_panel.focus_set()
     
     def reset_progress(self, window):
-        if messagebox.askyesno("Reset Progress", "Reset ALL progress?"):
+        if messagebox.askyesno("重置进度", "确定重置全部进度吗？"):
             self.progress_data = {}
             self.save_progress()
             self.update_video_progress()
             window.destroy()
-            self.status_var.set("🔄 Progress reset")
-            messagebox.showinfo("Reset Complete", "All progress has been reset.")
+            self.status_var.set("🔄 进度已重置")
+            messagebox.showinfo("重置完成", "全部进度已重置。")
     
     # ============ EXPORT ============
     
     def export_labels(self):
         if not self.labeled_frames:
-            messagebox.showwarning("No Labels", "No frames labeled")
+            messagebox.showwarning("没有标签", "当前没有已标注帧")
             return False
         
         video_name = os.path.splitext(os.path.basename(self.video_path))[0] if self.video_path else "labels"
@@ -2261,10 +2261,10 @@ class VideoLabelerGUI:
 
         if not export_path:
             export_path = filedialog.asksaveasfilename(
-                title="Export Labels",
+                title="导出标签",
                 defaultextension=".json",
                 initialfile=default_filename,
-                filetypes=[("JSON files", "*.json")]
+                filetypes=[("JSON 文件", "*.json")]
             )
 
         if not export_path:
@@ -2314,12 +2314,12 @@ class VideoLabelerGUI:
 
             if self.video_path:
                 self.mark_video_complete(self.video_path)
-            self.status_var.set(f"✅ Exported: {export_path}")
+            self.status_var.set(f"✅ 已导出：{export_path}")
             
             if self.video_files and len(self.video_files) > 1:
                 if self.is_playing:
                     self.is_playing = False
-                    self.play_btn.config(text="▶ Play")
+                    self.play_btn.config(text="▶ 播放")
                     if hasattr(self, '_after_id'):
                         self.root.after_cancel(self._after_id)
                 
@@ -2328,8 +2328,8 @@ class VideoLabelerGUI:
             return True
                         
         except Exception as e:
-            messagebox.showerror("Export Error", f"Failed to export:\n{str(e)}")
-            self.status_var.set(f"❌ Export failed: {e}")
+            messagebox.showerror("导出失败", f"导出失败：\n{str(e)}")
+            self.status_var.set(f"❌ 导出失败：{e}")
             return False
 
 # ============================================
@@ -2345,17 +2345,17 @@ if __name__ == "__main__":
     try:
         from PIL import Image, ImageTk
     except ImportError:
-        print("❌ PIL/Pillow not installed. Run: pip install pillow")
+        print("❌ 未安装 PIL/Pillow。请运行：pip install pillow")
         exit(1)
     
     # Optional pose assist (see the import note at the top of this file).
     try:
         import ultralytics
-        print(f"✅ Pose assist available (ultralytics {ultralytics.__version__})")
+        print(f"✅ 姿态辅助可用（ultralytics {ultralytics.__version__}）")
     except ImportError:
-        print("ℹ️ Pose assist off — ultralytics not installed. Labelling works, "
-              "keypoints are placed by hand. (Optional: pip install ultralytics; "
-              "AGPL, dev-only, never ship it.)")
+        print("ℹ️ 姿态辅助已关闭——未安装 ultralytics。仍可正常手动标注，"
+              关键点将由手动放置。（可选：pip install ultralytics；"
+              "AGPL，仅开发环境使用，不随发行版分发。）")
     
     root = tk.Tk()
     app = VideoLabelerGUI(root)

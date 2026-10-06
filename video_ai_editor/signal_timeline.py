@@ -2377,9 +2377,9 @@ class SignalTimelineScene(QGraphicsScene):
 
         # Empty state
         if not query_groups:
-            msg = ("(no visual search results — search via the Visual Search "
-                   "panel or ask the LLM Assistant)") if not self.visual_findings \
-                  else "(visual findings filtered out)"
+            msg = ("（暂无视觉搜索结果——请通过“视觉搜索”面板搜索，"
+                   "或询问大模型助手）") if not self.visual_findings \
+                  else "（视觉搜索结果已被筛选条件过滤）"
             text = self.addText(msg, QFont("Arial", 9))
             text.setPos(150, y_pos + 15)
             text.setDefaultTextColor(QColor(150, 150, 150))

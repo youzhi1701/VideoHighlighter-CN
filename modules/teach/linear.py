@@ -53,7 +53,7 @@ def fit(x, labels: Sequence[str], *, l2: float = L2, steps: int = STEPS,
     x = np.asarray(x, dtype=np.float64)
     classes = sorted(set(labels))
     if len(classes) < 2:
-        raise ValueError("a linear layer needs two classes or more")
+        raise ValueError("线性分类层至少需要两个类别")
     index = {c: i for i, c in enumerate(classes)}
     y = np.array([index[l] for l in labels])
     mean = x.mean(axis=0)

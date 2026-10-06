@@ -101,8 +101,8 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:
 
     src = _bundled_ffmpeg()
     if not src:
-        log_fn("❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装 "
-               "（imageio-ffmpeg) — reinstall them, or put ffmpeg on PATH.")
+        log_fn("❌ 未找到 FFmpeg。正常情况下它会随应用依赖一起安装"
+               "（imageio-ffmpeg）。请重新安装依赖，或将 ffmpeg 加入 PATH。")
         return None
 
     bin_dir = _bin_dir()
@@ -113,12 +113,12 @@ def ensure_ffmpeg_on_path(log_fn=print) -> str | None:
         # An older staged copy still runs (e.g. held open by another instance
         # while imageio-ffmpeg was upgraded); only a missing one is a failure.
         if not os.path.isfile(dst):
-            print(f"⚠️ [ffmpeg_tools] could not stage {src} as {dst}: {e}")
+            print(f"⚠️ [ffmpeg_tools] 无法将 {src} 暂存为 {dst}：{e}")
             return None
-        print(f"⚠️ [ffmpeg_tools] kept the previously staged ffmpeg ({e})")
+        print(f"⚠️ [ffmpeg_tools] 已保留之前暂存的 ffmpeg（{e}）")
 
     os.environ["PATH"] = bin_dir + os.pathsep + os.environ.get("PATH", "")
-    print(f"[ffmpeg_tools] no ffmpeg on PATH; using the bundled one as {dst}")
+    print(f"[ffmpeg_tools] PATH 中未找到 ffmpeg；将使用内置版本：{dst}")
     _ensured = dst
     return dst
 

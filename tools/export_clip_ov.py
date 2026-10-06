@@ -23,21 +23,21 @@ from llm.clip_prefilter import MODEL_ID, BUNDLED_OV_DIRNAME  # noqa: E402
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Export CLIP to OpenVINO IR for bundling")
+    ap = argparse.ArgumentParser(description="导出 CLIP 为 OpenVINO IR 以便打包")
     ap.add_argument("--model-id", default=MODEL_ID)
     ap.add_argument("--out", default=os.path.join("models", BUNDLED_OV_DIRNAME))
-    ap.add_argument("--force", action="store_true", help="re-export even if IR exists")
+    ap.add_argument("--force", action="store_true", help="即使 IR 已存在也重新导出")
     args = ap.parse_args()
 
     xml = os.path.join(args.out, "openvino_model.xml")
     if os.path.isfile(xml) and not args.force:
-        print(f"[export_clip_ov] IR already present, skipping: {xml}")
+        print(f"[CLIP 导出] IR 已存在，跳过：{xml}")
         return 0
 
     from optimum.intel import OVModelForZeroShotImageClassification
     from transformers import CLIPProcessor
 
-    print(f"[export_clip_ov] Exporting {args.model_id} -> {args.out} (OpenVINO IR)...")
+    print(f"[CLIP 导出] 正在导出 {args.model_id} → {args.out}（OpenVINO IR）…")
     os.makedirs(args.out, exist_ok=True)
     model = OVModelForZeroShotImageClassification.from_pretrained(
         args.model_id, export=True,
@@ -61,7 +61,7 @@ def main() -> int:
     del fp16
     for ext in (".xml", ".bin"):
         os.replace(tmp[:-4] + ext, xml[:-4] + ext)
-    print(f"[export_clip_ov] Done: {args.out}")
+    print(f"[CLIP 导出] 完成：{args.out}")
     return 0
 
 

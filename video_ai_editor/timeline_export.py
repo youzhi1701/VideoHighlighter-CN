@@ -424,7 +424,7 @@ def _face_spans(cache: dict) -> list[Span]:
                 label = name
             else:
                 key = ("track", track)
-                label = "Face"
+                label = "人脸"
             groups.setdefault(key, []).append(when)
             labels[key] = label
     spans: list[Span] = []
@@ -811,7 +811,7 @@ def fcpxml_text(sequence: Sequence) -> tuple[str, int]:
 
 
 _CSV_COLUMNS = (
-    "Clip", "Start (s)", "End (s)", "Duration (s)", "Frame in", "Frame out",
+    "片段", "开始时间（秒）", "结束时间（秒）", "时长（秒）", "起始帧", "结束帧",
 )
 
 

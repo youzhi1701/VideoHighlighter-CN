@@ -647,14 +647,16 @@ class ThumbnailCache(QObject):
         else in the log.
         """
         message = (error or "").strip().splitlines()
-        message = message[-1] if message else "无输出"
+        message = message[-1] if message else "no output"
         key = (hw, message)
         with self._lock:
             if key in self._reported_failures:
                 return
             self._reported_failures.add(key)
-        via = hw or "软件解码"
-        print(f"⚠️ 通过 {via} 解码缩略图失败：{message}")
+        via = hw or "software"
+        via_display = hw or "软件解码"
+        message_display = "无输出" if message == "no output" else message
+        print(f"⚠️ 通过 {via_display} 解码缩略图失败：{message_display}")
         if repaint_trace is not None:
             repaint_trace.note("thumb.decoder_failed", via=via, error=message)
 

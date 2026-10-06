@@ -75,7 +75,7 @@ def verify_manifest(raw: bytes, signature: str) -> Optional[dict]:
     before verifying would change what is being checked and defeat the point.
     """
     if not RELEASE_PUBLIC_KEY_HEX:
-        print("update_manifest: no release public key embedded; refusing.")
+        print("更新清单：未内置发行版公钥，已拒绝。")
         return None
     try:
         from cryptography.exceptions import InvalidSignature
@@ -88,32 +88,32 @@ def verify_manifest(raw: bytes, signature: str) -> Optional[dict]:
         try:
             key.verify(_b64url_decode((signature or "").strip()), raw)
         except InvalidSignature:
-            print("update_manifest: signature does not match; refusing.")
+            print("更新清单：签名不匹配，已拒绝。")
             return None
     except Exception as exc:
-        print(f"update_manifest: cannot verify ({type(exc).__name__}: {exc})")
+        print(f"更新清单：无法验证（{type(exc).__name__}：{exc}）")
         return None
 
     try:
         manifest = json.loads(raw.decode("utf-8"))
     except (ValueError, UnicodeDecodeError) as exc:
-        print(f"update_manifest: signed but unreadable ({exc})")
+        print(f"更新清单：已签名但无法读取（{exc}）")
         return None
 
     if not isinstance(manifest, dict) or manifest.get("format") != MANIFEST_FORMAT:
-        print("update_manifest: unsupported manifest format; refusing.")
+        print("更新清单：不支持的 manifest 格式，已拒绝。")
         return None
     if not isinstance(manifest.get("files"), list):
-        print("update_manifest: manifest has no file list; refusing.")
+        print("更新清单：manifest 中没有文件列表，已拒绝。")
         return None
     if str(manifest.get("compression") or "") not in ("", "gzip"):
         # A blob encoding this build cannot read: every download would fail
         # its hash, so say so here instead of after fetching gigabytes.
-        print("update_manifest: unsupported blob compression; refusing.")
+        print("更新清单：不支持的 blob 压缩格式，已拒绝。")
         return None
     for entry in manifest["files"]:
         if not isinstance(entry, dict) or not is_safe_relpath(entry.get("path")):
-            print(f"update_manifest: unsafe path in manifest: {entry!r}")
+            print(f"更新清单：manifest 中包含不安全路径：{entry!r}")
             return None
     return manifest
 

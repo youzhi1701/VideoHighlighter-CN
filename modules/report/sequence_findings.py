@@ -77,13 +77,13 @@ _VOICEOVER_MIN_SECONDS = 20.0
 # rules because the point is to be read by a person, and because a mechanism
 # that could decide them would not need the list.
 _ALWAYS_UNESTABLISHED = (
-    "what any person knew, intended, perceived or felt — no detector observes "
-    "an internal state, and a label for an appearance is not a reading of one",
-    "whether anything seen is what it appears to be — a detector reports "
-    "appearance, and what a thing actually was is a fact about the world",
-    "why one observation followed another — the order and the interval are "
-    "measured here, and neither is a cause",
-    "anything outside the frame, or outside the span that was analysed",
+    "任何人知道、意图、感知或感受到什么——没有检测器能够观察人的内在状态，"
+    "对外观的标签也不能等同于读取心理状态",
+    "画面中的事物是否确实如其外观所示——检测器只能报告外观，"
+    "事物真实是什么属于现实事实，不能仅由像素确认",
+    "为什么一个观察结果会跟在另一个之后——这里测量的是顺序和间隔，"
+    "两者都不能自动推导出因果关系",
+    "画面范围之外，或本次分析时间范围之外的任何内容",
 )
 
 
@@ -173,26 +173,24 @@ def findings(report: Mapping, *, kinds: Sequence[str] = ("object", "event", "act
     narration = _voiceover(report)
     if narration:
         unestablished.insert(0,
-            "what was said within the material — the audio is one speaker over "
-            f"{narration['share_pct']}% of the runtime, which reads as narration "
-            "about the material rather than sound from inside it. Anything it "
-            "asserts is that speaker's account, not an observation of this run")
+            "素材中说了什么——音频中单一说话者覆盖了 "
+            f"{narration['share_pct']}% 的时长，更像是在对素材进行旁白说明，"
+            "而不是素材现场内的声音。其陈述应视为说话者对素材的描述，"
+            "不是本次分析直接观察到的事实")
     elif not speech.get("segments"):
-        unestablished.insert(0, "what was said — no speech was transcribed")
+        unestablished.insert(0, "说了什么——本次没有转录到语音")
 
     activity = ((report.get("settings") or {}).get("detector_activity") or {})
     silent = sorted(k for k, v in activity.items() if not v)
     if silent:
         unestablished.append(
-            "anything the silent detectors would have covered: "
-            + ", ".join(silent)
-            + " — each ran or was weighted at nothing and found nothing, which "
-              "is not evidence that there was nothing to find")
+            "未产生有效结果的检测器本应覆盖的内容：" + "，".join(silent)
+            + "。这些检测器可能未运行、权重为零或没有结果；这并不能证明不存在相应内容")
 
     if coverage < 99.0:
         unestablished.append(
-            f"anything in the {round(100 - coverage, 1)}% of the source that was "
-            "not kept — the order below is the order within the selection")
+            f"源视频中未保留的 {round(100 - coverage, 1)}% 内容；"
+            "下方顺序仅代表已保留片段内部的顺序")
 
     return {
         "conditions": ordered,
@@ -205,30 +203,27 @@ def findings(report: Mapping, *, kinds: Sequence[str] = ("object", "event", "act
 def summarise(result: Mapping) -> str:
     """The findings as text, limits included rather than appended."""
     if not result:
-        return "Sequence findings: not measured."
+        return "序列分析：未测量。"
     lines = []
     conditions = result.get("conditions") or []
     if not conditions:
-        lines.append("Nothing was labelled in the kept moments, so there is no "
-                     "sequence to report.")
+        lines.append("保留片段中没有检测到已标注条件，因此没有可报告的事件序列。")
     else:
-        lines.append(f"{len(conditions)} condition(s) in the kept moments, in "
-                     f"order of first appearance "
-                     f"({result.get('coverage_pct', 0)}% of the source kept):")
+        lines.append(f"保留片段中共检测到 {len(conditions)} 个条件，按首次出现顺序排列"
+                     f"（保留源视频的 {result.get('coverage_pct', 0)}%）：")
         for rec in conditions:
             gap = ("" if rec["since_previous_s"] is None
-                   else f"  (+{rec['since_previous_s']:g}s)")
+                   else f"  （距上一个 +{rec['since_previous_s']:g} 秒）")
             lines.append(f"  {rec['at']}–{rec['until']}  {rec['kind']}: "
                          f"{rec['name']}  ×{rec['windows']}{gap}")
     narration = result.get("narration")
     if narration:
         lines.append("")
-        lines.append(f"The audio is narration: one speaker across "
-                     f"{narration['share_pct']}% of the runtime "
-                     f"({narration['words']} words). Treat its statements as "
-                     f"that speaker's account of the material, not as findings.")
+        lines.append(f"音频更像旁白：单一说话者覆盖 {narration['share_pct']}% 的时长"
+                     f"（{narration['words']} 个词）。这些陈述应视为说话者对素材的描述，"
+                     f"而不是本次分析直接得出的结论。")
     lines.append("")
-    lines.append("Not established by this run:")
+    lines.append("本次分析无法确认：")
     for item in (result.get("not_established") or []):
         lines.append(f"  - {item}")
     return "\n".join(lines)
@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:
     established = []
     for rec in found.get("conditions") or []:
         gap = ("" if rec["since_previous_s"] is None
-               else f", {rec['since_previous_s']:g}s after the previous")
+               else f"，距上一个 {rec['since_previous_s']:g} 秒")
         established.append(
-            f"{rec['name']} ({rec['kind']}) from {rec['at']} to {rec['until']}, "
-            f"in {rec['windows']} of the kept moments{gap}")
+            f"{rec['name']}（{rec['kind']}），时间 {rec['at']}–{rec['until']}，"
+            f"在保留片段中出现 {rec['windows']} 次{gap}")
 
     if established:
-        first = "This run observed: " + "; ".join(established) + "."
+        first = "本次分析观察到：" + "；".join(established) + "。"
     else:
-        first = ("This run observed nothing it has a label for in the kept "
-                 "moments.")
+        first = "本次分析在保留片段中没有观察到可由现有标签描述的内容。"
 
     if quotes and narration:
-        second = (f"Everything else below was said by one speaker over "
-                  f"{narration['share_pct']}% of the runtime. It is that "
-                  f"speaker's account of the material, not something this run "
-                  f"observed, and it may describe events outside the footage "
-                  f"entirely.")
+        second = (f"下方其他内容来自一位覆盖 {narration['share_pct']}% 视频时长的说话者。"
+                  f"这是该说话者对素材的描述，不是本次分析直接观察到的事实，"
+                  f"也可能描述画面之外的事件。")
     elif quotes:
-        second = ("The following was transcribed from the material. It is what "
-                  "was said, which is not the same as what happened.")
+        second = "以下内容来自素材语音转录。它代表“说了什么”，并不等同于“发生了什么”。"
     else:
-        second = "Nothing was transcribed."
+        second = "没有转录到语音内容。"
 
     return {
         "observed": established,
@@ -317,9 +308,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(
         prog="python -m modules.report.sequence_findings",
         description=__doc__.splitlines()[0])
-    ap.add_argument("report", help="the *_why.json written beside a cut")
+    ap.add_argument("report", help="剪辑文件旁生成的 *_why.json 报告")
     ap.add_argument("--attach", action="store_true",
-                    help="write the findings back into the report")
+                    help="将分析结果写回报告文件")
     args = ap.parse_args(argv)
 
     with open(args.report, encoding="utf-8") as fh:
@@ -331,7 +322,7 @@ def main(argv=None):
         report["sequence_findings"] = result
         with open(args.report, "w", encoding="utf-8") as fh:
             json.dump(report, fh, indent=1)
-        print(f"\nattached to {args.report}")
+        print(f"\n已写回报告：{args.report}")
     return 0
 
 

@@ -168,10 +168,9 @@ def _missing_package_reason(exc) -> str:
     runtime would only be wrong.
     """
     if getattr(sys, "frozen", False):
-        return ("a packaged build cannot carry torch-directml — it pins an "
-                "exact torch and this build ships the CUDA one. Running from "
-                "source adds it: see docs/AMD-GPU.md")
-    return f"torch-directml is not installed ({type(exc).__name__}: {exc})"
+        return ("打包版本无法同时携带 torch-directml：它要求固定的 torch 版本，而当前构建"
+                "包含的是 CUDA 版本。从源码运行时可以额外安装；请参阅 docs/AMD-GPU.md")
+    return f"未安装 torch-directml（{type(exc).__name__}：{exc}）"
 
 
 class DirectMLProbe:
@@ -400,7 +399,7 @@ def torch_device(index: Optional[int] = None):
     try:
         return _import_torch_directml().device(index)
     except Exception as e:  # noqa: BLE001
-        print(f"⚠️ [directml] could not build device {index}: {e}")
+        print(f"⚠️ [DirectML] 无法创建设备 {index}：{e}")
         return None
 
 

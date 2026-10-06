@@ -2508,7 +2508,7 @@ class SignalTimelineWindow(QMainWindow):
         # column (they used to be hidden docks behind toggle buttons, which
         # cost a second click and hid that they exist at all).
         self.setTabPosition(Qt.RightDockWidgetArea, QTabWidget.TabPosition.North)
-        startup_splash.stage("Building the side panels…")
+        startup_splash.stage("正在构建侧边面板…")
         try:
             search_dock = self.create_search_dock()
             self.addDockWidget(Qt.RightDockWidgetArea, search_dock)
@@ -2549,7 +2549,7 @@ class SignalTimelineWindow(QMainWindow):
 
         # Last, because it works by ticking the VR checkbox, and that has to
         # reach every view that was just built.
-        startup_splash.stage("Checking how the frames are packed…")
+        startup_splash.stage("正在检查画面排布方式…")
         self._detect_vr_layout()
         
         # Install event filter to handle global key events
@@ -3795,9 +3795,9 @@ class SignalTimelineWindow(QMainWindow):
             
             if len(visible_objects) < total_objects:
                 if len(visible_objects) <= 3:
-                    filter_details.append(f"Objects: {', '.join(visible_objects)}")
+                    filter_details.append(f"物体：{', '.join(visible_objects)}")
                 else:
-                    filter_details.append(f"Objects: {len(visible_objects)} shown")
+                    filter_details.append(f"物体：显示 {len(visible_objects)} 个")
             
             if filter_details:
                 self.current_filters_label.setText(" | ".join(filter_details))

@@ -74,7 +74,7 @@ USER_TEXT_CALLBACKS = {
     "log", "progress", "progress_cb", "status_cb", "message_cb", "detail_cb",
 }
 UI_NAME_RE = re.compile(
-    r"(?:text|title|label|button|btn|tooltip|tip|status|message|msg|caption|"
+    r"(?:^|_)(?:text|title|label|button|btn|tooltip|tip|status|message|msg|caption|"
     r"description|desc|placeholder|prompt|heading|header|menu|action|empty|"
     r"warning|error|success|progress|help|hint|option|options|choice|choices|"
     r"item|items|column|columns|tab|tabs)$",
@@ -106,6 +106,16 @@ DEV_ONLY_PATHS = {
 DEV_ONLY_PREFIXES = (
     "tools/teach_lab/",
 )
+
+# These paths intentionally emit ASCII-only text for runtime compatibility or
+# burn labels with OpenCV Hershey fonts, which do not render CJK. Treating them
+# as untranslated UI would encourage changes that either crash legacy Windows
+# consoles or render square boxes in generated videos.
+INTENTIONAL_ASCII_PATHS = {
+    "training/train_yolox_run.py",
+    "training/train_action_recognition.py",
+    "modules/crop/debug.py",
+}
 
 
 @dataclass(frozen=True)
@@ -388,7 +398,7 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 # _VISION_KEYWORDS. Translating these would change behaviour,
                 # which the localization audit must actively prevent.
                 parent = parent_of.get(id(node))
-                if isinstance(parent, (ast.Dict, ast.Compare, ast.Subscript)):
+                if isinstance(parent, (ast.Dict, ast.Compare, ast.Subscript, ast.Expr)):
                     continue
 
                 # Regex literals are behavior/protocol, not display text. This
@@ -430,7 +440,7 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
                 # File globs/cache names and generated output filenames are
                 # implementation data, not labels. They may contain English
                 # suffixes but translating them would break file discovery.
-                if re.search(r"(?:\*\.|\.(?:json|txt|srt|onnx|pth|gguf|xml|yaml|yml))(?:$|\W)", cleaned, re.I):
+                if re.search(r"(?:\*\.|\.(?:json|txt|srt|onnx|pth|gguf|xml|yaml|yml|csv|jpg|jpeg|png|mp4|avi|mov|mkv|html))(?:$|\W)", cleaned, re.I):
                     continue
 
                 hits.append(Hit(rel, getattr(node, "lineno", 0),
@@ -521,7 +531,8 @@ def excluded(path: Path, root: Path) -> bool:
         parts = path.relative_to(root).parts
     except ValueError:
         return True
-    if rel in DEV_ONLY_PATHS or any(rel.startswith(p) for p in DEV_ONLY_PREFIXES):
+    if (rel in DEV_ONLY_PATHS or rel in INTENTIONAL_ASCII_PATHS
+            or any(rel.startswith(p) for p in DEV_ONLY_PREFIXES)):
         return True
     return any(p in EXCLUDE_PARTS or p.startswith(".") for p in parts)
 

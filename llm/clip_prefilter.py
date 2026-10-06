@@ -562,20 +562,20 @@ def scan_video(video_path: str, query: str, interval: float = 1.0,
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="CLIP prefilter — rank video frames by a query")
+    ap = argparse.ArgumentParser(description="CLIP 预筛选——按查询对视频帧排序")
     ap.add_argument("--video", required=True)
     ap.add_argument("--query", required=True)
     ap.add_argument("--interval", type=float, default=1.0)
     ap.add_argument("--topk", type=int, default=30)
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--device", default="AUTO",
-                    help="AUTO/GPU (NVIDIA if present, else Intel GPU, else CPU), "
-                         "CUDA, cuda:N, CPU, or any OpenVINO device string")
+                    help="AUTO/GPU（有 NVIDIA 时优先使用，否则 Intel GPU，再否则 CPU），"
+                         "也可使用 CUDA、cuda:N、CPU 或任意 OpenVINO 设备字符串")
     ap.add_argument("--start", type=float, default=0.0)
     ap.add_argument("--negatives", default=None,
-                    help="comma-separated contrastive negatives. Describe the OTHER "
-                         "things in the video so CLIP discriminates the target act, "
-                         "e.g. \"a closeup of a face,two people talking,a solo scene\"")
+                    help="用逗号分隔的对比负样本。描述视频中的其他内容，"
+                         "帮助 CLIP 区分目标动作，例如 "
+                         "\"a closeup of a face,two people talking,a solo scene\"")
     args = ap.parse_args()
 
     negatives = None

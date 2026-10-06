@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "d1207e7a57ef10c915b3810bc95112795990fb8d"
+    "head_commit": "4f6b266cdfa629c800480327870df00c1725e84a"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -23717,6 +23717,195 @@
       "hunk": "@@ -2399,7 +2399,7 @@ def _clip_sections(entry: Mapping, readings: Mapping,"
     },
     {
+      "id": "modules/report/sequence_findings.py#1",
+      "file": "modules/report/sequence_findings.py",
+      "source": "    \"what any person knew, intended, perceived or felt — no detector observes \"\n    \"an internal state, and a label for an appearance is not a reading of one\",\n    \"whether anything seen is what it appears to be — a detector reports \"\n    \"appearance, and what a thing actually was is a fact about the world\",\n    \"why one observation followed another — the order and the interval are \"\n    \"measured here, and neither is a cause\",\n    \"anything outside the frame, or outside the span that was analysed\",",
+      "target": "    \"任何人知道、意图、感知或感受到什么——没有检测器能够观察人的内在状态，\"\n    \"对外观的标签也不能等同于读取心理状态\",\n    \"画面中的事物是否确实如其外观所示——检测器只能报告外观，\"\n    \"事物真实是什么属于现实事实，不能仅由像素确认\",\n    \"为什么一个观察结果会跟在另一个之后——这里测量的是顺序和间隔，\"\n    \"两者都不能自动推导出因果关系\",\n    \"画面范围之外，或本次分析时间范围之外的任何内容\",",
+      "before": "_ALWAYS_UNESTABLISHED = (",
+      "after": ")",
+      "hunk": "@@ -77,13 +77,13 @@ _VOICEOVER_MIN_SECONDS = 20.0"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#2",
+      "file": "modules/report/sequence_findings.py",
+      "source": "            \"what was said within the material — the audio is one speaker over \"\n            f\"{narration['share_pct']}% of the runtime, which reads as narration \"\n            \"about the material rather than sound from inside it. Anything it \"\n            \"asserts is that speaker's account, not an observation of this run\")",
+      "target": "            \"素材中说了什么——音频中单一说话者覆盖了 \"\n            f\"{narration['share_pct']}% 的时长，更像是在对素材进行旁白说明，\"\n            \"而不是素材现场内的声音。其陈述应视为说话者对素材的描述，\"\n            \"不是本次分析直接观察到的事实\")",
+      "before": "        unestablished.insert(0,",
+      "after": "    elif not speech.get(\"segments\"):",
+      "hunk": "@@ -173,26 +173,24 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#3",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        unestablished.insert(0, \"what was said — no speech was transcribed\")",
+      "target": "        unestablished.insert(0, \"说了什么——本次没有转录到语音\")",
+      "before": "    elif not speech.get(\"segments\"):",
+      "after": "",
+      "hunk": "@@ -173,26 +173,24 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#4",
+      "file": "modules/report/sequence_findings.py",
+      "source": "            \"anything the silent detectors would have covered: \"\n            + \", \".join(silent)\n            + \" — each ran or was weighted at nothing and found nothing, which \"\n              \"is not evidence that there was nothing to find\")",
+      "target": "            \"未产生有效结果的检测器本应覆盖的内容：\" + \"，\".join(silent)\n            + \"。这些检测器可能未运行、权重为零或没有结果；这并不能证明不存在相应内容\")",
+      "before": "        unestablished.append(",
+      "after": "",
+      "hunk": "@@ -173,26 +173,24 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#5",
+      "file": "modules/report/sequence_findings.py",
+      "source": "            f\"anything in the {round(100 - coverage, 1)}% of the source that was \"\n            \"not kept — the order below is the order within the selection\")",
+      "target": "            f\"源视频中未保留的 {round(100 - coverage, 1)}% 内容；\"\n            \"下方顺序仅代表已保留片段内部的顺序\")",
+      "before": "        unestablished.append(",
+      "after": "",
+      "hunk": "@@ -173,26 +173,24 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#6",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        return \"Sequence findings: not measured.\"",
+      "target": "        return \"序列分析：未测量。\"",
+      "before": "    if not result:",
+      "after": "    lines = []",
+      "hunk": "@@ -205,30 +203,27 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#7",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        lines.append(\"Nothing was labelled in the kept moments, so there is no \"\n                     \"sequence to report.\")",
+      "target": "        lines.append(\"保留片段中没有检测到已标注条件，因此没有可报告的事件序列。\")",
+      "before": "    if not conditions:",
+      "after": "    else:",
+      "hunk": "@@ -205,30 +203,27 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#8",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        lines.append(f\"{len(conditions)} condition(s) in the kept moments, in \"\n                     f\"order of first appearance \"\n                     f\"({result.get('coverage_pct', 0)}% of the source kept):\")",
+      "target": "        lines.append(f\"保留片段中共检测到 {len(conditions)} 个条件，按首次出现顺序排列\"\n                     f\"（保留源视频的 {result.get('coverage_pct', 0)}%）：\")",
+      "before": "    else:",
+      "after": "        for rec in conditions:",
+      "hunk": "@@ -205,30 +203,27 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#9",
+      "file": "modules/report/sequence_findings.py",
+      "source": "                   else f\"  (+{rec['since_previous_s']:g}s)\")",
+      "target": "                   else f\"  （距上一个 +{rec['since_previous_s']:g} 秒）\")",
+      "before": "            gap = (\"\" if rec[\"since_previous_s\"] is None",
+      "after": "            lines.append(f\"  {rec['at']}–{rec['until']}  {rec['kind']}: \"",
+      "hunk": "@@ -205,30 +203,27 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#10",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        lines.append(f\"The audio is narration: one speaker across \"\n                     f\"{narration['share_pct']}% of the runtime \"\n                     f\"({narration['words']} words). Treat its statements as \"\n                     f\"that speaker's account of the material, not as findings.\")",
+      "target": "        lines.append(f\"音频更像旁白：单一说话者覆盖 {narration['share_pct']}% 的时长\"\n                     f\"（{narration['words']} 个词）。这些陈述应视为说话者对素材的描述，\"\n                     f\"而不是本次分析直接得出的结论。\")",
+      "before": "        lines.append(\"\")",
+      "after": "    lines.append(\"\")",
+      "hunk": "@@ -205,30 +203,27 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#11",
+      "file": "modules/report/sequence_findings.py",
+      "source": "    lines.append(\"Not established by this run:\")",
+      "target": "    lines.append(\"本次分析无法确认：\")",
+      "before": "    lines.append(\"\")",
+      "after": "    for item in (result.get(\"not_established\") or []):",
+      "hunk": "@@ -205,30 +203,27 @@ def findings(report: Mapping, *, kinds: Sequence[str] = (\"object\", \"event\", \"act"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#12",
+      "file": "modules/report/sequence_findings.py",
+      "source": "               else f\", {rec['since_previous_s']:g}s after the previous\")",
+      "target": "               else f\"，距上一个 {rec['since_previous_s']:g} 秒\")",
+      "before": "        gap = (\"\" if rec[\"since_previous_s\"] is None",
+      "after": "        established.append(",
+      "hunk": "@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#13",
+      "file": "modules/report/sequence_findings.py",
+      "source": "            f\"{rec['name']} ({rec['kind']}) from {rec['at']} to {rec['until']}, \"\n            f\"in {rec['windows']} of the kept moments{gap}\")",
+      "target": "            f\"{rec['name']}（{rec['kind']}），时间 {rec['at']}–{rec['until']}，\"\n            f\"在保留片段中出现 {rec['windows']} 次{gap}\")",
+      "before": "        established.append(",
+      "after": "",
+      "hunk": "@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#14",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        first = \"This run observed: \" + \"; \".join(established) + \".\"",
+      "target": "        first = \"本次分析观察到：\" + \"；\".join(established) + \"。\"",
+      "before": "    if established:",
+      "after": "    else:",
+      "hunk": "@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#15",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        first = (\"This run observed nothing it has a label for in the kept \"\n                 \"moments.\")",
+      "target": "        first = \"本次分析在保留片段中没有观察到可由现有标签描述的内容。\"",
+      "before": "    else:",
+      "after": "",
+      "hunk": "@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#16",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        second = (f\"Everything else below was said by one speaker over \"\n                  f\"{narration['share_pct']}% of the runtime. It is that \"\n                  f\"speaker's account of the material, not something this run \"\n                  f\"observed, and it may describe events outside the footage \"\n                  f\"entirely.\")",
+      "target": "        second = (f\"下方其他内容来自一位覆盖 {narration['share_pct']}% 视频时长的说话者。\"\n                  f\"这是该说话者对素材的描述，不是本次分析直接观察到的事实，\"\n                  f\"也可能描述画面之外的事件。\")",
+      "before": "    if quotes and narration:",
+      "after": "    elif quotes:",
+      "hunk": "@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#17",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        second = (\"The following was transcribed from the material. It is what \"\n                  \"was said, which is not the same as what happened.\")",
+      "target": "        second = \"以下内容来自素材语音转录。它代表“说了什么”，并不等同于“发生了什么”。\"",
+      "before": "    elif quotes:",
+      "after": "    else:",
+      "hunk": "@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#18",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        second = \"Nothing was transcribed.\"",
+      "target": "        second = \"没有转录到语音内容。\"",
+      "before": "    else:",
+      "after": "",
+      "hunk": "@@ -270,28 +265,24 @@ def closing_summary(report: Mapping) -> dict:"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#19",
+      "file": "modules/report/sequence_findings.py",
+      "source": "    ap.add_argument(\"report\", help=\"the *_why.json written beside a cut\")",
+      "target": "    ap.add_argument(\"report\", help=\"剪辑文件旁生成的 *_why.json 报告\")",
+      "before": "        description=__doc__.splitlines()[0])",
+      "after": "    ap.add_argument(\"--attach\", action=\"store_true\",",
+      "hunk": "@@ -317,9 +308,9 @@ def main(argv=None):"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#20",
+      "file": "modules/report/sequence_findings.py",
+      "source": "                    help=\"write the findings back into the report\")",
+      "target": "                    help=\"将分析结果写回报告文件\")",
+      "before": "    ap.add_argument(\"--attach\", action=\"store_true\",",
+      "after": "    args = ap.parse_args(argv)",
+      "hunk": "@@ -317,9 +308,9 @@ def main(argv=None):"
+    },
+    {
+      "id": "modules/report/sequence_findings.py#21",
+      "file": "modules/report/sequence_findings.py",
+      "source": "        print(f\"\\nattached to {args.report}\")",
+      "target": "        print(f\"\\n已写回报告：{args.report}\")",
+      "before": "            json.dump(report, fh, indent=1)",
+      "after": "    return 0",
+      "hunk": "@@ -331,7 +322,7 @@ def main(argv=None):"
+    },
+    {
       "id": "modules/rules/compose_events.py#1",
       "file": "modules/rules/compose_events.py",
       "source": "            log_fn(f\"⚠️ Composition rules could not be loaded: {exc}\")",
@@ -25013,6 +25202,24 @@
       "hunk": "@@ -470,7 +470,7 @@ def profile_all(paths, *, use_cache: bool = True, log_fn=print) -> dict:"
     },
     {
+      "id": "modules/segments/simple_run.py#1",
+      "file": "modules/segments/simple_run.py",
+      "source": "        return \"Ready\"",
+      "target": "        return \"就绪\"",
+      "before": "    if n <= 0:",
+      "after": "    if n == 1:",
+      "hunk": "@@ -59,10 +59,10 @@ def is_video_path(path: str) -> bool:"
+    },
+    {
+      "id": "modules/segments/simple_run.py#2",
+      "file": "modules/segments/simple_run.py",
+      "source": "        return \"1 video ready — press Analyze\"\n    return f\"{n} videos ready — press Analyze\"",
+      "target": "        return \"1 个视频已就绪——点击“分析”\"\n    return f\"{n} 个视频已就绪——点击“分析”\"",
+      "before": "    if n == 1:",
+      "after": "",
+      "hunk": "@@ -59,10 +59,10 @@ def is_video_path(path: str) -> bool:"
+    },
+    {
       "id": "modules/system/compute_backend.py#1",
       "file": "modules/system/compute_backend.py",
       "source": "    (AUTO, \"Automatic — the fastest backend this machine has\"),\n    (CUDA, \"NVIDIA (CUDA)\"),\n    (INTEL, \"Intel (OpenVINO)\"),\n    (DIRECTML, \"AMD / any DX12 card (DirectML)\"),\n    (APPLE, \"Apple GPU (Core ML)\"),\n    (CPU, \"Processor only\"),",
@@ -25472,6 +25679,33 @@
       "hunk": "@@ -216,7 +216,7 @@ def _dxgi_adapters():"
     },
     {
+      "id": "modules/system/presets.py#1",
+      "file": "modules/system/presets.py",
+      "source": "        raise ValueError(\"preset name is empty\")",
+      "target": "        raise ValueError(\"预设名称不能为空\")",
+      "before": "    if not safe:",
+      "after": "    return os.path.join(presets_dir(config_file), safe + \".yaml\")",
+      "hunk": "@@ -36,7 +36,7 @@ def safe_preset_name(name: str) -> str:"
+    },
+    {
+      "id": "modules/system/presets.py#2",
+      "file": "modules/system/presets.py",
+      "source": "        raise ValueError(\"preset data must be a mapping\")",
+      "target": "        raise ValueError(\"预设数据必须是映射结构\")",
+      "before": "    if not isinstance(data, dict):",
+      "after": "    path = preset_path(name, config_file)",
+      "hunk": "@@ -57,7 +57,7 @@ def list_presets(config_file: str | None = None) -> list[str]:"
+    },
+    {
+      "id": "modules/system/presets.py#3",
+      "file": "modules/system/presets.py",
+      "source": "        raise ValueError(\"preset is not a mapping\")",
+      "target": "        raise ValueError(\"预设内容不是有效的映射结构\")",
+      "before": "    if not isinstance(data, dict):",
+      "after": "    return data",
+      "hunk": "@@ -70,7 +70,7 @@ def load_preset(name: str, config_file: str | None = None) -> dict:"
+    },
+    {
       "id": "modules/system/smoke_test.py#1",
       "file": "modules/system/smoke_test.py",
       "source": "",
@@ -25578,6 +25812,42 @@
       "before": "",
       "after": "            window = SignalTimelineWindow(...)",
       "hunk": "@@ -336,7 +336,7 @@ class splash:"
+    },
+    {
+      "id": "modules/system/ui_scale.py#1",
+      "file": "modules/system/ui_scale.py",
+      "source": "        print(f\"⚠️ {ENV_VAR}/{CONFIG_KEY}: {value!r} is not a number — ignoring\")",
+      "target": "        print(f\"⚠️ {ENV_VAR}/{CONFIG_KEY}：{value!r} 不是有效数字，已忽略\")",
+      "before": "    except (TypeError, ValueError):",
+      "after": "        return None",
+      "hunk": "@@ -45,11 +45,11 @@ def _clean(value) -> Optional[float]:"
+    },
+    {
+      "id": "modules/system/ui_scale.py#2",
+      "file": "modules/system/ui_scale.py",
+      "source": "        print(f\"⚠️ interface scale {scale} is outside \"\n              f\"{MIN_SCALE}–{MAX_SCALE} — ignoring\")",
+      "target": "        print(f\"⚠️ 界面缩放 {scale} 超出允许范围 \"\n              f\"{MIN_SCALE}–{MAX_SCALE}，已忽略\")",
+      "before": "    if not (MIN_SCALE <= scale <= MAX_SCALE):",
+      "after": "        return None",
+      "hunk": "@@ -45,11 +45,11 @@ def _clean(value) -> Optional[float]:"
+    },
+    {
+      "id": "modules/system/ui_scale.py#3",
+      "file": "modules/system/ui_scale.py",
+      "source": "        print(f\"⚠️ could not read {CONFIG_KEY} from config.yaml: \"\n              f\"{type(e).__name__}: {e}\")",
+      "target": "        print(f\"⚠️ 无法从 config.yaml 读取 {CONFIG_KEY}：\"\n              f\"{type(e).__name__}：{e}\")",
+      "before": "    except Exception as e:  # noqa: BLE001 - see docstring",
+      "after": "        return None",
+      "hunk": "@@ -72,8 +72,8 @@ def _from_config() -> Optional[float]:"
+    },
+    {
+      "id": "modules/system/ui_scale.py#4",
+      "file": "modules/system/ui_scale.py",
+      "source": "    print(f\"🔍 Interface scale: {scale}× (on top of the display's own)\")",
+      "target": "    print(f\"🔍 界面缩放：{scale}×（叠加在系统显示缩放之上）\")",
+      "before": "    os.environ[QT_VAR] = repr(float(scale))",
+      "after": "    return scale",
+      "hunk": "@@ -102,5 +102,5 @@ def apply() -> Optional[float]:"
     },
     {
       "id": "modules/teach/autolabel.py#1",
@@ -29637,25 +29907,79 @@
       "hunk": "@@ -417,7 +417,7 @@ def build_object_detector(mode: str = \"coco\", custom_model_xml: str = \"\","
     },
     {
+      "id": "modules/vision/face_emotions.py#1",
+      "file": "modules/vision/face_emotions.py",
+      "source": "            print(f\"ℹ Expression classifier not installed ({self.model_path}); \"\n                  \"built-in expression classes are unavailable. Taught face \"\n                  \"categories are unaffected.\")",
+      "target": "            print(f\"ℹ 未安装表情分类器（{self.model_path}）；\"\n                  \"内置表情类别暂不可用。已示教的人脸类别不受影响。\")",
+      "before": "        if not self.available():",
+      "after": "            return False",
+      "hunk": "@@ -162,9 +162,8 @@ class EmotionClassifier:"
+    },
+    {
+      "id": "modules/vision/face_emotions.py#2",
+      "file": "modules/vision/face_emotions.py",
+      "source": "            print(f\"✅ Expression classifier loaded ({self.device}\"\n                  f\"{', batch of 1' if self._batch == 1 else ''})\")",
+      "target": "            print(f\"✅ 表情分类器已加载（{self.device}\"\n                  f\"{'，批大小为 1' if self._batch == 1 else ''}）\")",
+      "before": "            self._output = self._compiled.output(0)",
+      "after": "            return True",
+      "hunk": "@@ -182,18 +181,18 @@ class EmotionClassifier:"
+    },
+    {
+      "id": "modules/vision/face_emotions.py#3",
+      "file": "modules/vision/face_emotions.py",
+      "source": "            print(f\"⚠️ Expression classifier failed to load: {exc}\")",
+      "target": "            print(f\"⚠️ 表情分类器加载失败：{exc}\")",
+      "before": "        except Exception as exc:",
+      "after": "            self._compiled = None",
+      "hunk": "@@ -182,18 +181,18 @@ class EmotionClassifier:"
+    },
+    {
+      "id": "modules/vision/face_emotions.py#4",
+      "file": "modules/vision/face_emotions.py",
+      "source": "            raise RuntimeError(\"call load() before infer()\")",
+      "target": "            raise RuntimeError(\"调用 infer() 前请先执行 load()\")",
+      "before": "        if self._compiled is None:",
+      "after": "        return self._compiled(batch)[self._output]",
+      "hunk": "@@ -182,18 +181,18 @@ class EmotionClassifier:"
+    },
+    {
       "id": "modules/vision/face_scan.py#1",
       "file": "modules/vision/face_scan.py",
+      "source": "        print(f\"⚠️ Could not save face scan: {exc}\")",
+      "target": "        print(f\"⚠️ 无法保存人脸扫描结果：{exc}\")",
+      "before": "    except OSError as exc:",
+      "after": "        return False",
+      "hunk": "@@ -230,7 +230,7 @@ def save(seconds: Mapping, path: str, *, video_path: str = \"\","
+    },
+    {
+      "id": "modules/vision/face_scan.py#2",
+      "file": "modules/vision/face_scan.py",
+      "source": "        print(f\"⚠️ Could not read face scan: {exc}\")",
+      "target": "        print(f\"⚠️ 无法读取人脸扫描结果：{exc}\")",
+      "before": "    except (OSError, ValueError) as exc:",
+      "after": "        return None",
+      "hunk": "@@ -242,7 +242,7 @@ def load(path: str) -> Optional[dict]:"
+    },
+    {
+      "id": "modules/vision/face_scan.py#3",
+      "file": "modules/vision/face_scan.py",
       "source": "            log_fn(f\"ℹ Using cached face scan ({len(cached)} second(s))\")",
-      "target": "            log_fn(f\"ℹ 正在使用缓存的人脸扫描结果（{len(cached)} second(s))\")",
+      "target": "            log_fn(f\"ℹ 正在使用缓存的人脸扫描结果（{len(cached)} 秒）\")",
       "before": "        if cached is not None:",
       "after": "            return cached",
       "hunk": "@@ -266,7 +266,7 @@ def scan_video(video_path: str,"
     },
     {
-      "id": "modules/vision/face_scan.py#2",
+      "id": "modules/vision/face_scan.py#4",
       "file": "modules/vision/face_scan.py",
-      "source": "    log_fn(f\"✅ Face scan: {len(seconds)} second(s) with a readable expression \"",
-      "target": "    log_fn(f\"✅ 人脸扫描完成：{len(seconds)} second(s) with a readable expression \"",
+      "source": "    log_fn(f\"✅ Face scan: {len(seconds)} second(s) with a readable expression \"\n           f\"in {time.time() - started:.1f}s\")",
+      "target": "    log_fn(f\"✅ 人脸扫描完成：检测到 {len(seconds)} 秒可识别表情，\"\n           f\"用时 {time.time() - started:.1f} 秒\")",
       "before": "                   classify_fn=classifier.classify)",
-      "after": "           f\"in {time.time() - started:.1f}s\")",
-      "hunk": "@@ -283,7 +283,7 @@ def scan_video(video_path: str,"
+      "after": "    save(seconds, path, video_path=video_path, interval=interval)",
+      "hunk": "@@ -283,8 +283,8 @@ def scan_video(video_path: str,"
     },
     {
-      "id": "modules/vision/face_scan.py#3",
+      "id": "modules/vision/face_scan.py#5",
       "file": "modules/vision/face_scan.py",
       "source": "        description=\"Find expressions in a video, with or without a highlight.\")",
       "target": "        description=\"在视频中查找表情，可限定或不限定高光片段。\")",
@@ -29664,7 +29988,7 @@
       "hunk": "@@ -294,14 +294,14 @@ def _main(argv=None) -> int:"
     },
     {
-      "id": "modules/vision/face_scan.py#4",
+      "id": "modules/vision/face_scan.py#6",
       "file": "modules/vision/face_scan.py",
       "source": "                        help=\"ignore any cached scan\")",
       "target": "                        help=\"忽略已有扫描缓存\")",
@@ -29673,13 +29997,31 @@
       "hunk": "@@ -294,14 +294,14 @@ def _main(argv=None) -> int:"
     },
     {
-      "id": "modules/vision/face_scan.py#5",
+      "id": "modules/vision/face_scan.py#7",
       "file": "modules/vision/face_scan.py",
       "source": "                        help=\"list the moments matching this expression\")",
       "target": "                        help=\"列出匹配此表情的时间点\")",
       "before": "    parser.add_argument(\"--label\", choices=EMOTION_LABELS,",
       "after": "    parser.add_argument(\"--min-confidence\", type=float, default=0.0)",
       "hunk": "@@ -294,14 +294,14 @@ def _main(argv=None) -> int:"
+    },
+    {
+      "id": "modules/vision/face_scan.py#8",
+      "file": "modules/vision/face_scan.py",
+      "source": "        print(f\"\\n{len(hits)} second(s) of '{args.label}':\")",
+      "target": "        print(f\"\\n表情“{args.label}”共匹配 {len(hits)} 秒：\")",
+      "before": "                           min_confidence=args.min_confidence)",
+      "after": "        for sec, confidence in hits[:args.top]:",
+      "hunk": "@@ -317,11 +317,11 @@ def _main(argv=None) -> int:"
+    },
+    {
+      "id": "modules/vision/face_scan.py#9",
+      "file": "modules/vision/face_scan.py",
+      "source": "        print(\"\\nseconds by expression:\")",
+      "target": "        print(\"\\n各表情对应秒数：\")",
+      "before": "    else:",
+      "after": "        for label, count in sorted(label_counts(seconds).items(),",
+      "hunk": "@@ -317,11 +317,11 @@ def _main(argv=None) -> int:"
     },
     {
       "id": "modules/vision/frame_encoder.py#1",
@@ -29815,6 +30157,78 @@
       "before": "        return encoder",
       "after": "    return None",
       "hunk": "@@ -428,11 +428,11 @@ def load(backend: Optional[str] = None, log: LogFn = print,"
+    },
+    {
+      "id": "modules/vision/label_store.py#1",
+      "file": "modules/vision/label_store.py",
+      "source": "            print(f\"[labels] unreadable store ({exc}); starting empty\")",
+      "target": "            print(f\"[标签] 无法读取标签存储（{exc}），将从空数据开始\")",
+      "before": "        except Exception as exc:",
+      "after": "        return self",
+      "hunk": "@@ -151,7 +151,7 @@ class LabelStore:"
+    },
+    {
+      "id": "modules/vision/label_store.py#2",
+      "file": "modules/vision/label_store.py",
+      "source": "        raise ValueError(\"No accepted labels — nothing to build a dataset from\")",
+      "target": "        raise ValueError(\"没有已接受的标签，无法构建数据集\")",
+      "before": "    if not class_names:",
+      "after": "",
+      "hunk": "@@ -363,7 +363,7 @@ def build_dataset(store: LabelStore, out_dir: str,"
+    },
+    {
+      "id": "modules/vision/label_store.py#3",
+      "file": "modules/vision/label_store.py",
+      "source": "    print(f\"[labels] dataset at {out_dir}: \"\n          + \", \".join(f\"{k} {v['images']} images / {v['annotations']} boxes\"\n                      for k, v in summary[\"splits\"].items()))",
+      "target": "    print(f\"[标签] 数据集已生成于 {out_dir}：\"\n          + \"，\".join(f\"{k}：{v['images']} 张图像 / {v['annotations']} 个检测框\"\n                     for k, v in summary[\"splits\"].items()))",
+      "before": "",
+      "after": "    if not summary[\"splits\"].get(\"val\", {}).get(\"images\"):",
+      "hunk": "@@ -422,16 +422,16 @@ def build_dataset(store: LabelStore, out_dir: str,"
+    },
+    {
+      "id": "modules/vision/label_store.py#4",
+      "file": "modules/vision/label_store.py",
+      "source": "        print(\"[labels] WARNING: the validation split is empty. Training will \"\n              \"report no validation loss, and rounds cannot be compared.\")",
+      "target": "        print(\"[标签] 警告：验证集为空。训练将无法报告验证损失，\"\n              \"也无法比较不同训练轮次。\")",
+      "before": "        # segment — spread them across the footage, or lower max_span.",
+      "after": "    return summary",
+      "hunk": "@@ -422,16 +422,16 @@ def build_dataset(store: LabelStore, out_dir: str,"
+    },
+    {
+      "id": "modules/vision/label_store.py#5",
+      "file": "modules/vision/label_store.py",
+      "source": "        raise ValueError(f\"{path} has no frame size; cannot normalise its points\")",
+      "target": "        raise ValueError(f\"{path} 缺少画面尺寸，无法归一化标注点\")",
+      "before": "    if width <= 0 or height <= 0:",
+      "after": "",
+      "hunk": "@@ -470,7 +470,7 @@ def from_labeler_export(path: str, box_fraction: float = 0.12,"
+    },
+    {
+      "id": "modules/vision/pose_backend.py#1",
+      "file": "modules/vision/pose_backend.py",
+      "source": "                \"No RTMPose IR found. Run: python tools/get_rtmpose_model.py\"",
+      "target": "                \"未找到 RTMPose IR 模型。请运行：python tools/get_rtmpose_model.py\"",
+      "before": "            raise FileNotFoundError(",
+      "after": "            )",
+      "hunk": "@@ -153,7 +153,7 @@ class RTMPoseOpenVINOEstimator:"
+    },
+    {
+      "id": "modules/vision/pose_backend.py#2",
+      "file": "modules/vision/pose_backend.py",
+      "source": "            print(f\"⚠️ RTMPose install failed: {e}\")",
+      "target": "            print(f\"⚠️ RTMPose 安装失败：{e}\")",
+      "before": "        except Exception as e:",
+      "after": "            return None",
+      "hunk": "@@ -243,12 +243,12 @@ def build_pose_estimator(device: str = \"GPU\", prefer: str = \"large\","
+    },
+    {
+      "id": "modules/vision/pose_backend.py#3",
+      "file": "modules/vision/pose_backend.py",
+      "source": "        print(f\"⚠️ RTMPose unavailable: {e}\")",
+      "target": "        print(f\"⚠️ RTMPose 不可用：{e}\")",
+      "before": "    except Exception as e:",
+      "after": "        return None",
+      "hunk": "@@ -243,12 +243,12 @@ def build_pose_estimator(device: str = \"GPU\", prefer: str = \"large\","
     },
     {
       "id": "modules/vision/r3d_onnx.py#1",
@@ -37485,7 +37899,7 @@
       "target": "    _hr(\"环境\")",
       "before": "    \"\"\"Environment and install. False if DirectML cannot be used at all.\"\"\"",
       "after": "    print(f\"python         {platform.python_version()} ({platform.machine()})\")",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#3",
@@ -37494,7 +37908,7 @@
       "target": "    print(f\"操作系统       {platform.system()} {platform.release()}\")",
       "before": "    print(f\"python         {platform.python_version()} ({platform.machine()})\")",
       "after": "",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#4",
@@ -37503,7 +37917,7 @@
       "target": "        print(f\"torch          无法导入（{type(e).__name__}：{e}）\")",
       "before": "    except Exception as e:",
       "after": "        return False",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#5",
@@ -37512,7 +37926,7 @@
       "target": "        print(f\"torch-directml {getattr(torch_directml, '__version__', '（未知）')}\")",
       "before": "        import torch_directml",
       "after": "    except Exception as e:",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#6",
@@ -37521,7 +37935,7 @@
       "target": "        print(f\"torch-directml 未安装（{type(e).__name__}：{e}）\")",
       "before": "    except Exception as e:",
       "after": "        print(\"\\n  pip install torch-directml\")",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#7",
@@ -37530,7 +37944,7 @@
       "target": "        print(\"  注意：不存在 torch-directml>=1.13；发布版本采用日期式 dev 版本号\")\n        print(\"  （例如 0.2.5.dev240914），因此常规版本下限会匹配不到。\")\n        print(\"  建议安装在独立虚拟环境中：它会固定特定 torch 版本，pip 可能会\")\n        print(\"  用标准 wheel 替换 +xpu 或 +cu128 版本，从而悄悄移除 Arc/CUDA 支持。\")",
       "before": "        print(\"\\n  pip install torch-directml\")",
       "after": "        return False",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#8",
@@ -37539,7 +37953,7 @@
       "target": "    print(f\"{dml.MODE_ENV:<14} {os.environ.get(dml.MODE_ENV, '（未设置）')} \"\n          f\"-> 模式={dml.mode()}\")\n    print(f\"{dml.FP16_ENV:<14} {os.environ.get(dml.FP16_ENV, '（未设置）')} \"",
       "before": "",
       "after": "          f\"-> fp16={dml.prefer_float16()}\")",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#9",
@@ -37548,7 +37962,7 @@
       "target": "    _hr(\"适配器\")",
       "before": "    \"\"\"Which adapters DirectML sees, and which the app would take.\"\"\"",
       "after": "    probe = dml.probe(refresh=True)",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#10",
@@ -37557,28 +37971,46 @@
       "target": "        print(f\"不可用：{probe.reason}\")",
       "before": "    if not probe.available:",
       "after": "        return False",
-      "hunk": "@@ -64,43 +64,42 @@ def _hr(title: str) -> None:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
       "id": "tools/check_directml.py#11",
+      "file": "tools/check_directml.py",
+      "source": "        marker = \"  <- the app would use this one\" if i == probe.preferred_index else \"\"",
+      "target": "        marker = \"  ← 应用将使用此适配器\" if i == probe.preferred_index else \"\"",
+      "before": "    for i, name in enumerate(probe.names):",
+      "after": "        if dml._is_software_adapter(name):",
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
+    },
+    {
+      "id": "tools/check_directml.py#12",
+      "file": "tools/check_directml.py",
+      "source": "            marker += \"  (software renderer, not a GPU)\"",
+      "target": "            marker += \"  （软件渲染器，不是 GPU）\"",
+      "before": "        if dml._is_software_adapter(name):",
+      "after": "        print(f\"  [{i}] {name}{marker}\")",
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
+    },
+    {
+      "id": "tools/check_directml.py#13",
       "file": "tools/check_directml.py",
       "source": "        print(\"\\n  Note: adapter 0 is a software renderer and is skipped. That is\")\n        print(\"  the intended behaviour — running on it would be slower than the\")\n        print(\"  CPU path it replaced, with nothing reporting a fault.\")",
       "target": "        print(\"\\n  注意：适配器 0 是软件渲染器，已跳过。这是预期行为；\")\n        print(\"  使用它会比被替代的 CPU 路径更慢，而且不会报告硬件故障。\")",
       "before": "    if probe.preferred_index != 0:",
       "after": "",
-      "hunk": "@@ -110,11 +109,10 @@ def report_adapters() -> bool:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
-      "id": "tools/check_directml.py#12",
+      "id": "tools/check_directml.py#14",
       "file": "tools/check_directml.py",
       "source": "    print(f\"\\ntorch device   {probe.device_string()} (backend {probe.backend!r})\")",
       "target": "    print(f\"\\ntorch 设备     {probe.device_string()}（后端 {probe.backend!r}）\")",
       "before": "",
       "after": "    return True",
-      "hunk": "@@ -110,11 +109,10 @@ def report_adapters() -> bool:"
+      "hunk": "@@ -64,57 +64,55 @@ def _hr(title: str) -> None:"
     },
     {
-      "id": "tools/check_directml.py#13",
+      "id": "tools/check_directml.py#15",
       "file": "tools/check_directml.py",
       "source": "    _hr(\"Usable memory\")",
       "target": "    _hr(\"可用内存\")",
@@ -37587,7 +38019,7 @@
       "hunk": "@@ -128,7 +126,7 @@ def report_memory() -> None:"
     },
     {
-      "id": "tools/check_directml.py#14",
+      "id": "tools/check_directml.py#16",
       "file": "tools/check_directml.py",
       "source": "        print(f\"largest single fp32 allocation that succeeded: ~{largest} MB\")",
       "target": "        print(f\"成功分配的最大单块 fp32 内存：约 {largest} MB\")",
@@ -37596,7 +38028,7 @@
       "hunk": "@@ -144,16 +142,16 @@ def report_memory() -> None:"
     },
     {
-      "id": "tools/check_directml.py#15",
+      "id": "tools/check_directml.py#17",
       "file": "tools/check_directml.py",
       "source": "        print(\"could not allocate even 64 MB - the device is not really usable\")\n    print(\"Compare with the card's advertised VRAM. A figure far below it means\")\n    print(\"DirectML is working in a fraction of the memory and will swap.\")",
       "target": "        print(\"连 64 MB 都无法分配——该设备实际上不可用\")\n    print(\"请与显卡标称显存比较；如果数值远低于标称值，说明 DirectML 只能使用部分内存，\")\n    print(\"运行时可能频繁发生内存交换。\")",
@@ -37605,7 +38037,7 @@
       "hunk": "@@ -144,16 +142,16 @@ def report_memory() -> None:"
     },
     {
-      "id": "tools/check_directml.py#16",
+      "id": "tools/check_directml.py#18",
       "file": "tools/check_directml.py",
       "source": "    _hr(\"Correctness\")",
       "target": "    _hr(\"正确性\")",
@@ -37614,7 +38046,7 @@
       "hunk": "@@ -144,16 +142,16 @@ def report_memory() -> None:"
     },
     {
-      "id": "tools/check_directml.py#17",
+      "id": "tools/check_directml.py#19",
       "file": "tools/check_directml.py",
       "source": "        print(f\"FAILED: the matmul did not run ({type(e).__name__}: {e})\")\n        print(\"An 'operator is not currently implemented' message here is\")\n        print(\"DirectML's operator coverage, not a bug in the app.\")",
       "target": "        print(f\"失败：矩阵乘法未能运行（{type(e).__name__}：{e}）\")\n        print(\"如果这里出现“operator is not currently implemented”，表示 DirectML\")\n        print(\"尚未覆盖该算子，并非应用程序本身的错误。\")",
@@ -37623,7 +38055,7 @@
       "hunk": "@@ -165,26 +163,26 @@ def check_forward(size: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#18",
+      "id": "tools/check_directml.py#20",
       "file": "tools/check_directml.py",
       "source": "        print(\"FAILED: the result contains inf/nan\")",
       "target": "        print(\"失败：结果中包含 inf/nan\")",
@@ -37632,16 +38064,16 @@
       "hunk": "@@ -165,26 +163,26 @@ def check_forward(size: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#19",
+      "id": "tools/check_directml.py#21",
       "file": "tools/check_directml.py",
-      "source": "    print(f\"cosine vs fp32 CPU reference: {cosine:.6f}  ({verdict}, \"\n          f\"need >= {AGREEMENT_MIN})\")",
-      "target": "    print(f\"与 fp32 CPU 参考结果的余弦相似度：{cosine:.6f}（{verdict}，\"\n          f\"要求 >= {AGREEMENT_MIN}）\")",
-      "before": "    verdict = \"ok\" if cosine >= AGREEMENT_MIN else \"FAILED\"",
+      "source": "    verdict = \"ok\" if cosine >= AGREEMENT_MIN else \"FAILED\"\n    print(f\"cosine vs fp32 CPU reference: {cosine:.6f}  ({verdict}, \"\n          f\"need >= {AGREEMENT_MIN})\")",
+      "target": "    verdict = \"通过\" if cosine >= AGREEMENT_MIN else \"失败\"\n    print(f\"与 fp32 CPU 参考结果的余弦相似度：{cosine:.6f}（{verdict}，\"\n          f\"要求 >= {AGREEMENT_MIN}）\")",
+      "before": "        got.double().unsqueeze(0), reference.double().unsqueeze(0)).item())",
       "after": "    return cosine >= AGREEMENT_MIN",
       "hunk": "@@ -165,26 +163,26 @@ def check_forward(size: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#20",
+      "id": "tools/check_directml.py#22",
       "file": "tools/check_directml.py",
       "source": "    _hr(\"Speed\")",
       "target": "    _hr(\"速度\")",
@@ -37650,7 +38082,7 @@
       "hunk": "@@ -165,26 +163,26 @@ def check_forward(size: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#21",
+      "id": "tools/check_directml.py#23",
       "file": "tools/check_directml.py",
       "source": "    print(f\"matmul {size}x{size}, {iterations} iterations\")\n    print(f\"  cpu        {cpu_s * 1000:8.1f} ms\")\n    print(f\"  directml   {dml_s * 1000:8.1f} ms\")",
       "target": "    print(f\"矩阵乘法 {size}x{size}，{iterations} 次迭代\")\n    print(f\"  CPU        {cpu_s * 1000:8.1f} ms\")\n    print(f\"  DirectML   {dml_s * 1000:8.1f} ms\")",
@@ -37659,7 +38091,7 @@
       "hunk": "@@ -208,21 +206,21 @@ def benchmark(size: int, iterations: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#22",
+      "id": "tools/check_directml.py#24",
       "file": "tools/check_directml.py",
       "source": "    print(f\"  speedup    {speedup:8.2f}x  (need >= {SPEEDUP_MIN:.1f}x to be worth it)\")",
       "target": "    print(f\"  加速比     {speedup:8.2f}x（达到 >= {SPEEDUP_MIN:.1f}x 才值得启用）\")",
@@ -37668,7 +38100,7 @@
       "hunk": "@@ -208,21 +206,21 @@ def benchmark(size: int, iterations: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#23",
+      "id": "tools/check_directml.py#25",
       "file": "tools/check_directml.py",
       "source": "        print(\"\\n  DirectML is not beating the CPU here. That is a legitimate\")\n        print(f\"  outcome on a weak card - set {dml.MODE_ENV}=off and lose nothing.\")",
       "target": "        print(\"\\n  当前 DirectML 性能没有超过 CPU。这在性能较弱的显卡上是正常结果；\")\n        print(f\"  可以设置 {dml.MODE_ENV}=off 关闭它，不会损失性能。\")",
@@ -37677,7 +38109,7 @@
       "hunk": "@@ -208,21 +206,21 @@ def benchmark(size: int, iterations: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#24",
+      "id": "tools/check_directml.py#26",
       "file": "tools/check_directml.py",
       "source": "                    help=\"matmul edge length for the correctness and speed checks\")",
       "target": "                    help=\"用于正确性和速度检查的矩阵乘法边长\")",
@@ -37686,7 +38118,7 @@
       "hunk": "@@ -208,21 +206,21 @@ def benchmark(size: int, iterations: int) -> bool:"
     },
     {
-      "id": "tools/check_directml.py#25",
+      "id": "tools/check_directml.py#27",
       "file": "tools/check_directml.py",
       "source": "    _hr(\"Verdict\")\n    print(\"DirectML is usable\" if ok else \"DirectML is NOT usable as configured\")",
       "target": "    _hr(\"结论\")\n    print(\"DirectML 可用\" if ok else \"按当前配置 DirectML 不可用\")",
@@ -39859,6 +40291,42 @@
       "before": "    p.add_argument(\"--manifest\", required=True)",
       "after": "    p.add_argument(\"--notes\")",
       "hunk": "@@ -501,57 +501,57 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/serve_report.py#1",
+      "file": "tools/serve_report.py",
+      "source": "            self.send_error(404, \"File not found\")",
+      "target": "            self.send_error(404, \"文件未找到\")",
+      "before": "        except OSError:",
+      "after": "            return None",
+      "hunk": "@@ -45,7 +45,7 @@ class RangeHandler(SimpleHTTPRequestHandler):"
+    },
+    {
+      "id": "tools/serve_report.py#2",
+      "file": "tools/serve_report.py",
+      "source": "        print(f\"not a directory: {directory}\")",
+      "target": "        print(f\"不是有效目录：{directory}\")",
+      "before": "    if not os.path.isdir(directory):",
+      "after": "        return 2",
+      "hunk": "@@ -100,15 +100,15 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/serve_report.py#3",
+      "file": "tools/serve_report.py",
+      "source": "    print(f\"serving {directory} on port {port} — Ctrl-C to stop\")",
+      "target": "    print(f\"正在通过端口 {port} 提供目录 {directory}，按 Ctrl-C 停止\")",
+      "before": "    server = ThreadingHTTPServer((\"0.0.0.0\", port), handler)",
+      "after": "    try:",
+      "hunk": "@@ -100,15 +100,15 @@ def main(argv=None) -> int:"
+    },
+    {
+      "id": "tools/serve_report.py#4",
+      "file": "tools/serve_report.py",
+      "source": "        print(\"\\nstopped\")",
+      "target": "        print(\"\\n服务已停止\")",
+      "before": "    except KeyboardInterrupt:",
+      "after": "    return 0",
+      "hunk": "@@ -100,15 +100,15 @@ def main(argv=None) -> int:"
     },
     {
       "id": "tools/simulate_directml.py#1",

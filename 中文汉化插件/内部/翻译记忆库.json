@@ -38,6 +38,13 @@
       ]
     },
     {
+      "source": "(+{rec['since_previous_s']:g}s)",
+      "target": "（距上一个 +{rec['since_previous_s']:g} 秒）",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "(0=auto)",
       "target": "（0=自动）",
       "files": [
@@ -487,6 +494,13 @@
       ]
     },
     {
+      "source": "(software renderer, not a GPU)",
+      "target": "（软件渲染器，不是 GPU）",
+      "files": [
+        "tools/check_directml.py"
+      ]
+    },
+    {
       "source": "(source is IP/session-locked to the browser).",
       "target": "（该地址可能绑定浏览器 IP 或会话）。",
       "files": [
@@ -883,6 +897,13 @@
       "target": "，已过滤={filtered_by_pose}",
       "files": [
         "modules/crop/people.py"
+      ]
+    },
+    {
+      "source": ", {rec['since_previous_s']:g}s after the previous",
+      "target": "，距上一个 {rec['since_previous_s']:g} 秒",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -1552,6 +1573,13 @@
       ]
     },
     {
+      "source": "1 video ready — press Analyze",
+      "target": "1 个视频已就绪——点击“分析”",
+      "files": [
+        "modules/segments/simple_run.py"
+      ]
+    },
+    {
       "source": "3 file(s)",
       "target": "3 个文件",
       "files": [
@@ -1647,6 +1675,13 @@
       "target": "；其中 {pairs} 对看起来属于相同视角",
       "files": [
         "modules/segments/shot_look.py"
+      ]
+    },
+    {
+      "source": "<- the app would use this one",
+      "target": "← 应用将使用此适配器",
+      "files": [
+        "tools/check_directml.py"
       ]
     },
     {
@@ -1906,6 +1941,27 @@
       "target": "[CLIP 导出] IR 已存在，跳过：{xml}",
       "files": [
         "tools/export_clip_ov.py"
+      ]
+    },
+    {
+      "source": "[labels] dataset at {out_dir}:",
+      "target": "[标签] 数据集已生成于 {out_dir}：",
+      "files": [
+        "modules/vision/label_store.py"
+      ]
+    },
+    {
+      "source": "[labels] unreadable store ({exc}); starting empty",
+      "target": "[标签] 无法读取标签存储（{exc}），将从空数据开始",
+      "files": [
+        "modules/vision/label_store.py"
+      ]
+    },
+    {
+      "source": "[labels] WARNING: the validation split is empty. Training will",
+      "target": "[标签] 警告：验证集为空。训练将无法报告验证损失，",
+      "files": [
+        "modules/vision/label_store.py"
       ]
     },
     {
@@ -2399,6 +2455,13 @@
       ]
     },
     {
+      "source": "\\nattached to {args.report}",
+      "target": "\\n已写回报告：{args.report}",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "\\nCheckpoint keys:",
       "target": "\\n检查点键：",
       "files": [
@@ -2497,6 +2560,13 @@
       ]
     },
     {
+      "source": "\\nseconds by expression:",
+      "target": "\\n各表情对应秒数：",
+      "files": [
+        "modules/vision/face_scan.py"
+      ]
+    },
+    {
       "source": "\\nSelected {len(sel)} video(s):",
       "target": "\\n已选择 {len(sel)} 个视频：",
       "files": [
@@ -2508,6 +2578,13 @@
       "target": "\\n已分享：{url}",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "\\nstopped",
+      "target": "\\n服务已停止",
+      "files": [
+        "tools/serve_report.py"
       ]
     },
     {
@@ -2578,6 +2655,13 @@
       "target": "\\n{len(clips)} 个片段（{int((targets.sum(1) > 1).sum())} 个包含两个或更多动作），",
       "files": [
         "model_training/action_head/train.py"
+      ]
+    },
+    {
+      "source": "\\n{len(hits)} second(s) of '{args.label}':",
+      "target": "\\n表情“{args.label}”共匹配 {len(hits)} 秒：",
+      "files": [
+        "modules/vision/face_scan.py"
       ]
     },
     {
@@ -3656,6 +3740,13 @@
       ]
     },
     {
+      "source": "about the material rather than sound from inside it. Anything it",
+      "target": "而不是素材现场内的声音。其陈述应视为说话者对素材的描述，",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "about {hours:.1f} hours",
       "target": "约 {hours:.1f} 小时",
       "files": [
@@ -4367,6 +4458,13 @@
       ]
     },
     {
+      "source": "an internal state, and a label for an appearance is not a reading of one",
+      "target": "对外观的标签也不能等同于读取心理状态",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "Analysing",
       "target": "正在分析",
       "files": [
@@ -4472,10 +4570,31 @@
       ]
     },
     {
+      "source": "anything in the {round(100 - coverage, 1)}% of the source that was",
+      "target": "源视频中未保留的 {round(100 - coverage, 1)}% 内容；",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
+      "source": "anything outside the frame, or outside the span that was analysed",
+      "target": "画面范围之外，或本次分析时间范围之外的任何内容",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "Apache 2.0 (recommended)",
       "target": "Apache 2.0（推荐）",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "appearance, and what a thing actually was is a fact about the world",
+      "target": "事物真实是什么属于现实事实，不能仅由像素确认",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -4588,6 +4707,13 @@
       "target": "可用素材不足，无法填满目标时长",
       "files": [
         "modules/segments/reel_plan.py"
+      ]
+    },
+    {
+      "source": "asserts is that speaker's account, not an observation of this run",
+      "target": "不是本次分析直接观察到的事实",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -5495,6 +5621,13 @@
       "target": "评分前请先调用 load() 和 set_query()。",
       "files": [
         "llm/clip_prefilter.py"
+      ]
+    },
+    {
+      "source": "call load() before infer()",
+      "target": "调用 infer() 前请先执行 load()",
+      "files": [
+        "modules/vision/face_emotions.py"
       ]
     },
     {
@@ -9494,6 +9627,13 @@
       ]
     },
     {
+      "source": "FAILED",
+      "target": "失败",
+      "files": [
+        "tools/check_directml.py"
+      ]
+    },
+    {
       "source": "Failed to create clip: {clip_path}",
       "target": "创建片段失败：{clip_path}",
       "files": [
@@ -9722,6 +9862,13 @@
       "target": "打斗过程",
       "files": [
         "llm/llm_reasoning.py"
+      ]
+    },
+    {
+      "source": "File not found",
+      "target": "文件未找到",
+      "files": [
+        "tools/serve_report.py"
       ]
     },
     {
@@ -11158,10 +11305,24 @@
       ]
     },
     {
+      "source": "in {rec['windows']} of the kept moments{gap}",
+      "target": "在保留片段中出现 {rec['windows']} 次{gap}",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "in {report['seconds']}s",
       "target": "，耗时 {report['seconds']} 秒",
       "files": [
         "modules/system/smoke_test.py"
+      ]
+    },
+    {
+      "source": "in {time.time() - started:.1f}s",
+      "target": "用时 {time.time() - started:.1f} 秒",
+      "files": [
+        "modules/vision/face_scan.py"
       ]
     },
     {
@@ -12727,6 +12888,13 @@
       ]
     },
     {
+      "source": "measured here, and neither is a cause",
+      "target": "两者都不能自动推导出因果关系",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "measured on this computer",
       "target": "根据本机实测",
       "files": [
@@ -13718,6 +13886,13 @@
       ]
     },
     {
+      "source": "No accepted labels — nothing to build a dataset from",
+      "target": "没有已接受的标签，无法构建数据集",
+      "files": [
+        "modules/vision/label_store.py"
+      ]
+    },
+    {
       "source": "No account yet? <a href=\"https://huggingface.co/join\">Create one</a>,",
       "target": "还没有账号？<a href=\"https://huggingface.co/join\">创建账号</a>，",
       "files": [
@@ -14266,6 +14441,13 @@
       ]
     },
     {
+      "source": "No RTMPose IR found. Run: python tools/get_rtmpose_model.py",
+      "target": "未找到 RTMPose IR 模型。请运行：python tools/get_rtmpose_model.py",
+      "files": [
+        "modules/vision/pose_backend.py"
+      ]
+    },
+    {
       "source": "no sample {sid}",
       "target": "找不到样本 {sid}",
       "files": [
@@ -14591,6 +14773,13 @@
       ]
     },
     {
+      "source": "not a directory: {directory}",
+      "target": "不是有效目录：{directory}",
+      "files": [
+        "tools/serve_report.py"
+      ]
+    },
+    {
       "source": "not a folder: {path!r}",
       "target": "不是有效文件夹：{path!r}",
       "files": [
@@ -14655,6 +14844,13 @@
       ]
     },
     {
+      "source": "Not established by this run:",
+      "target": "本次分析无法确认：",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "not found: {path!r}",
       "target": "未找到：{path!r}",
       "files": [
@@ -14666,6 +14862,13 @@
       "target": "尚未安装：首次使用人物聚焦时会自动获取",
       "files": [
         "modules/teach/doctor.py"
+      ]
+    },
+    {
+      "source": "not kept — the order below is the order within the selection",
+      "target": "下方顺序仅代表已保留片段内部的顺序",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -14806,6 +15009,13 @@
       "target": "未读取到任何内容；报告保持不变。",
       "files": [
         "modules/narration/clip_story.py"
+      ]
+    },
+    {
+      "source": "Nothing was transcribed.",
+      "target": "没有转录到语音内容。",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -15064,6 +15274,13 @@
       "target": "关闭 — 仅显示原始视频，不显示叠加层\\n",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "ok",
+      "target": "通过",
+      "files": [
+        "tools/check_directml.py"
       ]
     },
     {
@@ -16520,6 +16737,27 @@
       ]
     },
     {
+      "source": "preset data must be a mapping",
+      "target": "预设数据必须是映射结构",
+      "files": [
+        "modules/system/presets.py"
+      ]
+    },
+    {
+      "source": "preset is not a mapping",
+      "target": "预设内容不是有效的映射结构",
+      "files": [
+        "modules/system/presets.py"
+      ]
+    },
+    {
+      "source": "preset name is empty",
+      "target": "预设名称不能为空",
+      "files": [
+        "modules/system/presets.py"
+      ]
+    },
+    {
       "source": "Presets:",
       "target": "预设：",
       "files": [
@@ -17236,6 +17474,7 @@
       "target": "就绪",
       "files": [
         "main.py",
+        "modules/segments/simple_run.py",
         "modules/ui/simple_start.py"
       ]
     },
@@ -17726,6 +17965,13 @@
       "target": "报告问题",
       "files": [
         "model_hub/gui.py"
+      ]
+    },
+    {
+      "source": "report no validation loss, and rounds cannot be compared.",
+      "target": "也无法比较不同训练轮次。",
+      "files": [
+        "modules/vision/label_store.py"
       ]
     },
     {
@@ -18991,6 +19237,13 @@
       ]
     },
     {
+      "source": "Sequence findings: not measured.",
+      "target": "序列分析：未测量。",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "Sequence start:",
       "target": "序列起始时间：",
       "files": [
@@ -19016,6 +19269,13 @@
       "target": "服务端未计入耗时（ttfb − total）={server_unaccounted_ms:5.0f}ms",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "serving {directory} on port {port} — Ctrl-C to stop",
+      "target": "正在通过端口 {port} 提供目录 {directory}，按 Ctrl-C 停止",
+      "files": [
+        "tools/serve_report.py"
       ]
     },
     {
@@ -20516,7 +20776,8 @@
       "target": "剪辑文件旁生成的 *_why.json 报告",
       "files": [
         "modules/narration/clip_story.py",
-        "modules/report/advisor.py"
+        "modules/report/advisor.py",
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -20952,6 +21213,13 @@
       "target": "这份报告列出了 {n} {things}提到但尚未测量。",
       "files": [
         "modules/ui/pro_offer.py"
+      ]
+    },
+    {
+      "source": "This run observed:",
+      "target": "本次分析观察到：",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -23128,6 +23396,13 @@
       ]
     },
     {
+      "source": "what any person knew, intended, perceived or felt — no detector observes",
+      "target": "任何人知道、意图、感知或感受到什么——没有检测器能够观察人的内在状态，",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "What happened, and what comes next, shows here.",
       "target": "这里会显示已发生的操作和下一步。",
       "files": [
@@ -23174,6 +23449,20 @@
       "target": "说明本次剪辑主要受哪些因素影响，以及最值得优先调整的一项设置。\\n",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "what was said within the material — the audio is one speaker over",
+      "target": "素材中说了什么——音频中单一说话者覆盖了",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
+      "source": "what was said — no speech was transcribed",
+      "target": "说了什么——本次没有转录到语音",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -23282,6 +23571,13 @@
       ]
     },
     {
+      "source": "whether anything seen is what it appears to be — a detector reports",
+      "target": "画面中的事物是否确实如其外观所示——检测器只能报告外观，",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "which examples are picked",
       "target": "选择哪些示例的随机种子",
       "files": [
@@ -23314,6 +23610,13 @@
       "target": "为什么这个片段会被选中",
       "files": [
         "modules/ui/simple_start.py"
+      ]
+    },
+    {
+      "source": "why one observation followed another — the order and the interval are",
+      "target": "为什么一个观察结果会跟在另一个之后——这里测量的是顺序和间隔，",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -23504,6 +23807,13 @@
       "target": "生成训练数据集",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "write the findings back into the report",
+      "target": "将分析结果写回报告文件",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -23735,6 +24045,13 @@
       "target": "{' [支持应用内安装]' if can_install else ''}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{', batch of 1' if self._batch == 1 else ''})",
+      "target": "{'，批大小为 1' if self._batch == 1 else ''}）",
+      "files": [
+        "modules/vision/face_emotions.py"
       ]
     },
     {
@@ -24272,6 +24589,13 @@
       ]
     },
     {
+      "source": "{k} {v['images']} images / {v['annotations']} boxes",
+      "target": "{k}：{v['images']} 张图像 / {v['annotations']} 个检测框",
+      "files": [
+        "modules/vision/label_store.py"
+      ]
+    },
+    {
       "source": "{label} [custom]",
       "target": "{label} [自定义]",
       "files": [
@@ -24699,6 +25023,13 @@
       ]
     },
     {
+      "source": "{MIN_SCALE}–{MAX_SCALE} — ignoring",
+      "target": "{MIN_SCALE}–{MAX_SCALE}，已忽略",
+      "files": [
+        "modules/system/ui_scale.py"
+      ]
+    },
+    {
       "source": "{minutes} minute{'s' if minutes != 1 else ''}",
       "target": "{minutes} 分钟",
       "files": [
@@ -24867,6 +25198,13 @@
       ]
     },
     {
+      "source": "{narration['share_pct']}% of the runtime, which reads as narration",
+      "target": "{narration['share_pct']}% 的时长，更像是在对素材进行旁白说明，",
+      "files": [
+        "modules/report/sequence_findings.py"
+      ]
+    },
+    {
       "source": "{n} identities",
       "target": "识别到 {n} 个人物",
       "files": [
@@ -24878,6 +25216,13 @@
       "target": "{n} 个来源可用",
       "files": [
         "video_ai_editor/bbox_overlay.py"
+      ]
+    },
+    {
+      "source": "{n} videos ready — press Analyze",
+      "target": "{n} 个视频已就绪——点击“分析”",
+      "files": [
+        "modules/segments/simple_run.py"
       ]
     },
     {
@@ -24944,6 +25289,13 @@
       ]
     },
     {
+      "source": "{path} has no frame size; cannot normalise its points",
+      "target": "{path} 缺少画面尺寸，无法归一化标注点",
+      "files": [
+        "modules/vision/label_store.py"
+      ]
+    },
+    {
       "source": "{path}: aliases are one JSON object of name -> name (or \\\"\\\")",
       "target": "{path}：aliases 必须是一个“名称 -> 名称（或空字符串）”的 JSON 对象",
       "files": [
@@ -24976,6 +25328,13 @@
       "target": "{project.root} 已经包含一个项目",
       "files": [
         "modules/teach/project.py"
+      ]
+    },
+    {
+      "source": "{rec['name']} ({rec['kind']}) from {rec['at']} to {rec['until']},",
+      "target": "{rec['name']}（{rec['kind']}），时间 {rec['at']}–{rec['until']}，",
+      "files": [
+        "modules/report/sequence_findings.py"
       ]
     },
     {
@@ -26115,7 +26474,7 @@
     },
     {
       "source": "ℹ Using cached face scan ({len(cached)} second(s))",
-      "target": "ℹ 正在使用缓存的人脸扫描结果（{len(cached)} second(s))",
+      "target": "ℹ 正在使用缓存的人脸扫描结果（{len(cached)} 秒）",
       "files": [
         "modules/vision/face_scan.py"
       ]
@@ -28400,6 +28759,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not read face scan: {exc}",
+      "target": "⚠️ 无法读取人脸扫描结果：{exc}",
+      "files": [
+        "modules/vision/face_scan.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not read frame at {timestamp:.1f}s",
       "target": "⚠️ 无法读取 {timestamp:.1f} 秒处的视频帧",
       "files": [
@@ -28425,6 +28791,13 @@
       "target": "⚠️ 无法读取报告：{exc}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ could not read {CONFIG_KEY} from config.yaml:",
+      "target": "⚠️ 无法从 config.yaml 读取 {CONFIG_KEY}：",
+      "files": [
+        "modules/system/ui_scale.py"
       ]
     },
     {
@@ -28516,6 +28889,13 @@
       "target": "⚠️ 无法获取统计信息：{e}",
       "files": [
         "llm/llm_chat_widget.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not save face scan: {exc}",
+      "target": "⚠️ 无法保存人脸扫描结果：{exc}",
+      "files": [
+        "modules/vision/face_scan.py"
       ]
     },
     {
@@ -28747,6 +29127,13 @@
       "target": "⚠️ 已跳过表情变化曲线分析：{exc}",
       "files": [
         "modules/report/highlight_report.py"
+      ]
+    },
+    {
+      "source": "⚠️ Expression classifier failed to load: {exc}",
+      "target": "⚠️ 表情分类器加载失败：{exc}",
+      "files": [
+        "modules/vision/face_emotions.py"
       ]
     },
     {
@@ -29090,6 +29477,13 @@
       "target": "⚠️ 已请求 Intel 解码器，但未找到模型文件，已跳过",
       "files": [
         "action_recognition.py"
+      ]
+    },
+    {
+      "source": "⚠️ interface scale {scale} is outside",
+      "target": "⚠️ 界面缩放 {scale} 超出允许范围",
+      "files": [
+        "modules/system/ui_scale.py"
       ]
     },
     {
@@ -30039,6 +30433,20 @@
       ]
     },
     {
+      "source": "⚠️ RTMPose install failed: {e}",
+      "target": "⚠️ RTMPose 安装失败：{e}",
+      "files": [
+        "modules/vision/pose_backend.py"
+      ]
+    },
+    {
+      "source": "⚠️ RTMPose unavailable: {e}",
+      "target": "⚠️ RTMPose 不可用：{e}",
+      "files": [
+        "modules/vision/pose_backend.py"
+      ]
+    },
+    {
       "source": "⚠️ Rule proposal failed: {exc}",
       "target": "⚠️ 规则建议生成失败：{exc}",
       "files": [
@@ -30690,6 +31098,13 @@
       ]
     },
     {
+      "source": "⚠️ {ENV_VAR}/{CONFIG_KEY}: {value!r} is not a number — ignoring",
+      "target": "⚠️ {ENV_VAR}/{CONFIG_KEY}：{value!r} 不是有效数字，已忽略",
+      "files": [
+        "modules/system/ui_scale.py"
+      ]
+    },
+    {
       "source": "⚠️ {filename} downloaded but processing failed",
       "target": "⚠️ {filename} 已下载，但处理失败",
       "files": [
@@ -31222,6 +31637,13 @@
       ]
     },
     {
+      "source": "✅ Expression classifier loaded ({self.device}",
+      "target": "✅ 表情分类器已加载（{self.device}",
+      "files": [
+        "modules/vision/face_emotions.py"
+      ]
+    },
+    {
       "source": "✅ Extracted {len(embeddings)} speaker embeddings",
       "target": "✅ 已提取 {len(embeddings)} 个说话人嵌入",
       "files": [
@@ -31237,7 +31659,7 @@
     },
     {
       "source": "✅ Face scan: {len(seconds)} second(s) with a readable expression",
-      "target": "✅ 人脸扫描完成：{len(seconds)} second(s) with a readable expression",
+      "target": "✅ 人脸扫描完成：检测到 {len(seconds)} 秒可识别表情，",
       "files": [
         "modules/vision/face_scan.py"
       ]
@@ -36710,6 +37132,13 @@
       "target": "🔍 正在检查检查点…",
       "files": [
         "convert_pth_to_openvino.py"
+      ]
+    },
+    {
+      "source": "🔍 Interface scale: {scale}× (on top of the display's own)",
+      "target": "🔍 界面缩放：{scale}×（叠加在系统显示缩放之上）",
+      "files": [
+        "modules/system/ui_scale.py"
       ]
     },
     {

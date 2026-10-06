@@ -291,8 +291,8 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] =
     if head is None:
         heads = find_heads(frame_encoder.ENCODER_ID)
         if not heads:
-            log("⚠️ Action recognition: no trained action head found "
-                f"(train one, or set {HEAD_DIR_ENV})")
+            log("⚠️ 动作识别：未找到已训练的动作分类头，"
+                f"请先训练一个，或设置 {HEAD_DIR_ENV}")
             return [], []
         head = ActionHead(heads[0])
     if encoder is None:
@@ -300,8 +300,8 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] =
         if encoder is None:
             return [], []
     if head.encoder_id and head.encoder_id != encoder.encoder_id:
-        log(f"⚠️ Action head {head.name} was trained on {head.encoder_id}, "
-            f"not {encoder.encoder_id}; skipping action recognition")
+        log(f"⚠️ 动作分类头 {head.name} 使用 {head.encoder_id} 训练，"
+            f"与当前 {encoder.encoder_id} 不一致，已跳过动作识别")
         return [], []
     if detector is None:
         from modules.vision.detection_backend import YoloxPeopleDetector
@@ -315,10 +315,9 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] =
                            and a not in {c.lower() for c in head.trusted})
         unknown = sorted(a for a in wanted_names if a not in {c.lower() for c in head.classes})
         if untrusted:
-            log(f"ℹ️ Not reported, the head's held-out evidence is too thin to trust: "
-                f"{', '.join(untrusted)}")
+            log(f"ℹ️ 以下动作因留出集证据不足，暂不报告：{', '.join(untrusted)}")
         if unknown:
-            log(f"ℹ️ Not in action head {head.name}: {', '.join(unknown)}")
+            log(f"ℹ️ 动作分类头 {head.name} 中不存在：{', '.join(unknown)}")
 
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
@@ -327,7 +326,7 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] =
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or 0)
     cap.release()
     if total <= 0 or width <= 0:
-        log(f"⚠️ Action recognition: cannot read {os.path.basename(video_path)}")
+        log(f"⚠️ 动作识别：无法读取 {os.path.basename(video_path)}")
         return [], []
 
     windows = window_frames(total, fps, head.frames, window_s, stride_s)
@@ -339,9 +338,8 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] =
     pending = {}            # frame -> (bgr, boxes) until its windows are done
     queue = []              # (window, region, [4 crops]) waiting for the encoder
     window_scores = {}      # window -> (best score per class, region per class)
-    log(f"🎬 Action recognition: {head.name} ({len(head.trusted)} of "
-        f"{len(head.classes)} actions trusted) on {encoder.label}, "
-        f"{len(windows)} windows of {window_s:g} s")
+    log(f"🎬 动作识别：{head.name}（可信动作 {len(head.trusted)}/{len(head.classes)}），"
+        f"设备 {encoder.label}，共 {len(windows)} 个 {window_s:g} 秒窗口")
 
     def flush():
         if not queue:
@@ -378,7 +376,7 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] =
                 if len(queue) * head.frames >= ENCODE_BATCH:
                     flush()
                 if progress_callback:
-                    progress_callback(w + 1, len(windows), "Action recognition",
+                    progress_callback(w + 1, len(windows), "动作识别",
                                       f"{(w + 1) * 100 // len(windows)}%")
         # A frame is kept only while a window still needs it.
         for f in [f for f in pending if all(remaining[w] == 0 for w in owner[f])]:
@@ -408,6 +406,6 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] =
                                "confidence": float(scores[i]), "bbox": box,
                                "model_type": MODEL_TYPE})
     detections.sort(key=lambda d: (d[0], -d[3]))
-    log(f"✅ Action recognition: {len(detections)} detections "
-        f"({len({d[4] for d in detections})} actions) in {len(windows)} windows")
+    log(f"✅ 动作识别：在 {len(windows)} 个窗口中得到 {len(detections)} 次检测，"
+        f"涉及 {len({d[4] for d in detections})} 个动作")
     return detections, bboxes

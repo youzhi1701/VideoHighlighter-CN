@@ -2768,13 +2768,13 @@ def _segment_wave(report: Mapping, entry: Mapping) -> str:
                   f'fill="#5ac8b0" opacity=".8"/>')
 
     scored = entry["breakdown"].get("audio", 0.0)
-    note = (f"contributed {scored:.0f} points" if scored
-            else "contributed no points to this pick")
+    note = (f"为本次入选贡献 {scored:.0f} 分" if scored
+            else "没有为本次入选贡献分数")
     caption = (
-        f'<div class="wavelab">Loudness through the clip — '
-        f'<b style="color:#5ac8b0">|</b> marks {html.escape(entry["timestamp"])}, '
-        f'the second that scored highest. Volume is drawn for context only and '
-        f'{note}, so a louder stretch elsewhere in the clip did not move it.</div>'
+        f'<div class="wavelab">片段响度变化——'
+        f'<b style="color:#5ac8b0">|</b> 标记 {html.escape(entry["timestamp"])}，'
+        f'即得分最高的那一秒。音量曲线仅用于提供上下文，且{note}，'
+        f'因此片段中其他位置即使更响，也不会改变该入选点。</div>'
     )
     return (
         f'<svg class="wave" viewBox="0 0 {W:.0f} 26" preserveAspectRatio="none" '

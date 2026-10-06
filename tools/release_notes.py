@@ -159,9 +159,9 @@ def collect(since: Optional[str], until: str) -> list[Commit]:
 
 def main(argv: Optional[Iterable[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--since", help="previous release ref (default: nearest tag)")
-    parser.add_argument("--until", default="HEAD", help="ref being released")
-    parser.add_argument("--out", help="write here instead of stdout")
+    parser.add_argument("--since", help="上一发行版引用（默认：最近的标签）")
+    parser.add_argument("--until", default="HEAD", help="本次要发布的引用")
+    parser.add_argument("--out", help="写入此文件，而不是输出到标准输出")
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     since = args.since or previous_tag(args.until)

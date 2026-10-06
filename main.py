@@ -2064,7 +2064,7 @@ class VideoHighlighterGUI(QWidget):
             try:
                 models = discover_object_models()
             except Exception as e:
-                print(f"⚠️ object model discovery failed: {e}")
+                print(f"⚠️ 物体模型发现失败：{e}")
             for m in models:
                 n = len(m["classes"])
                 kind = "社区" if m.get("community") else "自定义"
@@ -2287,7 +2287,7 @@ class VideoHighlighterGUI(QWidget):
                 if idx >= 0:
                     self.action_models_combo.setCurrentIndex(idx)
             except Exception as e:
-                print(f"⚠️ action model import failed: {e}")
+                print(f"⚠️ 动作模型导入失败：{e}")
 
         import_action_btn.clicked.connect(_import_action_model)
 
@@ -4128,7 +4128,7 @@ class VideoHighlighterGUI(QWidget):
 
                 # --- SKIP if highlight already exists ---
                 if skip_existing and os.path.exists(output_file) and os.path.getsize(output_file) > 0:
-                    self.append_log(f"⏭️ Skipping processing (highlight exists): {os.path.basename(output_file)}")
+                    self.append_log(f"⏭️ 已跳过处理（高光文件已存在）：{os.path.basename(output_file)}")
                     self.append_log(f"{'='*60}\n")
 
                     return {
@@ -4143,7 +4143,7 @@ class VideoHighlighterGUI(QWidget):
                 config = self.build_pipeline_config()
                 config['output_file'] = output_file
 
-                self.append_log(f"📁 Output will be: {os.path.basename(output_file)}")
+                self.append_log(f"📁 输出文件：{os.path.basename(output_file)}")
                 self.append_log("")
 
                 # Run pipeline synchronously (this blocks the download worker thread by design)
@@ -4155,7 +4155,7 @@ class VideoHighlighterGUI(QWidget):
                     QMetaObject.invokeMethod(
                         self, "set_process_busy",
                         Qt.QueuedConnection,
-                        Q_ARG(str, f"🔧 正在处理：{filename} | Initializing…")
+                        Q_ARG(str, f"🔧 正在处理：{filename} | 正在初始化…")
                     )
 
                     # Thread-safe logging back to GUI
@@ -4202,7 +4202,7 @@ class VideoHighlighterGUI(QWidget):
                     highlight_path = result or output_file
 
                     if highlight_path and os.path.exists(highlight_path) and os.path.getsize(highlight_path) > 0:
-                        self.append_log(f"✅ Highlight created: {os.path.basename(highlight_path)}")
+                        self.append_log(f"✅ 高光视频已生成：{os.path.basename(highlight_path)}")
                         self.append_log(f"{'='*60}\n")
 
                         return {
@@ -4213,21 +4213,21 @@ class VideoHighlighterGUI(QWidget):
                             'skipped': False
                         }
 
-                    self.append_log("⚠️ Processing completed but no highlight generated (or file missing/empty)")
+                    self.append_log("⚠️ 处理已完成，但没有生成高光视频（或文件缺失/为空）")
                     self.append_log(f"{'='*60}\n")
                     return {'success': False, 'error': 'No highlight generated'}
 
                 except Exception as e:
-                    self.append_log(f"❌ Processing error: {e}")
+                    self.append_log(f"❌ 处理错误：{e}")
                     import traceback
                     self.append_log(f"错误堆栈：\n{traceback.format_exc()}")
                     self.append_log(f"{'='*60}\n")
                     return {'success': False, 'error': str(e)}
 
             except Exception as e:
-                self.append_log(f"❌ Callback setup error: {e}")
+                self.append_log(f"❌ 回调设置错误：{e}")
                 import traceback
-                self.append_log(f"Traceback:\n{traceback.format_exc()}")
+                self.append_log(f"错误堆栈：\n{traceback.format_exc()}")
                 return {'success': False, 'error': str(e)}
             
         # Videos processed straight off the download feed the preview window
@@ -4592,7 +4592,7 @@ class VideoHighlighterGUI(QWidget):
         except Exception as e:
             self.append_log(f"❌ 合并高光失败：{e}")
             import traceback
-            self.append_log(f"Traceback:\n{traceback.format_exc()}")
+            self.append_log(f"错误堆栈：\n{traceback.format_exc()}")
             return None
             
     # --- Settings presets (presets/<name>.yaml next to config.yaml) ---
@@ -4800,37 +4800,37 @@ class VideoHighlighterGUI(QWidget):
         name = self.preset_name_input.text().strip() or self.preset_combo.currentText().strip()
         safe = safe_preset_name(name)
         if not safe:
-            self.append_log("⚠️ Preset name is empty or not usable as a filename.")
+            self.append_log("⚠️ 预设名称为空，或不能用作文件名。")
             return
         data = self.save_config()
         path = save_preset(safe, data, CONFIG_FILE)
         self.preset_name_input.clear()
         self._refresh_presets(select=safe)
-        self.append_log(f"💾 Saved preset '{safe}' ({path})")
+        self.append_log(f"💾 已保存预设“{safe}”（{path}）")
 
     def load_named_preset(self):
         from modules.system.presets import load_preset
         name = self.preset_combo.currentText().strip()
         if not name:
-            self.append_log("⚠️ No preset selected.")
+            self.append_log("⚠️ 尚未选择预设。")
             return
         try:
             data = load_preset(name, CONFIG_FILE)
         except Exception as exc:
-            self.append_log(f"⚠️ Could not load preset '{name}': {exc}")
+            self.append_log(f"⚠️ 无法加载预设“{name}”：{exc}")
             return
         # Carried keys with no widget (loudness_bursts, ui) come from here
         # when save_config writes config.yaml back.
         self.config_data = data
         self._apply_settings_to_widgets(data)
         self.config_data = self.save_config()
-        self.append_log(f"📂 Loaded preset '{name}' into the controls and config.yaml")
+        self.append_log(f"📂 已将预设“{name}”加载到控件和 config.yaml")
 
     def delete_named_preset(self):
         from modules.system.presets import delete_preset
         name = self.preset_combo.currentText().strip()
         if not name:
-            self.append_log("⚠️ No preset selected.")
+            self.append_log("⚠️ 尚未选择预设。")
             return
         if delete_preset(name, CONFIG_FILE):
             self._refresh_presets()

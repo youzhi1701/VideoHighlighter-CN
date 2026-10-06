@@ -526,21 +526,21 @@ def main():
     import argparse
     import json
 
-    ap = argparse.ArgumentParser(description="Cut a video into chapters.")
+    ap = argparse.ArgumentParser(description="将视频划分为章节。")
     ap.add_argument("--video", required=True)
     ap.add_argument("--interval", type=float, default=1.0,
-                    help="CLIP sampling interval, seconds")
+                    help="CLIP 采样间隔（秒）")
     ap.add_argument("--target", type=int, default=None,
-                    help="roughly how many chapters to produce")
+                    help="大致生成多少个章节")
     ap.add_argument("--min-chapter", type=float, default=DEFAULT_MIN_CHAPTER_SECONDS)
     ap.add_argument("--max-chapter", type=float, default=DEFAULT_MAX_CHAPTER_SECONDS)
     ap.add_argument("--window", type=int, default=DEFAULT_SHOT_WINDOW)
     ap.add_argument("--z", type=float, default=DEFAULT_Z)
     ap.add_argument("--device", default="AUTO")
     ap.add_argument("--no-visual", action="store_true",
-                    help="skip CLIP and partition on shot structure alone")
-    ap.add_argument("--ffmetadata", help="write an ffmpeg chapter file here")
-    ap.add_argument("--json", help="write the chapter list here")
+                    help="跳过 CLIP，仅按镜头结构划分")
+    ap.add_argument("--ffmetadata", help="将 ffmpeg 章节文件写入此处")
+    ap.add_argument("--json", help="将章节列表写入此处")
     args = ap.parse_args()
 
     from modules.segments.motion_scene_detect_optimized import detect_scenes_motion_optimized

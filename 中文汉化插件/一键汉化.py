@@ -376,6 +376,20 @@ def main() -> int:
         f"missing_file={s.get('missing_file', 0)}"
     )
     print(f"report: {mp}")
+    problems = [item for item in report.get("details", [])
+                if item.get("status") in {"changed", "conflict", "missing", "missing_file"}]
+    if problems:
+        print("localization problems:")
+        for item in problems[:40]:
+            extra = ""
+            if item.get("occurrences") is not None:
+                extra = f" occurrences={item['occurrences']}"
+            print(
+                f"  {item.get('status')}: {item.get('file')} "
+                f"source={item.get('source', '')[:160]!r}{extra}"
+            )
+        if len(problems) > 40:
+            print(f"  ... 另外还有 {len(problems) - 40} 条，请查看报告。")
     bad = sum(s.get(k, 0) for k in ("changed", "conflict", "missing", "missing_file"))
     return 2 if args.strict and bad else 0
 

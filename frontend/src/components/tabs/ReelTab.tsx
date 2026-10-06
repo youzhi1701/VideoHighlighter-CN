@@ -66,7 +66,7 @@ const SHAPES = [
 
 const PACE_LABELS: Record<string, string> = {
   calm: "舒缓风景 / 情绪",
-  vlog: "Vlog / 回顾",
+  vlog: "视频日志 / 回顾",
   energetic: "活力蒙太奇",
   intense: "高强度 / 喜剧 / 强音乐",
 }
@@ -876,6 +876,13 @@ function ShotStrip({ plan }: { plan: ReelPlan }) {
   const total = plan.duration ?? 0
   if (!cuts.length || !total) return null
 
+  const sectionLabels: Record<string, string> = {
+    Hook: "开场",
+    Context: "背景",
+    Escalation: "递进",
+    Payoff: "收束",
+  }
+
   const tint: Record<string, string> = {
     Hook: "bg-rose-500/50",
     Context: "bg-amber-500/50",
@@ -894,11 +901,11 @@ function ShotStrip({ plan }: { plan: ReelPlan }) {
               className={`${tint[cut.label ?? ""] ?? "bg-muted"} relative border-r border-background/40`}
               style={{ width: `${((cut.duration ?? 0) / total) * 100}%` }}
               title={
-                `${cut.label} — ${(cut.duration ?? 0).toFixed(1)}s\n` +
+                `${sectionLabels[cut.label ?? ""] ?? cut.label ?? "片段"} — ${(cut.duration ?? 0).toFixed(1)} 秒\n` +
                 `${basename(cut.source)}，从 ${cut.start.toFixed(2)} 秒开始` +
                 (moved ? " （已跳过放置相机的片段）" : "") +
                 (cut.transition && cut.transition !== "cut"
-                  ? `\n${prettyName(cut.transition)} ${cut.transition_duration.toFixed(2)}s`
+                  ? `\n${prettyName(cut.transition)} ${cut.transition_duration.toFixed(2)} 秒`
                   : "") +
                 (cut.text ? `\n"${cut.text}"` : "")
               }

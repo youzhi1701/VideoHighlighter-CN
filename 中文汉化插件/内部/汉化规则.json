@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "252ac7ce8e62bc335bc36ad7b33278ae73638a05"
+    "head_commit": "94c37d9b8e557eaf11bb7cb6af1480978ce202a8"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -20716,6 +20716,24 @@
       "hunk": "@@ -316,16 +316,16 @@ def process_video_avoiding(input_path, output_folder, yolo_model,"
     },
     {
+      "id": "modules/crop/avoid.py#4",
+      "file": "modules/crop/avoid.py",
+      "source": "        print(f\"{name:28s} -> status={status:10s} side={side} \"\n              f\"window={win} clamped={clamped}\")",
+      "target": "        print(f\"{name:28s} → 状态={status:10s} 方向={side} \"\n              f\"窗口={win} 校正后={clamped}\")",
+      "before": "        clamped = clamp_out_of_forbidden(win, forb, W) if win else None",
+      "after": "",
+      "hunk": "@@ -337,8 +337,8 @@ if __name__ == \"__main__\":"
+    },
+    {
+      "id": "modules/crop/avoid.py#5",
+      "file": "modules/crop/avoid.py",
+      "source": "    print(\"clamp check        ->\",",
+      "target": "    print(\"边界校正检查       →\",",
+      "before": "    # exclusion guarantee: a window overlapping the slab gets clamped back out",
+      "after": "          clamp_out_of_forbidden((0, 0, 700, 500), [(450, 0, 600, 500)], W))",
+      "hunk": "@@ -352,5 +352,5 @@ if __name__ == \"__main__\":"
+    },
+    {
       "id": "modules/crop/people.py#1",
       "file": "modules/crop/people.py",
       "source": "                    print(f\"  🔬 Frame {idx}: Split detected! 2→{split_corrected_count} ({split_reason})\")",
@@ -21339,6 +21357,15 @@
     {
       "id": "modules/media/edl.py#4",
       "file": "modules/media/edl.py",
+      "source": "    title: str = \"Untitled\"",
+      "target": "    title: str = \"无标题\"",
+      "before": "class Edl:",
+      "after": "    cuts: list[Cut] = field(default_factory=list)",
+      "hunk": "@@ -157,7 +157,7 @@ class Cut:"
+    },
+    {
+      "id": "modules/media/edl.py#5",
+      "file": "modules/media/edl.py",
       "source": "        raise EdlError(f\"{what} must be a mapping, got {type(data).__name__}\")",
       "target": "        raise EdlError(f\"{what} 必须是映射对象，实际得到 {type(data).__name__}\")",
       "before": "    if not isinstance(data, dict):",
@@ -21346,7 +21373,7 @@
       "hunk": "@@ -207,7 +207,7 @@ class Edl:"
     },
     {
-      "id": "modules/media/edl.py#5",
+      "id": "modules/media/edl.py#6",
       "file": "modules/media/edl.py",
       "source": "            hint = f\" — did you mean {near[0]!r}?\" if near else \"\"\n            raise EdlError(f\"unknown {what} key {key!r}{hint}\")",
       "target": "            hint = f\"——你是不是想写 {near[0]!r}？\" if near else \"\"\n            raise EdlError(f\"{what} 中存在未知字段 {key!r}{hint}\")",
@@ -21355,7 +21382,7 @@
       "hunk": "@@ -218,8 +218,8 @@ def _reject_unknown(mapping, allowed, what):"
     },
     {
-      "id": "modules/media/edl.py#6",
+      "id": "modules/media/edl.py#7",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut list is not valid YAML: {exc}\") from exc",
       "target": "            raise EdlError(f\"剪辑列表不是有效的 YAML：{exc}\") from exc",
@@ -21364,7 +21391,7 @@
       "hunk": "@@ -229,25 +229,24 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#7",
+      "id": "modules/media/edl.py#8",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(\"cut list is empty — start from edl_from_clips()\")\n    _require_mapping(data, \"a cut list\")\n    _reject_unknown(data, _TOP_KEYS, \"top level\")",
       "target": "        raise EdlError(\"剪辑列表为空——请先创建剪辑内容\")\n    _require_mapping(data, \"剪辑列表\")\n    _reject_unknown(data, _TOP_KEYS, \"顶层\")",
@@ -21373,7 +21400,7 @@
       "hunk": "@@ -229,25 +229,24 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#8",
+      "id": "modules/media/edl.py#9",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(f\"cut list version {version!r} is not supported \"\n                       f\"(this build understands {EDL_VERSION})\")",
       "target": "        raise EdlError(f\"不支持剪辑列表版本 {version!r} \"\n                       f\"（当前版本支持 {EDL_VERSION}）\")",
@@ -21382,7 +21409,7 @@
       "hunk": "@@ -229,25 +229,24 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#9",
+      "id": "modules/media/edl.py#10",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(\"a cut list needs a 'cuts:' list — without cuts there is \"\n                       \"nothing to render\")",
       "target": "        raise EdlError(\"剪辑列表必须包含 'cuts:' 列表——没有镜头就无法渲染\")",
@@ -21391,7 +21418,7 @@
       "hunk": "@@ -229,25 +229,24 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#10",
+      "id": "modules/media/edl.py#11",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(f\"'cuts' must be a list, got {type(raw_cuts).__name__}\")",
       "target": "        raise EdlError(f\"'cuts' 必须是列表，实际得到 {type(raw_cuts).__name__}\")",
@@ -21400,7 +21427,7 @@
       "hunk": "@@ -229,25 +229,24 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#11",
+      "id": "modules/media/edl.py#12",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(\"a cut list needs at least one cut\")",
       "target": "        raise EdlError(\"剪辑列表至少需要一个镜头\")",
@@ -21409,7 +21436,7 @@
       "hunk": "@@ -229,25 +229,24 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#12",
+      "id": "modules/media/edl.py#13",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut {i} must be a mapping with at least a source \"\n                           f\"and an out time, got {entry!r}\")\n        _reject_unknown(entry, _CUT_KEYS, f\"cut {i}\")",
       "target": "            raise EdlError(f\"镜头 {i} 必须是映射对象，并至少包含 source \"\n                           f\"和 out 时间，实际得到 {entry!r}\")\n        _reject_unknown(entry, _CUT_KEYS, f\"镜头 {i}\")",
@@ -21418,7 +21445,7 @@
       "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#13",
+      "id": "modules/media/edl.py#14",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut {i} has no source file\")",
       "target": "            raise EdlError(f\"镜头 {i} 没有源文件\")",
@@ -21427,7 +21454,7 @@
       "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#14",
+      "id": "modules/media/edl.py#15",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut {i} ({source}): {exc}\") from None",
       "target": "            raise EdlError(f\"镜头 {i}（{source}）：{exc}\") from None",
@@ -21437,7 +21464,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "modules/media/edl.py#15",
+      "id": "modules/media/edl.py#16",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut {i} ({source}) has no 'out' time\")",
       "target": "            raise EdlError(f\"镜头 {i}（{source}）没有 'out' 时间\")",
@@ -21446,7 +21473,7 @@
       "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#16",
+      "id": "modules/media/edl.py#17",
       "file": "modules/media/edl.py",
       "source": "                f\"cut {i} ({source}) runs {format_time(start)}..{format_time(end)} \"\n                f\"— 'out' must come after 'in'\")",
       "target": "                f\"镜头 {i}（{source}）范围为 {format_time(start)}..{format_time(end)}，\"\n                f\"'out' 必须晚于 'in'\")",
@@ -21455,7 +21482,7 @@
       "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#17",
+      "id": "modules/media/edl.py#18",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut {i} ({source}): {exc}\") from None",
       "target": "            raise EdlError(f\"镜头 {i}（{source}）：{exc}\") from None",
@@ -21465,7 +21492,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "modules/media/edl.py#18",
+      "id": "modules/media/edl.py#19",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut {i} ({source}): transition_duration must be a \"\n                           f\"number of seconds, got \"",
       "target": "            raise EdlError(f\"镜头 {i}（{source}）：transition_duration 必须是秒数，实际得到 \"",
@@ -21474,23 +21501,13 @@
       "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#19",
+      "id": "modules/media/edl.py#20",
       "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"cut {i} ({source}): transition_duration must be a \"\n                           f\"finite, non-negative number of seconds\")",
       "target": "            raise EdlError(f\"镜头 {i}（{source}）：transition_duration 必须是有限的非负秒数\")",
       "before": "        if hold < 0 or hold != hold:",
       "after": "",
       "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:"
-    },
-    {
-      "id": "modules/media/edl.py#20",
-      "file": "modules/media/edl.py",
-      "source": "            raise EdlError(f\"cut {i} ({source}): {exc}\") from None",
-      "target": "            raise EdlError(f\"镜头 {i}（{source}）：{exc}\") from None",
-      "before": "        except ValueError as exc:",
-      "after": "",
-      "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:",
-      "safe_duplicate": true
     },
     {
       "id": "modules/media/edl.py#21",
@@ -21505,6 +21522,16 @@
     {
       "id": "modules/media/edl.py#22",
       "file": "modules/media/edl.py",
+      "source": "            raise EdlError(f\"cut {i} ({source}): {exc}\") from None",
+      "target": "            raise EdlError(f\"镜头 {i}（{source}）：{exc}\") from None",
+      "before": "        except ValueError as exc:",
+      "after": "",
+      "hunk": "@@ -255,51 +254,49 @@ def parse_edl(data) -> Edl:",
+      "safe_duplicate": true
+    },
+    {
+      "id": "modules/media/edl.py#23",
+      "file": "modules/media/edl.py",
       "source": "            raise EdlError(f\"{key} must be a whole number, got {data.get(key)!r}\") from None",
       "target": "            raise EdlError(f\"{key} 必须是整数，实际得到 {data.get(key)!r}\") from None",
       "before": "        except (TypeError, ValueError):",
@@ -21512,7 +21539,7 @@
       "hunk": "@@ -312,16 +309,16 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#23",
+      "id": "modules/media/edl.py#24",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(f\"music_volume must be a number between 0 and 1, got \"",
       "target": "        raise EdlError(f\"music_volume 必须是 0 到 1 之间的数字，实际得到 \"",
@@ -21521,7 +21548,7 @@
       "hunk": "@@ -312,16 +309,16 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#24",
+      "id": "modules/media/edl.py#25",
       "file": "modules/media/edl.py",
       "source": "        title=str(data.get(\"title\", \"Untitled\") or \"Untitled\"),",
       "target": "        title=str(data.get(\"title\", \"未命名\") or \"未命名\"),",
@@ -21530,7 +21557,7 @@
       "hunk": "@@ -312,16 +309,16 @@ def parse_edl(data) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#25",
+      "id": "modules/media/edl.py#26",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(f\"cannot read cut list {os.path.basename(path)}: \"\n                       f\"it is not UTF-8 text ({exc.reason})\") from None",
       "target": "        raise EdlError(f\"无法读取剪辑列表 {os.path.basename(path)}：\"\n                       f\"文件不是 UTF-8 文本（{exc.reason}）\") from None",
@@ -21539,7 +21566,7 @@
       "hunk": "@@ -342,10 +339,10 @@ def load_edl(path: str) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#26",
+      "id": "modules/media/edl.py#27",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(f\"cannot read cut list {path}: {exc}\") from None",
       "target": "        raise EdlError(f\"无法读取剪辑列表 {path}：{exc}\") from None",
@@ -21548,7 +21575,7 @@
       "hunk": "@@ -342,10 +339,10 @@ def load_edl(path: str) -> Edl:"
     },
     {
-      "id": "modules/media/edl.py#27",
+      "id": "modules/media/edl.py#28",
       "file": "modules/media/edl.py",
       "source": "        log_fn(\"⚠️ No tempo available — cuts left where they were\")",
       "target": "        log_fn(\"⚠️ 没有可用的节拍信息——保留原始剪切位置\")",
@@ -21557,7 +21584,7 @@
       "hunk": "@@ -492,12 +489,12 @@ def quantise_to_music(edl: Edl, analysis, *, unit: str = \"bar\","
     },
     {
-      "id": "modules/media/edl.py#28",
+      "id": "modules/media/edl.py#29",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(f\"unknown quantise unit {unit!r} (expected 'bar' or 'beat')\")",
       "target": "        raise EdlError(f\"未知节拍对齐单位 {unit!r}（应为 'bar' 或 'beat'）\")",
@@ -21566,7 +21593,7 @@
       "hunk": "@@ -492,12 +489,12 @@ def quantise_to_music(edl: Edl, analysis, *, unit: str = \"bar\","
     },
     {
-      "id": "modules/media/edl.py#29",
+      "id": "modules/media/edl.py#30",
       "file": "modules/media/edl.py",
       "source": "        log_fn(f\"✂️ {unblended} clip(s) had no room for the blend on top of a \"\n               f\"bar and cut hard instead, to keep the grid\")",
       "target": "        log_fn(f\"✂️ 有 {unblended} 个片段没有足够空间叠加转场，\"\n               f\"为保持节拍网格已改为直接切换\")",
@@ -21575,7 +21602,7 @@
       "hunk": "@@ -556,11 +553,11 @@ def quantise_to_music(edl: Edl, analysis, *, unit: str = \"bar\","
     },
     {
-      "id": "modules/media/edl.py#30",
+      "id": "modules/media/edl.py#31",
       "file": "modules/media/edl.py",
       "source": "    log_fn(f\"🎼 Quantised {trimmed}/{len(cuts)} cut(s) to the \"\n           f\"{step:.2f}s {unit} ({60.0 / interval:.1f} BPM)\")",
       "target": "    log_fn(f\"🎼 已将 {trimmed}/{len(cuts)} 个剪切对齐到 \"\n           f\"{step:.2f} 秒 {'小节' if unit == 'bar' else '节拍'}（{60.0 / interval:.1f} BPM）\")",
@@ -21584,7 +21611,7 @@
       "hunk": "@@ -556,11 +553,11 @@ def quantise_to_music(edl: Edl, analysis, *, unit: str = \"bar\","
     },
     {
-      "id": "modules/media/edl.py#31",
+      "id": "modules/media/edl.py#32",
       "file": "modules/media/edl.py",
       "source": "            warnings.append(f\"cut {i}: {os.path.basename(cut.source)} is not on disk\")",
       "target": "            warnings.append(f\"镜头 {i}：磁盘上找不到 {os.path.basename(cut.source)}\")",
@@ -21593,7 +21620,7 @@
       "hunk": "@@ -574,12 +571,11 @@ def validate_edl(edl: Edl) -> list[str]:"
     },
     {
-      "id": "modules/media/edl.py#32",
+      "id": "modules/media/edl.py#33",
       "file": "modules/media/edl.py",
       "source": "                f\"cut {i}: {format_time(cut.duration)} is shorter than half a \"\n                f\"second and will barely register\")",
       "target": "                f\"镜头 {i}：时长 {format_time(cut.duration)} 不足半秒，画面几乎无法辨认\")",
@@ -21602,7 +21629,7 @@
       "hunk": "@@ -574,12 +571,11 @@ def validate_edl(edl: Edl) -> list[str]:"
     },
     {
-      "id": "modules/media/edl.py#33",
+      "id": "modules/media/edl.py#34",
       "file": "modules/media/edl.py",
       "source": "                f\"cut {i}: out at {format_time(cut.end)} is past the end of \"\n                f\"{os.path.basename(cut.source)} ({format_time(available)})\")",
       "target": "                f\"镜头 {i}：out 时间 {format_time(cut.end)} 超过了 \"\n                f\"{os.path.basename(cut.source)} 的结尾（{format_time(available)}）\")",
@@ -21611,7 +21638,7 @@
       "hunk": "@@ -587,10 +583,10 @@ def validate_edl(edl: Edl) -> list[str]:"
     },
     {
-      "id": "modules/media/edl.py#34",
+      "id": "modules/media/edl.py#35",
       "file": "modules/media/edl.py",
       "source": "        warnings.append(f\"music file is not on disk: {edl.music}\")",
       "target": "        warnings.append(f\"磁盘上找不到音乐文件：{edl.music}\")",
@@ -21620,7 +21647,7 @@
       "hunk": "@@ -587,10 +583,10 @@ def validate_edl(edl: Edl) -> list[str]:"
     },
     {
-      "id": "modules/media/edl.py#35",
+      "id": "modules/media/edl.py#36",
       "file": "modules/media/edl.py",
       "source": "            log_fn(\"⚠️ None of the graphics could be drawn from this footage\")",
       "target": "            log_fn(\"⚠️ 当前素材无法绘制所选图形\")",
@@ -21629,7 +21656,7 @@
       "hunk": "@@ -617,7 +613,7 @@ def _draw_overlays(edl: Edl, built: str, overlays, track: str, temp_dir: str,"
     },
     {
-      "id": "modules/media/edl.py#36",
+      "id": "modules/media/edl.py#37",
       "file": "modules/media/edl.py",
       "source": "        log_fn(f\"⚠️ Could not draw the graphics ({exc}); \"\n               f\"the reel is finished without them\")",
       "target": "        log_fn(f\"⚠️ 无法绘制图形（{exc}）；\"\n               f\"成片将不包含这些图形\")",
@@ -21638,7 +21665,7 @@
       "hunk": "@@ -627,8 +623,8 @@ def _draw_overlays(edl: Edl, built: str, overlays, track: str, temp_dir: str,"
     },
     {
-      "id": "modules/media/edl.py#37",
+      "id": "modules/media/edl.py#38",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(\"nothing to render — the cut list is empty\")",
       "target": "        raise EdlError(\"没有可渲染内容——剪辑列表为空\")",
@@ -21647,7 +21674,7 @@
       "hunk": "@@ -649,11 +645,11 @@ def render_edl(edl: Edl, output: str, *, mode: str = \"gpu\","
     },
     {
-      "id": "modules/media/edl.py#38",
+      "id": "modules/media/edl.py#39",
       "file": "modules/media/edl.py",
       "source": "        raise EdlError(\"cannot render, these sources are missing: \"\n                       + \", \".join(os.path.basename(m) for m in dict.fromkeys(missing)))",
       "target": "        raise EdlError(\"无法渲染，以下源文件缺失：\"\n                       + \"，\".join(os.path.basename(m) for m in dict.fromkeys(missing)))",
@@ -21656,7 +21683,7 @@
       "hunk": "@@ -649,11 +645,11 @@ def render_edl(edl: Edl, output: str, *, mode: str = \"gpu\","
     },
     {
-      "id": "modules/media/edl.py#39",
+      "id": "modules/media/edl.py#40",
       "file": "modules/media/edl.py",
       "source": "                raise ReelCancelled(\"cancelled\")",
       "target": "                raise ReelCancelled(\"已取消\")",
@@ -21665,7 +21692,7 @@
       "hunk": "@@ -664,14 +660,14 @@ def render_edl(edl: Edl, output: str, *, mode: str = \"gpu\","
     },
     {
-      "id": "modules/media/edl.py#40",
+      "id": "modules/media/edl.py#41",
       "file": "modules/media/edl.py",
       "source": "                    progress_fn(i, total + 1, \"Cutting\", f\"cut {i + 1}/{total}\")",
       "target": "                    progress_fn(i, total + 1, \"正在剪切\", f\"镜头 {i + 1}/{total}\")",
@@ -21674,7 +21701,7 @@
       "hunk": "@@ -664,14 +660,14 @@ def render_edl(edl: Edl, output: str, *, mode: str = \"gpu\","
     },
     {
-      "id": "modules/media/edl.py#41",
+      "id": "modules/media/edl.py#42",
       "file": "modules/media/edl.py",
       "source": "            log_fn(f\"✂️ Cut {i + 1}/{total}: {os.path.basename(cut.source)} \"",
       "target": "            log_fn(f\"✂️ 剪切 {i + 1}/{total}：{os.path.basename(cut.source)} \"",
@@ -21918,6 +21945,15 @@
     },
     {
       "id": "modules/media/overlay.py#7",
+      "file": "modules/media/overlay.py",
+      "source": "                raise RuntimeError(\"cancelled\")",
+      "target": "                raise RuntimeError(\"已取消\")",
+      "before": "                process.kill()",
+      "after": "            process.stdin.write(frame)",
+      "hunk": "@@ -549,7 +548,7 @@ def burn_overlay(src: str, dst: str, scene: Scene, elements, *, fps: int = 30,"
+    },
+    {
+      "id": "modules/media/overlay.py#8",
       "file": "modules/media/overlay.py",
       "source": "        log_fn(f\"⚠️ Could not draw the graphics ({detail or 'unknown error'}); \"\n               f\"the reel keeps its picture\")",
       "target": "        log_fn(f\"⚠️ 无法绘制图形（{detail or '未知错误'}）；\"\n               f\"成片将保留原始画面\")",
@@ -22801,20 +22837,38 @@
     {
       "id": "modules/narration/clip_story.py#14",
       "file": "modules/narration/clip_story.py",
+      "source": "                        help=\"a model that can see, current-generation; \"\n                             \"a .gguf path for llama-cpp\")",
+      "target": "                        help=\"支持视觉输入的当前代模型；使用 llama-cpp 时也可填写 .gguf 模型路径\")",
+      "before": "    parser.add_argument(\"--model\", default=\"qwen2.5vl:7b\",",
+      "after": "    parser.add_argument(\"--mmproj\", default=None,",
+      "hunk": "@@ -623,11 +621,9 @@ def _main(argv=None) -> int:"
+    },
+    {
+      "id": "modules/narration/clip_story.py#15",
+      "file": "modules/narration/clip_story.py",
+      "source": "                        help=\"vision projector, for llama-cpp models that need \"\n                             \"one beside the weights\")",
+      "target": "                        help=\"视觉投影器；用于需要在权重旁提供该文件的 llama-cpp 模型\")",
+      "before": "    parser.add_argument(\"--mmproj\", default=None,",
+      "after": "    args = parser.parse_args(argv)",
+      "hunk": "@@ -623,11 +621,9 @@ def _main(argv=None) -> int:"
+    },
+    {
+      "id": "modules/narration/clip_story.py#16",
+      "file": "modules/narration/clip_story.py",
       "source": "        print(\"Nothing was read; the report is unchanged.\")",
       "target": "        print(\"未读取到任何内容；报告保持不变。\")",
       "before": "    if not read:",
       "after": "        return 1",
-      "hunk": "@@ -638,11 +636,11 @@ def _main(argv=None) -> int:"
+      "hunk": "@@ -638,11 +634,11 @@ def _main(argv=None) -> int:"
     },
     {
-      "id": "modules/narration/clip_story.py#15",
+      "id": "modules/narration/clip_story.py#17",
       "file": "modules/narration/clip_story.py",
       "source": "    print(f\"Read {read} of {total} clips.\")",
       "target": "    print(f\"已读取 {read}/{total} 个片段。\")",
       "before": "        total = len(json.load(fh).get(\"segments\") or [])",
       "after": "    return 0",
-      "hunk": "@@ -638,11 +636,11 @@ def _main(argv=None) -> int:"
+      "hunk": "@@ -638,11 +634,11 @@ def _main(argv=None) -> int:"
     },
     {
       "id": "modules/narration/llm_discovery.py#1",
@@ -24365,6 +24419,15 @@
       "hunk": "@@ -349,7 +349,7 @@ def load_checks(video_path: str) -> list:"
     },
     {
+      "id": "modules/rules/shapes.py#1",
+      "file": "modules/rules/shapes.py",
+      "source": "    raise ValueError(f\"relation must be one of {RELATIONS}, not {relation!r}\")",
+      "target": "    raise ValueError(f\"关系类型必须为 {RELATIONS} 之一，不能是 {relation!r}\")",
+      "before": "        return gap(as_polygon(source), as_polygon(region)) <= max_gap",
+      "after": "",
+      "hunk": "@@ -201,7 +201,7 @@ def relates(source: dict, region: dict, relation: str = INSIDE,"
+    },
+    {
       "id": "modules/segments/auto_pipeline.py#1",
       "file": "modules/segments/auto_pipeline.py",
       "source": "",
@@ -24905,6 +24968,15 @@
       "hunk": "@@ -562,7 +562,7 @@ def main():"
     },
     {
+      "id": "modules/segments/chapters.py#16",
+      "file": "modules/segments/chapters.py",
+      "source": "              f\"{ch['shots']:>4} shots  {ch['pace']:<10} \"\n              f\"novelty {ch['boundary_score']:.3f}\")",
+      "target": "              f\"{ch['shots']:>4} 个镜头  {ch['pace']:<10} \"\n              f\"新颖度 {ch['boundary_score']:.3f}\")",
+      "before": "              f\"{format_timestamp(ch['duration']):>8}  \"",
+      "after": "",
+      "hunk": "@@ -573,8 +573,8 @@ def main():"
+    },
+    {
       "id": "modules/segments/compute_forbidden.py#1",
       "file": "modules/segments/compute_forbidden.py",
       "source": "            log_fn(\"⬇️ First run: fetching the YOLOX person detector (Apache-2.0)…\")",
@@ -25046,6 +25118,15 @@
       "target": "    print(f\"\\n排除区间（{len(ranges)}）：\")",
       "before": "    ranges, boxes = compute_forbidden(video, bank, avoid_ids, fps)",
       "after": "    for a, b in ranges[:20]:",
+      "hunk": "@@ -267,7 +267,7 @@ if __name__ == \"__main__\":"
+    },
+    {
+      "id": "modules/segments/compute_forbidden.py#17",
+      "file": "modules/segments/compute_forbidden.py",
+      "source": "    print(f\"forbidden_boxes_by_frame: {len(boxes)} frame(s)\")",
+      "target": "    print(f\"逐帧排除框：共 {len(boxes)} 帧\")",
+      "before": "        print(f\"  {a:.1f}s – {b:.1f}s\")",
+      "after": null,
       "hunk": "@@ -267,7 +267,7 @@ if __name__ == \"__main__\":"
     },
     {
@@ -25347,6 +25428,33 @@
     },
     {
       "id": "modules/segments/script_plan.py#1",
+      "file": "modules/segments/script_plan.py",
+      "source": "_DEFAULT_TITLE = \"Untitled\"",
+      "target": "_DEFAULT_TITLE = \"无标题\"",
+      "before": "_DEFAULT_ORDER = \"best_first\"",
+      "after": "",
+      "hunk": "@@ -94,7 +94,7 @@ _MATCH_KEYS = (\"objects\", \"actions\", \"keywords\")"
+    },
+    {
+      "id": "modules/segments/script_plan.py#2",
+      "file": "modules/segments/script_plan.py",
+      "source": "            hint = \" — match terms belong under 'match:'\"",
+      "target": "            hint = \"——匹配条件应写在 'match:' 下\"",
+      "before": "        if name in _MATCH_KEYS:",
+      "after": "        else:",
+      "hunk": "@@ -404,12 +404,12 @@ def _reject_unknown(mapping: Mapping, allowed: tuple[str, ...], what: str) -> No"
+    },
+    {
+      "id": "modules/segments/script_plan.py#3",
+      "file": "modules/segments/script_plan.py",
+      "source": "            hint = (f\" — did you mean {close[0]!r}?\" if close\n                    else f\" — known {what} keys: {', '.join(allowed)}\")\n        _fail(f\"unknown {what} key {name!r}{hint}\", mapping, name)",
+      "target": "            hint = (f\"——你是否想写 {close[0]!r}？\" if close\n                    else f\"——已知 {what} 键：{', '.join(allowed)}\")\n        _fail(f\"未知 {what} 键 {name!r}{hint}\", mapping, name)",
+      "before": "            close = get_close_matches(name, allowed, n=1, cutoff=0.6)",
+      "after": "",
+      "hunk": "@@ -404,12 +404,12 @@ def _reject_unknown(mapping: Mapping, allowed: tuple[str, ...], what: str) -> No"
+    },
+    {
+      "id": "modules/segments/script_plan.py#4",
       "file": "modules/segments/script_plan.py",
       "source": "    log_fn(f\"📜 Script {script.title!r}: {len(script.beats)} beat(s), \"",
       "target": "    log_fn(f\"📜 脚本 {script.title!r}：{len(script.beats)} 个节拍节点，\"",
@@ -25812,6 +25920,24 @@
       "before": "    card = getattr(probe, \"adapter_name\", None)",
       "after": "    return DeviceInfo(",
       "hunk": "@@ -477,10 +474,9 @@ def _onnx_dml_info(log_fn=print):"
+    },
+    {
+      "id": "modules/system/device_utils.py#22",
+      "file": "modules/system/device_utils.py",
+      "source": "            _warn(f\"DirectML device listing failed: {e}\")",
+      "target": "            _warn(f\"DirectML 设备列表读取失败：{e}\")",
+      "before": "        except Exception as e:  # noqa: BLE001",
+      "after": "",
+      "hunk": "@@ -674,11 +670,11 @@ def describe_devices() -> list:"
+    },
+    {
+      "id": "modules/system/device_utils.py#23",
+      "file": "modules/system/device_utils.py",
+      "source": "    print(f\"   CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES', '(not set)')}\")",
+      "target": "    print(f\"   CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES', '（未设置）')}\")",
+      "before": "    print(f\"⚠️ [device_utils] {msg}\")",
+      "after": null,
+      "hunk": "@@ -674,11 +670,11 @@ def describe_devices() -> list:"
     },
     {
       "id": "modules/system/directml_device.py#1",
@@ -26306,6 +26432,15 @@
     {
       "id": "modules/teach/boxes.py#1",
       "file": "modules/teach/boxes.py",
+      "source": "        raise ValueError(\"boxes are for object projects\")",
+      "target": "        raise ValueError(\"检测框仅适用于物体项目\")",
+      "before": "    if project.task != OBJECTS:",
+      "after": "    read_at = read_at or _read_at",
+      "hunk": "@@ -132,7 +132,7 @@ def propose(project: Project, detector, embedder, *,"
+    },
+    {
+      "id": "modules/teach/boxes.py#2",
+      "file": "modules/teach/boxes.py",
       "source": "        captions.append(f\"{box.class_name} ({box.source} {box.confidence:.2f})\")",
       "target": "        source_name = {\"hand\": \"手动\", \"prompt\": \"提示匹配\", \"model\": \"模型\", \"seed\": \"示教\"}.get(\n            box.source, box.source)\n        captions.append(f\"{box.class_name}（{source_name} {box.confidence:.2f}）\")",
       "before": "        tiles.append(review._tile(drawn, 220))",
@@ -26313,7 +26448,7 @@
       "hunk": "@@ -398,13 +398,15 @@ def next_sheet(project: Project, size: int = 20, *, read_at: Optional[Callable]"
     },
     {
-      "id": "modules/teach/boxes.py#2",
+      "id": "modules/teach/boxes.py#3",
       "file": "modules/teach/boxes.py",
       "source": "             f\"boxes {number}: is the yellow box around the named thing, and tight?\")",
       "target": "             f\"检测框批次 {number}：黄色框是否准确且紧密地包围了目标？\")",
@@ -27201,6 +27336,24 @@
       "before": "            if encoder is None:",
       "after": "            self._encoder = encoder",
       "hunk": "@@ -82,7 +82,7 @@ class FrameEncoderBackend:"
+    },
+    {
+      "id": "modules/teach/embed.py#2",
+      "file": "modules/teach/embed.py",
+      "source": "        raise RuntimeError(\"the frame encoder sorts by examples; a class with no examples \"\n                           \"yet needs CLIP (--embedder clip)\")",
+      "target": "        raise RuntimeError(\"帧编码器依赖示例进行排序；尚无示例的类别需要使用 \"\n                           \"CLIP（--embedder clip）\")",
+      "before": "    def texts(self, texts: Sequence[str]) -> np.ndarray:",
+      "after": "",
+      "hunk": "@@ -92,8 +92,8 @@ class FrameEncoderBackend:"
+    },
+    {
+      "id": "modules/teach/embed.py#3",
+      "file": "modules/teach/embed.py",
+      "source": "    raise ValueError(f\"unknown embedder {name!r}; one of {', '.join(EMBEDDERS)}\")",
+      "target": "    raise ValueError(f\"未知嵌入器 {name!r}；应为 {', '.join(EMBEDDERS)} 之一\")",
+      "before": "        return ClipBackend()",
+      "after": "",
+      "hunk": "@@ -105,7 +105,7 @@ def make(name: str = \"clip\"):"
     },
     {
       "id": "modules/teach/find.py#1",
@@ -30089,6 +30242,24 @@
     {
       "id": "modules/vision/action_siglip.py#1",
       "file": "modules/vision/action_siglip.py",
+      "source": "        raise ValueError(f\"{HEAD_META} is not an action head (kind={meta.get('kind')!r})\")",
+      "target": "        raise ValueError(f\"{HEAD_META} 不是动作识别头（kind={meta.get('kind')!r}）\")",
+      "before": "    if meta.get(\"kind\") != HEAD_KIND:",
+      "after": "    if not os.path.isfile(os.path.join(folder, HEAD_MODEL)):",
+      "hunk": "@@ -73,9 +73,9 @@ def read_head_meta(folder: str) -> dict:"
+    },
+    {
+      "id": "modules/vision/action_siglip.py#2",
+      "file": "modules/vision/action_siglip.py",
+      "source": "        raise ValueError(f\"{HEAD_MODEL} is missing\")",
+      "target": "        raise ValueError(f\"缺少文件：{HEAD_MODEL}\")",
+      "before": "    if not os.path.isfile(os.path.join(folder, HEAD_MODEL)):",
+      "after": "    return meta",
+      "hunk": "@@ -73,9 +73,9 @@ def read_head_meta(folder: str) -> dict:"
+    },
+    {
+      "id": "modules/vision/action_siglip.py#3",
+      "file": "modules/vision/action_siglip.py",
       "source": "            log(\"⚠️ Action recognition: no trained action head found \"\n                f\"(train one, or set {HEAD_DIR_ENV})\")",
       "target": "            log(\"⚠️ 动作识别：未找到已训练的动作分类头，\"\n                f\"请先训练一个，或设置 {HEAD_DIR_ENV}\")",
       "before": "        if not heads:",
@@ -30096,7 +30267,7 @@
       "hunk": "@@ -291,8 +291,8 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] ="
     },
     {
-      "id": "modules/vision/action_siglip.py#2",
+      "id": "modules/vision/action_siglip.py#4",
       "file": "modules/vision/action_siglip.py",
       "source": "        log(f\"⚠️ Action head {head.name} was trained on {head.encoder_id}, \"\n            f\"not {encoder.encoder_id}; skipping action recognition\")",
       "target": "        log(f\"⚠️ 动作分类头 {head.name} 使用 {head.encoder_id} 训练，\"\n            f\"与当前 {encoder.encoder_id} 不一致，已跳过动作识别\")",
@@ -30105,7 +30276,7 @@
       "hunk": "@@ -300,8 +300,8 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] ="
     },
     {
-      "id": "modules/vision/action_siglip.py#3",
+      "id": "modules/vision/action_siglip.py#5",
       "file": "modules/vision/action_siglip.py",
       "source": "            log(f\"ℹ️ Not reported, the head's held-out evidence is too thin to trust: \"\n                f\"{', '.join(untrusted)}\")",
       "target": "            log(f\"ℹ️ 以下动作因留出集证据不足，暂不报告：{', '.join(untrusted)}\")",
@@ -30114,7 +30285,7 @@
       "hunk": "@@ -315,10 +315,9 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] ="
     },
     {
-      "id": "modules/vision/action_siglip.py#4",
+      "id": "modules/vision/action_siglip.py#6",
       "file": "modules/vision/action_siglip.py",
       "source": "            log(f\"ℹ️ Not in action head {head.name}: {', '.join(unknown)}\")",
       "target": "            log(f\"ℹ️ 动作分类头 {head.name} 中不存在：{', '.join(unknown)}\")",
@@ -30123,7 +30294,7 @@
       "hunk": "@@ -315,10 +315,9 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] ="
     },
     {
-      "id": "modules/vision/action_siglip.py#5",
+      "id": "modules/vision/action_siglip.py#7",
       "file": "modules/vision/action_siglip.py",
       "source": "        log(f\"⚠️ Action recognition: cannot read {os.path.basename(video_path)}\")",
       "target": "        log(f\"⚠️ 动作识别：无法读取 {os.path.basename(video_path)}\")",
@@ -30132,7 +30303,7 @@
       "hunk": "@@ -327,7 +326,7 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] ="
     },
     {
-      "id": "modules/vision/action_siglip.py#6",
+      "id": "modules/vision/action_siglip.py#8",
       "file": "modules/vision/action_siglip.py",
       "source": "    log(f\"🎬 Action recognition: {head.name} ({len(head.trusted)} of \"\n        f\"{len(head.classes)} actions trusted) on {encoder.label}, \"\n        f\"{len(windows)} windows of {window_s:g} s\")",
       "target": "    log(f\"🎬 动作识别：{head.name}（可信动作 {len(head.trusted)}/{len(head.classes)}），\"\n        f\"设备 {encoder.label}，共 {len(windows)} 个 {window_s:g} 秒窗口\")",
@@ -30141,7 +30312,7 @@
       "hunk": "@@ -339,9 +338,8 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] ="
     },
     {
-      "id": "modules/vision/action_siglip.py#7",
+      "id": "modules/vision/action_siglip.py#9",
       "file": "modules/vision/action_siglip.py",
       "source": "                    progress_callback(w + 1, len(windows), \"Action recognition\",",
       "target": "                    progress_callback(w + 1, len(windows), \"动作识别\",",
@@ -30150,7 +30321,7 @@
       "hunk": "@@ -378,7 +376,7 @@ def run_action_detection_siglip(video_path: str, *, head: Optional[ActionHead] ="
     },
     {
-      "id": "modules/vision/action_siglip.py#8",
+      "id": "modules/vision/action_siglip.py#10",
       "file": "modules/vision/action_siglip.py",
       "source": "    log(f\"✅ Action recognition: {len(detections)} detections \"\n        f\"({len({d[4] for d in detections})} actions) in {len(windows)} windows\")",
       "target": "    log(f\"✅ 动作识别：在 {len(windows)} 个窗口中得到 {len(detections)} 次检测，\"\n        f\"涉及 {len({d[4] for d in detections})} 个动作\")",
@@ -30528,6 +30699,33 @@
       "hunk": "@@ -470,7 +470,7 @@ def from_labeler_export(path: str, box_fraction: float = 0.12,"
     },
     {
+      "id": "modules/vision/onnx_detector.py#1",
+      "file": "modules/vision/onnx_detector.py",
+      "source": "        raise ValueError(f\"unexpected detector output shape {np.asarray(raw).shape}\")",
+      "target": "        raise ValueError(f\"检测器输出形状异常：{np.asarray(raw).shape}\")",
+      "before": "    if out.ndim != 2:",
+      "after": "    return out.T if out.shape[0] < out.shape[1] else out",
+      "hunk": "@@ -215,7 +215,7 @@ def _rows(raw):"
+    },
+    {
+      "id": "modules/vision/onnx_detector.py#2",
+      "file": "modules/vision/onnx_detector.py",
+      "source": "        print(f\"⚠️ ONNX detector unavailable: {type(e).__name__}: {e}\")",
+      "target": "        print(f\"⚠️ ONNX 检测器不可用：{type(e).__name__}：{e}\")",
+      "before": "    except Exception as e:  # noqa: BLE001 - a broken export must not stop a run",
+      "after": "        return None",
+      "hunk": "@@ -343,5 +343,5 @@ def load(model_path, **kwargs) -> Optional[OnnxDetector]:"
+    },
+    {
+      "id": "modules/vision/outlines.py#1",
+      "file": "modules/vision/outlines.py",
+      "source": "    raise ValueError(f\"outliner must be 'grabcut' or 'sam', not {name!r}\")",
+      "target": "    raise ValueError(f\"轮廓算法必须为 'grabcut' 或 'sam'，不能是 {name!r}\")",
+      "before": "        return SamOutliner()",
+      "after": "",
+      "hunk": "@@ -175,7 +175,7 @@ def make_outliner(name: str = \"grabcut\"):"
+    },
+    {
       "id": "modules/vision/pose_backend.py#1",
       "file": "modules/vision/pose_backend.py",
       "source": "                \"No RTMPose IR found. Run: python tools/get_rtmpose_model.py\"",
@@ -30602,11 +30800,11 @@
     {
       "id": "modules/vision/rtmpose_models.py#2",
       "file": "modules/vision/rtmpose_models.py",
-      "source": "        log(f\"📦 Extracting {member.rsplit('/', 1)[-1]} → {dest.name}\")",
-      "target": "        log(f\"📦 正在解压 {member.rsplit('/', 1)[-1]} → {dest.name}\")",
-      "before": "            raise ValueError(f\"{zip_path.name} contains no end2end.onnx — layout changed?\")",
+      "source": "            raise ValueError(f\"{zip_path.name} contains no end2end.onnx — layout changed?\")\n        log(f\"📦 Extracting {member.rsplit('/', 1)[-1]} → {dest.name}\")",
+      "target": "            raise ValueError(f\"{zip_path.name} 中没有 end2end.onnx——模型包结构可能已变化\")\n        log(f\"📦 正在解压 {member.rsplit('/', 1)[-1]} → {dest.name}\")",
+      "before": "        if member is None:",
       "after": "        dest.parent.mkdir(parents=True, exist_ok=True)",
-      "hunk": "@@ -101,7 +101,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non"
+      "hunk": "@@ -100,8 +100,8 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non"
     },
     {
       "id": "modules/vision/rtmpose_models.py#3",
@@ -30616,6 +30814,15 @@
       "before": "",
       "after": "    model = ov.convert_model(str(onnx_path))",
       "hunk": "@@ -110,7 +110,7 @@ def _extract_onnx(zip_path: Path, dest: Path, log: Callable[[str], None]) -> Non"
+    },
+    {
+      "id": "modules/vision/rtmpose_models.py#4",
+      "file": "modules/vision/rtmpose_models.py",
+      "source": "        raise ValueError(f\"Unknown RTMPose size(s): {unknown}. Choose from: {', '.join(SIZES)}\")",
+      "target": "        raise ValueError(f\"未知 RTMPose 尺寸：{unknown}。可选值：{', '.join(SIZES)}\")",
+      "before": "    if unknown:",
+      "after": "    out = []",
+      "hunk": "@@ -126,7 +126,7 @@ def install(sizes: Iterable[str] = DEFAULT_SIZES,"
     },
     {
       "id": "modules/vision/tracking_backend.py#1",
@@ -30706,6 +30913,15 @@
       "before": "",
       "after": "    model = ov.convert_model(str(onnx_path))",
       "hunk": "@@ -82,7 +82,7 @@ def _download(url: str, dest: Path, log: Callable[[str], None]) -> None:"
+    },
+    {
+      "id": "modules/vision/yolox_models.py#3",
+      "file": "modules/vision/yolox_models.py",
+      "source": "        raise ValueError(f\"Unknown YOLOX size(s): {unknown}. Choose from: {', '.join(SIZES)}\")",
+      "target": "        raise ValueError(f\"未知 YOLOX 尺寸：{unknown}。可选值：{', '.join(SIZES)}\")",
+      "before": "    if unknown:",
+      "after": "    out = []",
+      "hunk": "@@ -98,7 +98,7 @@ def install(sizes: Iterable[str] = DEFAULT_SIZES,"
     },
     {
       "id": "object_recognition.py#1",
@@ -31394,6 +31610,15 @@
       "hunk": "@@ -181,7 +181,7 @@ def _install_packs():"
     },
     {
+      "id": "packaging/pyinstaller-hooks/hook-ml_dtypes.py#1",
+      "file": "packaging/pyinstaller-hooks/hook-ml_dtypes.py",
+      "source": "    print(f\"hook-ml_dtypes: {_name} is imported by ml_dtypes but no *.libs has it\")",
+      "target": "    print(f\"hook-ml_dtypes：ml_dtypes 导入了 {_name}，但 *.libs 中未找到该文件\")",
+      "before": "for _name in sorted(_wanted - _available.keys()):",
+      "after": "",
+      "hunk": "@@ -56,6 +56,6 @@ _wanted = {n for n in _available if os.path.dirname(_available[n]).endswith(\"num"
+    },
+    {
       "id": "pipeline.py#1",
       "file": "pipeline.py",
       "source": "    print(\"⚠ Warning: Transcript modules not available. Transcript features disabled.\")",
@@ -31423,6 +31648,42 @@
     {
       "id": "pipeline.py#4",
       "file": "pipeline.py",
+      "source": "            where = f\"{api} (ONNX Runtime; the processor if that cannot run it)\"",
+      "target": "            where = f\"{api}（ONNX Runtime；若无法运行则退回处理器）\"",
+      "before": "            api = \"Core ML\" if sys.platform == \"darwin\" else \"DirectML\"",
+      "after": "        elif device.startswith(\"cuda\"):",
+      "hunk": "@@ -301,20 +301,20 @@ def action_backend_summary(enable_r3d, r3d_model, r3d_device, r3d_onnx_dml,"
+    },
+    {
+      "id": "pipeline.py#5",
+      "file": "pipeline.py",
+      "source": "            where = \"CPU (PyTorch)\"\n        text = f\"{name} on {where}\"",
+      "target": "            where = \"CPU（PyTorch）\"\n        text = f\"{name}，运行设备：{where}\"",
+      "before": "        else:",
+      "after": "    else:",
+      "hunk": "@@ -301,20 +301,20 @@ def action_backend_summary(enable_r3d, r3d_model, r3d_device, r3d_onnx_dml,"
+    },
+    {
+      "id": "pipeline.py#6",
+      "file": "pipeline.py",
+      "source": "        where = {\"CPU\": \"CPU\", \"AUTO\": \"the device OpenVINO picks\"}.get(",
+      "target": "        where = {\"CPU\": \"CPU\", \"AUTO\": \"OpenVINO 自动选择的设备\"}.get(",
+      "before": "        device = str(openvino_device or \"AUTO\").upper()",
+      "after": "            device, \"Intel GPU\" if device.startswith(\"GPU\") else device)",
+      "hunk": "@@ -301,20 +301,20 @@ def action_backend_summary(enable_r3d, r3d_model, r3d_device, r3d_onnx_dml,"
+    },
+    {
+      "id": "pipeline.py#7",
+      "file": "pipeline.py",
+      "source": "        text = f\"OpenVINO on {where}\"\n    return text + (\" (chosen automatically)\" if auto else \"\")",
+      "target": "        text = f\"OpenVINO，运行设备：{where}\"\n    return text + (\"（自动选择）\" if auto else \"\")",
+      "before": "            device, \"Intel GPU\" if device.startswith(\"GPU\") else device)",
+      "after": "",
+      "hunk": "@@ -301,20 +301,20 @@ def action_backend_summary(enable_r3d, r3d_model, r3d_device, r3d_onnx_dml,"
+    },
+    {
+      "id": "pipeline.py#8",
+      "file": "pipeline.py",
       "source": "            log_fn(f\"📹 Processing video {idx}/{total_videos}: {os.path.basename(single_video_path)}\")",
       "target": "            log_fn(f\"📹 正在处理视频 {idx}/{total_videos}：{os.path.basename(single_video_path)}\")",
       "before": "            log_fn(f\"\\n{'='*60}\")",
@@ -31430,7 +31691,7 @@
       "hunk": "@@ -349,21 +349,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#5",
+      "id": "pipeline.py#9",
       "file": "pipeline.py",
       "source": "                log_fn(\"⏹️ Batch processing cancelled\")",
       "target": "                log_fn(\"⏹️ 批量处理已取消\")",
@@ -31439,7 +31700,7 @@
       "hunk": "@@ -349,21 +349,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#6",
+      "id": "pipeline.py#10",
       "file": "pipeline.py",
       "source": "            detail = f\"Video {idx}/{total_videos}: {os.path.basename(single_video_path)}\"",
       "target": "            detail = f\"视频 {idx}/{total_videos}：{os.path.basename(single_video_path)}\"",
@@ -31448,7 +31709,7 @@
       "hunk": "@@ -349,21 +349,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#7",
+      "id": "pipeline.py#11",
       "file": "pipeline.py",
       "source": "                detail += f\" ({failed} failed)\"\n            progress.update_progress(idx - 1, total_videos, \"Batch Processing\", detail)",
       "target": "                detail += f\"（{failed} 个失败）\"\n            progress.update_progress(idx - 1, total_videos, \"批量处理\", detail)",
@@ -31457,7 +31718,7 @@
       "hunk": "@@ -349,21 +349,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#8",
+      "id": "pipeline.py#12",
       "file": "pipeline.py",
       "source": "                    log_fn(f\"✅ Completed {idx}/{total_videos}: {os.path.basename(result)}\")",
       "target": "                    log_fn(f\"✅ 已完成 {idx}/{total_videos}：{os.path.basename(result)}\")",
@@ -31466,7 +31727,7 @@
       "hunk": "@@ -396,26 +396,26 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#9",
+      "id": "pipeline.py#13",
       "file": "pipeline.py",
       "source": "                    log_fn(f\"⚠️ Failed {idx}/{total_videos}: {os.path.basename(single_video_path)}\")",
       "target": "                    log_fn(f\"⚠️ 处理失败 {idx}/{total_videos}：{os.path.basename(single_video_path)}\")",
@@ -31475,7 +31736,7 @@
       "hunk": "@@ -396,26 +396,26 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#10",
+      "id": "pipeline.py#14",
       "file": "pipeline.py",
       "source": "                log_fn(f\"❌ Error processing {single_video_path}: {e}\")",
       "target": "                log_fn(f\"❌ 处理 {single_video_path} 时出错：{e}\")",
@@ -31484,7 +31745,7 @@
       "hunk": "@@ -396,26 +396,26 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#11",
+      "id": "pipeline.py#15",
       "file": "pipeline.py",
       "source": "        log_fn(f\"📊 BATCH PROCESSING SUMMARY\")",
       "target": "        log_fn(\"📊 批量处理汇总\")",
@@ -31493,7 +31754,7 @@
       "hunk": "@@ -396,26 +396,26 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#12",
+      "id": "pipeline.py#16",
       "file": "pipeline.py",
       "source": "        log_fn(f\"Total: {total_videos} | ✅ Success: {successful} | ❌ Failed: {total_videos - successful}\")",
       "target": "        log_fn(f\"总数：{total_videos} | ✅ 成功：{successful} | ❌ 失败：{total_videos - successful}\")",
@@ -31502,7 +31763,7 @@
       "hunk": "@@ -396,26 +396,26 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#13",
+      "id": "pipeline.py#17",
       "file": "pipeline.py",
       "source": "        progress.update_progress(len(results), total_videos, \"Batch Processing\",\n                               f\"Complete: {successful}/{total_videos} succeeded\")",
       "target": "        progress.update_progress(len(results), total_videos, \"批量处理\",\n                               f\"已完成：{successful}/{total_videos} 个成功\")",
@@ -31511,7 +31772,7 @@
       "hunk": "@@ -396,26 +396,26 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#14",
+      "id": "pipeline.py#18",
       "file": "pipeline.py",
       "source": "                check_cancellation(cancel_flag, log, \"config loading\")",
       "target": "                check_cancellation(cancel_flag, log, \"加载配置\")",
@@ -31520,7 +31781,7 @@
       "hunk": "@@ -432,19 +432,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#15",
+      "id": "pipeline.py#19",
       "file": "pipeline.py",
       "source": "                log(\"✅ Loaded config.yaml\")",
       "target": "                log(\"✅ 已加载 config.yaml\")",
@@ -31529,7 +31790,7 @@
       "hunk": "@@ -432,19 +432,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#16",
+      "id": "pipeline.py#20",
       "file": "pipeline.py",
       "source": "                log(f\"⚠ Failed to read config.yaml: {e}\")",
       "target": "                log(f\"⚠ 无法读取 config.yaml：{e}\")",
@@ -31538,7 +31799,7 @@
       "hunk": "@@ -432,19 +432,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#17",
+      "id": "pipeline.py#21",
       "file": "pipeline.py",
       "source": "            log(\"⚠ config.yaml not found — using defaults and GUI overrides\")",
       "target": "            log(\"⚠ 未找到 config.yaml，将使用默认值和界面设置\")",
@@ -31547,7 +31808,7 @@
       "hunk": "@@ -432,19 +432,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#18",
+      "id": "pipeline.py#22",
       "file": "pipeline.py",
       "source": "        check_cancellation(cancel_flag, log, \"initialization\")",
       "target": "        check_cancellation(cancel_flag, log, \"初始化\")",
@@ -31556,7 +31817,7 @@
       "hunk": "@@ -432,19 +432,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#19",
+      "id": "pipeline.py#23",
       "file": "pipeline.py",
       "source": "        log(f\"🎯 Mode: {duration_mode} duration of {target_duration} seconds ({target_duration/60:.1f} minutes)\")",
       "target": "        duration_mode_label = \"精确\" if EXACT_DURATION else \"最长\"\n        log(f\"🎯 时长模式：{duration_mode_label}，目标 {target_duration} 秒（{target_duration/60:.1f} 分钟）\")",
@@ -31565,7 +31826,7 @@
       "hunk": "@@ -503,28 +503,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#20",
+      "id": "pipeline.py#24",
       "file": "pipeline.py",
       "source": "            log(\"❌ 'Score actions only if objects detected' is enabled, but no objects are configured. \"\n                \"Please add objects to detect, or uncheck that option.\")",
       "target": "            log(\"❌ 已启用“仅在检测到物体时为动作评分”，但尚未配置要检测的物体。\"\n                \"请添加物体类别，或关闭该选项。\")",
@@ -31574,7 +31835,7 @@
       "hunk": "@@ -503,28 +503,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#21",
+      "id": "pipeline.py#25",
       "file": "pipeline.py",
       "source": "            raise FileNotFoundError(f\"Input video not found at path: {video_path}\")",
       "target": "            raise FileNotFoundError(f\"找不到输入视频：{video_path}\")",
@@ -31583,7 +31844,7 @@
       "hunk": "@@ -503,28 +503,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#22",
+      "id": "pipeline.py#26",
       "file": "pipeline.py",
       "source": "        progress.update_progress(0, 100, \"Pipeline\", \"Initializing...\")\n        check_cancellation(cancel_flag, log, \"setup\")",
       "target": "        progress.update_progress(0, 100, \"处理流水线\", \"正在初始化…\")\n        check_cancellation(cancel_flag, log, \"初始化\")",
@@ -31592,7 +31853,7 @@
       "hunk": "@@ -503,28 +503,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#23",
+      "id": "pipeline.py#27",
       "file": "pipeline.py",
       "source": "        log(f\"🎯 YOLO device: {yolo_device}\")",
       "target": "        log(f\"🎯 YOLO 设备：{yolo_device}\")",
@@ -31601,7 +31862,7 @@
       "hunk": "@@ -503,28 +503,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#24",
+      "id": "pipeline.py#28",
       "file": "pipeline.py",
       "source": "        log(f\"🎬 Video duration: {video_duration:.2f}s, FPS: {fps}, total frames: {total_frames}\")",
       "target": "        log(f\"🎬 视频时长：{video_duration:.2f} 秒，FPS：{fps}，总帧数：{total_frames}\")",
@@ -31610,7 +31871,7 @@
       "hunk": "@@ -532,9 +533,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#25",
+      "id": "pipeline.py#29",
       "file": "pipeline.py",
       "source": "        check_cancellation(cancel_flag, log, \"video info extraction\")",
       "target": "        check_cancellation(cancel_flag, log, \"读取视频信息\")",
@@ -31619,7 +31880,7 @@
       "hunk": "@@ -532,9 +533,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#26",
+      "id": "pipeline.py#30",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Invalid time range: start ({RANGE_START}s) >= end ({RANGE_END}s)\")",
       "target": "                log(f\"⚠️ 时间范围无效：起点（{RANGE_START} 秒）>= 终点（{RANGE_END} 秒）\")",
@@ -31628,7 +31889,7 @@
       "hunk": "@@ -555,34 +556,34 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#27",
+      "id": "pipeline.py#31",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Start time ({RANGE_START}s) exceeds video duration ({video_duration:.1f}s)\")",
       "target": "                log(f\"⚠️ 起始时间（{RANGE_START} 秒）超过视频时长（{video_duration:.1f} 秒）\")",
@@ -31637,7 +31898,7 @@
       "hunk": "@@ -555,34 +556,34 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#28",
+      "id": "pipeline.py#32",
       "file": "pipeline.py",
       "source": "            log(f\"🎯 Processing time range: {RANGE_START//60}:{RANGE_START%60:02d} to {RANGE_END//60}:{RANGE_END%60:02d}\")\n            log(f\"   Range duration: {range_duration//60}:{int(range_duration%60):02d} ({range_duration:.1f}s)\")\n            log(f\"   Skipping: {RANGE_START:.1f}s at start, {video_duration - RANGE_END:.1f}s at end\")",
       "target": "            log(f\"🎯 处理时间范围：{RANGE_START//60}:{RANGE_START%60:02d} 至 {RANGE_END//60}:{RANGE_END%60:02d}\")\n            log(f\"   范围时长：{range_duration//60}:{int(range_duration%60):02d}（{range_duration:.1f} 秒）\")\n            log(f\"   跳过：开头 {RANGE_START:.1f} 秒，结尾 {video_duration - RANGE_END:.1f} 秒\")",
@@ -31646,7 +31907,7 @@
       "hunk": "@@ -555,34 +556,34 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#29",
+      "id": "pipeline.py#33",
       "file": "pipeline.py",
       "source": "            progress.update_progress(5, 100, \"Pipeline\", \"Trimming video to selected range...\")",
       "target": "            progress.update_progress(5, 100, \"处理流水线\", \"正在按所选范围裁剪视频…\")",
@@ -31655,7 +31916,7 @@
       "hunk": "@@ -555,34 +556,34 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#30",
+      "id": "pipeline.py#34",
       "file": "pipeline.py",
       "source": "                check_cancellation(cancel_flag, log, \"video trimming\")",
       "target": "                check_cancellation(cancel_flag, log, \"裁剪视频\")",
@@ -31664,7 +31925,7 @@
       "hunk": "@@ -555,34 +556,34 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#31",
+      "id": "pipeline.py#35",
       "file": "pipeline.py",
       "source": "                log(f\"   Using FFmpeg to extract range...\")",
       "target": "                log(\"   正在使用 FFmpeg 提取所选范围…\")",
@@ -31673,7 +31934,7 @@
       "hunk": "@@ -555,34 +556,34 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#32",
+      "id": "pipeline.py#36",
       "file": "pipeline.py",
       "source": "                log(f\"✅ Video trimmed to: {temp_trimmed_video}\")",
       "target": "                log(f\"✅ 视频已裁剪到：{temp_trimmed_video}\")",
@@ -31682,7 +31943,7 @@
       "hunk": "@@ -592,7 +593,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#33",
+      "id": "pipeline.py#37",
       "file": "pipeline.py",
       "source": "                log(f\"📊 Trimmed video: {video_duration:.2f}s, FPS: {fps}, frames: {total_frames}\")",
       "target": "                log(f\"📊 裁剪后视频：{video_duration:.2f} 秒，FPS：{fps}，帧数：{total_frames}\")",
@@ -31691,7 +31952,7 @@
       "hunk": "@@ -603,10 +604,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#34",
+      "id": "pipeline.py#38",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ FFmpeg trimming with copy failed, trying with re-encoding...\")",
       "target": "                log(\"⚠️ FFmpeg 直接复制裁剪失败，正在尝试重新编码…\")",
@@ -31700,7 +31961,7 @@
       "hunk": "@@ -603,10 +604,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#35",
+      "id": "pipeline.py#39",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Video trimmed (re-encoded) to: {temp_trimmed_video}\")",
       "target": "                    log(f\"✅ 视频已重新编码并裁剪到：{temp_trimmed_video}\")",
@@ -31709,7 +31970,7 @@
       "hunk": "@@ -616,7 +617,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#36",
+      "id": "pipeline.py#40",
       "file": "pipeline.py",
       "source": "                    log(f\"📊 Trimmed video: {video_duration:.2f}s, FPS: {fps}, frames: {total_frames}\")",
       "target": "                    log(f\"📊 裁剪后视频：{video_duration:.2f} 秒，FPS：{fps}，帧数：{total_frames}\")",
@@ -31718,7 +31979,7 @@
       "hunk": "@@ -625,24 +626,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#37",
+      "id": "pipeline.py#41",
       "file": "pipeline.py",
       "source": "                    log(f\"❌ Failed to trim video: {e2}\")",
       "target": "                    log(f\"❌ 视频裁剪失败：{e2}\")",
@@ -31727,7 +31988,7 @@
       "hunk": "@@ -625,24 +626,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#38",
+      "id": "pipeline.py#42",
       "file": "pipeline.py",
       "source": "                log(f\"❌ ffmpeg not found for trimming ({e}). It comes with the app's \"\n                    f\"requirements (imageio-ffmpeg) — reinstall them. Cannot process time range.\")",
       "target": "                log(f\"❌ 找不到用于裁剪的 ffmpeg（{e}）。它随应用依赖 imageio-ffmpeg 提供，\"\n                    f\"请重新安装相关依赖；当前无法处理所选时间范围。\")",
@@ -31736,7 +31997,7 @@
       "hunk": "@@ -625,24 +626,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#39",
+      "id": "pipeline.py#43",
       "file": "pipeline.py",
       "source": "                    log(f\"❌ Failed to trim video: {e}\")",
       "target": "                    log(f\"❌ 视频裁剪失败：{e}\")",
@@ -31745,7 +32006,7 @@
       "hunk": "@@ -625,24 +626,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#40",
+      "id": "pipeline.py#44",
       "file": "pipeline.py",
       "source": "            log(\"ℹ️ Processing full video\")",
       "target": "            log(\"ℹ️ 正在处理完整视频\")",
@@ -31754,7 +32015,7 @@
       "hunk": "@@ -625,24 +626,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#41",
+      "id": "pipeline.py#45",
       "file": "pipeline.py",
       "source": "                                log(f\"⚠️ Cache language mismatch: cached '{cache_language}' vs requested '{TRANSCRIPT_SOURCE_LANG}'\")",
       "target": "                                log(f\"⚠️ 缓存语言不匹配：缓存为“{cache_language}”，当前请求为“{TRANSCRIPT_SOURCE_LANG}”\")",
@@ -31763,7 +32024,7 @@
       "hunk": "@@ -706,7 +707,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#42",
+      "id": "pipeline.py#46",
       "file": "pipeline.py",
       "source": "                                log(f\"⚠️ Cache incompatible: language mismatch or keywords not matching\")",
       "target": "                                log(\"⚠️ 缓存不兼容：语言或关键词不匹配\")",
@@ -31772,7 +32033,7 @@
       "hunk": "@@ -714,10 +715,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#43",
+      "id": "pipeline.py#47",
       "file": "pipeline.py",
       "source": "                            log(f\"✅ Loaded from cache ({load_time:.2f}s) [signature match]\")",
       "target": "                            log(f\"✅ 已从缓存加载（{load_time:.2f} 秒）[签名匹配]\")",
@@ -31781,7 +32042,7 @@
       "hunk": "@@ -714,10 +715,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#44",
+      "id": "pipeline.py#48",
       "file": "pipeline.py",
       "source": "                            cache_status = \"full\" if not cache_keyword_filtered else f\"keyword-filtered ({len(cache_search_keywords or [])} keywords)\"\n                            log(f\"✅ Loaded from cache: {len(transcript_segments)} transcript segments ({cache_status}), \"\n                                f\"{len(object_detections)} object seconds, {len(action_detections)} actions, \"\n                                f\"{len(scenes)} scenes, {len(motion_events)} motion events, {len(motion_peaks)} motion peaks, \"\n                                f\"{len(audio_peaks)} audio peaks\")",
       "target": "                            cache_status = \"完整\" if not cache_keyword_filtered else f\"关键词筛选（{len(cache_search_keywords or [])} 个关键词）\"\n                            log(f\"✅ 已从缓存加载：{len(transcript_segments)} 个转录片段（{cache_status}），\"\n                                f\"{len(object_detections)} 秒含物体，{len(action_detections)} 个动作，\"\n                                f\"{len(scenes)} 个场景，{len(motion_events)} 个运动事件，{len(motion_peaks)} 个运动峰值，\"\n                                f\"{len(audio_peaks)} 个音频峰值\")",
@@ -31790,7 +32051,7 @@
       "hunk": "@@ -766,23 +767,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#45",
+      "id": "pipeline.py#49",
       "file": "pipeline.py",
       "source": "                            log(f\"⚠️ Cache incompatible: cached with {'keyword-filtered' if cache_keyword_filtered else 'full'} transcript, \"\n                                f\"need {'keyword-filtered' if current_keywords else 'full'} transcript\")",
       "target": "                            log(f\"⚠️ 缓存不兼容：缓存转录类型为\"\n                                f\"{'关键词筛选' if cache_keyword_filtered else '完整'}，\"\n                                f\"当前需要{'关键词筛选' if current_keywords else '完整'}转录\")",
@@ -31799,7 +32060,7 @@
       "hunk": "@@ -766,23 +767,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#46",
+      "id": "pipeline.py#50",
       "file": "pipeline.py",
       "source": "                        log(f\"⚠️ Cache duration mismatch: {cache_video_duration}s vs {video_duration}s\")",
       "target": "                        log(f\"⚠️ 缓存时长不匹配：{cache_video_duration} 秒 vs {video_duration} 秒\")",
@@ -31808,7 +32069,7 @@
       "hunk": "@@ -766,23 +767,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#47",
+      "id": "pipeline.py#51",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Cache load error: {e}\")",
       "target": "                log(f\"⚠️ 缓存加载错误：{e}\")",
@@ -31817,7 +32078,7 @@
       "hunk": "@@ -766,23 +767,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#48",
+      "id": "pipeline.py#52",
       "file": "pipeline.py",
       "source": "            log(\"ℹ️ Cache disabled or forced reprocess\")",
       "target": "            log(\"ℹ️ 缓存已禁用，或已强制重新处理\")",
@@ -31826,7 +32087,7 @@
       "hunk": "@@ -766,23 +767,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#49",
+      "id": "pipeline.py#53",
       "file": "pipeline.py",
       "source": "                progress.update_progress(5, 100, \"Pipeline\", \"Processing transcript...\")\n                log(\"🔹 Step 0.5: Processing transcript...\")",
       "target": "                progress.update_progress(5, 100, \"处理流水线\", \"正在处理转录文本…\")\n                log(\"🔹 步骤 0.5：正在处理转录文本…\")",
@@ -31835,7 +32096,7 @@
       "hunk": "@@ -792,10 +794,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#50",
+      "id": "pipeline.py#54",
       "file": "pipeline.py",
       "source": "                    check_cancellation(cancel_flag, log, \"transcript processing\")",
       "target": "                    check_cancellation(cancel_flag, log, \"处理转录文本\")",
@@ -31844,7 +32105,7 @@
       "hunk": "@@ -792,10 +794,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#51",
+      "id": "pipeline.py#55",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Transcript saved: {transcript_file}\")",
       "target": "                    log(f\"✅ 转录文本已保存：{transcript_file}\")",
@@ -31853,7 +32114,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#52",
+      "id": "pipeline.py#56",
       "file": "pipeline.py",
       "source": "                    log(f\"⚠ Transcript processing failed: {e}\")",
       "target": "                    log(f\"⚠ 转录处理失败：{e}\")",
@@ -31863,7 +32124,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#53",
+      "id": "pipeline.py#57",
       "file": "pipeline.py",
       "source": "                    log(f\"⚠ Transcript processing failed: {e}\")",
       "target": "                    log(f\"⚠ 转录处理失败：{e}\")",
@@ -31873,7 +32134,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#54",
+      "id": "pipeline.py#58",
       "file": "pipeline.py",
       "source": "                    check_cancellation(cancel_flag, log, \"keyword search\")\n                    log(f\"🔹 Searching transcript for keywords: {SEARCH_KEYWORDS}\")",
       "target": "                    check_cancellation(cancel_flag, log, \"关键词搜索\")\n                    log(f\"🔹 正在转录文本中搜索关键词：{SEARCH_KEYWORDS}\")",
@@ -31882,7 +32143,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#55",
+      "id": "pipeline.py#59",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Found {len(keyword_matches)} keyword matches\")",
       "target": "                    log(f\"✅ 找到 {len(keyword_matches)} 个关键词匹配\")",
@@ -31891,7 +32152,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#56",
+      "id": "pipeline.py#60",
       "file": "pipeline.py",
       "source": "                        log(f\"\\n📊 KEYWORD MATCH DETAILS:\")",
       "target": "                        log(\"\\n📊 关键词匹配详情：\")",
@@ -31900,7 +32161,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#57",
+      "id": "pipeline.py#61",
       "file": "pipeline.py",
       "source": "                            log(f\"   Match {i+1}: '{keyword}' at {start_sec}-{end_sec}s\")\n                            log(f\"            Text: \\\"{text}...\\\"\")",
       "target": "                            log(f\"   匹配 {i+1}：“{keyword}”，位于 {start_sec}-{end_sec} 秒\")\n                            log(f\"            文本：“{text}...”\")",
@@ -31909,7 +32170,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#58",
+      "id": "pipeline.py#62",
       "file": "pipeline.py",
       "source": "                        log(f\"⚠️ No keyword matches found!\")\n                        log(f\"   Searched for: {SEARCH_KEYWORDS}\")\n                        log(f\"   In {len(transcript_segments)} transcript segments\")",
       "target": "                        log(\"⚠️ 未找到关键词匹配！\")\n                        log(f\"   搜索关键词：{SEARCH_KEYWORDS}\")\n                        log(f\"   共检查 {len(transcript_segments)} 个转录片段\")",
@@ -31918,7 +32179,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#59",
+      "id": "pipeline.py#63",
       "file": "pipeline.py",
       "source": "            log(\"ℹ️ Using cached transcript\")",
       "target": "            log(\"ℹ️ 正在使用缓存的转录文本\")",
@@ -31927,7 +32188,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#60",
+      "id": "pipeline.py#64",
       "file": "pipeline.py",
       "source": "                log(f\"🔹 Searching cached transcript for keywords: {SEARCH_KEYWORDS}\")",
       "target": "                log(f\"🔹 正在缓存转录中搜索关键词：{SEARCH_KEYWORDS}\")",
@@ -31936,7 +32197,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#61",
+      "id": "pipeline.py#65",
       "file": "pipeline.py",
       "source": "                log(f\"✅ Found {len(keyword_matches)} keyword matches\")",
       "target": "                log(f\"✅ 找到 {len(keyword_matches)} 个关键词匹配\")",
@@ -31945,7 +32206,7 @@
       "hunk": "@@ -819,52 +821,52 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#62",
+      "id": "pipeline.py#66",
       "file": "pipeline.py",
       "source": "                log(\"ℹ️ Skipping motion detection (all scene/motion points set to 0)\")",
       "target": "                log(\"ℹ️ 已跳过运动检测（场景/运动评分均为 0）\")",
@@ -31954,7 +32215,7 @@
       "hunk": "@@ -916,11 +918,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#63",
+      "id": "pipeline.py#67",
       "file": "pipeline.py",
       "source": "                log(\"🔹 Step 1+2: Detecting scenes, motion events, and motion peaks (this may take time)...\")",
       "target": "                log(\"🔹 步骤 1+2：正在检测场景、运动事件和运动峰值（可能需要一些时间）…\")",
@@ -31963,7 +32224,7 @@
       "hunk": "@@ -916,11 +918,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#64",
+      "id": "pipeline.py#68",
       "file": "pipeline.py",
       "source": "                        log(f\"✅ Motion detection results: {len(scenes)} scenes, {len(motion_events)} motion events, {len(motion_peaks)} motion peaks\")",
       "target": "                        log(f\"✅ 运动检测结果：{len(scenes)} 个场景，{len(motion_events)} 个运动事件，{len(motion_peaks)} 个运动峰值\")",
@@ -31972,7 +32233,7 @@
       "hunk": "@@ -948,21 +950,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#65",
+      "id": "pipeline.py#69",
       "file": "pipeline.py",
       "source": "                        log(f\"⚠️ Unexpected motion detection result format: {result}\")",
       "target": "                        log(f\"⚠️ 运动检测结果格式异常：{result}\")",
@@ -31981,7 +32242,7 @@
       "hunk": "@@ -948,21 +950,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#66",
+      "id": "pipeline.py#70",
       "file": "pipeline.py",
       "source": "                    log(f\"❌ Motion detection failed: {e}\")",
       "target": "                    log(f\"❌ 运动检测失败：{e}\")",
@@ -31990,7 +32251,7 @@
       "hunk": "@@ -948,21 +950,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#67",
+      "id": "pipeline.py#71",
       "file": "pipeline.py",
       "source": "                    log(f\"Full error: {traceback.format_exc()}\")",
       "target": "                    log(f\"完整错误信息：{traceback.format_exc()}\")",
@@ -31999,7 +32260,7 @@
       "hunk": "@@ -948,21 +950,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#68",
+      "id": "pipeline.py#72",
       "file": "pipeline.py",
       "source": "            log(\"ℹ️ Using cached motion analysis\")",
       "target": "            log(\"ℹ️ 正在使用缓存的运动分析\")",
@@ -32008,7 +32269,7 @@
       "hunk": "@@ -948,21 +950,21 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#69",
+      "id": "pipeline.py#73",
       "file": "pipeline.py",
       "source": "            log(\"ℹ️ Using cached audio data\")",
       "target": "            log(\"ℹ️ 正在使用缓存的音频数据\")",
@@ -32017,7 +32278,7 @@
       "hunk": "@@ -996,7 +998,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#70",
+      "id": "pipeline.py#74",
       "file": "pipeline.py",
       "source": "                    check_cancellation(cancel_flag, log, \"audio peak detection\")",
       "target": "                    check_cancellation(cancel_flag, log, \"音频峰值检测\")",
@@ -32027,7 +32288,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#71",
+      "id": "pipeline.py#75",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Audio peak detection done: {len(audio_peaks)} peaks\")",
       "target": "                    log(f\"✅ 音频峰值检测完成：{len(audio_peaks)} 个峰值\")",
@@ -32037,7 +32298,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#72",
+      "id": "pipeline.py#76",
       "file": "pipeline.py",
       "source": "                    log(f\"⚠️ Audio peak detection failed: {e}\")",
       "target": "                    log(f\"⚠️ 音频峰值检测失败：{e}\")",
@@ -32046,7 +32307,7 @@
       "hunk": "@@ -1009,14 +1011,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#73",
+      "id": "pipeline.py#77",
       "file": "pipeline.py",
       "source": "                    log(\"✅ Waveform computed (was missing in cache)\")",
       "target": "                    log(\"✅ 已计算音频波形（缓存中原本缺失）\")",
@@ -32055,7 +32316,7 @@
       "hunk": "@@ -1028,9 +1030,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#74",
+      "id": "pipeline.py#78",
       "file": "pipeline.py",
       "source": "                    log(f\"⚠️ Failed to compute waveform: {e}\")",
       "target": "                    log(f\"⚠️ 无法计算音频波形：{e}\")",
@@ -32064,7 +32325,7 @@
       "hunk": "@@ -1028,9 +1030,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#75",
+      "id": "pipeline.py#79",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Waveform extraction failed: {e}\")",
       "target": "                log(f\"⚠️ 音频波形提取失败：{e}\")",
@@ -32073,7 +32334,7 @@
       "hunk": "@@ -1045,23 +1047,23 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#76",
+      "id": "pipeline.py#80",
       "file": "pipeline.py",
       "source": "                log(\"ℹ️ Skipping audio peak detection (audio_peak_points set to 0)\")",
       "target": "                log(\"ℹ️ 已跳过音频峰值检测（audio_peak_points 为 0）\")",
@@ -32082,7 +32343,7 @@
       "hunk": "@@ -1045,23 +1047,23 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#77",
+      "id": "pipeline.py#81",
       "file": "pipeline.py",
       "source": "                    30, 100, \"Pipeline\",\n                    \"Audio peaks skipped (no audio scoring) — waveform computed for timeline\"",
       "target": "                    30, 100, \"处理流水线\",\n                    \"已跳过音频峰值评分——已为时间线计算音频波形\"",
@@ -32091,7 +32352,7 @@
       "hunk": "@@ -1045,23 +1047,23 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#78",
+      "id": "pipeline.py#82",
       "file": "pipeline.py",
       "source": "                progress.update_progress(30, 100, \"Pipeline\", \"Analyzing audio...\")\n                log(\"🔹 Step 3: Detecting audio peaks...\")",
       "target": "                progress.update_progress(30, 100, \"处理流水线\", \"正在分析音频…\")\n                log(\"🔹 步骤 3：正在检测音频峰值…\")",
@@ -32100,7 +32361,7 @@
       "hunk": "@@ -1045,23 +1047,23 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#79",
+      "id": "pipeline.py#83",
       "file": "pipeline.py",
       "source": "                    check_cancellation(cancel_flag, log, \"audio peak detection\")",
       "target": "                    check_cancellation(cancel_flag, log, \"音频峰值检测\")",
@@ -32110,7 +32371,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#80",
+      "id": "pipeline.py#84",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Audio peak detection done: {len(audio_peaks)} peaks\")",
       "target": "                    log(f\"✅ 音频峰值检测完成：{len(audio_peaks)} 个峰值\")",
@@ -32120,7 +32381,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#81",
+      "id": "pipeline.py#85",
       "file": "pipeline.py",
       "source": "                log(f\"ℹ️ Using cached loudness bursts \"\n                    f\"({len(loudness_bursts)} event(s))\")",
       "target": "                log(f\"ℹ️ 正在使用缓存的响度突增 \"\n                    f\"（{len(loudness_bursts)} 个事件）\")",
@@ -32129,7 +32390,7 @@
       "hunk": "@@ -1090,12 +1092,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#82",
+      "id": "pipeline.py#86",
       "file": "pipeline.py",
       "source": "                progress.update_progress(31, 100, \"Pipeline\",\n                                         \"Finding loudness bursts...\")\n                log(\"🔹 Step 3b: Finding loudness bursts...\")",
       "target": "                progress.update_progress(31, 100, \"处理流水线\",\n                                         \"正在查找响度突增…\")\n                log(\"🔹 步骤 3b：正在查找响度突增…\")",
@@ -32138,7 +32399,7 @@
       "hunk": "@@ -1090,12 +1092,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#83",
+      "id": "pipeline.py#87",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Loudness bursts: {len(loudness_bursts)} event(s) \"\n                        f\"({_lb_result['events_per_hour']}/hour)\")",
       "target": "                    log(f\"✅ 响度突增：{len(loudness_bursts)} 个事件 \"\n                        f\"（每小时 {_lb_result['events_per_hour']} 个）\")",
@@ -32147,7 +32408,7 @@
       "hunk": "@@ -1113,15 +1115,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#84",
+      "id": "pipeline.py#88",
       "file": "pipeline.py",
       "source": "                    log(f\"⚠️ Loudness burst detection skipped: {e}\")",
       "target": "                    log(f\"⚠️ 已跳过响度突增检测：{e}\")",
@@ -32156,7 +32417,7 @@
       "hunk": "@@ -1113,15 +1115,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#85",
+      "id": "pipeline.py#89",
       "file": "pipeline.py",
       "source": "                    log(f\"⚠️ Loudness burst detection failed: {e}\")",
       "target": "                    log(f\"⚠️ 响度突增检测失败：{e}\")",
@@ -32165,7 +32426,7 @@
       "hunk": "@@ -1113,15 +1115,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#86",
+      "id": "pipeline.py#90",
       "file": "pipeline.py",
       "source": "                log(f\"💾 Cached the {filled} data - the next run reuses it.\")",
       "target": "                log(f\"💾 已缓存 {filled} 数据，下次运行将直接复用。\")",
@@ -32174,7 +32435,7 @@
       "hunk": "@@ -1149,9 +1151,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#87",
+      "id": "pipeline.py#91",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Could not cache the backfilled data: {e}\")",
       "target": "                log(f\"⚠️ 无法缓存补全数据：{e}\")",
@@ -32183,7 +32444,7 @@
       "hunk": "@@ -1149,9 +1151,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#88",
+      "id": "pipeline.py#92",
       "file": "pipeline.py",
       "source": "        log(f\"🎯 Object detector: {object_mode}, size {yolo_model_size}\"\n            + (f\" (+ {os.path.basename(custom_model_path)})\"",
       "target": "        log(f\"🎯 物体检测器：{object_mode}，尺寸 {yolo_model_size}\"\n            + (f\"（+ {os.path.basename(custom_model_path)}）\"",
@@ -32192,7 +32453,7 @@
       "hunk": "@@ -1168,8 +1170,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#89",
+      "id": "pipeline.py#93",
       "file": "pipeline.py",
       "source": "            log(f\"🔹 OpenVINO available devices: {ie.available_devices}\")",
       "target": "            log(f\"🔹 OpenVINO 可用设备：{ie.available_devices}\")",
@@ -32201,7 +32462,7 @@
       "hunk": "@@ -1179,11 +1181,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#90",
+      "id": "pipeline.py#94",
       "file": "pipeline.py",
       "source": "            log(\"ℹ️ OpenVINO not available\")",
       "target": "            log(\"ℹ️ OpenVINO 不可用\")",
@@ -32210,7 +32471,7 @@
       "hunk": "@@ -1179,11 +1181,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#91",
+      "id": "pipeline.py#95",
       "file": "pipeline.py",
       "source": "            log(f\"⚠️ OpenVINO device check failed: {e}\")",
       "target": "            log(f\"⚠️ OpenVINO 设备检查失败：{e}\")",
@@ -32219,7 +32480,7 @@
       "hunk": "@@ -1179,11 +1181,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#92",
+      "id": "pipeline.py#96",
       "file": "pipeline.py",
       "source": "                log(\"⚠️ Open-vocabulary detection is no longer part of this \"\n                    \"detector — using the standard one\")",
       "target": "                log(\"⚠️ 当前检测器已不再包含开放词汇检测，将改用标准检测器\")",
@@ -32228,7 +32489,7 @@
       "hunk": "@@ -1192,12 +1194,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#93",
+      "id": "pipeline.py#97",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ {os.path.basename(custom_model_path)} is a .pt model, \"\n                    \"which this detector cannot load. Export it to ONNX, or \"\n                    \"train a model of your own in the app.\")",
       "target": "                log(f\"⚠️ {os.path.basename(custom_model_path)} 是 .pt 模型，当前检测器无法加载。\"\n                    \"请导出为 ONNX，或直接在应用中训练自己的模型。\")",
@@ -32237,7 +32498,7 @@
       "hunk": "@@ -1192,12 +1194,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#94",
+      "id": "pipeline.py#98",
       "file": "pipeline.py",
       "source": "                log(\"⚠️ Object detection unavailable — no usable model \"\n                    \"(run tools/get_yolox_model.py, or import a custom model)\")",
       "target": "                log(\"⚠️ 物体检测不可用——没有可用模型\"\n                    \"（可运行 tools/get_yolox_model.py，或导入自定义模型）\")",
@@ -32246,7 +32507,7 @@
       "hunk": "@@ -1216,15 +1216,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#95",
+      "id": "pipeline.py#99",
       "file": "pipeline.py",
       "source": "                log(f\"✅ Object detector: {type(yolo_model).__name__}, \"\n                    f\"{len(object_class_names)} classes\")",
       "target": "                log(f\"✅ 物体检测器：{type(yolo_model).__name__}，\"\n                    f\"{len(object_class_names)} 个类别\")",
@@ -32255,7 +32516,7 @@
       "hunk": "@@ -1216,15 +1216,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#96",
+      "id": "pipeline.py#100",
       "file": "pipeline.py",
       "source": "            log(f\"❌ Failed to load object detector: {e}\")",
       "target": "            log(f\"❌ 物体检测器加载失败：{e}\")",
@@ -32264,7 +32525,7 @@
       "hunk": "@@ -1216,15 +1216,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#97",
+      "id": "pipeline.py#101",
       "file": "pipeline.py",
       "source": "                log(f\"ℹ Reusing {len(object_bboxes_cache)} cached detection \"\n                    \"frame(s) for the report\")",
       "target": "                log(f\"ℹ 正在为报告复用 {len(object_bboxes_cache)} 个缓存检测帧\")",
@@ -32273,7 +32534,7 @@
       "hunk": "@@ -1244,11 +1244,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#98",
+      "id": "pipeline.py#102",
       "file": "pipeline.py",
       "source": "                log(\"ℹ Skipping object detection (no objects to highlight)\")",
       "target": "                log(\"ℹ 已跳过物体检测（未配置需要关注的物体）\")",
@@ -32282,7 +32543,7 @@
       "hunk": "@@ -1244,11 +1244,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#99",
+      "id": "pipeline.py#103",
       "file": "pipeline.py",
       "source": "                        log(f\"🎨 Object bounding boxes enabled, output: {object_annotated_path}\")",
       "target": "                        log(f\"🎨 已启用物体检测框，输出：{object_annotated_path}\")",
@@ -32291,7 +32552,7 @@
       "hunk": "@@ -1261,7 +1260,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#100",
+      "id": "pipeline.py#104",
       "file": "pipeline.py",
       "source": "                log(f\"✅ Object detection complete: {len(object_detections)} seconds with objects\")",
       "target": "                log(f\"✅ 物体检测完成：{len(object_detections)} 秒包含检测到的物体\")",
@@ -32300,7 +32561,7 @@
       "hunk": "@@ -1282,7 +1281,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#101",
+      "id": "pipeline.py#105",
       "file": "pipeline.py",
       "source": "            log(f\"⚠️ Composition engine skipped: {_ce}\")",
       "target": "            log(f\"⚠️ 已跳过构图引擎：{_ce}\")",
@@ -32309,7 +32570,7 @@
       "hunk": "@@ -1335,9 +1334,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#102",
+      "id": "pipeline.py#106",
       "file": "pipeline.py",
       "source": "        print(\"Detections per second:\", len(object_detections))",
       "target": "        print(\"每秒检测结果数：\", len(object_detections))",
@@ -32318,7 +32579,7 @@
       "hunk": "@@ -1335,9 +1334,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#103",
+      "id": "pipeline.py#107",
       "file": "pipeline.py",
       "source": "                    log(f\"🎨 Action labels enabled, output: {action_annotated_path}\")",
       "target": "                    log(f\"🎨 已启用动作标签，输出：{action_annotated_path}\")",
@@ -32327,7 +32588,7 @@
       "hunk": "@@ -1416,7 +1415,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#104",
+      "id": "pipeline.py#108",
       "file": "pipeline.py",
       "source": "                        log(\"ℹ️ The SigLIP2 action backend does not draw labels on the video yet\")",
       "target": "                        log(\"ℹ️ SigLIP2 动作后端目前尚不支持在视频上绘制标签\")",
@@ -32336,7 +32597,7 @@
       "hunk": "@@ -1462,18 +1461,17 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#105",
+      "id": "pipeline.py#109",
       "file": "pipeline.py",
       "source": "                    log(\"⚠️ Intel / R3D action recognition is deprecated and will be removed; \"\n                        \"train an action head (SigLIP2) to replace it\")",
       "target": "                    log(\"⚠️ Intel / R3D 动作识别已弃用并将在后续移除；\"\n                        \"请训练 SigLIP2 动作头作为替代\")",
@@ -32345,7 +32606,7 @@
       "hunk": "@@ -1462,18 +1461,17 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#106",
+      "id": "pipeline.py#110",
       "file": "pipeline.py",
       "source": "                            print(\"🎯 Action backend → R3D on DirectML through \"\n                                \"ONNX Runtime; it stays on the CPU if the export or \"\n                                \"the provider will not run\")",
       "target": "                            print(\"🎯 动作后端 → 通过 ONNX Runtime 在 DirectML 上运行 R3D；\"\n                                \"如果导出或执行提供程序无法运行，将回退到 CPU\")",
@@ -32354,7 +32615,7 @@
       "hunk": "@@ -1462,18 +1461,17 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#107",
+      "id": "pipeline.py#111",
       "file": "pipeline.py",
       "source": "                            print(f\"🎯 Auto backend → CUDA detected, using R3D ({_dev.backend_name})\")",
       "target": "                            print(f\"🎯 自动后端 → 检测到 CUDA，使用 R3D（{_dev.backend_name}）\")",
@@ -32363,7 +32624,7 @@
       "hunk": "@@ -1492,7 +1490,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#108",
+      "id": "pipeline.py#112",
       "file": "pipeline.py",
       "source": "                            print(f\"🎯 Auto backend → DirectML detected, using R3D on \"\n                                f\"{_dev.dml_device} ({_dev.backend_name}); if that \"\n                                f\"backend cannot run it, ONNX Runtime is tried on \"\n                                f\"the same card before the CPU\")",
       "target": "                            print(f\"🎯 自动后端 → 检测到 DirectML，在 \"\n                                f\"{_dev.dml_device}（{_dev.backend_name}）上使用 R3D；如果该后端\"\n                                f\"无法运行，将先尝试在同一显卡上使用 ONNX Runtime，\"\n                                f\"最后才回退到 CPU\")",
@@ -32372,7 +32633,7 @@
       "hunk": "@@ -1510,10 +1508,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#109",
+      "id": "pipeline.py#113",
       "file": "pipeline.py",
       "source": "                            print(f\"🎯 Auto backend → ONNX Runtime on the GPU, using \"\n                                f\"R3D ({_dev.backend_name}); it stays on the CPU if \"\n                                f\"the export or the provider will not run\")",
       "target": "                            print(f\"🎯 自动后端 → 在 GPU 上使用 ONNX Runtime，运行 \"\n                                f\"R3D（{_dev.backend_name}）；如果导出或执行提供程序无法运行，\"\n                                f\"将回退到 CPU\")",
@@ -32381,7 +32642,7 @@
       "hunk": "@@ -1527,20 +1525,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#110",
+      "id": "pipeline.py#114",
       "file": "pipeline.py",
       "source": "                            print(f\"🎯 Auto backend → no CUDA, using OpenVINO on {_dev.backend_name}\")",
       "target": "                            print(f\"🎯 自动后端 → 未检测到 CUDA，在 {_dev.backend_name} 上使用 OpenVINO\")",
@@ -32390,7 +32651,7 @@
       "hunk": "@@ -1527,20 +1525,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#111",
+      "id": "pipeline.py#115",
       "file": "pipeline.py",
       "source": "                    log(\"🎯 Action recognition: \" + action_backend_summary(",
       "target": "                    log(\"🎯 动作识别：\" + action_backend_summary(",
@@ -32399,7 +32660,7 @@
       "hunk": "@@ -1527,20 +1525,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#112",
+      "id": "pipeline.py#116",
       "file": "pipeline.py",
       "source": "                    print(f\"   action backend setting: {action_backend} | R3D model: {r3d_model} | \"\n                          f\"enable_r3d: {enable_r3d} | r3d_device: {r3d_device or 'auto'} | \"\n                          f\"onnx_dml: {r3d_onnx_dml} | OpenVINO device: {openvino_device}\")",
       "target": "                    print(f\"   动作后端设置：{action_backend} | R3D 模型：{r3d_model} | \"\n                          f\"启用 R3D：{enable_r3d} | R3D 设备：{r3d_device or 'auto'} | \"\n                          f\"ONNX DirectML：{r3d_onnx_dml} | OpenVINO 设备：{openvino_device}\")",
@@ -32408,7 +32669,7 @@
       "hunk": "@@ -1527,20 +1525,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#113",
+      "id": "pipeline.py#117",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Action detection complete: {len(all_action_detections)} detections\")",
       "target": "                    log(f\"✅ 动作检测完成：{len(all_action_detections)} 个检测结果\")",
@@ -32417,7 +32678,7 @@
       "hunk": "@@ -1568,12 +1566,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#114",
+      "id": "pipeline.py#118",
       "file": "pipeline.py",
       "source": "                        log(f\"DEBUG: Detection format - {len(first_detection)} elements: {first_detection}\")",
       "target": "                        log(f\"调试：检测格式 - {len(first_detection)} 个元素：{first_detection}\")",
@@ -32426,7 +32687,7 @@
       "hunk": "@@ -1568,12 +1566,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#115",
+      "id": "pipeline.py#119",
       "file": "pipeline.py",
       "source": "                            log(f\"⚠️ Unexpected detection format with {len(detection)} elements: {detection}\")",
       "target": "                            log(f\"⚠️ 检测结果格式异常，共 {len(detection)} 个元素：{detection}\")",
@@ -32435,7 +32696,7 @@
       "hunk": "@@ -1590,11 +1588,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#116",
+      "id": "pipeline.py#120",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Normalized {len(all_action_detections)} detections to 5-element format\")",
       "target": "                    log(f\"✅ 已将 {len(all_action_detections)} 个检测结果标准化为 5 元素格式\")",
@@ -32444,7 +32705,7 @@
       "hunk": "@@ -1590,11 +1588,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#117",
+      "id": "pipeline.py#121",
       "file": "pipeline.py",
       "source": "                        log(f\"DEBUG: {action_name}: {len(action_list)} detections → {len(grouped_by_action[action_name])} sequences\")",
       "target": "                        log(f\"调试：{action_name}：{len(action_list)} 个检测 → {len(grouped_by_action[action_name])} 个序列\")",
@@ -32453,7 +32714,7 @@
       "hunk": "@@ -1611,7 +1609,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#118",
+      "id": "pipeline.py#122",
       "file": "pipeline.py",
       "source": "                    log(f\"DEBUG: Allocating {quota_per_action:.1f}s per action type ({num_actions} types)\")",
       "target": "                    log(f\"调试：每种动作分配 {quota_per_action:.1f} 秒（共 {num_actions} 种）\")",
@@ -32462,7 +32723,7 @@
       "hunk": "@@ -1621,7 +1619,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#119",
+      "id": "pipeline.py#123",
       "file": "pipeline.py",
       "source": "                            log(f\"DEBUG: Selected {action_name} at {seconds_to_mmss(start_time)}-{seconds_to_mmss(end_time)} \"\n                                f\"({duration:.1f}s, conf: {confidence:.3f}) - Action total: {action_duration:.1f}s/{quota_per_action:.1f}s\")",
       "target": "                            log(f\"调试：已选择 {action_name}，{seconds_to_mmss(start_time)}-{seconds_to_mmss(end_time)} \"\n                                f\"（{duration:.1f} 秒，置信度：{confidence:.3f}）- 该动作累计：{action_duration:.1f}/{quota_per_action:.1f} 秒\")",
@@ -32471,7 +32732,7 @@
       "hunk": "@@ -1639,10 +1637,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#120",
+      "id": "pipeline.py#124",
       "file": "pipeline.py",
       "source": "                    log(f\"\\nDEBUG: Selected {len(selected_sequences)} sequences from {num_actions} action types\")",
       "target": "                    log(f\"\\n调试：从 {num_actions} 种动作中选择了 {len(selected_sequences)} 个序列\")",
@@ -32480,7 +32741,7 @@
       "hunk": "@@ -1639,10 +1637,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#121",
+      "id": "pipeline.py#125",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Action recognition: {len(action_detections)} action sequences selected (total duration: {total_duration:.1f}s)\")",
       "target": "                    log(f\"✅ 动作识别：已选择 {len(action_detections)} 个动作序列（总时长：{total_duration:.1f} 秒）\")",
@@ -32489,7 +32750,7 @@
       "hunk": "@@ -1661,12 +1659,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#122",
+      "id": "pipeline.py#126",
       "file": "pipeline.py",
       "source": "                log(f\"⚠ Action recognition failed: {e}\")",
       "target": "                log(f\"⚠ 动作识别失败：{e}\")",
@@ -32498,7 +32759,7 @@
       "hunk": "@@ -1661,12 +1659,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#123",
+      "id": "pipeline.py#127",
       "file": "pipeline.py",
       "source": "                log(f\"Full error: {traceback.format_exc()}\")",
       "target": "                log(f\"完整错误信息：{traceback.format_exc()}\")",
@@ -32508,7 +32769,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#124",
+      "id": "pipeline.py#128",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Converted cached detections from 6-element to 5-element format\")",
       "target": "                    log(\"✅ 已将缓存检测结果从 6 元素格式转换为 5 元素格式\")",
@@ -32517,7 +32778,7 @@
       "hunk": "@@ -1679,9 +1677,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#125",
+      "id": "pipeline.py#129",
       "file": "pipeline.py",
       "source": "            log(\"ℹ️ No interesting actions specified, skipping action recognition\")",
       "target": "            log(\"ℹ️ 未指定关注动作，已跳过动作识别\")",
@@ -32526,7 +32787,7 @@
       "hunk": "@@ -1679,9 +1677,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#126",
+      "id": "pipeline.py#130",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Analysis results cached (keyword-filtered: {len(analysis_data['transcript']['segments'])} segments, language: {TRANSCRIPT_SOURCE_LANG})\")",
       "target": "                    log(f\"✅ 分析结果已缓存（关键词筛选：{len(analysis_data['transcript']['segments'])} 个片段，语言：{TRANSCRIPT_SOURCE_LANG}）\")",
@@ -32535,7 +32796,7 @@
       "hunk": "@@ -1723,14 +1721,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#127",
+      "id": "pipeline.py#131",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Analysis results cached (full transcript: {len(analysis_data['transcript']['segments'])} segments, language: {TRANSCRIPT_SOURCE_LANG})\")",
       "target": "                    log(f\"✅ 分析结果已缓存（完整转录：{len(analysis_data['transcript']['segments'])} 个片段，语言：{TRANSCRIPT_SOURCE_LANG}）\")",
@@ -32544,7 +32805,7 @@
       "hunk": "@@ -1723,14 +1721,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#128",
+      "id": "pipeline.py#132",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Failed to save cache: {e}\")",
       "target": "                log(f\"⚠️ 缓存保存失败：{e}\")",
@@ -32553,7 +32814,7 @@
       "hunk": "@@ -1723,14 +1721,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#129",
+      "id": "pipeline.py#133",
       "file": "pipeline.py",
       "source": "                log(f\"Full error: {traceback.format_exc()}\")",
       "target": "                log(f\"完整错误信息：{traceback.format_exc()}\")",
@@ -32563,7 +32824,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#130",
+      "id": "pipeline.py#134",
       "file": "pipeline.py",
       "source": "                log(f\"🚫 Avoid: located {len(forbidden_ranges)} forbidden range(s)\")",
       "target": "                log(f\"🚫 排除：已定位 {len(forbidden_ranges)} 个禁用区间\")",
@@ -32572,7 +32833,7 @@
       "hunk": "@@ -1743,9 +1741,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#131",
+      "id": "pipeline.py#135",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Avoid resolver unavailable — running without exclusion: {e}\")",
       "target": "                log(f\"⚠️ 排除解析器不可用，将不应用人物排除：{e}\")",
@@ -32581,7 +32842,7 @@
       "hunk": "@@ -1743,9 +1741,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#132",
+      "id": "pipeline.py#136",
       "file": "pipeline.py",
       "source": "            log(f\"⚠️ Manual avoid parse failed — ignoring manual ranges: {e}\")",
       "target": "            log(f\"⚠️ 手动排除区间解析失败，将忽略这些区间：{e}\")",
@@ -32590,7 +32851,7 @@
       "hunk": "@@ -1756,16 +1754,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#133",
+      "id": "pipeline.py#137",
       "file": "pipeline.py",
       "source": "            log(f\"🚫 Avoid: +{len(manual_avoid)} manual range(s) → \"\n                f\"{len(forbidden_ranges)} forbidden range(s) total\")",
       "target": "            log(f\"🚫 排除：增加 {len(manual_avoid)} 个手动区间 → \"\n                f\"总计 {len(forbidden_ranges)} 个禁用区间\")",
@@ -32599,7 +32860,7 @@
       "hunk": "@@ -1756,16 +1754,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#134",
+      "id": "pipeline.py#138",
       "file": "pipeline.py",
       "source": "        progress.update_progress(80, 100, \"Pipeline\", \"Computing scores...\")\n        check_cancellation(cancel_flag, log, \"score computation\")",
       "target": "        progress.update_progress(80, 100, \"处理流水线\", \"正在计算评分…\")\n        check_cancellation(cancel_flag, log, \"计算评分\")",
@@ -32608,7 +32869,7 @@
       "hunk": "@@ -1756,16 +1754,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#135",
+      "id": "pipeline.py#139",
       "file": "pipeline.py",
       "source": "            log(\"⚠️ WARNING: object_points > 0 and objects were configured, \"\n                \"but no objects were detected in the video. Object scoring will contribute nothing.\")",
       "target": "            log(\"⚠️ 警告：object_points > 0 且已配置物体，但视频中未检测到这些物体；物体评分不会产生贡献。\")",
@@ -32617,7 +32878,7 @@
       "hunk": "@@ -1816,25 +1814,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#136",
+      "id": "pipeline.py#140",
       "file": "pipeline.py",
       "source": "            log(\"⚠️ WARNING: action_points > 0 but no interesting actions are configured. \"\n                \"Action scoring will contribute nothing — set action_points to 0 or add actions to detect.\")",
       "target": "            log(\"⚠️ 警告：action_points > 0，但未配置关注动作；动作评分不会产生贡献。请将 action_points 设为 0，或添加需要检测的动作。\")",
@@ -32626,7 +32887,7 @@
       "hunk": "@@ -1816,25 +1814,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#137",
+      "id": "pipeline.py#141",
       "file": "pipeline.py",
       "source": "            log(\"⚠️ WARNING: keyword_points > 0 but no search keywords are configured. \"\n                \"Keyword scoring will contribute nothing.\")",
       "target": "            log(\"⚠️ 警告：keyword_points > 0，但未配置搜索关键词；关键词评分不会产生贡献。\")",
@@ -32635,7 +32896,7 @@
       "hunk": "@@ -1816,25 +1814,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#138",
+      "id": "pipeline.py#142",
       "file": "pipeline.py",
       "source": "            log(\"⚠️ WARNING: keyword_points > 0 and keywords were configured, \"\n                \"but no keyword matches were found in the transcript.\")",
       "target": "            log(\"⚠️ 警告：keyword_points > 0 且已配置关键词，但转录文本中未找到匹配项。\")",
@@ -32644,7 +32905,7 @@
       "hunk": "@@ -1816,25 +1814,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#139",
+      "id": "pipeline.py#143",
       "file": "pipeline.py",
       "source": "            log(\"⚠️ WARNING: 'Score actions only if objects detected' is enabled, \"\n                \"but no objects are configured to detect. Actions will NEVER be scored. \"\n                \"Either add objects to detect, or uncheck 'Score actions only if objects detected'.\")",
       "target": "            log(\"⚠️ 警告：已启用“仅在检测到物体时为动作评分”，但未配置要检测的物体。\"\n                \"动作将无法获得评分；请添加物体类别，或关闭该选项。\")",
@@ -32653,7 +32914,7 @@
       "hunk": "@@ -1816,25 +1814,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#140",
+      "id": "pipeline.py#144",
       "file": "pipeline.py",
       "source": "            log(\"⚠️ WARNING: All scoring signals are set to 0. No moments will be scored and \"\n                \"no highlight will be generated in MAX mode. Enable at least one scoring signal.\")",
       "target": "            log(\"⚠️ 警告：所有评分信号都设为 0。不会有任何时刻获得评分，MAX 模式下也不会生成高光。\"\n                \"请至少启用一种评分信号。\")",
@@ -32662,7 +32923,7 @@
       "hunk": "@@ -1842,8 +1835,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#141",
+      "id": "pipeline.py#145",
       "file": "pipeline.py",
       "source": "                log(f\"📊 {action_name} confidence stats: 50th={action_type_percentiles[action_name]['50th']:.2f}, 90th={action_type_percentiles[action_name]['90th']:.2f}\")",
       "target": "                log(f\"📊 {action_name} 置信度统计：50 分位={action_type_percentiles[action_name]['50th']:.2f}，90 分位={action_type_percentiles[action_name]['90th']:.2f}\")",
@@ -32671,7 +32932,7 @@
       "hunk": "@@ -1908,11 +1901,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#142",
+      "id": "pipeline.py#146",
       "file": "pipeline.py",
       "source": "            log(\"⚠️ Skipping action scoring — 'require objects' is ON but no objects configured.\")",
       "target": "            log(\"⚠️ 已跳过动作评分——已开启“需要物体”，但没有配置物体。\")",
@@ -32680,7 +32941,7 @@
       "hunk": "@@ -1908,11 +1901,11 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#143",
+      "id": "pipeline.py#147",
       "file": "pipeline.py",
       "source": "        log(f\"✅ Object detection summary: {total_detections} detections\")",
       "target": "        log(f\"✅ 物体检测汇总：{total_detections} 个检测结果\")",
@@ -32689,7 +32950,7 @@
       "hunk": "@@ -1939,7 +1932,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#144",
+      "id": "pipeline.py#148",
       "file": "pipeline.py",
       "source": "                    log(f\"😐 Expressions: {int((face_score > 0).sum())} second(s) \"\n                        f\"matched {', '.join(FACE_LABELS)}\")",
       "target": "                    log(f\"😐 表情：有 {int((face_score > 0).sum())} 秒 \"\n                        f\"匹配 {', '.join(FACE_LABELS)}\")",
@@ -32698,7 +32959,7 @@
       "hunk": "@@ -1967,10 +1960,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#145",
+      "id": "pipeline.py#149",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Expression scan skipped: {_fe}\")",
       "target": "                log(f\"⚠️ 已跳过表情扫描：{_fe}\")",
@@ -32707,7 +32968,7 @@
       "hunk": "@@ -1967,10 +1960,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#146",
+      "id": "pipeline.py#150",
       "file": "pipeline.py",
       "source": "                    print(f\"ℹ Expression scan reused for the report only \"\n                          f\"({len(_cached)} second(s)); it scored no points.\")",
       "target": "                    print(f\"ℹ 表情扫描结果仅用于报告复用\"\n                          f\"（{len(_cached)} 秒）；不会计入高光评分。\")",
@@ -32716,7 +32977,7 @@
       "hunk": "@@ -1986,10 +1979,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#147",
+      "id": "pipeline.py#151",
       "file": "pipeline.py",
       "source": "                print(f\"⚠️ Cached expression scan not loaded: {_fe}\")",
       "target": "                print(f\"⚠️ 无法加载缓存的表情扫描结果：{_fe}\")",
@@ -32725,7 +32986,7 @@
       "hunk": "@@ -1986,10 +1979,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#148",
+      "id": "pipeline.py#152",
       "file": "pipeline.py",
       "source": "            log(f\"🚫 Avoid(skip): zeroed score on {len(forbidden_seconds)} second(s)\")",
       "target": "            log(f\"🚫 排除（跳过）：已将 {len(forbidden_seconds)} 秒的评分归零\")",
@@ -32734,7 +32995,7 @@
       "hunk": "@@ -2023,10 +2016,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#149",
+      "id": "pipeline.py#153",
       "file": "pipeline.py",
       "source": "        progress.update_progress(80, 100, \"Score Calculation\", \"Score computation complete\")\n        check_cancellation(cancel_flag, log, \"score computation completion\")",
       "target": "        progress.update_progress(80, 100, \"评分计算\", \"评分计算完成\")\n        check_cancellation(cancel_flag, log, \"评分计算完成\")",
@@ -32743,7 +33004,7 @@
       "hunk": "@@ -2023,10 +2016,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#150",
+      "id": "pipeline.py#154",
       "file": "pipeline.py",
       "source": "        print(f\"\\n=== SCORE DISTRIBUTION ===\")\n        print(f\"Max score: {max_score:.1f}\")\n        print(f\"Min score: {min_score:.1f}\")\n        print(f\"Average score: {avg_score:.1f}\")\n        print(f\"Score range: {max_score - min_score:.1f}\")\n        print(f\"Average ending score: {np.mean(ending_scores) if len(ending_scores) > 0 else 0:.2f}\")",
       "target": "        print(\"\\n=== 评分分布 ===\")\n        print(f\"最高分：{max_score:.1f}\")\n        print(f\"最低分：{min_score:.1f}\")\n        print(f\"平均分：{avg_score:.1f}\")\n        print(f\"分数跨度：{max_score - min_score:.1f}\")\n        print(f\"结尾平均分：{np.mean(ending_scores) if len(ending_scores) > 0 else 0:.2f}\")",
@@ -32752,7 +33013,7 @@
       "hunk": "@@ -2037,19 +2030,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#151",
+      "id": "pipeline.py#155",
       "file": "pipeline.py",
       "source": "        print(f\"\\n=== TOP 10 SCORING MOMENTS ===\")",
       "target": "        print(\"\\n=== 评分最高的 10 个时刻 ===\")",
@@ -32761,7 +33022,7 @@
       "hunk": "@@ -2037,19 +2030,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#152",
+      "id": "pipeline.py#156",
       "file": "pipeline.py",
       "source": "            print(f\"{i+1}. Second {idx} ({timestamp}): {score[idx]:.1f} points\")",
       "target": "            print(f\"{i+1}. 第 {idx} 秒（{timestamp}）：{score[idx]:.1f} 分\")",
@@ -32770,7 +33031,7 @@
       "hunk": "@@ -2037,19 +2030,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#153",
+      "id": "pipeline.py#157",
       "file": "pipeline.py",
       "source": "            log(\"🔄 Rebuilding action sequences from cached detections...\")",
       "target": "            log(\"🔄 正在根据缓存检测结果重建动作序列…\")",
@@ -32779,7 +33040,7 @@
       "hunk": "@@ -2060,7 +2053,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#154",
+      "id": "pipeline.py#158",
       "file": "pipeline.py",
       "source": "                log(f\"   {action_name}: {len(action_list)} detections → \"\n                    f\"{len(grouped_by_action[action_name])} sequences\")",
       "target": "                log(f\"   {action_name}：{len(action_list)} 个检测 → \"\n                    f\"{len(grouped_by_action[action_name])} 个序列\")",
@@ -32788,7 +33049,7 @@
       "hunk": "@@ -2077,8 +2070,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#155",
+      "id": "pipeline.py#159",
       "file": "pipeline.py",
       "source": "            log(f\"✅ Rebuilt {len(selected_sequences)} action sequences from \"\n                f\"{len(action_detections)} cached detections\")",
       "target": "            log(f\"✅ 已根据 {len(action_detections)} 个缓存检测结果重建 \"\n                f\"{len(selected_sequences)} 个动作序列\")",
@@ -32797,7 +33058,7 @@
       "hunk": "@@ -2096,12 +2089,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#156",
+      "id": "pipeline.py#160",
       "file": "pipeline.py",
       "source": "            log(\"🔧 CLIP_TIME=0 → using auto-segmentation (variable-length clips)\")",
       "target": "            log(\"🔧 CLIP_TIME=0 → 使用自动分段（可变长度片段）\")",
@@ -32806,7 +33067,7 @@
       "hunk": "@@ -2096,12 +2089,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#157",
+      "id": "pipeline.py#161",
       "file": "pipeline.py",
       "source": "                log(f\"🎞️ Coverage {COVERAGE:.0%} → spreading clips across the video\")",
       "target": "                log(f\"🎞️ 覆盖率 {COVERAGE:.0%} → 将片段分散到整个视频\")",
@@ -32815,7 +33076,7 @@
       "hunk": "@@ -2133,7 +2126,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#158",
+      "id": "pipeline.py#162",
       "file": "pipeline.py",
       "source": "                log(f\"🩹 Quality gate: {penalized} of {len(segments)} clips \"\n                    f\"penalized as blurry\")",
       "target": "                log(f\"🩹 画质门控：{len(segments)} 个片段中有 {penalized} 个因模糊被降权\")",
@@ -32824,7 +33085,7 @@
       "hunk": "@@ -2160,21 +2153,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#159",
+      "id": "pipeline.py#163",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Quality gate skipped: {e}\")",
       "target": "                log(f\"⚠️ 已跳过画质门控：{e}\")",
@@ -32833,7 +33094,7 @@
       "hunk": "@@ -2160,21 +2153,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#160",
+      "id": "pipeline.py#164",
       "file": "pipeline.py",
       "source": "            log(f\"🚫 Avoid(skip): {before_n} → {len(segments)} segment(s) after removing forbidden ranges\")",
       "target": "            log(f\"🚫 排除（跳过）：移除禁用区间后，片段数 {before_n} → {len(segments)}\")",
@@ -32842,7 +33103,7 @@
       "hunk": "@@ -2160,21 +2153,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#161",
+      "id": "pipeline.py#165",
       "file": "pipeline.py",
       "source": "        print(\"\\n🔍 FINAL HIGHLIGHT BREAKDOWN:\")\n        print(f\"Total segments: {len(segments)}\")",
       "target": "        print(\"\\n🔍 最终高光明细：\")\n        print(f\"片段总数：{len(segments)}\")",
@@ -32851,7 +33112,7 @@
       "hunk": "@@ -2160,21 +2153,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#162",
+      "id": "pipeline.py#166",
       "file": "pipeline.py",
       "source": "        print(f\"Total highlight duration: {total_final_duration:.1f}s\")",
       "target": "        print(f\"高光总时长：{total_final_duration:.1f} 秒\")",
@@ -32860,7 +33121,7 @@
       "hunk": "@@ -2160,21 +2153,20 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#163",
+      "id": "pipeline.py#167",
       "file": "pipeline.py",
       "source": "                    print(f\"⚠️ Chapters skipped: {_ce}\")",
       "target": "                    print(f\"⚠️ 已跳过章节分析：{_ce}\")",
@@ -32869,7 +33130,7 @@
       "hunk": "@@ -2220,7 +2212,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#164",
+      "id": "pipeline.py#168",
       "file": "pipeline.py",
       "source": "                    print(f\"⚠️ Sequence findings skipped: {_fe}\")",
       "target": "                    print(f\"⚠️ 已跳过序列分析：{_fe}\")",
@@ -32878,7 +33139,7 @@
       "hunk": "@@ -2332,7 +2324,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#165",
+      "id": "pipeline.py#169",
       "file": "pipeline.py",
       "source": "                        log(f\"💡 {len(report['advice'])} suggestion(s) in the \"\n                            \"highlight report\")",
       "target": "                        log(f\"💡 高光报告中有 {len(report['advice'])} 条建议\")",
@@ -32887,7 +33148,7 @@
       "hunk": "@@ -2340,10 +2332,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#166",
+      "id": "pipeline.py#170",
       "file": "pipeline.py",
       "source": "                    print(f\"⚠️ Advisor skipped: {_ae}\")",
       "target": "                    print(f\"⚠️ 已跳过分析建议：{_ae}\")",
@@ -32896,7 +33157,7 @@
       "hunk": "@@ -2340,10 +2332,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#167",
+      "id": "pipeline.py#171",
       "file": "pipeline.py",
       "source": "                log(f\"📄 Why-these-moments report: {os.path.basename(html_path)}\")",
       "target": "                log(f\"📄 高光入选原因报告：{os.path.basename(html_path)}\")",
@@ -32905,7 +33166,7 @@
       "hunk": "@@ -2351,7 +2342,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#168",
+      "id": "pipeline.py#172",
       "file": "pipeline.py",
       "source": "                    log(f\"⚠️ Narration skipped: {_ne}\")",
       "target": "                    log(f\"⚠️ 已跳过讲述生成：{_ne}\")",
@@ -32914,7 +33175,7 @@
       "hunk": "@@ -2375,9 +2366,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#169",
+      "id": "pipeline.py#173",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Highlight report skipped: {_re}\")",
       "target": "                log(f\"⚠️ 已跳过高光报告：{_re}\")",
@@ -32923,7 +33184,7 @@
       "hunk": "@@ -2375,9 +2366,9 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#170",
+      "id": "pipeline.py#174",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ Saved {len(segments)} highlight segments to cache\")",
       "target": "                    log(f\"✅ 已将 {len(segments)} 个高光片段保存到缓存\")",
@@ -32932,7 +33193,7 @@
       "hunk": "@@ -2453,19 +2444,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#171",
+      "id": "pipeline.py#175",
       "file": "pipeline.py",
       "source": "                    log(\"⚠️ Failed to save highlight segments to cache\")",
       "target": "                    log(\"⚠️ 高光片段保存到缓存失败\")",
@@ -32941,7 +33202,7 @@
       "hunk": "@@ -2453,19 +2444,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#172",
+      "id": "pipeline.py#176",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Error saving highlight cache: {e}\")",
       "target": "                log(f\"⚠️ 保存高光缓存时出错：{e}\")",
@@ -32950,7 +33211,7 @@
       "hunk": "@@ -2453,19 +2444,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#173",
+      "id": "pipeline.py#177",
       "file": "pipeline.py",
       "source": "                log(f\"Full error: {traceback.format_exc()}\")",
       "target": "                log(f\"完整错误信息：{traceback.format_exc()}\")",
@@ -32960,7 +33221,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "pipeline.py#174",
+      "id": "pipeline.py#178",
       "file": "pipeline.py",
       "source": "        print(f\"\\nACTUAL SELECTED SEGMENTS (PEAK CONFIDENCE):\")",
       "target": "        print(\"\\n实际选中的片段（峰值置信度）：\")",
@@ -32969,7 +33230,7 @@
       "hunk": "@@ -2453,19 +2444,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#175",
+      "id": "pipeline.py#179",
       "file": "pipeline.py",
       "source": "                confidence_str = f\"PEAK: {peak_confidence:.1f}\"",
       "target": "                confidence_str = f\"峰值：{peak_confidence:.1f}\"",
@@ -32978,7 +33239,7 @@
       "hunk": "@@ -2487,16 +2478,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#176",
+      "id": "pipeline.py#180",
       "file": "pipeline.py",
       "source": "                    confidence_str += f\" | {len(high_confidence_moments)} high-conf moments\"",
       "target": "                    confidence_str += f\" | {len(high_confidence_moments)} 个高置信度时刻\"",
@@ -32987,7 +33248,7 @@
       "hunk": "@@ -2487,16 +2478,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#177",
+      "id": "pipeline.py#181",
       "file": "pipeline.py",
       "source": "                confidence_str = \"no high-confidence actions\"",
       "target": "                confidence_str = \"无高置信度动作\"",
@@ -32996,7 +33257,7 @@
       "hunk": "@@ -2487,16 +2478,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#178",
+      "id": "pipeline.py#182",
       "file": "pipeline.py",
       "source": "            print(f\"  Segment {i+1}: {seconds_to_mmss(seg_start)}-{seconds_to_mmss(seg_end)} ({seg_duration:.1f}s) - {confidence_str}\")",
       "target": "            print(f\"  片段 {i+1}：{seconds_to_mmss(seg_start)}-{seconds_to_mmss(seg_end)}（{seg_duration:.1f} 秒）- {confidence_str}\")",
@@ -33005,7 +33266,7 @@
       "hunk": "@@ -2487,16 +2478,16 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#179",
+      "id": "pipeline.py#183",
       "file": "pipeline.py",
       "source": "        print(f\"\\nACTION SEQUENCES INCLUDED IN HIGHLIGHT (≥1s):\")",
       "target": "        print(\"\\n高光中包含的动作序列（≥1 秒）：\")",
@@ -33014,7 +33275,7 @@
       "hunk": "@@ -2521,7 +2512,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#180",
+      "id": "pipeline.py#184",
       "file": "pipeline.py",
       "source": "                    f\"({action['duration']:.1f}s, {ratio_percent:.0f}% of original, conf: {action['confidence']:.3f})\")",
       "target": "                    f\"（{action['duration']:.1f} 秒，占原序列 {ratio_percent:.0f}%，置信度：{action['confidence']:.3f}）\")",
@@ -33023,7 +33284,7 @@
       "hunk": "@@ -2529,19 +2520,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#181",
+      "id": "pipeline.py#185",
       "file": "pipeline.py",
       "source": "            print(\"  No action sequences significantly included in final highlight\")",
       "target": "            print(\"  最终高光中没有明显包含动作序列\")",
@@ -33032,7 +33293,7 @@
       "hunk": "@@ -2529,19 +2520,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#182",
+      "id": "pipeline.py#186",
       "file": "pipeline.py",
       "source": "            print(f\"Total action content in highlight: {total_action_duration:.1f}s ({action_percentage:.1f}% of total)\")",
       "target": "            print(f\"高光中的动作内容总时长：{total_action_duration:.1f} 秒（占总时长 {action_percentage:.1f}%）\")",
@@ -33041,7 +33302,7 @@
       "hunk": "@@ -2529,19 +2520,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#183",
+      "id": "pipeline.py#187",
       "file": "pipeline.py",
       "source": "            print(f\"Total action content in highlight: {total_action_duration:.1f}s (no highlight segments)\")",
       "target": "            print(f\"高光中的动作内容总时长：{total_action_duration:.1f} 秒（没有高光片段）\")",
@@ -33050,7 +33311,7 @@
       "hunk": "@@ -2529,19 +2520,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#184",
+      "id": "pipeline.py#188",
       "file": "pipeline.py",
       "source": "        print(f\"\\nTOP 10 HIGH-CONFIDENCE ACTION SEQUENCES EXCLUDED:\")",
       "target": "        print(\"\\n未入选的高置信度动作序列 TOP 10：\")",
@@ -33059,7 +33320,7 @@
       "hunk": "@@ -2529,19 +2520,19 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#185",
+      "id": "pipeline.py#189",
       "file": "pipeline.py",
       "source": "            print(f\"  {name}: {range_str} (conf: {conf:.3f})\")",
       "target": "            print(f\"  {name}：{range_str}（置信度：{conf:.3f}）\")",
@@ -33068,7 +33329,7 @@
       "hunk": "@@ -2558,7 +2549,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#186",
+      "id": "pipeline.py#190",
       "file": "pipeline.py",
       "source": "            log(f\"\\n🎯 Final segments selected: {len(segments)}, total {total_duration:.1f}s (target {target_duration}s)\")",
       "target": "            log(f\"\\n🎯 最终选择 {len(segments)} 个片段，总时长 {total_duration:.1f} 秒（目标 {target_duration} 秒）\")",
@@ -33077,7 +33338,7 @@
       "hunk": "@@ -2567,10 +2558,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#187",
+      "id": "pipeline.py#191",
       "file": "pipeline.py",
       "source": "        print(f\"\\n=== DETAILED DEBUG FOR TOP MOMENTS ===\")",
       "target": "        print(\"\\n=== 高分时刻详细调试信息 ===\")",
@@ -33086,7 +33347,7 @@
       "hunk": "@@ -2567,10 +2558,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#188",
+      "id": "pipeline.py#192",
       "file": "pipeline.py",
       "source": "            print(f\"\\nTime {timestamp} ({idx} sec): {score[idx]:.1f} total points\")\n            print(f\"  Scene: {scene_score[idx]:.1f}\")\n            print(f\"  Motion events: {motion_event_score[idx]:.1f}\")\n            print(f\"  Motion peaks: {motion_peak_score[idx]:.1f}\")\n            print(f\"  Audio: {audio_score[idx]:.1f}\")\n            print(f\"  Keywords: {keyword_score[idx]:.1f}\")\n            print(f\"  Objects: {object_score[idx]:.1f}\")\n            print(f\"  Actions: {action_score[idx]:.1f}\")\n            print(f\"  Subtotal (before boost): {pre_boost_total:.1f}\")",
       "target": "            print(f\"\\n时间 {timestamp}（{idx} 秒）：总分 {score[idx]:.1f}\")\n            print(f\"  场景：{scene_score[idx]:.1f}\")\n            print(f\"  运动事件：{motion_event_score[idx]:.1f}\")\n            print(f\"  运动峰值：{motion_peak_score[idx]:.1f}\")\n            print(f\"  音频：{audio_score[idx]:.1f}\")\n            print(f\"  关键词：{keyword_score[idx]:.1f}\")\n            print(f\"  对象：{object_score[idx]:.1f}\")\n            print(f\"  动作：{action_score[idx]:.1f}\")\n            print(f\"  加成前小计：{pre_boost_total:.1f}\")",
@@ -33095,7 +33356,7 @@
       "hunk": "@@ -2581,24 +2572,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#189",
+      "id": "pipeline.py#193",
       "file": "pipeline.py",
       "source": "                print(f\"    Objects detected: {object_detections[idx]}\")",
       "target": "                print(f\"    检测到的对象：{object_detections[idx]}\")",
@@ -33104,7 +33365,7 @@
       "hunk": "@@ -2581,24 +2572,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#190",
+      "id": "pipeline.py#194",
       "file": "pipeline.py",
       "source": "                print(f\"    Actions detected: {', '.join(detected_actions)}\")",
       "target": "                print(f\"    检测到的动作：{', '.join(detected_actions)}\")",
@@ -33113,7 +33374,7 @@
       "hunk": "@@ -2581,24 +2572,24 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#191",
+      "id": "pipeline.py#195",
       "file": "pipeline.py",
       "source": "                            tier = \"BONUS (≥90th percentile)\"",
       "target": "                            tier = \"加成（≥第 90 百分位）\"",
@@ -33122,7 +33383,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#192",
+      "id": "pipeline.py#196",
       "file": "pipeline.py",
       "source": "                            tier = \"NORMAL (≥50th percentile)\"",
       "target": "                            tier = \"正常（≥第 50 百分位）\"",
@@ -33131,7 +33392,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#193",
+      "id": "pipeline.py#197",
       "file": "pipeline.py",
       "source": "                            tier = \"REDUCED (<50th percentile)\"",
       "target": "                            tier = \"降低（<第 50 百分位）\"",
@@ -33140,7 +33401,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#194",
+      "id": "pipeline.py#198",
       "file": "pipeline.py",
       "source": "                        print(f\"    ✓ Action scored (objects present): +{actual_points:.1f} points [{tier}, conf={max_confidence:.2f}]\")",
       "target": "                        print(f\"    ✓ 动作已计分（存在对象）：+{actual_points:.1f} 分 [{tier}，置信度={max_confidence:.2f}]\")",
@@ -33149,7 +33410,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#195",
+      "id": "pipeline.py#199",
       "file": "pipeline.py",
       "source": "                        print(f\"    ✗ Action NOT scored (no objects detected)\")",
       "target": "                        print(\"    ✗ 动作未计分（未检测到对象）\")",
@@ -33158,7 +33419,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#196",
+      "id": "pipeline.py#200",
       "file": "pipeline.py",
       "source": "                        tier = \"BONUS (≥90th percentile)\"",
       "target": "                        tier = \"加成（≥第 90 百分位）\"",
@@ -33167,7 +33428,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#197",
+      "id": "pipeline.py#201",
       "file": "pipeline.py",
       "source": "                        tier = \"NORMAL (≥50th percentile)\"",
       "target": "                        tier = \"正常（≥第 50 百分位）\"",
@@ -33176,7 +33437,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#198",
+      "id": "pipeline.py#202",
       "file": "pipeline.py",
       "source": "                        tier = \"REDUCED (<50th percentile)\"",
       "target": "                        tier = \"降低（<第 50 百分位）\"",
@@ -33185,7 +33446,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#199",
+      "id": "pipeline.py#203",
       "file": "pipeline.py",
       "source": "                    print(f\"    ➕ Added {actual_points:.1f} action points [{tier}, conf={max_confidence:.2f}]\")",
       "target": "                    print(f\"    ➕ 已增加 {actual_points:.1f} 动作分 [{tier}，置信度={max_confidence:.2f}]\")",
@@ -33194,7 +33455,7 @@
       "hunk": "@@ -2608,28 +2599,28 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#200",
+      "id": "pipeline.py#204",
       "file": "pipeline.py",
       "source": "                print(f\"  ⚡ Multi-signal boost: {signals} signals detected\")\n                print(f\"     Multiplier: x{MULTI_SIGNAL_BOOST}\")\n                print(f\"     Boost added: +{boost_amount:.1f} points\")\n                print(f\"     Final score: {score[idx]:.1f}\")",
       "target": "                print(f\"  ⚡ 多信号加成：检测到 {signals} 个信号\")\n                print(f\"     倍数：x{MULTI_SIGNAL_BOOST}\")\n                print(f\"     增加分数：+{boost_amount:.1f}\")\n                print(f\"     最终得分：{score[idx]:.1f}\")",
@@ -33203,7 +33464,7 @@
       "hunk": "@@ -2644,10 +2635,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#201",
+      "id": "pipeline.py#205",
       "file": "pipeline.py",
       "source": "            log(f\"📄 Report only — {len(segments)} segment(s) scored, \"\n                \"no video written.\")\n            progress.update_progress(100, 100, \"Pipeline\", \"Report ready\")",
       "target": "            log(f\"📄 仅生成报告——已为 {len(segments)} 个片段评分，未写出视频。\")\n            progress.update_progress(100, 100, \"处理流水线\", \"报告已就绪\")",
@@ -33212,7 +33473,7 @@
       "hunk": "@@ -2656,16 +2647,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#202",
+      "id": "pipeline.py#206",
       "file": "pipeline.py",
       "source": "        progress.update_progress(90, 100, \"Pipeline\", \"Creating highlight video...\")\n        _render_mode_label = {\"cpu\": \"CPU re-encode (libx265/264)\",\n                              \"gpu\": \"GPU re-encode\"}[RENDER_MODE]\n        log(f\"🔹 Step 7: Cutting video segments... [{_render_mode_label}]\")",
       "target": "        progress.update_progress(90, 100, \"处理流水线\", \"正在创建高光视频…\")\n        _render_mode_label = {\"cpu\": \"CPU 重新编码（libx265/264）\",\n                              \"gpu\": \"GPU 重新编码\"}[RENDER_MODE]\n        log(f\"🔹 步骤 7：正在剪切视频片段… [{_render_mode_label}]\")",
@@ -33221,7 +33482,7 @@
       "hunk": "@@ -2656,16 +2647,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#203",
+      "id": "pipeline.py#207",
       "file": "pipeline.py",
       "source": "                log(\"⚠️ No segments selected — nothing to cut.\")",
       "target": "                log(\"⚠️ 未选中任何片段——没有可剪切内容。\")",
@@ -33230,7 +33491,7 @@
       "hunk": "@@ -2674,7 +2664,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#204",
+      "id": "pipeline.py#208",
       "file": "pipeline.py",
       "source": "                    log(f\"📁 Separate clips → {clips_dir}\")",
       "target": "                    log(f\"📁 独立片段 → {clips_dir}\")",
@@ -33239,7 +33500,7 @@
       "hunk": "@@ -2689,7 +2679,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#205",
+      "id": "pipeline.py#209",
       "file": "pipeline.py",
       "source": "                    log(f\"  Creating clip: {clip_path}\")",
       "target": "                    log(f\"  正在创建片段：{clip_path}\")",
@@ -33248,7 +33509,7 @@
       "hunk": "@@ -2699,10 +2689,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#206",
+      "id": "pipeline.py#210",
       "file": "pipeline.py",
       "source": "                        raise Exception(f\"Failed to create clip: {clip_path}\")",
       "target": "                        raise Exception(f\"创建片段失败：{clip_path}\")",
@@ -33257,7 +33518,7 @@
       "hunk": "@@ -2699,10 +2689,10 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#207",
+      "id": "pipeline.py#211",
       "file": "pipeline.py",
       "source": "                    log(f\"📝 Writing concat file: {concat_file}\")",
       "target": "                    log(f\"📝 正在写入拼接列表：{concat_file}\")",
@@ -33266,7 +33527,7 @@
       "hunk": "@@ -2714,7 +2704,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#208",
+      "id": "pipeline.py#212",
       "file": "pipeline.py",
       "source": "                    log(f\"🎬 Running FFmpeg concatenation to: {OUTPUT_FILE_CLEAN}\")",
       "target": "                    log(f\"🎬 正在使用 FFmpeg 拼接到：{OUTPUT_FILE_CLEAN}\")",
@@ -33275,7 +33536,7 @@
       "hunk": "@@ -2727,7 +2717,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#209",
+      "id": "pipeline.py#213",
       "file": "pipeline.py",
       "source": "                    log(f\"✅ {len(clip_paths)} separate clip(s) in {clips_dir}\")",
       "target": "                    log(f\"✅ 已在 {clips_dir} 生成 {len(clip_paths)} 个独立片段\")",
@@ -33284,7 +33545,7 @@
       "hunk": "@@ -2749,13 +2739,13 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#210",
+      "id": "pipeline.py#214",
       "file": "pipeline.py",
       "source": "                log(f\"✅ Highlight saved: {OUTPUT_FILE}, duration {total_duration:.1f}s\")",
       "target": "                log(f\"✅ 高光视频已保存：{OUTPUT_FILE}，时长 {total_duration:.1f} 秒\")",
@@ -33293,7 +33554,7 @@
       "hunk": "@@ -2749,13 +2739,13 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#211",
+      "id": "pipeline.py#215",
       "file": "pipeline.py",
       "source": "                        log(f\"🎵 Applying music: {os.path.basename(MUSIC_PATH)}\")",
       "target": "                        log(f\"🎵 正在应用音乐：{os.path.basename(MUSIC_PATH)}\")",
@@ -33302,7 +33563,7 @@
       "hunk": "@@ -2768,15 +2758,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#212",
+      "id": "pipeline.py#216",
       "file": "pipeline.py",
       "source": "                        log(\"🎵 Music applied to highlight\")",
       "target": "                        log(\"🎵 音乐已应用到高光视频\")",
@@ -33311,7 +33572,7 @@
       "hunk": "@@ -2768,15 +2758,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#213",
+      "id": "pipeline.py#217",
       "file": "pipeline.py",
       "source": "                        log(f\"⚠️ Could not apply music (left highlight as-is): {e}\")",
       "target": "                        log(f\"⚠️ 无法应用音乐，已保留原高光视频：{e}\")",
@@ -33320,7 +33581,7 @@
       "hunk": "@@ -2768,15 +2758,15 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#214",
+      "id": "pipeline.py#218",
       "file": "pipeline.py",
       "source": "            log(f\"⚠️ Error during cutting/concatenation: {e}\")",
       "target": "            log(f\"⚠️ 剪切/拼接过程中出错：{e}\")",
@@ -33329,7 +33590,7 @@
       "hunk": "@@ -2785,7 +2775,7 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#215",
+      "id": "pipeline.py#219",
       "file": "pipeline.py",
       "source": "                progress.update_progress(95, 100, \"Pipeline\", \"Creating full-video subtitles...\")\n                log(\"Creating subtitles for the full video...\")",
       "target": "                progress.update_progress(95, 100, \"处理流水线\", \"正在创建完整视频字幕…\")\n                log(\"正在为完整视频创建字幕…\")",
@@ -33338,7 +33599,7 @@
       "hunk": "@@ -2802,8 +2792,8 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#216",
+      "id": "pipeline.py#220",
       "file": "pipeline.py",
       "source": "                log(f\"Full-video subtitles created: {full_srt}\")",
       "target": "                log(f\"完整视频字幕已创建：{full_srt}\")",
@@ -33347,7 +33608,7 @@
       "hunk": "@@ -2819,12 +2809,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#217",
+      "id": "pipeline.py#221",
       "file": "pipeline.py",
       "source": "                    progress.update_progress(95, 100, \"Pipeline\", \"Creating highlight subtitles...\")\n                    log(\"Creating subtitles that match highlight timing...\")",
       "target": "                    progress.update_progress(95, 100, \"处理流水线\", \"正在创建高光字幕…\")\n                    log(\"正在创建与高光时间轴匹配的字幕…\")",
@@ -33356,7 +33617,7 @@
       "hunk": "@@ -2819,12 +2809,12 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#218",
+      "id": "pipeline.py#222",
       "file": "pipeline.py",
       "source": "                    log(f\"Highlight subtitles created: {highlight_srt_file}\")",
       "target": "                    log(f\"高光字幕已创建：{highlight_srt_file}\")",
@@ -33365,7 +33626,7 @@
       "hunk": "@@ -2844,29 +2834,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#219",
+      "id": "pipeline.py#223",
       "file": "pipeline.py",
       "source": "                log(f\"Error creating subtitles: {e}\")",
       "target": "                log(f\"创建字幕时出错：{e}\")",
@@ -33374,7 +33635,7 @@
       "hunk": "@@ -2844,29 +2834,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#220",
+      "id": "pipeline.py#224",
       "file": "pipeline.py",
       "source": "        progress.update_progress(100, 100, \"Pipeline\", \"Complete!\")",
       "target": "        progress.update_progress(100, 100, \"处理流水线\", \"完成！\")",
@@ -33383,7 +33644,7 @@
       "hunk": "@@ -2844,29 +2834,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#221",
+      "id": "pipeline.py#225",
       "file": "pipeline.py",
       "source": "        log(f\"⏱️ Processing time: {minutes}m {seconds}s\")",
       "target": "        log(f\"⏱️ 处理用时：{minutes} 分 {seconds} 秒\")",
@@ -33392,7 +33653,7 @@
       "hunk": "@@ -2844,29 +2834,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#222",
+      "id": "pipeline.py#226",
       "file": "pipeline.py",
       "source": "                log(\"✅ CUDA memory cleaned up\")",
       "target": "                log(\"✅ CUDA 显存已清理\")",
@@ -33401,7 +33662,7 @@
       "hunk": "@@ -2844,29 +2834,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#223",
+      "id": "pipeline.py#227",
       "file": "pipeline.py",
       "source": "                log(\"✅ XPU memory cleaned up\")",
       "target": "                log(\"✅ XPU 显存已清理\")",
@@ -33410,7 +33671,7 @@
       "hunk": "@@ -2844,29 +2834,29 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#224",
+      "id": "pipeline.py#228",
       "file": "pipeline.py",
       "source": "                log(f\"🧹 Cleaned up temporary trimmed video\")",
       "target": "                log(\"🧹 临时裁剪视频已清理\")",
@@ -33419,7 +33680,7 @@
       "hunk": "@@ -2874,14 +2864,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#225",
+      "id": "pipeline.py#229",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Could not remove temporary file: {e}\")",
       "target": "                log(f\"⚠️ 无法删除临时文件：{e}\")",
@@ -33428,7 +33689,7 @@
       "hunk": "@@ -2874,14 +2864,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#226",
+      "id": "pipeline.py#230",
       "file": "pipeline.py",
       "source": "                log(\"🎨 Launching Signal Timeline Viewer...\")",
       "target": "                log(\"🎨 正在打开信号时间线查看器…\")",
@@ -33437,7 +33698,7 @@
       "hunk": "@@ -2874,14 +2864,14 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#227",
+      "id": "pipeline.py#231",
       "file": "pipeline.py",
       "source": "                log(f\"⚠️ Timeline viewer failed: {e}\")",
       "target": "                log(f\"⚠️ 时间线查看器启动失败：{e}\")",
@@ -33446,7 +33707,7 @@
       "hunk": "@@ -2920,17 +2910,17 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#228",
+      "id": "pipeline.py#232",
       "file": "pipeline.py",
       "source": "        log(f\"⏹️ Pipeline cancelled: {e}\")",
       "target": "        log(f\"⏹️ 处理流水线已取消：{e}\")",
@@ -33455,7 +33716,7 @@
       "hunk": "@@ -2920,17 +2910,17 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#229",
+      "id": "pipeline.py#233",
       "file": "pipeline.py",
       "source": "        log(f\"❌ Pipeline failed: {e}\")",
       "target": "        log(f\"❌ 处理流水线失败：{e}\")",
@@ -33464,7 +33725,7 @@
       "hunk": "@@ -2920,17 +2910,17 @@ def run_highlighter(video_path, sample_rate=5, gui_config: dict = None,"
     },
     {
-      "id": "pipeline.py#230",
+      "id": "pipeline.py#234",
       "file": "pipeline.py",
       "source": "        log(f\"Full error: {traceback.format_exc()}\")",
       "target": "        log(f\"完整错误信息：{traceback.format_exc()}\")",
@@ -37830,6 +38091,24 @@
       "hunk": "@@ -239,43 +239,43 @@ def main(argv=None) -> int:"
     },
     {
+      "id": "tools/build_torch_pack.py#1",
+      "file": "tools/build_torch_pack.py",
+      "source": "    print(f\"pack {info['name']}: pip {raw / 2**30:.2f} GB -> \"\n          f\"kept {info['bytes_installed'] / 2**30:.2f} GB\")",
+      "target": "    print(f\"资源包 {info['name']}：pip 原始大小 {raw / 2**30:.2f} GB → \"\n          f\"保留 {info['bytes_installed'] / 2**30:.2f} GB\")",
+      "before": "        json.dump(info, fh, indent=2)",
+      "after": "    return info",
+      "hunk": "@@ -81,14 +81,14 @@ def build(variant: str, out: str) -> dict:"
+    },
+    {
+      "id": "tools/build_torch_pack.py#2",
+      "file": "tools/build_torch_pack.py",
+      "source": "    ap.add_argument(\"--variant\", required=True, help=\"cu128, cpu, ...\")",
+      "target": "    ap.add_argument(\"--variant\", required=True, help=\"变体名称，例如 cu128、cpu 等\")",
+      "before": "    ap = argparse.ArgumentParser()",
+      "after": "    ap.add_argument(\"--out\", required=True)",
+      "hunk": "@@ -81,14 +81,14 @@ def build(variant: str, out: str) -> dict:"
+    },
+    {
       "id": "tools/check_clip_device.py#1",
       "file": "tools/check_clip_device.py",
       "source": "\"\"\"Report which backend CLIP lands on, and prove that backend is actually right.",
@@ -37967,6 +38246,15 @@
     {
       "id": "tools/check_clip_device.py#16",
       "file": "tools/check_clip_device.py",
+      "source": "    print(f\"cuda_device() -> {probe!r}\")",
+      "target": "    print(f\"CUDA 设备探测结果 → {probe!r}\")",
+      "before": "    probe = cp.cuda_device()",
+      "after": "    for req in (\"AUTO\", \"GPU\", \"CUDA\", \"CPU\"):",
+      "hunk": "@@ -46,45 +45,45 @@ def _hr(title: str) -> None:"
+    },
+    {
+      "id": "tools/check_clip_device.py#17",
+      "file": "tools/check_clip_device.py",
       "source": "    print(f\"\\nrequested {requested!r} -> backend={backend!r} device={device!r}\")",
       "target": "    print(f\"\\n请求 {requested!r} -> 后端={backend!r} 设备={device!r}\")",
       "before": "    backend, device = cp.resolve_device(requested)",
@@ -37974,16 +38262,16 @@
       "hunk": "@@ -46,45 +45,45 @@ def _hr(title: str) -> None:"
     },
     {
-      "id": "tools/check_clip_device.py#17",
+      "id": "tools/check_clip_device.py#18",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"import_error({requested!r}) -> {err or 'None (stack imports cleanly)'}\")",
-      "target": "    print(f\"import_error({requested!r}) -> {err or '无（依赖栈导入正常）'}\")",
+      "target": "    print(f\"依赖导入检查（{requested!r}）→ {err or '无（依赖栈导入正常）'}\")",
       "before": "    err = cp.ClipFramePrefilter.import_error(requested)",
       "after": "    return backend, device",
       "hunk": "@@ -46,45 +45,45 @@ def _hr(title: str) -> None:"
     },
     {
-      "id": "tools/check_clip_device.py#18",
+      "id": "tools/check_clip_device.py#19",
       "file": "tools/check_clip_device.py",
       "source": "        print(f\"⚠️  could not build CPU reference ({type(e).__name__}: {e})\")",
       "target": "        print(f\"⚠️  无法建立 CPU 参考模型（{type(e).__name__}：{e}）\")",
@@ -37992,7 +38280,7 @@
       "hunk": "@@ -113,7 +112,7 @@ def cpu_reference(model_id: str) -> ClipEmbedder | None:"
     },
     {
-      "id": "tools/check_clip_device.py#19",
+      "id": "tools/check_clip_device.py#20",
       "file": "tools/check_clip_device.py",
       "source": "    ap.add_argument(\"--frames\", type=int, default=48, help=\"frames to benchmark\")",
       "target": "    ap.add_argument(\"--frames\", type=int, default=48, help=\"用于基准测试的帧数\")",
@@ -38001,7 +38289,7 @@
       "hunk": "@@ -121,12 +120,12 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#20",
+      "id": "tools/check_clip_device.py#21",
       "file": "tools/check_clip_device.py",
       "source": "                    help=\"fail unless this backend is chosen (for CI/automation)\")",
       "target": "                    help=\"如果未选择此后端则失败（用于 CI/自动化）\")",
@@ -38010,7 +38298,7 @@
       "hunk": "@@ -121,12 +120,12 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#21",
+      "id": "tools/check_clip_device.py#22",
       "file": "tools/check_clip_device.py",
       "source": "                    help=\"skip the CPU agreement check (saves a second model load)\")",
       "target": "                    help=\"跳过 CPU 一致性检查（可省去第二次模型加载）\")",
@@ -38019,7 +38307,7 @@
       "hunk": "@@ -121,12 +120,12 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#22",
+      "id": "tools/check_clip_device.py#23",
       "file": "tools/check_clip_device.py",
       "source": "        print(f\"\\n❌ FAIL — the {backend!r} backend's stack is incomplete:\\n   {err}\")",
       "target": "        print(f\"\\n❌ 失败——{backend!r} 后端的依赖栈不完整：\\n   {err}\")",
@@ -38028,7 +38316,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#23",
+      "id": "tools/check_clip_device.py#24",
       "file": "tools/check_clip_device.py",
       "source": "            print(\"\\n   Install a CUDA torch:\\n\"",
       "target": "            print(\"\\n   请安装 CUDA 版 torch：\\n\"",
@@ -38037,7 +38325,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#24",
+      "id": "tools/check_clip_device.py#25",
       "file": "tools/check_clip_device.py",
       "source": "            print('\\n   Install the OpenVINO stack:\\n'",
       "target": "            print('\\n   请安装 OpenVINO 依赖栈：\\n'",
@@ -38046,7 +38334,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#25",
+      "id": "tools/check_clip_device.py#26",
       "file": "tools/check_clip_device.py",
       "source": "        print(\"   ...plus: pip install transformers pillow opencv-python numpy\")",
       "target": "        print(\"   另外还需：pip install transformers pillow opencv-python numpy\")",
@@ -38055,7 +38343,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#26",
+      "id": "tools/check_clip_device.py#27",
       "file": "tools/check_clip_device.py",
       "source": "        failures.append(f\"expected backend {args.expect!r}, resolved {backend!r}\")",
       "target": "        failures.append(f\"期望后端 {args.expect!r}，实际解析为 {backend!r}\")",
@@ -38064,7 +38352,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#27",
+      "id": "tools/check_clip_device.py#28",
       "file": "tools/check_clip_device.py",
       "source": "    _hr(\"Load\")",
       "target": "    _hr(\"加载\")",
@@ -38073,7 +38361,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#28",
+      "id": "tools/check_clip_device.py#29",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"loaded: backend={emb.backend!r} device={emb.device!r} dtype={emb._dtype}\")",
       "target": "    print(f\"已加载：后端={emb.backend!r} 设备={emb.device!r} dtype={emb._dtype}\")",
@@ -38082,7 +38370,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#29",
+      "id": "tools/check_clip_device.py#30",
       "file": "tools/check_clip_device.py",
       "source": "        failures.append(f\"expected to LOAD on {args.expect!r}, got {emb.backend!r} \"\n                        f\"(it fell back — see the warning above for why)\")",
       "target": "        failures.append(f\"期望加载到 {args.expect!r}，实际为 {emb.backend!r} \"\n                        f\"（发生了回退，原因请查看上方警告）\")",
@@ -38091,7 +38379,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#30",
+      "id": "tools/check_clip_device.py#31",
       "file": "tools/check_clip_device.py",
       "source": "    _hr(\"Correctness\")",
       "target": "    _hr(\"正确性\")",
@@ -38100,7 +38388,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#31",
+      "id": "tools/check_clip_device.py#32",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"image_embeds  shape={img.shape} dtype={img.dtype}\")",
       "target": "    print(f\"图像嵌入     shape={img.shape} dtype={img.dtype}\")",
@@ -38109,7 +38397,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#32",
+      "id": "tools/check_clip_device.py#33",
       "file": "tools/check_clip_device.py",
       "source": "        failures.append(f\"bad embedding shape {img.shape}\")",
       "target": "        failures.append(f\"嵌入形状异常 {img.shape}\")",
@@ -38118,7 +38406,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#33",
+      "id": "tools/check_clip_device.py#34",
       "file": "tools/check_clip_device.py",
       "source": "        failures.append(\"non-finite values in image embeddings\")",
       "target": "        failures.append(\"图像嵌入中存在非有限值\")",
@@ -38127,7 +38415,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#34",
+      "id": "tools/check_clip_device.py#35",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"unit norms    {np.round(norms, 5)}\")",
       "target": "    print(f\"单位范数      {np.round(norms, 5)}\")",
@@ -38136,7 +38424,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#35",
+      "id": "tools/check_clip_device.py#36",
       "file": "tools/check_clip_device.py",
       "source": "        failures.append(f\"embeddings are not unit-norm: {norms}\")",
       "target": "        failures.append(f\"嵌入不是单位范数：{norms}\")",
@@ -38145,7 +38433,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#36",
+      "id": "tools/check_clip_device.py#37",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"text_embeds   shape={txt.shape}\")\n    print(f\"logit_scale   {emb.logit_scale:.2f}  (CLIP's published value is 100.0)\")",
       "target": "    print(f\"文本嵌入     shape={txt.shape}\")\n    print(f\"logit_scale   {emb.logit_scale:.2f}（CLIP 公布值为 100.0）\")",
@@ -38154,7 +38442,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#37",
+      "id": "tools/check_clip_device.py#38",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"scores        {[round(s, 4) for s in scores]}\")",
       "target": "    print(f\"分数          {[round(s, 4) for s in scores]}\")",
@@ -38163,7 +38451,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#38",
+      "id": "tools/check_clip_device.py#39",
       "file": "tools/check_clip_device.py",
       "source": "        failures.append(\"non-finite score from score_frames_bgr\")",
       "target": "        failures.append(\"score_frames_bgr 返回了非有限分数\")",
@@ -38172,7 +38460,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#39",
+      "id": "tools/check_clip_device.py#40",
       "file": "tools/check_clip_device.py",
       "source": "        _hr(\"Agreement with fp32 CPU reference\")",
       "target": "        _hr(\"与 fp32 CPU 参考结果的一致性\")",
@@ -38181,7 +38469,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#40",
+      "id": "tools/check_clip_device.py#41",
       "file": "tools/check_clip_device.py",
       "source": "            print(f\"cosine/frame  {np.round(agree, 6)}\")",
       "target": "            print(f\"每帧余弦值   {np.round(agree, 6)}\")",
@@ -38190,7 +38478,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#41",
+      "id": "tools/check_clip_device.py#42",
       "file": "tools/check_clip_device.py",
       "source": "            print(f\"worst         {worst:.6f}  (threshold {AGREEMENT_MIN})\")",
       "target": "            print(f\"最差值       {worst:.6f}（阈值 {AGREEMENT_MIN}）\")",
@@ -38199,7 +38487,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#42",
+      "id": "tools/check_clip_device.py#43",
       "file": "tools/check_clip_device.py",
       "source": "                failures.append(f\"backend disagrees with CPU reference (worst {worst:.6f}) \"\n                                f\"— embeddings would be wrong, and cached indexes \"\n                                f\"from other machines incompatible\")",
       "target": "                failures.append(f\"后端与 CPU 参考结果不一致（最差 {worst:.6f}），\"\n                                f\"嵌入结果会不正确，且与其他机器生成的缓存索引不兼容\")",
@@ -38208,7 +38496,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#43",
+      "id": "tools/check_clip_device.py#44",
       "file": "tools/check_clip_device.py",
       "source": "                print(\"→ same numbers as the CPU: indexes stay portable across machines.\")",
       "target": "                print(\"→ 与 CPU 结果一致：索引可在不同机器之间通用。\")",
@@ -38217,7 +38505,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#44",
+      "id": "tools/check_clip_device.py#45",
       "file": "tools/check_clip_device.py",
       "source": "    _hr(f\"Benchmark ({args.frames} frames, batch {args.batch})\")",
       "target": "    _hr(f\"基准测试（{args.frames} 帧，批大小 {args.batch}）\")",
@@ -38226,7 +38514,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#45",
+      "id": "tools/check_clip_device.py#46",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"{emb.device}: {elapsed:.2f}s total, {per:.1f} ms/frame, \"\n          f\"{len(frames) / elapsed:.1f} frames/s\")\n    print(\"(encode only — a real scan adds video decode)\")",
       "target": "    print(f\"{emb.device}：总计 {elapsed:.2f} 秒，{per:.1f} 毫秒/帧，\"\n          f\"{len(frames) / elapsed:.1f} 帧/秒\")\n    print(\"（这里只测试编码；实际扫描还会包含视频解码）\")",
@@ -38235,7 +38523,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#46",
+      "id": "tools/check_clip_device.py#47",
       "file": "tools/check_clip_device.py",
       "source": "    _hr(\"Verdict\")",
       "target": "    _hr(\"结论\")",
@@ -38244,7 +38532,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#47",
+      "id": "tools/check_clip_device.py#48",
       "file": "tools/check_clip_device.py",
       "source": "        print(f\"❌ FAIL ({len(failures)})\")",
       "target": "        print(f\"❌ 失败（{len(failures)} 项）\")",
@@ -38253,7 +38541,7 @@
       "hunk": "@@ -136,87 +135,86 @@ def main() -> int:"
     },
     {
-      "id": "tools/check_clip_device.py#48",
+      "id": "tools/check_clip_device.py#49",
       "file": "tools/check_clip_device.py",
       "source": "    print(f\"✅ PASS — CLIP works on {emb.device!r} via the {emb.backend!r} backend \"\n          f\"at {per:.1f} ms/frame.\")",
       "target": "    print(f\"✅ 通过——CLIP 正在 {emb.device!r} 上通过 {emb.backend!r} 后端运行，\"\n          f\"速度为 {per:.1f} 毫秒/帧。\")",
@@ -43110,6 +43398,24 @@
       "before": "        except Exception as e:",
       "after": "            import traceback; traceback.print_exc()",
       "hunk": "@@ -543,15 +544,15 @@ class AnnotatedVideoManager(QObject):"
+    },
+    {
+      "id": "video_ai_editor/composition_engine.py#1",
+      "file": "video_ai_editor/composition_engine.py",
+      "source": "        raise ValueError(f\"relation must be one of {RELATIONS}, not {value!r}\")",
+      "target": "        raise ValueError(f\"关系类型必须为 {RELATIONS} 之一，不能是 {value!r}\")",
+      "before": "    if relation not in RELATIONS:",
+      "after": "    return relation",
+      "hunk": "@@ -53,7 +53,7 @@ def _relation(value) -> str:"
+    },
+    {
+      "id": "video_ai_editor/composition_engine.py#2",
+      "file": "video_ai_editor/composition_engine.py",
+      "source": "            raise ValueError(f\"outliner must be 'grabcut' or 'sam', not {name!r}\")",
+      "target": "            raise ValueError(f\"轮廓算法必须为 'grabcut' 或 'sam'，不能是 {name!r}\")",
+      "before": "        if name not in ('grabcut', 'sam'):",
+      "after": "        return name",
+      "hunk": "@@ -237,7 +237,7 @@ class CompositionEngine:"
     },
     {
       "id": "video_ai_editor/edit_timeline.py#1",

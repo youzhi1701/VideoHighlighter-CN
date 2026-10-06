@@ -108,6 +108,13 @@
       ]
     },
     {
+      "source": "(chosen automatically)",
+      "target": "（自动选择）",
+      "files": [
+        "pipeline.py"
+      ]
+    },
+    {
       "source": "(confidence: {confidence})",
       "target": "（置信度：{confidence}）",
       "files": [
@@ -5511,6 +5518,13 @@
       ]
     },
     {
+      "source": "boxes are for object projects",
+      "target": "检测框仅适用于物体项目",
+      "files": [
+        "modules/teach/boxes.py"
+      ]
+    },
+    {
       "source": "boxes {number}: is the yellow box around the named thing, and tight?",
       "target": "检测框批次 {number}：黄色框是否准确且紧密地包围了目标？",
       "files": [
@@ -5772,6 +5786,7 @@
       "target": "已取消",
       "files": [
         "modules/media/edl.py",
+        "modules/media/overlay.py",
         "modules/segments/auto_pipeline.py",
         "signal_timeline_viewer.py"
       ]
@@ -6154,6 +6169,13 @@
       "files": [
         "model_hub/gui.py",
         "modules/teach/teach_panel.py"
+      ]
+    },
+    {
+      "source": "clamp check        ->",
+      "target": "边界校正检查       →",
+      "files": [
+        "modules/crop/avoid.py"
       ]
     },
     {
@@ -7603,6 +7625,13 @@
       ]
     },
     {
+      "source": "cu128, cpu, ...",
+      "target": "变体名称，例如 cu128、cpu 等",
+      "files": [
+        "tools/build_torch_pack.py"
+      ]
+    },
+    {
       "source": "cuda build {torch.version.cuda or '(none — this is a CPU/XPU wheel)'}",
       "target": "CUDA 构建  {torch.version.cuda or '（无——这是 CPU/XPU wheel）'}",
       "files": [
@@ -7636,6 +7665,20 @@
       "files": [
         "llm/clip_index.py",
         "llm/clip_prefilter.py"
+      ]
+    },
+    {
+      "source": "cuda_device() -> {probe!r}",
+      "target": "CUDA 设备探测结果 → {probe!r}",
+      "files": [
+        "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES', '(not set)')}",
+      "target": "CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES', '（未设置）')}",
+      "files": [
+        "modules/system/device_utils.py"
       ]
     },
     {
@@ -8256,6 +8299,13 @@
       "target": "已清空；请重新录入这些人脸。",
       "files": [
         "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
+      "source": "DirectML device listing failed: {e}",
+      "target": "DirectML 设备列表读取失败：{e}",
+      "files": [
+        "modules/system/device_utils.py"
       ]
     },
     {
@@ -10455,6 +10505,13 @@
       ]
     },
     {
+      "source": "forbidden_boxes_by_frame: {len(boxes)} frame(s)",
+      "target": "逐帧排除框：共 {len(boxes)} 帧",
+      "files": [
+        "modules/segments/compute_forbidden.py"
+      ]
+    },
+    {
       "source": "Force CPU training (skip Intel GPU)",
       "target": "强制使用 CPU 训练（跳过 Intel GPU）",
       "files": [
@@ -11313,6 +11370,13 @@
       ]
     },
     {
+      "source": "hook-ml_dtypes: {_name} is imported by ml_dtypes but no *.libs has it",
+      "target": "hook-ml_dtypes：ml_dtypes 导入了 {_name}，但 *.libs 中未找到该文件",
+      "files": [
+        "packaging/pyinstaller-hooks/hook-ml_dtypes.py"
+      ]
+    },
+    {
       "source": "hours",
       "target": "小时",
       "files": [
@@ -11482,7 +11546,7 @@
     },
     {
       "source": "import_error({requested!r}) -> {err or 'None (stack imports cleanly)'}",
-      "target": "import_error({requested!r}) -> {err or '无（依赖栈导入正常）'}",
+      "target": "依赖导入检查（{requested!r}）→ {err or '无（依赖栈导入正常）'}",
       "files": [
         "tools/check_clip_device.py"
       ]
@@ -12081,6 +12145,13 @@
       "target": "保留完整画面——无法填满的位置会使用留边。",
       "files": [
         "frontend/src/components/tabs/ReelTab.tsx"
+      ]
+    },
+    {
+      "source": "kept {info['bytes_installed'] / 2**30:.2f} GB",
+      "target": "保留 {info['bytes_installed'] / 2**30:.2f} GB",
+      "files": [
+        "tools/build_torch_pack.py"
       ]
     },
     {
@@ -15287,6 +15358,13 @@
       ]
     },
     {
+      "source": "novelty {ch['boundary_score']:.3f}",
+      "target": "新颖度 {ch['boundary_score']:.3f}",
+      "files": [
+        "modules/segments/chapters.py"
+      ]
+    },
+    {
       "source": "Number of classes: {num_classes}",
       "target": "类别数量：{num_classes}",
       "files": [
@@ -16010,6 +16088,13 @@
       ]
     },
     {
+      "source": "OpenVINO on {where}",
+      "target": "OpenVINO，运行设备：{where}",
+      "files": [
+        "pipeline.py"
+      ]
+    },
+    {
       "source": "OpenVINO threads:     {openvino_threads}",
       "target": "OpenVINO 线程数：     {openvino_threads}",
       "files": [
@@ -16200,6 +16285,14 @@
       ]
     },
     {
+      "source": "outliner must be 'grabcut' or 'sam', not {name!r}",
+      "target": "轮廓算法必须为 'grabcut' 或 'sam'，不能是 {name!r}",
+      "files": [
+        "modules/vision/outlines.py",
+        "video_ai_editor/composition_engine.py"
+      ]
+    },
+    {
       "source": "Output base name:",
       "target": "输出基础名称：",
       "files": [
@@ -16365,6 +16458,13 @@
       "target": "p             - 显示当前位置",
       "files": [
         "llm/llm_module.py"
+      ]
+    },
+    {
+      "source": "pack {info['name']}: pip {raw / 2**30:.2f} GB ->",
+      "target": "资源包 {info['name']}：pip 原始大小 {raw / 2**30:.2f} GB →",
+      "files": [
+        "tools/build_torch_pack.py"
       ]
     },
     {
@@ -17986,6 +18086,20 @@
       "files": [
         "frontend/src/components/CompositionRules.tsx",
         "main.py"
+      ]
+    },
+    {
+      "source": "relation must be one of {RELATIONS}, not {relation!r}",
+      "target": "关系类型必须为 {RELATIONS} 之一，不能是 {relation!r}",
+      "files": [
+        "modules/rules/shapes.py"
+      ]
+    },
+    {
+      "source": "relation must be one of {RELATIONS}, not {value!r}",
+      "target": "关系类型必须为 {RELATIONS} 之一，不能是 {value!r}",
+      "files": [
+        "video_ai_editor/composition_engine.py"
       ]
     },
     {
@@ -21134,6 +21248,13 @@
       ]
     },
     {
+      "source": "the device OpenVINO picks",
+      "target": "OpenVINO 自动选择的设备",
+      "files": [
+        "pipeline.py"
+      ]
+    },
+    {
       "source": "The download failed: {e}",
       "target": "下载失败：{e}",
       "files": [
@@ -21185,6 +21306,13 @@
     {
       "source": "the frame encoder is not installed or cannot run here",
       "target": "帧编码器未安装或无法在当前环境运行",
+      "files": [
+        "modules/teach/embed.py"
+      ]
+    },
+    {
+      "source": "the frame encoder sorts by examples; a class with no examples",
+      "target": "帧编码器依赖示例进行排序；尚无示例的类别需要使用",
       "files": [
         "modules/teach/embed.py"
       ]
@@ -22343,6 +22471,13 @@
       ]
     },
     {
+      "source": "unexpected detector output shape {np.asarray(raw).shape}",
+      "target": "检测器输出形状异常：{np.asarray(raw).shape}",
+      "files": [
+        "modules/vision/onnx_detector.py"
+      ]
+    },
+    {
       "source": "unit norms    {np.round(norms, 5)}",
       "target": "单位范数      {np.round(norms, 5)}",
       "files": [
@@ -22413,6 +22548,13 @@
       "target": "未知缓动方式 {easing!r}——应为以下之一：",
       "files": [
         "modules/media/transitions.py"
+      ]
+    },
+    {
+      "source": "unknown embedder {name!r}; one of {', '.join(EMBEDDERS)}",
+      "target": "未知嵌入器 {name!r}；应为 {', '.join(EMBEDDERS)} 之一",
+      "files": [
+        "modules/teach/embed.py"
       ]
     },
     {
@@ -22501,6 +22643,13 @@
       ]
     },
     {
+      "source": "Unknown RTMPose size(s): {unknown}. Choose from: {', '.join(SIZES)}",
+      "target": "未知 RTMPose 尺寸：{unknown}。可选值：{', '.join(SIZES)}",
+      "files": [
+        "modules/vision/rtmpose_models.py"
+      ]
+    },
+    {
       "source": "unknown signal kind: {self.kind}",
       "target": "未知信号类型：{self.kind}",
       "files": [
@@ -22529,10 +22678,24 @@
       ]
     },
     {
+      "source": "Unknown YOLOX size(s): {unknown}. Choose from: {', '.join(SIZES)}",
+      "target": "未知 YOLOX 尺寸：{unknown}。可选值：{', '.join(SIZES)}",
+      "files": [
+        "modules/vision/yolox_models.py"
+      ]
+    },
+    {
       "source": "unknown {what} key {key!r}{hint}",
       "target": "{what} 中存在未知字段 {key!r}{hint}",
       "files": [
         "modules/media/edl.py"
+      ]
+    },
+    {
+      "source": "unknown {what} key {name!r}{hint}",
+      "target": "未知 {what} 键 {name!r}{hint}",
+      "files": [
+        "modules/segments/script_plan.py"
       ]
     },
     {
@@ -22645,6 +22808,14 @@
       "target": "取消勾选“VR 半画面”即可查看完整画面。",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Untitled",
+      "target": "无标题",
+      "files": [
+        "modules/media/edl.py",
+        "modules/segments/script_plan.py"
       ]
     },
     {
@@ -24001,6 +24172,13 @@
       ]
     },
     {
+      "source": "window={win} clamped={clamped}",
+      "target": "窗口={win} 校正后={clamped}",
+      "files": [
+        "modules/crop/avoid.py"
+      ]
+    },
+    {
       "source": "windowed",
       "target": "窗口",
       "files": [
@@ -24625,6 +24803,13 @@
       ]
     },
     {
+      "source": "{api} (ONNX Runtime; the processor if that cannot run it)",
+      "target": "{api}（ONNX Runtime；若无法运行则退回处理器）",
+      "files": [
+        "pipeline.py"
+      ]
+    },
+    {
       "source": "{args.out}: {', '.join(p['name'] for p in packs)} from {lock['tag']}",
       "target": "{args.out}：{', '.join(p['name'] for p in packs)}，来源标签 {lock['tag']}",
       "files": [
@@ -24643,6 +24828,13 @@
       "target": "{cache_data['num_samples']} 个样本，",
       "files": [
         "model_training/shared/feature_cache.py"
+      ]
+    },
+    {
+      "source": "{ch['shots']:>4} shots  {ch['pace']:<10}",
+      "target": "{ch['shots']:>4} 个镜头  {ch['pace']:<10}",
+      "files": [
+        "modules/segments/chapters.py"
       ]
     },
     {
@@ -24854,6 +25046,20 @@
       "target": "目前已检查 {have}/{settings.auto_min_checked} 个样本",
       "files": [
         "modules/teach/autolabel.py"
+      ]
+    },
+    {
+      "source": "{HEAD_META} is not an action head (kind={meta.get('kind')!r})",
+      "target": "{HEAD_META} 不是动作识别头（kind={meta.get('kind')!r}）",
+      "files": [
+        "modules/vision/action_siglip.py"
+      ]
+    },
+    {
+      "source": "{HEAD_MODEL} is missing",
+      "target": "缺少文件：{HEAD_MODEL}",
+      "files": [
+        "modules/vision/action_siglip.py"
       ]
     },
     {
@@ -25481,6 +25687,13 @@
       ]
     },
     {
+      "source": "{name:28s} -> status={status:10s} side={side}",
+      "target": "{name:28s} → 状态={status:10s} 方向={side}",
+      "files": [
+        "modules/crop/avoid.py"
+      ]
+    },
+    {
       "source": "{name} (cached)",
       "target": "{label}（缓存）",
       "files": [
@@ -25527,6 +25740,13 @@
       "target": "{name} 文件过大。",
       "files": [
         "model_hub/package.py"
+      ]
+    },
+    {
+      "source": "{name} on {where}",
+      "target": "{name}，运行设备：{where}",
+      "files": [
+        "pipeline.py"
       ]
     },
     {
@@ -26041,6 +26261,13 @@
       ]
     },
     {
+      "source": "{zip_path.name} contains no end2end.onnx — layout changed?",
+      "target": "{zip_path.name} 中没有 end2end.onnx——模型包结构可能已变化",
+      "files": [
+        "modules/vision/rtmpose_models.py"
+      ]
+    },
+    {
       "source": "{zone.capitalize()} has no action",
       "target": "{ZONE_NAMES_ZH.get(zone, zone)}区域没有动作",
       "files": [
@@ -26146,6 +26373,13 @@
       ]
     },
     {
+      "source": "— did you mean {close[0]!r}?",
+      "target": "——你是否想写 {close[0]!r}？",
+      "files": [
+        "modules/segments/script_plan.py"
+      ]
+    },
+    {
       "source": "— did you mean {near[0]!r}?",
       "target": "——你是不是想写 {near[0]!r}？",
       "files": [
@@ -26164,6 +26398,20 @@
       "target": "— 选择表情 —",
       "files": [
         "video_ai_editor/search_panel.py"
+      ]
+    },
+    {
+      "source": "— known {what} keys: {', '.join(allowed)}",
+      "target": "——已知 {what} 键：{', '.join(allowed)}",
+      "files": [
+        "modules/segments/script_plan.py"
+      ]
+    },
+    {
+      "source": "— match terms belong under 'match:'",
+      "target": "——匹配条件应写在 'match:' 下",
+      "files": [
+        "modules/segments/script_plan.py"
       ]
     },
     {
@@ -30580,6 +30828,13 @@
       "target": "⚠️ 物体模型导入失败：{e}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ ONNX detector unavailable: {type(e).__name__}: {e}",
+      "target": "⚠️ ONNX 检测器不可用：{type(e).__name__}：{e}",
+      "files": [
+        "modules/vision/onnx_detector.py"
       ]
     },
     {

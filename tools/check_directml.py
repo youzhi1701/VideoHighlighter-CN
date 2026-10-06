@@ -1,4 +1,4 @@
-"""Report whether DirectML is usable on this machine, and prove it is not lying.
+"""检查本机 DirectML 是否真正可用，并验证其报告结果是否可信。
 
 DirectML's failure modes are quiet ones. It reports a device and runs, so
 "it works" is easy to believe while the run is slower than the CPU it replaced.
@@ -64,7 +64,7 @@ def _hr(title: str) -> None:
 
 def report_env() -> bool:
     """Environment and install. False if DirectML cannot be used at all."""
-    _hr("Environment")
+    _hr("环境")
     print(f"python         {platform.python_version()} ({platform.machine()})")
     print(f"操作系统       {platform.system()} {platform.release()}")
 
@@ -87,16 +87,16 @@ def report_env() -> bool:
         print("  用标准 wheel 替换 +xpu 或 +cu128 版本，从而悄悄移除 Arc/CUDA 支持。")
         return False
 
-    print(f"{dml.MODE_ENV:<14} {os.environ.get(dml.MODE_ENV, '(not set)')} "
+    print(f"{dml.MODE_ENV:<14} {os.environ.get(dml.MODE_ENV, '（未设置）')} "
           f"-> 模式={dml.mode()}")
-    print(f"{dml.FP16_ENV:<14} {os.environ.get(dml.FP16_ENV, '(not set)')} "
+    print(f"{dml.FP16_ENV:<14} {os.environ.get(dml.FP16_ENV, '（未设置）')} "
           f"-> fp16={dml.prefer_float16()}")
     return True
 
 
 def report_adapters() -> bool:
     """Which adapters DirectML sees, and which the app would take."""
-    _hr("Adapters")
+    _hr("适配器")
     probe = dml.probe(refresh=True)
     if not probe.available:
         print(f"不可用：{probe.reason}")
@@ -126,7 +126,7 @@ def report_memory() -> None:
     been chased down, it was a memory-limiting launch flag (a --lowvram-style
     option) doing it, not the driver.
     """
-    _hr("Usable memory")
+    _hr("可用内存")
     import torch
 
     device = dml.torch_device()
@@ -151,7 +151,7 @@ def report_memory() -> None:
 
 def check_forward(size: int) -> bool:
     """A real matmul on DirectML, checked against an fp32 CPU reference."""
-    _hr("Correctness")
+    _hr("正确性")
     import torch
 
     device = dml.torch_device()
@@ -182,7 +182,7 @@ def check_forward(size: int) -> bool:
 
 def benchmark(size: int, iterations: int) -> bool:
     """DirectML against this machine's CPU on the same matmul."""
-    _hr("Speed")
+    _hr("速度")
     import torch
 
     device = dml.torch_device()
@@ -236,7 +236,7 @@ def main(argv=None) -> int:
     if ok and not args.skip_benchmark:
         ok = benchmark(args.size, args.iterations)
 
-    _hr("Verdict")
+    _hr("结论")
     print("DirectML 可用" if ok else "按当前配置 DirectML 不可用")
     return 0 if ok else 1
 

@@ -595,10 +595,10 @@ class SearchPanel(QWidget):
         self._expr_seconds = seconds
         self._expr_combo.setEnabled(True)
         counts = label_counts(seconds)
-        summary = ", ".join(f"{label} {count}"
-                            for label, count in sorted(counts.items(),
-                                                       key=lambda kv: -kv[1])
-                            if count)
+        summary = ", ".join(
+            f"{EMOTION_LABELS_ZH.get(label, label)} {count}"
+            for label, count in sorted(counts.items(), key=lambda kv: -kv[1])
+            if count)
         prefix = "缓存扫描结果" if cached else "扫描完成"
         self._expr_status.setText(
             f"{prefix}：{len(seconds)} 秒画面中检测到可识别人脸"
@@ -613,7 +613,8 @@ class SearchPanel(QWidget):
         segments = segments_for(self._expr_seconds, label,
                                 duration=self._video_duration)
         self._current_segments = segments
-        self._results_header.setText(f"“{label}”共有 {len(segments)} 个片段")
+        display_label = EMOTION_LABELS_ZH.get(label, label)
+        self._results_header.setText(f"“{display_label}”共有 {len(segments)} 个片段")
         self._add_all_btn.setEnabled(bool(segments))
         self._refresh_results(segments)
 

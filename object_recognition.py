@@ -110,7 +110,7 @@ def detect_objects_in_frame(frame, model, objects_of_interest, draw_boxes=False,
                     FONT_THICKNESS
                 )
     except Exception as e:
-        print(f"⚠️ Error in detection: {e}")
+        print(f"⚠️ 检测出错：{e}")
     
     return objs, annotated_frame, bbox_data
 
@@ -199,9 +199,9 @@ def worker_process(video_path, start_frame, end_frame, objects_of_interest, retu
     """
     model = load_detector(model_path, device="AUTO")
     if model is None:
-        print(f"Worker {worker_id}: no object detector available")
+        print(f"工作线程 {worker_id}：没有可用的对象检测器")
         return
-    print(f"Worker {worker_id}: loaded {type(model).__name__}")
+    print(f"工作线程 {worker_id}：已加载 {type(model).__name__}")
 
     cap = cv2.VideoCapture(video_path)
     cap.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
@@ -660,10 +660,10 @@ def merge_worker_videos(worker_videos, output_path, fps):
                     pass
         
         out.release()
-        print(f"✅ Annotated video saved: {output_path}")
+        print(f"✅ 标注视频已保存：{output_path}")
         
     except Exception as e:
-        print(f"⚠️ Error merging annotated videos: {e}")
+        print(f"⚠️ 合并标注视频出错：{e}")
 
 # ---------------- Standalone execution ----------------
 if __name__ == "__main__":
@@ -671,7 +671,7 @@ if __name__ == "__main__":
         bar_length = 40
         filled_length = int(bar_length * progress)
         bar = '█' * filled_length + '░' * (bar_length - filled_length)
-        print(f'\rProgress: |{bar}| {progress:.1%} - {status}', end='', flush=True)
+        print(f'\r进度：|{bar}| {progress:.1%} - {status}', end='', flush=True)
         if progress >= 1.0:
             print()
     
@@ -690,4 +690,4 @@ if __name__ == "__main__":
             yolo_model_size="n",
         )
     else:
-        print(f"Test video {test_video} not found.")
+        print(f"未找到测试视频 {test_video}。")

@@ -185,6 +185,13 @@
       ]
     },
     {
+      "source": "(frozen={bool(getattr(sys, 'frozen', False))}, child={is_child}) =====\\n",
+      "target": "（打包运行={bool(getattr(sys, 'frozen', False))}，子进程={is_child}）=====\\n",
+      "files": [
+        "modules/system/debug_console.py"
+      ]
+    },
+    {
       "source": "(GGUF image decoding cannot be interrupted mid-frame)",
       "target": "（GGUF 图像解码无法在单帧处理中途停止）",
       "files": [
@@ -287,6 +294,13 @@
       "target": "（尚未识别人脸）",
       "files": [
         "video_ai_editor/realtime_overlay.py"
+      ]
+    },
+    {
+      "source": "(no highlights — run highlight detection to populate)",
+      "target": "（暂无高光——请先运行高光检测）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -2186,6 +2200,13 @@
       "target": "\\n=== 评分最高的 10 个时刻 ===",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "\\n===== VideoHighlighter session {time.strftime('%Y-%m-%d %H:%M:%S')}",
+      "target": "\\n===== VideoHighlighter 会话 {time.strftime('%Y-%m-%d %H:%M:%S')}",
+      "files": [
+        "modules/system/debug_console.py"
       ]
     },
     {
@@ -4452,6 +4473,20 @@
       "target": "音频波形",
       "files": [
         "signal_timeline_viewer.py",
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Audio x{count}",
+      "target": "音频 x{count}",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Audio x{count} ({avg_conf:.0%})",
+      "target": "音频 x{count}（{avg_conf:.0%}）",
+      "files": [
         "video_ai_editor/signal_timeline.py"
       ]
     },
@@ -7425,6 +7460,13 @@
       ]
     },
     {
+      "source": "Describe each kept clip of a report from its own frames.",
+      "target": "根据各片段自身画面描述报告中保留的片段。",
+      "files": [
+        "modules/narration/clip_story.py"
+      ]
+    },
+    {
       "source": "Description",
       "target": "描述",
       "files": [
@@ -8713,6 +8755,13 @@
       "target": "期望后端 {args.expect!r}，实际解析为 {backend!r}",
       "files": [
         "tools/check_clip_device.py"
+      ]
+    },
+    {
+      "source": "Expected the bundled OpenCV Zoo model under video_ai_editor/models/.",
+      "target": "应使用 video_ai_editor/models/ 下随程序附带的 OpenCV Zoo 模型。",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -12626,6 +12675,13 @@
       ]
     },
     {
+      "source": "Motion ({conf:.0%})",
+      "target": "运动（{conf:.0%}）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
       "source": "Motion and scene detection read every Nth frame.",
       "target": "运动和场景检测每隔 N 帧读取一次。",
       "files": [
@@ -13309,6 +13365,13 @@
       "target": "当前没有已标注帧",
       "files": [
         "tools/labeler.py"
+      ]
+    },
+    {
+      "source": "no frames to read",
+      "target": "没有可读取的画面",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -14056,6 +14119,13 @@
       "target": "没有等待审核的内容",
       "files": [
         "modules/teach/cli.py"
+      ]
+    },
+    {
+      "source": "Nothing was read; the report is unchanged.",
+      "target": "未读取到任何内容；报告保持不变。",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -15154,6 +15224,20 @@
       ]
     },
     {
+      "source": "Peak x{count}",
+      "target": "峰值 x{count}",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
+      "source": "Peak x{count} ({avg_conf:.0%})",
+      "target": "峰值 x{count}（{avg_conf:.0%}）",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
       "source": "PEAK: {peak_confidence:.1f}",
       "target": "峰值：{peak_confidence:.1f}",
       "files": [
@@ -16216,6 +16300,13 @@
       ]
     },
     {
+      "source": "Re-reading the analysis cache…",
+      "target": "正在重新读取分析缓存…",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Re-scan for annotated videos",
       "target": "重新扫描已标注视频",
       "files": [
@@ -16269,6 +16360,13 @@
       "target": "使用以下模型读取…",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "Read {read} of {total} clips.",
+      "target": "已读取 {read}/{total} 个片段。",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -16902,6 +17000,13 @@
       ]
     },
     {
+      "source": "ROI: {roi}, Focus: {focus_region}, Poses: {len(current_poses)}",
+      "target": "ROI：{roi}，焦点区域：{focus_region}，姿态数：{len(current_poses)}",
+      "files": [
+        "modules/crop/track.py"
+      ]
+    },
+    {
       "source": "roughly how many chapters to produce",
       "target": "大致生成多少个章节",
       "files": [
@@ -17392,6 +17497,13 @@
       "target": "场景尚未就绪，先保存波形数据",
       "files": [
         "signal_timeline_viewer.py"
+      ]
+    },
+    {
+      "source": "Scene {i+1}",
+      "target": "场景 {i+1}",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
       ]
     },
     {
@@ -18056,6 +18168,13 @@
       "target": "初始化",
       "files": [
         "pipeline.py"
+      ]
+    },
+    {
+      "source": "SFace recogniser",
+      "target": "SFace 识别器",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -19454,6 +19573,13 @@
       ]
     },
     {
+      "source": "the *_why.json written beside a cut",
+      "target": "剪辑文件旁生成的 *_why.json 报告",
+      "files": [
+        "modules/narration/clip_story.py"
+      ]
+    },
+    {
       "source": "the advisor documentation, not from the video itself.",
       "target": "顾问文档，而不是直接读取视频本身。",
       "files": [
@@ -20618,6 +20744,13 @@
       "target": "只有效果优于上一版时才会安装新模型）。",
       "files": [
         "modules/teach/status.py"
+      ]
+    },
+    {
+      "source": "UNCAUGHT EXCEPTION:\\n",
+      "target": "未捕获异常：\\n",
+      "files": [
+        "modules/system/debug_console.py"
       ]
     },
     {
@@ -22475,6 +22608,13 @@
       ]
     },
     {
+      "source": "YuNet detector",
+      "target": "YuNet 检测器",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
       "source": "{' [self-install]' if can_install else ''}",
       "target": "{' [支持应用内安装]' if can_install else ''}",
       "files": [
@@ -23268,6 +23408,13 @@
       ]
     },
     {
+      "source": "{len(self.row_labels)} lanes, final height={self.sceneRect().height()}",
+      "target": "{len(self.row_labels)} 个轨道，最终高度={self.sceneRect().height()}",
+      "files": [
+        "video_ai_editor/signal_timeline.py"
+      ]
+    },
+    {
       "source": "{len(self.segments)} segments",
       "target": "{len(self.segments)} 个片段",
       "files": [
@@ -23881,6 +24028,13 @@
       "target": "完整叙事倾向 {value}%——在保留最佳时刻的同时，让片段分布更均衡。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "{what} model not found: {path}\\n",
+      "target": "未找到 {what} 模型：{path}\\n",
+      "files": [
+        "video_ai_editor/face_identity.py"
       ]
     },
     {
@@ -24925,6 +25079,13 @@
       "target": "ℹ️ 未添加规则。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "ℹ️ Rule proposal declined: {raw.get('why') or 'no reason given'}",
+      "target": "ℹ️ 规则建议未采用：{raw.get('why') or '未提供原因'}",
+      "files": [
+        "modules/rules/rule_proposal.py"
       ]
     },
     {
@@ -26128,6 +26289,13 @@
       ]
     },
     {
+      "source": "⚠️  No person boxes -> no ROI",
+      "target": "⚠️  未检测到人物框 → 无可用 ROI",
+      "files": [
+        "modules/crop/track.py"
+      ]
+    },
+    {
       "source": "⚠️  No poses detected -> defaulting to LOWER BODY (hip-based)",
       "target": "⚠️  未检测到姿态 → 默认按下半身区域处理（基于髋部）",
       "files": [
@@ -26244,6 +26412,13 @@
       "target": "⚠️ 请先添加视频，再扫描其中的人脸。",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Advisor narration failed: {exc}",
+      "target": "⚠️ 建议说明生成失败：{exc}",
+      "files": [
+        "modules/report/advisor.py"
       ]
     },
     {
@@ -26450,6 +26625,13 @@
       ]
     },
     {
+      "source": "⚠️ Chapter context skipped: {exc}",
+      "target": "⚠️ 已跳过章节上下文：{exc}",
+      "files": [
+        "modules/report/advisor.py"
+      ]
+    },
+    {
       "source": "⚠️ Chapter {index} could not be told: {exc}",
       "target": "⚠️ 无法讲述章节 {index}：{exc}",
       "files": [
@@ -26468,6 +26650,13 @@
       "target": "⚠️ 已跳过片段表情峰值分析：{exc}",
       "files": [
         "modules/report/highlight_report.py"
+      ]
+    },
+    {
+      "source": "⚠️ Clip facts skipped: {exc}",
+      "target": "⚠️ 已跳过片段事实信息：{exc}",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -26801,6 +26990,13 @@
       ]
     },
     {
+      "source": "⚠️ Could not load {backend}/{model}: {exc}",
+      "target": "⚠️ 无法加载 {backend}/{model}：{exc}",
+      "files": [
+        "modules/report/advisor.py"
+      ]
+    },
+    {
       "source": "⚠️ Could not measure how {os.path.basename(path)} looks ({exc})",
       "target": "⚠️ 无法测量 {os.path.basename(path)} 的画面特征（{exc}）",
       "files": [
@@ -26889,6 +27085,13 @@
       "target": "⚠️ 无法连接 {backend}/{name}。章节的分析数据仍会保留，",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Could not read composition rules: {exc}",
+      "target": "⚠️ 无法读取组合规则：{exc}",
+      "files": [
+        "modules/rules/rule_proposal.py"
       ]
     },
     {
@@ -27361,6 +27564,13 @@
       ]
     },
     {
+      "source": "⚠️ Footage context skipped: {exc}",
+      "target": "⚠️ 已跳过素材上下文：{exc}",
+      "files": [
+        "modules/report/advisor.py"
+      ]
+    },
+    {
       "source": "⚠️ Force terminating thread...",
       "target": "⚠️ 正在强制终止线程…",
       "files": [
@@ -27428,6 +27638,13 @@
       "target": "⚠️ 第 {ts:.1f} 秒画面：{exc}",
       "files": [
         "sidecar/worker.py"
+      ]
+    },
+    {
+      "source": "⚠️ Frames for clip {position} failed: {exc}",
+      "target": "⚠️ 片段 {position} 的画面读取失败：{exc}",
+      "files": [
+        "modules/narration/clip_story.py"
       ]
     },
     {
@@ -27705,6 +27922,13 @@
       ]
     },
     {
+      "source": "⚠️ Narration notes skipped: {exc}",
+      "target": "⚠️ 已跳过旁白备注：{exc}",
+      "files": [
+        "modules/narration/clip_story.py"
+      ]
+    },
+    {
       "source": "⚠️ Narration skipped — could not reach {label}. The report",
       "target": "⚠️ 已跳过旁白：无法连接 {label}。报告中的测量结果会保留，",
       "files": [
@@ -27849,6 +28073,13 @@
       "target": "⚠️ {label_file} 中没有找到标签",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ No LLM stack available: {exc}",
+      "target": "⚠️ 没有可用的大模型运行环境：{exc}",
+      "files": [
+        "modules/report/advisor.py"
       ]
     },
     {
@@ -28413,9 +28644,65 @@
     },
     {
       "source": "⚠️ Rule proposal failed: {exc}",
+      "target": "⚠️ 规则建议生成失败：{exc}",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal failed: {exc}",
       "target": "⚠️ 规则生成失败：{exc}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal names a class this video has no",
+      "target": "⚠️ 规则建议引用了当前视频中未检测到的类别：",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal: '{name}' already exists",
+      "target": "⚠️ 规则建议：'{name}' 已存在",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal: '{name}' is not a usable rule name",
+      "target": "⚠️ 规则建议：'{name}' 不是可用的规则名称",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal: counts are not whole numbers",
+      "target": "⚠️ 规则建议：计数必须为整数",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal: max_count below min_count",
+      "target": "⚠️ 规则建议：max_count 小于 min_count",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal: no conditions",
+      "target": "⚠️ 规则建议：没有设置条件",
+      "files": [
+        "modules/rules/rule_proposal.py"
+      ]
+    },
+    {
+      "source": "⚠️ Rule proposal: no JSON object in the reply",
+      "target": "⚠️ 规则建议：回复中没有 JSON 对象",
+      "files": [
+        "modules/rules/rule_proposal.py"
       ]
     },
     {
@@ -28668,6 +28955,13 @@
       "target": "⚠️ 训练面板不可用：{e}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ Transcript context skipped: {exc}",
+      "target": "⚠️ 已跳过转录文本上下文：{exc}",
+      "files": [
+        "modules/report/advisor.py"
       ]
     },
     {
@@ -29504,6 +29798,13 @@
       ]
     },
     {
+      "source": "✅ FaceIdentityBank: loaded YuNet + SFace (CPU, OpenCV DNN)",
+      "target": "✅ 人脸身份库：已加载 YuNet + SFace（CPU，OpenCV DNN）",
+      "files": [
+        "video_ai_editor/face_identity.py"
+      ]
+    },
+    {
       "source": "✅ Fallback 1 succeeded!",
       "target": "✅ 回退方案 1 成功！",
       "files": [
@@ -30235,7 +30536,7 @@
     },
     {
       "source": "✅ Timeline rebuilt successfully,",
-      "target": "✅ 时间线重建成功，",
+      "target": "✅ 时间线重建成功：",
       "files": [
         "video_ai_editor/signal_timeline.py"
       ]

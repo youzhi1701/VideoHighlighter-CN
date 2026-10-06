@@ -906,7 +906,7 @@ export default function App() {
             disabled={!running}
             className="gap-1.5 text-destructive hover:text-destructive disabled:opacity-40"
           >
-            <Square className="size-3.5" /> Cancel
+            <Square className="size-3.5" /> 取消
           </Button>
 
           {/* Progress owns the middle: it's the only thing that changes while a

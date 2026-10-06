@@ -90,6 +90,20 @@ EXCLUDE_PARTS = {
     "tests", "test", "docs", "中文汉化插件", "__pycache__",
 }
 
+# Developer-only probes/build helpers are not application localization surfaces.
+# Their output is useful to maintainers, but counting it as untranslated desktop
+# UI creates pressure to change protocol-ish diagnostics that users never see.
+DEV_ONLY_PATHS = {
+    "modules/system/smoke_test.py",
+    "tools/simulate_macos_bundle.py",
+    "tools/export_frame_encoder.py",
+    "tools/scrape_listing_probe.py",
+    "tools/strip_bundle.py",
+}
+DEV_ONLY_PREFIXES = (
+    "tools/teach_lab/",
+)
+
 
 @dataclass(frozen=True)
 class Hit:
@@ -483,8 +497,11 @@ def scan_iss(path: Path, rel: str, allow: set[str]) -> list[Hit]:
 
 def excluded(path: Path, root: Path) -> bool:
     try:
+        rel = path.relative_to(root).as_posix()
         parts = path.relative_to(root).parts
     except ValueError:
+        return True
+    if rel in DEV_ONLY_PATHS or any(rel.startswith(p) for p in DEV_ONLY_PREFIXES):
         return True
     return any(p in EXCLUDE_PARTS or p.startswith(".") for p in parts)
 

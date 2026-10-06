@@ -415,8 +415,8 @@ class FaceIdentityBank:
         """Display label for an identity (name if set, else short id)."""
         ident = self._id_index.get(identity_id)
         if ident is None:
-            return "unknown"
-        return ident.get("name") or f"Person {identity_id[:8]}"
+            return "未知"
+        return ident.get("name") or f"人物 {identity_id[:8]}"
 
     # ── persistence ───────────────────────────────────────────────
 
@@ -424,7 +424,7 @@ class FaceIdentityBank:
         """Write the gallery to JSON. Embeddings are stored as plain lists."""
         path = path or self.db_path
         if not path:
-            print("⚠️ FaceIdentityBank.save: no db_path set")
+            print("⚠️ 人脸身份库保存失败：未设置 db_path")
             return False
         try:
             data = {
@@ -446,10 +446,10 @@ class FaceIdentityBank:
             os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(data, f)
-            print(f"💾 FaceIdentityBank: saved {len(self.identities)} identities → {path}")
+            print(f"💾 人脸身份库：已保存 {len(self.identities)} 个身份 → {path}")
             return True
         except Exception as e:
-            print(f"⚠️ FaceIdentityBank.save failed: {e}")
+            print(f"⚠️ 人脸身份库保存失败：{e}")
             return False
 
     def load(self, path: str | None = None) -> bool:
@@ -486,8 +486,8 @@ class FaceIdentityBank:
                 self._id_index[ident["id"]] = ident
 
             if dropped:
-                print(f"⚠️ FaceIdentityBank: {dropped} identity gallery(ies) came from a "
-                      f"different face model and were cleared — re-enroll those faces.")
+                print(f"⚠️ 人脸身份库：有 {dropped} 个身份图库来自不同的人脸模型，"
+                      f"已清空；请重新录入这些人脸。")
 
             # Respect a saved threshold only if it came from the same backbone;
             # an old InsightFace threshold (0.45) is wrong for SFace cosine.
@@ -495,10 +495,10 @@ class FaceIdentityBank:
             if "sim_threshold" in data and (saved_model is None or saved_model == self.model_name):
                 self.sim_threshold = float(data["sim_threshold"])
 
-            print(f"✅ FaceIdentityBank: loaded {len(self.identities)} identities ← {path}")
+            print(f"✅ 人脸身份库：已加载 {len(self.identities)} 个身份 ← {path}")
             return True
         except Exception as e:
-            print(f"⚠️ FaceIdentityBank.load failed: {e}")
+            print(f"⚠️ 人脸身份库加载失败：{e}")
             return False
 
     # ── internals ─────────────────────────────────────────────────
@@ -582,7 +582,7 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) < 2:
-        print("Usage: python face_identity.py <image_or_video> [face_db.json]")
+        print("用法：python face_identity.py <图片或视频> [face_db.json]")
         sys.exit(1)
 
     import cv2
@@ -595,13 +595,13 @@ if __name__ == "__main__":
         faces = bank.detect_faces(frame)
         for f in faces:
             ident_id = bank.assign(f["embedding"], thumbnail=bank._crop(frame, f["bbox"]))
-            print(f"  {tag} face det={f['det_score']:.2f} -> {bank.name_for(ident_id)}")
+            print(f"  {tag} 人脸检测分数={f['det_score']:.2f} → {bank.name_for(ident_id)}")
 
     ext = os.path.splitext(src)[1].lower()
     if ext in (".jpg", ".jpeg", ".png", ".bmp", ".webp"):
         img = cv2.imread(src)
         if img is None:
-            print(f"Could not read image: {src}")
+            print(f"无法读取图片：{src}")
             sys.exit(1)
         process(img, "img")
     else:
@@ -618,8 +618,8 @@ if __name__ == "__main__":
 
     print(f"\n{bank}")
     for ident in bank.all_identities():
-        print(f"  {ident['id'][:8]}  name={ident['name']}  "
-              f"seen={ident['count']}  gallery={ident['gallery_size']}")
+        print(f"  {ident['id'][:8]}  名称={ident['name']}  "
+              f"出现次数={ident['count']}  图库数量={ident['gallery_size']}")
 
     if db:
         bank.save()

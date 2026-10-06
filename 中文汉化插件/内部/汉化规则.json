@@ -7,7 +7,7 @@
   },
   "generated_from": {
     "repository": "youzhi1701/VideoHighlighter-CN",
-    "head_commit": "43283d7762521f662d4e055251d0d65bae0df53b"
+    "head_commit": "9efaac0e723e3a0151962a2e63a707c6d82999ee"
   },
   "strategy": "file-scoped exact block replacement with contextual insertion anchors; never global replace",
   "rules": [
@@ -32345,6 +32345,24 @@
     {
       "id": "signal_timeline_viewer.py#63",
       "file": "signal_timeline_viewer.py",
+      "source": "                    f\"⏱ SYNC: player_duration={player_dur:.3f}s \"\n                    f\"cache/scene video_duration={cache_dur:.3f}s \"\n                    f\"delta(player-cache)={delta:+.3f}s waveform_points={wf_len}\"",
+      "target": "                    f\"⏱ 同步诊断：播放器时长={player_dur:.3f}秒 \"\n                    f\"缓存/场景时长={cache_dur:.3f}秒 \"\n                    f\"播放器-缓存差值={delta:+.3f}秒 波形点数={wf_len}\"",
+      "before": "                debug_log(",
+      "after": "                )",
+      "hunk": "@@ -1380,15 +1379,15 @@ class SignalTimelineWindow(QMainWindow):"
+    },
+    {
+      "id": "signal_timeline_viewer.py#64",
+      "file": "signal_timeline_viewer.py",
+      "source": "                        f\"⚠️ SYNC: duration mismatch {delta:+.3f}s — waveform is \"\n                        f\"stretched over cache duration while the playhead uses the \"\n                        f\"player clock, so they will drift by ~{abs(delta):.2f}s by the end.\"",
+      "target": "                        f\"⚠️ 同步诊断：时长不一致 {delta:+.3f}秒——波形按缓存时长拉伸，\"\n                        f\"而播放头使用播放器时钟，因此到结尾时预计会偏移约 \"\n                        f\"{abs(delta):.2f}秒。\"",
+      "before": "                    debug_log(",
+      "after": "                    )",
+      "hunk": "@@ -1380,15 +1379,15 @@ class SignalTimelineWindow(QMainWindow):"
+    },
+    {
+      "id": "signal_timeline_viewer.py#65",
+      "file": "signal_timeline_viewer.py",
       "source": "            self.play_btn.setText(\"⏸ Pause\")",
       "target": "            self.play_btn.setText(\"⏸ 暂停\")",
       "before": "        if state == QMediaPlayer.PlayingState:",
@@ -32353,7 +32371,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#64",
+      "id": "signal_timeline_viewer.py#66",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_btn.setText(\"▶ Play\")",
       "target": "            self.play_btn.setText(\"▶ 播放\")",
@@ -32363,7 +32381,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#65",
+      "id": "signal_timeline_viewer.py#67",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"⚠️ No signal_scene yet, cannot apply waveform\")",
       "target": "                print(\"⚠️ 信号场景尚未就绪，无法应用波形\")",
@@ -32372,7 +32390,7 @@
       "hunk": "@@ -1415,7 +1414,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#66",
+      "id": "signal_timeline_viewer.py#68",
       "file": "signal_timeline_viewer.py",
       "source": "                    print(f\"✅ Loaded waveform from cache audio key ({len(waveform_data)} points)\")",
       "target": "                    print(f\"✅ 已从缓存 audio 字段加载波形（{len(waveform_data)} 个采样点）\")",
@@ -32381,7 +32399,7 @@
       "hunk": "@@ -1431,18 +1430,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#67",
+      "id": "signal_timeline_viewer.py#69",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"✅ Loaded waveform from cache waveform_data ({len(waveform_data)} points)\")",
       "target": "                print(f\"✅ 已从缓存 waveform_data 字段加载波形（{len(waveform_data)} 个采样点）\")",
@@ -32390,7 +32408,7 @@
       "hunk": "@@ -1431,18 +1430,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#68",
+      "id": "signal_timeline_viewer.py#70",
       "file": "signal_timeline_viewer.py",
       "source": "            print(\"⚠️ No waveform found in cache\")",
       "target": "            print(\"⚠️ 缓存中没有找到波形\")",
@@ -32399,7 +32417,7 @@
       "hunk": "@@ -1431,18 +1430,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#69",
+      "id": "signal_timeline_viewer.py#71",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not load cached waveform: {e}\")",
       "target": "            print(f\"⚠️ 无法加载缓存波形：{e}\")",
@@ -32408,7 +32426,7 @@
       "hunk": "@@ -1431,18 +1430,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#70",
+      "id": "signal_timeline_viewer.py#72",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"⚠️ Video has NO AUDIO STREAM → no waveform possible\")\n                self.statusBar().showMessage(\"Video has no audio track\", 5000)",
       "target": "                print(\"⚠️ 视频没有音频流 → 无法生成波形\")\n                self.statusBar().showMessage(\"视频没有音轨\", 5000)",
@@ -32417,7 +32435,7 @@
       "hunk": "@@ -1454,27 +1453,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#71",
+      "id": "signal_timeline_viewer.py#73",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"✓ Video contains audio stream\")",
       "target": "                print(\"✓ 视频包含音频流\")",
@@ -32426,7 +32444,7 @@
       "hunk": "@@ -1454,27 +1453,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#72",
+      "id": "signal_timeline_viewer.py#74",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not check audio stream: {e}\")",
       "target": "            print(f\"⚠️ 无法检查音频流：{e}\")",
@@ -32435,7 +32453,7 @@
       "hunk": "@@ -1454,27 +1453,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#73",
+      "id": "signal_timeline_viewer.py#75",
       "file": "signal_timeline_viewer.py",
       "source": "            print(\"🎵 [thread] Starting waveform extraction...\")",
       "target": "            print(\"🎵 [线程] 正在开始提取波形…\")",
@@ -32444,7 +32462,7 @@
       "hunk": "@@ -1454,27 +1453,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#74",
+      "id": "signal_timeline_viewer.py#76",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"❌ [thread] extract_waveform() returned None\")",
       "target": "                print(\"❌ [线程] extract_waveform() 返回空结果\")",
@@ -32453,7 +32471,7 @@
       "hunk": "@@ -1454,27 +1453,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#75",
+      "id": "signal_timeline_viewer.py#77",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"✅ [thread] extract_waveform() returned list len={len(data)} first={data[0] if data else None}\")",
       "target": "                print(f\"✅ [线程] extract_waveform() 返回列表：长度={len(data)}，首项={data[0] if data else None}\")",
@@ -32462,7 +32480,7 @@
       "hunk": "@@ -1454,27 +1453,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#76",
+      "id": "signal_timeline_viewer.py#78",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"🧵 [ui] waveform_ready received ({len(data) if data else 0} points)\")",
       "target": "        print(f\"🧵 [界面] 已收到 waveform_ready（{len(data) if data else 0} 个采样点）\")",
@@ -32471,7 +32489,7 @@
       "hunk": "@@ -1485,20 +1484,20 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#77",
+      "id": "signal_timeline_viewer.py#79",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"Failed to extract waveform (None)\", 6000)",
       "target": "            self.statusBar().showMessage(\"提取波形失败（无数据）\", 6000)",
@@ -32480,7 +32498,7 @@
       "hunk": "@@ -1485,20 +1484,20 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#78",
+      "id": "signal_timeline_viewer.py#80",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"🧩 update_waveform_data() called with {len(waveform_data) if waveform_data else 0} points\")",
       "target": "        print(f\"🧩 update_waveform_data() 收到 {len(waveform_data) if waveform_data else 0} 个采样点\")",
@@ -32489,7 +32507,7 @@
       "hunk": "@@ -1485,20 +1484,20 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#79",
+      "id": "signal_timeline_viewer.py#81",
       "file": "signal_timeline_viewer.py",
       "source": "            print(\"❌ No waveform data received → skipping update\")",
       "target": "            print(\"❌ 未收到波形数据 → 跳过更新\")",
@@ -32498,7 +32516,7 @@
       "hunk": "@@ -1485,20 +1484,20 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#80",
+      "id": "signal_timeline_viewer.py#82",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"✅ update_waveform_data received: {len(waveform_data)} points\")",
       "target": "        print(f\"✅ update_waveform_data 已接收：{len(waveform_data)} 个采样点\")",
@@ -32507,7 +32525,7 @@
       "hunk": "@@ -1485,20 +1484,20 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#81",
+      "id": "signal_timeline_viewer.py#83",
       "file": "signal_timeline_viewer.py",
       "source": "                f\"✅ Waveform loaded ({len(waveform_data)} points)\", 5000",
       "target": "                f\"✅ 波形已加载（{len(waveform_data)} 个采样点）\", 5000",
@@ -32516,7 +32534,7 @@
       "hunk": "@@ -1513,10 +1512,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#82",
+      "id": "signal_timeline_viewer.py#84",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"Scene not ready yet, storing waveform data\")",
       "target": "            print(\"场景尚未就绪，先保存波形数据\")",
@@ -32525,7 +32543,7 @@
       "hunk": "@@ -1513,10 +1512,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#83",
+      "id": "signal_timeline_viewer.py#85",
       "file": "signal_timeline_viewer.py",
       "source": "            checkbox.setToolTip(f\"Show '{query}' bars, and let ◀ ▶ stop on them\")",
       "target": "            checkbox.setToolTip(f\"显示“{query}”条，并允许 ◀ ▶ 在这些位置停靠\")",
@@ -32534,7 +32552,7 @@
       "hunk": "@@ -1553,7 +1552,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#84",
+      "id": "signal_timeline_viewer.py#86",
       "file": "signal_timeline_viewer.py",
       "source": "            remove = self._mini_button(\"✕\", f\"Remove all '{query}' findings\")",
       "target": "            remove = self._mini_button(\"✕\", f\"移除所有“{query}”搜索结果\")",
@@ -32543,7 +32561,7 @@
       "hunk": "@@ -1561,7 +1560,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#85",
+      "id": "signal_timeline_viewer.py#87",
       "file": "signal_timeline_viewer.py",
       "source": "                    f\"{moments} moment(s), {seconds}s in total.\",\n                    f\"Show the '{event}' row, and let ◀ ▶ stop on it\",",
       "target": "                    f\"{moments} 个时刻，总计 {seconds} 秒。\",\n                    f\"显示“{event}”事件轨道，并允许 ◀ ▶ 跳转到这些位置\",",
@@ -32552,7 +32570,7 @@
       "hunk": "@@ -1620,8 +1619,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#86",
+      "id": "signal_timeline_viewer.py#88",
       "file": "signal_timeline_viewer.py",
       "source": "            checkbox = QCheckBox(f\"{name.replace('_', ' ')} ({counts.get(name, 0)}s)\")",
       "target": "            checkbox = QCheckBox(f\"{name.replace('_', ' ')}（{counts.get(name, 0)} 秒）\")",
@@ -32561,7 +32579,7 @@
       "hunk": "@@ -1675,9 +1674,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#87",
+      "id": "signal_timeline_viewer.py#89",
       "file": "signal_timeline_viewer.py",
       "source": "            checkbox.setToolTip(f\"Show the '{name}' row, and let ◀ ▶ stop on it\")",
       "target": "            checkbox.setToolTip(f\"显示“{name}”轨道，并允许 ◀ ▶ 在其位置停靠\")",
@@ -32570,7 +32588,7 @@
       "hunk": "@@ -1675,9 +1674,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#88",
+      "id": "signal_timeline_viewer.py#90",
       "file": "signal_timeline_viewer.py",
       "source": "        label = QLabel(\"Show:\")",
       "target": "        label = QLabel(\"显示：\")",
@@ -32580,7 +32598,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#89",
+      "id": "signal_timeline_viewer.py#91",
       "file": "signal_timeline_viewer.py",
       "source": "        all_btn = self._mini_button(\"all\", \"Show every object class\")",
       "target": "        all_btn = self._mini_button(\"all\", \"显示全部物体类别\")",
@@ -32589,7 +32607,7 @@
       "hunk": "@@ -1693,14 +1692,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#90",
+      "id": "signal_timeline_viewer.py#92",
       "file": "signal_timeline_viewer.py",
       "source": "        none_btn = self._mini_button(\"none\", \"Hide every object class\")",
       "target": "        none_btn = self._mini_button(\"none\", \"隐藏全部物体类别\")",
@@ -32598,7 +32616,7 @@
       "hunk": "@@ -1693,14 +1692,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#91",
+      "id": "signal_timeline_viewer.py#93",
       "file": "signal_timeline_viewer.py",
       "source": "            fold.setToolTip(\"Hide the object list\")",
       "target": "            fold.setToolTip(\"隐藏物体列表\")",
@@ -32608,7 +32626,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#92",
+      "id": "signal_timeline_viewer.py#94",
       "file": "signal_timeline_viewer.py",
       "source": "            fold.setToolTip(f\"Show the object list ({shown}/{total} visible)\")",
       "target": "            fold.setToolTip(f\"显示物体列表（{shown}/{total} 可见）\")",
@@ -32617,7 +32635,7 @@
       "hunk": "@@ -1724,10 +1723,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#93",
+      "id": "signal_timeline_viewer.py#95",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"Showing '{pretty}'\" if visible\n            else f\"Hiding '{pretty}' — ◀ ▶ now skip it\",",
       "target": "            f\"正在显示“{pretty}”\" if visible\n            else f\"已隐藏“{pretty}”——◀ ▶ 将跳过它\",",
@@ -32627,7 +32645,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#94",
+      "id": "signal_timeline_viewer.py#96",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Showing all objects\" if visible\n            else \"Hid all objects — ◀ ▶ have nothing to step\",",
       "target": "            \"正在显示全部物体\" if visible\n            else \"已隐藏全部物体——◀ ▶ 当前没有可跳转项目\",",
@@ -32636,7 +32654,7 @@
       "hunk": "@@ -1749,8 +1748,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#95",
+      "id": "signal_timeline_viewer.py#97",
       "file": "signal_timeline_viewer.py",
       "source": "        label = QLabel(\"Show:\")",
       "target": "        label = QLabel(\"显示：\")",
@@ -32646,7 +32664,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#96",
+      "id": "signal_timeline_viewer.py#98",
       "file": "signal_timeline_viewer.py",
       "source": "        all_btn = self._mini_button(\"all\", \"Show every event\")",
       "target": "        all_btn = self._mini_button(\"全部\", \"显示全部事件\")",
@@ -32655,7 +32673,7 @@
       "hunk": "@@ -1760,14 +1759,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#97",
+      "id": "signal_timeline_viewer.py#99",
       "file": "signal_timeline_viewer.py",
       "source": "        none_btn = self._mini_button(\"none\", \"Hide every event\")",
       "target": "        none_btn = self._mini_button(\"无\", \"隐藏全部事件\")",
@@ -32664,7 +32682,7 @@
       "hunk": "@@ -1760,14 +1759,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#98",
+      "id": "signal_timeline_viewer.py#100",
       "file": "signal_timeline_viewer.py",
       "source": "            fold.setToolTip(\"Hide the event list\")",
       "target": "            fold.setToolTip(\"隐藏事件列表\")",
@@ -32673,7 +32691,7 @@
       "hunk": "@@ -1791,10 +1790,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#99",
+      "id": "signal_timeline_viewer.py#101",
       "file": "signal_timeline_viewer.py",
       "source": "            fold.setToolTip(f\"Show the event list ({shown}/{total} visible)\")",
       "target": "            fold.setToolTip(f\"显示事件列表（{shown}/{total} 可见）\")",
@@ -32682,7 +32700,7 @@
       "hunk": "@@ -1791,10 +1790,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#100",
+      "id": "signal_timeline_viewer.py#102",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"Showing '{pretty}'\" if visible\n            else f\"Hiding '{pretty}' — ◀ ▶ now skip it\",",
       "target": "            f\"正在显示“{pretty}”\" if visible\n            else f\"已隐藏“{pretty}”——◀ ▶ 将跳过它\",",
@@ -32692,7 +32710,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#101",
+      "id": "signal_timeline_viewer.py#103",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Showing all events\" if visible\n            else \"Hid all events — ◀ ▶ have nothing to step\",",
       "target": "            \"正在显示全部事件\" if visible\n            else \"已隐藏全部事件——◀ ▶ 当前没有可跳转项目\",",
@@ -32701,7 +32719,7 @@
       "hunk": "@@ -1816,8 +1815,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#102",
+      "id": "signal_timeline_viewer.py#104",
       "file": "signal_timeline_viewer.py",
       "source": "        label = QLabel(\"Show:\")",
       "target": "        label = QLabel(\"显示：\")",
@@ -32711,7 +32729,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#103",
+      "id": "signal_timeline_viewer.py#105",
       "file": "signal_timeline_viewer.py",
       "source": "        all_btn = self._mini_button(\"all\", \"Show every object\")",
       "target": "        all_btn = self._mini_button(\"全部\", \"显示全部物体\")",
@@ -32720,7 +32738,7 @@
       "hunk": "@@ -1842,14 +1841,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#104",
+      "id": "signal_timeline_viewer.py#106",
       "file": "signal_timeline_viewer.py",
       "source": "        none_btn = self._mini_button(\"none\", \"Hide every object\")",
       "target": "        none_btn = self._mini_button(\"无\", \"隐藏全部物体\")",
@@ -32729,7 +32747,7 @@
       "hunk": "@@ -1842,14 +1841,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#105",
+      "id": "signal_timeline_viewer.py#107",
       "file": "signal_timeline_viewer.py",
       "source": "            fold.setToolTip(\"Hide the object list\")",
       "target": "            fold.setToolTip(\"隐藏物体列表\")",
@@ -32739,7 +32757,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#106",
+      "id": "signal_timeline_viewer.py#108",
       "file": "signal_timeline_viewer.py",
       "source": "                f\"Show the object list ({shown} of {total} objects visible)\"\n                if shown != total else \"Show the object list\"",
       "target": "                f\"显示物体列表（当前显示 {shown}/{total} 个）\"\n                if shown != total else \"显示物体列表\"",
@@ -32748,7 +32766,7 @@
       "hunk": "@@ -1876,13 +1875,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#107",
+      "id": "signal_timeline_viewer.py#109",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"Showing '{query}'\" if visible else f\"Hiding '{query}' — ◀ ▶ now skip it\",",
       "target": "            f\"正在显示“{query}”\" if visible else f\"已隐藏“{query}”——◀ ▶ 将跳过它\",",
@@ -32757,7 +32775,7 @@
       "hunk": "@@ -1894,7 +1893,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#108",
+      "id": "signal_timeline_viewer.py#110",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Showing all objects\" if visible else \"Hid all objects — ◀ ▶ have nothing to step\",",
       "target": "            \"正在显示全部物体\" if visible else \"已隐藏全部物体——◀ ▶ 当前没有可跳转项目\",",
@@ -32766,7 +32784,7 @@
       "hunk": "@@ -1906,7 +1905,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#109",
+      "id": "signal_timeline_viewer.py#111",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"Removed '{query}' ({removed} finding(s)) — re-search to bring it back\",",
       "target": "            f\"已移除“{query}”（{removed} 个结果）——重新搜索即可恢复\",",
@@ -32775,7 +32793,7 @@
       "hunk": "@@ -1924,7 +1923,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#110",
+      "id": "signal_timeline_viewer.py#112",
       "file": "signal_timeline_viewer.py",
       "source": "                f\"🔍 Added {len(findings)} visual finding(s) to timeline\", 3000",
       "target": "                f\"🔍 已向时间线添加 {len(findings)} 个视觉搜索结果\", 3000",
@@ -32784,7 +32802,7 @@
       "hunk": "@@ -1959,7 +1958,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#111",
+      "id": "signal_timeline_viewer.py#113",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not compute video_hash from file: {e}\")",
       "target": "            print(f\"⚠️ 无法从文件计算 video_hash：{e}\")",
@@ -32793,7 +32811,7 @@
       "hunk": "@@ -1980,7 +1979,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#112",
+      "id": "signal_timeline_viewer.py#114",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"⚠️ Cache directory not found, findings not persisted\")",
       "target": "                print(\"⚠️ 未找到缓存目录，视觉搜索结果未持久化\")",
@@ -32802,7 +32820,7 @@
       "hunk": "@@ -1999,12 +1998,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#113",
+      "id": "signal_timeline_viewer.py#115",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"⚠️ No video_hash in cache_data, cannot save findings\")",
       "target": "                print(\"⚠️ cache_data 中没有 video_hash，无法保存视觉搜索结果\")",
@@ -32811,7 +32829,7 @@
       "hunk": "@@ -1999,12 +1998,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#114",
+      "id": "signal_timeline_viewer.py#116",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"ℹ️ No cache file for hash {video_hash[:16]}..., creating one\")",
       "target": "                print(f\"ℹ️ 未找到哈希 {video_hash[:16]}… 对应的缓存文件，正在新建\")",
@@ -32820,7 +32838,7 @@
       "hunk": "@@ -2016,7 +2015,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#115",
+      "id": "signal_timeline_viewer.py#117",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"💾 Saved {len(findings)} visual findings → {cache_file.name}\")",
       "target": "            print(f\"💾 已保存 {len(findings)} 个视觉搜索结果 → {cache_file.name}\")",
@@ -32829,7 +32847,7 @@
       "hunk": "@@ -2040,10 +2039,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#116",
+      "id": "signal_timeline_viewer.py#118",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not save visual findings: {e}\")",
       "target": "            print(f\"⚠️ 无法保存视觉搜索结果：{e}\")",
@@ -32838,7 +32856,7 @@
       "hunk": "@@ -2040,10 +2039,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#117",
+      "id": "signal_timeline_viewer.py#119",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"⚠️ Cache directory not found, waveform not persisted\")",
       "target": "                print(\"⚠️ 未找到缓存目录，波形未持久化\")",
@@ -32847,7 +32865,7 @@
       "hunk": "@@ -2064,18 +2063,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#118",
+      "id": "signal_timeline_viewer.py#120",
       "file": "signal_timeline_viewer.py",
       "source": "                print(\"⚠️ No video_hash in cache_data, cannot save waveform to disk\")",
       "target": "                print(\"⚠️ cache_data 中没有 video_hash，无法将波形保存到磁盘\")",
@@ -32856,7 +32874,7 @@
       "hunk": "@@ -2064,18 +2063,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#119",
+      "id": "signal_timeline_viewer.py#121",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"⚠️ No cache file found for hash {video_hash[:16]}...\")",
       "target": "                print(f\"⚠️ 未找到哈希 {video_hash[:16]}… 对应的缓存文件\")",
@@ -32865,7 +32883,7 @@
       "hunk": "@@ -2064,18 +2063,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#120",
+      "id": "signal_timeline_viewer.py#122",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"💾 Saved waveform to disk ({len(waveform_data)} points) → {cache_file.name}\")",
       "target": "            print(f\"💾 已将波形保存到磁盘（{len(waveform_data)} 个采样点）→ {cache_file.name}\")",
@@ -32874,7 +32892,7 @@
       "hunk": "@@ -2092,14 +2091,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#121",
+      "id": "signal_timeline_viewer.py#123",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not save waveform to cache: {e}\")",
       "target": "            print(f\"⚠️ 无法将波形保存到缓存：{e}\")",
@@ -32883,7 +32901,7 @@
       "hunk": "@@ -2092,14 +2091,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#122",
+      "id": "signal_timeline_viewer.py#124",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"\\n🔍 [TIMELINE] get_cache_instance\")",
       "target": "        print(\"\\n🔍 [时间线] 获取缓存实例\")",
@@ -32892,7 +32910,7 @@
       "hunk": "@@ -2092,14 +2091,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#123",
+      "id": "signal_timeline_viewer.py#125",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"  - Cache directory contains {len(cache_files)} cache files:\")",
       "target": "                print(f\"  - 缓存目录包含 {len(cache_files)} 个缓存文件：\")",
@@ -32901,7 +32919,7 @@
       "hunk": "@@ -2108,7 +2107,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#124",
+      "id": "signal_timeline_viewer.py#126",
       "file": "signal_timeline_viewer.py",
       "source": "                            print(f\"      Keys: {data.keys()}\")",
       "target": "                            print(f\"      键：{data.keys()}\")",
@@ -32910,7 +32928,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#125",
+      "id": "signal_timeline_viewer.py#127",
       "file": "signal_timeline_viewer.py",
       "source": "                                print(f\"      Video: {data['video_path']}\")",
       "target": "                                print(f\"      视频：{data['video_path']}\")",
@@ -32919,7 +32937,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#126",
+      "id": "signal_timeline_viewer.py#128",
       "file": "signal_timeline_viewer.py",
       "source": "                        print(f\"      Could not read file\")",
       "target": "                        print(\"      无法读取文件\")",
@@ -32928,7 +32946,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#127",
+      "id": "signal_timeline_viewer.py#129",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"  ❌ Could not initialize cache: {e}\")",
       "target": "            print(f\"  ❌ 无法初始化缓存：{e}\")",
@@ -32937,7 +32955,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#128",
+      "id": "signal_timeline_viewer.py#130",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"🔍 [TIMELINE] load_cache_data START\")",
       "target": "        print(\"🔍 [时间线] 开始加载缓存数据\")",
@@ -32946,7 +32964,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#129",
+      "id": "signal_timeline_viewer.py#131",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"  - video_path: {self.video_path}\")",
       "target": "        print(f\"  - 视频路径：{self.video_path}\")",
@@ -32955,7 +32973,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#130",
+      "id": "signal_timeline_viewer.py#132",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"  ✓ Created VideoAnalysisCache instance\")",
       "target": "            print(\"  ✓ 已创建 VideoAnalysisCache 实例\")",
@@ -32964,7 +32982,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#131",
+      "id": "signal_timeline_viewer.py#133",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"  - Video hash: {video_hash}\")",
       "target": "            print(f\"  - 视频哈希：{video_hash}\")",
@@ -32973,7 +32991,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#132",
+      "id": "signal_timeline_viewer.py#134",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"\\n  📁 All cache files in directory ({len(all_cache_files)}):\")",
       "target": "            print(f\"\\n  📁 目录中的全部缓存文件（{len(all_cache_files)} 个）：\")",
@@ -32982,7 +33000,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#133",
+      "id": "signal_timeline_viewer.py#135",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"\\n  🔍 Files matching video hash ({len(matching_files)}):\")",
       "target": "            print(f\"\\n  🔍 与视频哈希匹配的文件（{len(matching_files)} 个）：\")",
@@ -32991,7 +33009,7 @@
       "hunk": "@@ -2117,44 +2116,44 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#134",
+      "id": "signal_timeline_viewer.py#136",
       "file": "signal_timeline_viewer.py",
       "source": "                        print(f\"      ✓ Successfully loaded cache file\")\n                        print(f\"      ✓ Contains keys: {list(cache_data.keys())}\")",
       "target": "                        print(\"      ✓ 缓存文件加载成功\")\n                        print(f\"      ✓ 包含键：{list(cache_data.keys())}\")",
@@ -33000,7 +33018,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#135",
+      "id": "signal_timeline_viewer.py#137",
       "file": "signal_timeline_viewer.py",
       "source": "                        print(f\"      - motion_events present: {'motion_events' in cache_data}\")\n                        print(f\"      - motion_peaks present: {'motion_peaks' in cache_data}\")\n                        print(f\"      - scenes present: {'scenes' in cache_data}\")",
       "target": "                        print(f\"      - motion_events 是否存在：{'motion_events' in cache_data}\")\n                        print(f\"      - motion_peaks 是否存在：{'motion_peaks' in cache_data}\")\n                        print(f\"      - scenes 是否存在：{'scenes' in cache_data}\")",
@@ -33009,7 +33027,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#136",
+      "id": "signal_timeline_viewer.py#138",
       "file": "signal_timeline_viewer.py",
       "source": "                            print(f\"      - motion_events count: {len(cache_data['motion_events'])}\")",
       "target": "                            print(f\"      - motion_events 数量：{len(cache_data['motion_events'])}\")",
@@ -33018,7 +33036,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#137",
+      "id": "signal_timeline_viewer.py#139",
       "file": "signal_timeline_viewer.py",
       "source": "                            print(f\"      - motion_peaks count: {len(cache_data['motion_peaks'])}\")",
       "target": "                            print(f\"      - motion_peaks 数量：{len(cache_data['motion_peaks'])}\")",
@@ -33027,7 +33045,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#138",
+      "id": "signal_timeline_viewer.py#140",
       "file": "signal_timeline_viewer.py",
       "source": "                            print(f\"      - scenes count: {len(cache_data['scenes'])}\")",
       "target": "                            print(f\"      - scenes 数量：{len(cache_data['scenes'])}\")",
@@ -33036,7 +33054,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#139",
+      "id": "signal_timeline_viewer.py#141",
       "file": "signal_timeline_viewer.py",
       "source": "                        print(f\"\\n  ✅ Successfully loaded cache data from direct file read\")",
       "target": "                        print(\"\\n  ✅ 已通过直接读取文件成功加载缓存数据\")",
@@ -33045,7 +33063,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#140",
+      "id": "signal_timeline_viewer.py#142",
       "file": "signal_timeline_viewer.py",
       "source": "                    print(f\"      ✗ Failed to load: {e}\")",
       "target": "                    print(f\"      ✗ 加载失败：{e}\")",
@@ -33054,7 +33072,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#141",
+      "id": "signal_timeline_viewer.py#143",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"\\n  🔄 Attempting to load with default params...\")",
       "target": "            print(\"\\n  🔄 正在尝试使用默认参数加载…\")",
@@ -33063,7 +33081,7 @@
       "hunk": "@@ -2165,30 +2164,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#142",
+      "id": "signal_timeline_viewer.py#144",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"  ✓ Found param-based cache\")\n                print(f\"  ✓ Contains keys: {list(cache_data.keys())}\")",
       "target": "                print(\"  ✓ 找到基于参数的缓存\")\n                print(f\"  ✓ 包含键：{list(cache_data.keys())}\")",
@@ -33072,7 +33090,7 @@
       "hunk": "@@ -2216,23 +2215,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#143",
+      "id": "signal_timeline_viewer.py#145",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"\\n  🔄 Attempting legacy load (no params)...\")",
       "target": "            print(\"\\n  🔄 正在尝试旧版缓存加载（无参数）…\")",
@@ -33081,7 +33099,7 @@
       "hunk": "@@ -2216,23 +2215,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#144",
+      "id": "signal_timeline_viewer.py#146",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"  ✓ Found legacy cache\")",
       "target": "                print(\"  ✓ 找到旧版缓存\")",
@@ -33090,7 +33108,7 @@
       "hunk": "@@ -2216,23 +2215,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#145",
+      "id": "signal_timeline_viewer.py#147",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"\\n  ⚠️ No cache found in any format - creating empty dict\")",
       "target": "            print(\"\\n  ⚠️ 未找到任何格式的缓存——将创建空数据\")",
@@ -33099,7 +33117,7 @@
       "hunk": "@@ -2216,23 +2215,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#146",
+      "id": "signal_timeline_viewer.py#148",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"  ❌ Error in load_cache_data: {e}\")",
       "target": "            print(f\"  ❌ 加载缓存数据时出错：{e}\")",
@@ -33108,7 +33126,7 @@
       "hunk": "@@ -2216,23 +2215,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#147",
+      "id": "signal_timeline_viewer.py#149",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ refresh_from_disk: cache reload failed: {e}\")",
       "target": "            print(f\"⚠️ 从磁盘刷新：缓存重新加载失败：{e}\")",
@@ -33117,7 +33135,7 @@
       "hunk": "@@ -2256,7 +2255,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#148",
+      "id": "signal_timeline_viewer.py#150",
       "file": "signal_timeline_viewer.py",
       "source": "        startup_splash.stage(\"Reloading signals…\")",
       "target": "        startup_splash.stage(\"正在重新加载信号…\")",
@@ -33126,7 +33144,7 @@
       "hunk": "@@ -2264,7 +2263,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#149",
+      "id": "signal_timeline_viewer.py#151",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ refresh_from_disk: waveform reload failed: {e}\")",
       "target": "            print(f\"⚠️ 从磁盘刷新：波形重新加载失败：{e}\")",
@@ -33135,7 +33153,7 @@
       "hunk": "@@ -2276,7 +2275,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#150",
+      "id": "signal_timeline_viewer.py#152",
       "file": "signal_timeline_viewer.py",
       "source": "        startup_splash.stage(\"Redrawing the timeline…\")",
       "target": "        startup_splash.stage(\"正在重绘时间线…\")",
@@ -33144,7 +33162,7 @@
       "hunk": "@@ -2292,18 +2291,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#151",
+      "id": "signal_timeline_viewer.py#153",
       "file": "signal_timeline_viewer.py",
       "source": "        startup_splash.stage(\"Refreshing the panels…\")",
       "target": "        startup_splash.stage(\"正在刷新面板…\")",
@@ -33153,7 +33171,7 @@
       "hunk": "@@ -2292,18 +2291,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#152",
+      "id": "signal_timeline_viewer.py#154",
       "file": "signal_timeline_viewer.py",
       "source": "        print(\"🔄 Timeline refreshed from disk\")",
       "target": "        print(\"🔄 时间线已从磁盘刷新\")",
@@ -33162,7 +33180,7 @@
       "hunk": "@@ -2292,18 +2291,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#153",
+      "id": "signal_timeline_viewer.py#155",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"🎵 init_ui: Creating scene with waveform data ({len(self.waveform) if self.waveform else 0} points)\")",
       "target": "        print(f\"🎵 初始化界面：正在使用波形数据创建场景（{len(self.waveform) if self.waveform else 0} 个采样点）\")",
@@ -33171,7 +33189,7 @@
       "hunk": "@@ -2345,10 +2344,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#154",
+      "id": "signal_timeline_viewer.py#156",
       "file": "signal_timeline_viewer.py",
       "source": "        startup_splash.stage(\"Drawing the signal timeline…\")",
       "target": "        startup_splash.stage(\"正在绘制信号时间线…\")",
@@ -33180,7 +33198,7 @@
       "hunk": "@@ -2345,10 +2344,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#155",
+      "id": "signal_timeline_viewer.py#157",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ could not load manual avoid ranges: {e}\")",
       "target": "            print(f\"⚠️ 无法加载手动排除范围：{e}\")",
@@ -33189,7 +33207,7 @@
       "hunk": "@@ -2358,7 +2357,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#156",
+      "id": "signal_timeline_viewer.py#158",
       "file": "signal_timeline_viewer.py",
       "source": "        startup_splash.stage(\"Building the edit timeline…\")",
       "target": "        startup_splash.stage(\"正在构建编辑时间线…\")",
@@ -33198,7 +33216,7 @@
       "hunk": "@@ -2423,7 +2422,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#157",
+      "id": "signal_timeline_viewer.py#159",
       "file": "signal_timeline_viewer.py",
       "source": "        startup_splash.stage(\"Starting the assistant…\")",
       "target": "        startup_splash.stage(\"正在启动大模型助手…\")",
@@ -33207,7 +33225,7 @@
       "hunk": "@@ -2441,7 +2440,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#158",
+      "id": "signal_timeline_viewer.py#160",
       "file": "signal_timeline_viewer.py",
       "source": "            llm_dock = QDockWidget(\"LLM Assistant\", self)",
       "target": "            llm_dock = QDockWidget(\"大模型助手\", self)",
@@ -33216,7 +33234,7 @@
       "hunk": "@@ -2452,7 +2451,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#159",
+      "id": "signal_timeline_viewer.py#161",
       "file": "signal_timeline_viewer.py",
       "source": "        startup_splash.stage(\"Starting the video preview…\")",
       "target": "        startup_splash.stage(\"正在启动视频预览…\")",
@@ -33225,7 +33243,7 @@
       "hunk": "@@ -2497,12 +2496,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#160",
+      "id": "signal_timeline_viewer.py#162",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not create preview dock: {e}\")",
       "target": "            print(f\"⚠️ 无法创建预览停靠面板：{e}\")",
@@ -33234,7 +33252,7 @@
       "hunk": "@@ -2497,12 +2496,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#161",
+      "id": "signal_timeline_viewer.py#163",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not create search dock: {e}\")",
       "target": "            print(f\"⚠️ 无法创建搜索停靠面板：{e}\")",
@@ -33243,7 +33261,7 @@
       "hunk": "@@ -2515,7 +2514,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#162",
+      "id": "signal_timeline_viewer.py#164",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not create transcript dock: {e}\")",
       "target": "            print(f\"⚠️ 无法创建转录停靠面板：{e}\")",
@@ -33252,7 +33270,7 @@
       "hunk": "@@ -2523,7 +2522,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#163",
+      "id": "signal_timeline_viewer.py#165",
       "file": "signal_timeline_viewer.py",
       "source": "                tag = \" [live overlay]\" if self.realtime_preview._overlay_enabled else \"\"\n                print(f\"📷 Captured frame at {self.current_time:.1f}s \"\n                      f\"({len(b64) // 1024}KB){tag}\")",
       "target": "                tag = \" [实时叠加]\" if self.realtime_preview._overlay_enabled else \"\"\n                print(f\"📷 已截取 {self.current_time:.1f} 秒处画面（{len(b64) // 1024} KB）{tag}\")",
@@ -33261,7 +33279,7 @@
       "hunk": "@@ -2590,9 +2589,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#164",
+      "id": "signal_timeline_viewer.py#166",
       "file": "signal_timeline_viewer.py",
       "source": "                print(f\"❌ Could not read frame at {self.current_time:.1f}s\")",
       "target": "                print(f\"❌ 无法读取 {self.current_time:.1f} 秒处画面\")",
@@ -33270,7 +33288,7 @@
       "hunk": "@@ -2615,7 +2613,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#165",
+      "id": "signal_timeline_viewer.py#167",
       "file": "signal_timeline_viewer.py",
       "source": "                tag = \" [precomp annotated]\"",
       "target": "                tag = \" [预计算标注]\"",
@@ -33279,7 +33297,7 @@
       "hunk": "@@ -2632,14 +2630,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#166",
+      "id": "signal_timeline_viewer.py#168",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"📷 Captured frame at {self.current_time:.1f}s \"\n                  f\"({len(b64) // 1024}KB){tag}\")",
       "target": "            print(f\"📷 已截取 {self.current_time:.1f} 秒处画面（{len(b64) // 1024} KB）{tag}\")",
@@ -33288,7 +33306,7 @@
       "hunk": "@@ -2632,14 +2630,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#167",
+      "id": "signal_timeline_viewer.py#169",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"❌ Frame capture failed: {e}\")",
       "target": "            print(f\"❌ 画面截取失败：{e}\")",
@@ -33297,7 +33315,7 @@
       "hunk": "@@ -2632,14 +2630,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#168",
+      "id": "signal_timeline_viewer.py#170",
       "file": "signal_timeline_viewer.py",
       "source": "        \"Drag signal bars → edit timeline\\n\"\n        \"Left-drag background → highlight range, then drag range → edit timeline\\n\"\n        \"Ctrl+click / Shift+click / Ctrl+A to multi-select, then Delete to remove\"",
       "target": "        \"拖动信号条 → 添加到编辑时间线\\n\"\n        \"在背景上按住左键拖动 → 选择高光范围，再拖动该范围 → 添加到编辑时间线\\n\"\n        \"Ctrl+单击 / Shift+单击 / Ctrl+A 可多选，按 Delete 删除\"",
@@ -33306,7 +33324,7 @@
       "hunk": "@@ -2688,9 +2685,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#169",
+      "id": "signal_timeline_viewer.py#171",
       "file": "signal_timeline_viewer.py",
       "source": "        self.time_label = QLabel(\"No time selected\")",
       "target": "        self.time_label = QLabel(\"未选择时间\")",
@@ -33315,7 +33333,7 @@
       "hunk": "@@ -2701,7 +2698,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#170",
+      "id": "signal_timeline_viewer.py#172",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"Duration: {mins:02d}:{secs:02d} • Actions: {len(self.action_types)} • \"\n            f\"Objects: {len(self.object_classes)} | Edit: {edit_len:.1f}s\"",
       "target": "            f\"时长：{mins:02d}:{secs:02d} • 动作：{len(self.action_types)} • \"\n            f\"物体：{len(self.object_classes)} | 编辑长度：{edit_len:.1f} 秒\"",
@@ -33324,7 +33342,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#171",
+      "id": "signal_timeline_viewer.py#173",
       "file": "signal_timeline_viewer.py",
       "source": "        filter_group = CollapsibleSection(\"Filters\", settings_key=\"controls/filters\")",
       "target": "        filter_group = CollapsibleSection(\"筛选\", settings_key=\"controls/filters\")",
@@ -33333,7 +33351,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#172",
+      "id": "signal_timeline_viewer.py#174",
       "file": "signal_timeline_viewer.py",
       "source": "        self.filter_summary = QLabel(\"All actions/objects visible\")",
       "target": "        self.filter_summary = QLabel(\"所有动作/物体均可见\")",
@@ -33342,7 +33360,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#173",
+      "id": "signal_timeline_viewer.py#175",
       "file": "signal_timeline_viewer.py",
       "source": "        self.confidence_label = QLabel(f\"Actions: {self.signal_scene.min_action_confidence:.0%} | Objects: {self.signal_scene.min_object_confidence:.0%}\")",
       "target": "        self.confidence_label = QLabel(f\"动作：{self.signal_scene.min_action_confidence:.0%} | 物体：{self.signal_scene.min_object_confidence:.0%}\")",
@@ -33351,7 +33369,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#174",
+      "id": "signal_timeline_viewer.py#176",
       "file": "signal_timeline_viewer.py",
       "source": "        show_all_btn = QPushButton(\"Show All\")",
       "target": "        show_all_btn = QPushButton(\"全部显示\")",
@@ -33360,7 +33378,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#175",
+      "id": "signal_timeline_viewer.py#177",
       "file": "signal_timeline_viewer.py",
       "source": "        show_all_btn.setToolTip(\"Show all actions and objects\")",
       "target": "        show_all_btn.setToolTip(\"显示全部动作和物体\")",
@@ -33369,7 +33387,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#176",
+      "id": "signal_timeline_viewer.py#178",
       "file": "signal_timeline_viewer.py",
       "source": "        hide_all_btn = QPushButton(\"Hide All\")",
       "target": "        hide_all_btn = QPushButton(\"全部隐藏\")",
@@ -33378,7 +33396,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#177",
+      "id": "signal_timeline_viewer.py#179",
       "file": "signal_timeline_viewer.py",
       "source": "        hide_all_btn.setToolTip(\"Hide all actions and objects\")",
       "target": "        hide_all_btn.setToolTip(\"隐藏全部动作和物体\")",
@@ -33387,7 +33405,7 @@
       "hunk": "@@ -2715,36 +2712,36 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#178",
+      "id": "signal_timeline_viewer.py#180",
       "file": "signal_timeline_viewer.py",
       "source": "        self.confidence_filter_btn = QPushButton(\"Confidence…\")\n        self.confidence_filter_btn.setToolTip(\"Set minimum confidence for actions/objects\")",
       "target": "        self.confidence_filter_btn = QPushButton(\"置信度…\")\n        self.confidence_filter_btn.setToolTip(\"设置动作/物体最低置信度\")",
@@ -33396,7 +33414,7 @@
       "hunk": "@@ -2755,14 +2752,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#179",
+      "id": "signal_timeline_viewer.py#181",
       "file": "signal_timeline_viewer.py",
       "source": "        self.filter_dialog_btn = QPushButton(\"Advanced…\")\n        self.filter_dialog_btn.setToolTip(\"Advanced per-type filters\")",
       "target": "        self.filter_dialog_btn = QPushButton(\"高级…\")\n        self.filter_dialog_btn.setToolTip(\"按类型设置高级筛选\")",
@@ -33405,7 +33423,7 @@
       "hunk": "@@ -2755,14 +2752,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#180",
+      "id": "signal_timeline_viewer.py#182",
       "file": "signal_timeline_viewer.py",
       "source": "        self.only_highlight_actions_cb = QCheckBox(\"Show only highlight actions\")",
       "target": "        self.only_highlight_actions_cb = QCheckBox(\"仅显示高光动作\")",
@@ -33414,7 +33432,7 @@
       "hunk": "@@ -2775,12 +2772,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#181",
+      "id": "signal_timeline_viewer.py#183",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Off (default): the ACTIONS row shows every detected action.\\n\"\n            \"On: only the actions selected into the highlight.\\n\"\n            \"(Needs a re-analysis to populate the full list.)\"",
       "target": "            \"关闭（默认）：动作轨道显示检测到的全部动作。\\n\"\n            \"开启：只显示最终入选高光的动作。\\n\"\n            \"若要获得完整动作列表，需要重新分析。\"",
@@ -33423,7 +33441,7 @@
       "hunk": "@@ -2775,12 +2772,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#182",
+      "id": "signal_timeline_viewer.py#184",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Analyze\", expanded=False, settings_key=\"controls/analyze\")",
       "target": "            \"分析\", expanded=False, settings_key=\"controls/analyze\")",
@@ -33432,7 +33450,7 @@
       "hunk": "@@ -2796,7 +2793,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#183",
+      "id": "signal_timeline_viewer.py#185",
       "file": "signal_timeline_viewer.py",
       "source": "            \"motion\", \"Motion & scenes\",\n            \"Detect scene cuts and motion over the whole video (scene, motion \"\n            \"event and motion peak — one pass).\"))",
       "target": "            \"motion\", \"运动与场景\",\n            \"检测整个视频的场景切换与运动，一次分析同时覆盖场景、运动事件和运动峰值。\"))",
@@ -33441,7 +33459,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#184",
+      "id": "signal_timeline_viewer.py#186",
       "file": "signal_timeline_viewer.py",
       "source": "            \"audio\", \"Audio\",\n            \"Detect audio peaks (and the waveform) over the whole video.\"))",
       "target": "            \"audio\", \"音频\",\n            \"检测整个视频的音频峰值并生成波形。\"))",
@@ -33450,7 +33468,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#185",
+      "id": "signal_timeline_viewer.py#187",
       "file": "signal_timeline_viewer.py",
       "source": "        self.analyze_actions_field.setPlaceholderText(\"all actions (or: high kick, archery…)\")",
       "target": "        self.analyze_actions_field.setPlaceholderText(\"全部动作（或输入：高踢、射箭…）\")",
@@ -33459,7 +33477,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#186",
+      "id": "signal_timeline_viewer.py#188",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Optional. Leave blank to detect every action; or list names to keep \"\n            \"only those. Prefilled from the main window's action keywords.\")",
       "target": "            \"可选。留空表示检测全部动作；也可以输入动作名称，只保留指定动作。\"\n            \"默认使用主窗口中的动作关键词。\")",
@@ -33468,7 +33486,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#187",
+      "id": "signal_timeline_viewer.py#189",
       "file": "signal_timeline_viewer.py",
       "source": "            \"actions\", \"Actions\", \"Run action recognition over the whole video\",",
       "target": "            \"actions\", \"动作\", \"对整个视频运行动作识别\",",
@@ -33477,7 +33495,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#188",
+      "id": "signal_timeline_viewer.py#190",
       "file": "signal_timeline_viewer.py",
       "source": "        self.analyze_objects_field.setPlaceholderText(\"person, car, dog…\")",
       "target": "        self.analyze_objects_field.setPlaceholderText(\"人物、汽车、狗…\")",
@@ -33486,7 +33504,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#189",
+      "id": "signal_timeline_viewer.py#191",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Comma-separated object classes to detect. Prefilled from the main \"\n            \"window's list; edit per run. Change the model/confidence there.\")",
       "target": "            \"输入要检测的物体类别，用逗号分隔。默认使用主窗口中的列表；\"\n            \"每次运行前都可以修改。模型和置信度请在主窗口中设置。\")",
@@ -33495,7 +33513,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#190",
+      "id": "signal_timeline_viewer.py#192",
       "file": "signal_timeline_viewer.py",
       "source": "            \"objects\", \"Objects\", \"Detect the object classes listed above\",",
       "target": "            \"objects\", \"物体\", \"检测上方列出的物体类别\",",
@@ -33504,7 +33522,7 @@
       "hunk": "@@ -2824,30 +2821,29 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#191",
+      "id": "signal_timeline_viewer.py#193",
       "file": "signal_timeline_viewer.py",
       "source": "        lang_row.addWidget(QLabel(\"Language:\"))",
       "target": "        lang_row.addWidget(QLabel(\"语言：\"))",
@@ -33513,7 +33531,7 @@
       "hunk": "@@ -2861,7 +2857,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#192",
+      "id": "signal_timeline_viewer.py#194",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Spoken language for transcription. Defaults to English; 'auto' \"\n            \"detects it. Overrides the main GUI's saved language for this run.\")",
       "target": "            \"设置语音转录的语言。默认英语；auto 会自动检测。\"\n            \"此设置仅作用于本次运行，并覆盖主窗口保存的语言设置。\")",
@@ -33522,7 +33540,7 @@
       "hunk": "@@ -2869,8 +2865,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#193",
+      "id": "signal_timeline_viewer.py#195",
       "file": "signal_timeline_viewer.py",
       "source": "        self.analyze_transcript_kw.setPlaceholderText(\"mark words, e.g. goal, score\")",
       "target": "        self.analyze_transcript_kw.setPlaceholderText(\"标记关键词，例如：进球、得分\")",
@@ -33531,7 +33549,7 @@
       "hunk": "@@ -2879,27 +2875,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#194",
+      "id": "signal_timeline_viewer.py#196",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Mark transcript moments where these words are spoken, on the \"\n            \"timeline. The TRANSCRIPT ◀▶ arrows then jump between the hits. \"\n            \"Blank clears the marking.\")",
       "target": "            \"在时间线上标记转录中出现这些关键词的时刻。之后可用“转录”轨道的 ◀▶ \"\n            \"按钮在匹配结果之间跳转。留空会清除关键词标记。\")",
@@ -33540,7 +33558,7 @@
       "hunk": "@@ -2879,27 +2875,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#195",
+      "id": "signal_timeline_viewer.py#197",
       "file": "signal_timeline_viewer.py",
       "source": "        kw_btn.setToolTip(\"Mark these words on the timeline\")",
       "target": "        kw_btn.setToolTip(\"在时间线上标记这些词\")",
@@ -33549,7 +33567,7 @@
       "hunk": "@@ -2879,27 +2875,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#196",
+      "id": "signal_timeline_viewer.py#198",
       "file": "signal_timeline_viewer.py",
       "source": "            \"transcript\", \"Transcript\", \"Transcribe speech with Whisper\",",
       "target": "            \"transcript\", \"转录\", \"使用 Whisper 转录语音\",",
@@ -33558,7 +33576,7 @@
       "hunk": "@@ -2879,27 +2875,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#197",
+      "id": "signal_timeline_viewer.py#199",
       "file": "signal_timeline_viewer.py",
       "source": "        hint = QLabel(\"Runs one pass on this video and folds it into the cache. \"\n                      \"Advanced settings live in the main window.\")",
       "target": "        hint = QLabel(\"对该视频运行一次分析并写入缓存。\"\n                      \"高级设置位于主窗口。\")",
@@ -33567,7 +33585,7 @@
       "hunk": "@@ -2879,27 +2875,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#198",
+      "id": "signal_timeline_viewer.py#200",
       "file": "signal_timeline_viewer.py",
       "source": "            self._analyze_rows[kind][\"status\"].setText(\"cancelling…\")",
       "target": "            self._analyze_rows[kind][\"status\"].setText(\"正在取消…\")",
@@ -33576,7 +33594,7 @@
       "hunk": "@@ -2934,11 +2929,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#199",
+      "id": "signal_timeline_viewer.py#201",
       "file": "signal_timeline_viewer.py",
       "source": "                \"Another analysis is already running — let it finish first.\", 3000)",
       "target": "                \"已有其他分析任务正在运行，请等待其完成。\", 3000)",
@@ -33585,7 +33603,7 @@
       "hunk": "@@ -2934,11 +2929,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#200",
+      "id": "signal_timeline_viewer.py#202",
       "file": "signal_timeline_viewer.py",
       "source": "        self._analyze_rows[kind][\"status\"].setText(\"starting…\")",
       "target": "        self._analyze_rows[kind][\"status\"].setText(\"正在启动…\")",
@@ -33594,7 +33612,7 @@
       "hunk": "@@ -2951,7 +2946,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#201",
+      "id": "signal_timeline_viewer.py#203",
       "file": "signal_timeline_viewer.py",
       "source": "                row[\"btn\"].setText(\"  Cancel\" if busy else f\"  {row['label']}\")",
       "target": "                row[\"btn\"].setText(\"  取消\" if busy else f\"  {row['label']}\")",
@@ -33603,7 +33621,7 @@
       "hunk": "@@ -3003,7 +2998,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#202",
+      "id": "signal_timeline_viewer.py#204",
       "file": "signal_timeline_viewer.py",
       "source": "                    row[\"status\"].setText(\"cancelled\")",
       "target": "                    row[\"status\"].setText(\"已取消\")",
@@ -33612,7 +33630,7 @@
       "hunk": "@@ -3027,13 +3022,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#203",
+      "id": "signal_timeline_viewer.py#205",
       "file": "signal_timeline_viewer.py",
       "source": "                    row[\"status\"].setText(\"failed — see log\")",
       "target": "                    row[\"status\"].setText(\"失败 — 请查看日志\")",
@@ -33621,7 +33639,7 @@
       "hunk": "@@ -3027,13 +3022,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#204",
+      "id": "signal_timeline_viewer.py#206",
       "file": "signal_timeline_viewer.py",
       "source": "                    f\"{kind.title()} analysis failed: {str(result)[:80]}\", 6000)\n                print(f\"❌ {kind} analysis failed: {result}\")",
       "target": "                    f\"{kind} 分析失败：{str(result)[:80]}\", 6000)\n                print(f\"❌ {kind} 分析失败：{result}\")",
@@ -33630,7 +33648,7 @@
       "hunk": "@@ -3027,13 +3022,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#205",
+      "id": "signal_timeline_viewer.py#207",
       "file": "signal_timeline_viewer.py",
       "source": "                    f\"✓ {len(result.get('scenes', []))} scenes, \"\n                    f\"{len(result.get('motion_peaks', []))} peaks\")",
       "target": "                    f\"✓ {len(result.get('scenes', []))} 个场景，\"\n                    f\"{len(result.get('motion_peaks', []))} 个峰值\")",
@@ -33639,7 +33657,7 @@
       "hunk": "@@ -3046,8 +3041,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#206",
+      "id": "signal_timeline_viewer.py#208",
       "file": "signal_timeline_viewer.py",
       "source": "                row[\"status\"].setText(f\"✓ {len(result.get('audio_peaks', []))} peaks\")",
       "target": "                row[\"status\"].setText(f\"✓ {len(result.get('audio_peaks', []))} 个峰值\")",
@@ -33648,7 +33666,7 @@
       "hunk": "@@ -3058,27 +3053,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#207",
+      "id": "signal_timeline_viewer.py#209",
       "file": "signal_timeline_viewer.py",
       "source": "                row[\"status\"].setText(f\"✓ {len(result)} detections\")",
       "target": "                row[\"status\"].setText(f\"✓ {len(result)} 个检测结果\")",
@@ -33657,7 +33675,7 @@
       "hunk": "@@ -3058,27 +3053,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#208",
+      "id": "signal_timeline_viewer.py#210",
       "file": "signal_timeline_viewer.py",
       "source": "                row[\"status\"].setText(f\"✓ {len(result)} seconds\")",
       "target": "                row[\"status\"].setText(f\"✓ {len(result)} 秒\")",
@@ -33666,7 +33684,7 @@
       "hunk": "@@ -3058,27 +3053,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#209",
+      "id": "signal_timeline_viewer.py#211",
       "file": "signal_timeline_viewer.py",
       "source": "                row[\"status\"].setText(f\"✓ {len(result.get('segments', []))} segments\")",
       "target": "                row[\"status\"].setText(f\"✓ {len(result.get('segments', []))} 个片段\")",
@@ -33675,7 +33693,7 @@
       "hunk": "@@ -3058,27 +3053,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#210",
+      "id": "signal_timeline_viewer.py#212",
       "file": "signal_timeline_viewer.py",
       "source": "                row[\"status\"].setText(f\"⌕ {len(hits)} match(es)\")",
       "target": "                row[\"status\"].setText(f\"⌕ {len(hits)} 个匹配\")",
@@ -33684,7 +33702,7 @@
       "hunk": "@@ -3108,7 +3103,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#211",
+      "id": "signal_timeline_viewer.py#213",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not refresh transcript panel: {e}\")",
       "target": "            print(f\"⚠️ 无法刷新转录面板：{e}\")",
@@ -33693,7 +33711,7 @@
       "hunk": "@@ -3140,7 +3135,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#212",
+      "id": "signal_timeline_viewer.py#214",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn = QPushButton(\"Play Edit\")",
       "target": "        self.play_edit_btn = QPushButton(\"播放剪辑\")",
@@ -33702,7 +33720,7 @@
       "hunk": "@@ -3170,7 +3165,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#213",
+      "id": "signal_timeline_viewer.py#215",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setToolTip(\"Play all clips in the edit timeline sequentially\")",
       "target": "        self.play_edit_btn.setToolTip(\"按顺序播放剪辑时间线中的全部片段\")",
@@ -33711,7 +33729,7 @@
       "hunk": "@@ -3185,10 +3180,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#214",
+      "id": "signal_timeline_viewer.py#216",
       "file": "signal_timeline_viewer.py",
       "source": "        self.stop_edit_btn = QPushButton(\"Stop\")",
       "target": "        self.stop_edit_btn = QPushButton(\"停止\")",
@@ -33720,7 +33738,7 @@
       "hunk": "@@ -3185,10 +3180,10 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#215",
+      "id": "signal_timeline_viewer.py#217",
       "file": "signal_timeline_viewer.py",
       "source": "        self.add_clip_btn = QPushButton(\"Add Clip\")",
       "target": "        self.add_clip_btn = QPushButton(\"添加片段\")",
@@ -33729,7 +33747,7 @@
       "hunk": "@@ -3207,26 +3202,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#216",
+      "id": "signal_timeline_viewer.py#218",
       "file": "signal_timeline_viewer.py",
       "source": "        self.add_clip_btn.setToolTip(\"Add a clip at the current playhead time\")",
       "target": "        self.add_clip_btn.setToolTip(\"在当前播放头位置添加片段\")",
@@ -33738,7 +33756,7 @@
       "hunk": "@@ -3207,26 +3202,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#217",
+      "id": "signal_timeline_viewer.py#219",
       "file": "signal_timeline_viewer.py",
       "source": "        self.remove_clips_btn = QPushButton(\"Delete\")",
       "target": "        self.remove_clips_btn = QPushButton(\"删除\")",
@@ -33747,7 +33765,7 @@
       "hunk": "@@ -3207,26 +3202,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#218",
+      "id": "signal_timeline_viewer.py#220",
       "file": "signal_timeline_viewer.py",
       "source": "        self.remove_clips_btn.setToolTip(\"Delete the selected clips from the edit timeline\")",
       "target": "        self.remove_clips_btn.setToolTip(\"从剪辑时间线删除所选片段\")",
@@ -33756,7 +33774,7 @@
       "hunk": "@@ -3207,26 +3202,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#219",
+      "id": "signal_timeline_viewer.py#221",
       "file": "signal_timeline_viewer.py",
       "source": "        self.cut_mode_btn = QPushButton(\"Cut Mode\")",
       "target": "        self.cut_mode_btn = QPushButton(\"切割模式\")",
@@ -33765,7 +33783,7 @@
       "hunk": "@@ -3207,26 +3202,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#220",
+      "id": "signal_timeline_viewer.py#222",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Cut Mode ON:\\n\"\n            \"  • Left-click on a clip to cut it at that point\\n\"\n            \"  • Right-click for trim / cut menu\\n\"\n            \"  • Press C while hovering to cut at cursor\\n\\n\"\n            \"Cut Mode OFF: normal drag/select behaviour\"",
       "target": "            \"切割模式开启：\\n\"\n            \"  • 左键点击片段即可在该位置切开\\n\"\n            \"  • 右键打开修剪 / 切割菜单\\n\"\n            \"  • 鼠标悬停时按 C 可在光标位置切开\\n\\n\"\n            \"切割模式关闭：恢复普通拖动和选择操作\"",
@@ -33774,7 +33792,7 @@
       "hunk": "@@ -3207,26 +3202,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#221",
+      "id": "signal_timeline_viewer.py#223",
       "file": "signal_timeline_viewer.py",
       "source": "        self.save_cache_btn = QPushButton(\"Save\")",
       "target": "        self.save_cache_btn = QPushButton(\"保存\")",
@@ -33783,7 +33801,7 @@
       "hunk": "@@ -3239,18 +3234,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#222",
+      "id": "signal_timeline_viewer.py#224",
       "file": "signal_timeline_viewer.py",
       "source": "        self.save_cache_btn.setToolTip(\"Save current edit timeline to cache for future use\")",
       "target": "        self.save_cache_btn.setToolTip(\"将当前剪辑时间线保存到缓存以便以后使用\")",
@@ -33792,7 +33810,7 @@
       "hunk": "@@ -3239,18 +3234,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#223",
+      "id": "signal_timeline_viewer.py#225",
       "file": "signal_timeline_viewer.py",
       "source": "        self.export_btn = QPushButton(\"Export\")",
       "target": "        self.export_btn = QPushButton(\"导出\")",
@@ -33801,7 +33819,7 @@
       "hunk": "@@ -3239,18 +3234,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#224",
+      "id": "signal_timeline_viewer.py#226",
       "file": "signal_timeline_viewer.py",
       "source": "        self.export_btn.setToolTip(\"Export the edit timeline\")",
       "target": "        self.export_btn.setToolTip(\"导出剪辑时间线\")",
@@ -33810,7 +33828,7 @@
       "hunk": "@@ -3239,18 +3234,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#225",
+      "id": "signal_timeline_viewer.py#227",
       "file": "signal_timeline_viewer.py",
       "source": "        self.edit_duration_label = QLabel(\"Edit duration: 0.0s\")",
       "target": "        self.edit_duration_label = QLabel(\"剪辑时长：0.0 秒\")",
@@ -33819,7 +33837,7 @@
       "hunk": "@@ -3239,18 +3234,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#226",
+      "id": "signal_timeline_viewer.py#228",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_mode_combo.addItem(\"Video: CPU x265 (VR-safe, slow)\", \"cpu\")\n        self.render_mode_combo.addItem(\"Video: GPU (fast, may break VR)\", \"gpu\")",
       "target": "        self.render_mode_combo.addItem(\"视频：CPU x265（VR 兼容，较慢）\", \"cpu\")\n        self.render_mode_combo.addItem(\"视频：GPU（快速，部分 VR 播放器可能不兼容）\", \"gpu\")",
@@ -33828,7 +33846,7 @@
       "hunk": "@@ -3264,14 +3259,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#227",
+      "id": "signal_timeline_viewer.py#229",
       "file": "signal_timeline_viewer.py",
       "source": "            \"How the highlight video is encoded:\\n\"\n            \"CPU x265 — re-encode on the CPU with libx265 (HEVC), matching how VR\\n\"\n            \"   sources are authored. VR-safe, but slow at 6K.\\n\"\n            \"GPU — re-encode with the hardware encoder. Fast, but the HEVC output\\n\"\n            \"   may not play in VR players like HereSphere.\"",
       "target": "            \"高光视频编码方式：\\n\"\n            \"CPU x265 — 使用 CPU 和 libx265（HEVC）重新编码，VR 兼容性更好，但 6K 视频较慢。\\n\"\n            \"GPU — 使用硬件编码器重新编码，速度更快，但生成的 HEVC 视频可能无法在\"\n            \" HereSphere 等部分 VR 播放器中播放。\"",
@@ -33837,7 +33855,7 @@
       "hunk": "@@ -3264,14 +3259,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#228",
+      "id": "signal_timeline_viewer.py#230",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn = QPushButton(\"Render Highlight Video\")",
       "target": "        self.render_highlight_btn = QPushButton(\"渲染高光视频\")",
@@ -33846,7 +33864,7 @@
       "hunk": "@@ -3281,7 +3275,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#229",
+      "id": "signal_timeline_viewer.py#231",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setToolTip(\"Render edit timeline clips into a single highlight video file\")",
       "target": "        self.render_highlight_btn.setToolTip(\"将剪辑时间线片段渲染为一个高光视频文件\")",
@@ -33855,7 +33873,7 @@
       "hunk": "@@ -3291,7 +3285,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#230",
+      "id": "signal_timeline_viewer.py#232",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not adjust dock tab titles: {e}\")",
       "target": "            print(f\"⚠️ 无法调整停靠面板标签标题：{e}\")",
@@ -33864,7 +33882,7 @@
       "hunk": "@@ -3318,7 +3312,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#231",
+      "id": "signal_timeline_viewer.py#233",
       "file": "signal_timeline_viewer.py",
       "source": "                    print(f\"✅ Transcript: loaded {len(segments)} segments from {os.path.basename(srt_path)}\")",
       "target": "                    print(f\"✅ 转录：已从 {os.path.basename(srt_path)} 加载 {len(segments)} 个片段\")",
@@ -33873,7 +33891,7 @@
       "hunk": "@@ -3389,7 +3383,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#232",
+      "id": "signal_timeline_viewer.py#234",
       "file": "signal_timeline_viewer.py",
       "source": "        print(\"⚠️ No transcript file found next to video\")",
       "target": "        print(\"⚠️ 视频旁没有找到转录文件\")",
@@ -33882,7 +33900,7 @@
       "hunk": "@@ -3397,7 +3391,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#233",
+      "id": "signal_timeline_viewer.py#235",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ SRT parse error: {e}\")",
       "target": "            print(f\"⚠️ SRT 解析错误：{e}\")",
@@ -33891,7 +33909,7 @@
       "hunk": "@@ -3428,7 +3422,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#234",
+      "id": "signal_timeline_viewer.py#236",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Transcript txt parse error: {e}\")",
       "target": "            print(f\"⚠️ 转录 TXT 解析错误：{e}\")",
@@ -33900,7 +33918,7 @@
       "hunk": "@@ -3461,7 +3455,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#235",
+      "id": "signal_timeline_viewer.py#237",
       "file": "signal_timeline_viewer.py",
       "source": "        layer_group = CollapsibleSection(\"Visible Layers\", settings_key=\"controls/layers\")",
       "target": "        layer_group = CollapsibleSection(\"可见图层\", settings_key=\"controls/layers\")",
@@ -33909,7 +33927,7 @@
       "hunk": "@@ -3483,13 +3477,28 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#236",
+      "id": "signal_timeline_viewer.py#238",
       "file": "signal_timeline_viewer.py",
       "source": "",
       "target": "        layer_names_zh = {\n            \"events\": \"事件\",\n            \"transcript\": \"转录文本\",\n            \"actions\": \"动作\",\n            \"objects\": \"物体\",\n            \"visual_search\": \"视觉搜索\",\n            \"scenes\": \"场景\",\n            \"motion_events\": \"运动事件\",\n            \"motion_peaks\": \"运动峰值\",\n            \"audio_peaks\": \"音频峰值\",\n            \"highlights\": \"最终高光\",\n            \"filmstrip\": \"胶片条\",\n            \"waveform\": \"音频波形\",\n        }",
@@ -33918,7 +33936,7 @@
       "hunk": "@@ -3483,13 +3477,28 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#237",
+      "id": "signal_timeline_viewer.py#239",
       "file": "signal_timeline_viewer.py",
       "source": "            display_name = layer_name.replace('_', ' ').title()",
       "target": "            display_name = layer_names_zh.get(\n                layer_name, layer_name.replace('_', ' ').title())",
@@ -33927,7 +33945,7 @@
       "hunk": "@@ -3483,13 +3477,28 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#238",
+      "id": "signal_timeline_viewer.py#240",
       "file": "signal_timeline_viewer.py",
       "source": "                checkbox.setToolTip(\"No detections for this signal type\")",
       "target": "                checkbox.setToolTip(\"此信号类型没有检测结果\")",
@@ -33936,7 +33954,7 @@
       "hunk": "@@ -3497,7 +3506,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#239",
+      "id": "signal_timeline_viewer.py#241",
       "file": "signal_timeline_viewer.py",
       "source": "                self._object_fold = self._mini_button(\"▾\", \"Hide the object list\")",
       "target": "                self._object_fold = self._mini_button(\"▾\", \"隐藏物体列表\")",
@@ -33945,7 +33963,7 @@
       "hunk": "@@ -3514,7 +3523,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#240",
+      "id": "signal_timeline_viewer.py#242",
       "file": "signal_timeline_viewer.py",
       "source": "                self._event_fold = self._mini_button(\"▾\", \"Hide the event list\")",
       "target": "                self._event_fold = self._mini_button(\"▾\", \"隐藏事件列表\")",
@@ -33954,7 +33972,7 @@
       "hunk": "@@ -3542,7 +3551,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#241",
+      "id": "signal_timeline_viewer.py#243",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Avoid in Highlights\", expanded=False, settings_key=\"controls/avoid\")",
       "target": "            \"高光排除\", expanded=False, settings_key=\"controls/avoid\")",
@@ -33963,7 +33981,7 @@
       "hunk": "@@ -3608,18 +3617,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#242",
+      "id": "signal_timeline_viewer.py#244",
       "file": "signal_timeline_viewer.py",
       "source": "        self.avoid_range_btn = QPushButton(\"Avoid selected range\")",
       "target": "        self.avoid_range_btn = QPushButton(\"排除所选区间\")",
@@ -33972,7 +33990,7 @@
       "hunk": "@@ -3608,18 +3617,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#243",
+      "id": "signal_timeline_viewer.py#245",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Drag-select a range on the timeline, then click to exclude it from \"\n            \"highlight selection on the next run.\"",
       "target": "            \"先在时间线上拖拽选择一个区间，再点击此按钮；\"\n            \"下次生成高光时将排除该区间。\"",
@@ -33981,7 +33999,7 @@
       "hunk": "@@ -3608,18 +3617,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#244",
+      "id": "signal_timeline_viewer.py#246",
       "file": "signal_timeline_viewer.py",
       "source": "        self.clear_avoid_btn = QPushButton(\"Clear\")\n        self.clear_avoid_btn.setToolTip(\"Remove all avoid ranges\")",
       "target": "        self.clear_avoid_btn = QPushButton(\"清空\")\n        self.clear_avoid_btn.setToolTip(\"移除全部排除区间\")",
@@ -33990,7 +34008,7 @@
       "hunk": "@@ -3608,18 +3617,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#245",
+      "id": "signal_timeline_viewer.py#247",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Merge Signals\", expanded=False, settings_key=\"controls/merge\")",
       "target": "            \"合并信号\", expanded=False, settings_key=\"controls/merge\")",
@@ -33999,7 +34017,7 @@
       "hunk": "@@ -3627,11 +3636,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#246",
+      "id": "signal_timeline_viewer.py#248",
       "file": "signal_timeline_viewer.py",
       "source": "        merge_row.addWidget(QLabel(\"Gap:\"))",
       "target": "        merge_row.addWidget(QLabel(\"间隔：\"))",
@@ -34008,7 +34026,7 @@
       "hunk": "@@ -3627,11 +3636,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#247",
+      "id": "signal_timeline_viewer.py#249",
       "file": "signal_timeline_viewer.py",
       "source": "        self.merge_value_label = QLabel(\"Off\")",
       "target": "        self.merge_value_label = QLabel(\"关闭\")",
@@ -34017,7 +34035,7 @@
       "hunk": "@@ -3642,13 +3651,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#248",
+      "id": "signal_timeline_viewer.py#250",
       "file": "signal_timeline_viewer.py",
       "source": "        merge_hint = QLabel(\"Merge nearby signals into continuous blocks\")",
       "target": "        merge_hint = QLabel(\"将相邻信号合并为连续区块\")",
@@ -34026,7 +34044,7 @@
       "hunk": "@@ -3642,13 +3651,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#249",
+      "id": "signal_timeline_viewer.py#251",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Waveform Peaks\", expanded=False, settings_key=\"controls/wpeaks\")",
       "target": "            \"波形峰值\", expanded=False, settings_key=\"controls/wpeaks\")",
@@ -34035,7 +34053,7 @@
       "hunk": "@@ -3663,11 +3672,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#250",
+      "id": "signal_timeline_viewer.py#252",
       "file": "signal_timeline_viewer.py",
       "source": "        wpeak_row.addWidget(QLabel(\"Sensitivity:\"))",
       "target": "        wpeak_row.addWidget(QLabel(\"灵敏度：\"))",
@@ -34044,7 +34062,7 @@
       "hunk": "@@ -3663,11 +3672,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#251",
+      "id": "signal_timeline_viewer.py#253",
       "file": "signal_timeline_viewer.py",
       "source": "        wpeak_hint = QLabel(\"Higher = only the loudest moments. Use ◀▶ on the \"",
       "target": "        wpeak_hint = QLabel(\"数值越高，只保留最明显的时刻。可使用 ◀▶ 浏览\"",
@@ -34053,7 +34071,7 @@
       "hunk": "@@ -3685,7 +3694,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#252",
+      "id": "signal_timeline_viewer.py#254",
       "file": "signal_timeline_viewer.py",
       "source": "        playback_group = CollapsibleSection(\"Playback\", settings_key=\"controls/playback\")",
       "target": "        playback_group = CollapsibleSection(\"播放\", settings_key=\"controls/playback\")",
@@ -34062,7 +34080,7 @@
       "hunk": "@@ -3699,13 +3708,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#253",
+      "id": "signal_timeline_viewer.py#255",
       "file": "signal_timeline_viewer.py",
       "source": "        self.follow_playhead_checkbox = QCheckBox(\"Follow Playhead\")",
       "target": "        self.follow_playhead_checkbox = QCheckBox(\"跟随播放头\")",
@@ -34071,7 +34089,7 @@
       "hunk": "@@ -3699,13 +3708,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#254",
+      "id": "signal_timeline_viewer.py#256",
       "file": "signal_timeline_viewer.py",
       "source": "            \"Auto-scroll the timeline to keep the playhead visible during playback\"",
       "target": "            \"播放时自动滚动时间线，使播放头始终保持可见\"",
@@ -34080,7 +34098,7 @@
       "hunk": "@@ -3699,13 +3708,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#255",
+      "id": "signal_timeline_viewer.py#257",
       "file": "signal_timeline_viewer.py",
       "source": "            action_text = f\"{len(visible_actions)}/{total_actions} actions\"\n            object_text = f\"{len(visible_objects)}/{total_objects} objects\"",
       "target": "            action_text = f\"{len(visible_actions)}/{total_actions} 个动作\"\n            object_text = f\"{len(visible_objects)}/{total_objects} 个物体\"",
@@ -34090,7 +34108,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#256",
+      "id": "signal_timeline_viewer.py#258",
       "file": "signal_timeline_viewer.py",
       "source": "                parts.append(f\"{shown}/{len(events)} events\")",
       "target": "                parts.append(f\"{shown}/{len(events)} 个事件\")",
@@ -34100,7 +34118,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#257",
+      "id": "signal_timeline_viewer.py#259",
       "file": "signal_timeline_viewer.py",
       "source": "            self.filter_summary.setText(\"Showing: \" + \", \".join(parts))\n            self.confidence_label.setText(f\"Actions: {self.signal_scene.min_action_confidence:.0%} | Objects: {self.signal_scene.min_object_confidence:.0%}\")",
       "target": "            self.filter_summary.setText(\"当前显示：\" + \", \".join(parts))\n            self.confidence_label.setText(f\"动作：{self.signal_scene.min_action_confidence:.0%} | 物体：{self.signal_scene.min_object_confidence:.0%}\")",
@@ -34109,7 +34127,7 @@
       "hunk": "@@ -3766,23 +3775,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#258",
+      "id": "signal_timeline_viewer.py#260",
       "file": "signal_timeline_viewer.py",
       "source": "                filter_details.append(f\"Actions≥{self.signal_scene.min_action_confidence:.0%}, Objects≥{self.signal_scene.min_object_confidence:.0%}\")",
       "target": "                filter_details.append(f\"动作≥{self.signal_scene.min_action_confidence:.0%}，物体≥{self.signal_scene.min_object_confidence:.0%}\")",
@@ -34118,7 +34136,7 @@
       "hunk": "@@ -3766,23 +3775,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#259",
+      "id": "signal_timeline_viewer.py#261",
       "file": "signal_timeline_viewer.py",
       "source": "                    filter_details.append(f\"Actions: {', '.join(visible_actions)}\")",
       "target": "                    filter_details.append(f\"动作：{', '.join(visible_actions)}\")",
@@ -34127,7 +34145,7 @@
       "hunk": "@@ -3766,23 +3775,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#260",
+      "id": "signal_timeline_viewer.py#262",
       "file": "signal_timeline_viewer.py",
       "source": "                    filter_details.append(f\"Actions: {len(visible_actions)} shown\")",
       "target": "                    filter_details.append(f\"动作：显示 {len(visible_actions)} 个\")",
@@ -34136,7 +34154,7 @@
       "hunk": "@@ -3766,23 +3775,23 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#261",
+      "id": "signal_timeline_viewer.py#263",
       "file": "signal_timeline_viewer.py",
       "source": "                self.current_filters_label.setText(\"No filters applied\")",
       "target": "                self.current_filters_label.setText(\"未应用筛选\")",
@@ -34146,7 +34164,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#262",
+      "id": "signal_timeline_viewer.py#264",
       "file": "signal_timeline_viewer.py",
       "source": "            self._swap_message(\"No highlight report was found next to this video, \"\n                               \"so there is nothing to re-choose from. Run the \"\n                               \"highlighter again to write one.\")",
       "target": "            self._swap_message(\"在该视频旁未找到高光报告，因此没有可供重新选择的候选片段。\"\n                               \"请重新运行高光处理以生成报告。\")",
@@ -34155,7 +34173,7 @@
       "hunk": "@@ -3812,27 +3821,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#263",
+      "id": "signal_timeline_viewer.py#265",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Could not read {path}: {exc}\")\n            self._swap_message(f\"The highlight report could not be read:\\n{exc}\")",
       "target": "            print(f\"⚠️ 无法读取 {path}：{exc}\")\n            self._swap_message(f\"无法读取高光报告：\\n{exc}\")",
@@ -34164,7 +34182,7 @@
       "hunk": "@@ -3812,27 +3821,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#264",
+      "id": "signal_timeline_viewer.py#266",
       "file": "signal_timeline_viewer.py",
       "source": "            self._swap_message(\"This report was written before the score was \"\n                               \"saved with it. Re-run the highlighter to enable \"\n                               \"swapping.\")",
       "target": "            self._swap_message(\"此报告生成时尚未保存评分数据。请重新运行高光处理后再使用替换功能。\")",
@@ -34173,7 +34191,7 @@
       "hunk": "@@ -3812,27 +3821,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#265",
+      "id": "signal_timeline_viewer.py#267",
       "file": "signal_timeline_viewer.py",
       "source": "        QMessageBox.information(self, \"Swap clip\", text)",
       "target": "        QMessageBox.information(self, \"替换片段\", text)",
@@ -34182,7 +34200,7 @@
       "hunk": "@@ -3812,27 +3821,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#266",
+      "id": "signal_timeline_viewer.py#268",
       "file": "signal_timeline_viewer.py",
       "source": "            self._swap_message(\"There is no other moment left to offer for this \"\n                               \"clip — everything else is either already in the \"\n                               \"highlight or has been turned down.\")",
       "target": "            self._swap_message(\"没有其他可替换到此片段的候选时刻；其余内容要么已经在高光中，\"\n                               \"要么此前已被排除。\")",
@@ -34191,7 +34209,7 @@
       "hunk": "@@ -3855,20 +3861,19 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#267",
+      "id": "signal_timeline_viewer.py#269",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"🔀 Swapped highlight {index + 1} \"\n              f\"({replaced[0]:.1f}s–{replaced[1]:.1f}s) for another moment\")",
       "target": "        print(f\"🔀 已替换第 {index + 1} 个高光片段 \"\n              f\"（原片段 {replaced[0]:.1f} 秒–{replaced[1]:.1f} 秒）\")",
@@ -34200,7 +34218,7 @@
       "hunk": "@@ -3855,20 +3861,19 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#268",
+      "id": "signal_timeline_viewer.py#270",
       "file": "signal_timeline_viewer.py",
       "source": "        print(\"↩ Undid the last highlight swap\")",
       "target": "        print(\"↩ 已撤销上一次高光片段替换\")",
@@ -34209,7 +34227,7 @@
       "hunk": "@@ -3855,20 +3861,19 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#269",
+      "id": "signal_timeline_viewer.py#271",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ Error extracting highlights from signal data: {e}\")",
       "target": "            print(f\"⚠️ 从信号数据提取高光片段时出错：{e}\")",
@@ -34218,7 +34236,7 @@
       "hunk": "@@ -3901,7 +3906,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#270",
+      "id": "signal_timeline_viewer.py#272",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(f\"🚫 Avoiding {name} — {len(self.avoided_identity_ids)} total\", 3000)",
       "target": "        self.statusBar().showMessage(f\"🚫 正在排除 {name} — 共 {len(self.avoided_identity_ids)} 个\", 3000)",
@@ -34227,7 +34245,7 @@
       "hunk": "@@ -3910,12 +3915,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#271",
+      "id": "signal_timeline_viewer.py#273",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"✅ Moved Clip {from_idx + 1} → position {to_idx + 1}\", 3000",
       "target": "            f\"✅ 已将片段 {from_idx + 1} 移动到位置 {to_idx + 1}\", 3000",
@@ -34236,7 +34254,7 @@
       "hunk": "@@ -3910,12 +3915,12 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#272",
+      "id": "signal_timeline_viewer.py#274",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(f\"Follow playhead: {'ON' if follow else 'OFF'}\", 2000)",
       "target": "        self.statusBar().showMessage(f\"跟随播放头：{'开' if follow else '关'}\", 2000)",
@@ -34245,7 +34263,7 @@
       "hunk": "@@ -3924,7 +3929,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#273",
+      "id": "signal_timeline_viewer.py#275",
       "file": "signal_timeline_viewer.py",
       "source": "                        self.statusBar().showMessage(\"✅ Edit timeline saved to cache\", 3000)",
       "target": "                        self.statusBar().showMessage(\"✅ 剪辑时间线已保存到缓存\", 3000)",
@@ -34254,7 +34272,7 @@
       "hunk": "@@ -3935,15 +3940,15 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#274",
+      "id": "signal_timeline_viewer.py#276",
       "file": "signal_timeline_viewer.py",
       "source": "                        self.statusBar().showMessage(\"⚠️ Failed to save to cache\", 3000)",
       "target": "                        self.statusBar().showMessage(\"⚠️ 保存到缓存失败\", 3000)",
@@ -34263,7 +34281,7 @@
       "hunk": "@@ -3935,15 +3940,15 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#275",
+      "id": "signal_timeline_viewer.py#277",
       "file": "signal_timeline_viewer.py",
       "source": "                    self.statusBar().showMessage(\"⚠️ Cache saving not available in this scene\", 3000)",
       "target": "                    self.statusBar().showMessage(\"⚠️ 当前场景不支持保存缓存\", 3000)",
@@ -34272,7 +34290,7 @@
       "hunk": "@@ -3935,15 +3940,15 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#276",
+      "id": "signal_timeline_viewer.py#278",
       "file": "signal_timeline_viewer.py",
       "source": "                self.statusBar().showMessage(f\"⚠️ Error saving to cache: {str(e)[:50]}...\", 3000)",
       "target": "                self.statusBar().showMessage(f\"⚠️ 保存到缓存时出错：{str(e)[:50]}…\", 3000)",
@@ -34281,7 +34299,7 @@
       "hunk": "@@ -3935,15 +3940,15 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#277",
+      "id": "signal_timeline_viewer.py#279",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"⚠️ No edit timeline available\", 3000)",
       "target": "            self.statusBar().showMessage(\"⚠️ 没有可用的剪辑时间线\", 3000)",
@@ -34290,7 +34308,7 @@
       "hunk": "@@ -3935,15 +3940,15 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#278",
+      "id": "signal_timeline_viewer.py#280",
       "file": "signal_timeline_viewer.py",
       "source": "                \"Drag-select a range on the timeline first, then click Avoid.\", 4000)",
       "target": "                \"请先在时间线上拖动选择一个范围，然后点击“避开”。\", 4000)",
@@ -34299,7 +34317,7 @@
       "hunk": "@@ -3974,7 +3979,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#279",
+      "id": "signal_timeline_viewer.py#281",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"🚫 Avoiding {lo:.1f}s–{hi:.1f}s — {len(ranges)} range(s) excluded from highlights\",",
       "target": "            f\"🚫 已避开 {lo:.1f} 秒–{hi:.1f} 秒——共有 {len(ranges)} 个范围不会进入高光\",",
@@ -34308,7 +34326,7 @@
       "hunk": "@@ -3988,14 +3993,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#280",
+      "id": "signal_timeline_viewer.py#282",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(\"Cleared all avoid ranges\", 3000)",
       "target": "        self.statusBar().showMessage(\"已清空全部排除区间\", 3000)",
@@ -34317,7 +34335,7 @@
       "hunk": "@@ -3988,14 +3993,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#281",
+      "id": "signal_timeline_viewer.py#283",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ could not save manual avoid ranges: {e}\")",
       "target": "            print(f\"⚠️ 无法保存手动排除范围：{e}\")",
@@ -34326,7 +34344,7 @@
       "hunk": "@@ -4007,7 +4012,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#282",
+      "id": "signal_timeline_viewer.py#284",
       "file": "signal_timeline_viewer.py",
       "source": "            self.merge_value_label.setText(\"Off\")",
       "target": "            self.merge_value_label.setText(\"关闭\")",
@@ -34335,7 +34353,7 @@
       "hunk": "@@ -4018,9 +4023,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#283",
+      "id": "signal_timeline_viewer.py#285",
       "file": "signal_timeline_viewer.py",
       "source": "            self.merge_value_label.setText(f\"{seconds:.1f}s\")",
       "target": "            self.merge_value_label.setText(f\"{seconds:.1f} 秒\")",
@@ -34344,7 +34362,7 @@
       "hunk": "@@ -4018,9 +4023,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#284",
+      "id": "signal_timeline_viewer.py#286",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -34354,7 +34372,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#285",
+      "id": "signal_timeline_viewer.py#287",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -34364,7 +34382,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#286",
+      "id": "signal_timeline_viewer.py#288",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_btn.setText(\"▶ Play\")",
       "target": "            self.play_btn.setText(\"▶ 播放\")",
@@ -34374,7 +34392,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#287",
+      "id": "signal_timeline_viewer.py#289",
       "file": "signal_timeline_viewer.py",
       "source": "        print(f\"🎵 Waveform clicked at {start_time:.2f}s, amplitude: {amplitude:.2f}\")",
       "target": "        print(f\"🎵 点击波形位置：{start_time:.2f} 秒，振幅：{amplitude:.2f}\")",
@@ -34383,7 +34401,7 @@
       "hunk": "@@ -4140,14 +4145,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#288",
+      "id": "signal_timeline_viewer.py#290",
       "file": "signal_timeline_viewer.py",
       "source": "                self.statusBar().showMessage(f\"Added audio clip: {start_time:.1f}s to {end_time:.1f}s\", 2000)",
       "target": "                self.statusBar().showMessage(f\"已添加音频片段：{start_time:.1f} 秒至 {end_time:.1f} 秒\", 2000)",
@@ -34392,7 +34410,7 @@
       "hunk": "@@ -4140,14 +4145,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#289",
+      "id": "signal_timeline_viewer.py#291",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(f\"Added clip: {start:.1f}s to {end:.1f}s\", 2000)",
       "target": "        self.statusBar().showMessage(f\"已添加片段：{start:.1f} 秒至 {end:.1f} 秒\", 2000)",
@@ -34402,7 +34420,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#290",
+      "id": "signal_timeline_viewer.py#292",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(f\"Added clip: {start:.1f}s to {end:.1f}s\", 2000)",
       "target": "        self.statusBar().showMessage(f\"已添加片段：{start:.1f} 秒至 {end:.1f} 秒\", 2000)",
@@ -34412,7 +34430,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#291",
+      "id": "signal_timeline_viewer.py#293",
       "file": "signal_timeline_viewer.py",
       "source": "        plural = \"s\" if added != 1 else \"\"\n        self.statusBar().showMessage(f\"Added {added} clip{plural} to edit timeline\", 2500)",
       "target": "        plural = \" 秒\" if added != 1 else \"\"\n        self.statusBar().showMessage(f\"已向剪辑时间线添加 {added} 个片段\", 2500)",
@@ -34421,7 +34439,7 @@
       "hunk": "@@ -4179,8 +4184,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#292",
+      "id": "signal_timeline_viewer.py#294",
       "file": "signal_timeline_viewer.py",
       "source": "        self.time_label.setText(f\"Clip: {minutes:02d}:{seconds:02d}\")",
       "target": "        self.time_label.setText(f\"片段：{minutes:02d}:{seconds:02d}\")",
@@ -34430,7 +34448,7 @@
       "hunk": "@@ -4288,26 +4293,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#293",
+      "id": "signal_timeline_viewer.py#295",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"⏸ Pause\")",
       "target": "        self.play_edit_btn.setText(\"⏸ 暂停\")",
@@ -34440,7 +34458,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#294",
+      "id": "signal_timeline_viewer.py#296",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -34450,7 +34468,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#295",
+      "id": "signal_timeline_viewer.py#297",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"✅  Added clip  {start_time:.2f}s → {end_time:.2f}s  \"\n            f\"({end_time - start_time:.2f}s)\",",
       "target": "            f\"✅ 已添加片段  {start_time:.2f} 秒 → {end_time:.2f} 秒  \"\n            f\"（{end_time - start_time:.2f} 秒）\",",
@@ -34459,7 +34477,7 @@
       "hunk": "@@ -4288,26 +4293,26 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#296",
+      "id": "signal_timeline_viewer.py#298",
       "file": "signal_timeline_viewer.py",
       "source": "                \"✂️  Cut Mode ON — left-click a clip to cut it  |  C key = cut at cursor  |  right-click for trim menu\",",
       "target": "                \"✂️ 切割模式：开——左键点击片段切割｜按 C 在光标处切割｜右键打开修剪菜单\",",
@@ -34468,7 +34486,7 @@
       "hunk": "@@ -4352,14 +4357,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#297",
+      "id": "signal_timeline_viewer.py#299",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"Cut Mode OFF\", 3000)",
       "target": "            self.statusBar().showMessage(\"切割模式：关\", 3000)",
@@ -34477,7 +34495,7 @@
       "hunk": "@@ -4352,14 +4357,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#298",
+      "id": "signal_timeline_viewer.py#300",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"✂️  Cut at {minutes:02d}:{seconds:05.2f}  —  \"\n            f\"{len(self.edit_scene.clips)} clips in timeline\",",
       "target": "            f\"✂️ 已在 {minutes:02d}:{seconds:05.2f} 处切割——\"\n            f\"时间线共有 {len(self.edit_scene.clips)} 个片段\",",
@@ -34486,7 +34504,7 @@
       "hunk": "@@ -4372,8 +4377,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#299",
+      "id": "signal_timeline_viewer.py#301",
       "file": "signal_timeline_viewer.py",
       "source": "                f\"Trimmed clip {clip_index + 1}  →  {start:.2f}s – {end:.2f}s  ({duration:.1f}s)\",",
       "target": "                f\"已修剪片段 {clip_index + 1} → {start:.2f} 秒 – {end:.2f} 秒（{duration:.1f} 秒）\",",
@@ -34495,7 +34513,7 @@
       "hunk": "@@ -4389,11 +4394,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#300",
+      "id": "signal_timeline_viewer.py#302",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"Clip trimmed\", 2000)",
       "target": "            self.statusBar().showMessage(\"片段已修剪\", 2000)",
@@ -34504,7 +34522,7 @@
       "hunk": "@@ -4389,11 +4394,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#301",
+      "id": "signal_timeline_viewer.py#303",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(f\"Removed clip {self.pending_clip_removals[0] + 1}\", 2000)",
       "target": "            self.statusBar().showMessage(f\"已移除片段 {self.pending_clip_removals[0] + 1}\", 2000)",
@@ -34513,7 +34531,7 @@
       "hunk": "@@ -4406,9 +4411,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#302",
+      "id": "signal_timeline_viewer.py#304",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(f\"Removed {count} clips\", 2000)",
       "target": "            self.statusBar().showMessage(f\"已移除 {count} 个片段\", 2000)",
@@ -34522,7 +34540,7 @@
       "hunk": "@@ -4406,9 +4411,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#303",
+      "id": "signal_timeline_viewer.py#305",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(f\"Added clip at {self.current_time:.1f}s\", 2000)",
       "target": "            self.statusBar().showMessage(f\"已在 {self.current_time:.1f} 秒处添加片段\", 2000)",
@@ -34531,7 +34549,7 @@
       "hunk": "@@ -4419,9 +4424,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#304",
+      "id": "signal_timeline_viewer.py#306",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"⚠️ Select a time first\", 2000)",
       "target": "            self.statusBar().showMessage(\"⚠️ 请先选择时间\", 2000)",
@@ -34540,7 +34558,7 @@
       "hunk": "@@ -4419,9 +4424,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#305",
+      "id": "signal_timeline_viewer.py#307",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"Removed selected clips\", 2000)",
       "target": "            self.statusBar().showMessage(\"已移除所选片段\", 2000)",
@@ -34549,7 +34567,7 @@
       "hunk": "@@ -4429,13 +4434,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#306",
+      "id": "signal_timeline_viewer.py#308",
       "file": "signal_timeline_viewer.py",
       "source": "            QMessageBox.warning(self, \"No Clips\", \"Add some clips to the edit timeline first!\")",
       "target": "            QMessageBox.warning(self, \"没有片段\", \"请先向剪辑时间线添加一些片段！\")",
@@ -34559,7 +34577,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#307",
+      "id": "signal_timeline_viewer.py#309",
       "file": "signal_timeline_viewer.py",
       "source": "            QMessageBox.critical(self, \"Export Failed\",\n                                 f\"Failed to export timeline:\\n{str(e)}\")",
       "target": "            QMessageBox.critical(self, \"导出失败\",\n                                 f\"导出时间线失败：\\n{str(e)}\")",
@@ -34569,7 +34587,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#308",
+      "id": "signal_timeline_viewer.py#310",
       "file": "signal_timeline_viewer.py",
       "source": "        dialog.setWindowTitle(\"Export Timeline\")",
       "target": "        dialog.setWindowTitle(\"导出时间线\")",
@@ -34578,7 +34596,7 @@
       "hunk": "@@ -4446,30 +4451,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#309",
+      "id": "signal_timeline_viewer.py#311",
       "file": "signal_timeline_viewer.py",
       "source": "        layout.addWidget(QLabel(\"Select export format:\"))",
       "target": "        layout.addWidget(QLabel(\"选择导出格式：\"))",
@@ -34587,7 +34605,7 @@
       "hunk": "@@ -4446,30 +4451,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#310",
+      "id": "signal_timeline_viewer.py#312",
       "file": "signal_timeline_viewer.py",
       "source": "        layout.addWidget(QLabel(\"Sequence start:\"))",
       "target": "        layout.addWidget(QLabel(\"序列起始时间：\"))",
@@ -34596,7 +34614,7 @@
       "hunk": "@@ -4446,30 +4451,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#311",
+      "id": "signal_timeline_viewer.py#313",
       "file": "signal_timeline_viewer.py",
       "source": "        start_combo.addItem(\"Start at 00:00:00:00\", RECORD_START_ZERO)\n        start_combo.addItem(\"Start at 01:00:00:00\", RECORD_START_HOUR)",
       "target": "        start_combo.addItem(\"从 00:00:00:00 开始\", RECORD_START_ZERO)\n        start_combo.addItem(\"从 01:00:00:00 开始\", RECORD_START_HOUR)",
@@ -34605,7 +34623,7 @@
       "hunk": "@@ -4446,30 +4451,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#312",
+      "id": "signal_timeline_viewer.py#314",
       "file": "signal_timeline_viewer.py",
       "source": "            1, \"Matches a new Resolve timeline.\", Qt.ItemDataRole.ToolTipRole)",
       "target": "            1, \"与新建的 DaVinci Resolve 时间线起始时间一致。\", Qt.ItemDataRole.ToolTipRole)",
@@ -34614,7 +34632,7 @@
       "hunk": "@@ -4446,30 +4451,30 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#313",
+      "id": "signal_timeline_viewer.py#315",
       "file": "signal_timeline_viewer.py",
       "source": "",
       "target": "        buttons.button(QDialogButtonBox.Ok).setText(\"确定\")\n        buttons.button(QDialogButtonBox.Cancel).setText(\"取消\")",
@@ -34623,7 +34641,7 @@
       "hunk": "@@ -4498,6 +4503,8 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#314",
+      "id": "signal_timeline_viewer.py#316",
       "file": "signal_timeline_viewer.py",
       "source": "            QMessageBox.warning(self, \"Export\", str(e))",
       "target": "            QMessageBox.warning(self, \"导出\", str(e))",
@@ -34632,7 +34650,7 @@
       "hunk": "@@ -4510,13 +4517,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#315",
+      "id": "signal_timeline_viewer.py#317",
       "file": "signal_timeline_viewer.py",
       "source": "            self, \"Save Timeline\", default_path, filter_str",
       "target": "            self, \"保存时间线\", default_path, filter_str",
@@ -34641,7 +34659,7 @@
       "hunk": "@@ -4510,13 +4517,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#316",
+      "id": "signal_timeline_viewer.py#318",
       "file": "signal_timeline_viewer.py",
       "source": "                msg = f\"EDL exported to: {os.path.basename(result)}\"",
       "target": "                msg = f\"EDL 已导出到：{os.path.basename(result)}\"",
@@ -34650,7 +34668,7 @@
       "hunk": "@@ -4529,27 +4536,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#317",
+      "id": "signal_timeline_viewer.py#319",
       "file": "signal_timeline_viewer.py",
       "source": "                msg = f\"FCPXML exported to: {os.path.basename(result)}\"",
       "target": "                msg = f\"FCPXML 已导出到：{os.path.basename(result)}\"",
@@ -34659,7 +34677,7 @@
       "hunk": "@@ -4529,27 +4536,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#318",
+      "id": "signal_timeline_viewer.py#320",
       "file": "signal_timeline_viewer.py",
       "source": "                msg = f\"CSV exported to: {os.path.basename(result)}\"",
       "target": "                msg = f\"CSV 已导出到：{os.path.basename(result)}\"",
@@ -34668,7 +34686,7 @@
       "hunk": "@@ -4529,27 +4536,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#319",
+      "id": "signal_timeline_viewer.py#321",
       "file": "signal_timeline_viewer.py",
       "source": "                raise ExportError(f\"unknown export format {format_name!r}\")",
       "target": "                raise ExportError(f\"未知导出格式 {format_name!r}\")",
@@ -34677,7 +34695,7 @@
       "hunk": "@@ -4529,27 +4536,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#320",
+      "id": "signal_timeline_viewer.py#322",
       "file": "signal_timeline_viewer.py",
       "source": "                self, \"Export Successful\",\n                f\"✅ Timeline exported successfully!\\n\\n{msg}\"",
       "target": "                self, \"导出成功\",\n                f\"✅ 时间线导出成功！\\n\\n{msg}\"",
@@ -34686,7 +34704,7 @@
       "hunk": "@@ -4529,27 +4536,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#321",
+      "id": "signal_timeline_viewer.py#323",
       "file": "signal_timeline_viewer.py",
       "source": "            reply = QMessageBox.question(self, \"Open Folder\",\n                                         \"Open containing folder?\",",
       "target": "            reply = QMessageBox.question(self, \"打开文件夹\",\n                                         \"是否打开所在文件夹？\",",
@@ -34695,7 +34713,7 @@
       "hunk": "@@ -4529,27 +4536,27 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#322",
+      "id": "signal_timeline_viewer.py#324",
       "file": "signal_timeline_viewer.py",
       "source": "            QMessageBox.critical(self, \"Export Failed\",\n                                 f\"Failed to export timeline:\\n{str(e)}\")",
       "target": "            QMessageBox.critical(self, \"导出失败\",\n                                 f\"导出时间线失败：\\n{str(e)}\")",
@@ -34705,7 +34723,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#323",
+      "id": "signal_timeline_viewer.py#325",
       "file": "signal_timeline_viewer.py",
       "source": "        self.edit_duration_label.setText(f\"Edit duration: {total_duration:.1f}s\")",
       "target": "        self.edit_duration_label.setText(f\"剪辑时长：{total_duration:.1f} 秒\")",
@@ -34714,7 +34732,7 @@
       "hunk": "@@ -4562,13 +4569,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#324",
+      "id": "signal_timeline_viewer.py#326",
       "file": "signal_timeline_viewer.py",
       "source": "            action_text = f\"{len(visible_actions)}/{total_actions} actions\"\n            object_text = f\"{len(visible_objects)}/{total_objects} objects\"",
       "target": "            action_text = f\"{len(visible_actions)}/{total_actions} 个动作\"\n            object_text = f\"{len(visible_objects)}/{total_objects} 个物体\"",
@@ -34724,7 +34742,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#325",
+      "id": "signal_timeline_viewer.py#327",
       "file": "signal_timeline_viewer.py",
       "source": "                parts.append(f\"{shown}/{len(events)} events\")",
       "target": "                parts.append(f\"{shown}/{len(events)} 个事件\")",
@@ -34734,7 +34752,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#326",
+      "id": "signal_timeline_viewer.py#328",
       "file": "signal_timeline_viewer.py",
       "source": "            self.filter_summary.setText(\"Showing: \" + \", \".join(parts))",
       "target": "            self.filter_summary.setText(\"当前显示：\" + \", \".join(parts))",
@@ -34743,7 +34761,7 @@
       "hunk": "@@ -4667,18 +4674,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#327",
+      "id": "signal_timeline_viewer.py#329",
       "file": "signal_timeline_viewer.py",
       "source": "                        filter_details.append(f\"Actions: {', '.join(visible_actions)}\")",
       "target": "                        filter_details.append(f\"动作：{', '.join(visible_actions)}\")",
@@ -34752,7 +34770,7 @@
       "hunk": "@@ -4667,18 +4674,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#328",
+      "id": "signal_timeline_viewer.py#330",
       "file": "signal_timeline_viewer.py",
       "source": "                        filter_details.append(f\"Actions: {len(visible_actions)} shown\")",
       "target": "                        filter_details.append(f\"动作：显示 {len(visible_actions)} 个\")",
@@ -34761,7 +34779,7 @@
       "hunk": "@@ -4667,18 +4674,18 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#329",
+      "id": "signal_timeline_viewer.py#331",
       "file": "signal_timeline_viewer.py",
       "source": "                self.current_filters_label.setText(\"No filters applied\")",
       "target": "                self.current_filters_label.setText(\"未应用筛选\")",
@@ -34771,7 +34789,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#330",
+      "id": "signal_timeline_viewer.py#332",
       "file": "signal_timeline_viewer.py",
       "source": "        \"\"\"Where 'Play Edit' should resume from.",
       "target": "        \"\"\"Where '播放剪辑' should resume from.",
@@ -34780,7 +34798,7 @@
       "hunk": "@@ -4696,7 +4703,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#331",
+      "id": "signal_timeline_viewer.py#333",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"⚠️ No clips in edit timeline\", 2000)",
       "target": "            self.statusBar().showMessage(\"⚠️ 剪辑时间线中没有片段\", 2000)",
@@ -34789,7 +34807,7 @@
       "hunk": "@@ -4728,7 +4735,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#332",
+      "id": "signal_timeline_viewer.py#334",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"⏸ Pause\")",
       "target": "        self.play_edit_btn.setText(\"⏸ 暂停\")",
@@ -34799,7 +34817,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#333",
+      "id": "signal_timeline_viewer.py#335",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(f\"▶ Playing edit timeline: {remaining} clip(s)\", 3000)",
       "target": "        self.statusBar().showMessage(f\"▶ 正在播放剪辑时间线：剩余 {remaining} 个片段\", 3000)",
@@ -34808,7 +34826,7 @@
       "hunk": "@@ -4737,9 +4744,9 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#334",
+      "id": "signal_timeline_viewer.py#336",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -34818,7 +34836,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#335",
+      "id": "signal_timeline_viewer.py#337",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"⏸ Pause\")",
       "target": "            self.play_edit_btn.setText(\"⏸ 暂停\")",
@@ -34827,7 +34845,7 @@
       "hunk": "@@ -4779,7 +4786,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#336",
+      "id": "signal_timeline_viewer.py#338",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"▶ Resumed\", 2000)",
       "target": "            self.statusBar().showMessage(\"▶ 已继续\", 2000)",
@@ -34836,7 +34854,7 @@
       "hunk": "@@ -4791,11 +4798,11 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#337",
+      "id": "signal_timeline_viewer.py#339",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -34846,7 +34864,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#338",
+      "id": "signal_timeline_viewer.py#340",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"⏸ Paused\", 2000)",
       "target": "            self.statusBar().showMessage(\"⏸ 已暂停\", 2000)",
@@ -34855,7 +34873,7 @@
       "hunk": "@@ -4806,21 +4813,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#339",
+      "id": "signal_timeline_viewer.py#341",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"✅ Edit timeline playback complete\", 3000)",
       "target": "            self.statusBar().showMessage(\"✅ 剪辑时间线播放完成\", 3000)",
@@ -34864,7 +34882,7 @@
       "hunk": "@@ -4806,21 +4813,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#340",
+      "id": "signal_timeline_viewer.py#342",
       "file": "signal_timeline_viewer.py",
       "source": "            self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "            self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -34874,7 +34892,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#341",
+      "id": "signal_timeline_viewer.py#343",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"▶ Clip {clip_num}/{total}: {start:.1f}s - {end:.1f}s\",",
       "target": "            f\"▶ 片段 {clip_num}/{total}：{start:.1f} 秒 - {end:.1f} 秒\",",
@@ -34883,7 +34901,7 @@
       "hunk": "@@ -4840,7 +4847,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#342",
+      "id": "signal_timeline_viewer.py#344",
       "file": "signal_timeline_viewer.py",
       "source": "        Honors the same \"Follow Playhead\" toggle used for the source timeline",
       "target": "        Honors the same \"跟随播放头\" toggle used for the source timeline",
@@ -34892,7 +34910,7 @@
       "hunk": "@@ -4876,7 +4883,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#343",
+      "id": "signal_timeline_viewer.py#345",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_edit_btn.setText(\"▶ Play Edit\")",
       "target": "        self.play_edit_btn.setText(\"▶ 播放剪辑\")",
@@ -34902,7 +34920,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#344",
+      "id": "signal_timeline_viewer.py#346",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(\"⏹ Edit playback stopped\", 2000)",
       "target": "        self.statusBar().showMessage(\"⏹ 剪辑播放已停止\", 2000)",
@@ -34911,7 +34929,7 @@
       "hunk": "@@ -4958,13 +4965,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#345",
+      "id": "signal_timeline_viewer.py#347",
       "file": "signal_timeline_viewer.py",
       "source": "            f\"Playing clip: {start_time:.1f}s for {duration:.1f}s\", 3000",
       "target": "            f\"正在播放片段：从 {start_time:.1f} 秒开始，时长 {duration:.1f} 秒\", 3000",
@@ -34920,7 +34938,7 @@
       "hunk": "@@ -4958,13 +4965,13 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#346",
+      "id": "signal_timeline_viewer.py#348",
       "file": "signal_timeline_viewer.py",
       "source": "        self.play_btn.setText(\"⏸ Pause\")",
       "target": "        self.play_btn.setText(\"⏸ 暂停\")",
@@ -34929,7 +34947,7 @@
       "hunk": "@@ -4973,7 +4980,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#347",
+      "id": "signal_timeline_viewer.py#349",
       "file": "signal_timeline_viewer.py",
       "source": "            QMessageBox.warning(self, \"No Clips\", \"Add some clips to the edit timeline first!\")",
       "target": "            QMessageBox.warning(self, \"没有片段\", \"请先向剪辑时间线添加一些片段！\")",
@@ -34939,7 +34957,7 @@
       "safe_duplicate": true
     },
     {
-      "id": "signal_timeline_viewer.py#348",
+      "id": "signal_timeline_viewer.py#350",
       "file": "signal_timeline_viewer.py",
       "source": "            self, \"Save Highlight Video\", default_path, \"MP4 files (*.mp4);;All files (*.*)\"",
       "target": "            self, \"保存高光视频\", default_path, \"MP4 视频 (*.mp4);;所有文件 (*.*)\"",
@@ -34948,7 +34966,7 @@
       "hunk": "@@ -4997,14 +5004,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#349",
+      "id": "signal_timeline_viewer.py#351",
       "file": "signal_timeline_viewer.py",
       "source": "        self.statusBar().showMessage(\"🎬 Rendering highlight video…\")",
       "target": "        self.statusBar().showMessage(\"🎬 正在渲染高光视频…\")",
@@ -34957,7 +34975,7 @@
       "hunk": "@@ -4997,14 +5004,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#350",
+      "id": "signal_timeline_viewer.py#352",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(\"⏳ Rendering… 0%\")",
       "target": "        self.render_highlight_btn.setText(\"⏳ 正在渲染… 0%\")",
@@ -34966,7 +34984,7 @@
       "hunk": "@@ -4997,14 +5004,14 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#351",
+      "id": "signal_timeline_viewer.py#353",
       "file": "signal_timeline_viewer.py",
       "source": "                            msg = (f\"✅ Highlight video rendered!\\n\\n\"\n                                   f\"File: {os.path.basename(output_path)}\\n\"\n                                   f\"Clips: {len(clips)}\\n\"\n                                   f\"Duration: {total_dur:.1f}s\\n\"\n                                   f\"Size: {size_mb:.1f} MB\\n\"\n                                   f\"Encoder: {enc}\")",
       "target": "                            msg = (f\"✅ 高光视频渲染完成！\\n\\n\"\n                                   f\"文件：{os.path.basename(output_path)}\\n\"\n                                   f\"片段数：{len(clips)}\\n\"\n                                   f\"时长：{total_dur:.1f} 秒\\n\"\n                                   f\"大小：{size_mb:.1f} MB\\n\"\n                                   f\"编码器：{enc}\")",
@@ -34975,7 +34993,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#352",
+      "id": "signal_timeline_viewer.py#354",
       "file": "signal_timeline_viewer.py",
       "source": "                        last_err = (errf.read() or \"\").strip()[-2000:] or \"Unknown error\"\n                        print(f\"⚠️ Render with {enc} failed (rc={proc.returncode}); \"\n                              + (\"falling back to next encoder…\"\n                                 if (enc, vargs) != attempts[-1] else \"no fallback left\"))\n                        print(\"   cmd: \" + \" \".join(str(c) for c in cmd))\n                        print(\"   ffmpeg stderr tail:\\n\" + last_err[-1200:])",
       "target": "                        last_err = (errf.read() or \"\").strip()[-2000:] or \"未知错误\"\n                        print(f\"⚠️ 使用 {enc} 渲染失败（返回码={proc.returncode}）；\" + (\"正在回退到下一个编码器…\" if (enc, vargs) != attempts[-1] else \"没有可用回退方案\"))\n                        print(\"   命令：\" + \" \".join(str(c) for c in cmd))\n                        print(\"   ffmpeg 错误输出末尾：\\n\" + last_err[-1200:])",
@@ -34984,7 +35002,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#353",
+      "id": "signal_timeline_viewer.py#355",
       "file": "signal_timeline_viewer.py",
       "source": "            self.render_finished.emit(False, f\"FFmpeg error:\\n{last_err}\")",
       "target": "            self.render_finished.emit(False, f\"FFmpeg 错误：\\n{last_err}\")",
@@ -34993,7 +35011,7 @@
       "hunk": "@@ -5073,26 +5080,24 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#354",
+      "id": "signal_timeline_viewer.py#356",
       "file": "signal_timeline_viewer.py",
       "source": "            print(f\"⚠️ [timeline] could not persist render_mode: {e}\")",
       "target": "            print(f\"⚠️ [时间线] 无法保存 render_mode：{e}\")",
@@ -35002,7 +35020,7 @@
       "hunk": "@@ -5128,7 +5133,7 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#355",
+      "id": "signal_timeline_viewer.py#357",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(f\"⏳ Rendering… {pct}%\")\n        self.statusBar().showMessage(f\"🎬 Rendering highlight video… {pct}%\")",
       "target": "        self.render_highlight_btn.setText(f\"⏳ 正在渲染… {pct}%\")\n        self.statusBar().showMessage(f\"🎬 正在渲染高光视频… {pct}%\")",
@@ -35011,7 +35029,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#356",
+      "id": "signal_timeline_viewer.py#358",
       "file": "signal_timeline_viewer.py",
       "source": "        self.render_highlight_btn.setText(\"🎬 Render Highlight Video\")",
       "target": "        self.render_highlight_btn.setText(\"🎬 渲染高光视频\")",
@@ -35020,7 +35038,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#357",
+      "id": "signal_timeline_viewer.py#359",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"✅ Highlight rendered!\", 5000)\n            QMessageBox.information(self, \"Render Complete\", message)",
       "target": "            self.statusBar().showMessage(\"✅ 高光视频渲染完成！\", 5000)\n            QMessageBox.information(self, \"渲染完成\", message)",
@@ -35029,7 +35047,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#358",
+      "id": "signal_timeline_viewer.py#360",
       "file": "signal_timeline_viewer.py",
       "source": "            self.statusBar().showMessage(\"❌ Render failed\", 5000)\n            QMessageBox.critical(self, \"Render Failed\", message)",
       "target": "            self.statusBar().showMessage(\"❌ 渲染失败\", 5000)\n            QMessageBox.critical(self, \"渲染失败\", message)",
@@ -35038,7 +35056,7 @@
       "hunk": "@@ -5150,21 +5155,21 @@ class SignalTimelineWindow(QMainWindow):"
     },
     {
-      "id": "signal_timeline_viewer.py#359",
+      "id": "signal_timeline_viewer.py#361",
       "file": "signal_timeline_viewer.py",
       "source": "debug_log(\"🚀 TIMELINE VIEWER STARTING\")",
       "target": "debug_log(\"🚀 时间线查看器正在启动\")",
@@ -35047,7 +35065,7 @@
       "hunk": "@@ -5254,11 +5259,11 @@ original_print = print"
     },
     {
-      "id": "signal_timeline_viewer.py#360",
+      "id": "signal_timeline_viewer.py#362",
       "file": "signal_timeline_viewer.py",
       "source": "debug_log(f\"Python version: {sys.version}\")\ndebug_log(f\"Current working directory: {os.getcwd()}\")\ndebug_log(f\"Script location: {__file__}\")",
       "target": "debug_log(f\"Python 版本：{sys.version}\")\ndebug_log(f\"当前工作目录：{os.getcwd()}\")\ndebug_log(f\"脚本位置：{__file__}\")",
@@ -35056,7 +35074,7 @@
       "hunk": "@@ -5254,11 +5259,11 @@ original_print = print"
     },
     {
-      "id": "signal_timeline_viewer.py#361",
+      "id": "signal_timeline_viewer.py#363",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(f\"🩺 Repaint trace → {_repaint_trace.default_path()}\")",
       "target": "        debug_log(f\"🩺 重绘追踪 → {_repaint_trace.default_path()}\")",
@@ -35065,7 +35083,7 @@
       "hunk": "@@ -5268,9 +5273,9 @@ debug_log(f\"Script location: {__file__}\")"
     },
     {
-      "id": "signal_timeline_viewer.py#362",
+      "id": "signal_timeline_viewer.py#364",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"⚠️ Repaint trace unavailable: {_e}\")",
       "target": "    debug_log(f\"⚠️ 重绘追踪不可用：{_e}\")",
@@ -35074,7 +35092,7 @@
       "hunk": "@@ -5268,9 +5273,9 @@ debug_log(f\"Script location: {__file__}\")"
     },
     {
-      "id": "signal_timeline_viewer.py#363",
+      "id": "signal_timeline_viewer.py#365",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"🎬 show_timeline_viewer called\")",
       "target": "    debug_log(\"🎬 已调用 show_timeline_viewer\")",
@@ -35083,7 +35101,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#364",
+      "id": "signal_timeline_viewer.py#366",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"  - cache_data provided: {cache_data is not None}\")\n    debug_log(f\"  - video_path exists: {os.path.exists(video_path)}\")",
       "target": "    debug_log(f\"  - 是否提供 cache_data：{cache_data is not None}\")\n    debug_log(f\"  - 视频路径是否存在：{os.path.exists(video_path)}\")",
@@ -35092,7 +35110,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#365",
+      "id": "signal_timeline_viewer.py#367",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  - Creating new QApplication\")",
       "target": "        debug_log(\"  - 正在创建新的 QApplication\")",
@@ -35101,7 +35119,7 @@
       "hunk": "@@ -5286,14 +5291,14 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#366",
+      "id": "signal_timeline_viewer.py#368",
       "file": "signal_timeline_viewer.py",
       "source": "            debug_log(f\"  ⚠️ Theme apply failed: {e}\")",
       "target": "            debug_log(f\"  ⚠️ 应用主题失败：{e}\")",
@@ -35110,7 +35128,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#367",
+      "id": "signal_timeline_viewer.py#369",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  - Using existing QApplication\")",
       "target": "        debug_log(\"  - 使用现有 QApplication\")",
@@ -35119,7 +35137,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#368",
+      "id": "signal_timeline_viewer.py#370",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  🔵 ABOUT TO CREATE SignalTimelineWindow...\")",
       "target": "    debug_log(\"  🔵 即将创建 SignalTimelineWindow…\")",
@@ -35128,7 +35146,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#369",
+      "id": "signal_timeline_viewer.py#371",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(\"  🟢 SignalTimelineWindow CREATED successfully\")",
       "target": "        debug_log(\"  🟢 SignalTimelineWindow 创建成功\")",
@@ -35137,7 +35155,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#370",
+      "id": "signal_timeline_viewer.py#372",
       "file": "signal_timeline_viewer.py",
       "source": "        debug_log(f\"  ❌ ERROR creating SignalTimelineWindow: {e}\")",
       "target": "        debug_log(f\"  ❌ 创建 SignalTimelineWindow 时出错：{e}\")",
@@ -35146,7 +35164,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#371",
+      "id": "signal_timeline_viewer.py#373",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  - Showing window...\")",
       "target": "    debug_log(\"  - 正在显示窗口…\")",
@@ -35155,7 +35173,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#372",
+      "id": "signal_timeline_viewer.py#374",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(\"  - Entering event loop...\")",
       "target": "    debug_log(\"  - 正在进入事件循环…\")",
@@ -35164,7 +35182,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#373",
+      "id": "signal_timeline_viewer.py#375",
       "file": "signal_timeline_viewer.py",
       "source": "    debug_log(f\"  - Event loop exited with code: {result}\")",
       "target": "    debug_log(f\"  - 事件循环已退出，代码：{result}\")",
@@ -35173,7 +35191,7 @@
       "hunk": "@@ -5301,26 +5306,26 @@ def show_timeline_viewer(video_path, cache_data=None):"
     },
     {
-      "id": "signal_timeline_viewer.py#374",
+      "id": "signal_timeline_viewer.py#376",
       "file": "signal_timeline_viewer.py",
       "source": "        print(\"Usage: python signal_timeline_viewer.py <video_path>\")",
       "target": "        print(\"用法：python signal_timeline_viewer.py <视频路径>\")",

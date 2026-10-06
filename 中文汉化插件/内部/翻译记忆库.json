@@ -5148,6 +5148,13 @@
       ]
     },
     {
+      "source": "cache/scene video_duration={cache_dur:.3f}s",
+      "target": "缓存/场景时长={cache_dur:.3f}秒",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Cache: {cache_path}\\n",
       "target": "缓存：{cache_path}\\n",
       "files": [
@@ -7401,6 +7408,13 @@
       "files": [
         "frontend/src/components/tabs/AutoTab.tsx",
         "frontend/src/components/tabs/TimelineTab.tsx"
+      ]
+    },
+    {
+      "source": "delta(player-cache)={delta:+.3f}s waveform_points={wf_len}",
+      "target": "播放器-缓存差值={delta:+.3f}秒 波形点数={wf_len}",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -15350,6 +15364,13 @@
       ]
     },
     {
+      "source": "player clock, so they will drift by ~{abs(delta):.2f}s by the end.",
+      "target": "{abs(delta):.2f}秒。",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "Playing clip: {start_time:.1f}s for {duration:.1f}s",
       "target": "正在播放片段：从 {start_time:.1f} 秒开始，时长 {duration:.1f} 秒",
       "files": [
@@ -19163,6 +19184,13 @@
       "target": "实际获取到的流片段（可证明播放已发生）：",
       "files": [
         "tools/probe_player.py"
+      ]
+    },
+    {
+      "source": "stretched over cache duration while the playhead uses the",
+      "target": "而播放头使用播放器时钟，因此到结尾时预计会偏移约",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {
@@ -25299,6 +25327,13 @@
       ]
     },
     {
+      "source": "⏱ SYNC: player_duration={player_dur:.3f}s",
+      "target": "⏱ 同步诊断：播放器时长={player_dur:.3f}秒",
+      "files": [
+        "signal_timeline_viewer.py"
+      ]
+    },
+    {
       "source": "⏱️ Calculated time range: {start_seconds:.1f}s to {end_seconds:.1f}s",
       "target": "⏱️ 计算出的时间范围：{start_seconds:.1f} 秒至 {end_seconds:.1f} 秒",
       "files": [
@@ -28535,6 +28570,13 @@
       "target": "⚠️ 摘要生成失败：{exc}",
       "files": [
         "main.py"
+      ]
+    },
+    {
+      "source": "⚠️ SYNC: duration mismatch {delta:+.3f}s — waveform is",
+      "target": "⚠️ 同步诊断：时长不一致 {delta:+.3f}秒——波形按缓存时长拉伸，",
+      "files": [
+        "signal_timeline_viewer.py"
       ]
     },
     {

@@ -114,7 +114,7 @@ class AnnotatedVideoManager(QObject):
 
         if len(self._sources) > 1:
             names = [k for k in self._sources if k != "🎥 原始视频"]
-            print(f"✅ Found annotated videos: {', '.join(names)}")
+            print(f"✅ 找到已标注视频：{', '.join(names)}")
         else:
             print("ℹ️ 尚未找到已标注视频 — 请使用生成按钮")
 
@@ -150,7 +150,7 @@ class AnnotatedVideoManager(QObject):
 
         new_keys = set(self._sources.keys()) - old_keys
         if new_keys:
-            print(f"🔄 Refresh found new: {', '.join(new_keys)}")
+            print(f"🔄 刷新后发现新标注视频：{', '.join(new_keys)}")
 
     def set_generating(self, generating: bool, which: str = "actions"):
         if which == "actions":

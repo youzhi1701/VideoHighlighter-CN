@@ -101,7 +101,7 @@ def background_folder(project: Project) -> str:
         return ""
     blocking = [p for p in check_name(name, project.class_names()) if p.blocking]
     if blocking:
-        raise ValueError(f"background_class {name!r}: "
+        raise ValueError(f"背景类别 {name!r}："
                          + "; ".join(p.message for p in blocking))
     return name
 

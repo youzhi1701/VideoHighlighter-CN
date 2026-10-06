@@ -89,8 +89,8 @@ def narrate_report_file(json_path: str,
         log_fn(f"⚠️ 已跳过旁白：无法加载 {label}：{exc}")
         return done
     if llm is None:
-        log_fn(f"⚠️ Narration skipped — could not reach {label}. The report "
-               "keeps its measurements; only the telling needs a model.")
+        log_fn(f"⚠️ 已跳过旁白：无法连接 {label}。报告中的测量结果会保留，"
+               "只有叙述生成需要模型。")
         return done
 
     # Asked once, before either pass, because the clip pass is meaningless
@@ -98,9 +98,9 @@ def narrate_report_file(json_path: str,
     # own notes. Said as a warning rather than an abort for the chapter walk.
     sees = not hasattr(llm, "accepts_images") or llm.accepts_images()
     if do_clips and not sees:
-        log_fn(f"⚠️ {label} has no vision half loaded, so it cannot see the "
-               "frames — and the frames are the whole point of the clip pass. "
-               "Skipping it.")
+        log_fn(f"⚠️ {label} 未加载视觉能力，无法查看视频帧；"
+               "片段旁白依赖画面，"
+               "因此已跳过。")
         do_clips = False
 
     if do_chapters:
@@ -129,8 +129,8 @@ def _pass(which: str, json_path: str, *, llm, label, log_fn, cancel_fn) -> int:
         from modules.narration.clip_story import tell_report_file
         noun = "片段"
 
-    log_fn(f"📖 Narrating {noun}s with {label} — one call each, so this takes "
-           "minutes rather than seconds.")
+    log_fn(f"📖 正在使用 {label} 为{noun}生成旁白；每个{noun}都会单独调用模型，"
+           "通常需要数分钟。")
     try:
         return tell_report_file(json_path, llm=llm, model_name=label,
                                 log_fn=log_fn, cancel_fn=cancel_fn) or 0

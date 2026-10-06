@@ -37,7 +37,7 @@ def _built_archs(cuda) -> list:
 def _probe(torch) -> str | None:
     cuda = torch.cuda
     if not cuda.is_available():
-        return "no CUDA device"
+        return "未检测到 CUDA 设备"
 
     try:
         built = _built_archs(cuda)
@@ -46,10 +46,9 @@ def _probe(torch) -> str | None:
             # The rule torch itself warns by: compute architectures are
             # backward compatible within a major version, never across one.
             if not any(sm // 10 == major for sm in built):
-                return (f"{cuda.get_device_name(0)} (compute capability "
-                        f"sm_{major}{minor}) is newer than this PyTorch build "
-                        f"supports (sm_{min(built)}–sm_{max(built)}); it needs a "
-                        f"PyTorch built for CUDA 12.8 or later")
+                return (f"{cuda.get_device_name(0)}（计算能力 sm_{major}{minor}）比当前 PyTorch 构建"
+                        f"支持的范围（sm_{min(built)}–sm_{max(built)}）更新；"
+                        f"需要使用面向 CUDA 12.8 或更高版本构建的 PyTorch")
     except (AttributeError, TypeError, ValueError):
         pass  # a torch that cannot say: let the test operation decide
 
@@ -60,7 +59,7 @@ def _probe(torch) -> str | None:
     except AttributeError:
         return None
     except RuntimeError as e:
-        return f"CUDA is present but a test operation on it failed ({e})"
+        return f"已检测到 CUDA，但测试运算失败（{e}）"
     return None
 
 
@@ -74,7 +73,7 @@ def cuda_unusable_reason(torch_module=None) -> str | None:
         try:
             import torch as torch_module
         except Exception:  # noqa: BLE001 — no torch means no CUDA
-            return "PyTorch is not installed"
+            return "未安装 PyTorch"
 
     hit = _cache.get(id(torch_module))
     if hit is not None and hit[0] is torch_module:
@@ -82,7 +81,7 @@ def cuda_unusable_reason(torch_module=None) -> str | None:
     try:
         reason = _probe(torch_module)
     except Exception as e:  # noqa: BLE001 — a probe must never break the caller
-        reason = f"CUDA check failed ({type(e).__name__}: {e})"
+        reason = f"CUDA 检查失败（{type(e).__name__}：{e}）"
     _cache[id(torch_module)] = (torch_module, reason)
     return reason
 

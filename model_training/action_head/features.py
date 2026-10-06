@@ -151,7 +151,7 @@ def encode_clips(paths: Sequence[str], root: str, encoder, cache: FeatureCache,
     if todo:
         cache.save()
     for p in failed[:10]:
-        log(f"⚠️ Could not read {os.path.basename(p)}; left out")
+        log(f"⚠️ 无法读取 {os.path.basename(p)}，已跳过")
     if len(failed) > 10:
-        log(f"⚠️ ... and {len(failed) - 10} more clips that could not be read")
+        log(f"⚠️ 另外还有 {len(failed) - 10} 个片段无法读取，已跳过")
     return feats, ok

@@ -48,7 +48,7 @@ def _build_backbone(name):
         m = models.mobilenet_v3_large(weights=models.MobileNet_V3_Large_Weights.DEFAULT)
         return nn.Sequential(m.features, nn.AdaptiveAvgPool2d(1), nn.Flatten())
     else:
-        raise ValueError(f"Unknown backbone '{name}'. Available: {list(BACKBONES.keys())}")
+        raise ValueError(f"未知主干网络 '{name}'。可用选项：{list(BACKBONES.keys())}")
 
 
 class GPUFeatureExtractor:
@@ -83,11 +83,11 @@ class GPUFeatureExtractor:
 
         # ----- backbone -----
         if backbone not in BACKBONES:
-            raise ValueError(f"Unknown backbone '{backbone}'. "
-                             f"Available: {list(BACKBONES.keys())}")
+            raise ValueError(f"未知主干网络 '{backbone}'。"
+                             f"可用选项：{list(BACKBONES.keys())}")
 
         self.feature_dim = BACKBONES[backbone]
-        print(f"🔧 Loading {backbone} on {device} (dtype={self.dtype})")
+        print(f"🔧 正在 {device} 上加载 {backbone}（dtype={self.dtype}）")
 
         self.model = _build_backbone(backbone)
         self.model.eval()
@@ -109,7 +109,7 @@ class GPUFeatureExtractor:
             assert out.shape[-1] == self.feature_dim, \
                 f"Expected {self.feature_dim}, got {out.shape[-1]}"
 
-        print(f"  ✅ {backbone} ready — feature_dim={self.feature_dim}")
+        print(f"  ✅ {backbone} 已就绪——特征维度={self.feature_dim}")
 
     @torch.no_grad()
     def encode(self, frames_batch):

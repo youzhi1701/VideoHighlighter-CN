@@ -2225,7 +2225,7 @@ class SignalTimelineWindow(QMainWindow):
             cache_data = cache.load(self.video_path)
             if cache_data:
                 print("  ✓ 找到旧版缓存")
-                print(f"  ✓ Contains keys: {list(cache_data.keys())}")
+                print(f"  ✓ 包含键：{list(cache_data.keys())}")
                 return cache_data
             
             print("\n  ⚠️ 未找到任何格式的缓存——将创建空数据")
@@ -2251,7 +2251,7 @@ class SignalTimelineWindow(QMainWindow):
         runs it (see main.open_timeline_viewer, which reuses the window). The
         calls are no-ops when nobody opened a splash, so the on-demand-analysis
         caller is unaffected."""
-        startup_splash.stage("Re-reading the analysis cache…")
+        startup_splash.stage("正在重新读取分析缓存…")
         try:
             fresh = self.load_cache_data()
         except Exception as e:

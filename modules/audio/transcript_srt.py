@@ -16,7 +16,7 @@ def get_video_fps(video_path: str) -> float:
         cap.release()
         return fps if fps > 0 else 25.0
     except:
-        print("⚠️ Could not detect FPS, using 25.0")
+        print("⚠️ 无法检测 FPS，将使用 25.0")
         return 25.0
 
 def format_timestamp_srt(seconds: float) -> str:
@@ -351,7 +351,7 @@ def translate_with_llm(text, source_lang="en", target_lang="pl", model="llama3",
             )
             return translated.strip()
     except Exception as e:
-        print(f"⚠️ LLM translation failed: {e}")
+        print(f"⚠️ LLM 翻译失败：{e}")
 
     return None
 
@@ -372,7 +372,7 @@ def translate_batch_with_llm(texts, source_lang="en", target_lang="pl",
         batch = texts[i:i + batch_size]
         batch_num = i // batch_size + 1
         total_batches = (total + batch_size - 1) // batch_size
-        print(f"  🦙 Batch {batch_num}/{total_batches} ({len(batch)} segments)...")
+        print(f"  🦙 批次 {batch_num}/{total_batches}（{len(batch)} 个片段）…")
         if progress_fn:
             progress_fn(i, total, "翻译",
                         f"批次 {batch_num}/{total_batches}")
@@ -424,9 +424,9 @@ def translate_batch_with_llm(texts, source_lang="en", target_lang="pl",
                     results.extend(parsed)
                     continue
                 else:
-                    print(f"  ⚠️ Batch returned {len(parsed)} lines, expected {len(batch)}, falling back to individual")
+                    print(f"  ⚠️ 批量翻译返回 {len(parsed)} 行，应为 {len(batch)} 行，将回退为逐条翻译")
         except Exception as e:
-            print(f"  ⚠️ Batch LLM translation failed: {e}")
+            print(f"  ⚠️ 批量 LLM 翻译失败：{e}")
 
         # Fallback: translate individually for this batch
         for j, text in enumerate(batch):
@@ -436,7 +436,7 @@ def translate_batch_with_llm(texts, source_lang="en", target_lang="pl",
             if translated:
                 results.append(translated)
             else:
-                print(f"  ⚠️ LLM failed for segment {i+j+1}, keeping original")
+                print(f"  ⚠️ 第 {i+j+1} 个片段 LLM 翻译失败，将保留原文")
                 results.append(text)
 
     if progress_fn:
@@ -455,23 +455,23 @@ def translate_segments(segments, source_lang="en", target_lang="pl",
     LLM batches — so a caller with a progress bar should pass one.
     """
     if not segments:
-        print("No segments to translate")
+        print("没有需要翻译的片段")
         return []
 
     if source_lang == target_lang:
-        print("No translation needed (same language)")
+        print("源语言与目标语言相同，无需翻译")
         return segments
 
-    print(f"⏳ Translating {len(segments)} segments from {source_lang} to {target_lang}...")
+    print(f"⏳ 正在将 {len(segments)} 个片段从 {source_lang} 翻译为 {target_lang}…")
 
     # --- Try LLM first ---
     llm_backend = get_llm_translator()
     if llm_backend:
-        print(f"🦙 Using local LLM ({llm_backend}) for translation (better quality)")
+        print(f"🦙 正在使用本地 LLM（{llm_backend}）翻译（质量更佳）")
         
         # DEBUG — remove after confirming
         for seg in segments[:5]:
-            print(f"  🔍 DEBUG: '{seg['text'][:40]}' | gender={seg.get('gender', 'MISSING')} | speaker={seg.get('speaker_label', 'MISSING')}")
+            print(f"  🔍 调试：'{seg['text'][:40]}' | 性别={seg.get('gender', 'MISSING')} | 说话人={seg.get('speaker_label', 'MISSING')}")
         
         texts = [seg["text"] for seg in segments]
         genders = [seg.get("gender") for seg in segments]
@@ -494,16 +494,16 @@ def translate_segments(segments, source_lang="en", target_lang="pl",
                         new_seg[key] = seg[key]
                 translated_segments.append(new_seg)
 
-            print(f"✅ Translated {len(translated_segments)} segments via LLM")
+            print(f"✅ 已通过 LLM 翻译 {len(translated_segments)} 个片段")
             return translated_segments
         else:
-            print(f"⚠️ LLM returned {len(translated_texts)} translations for {len(segments)} segments — keeping the originals")
+            print(f"⚠️ LLM 为 {len(segments)} 个片段返回了 {len(translated_texts)} 条翻译，将保留原文")
 
     # No LLM backend. Leave the subtitles in the source language rather than
     # routing them through a scraped web endpoint, and say so loudly: an
     # untranslated SRT is otherwise indistinguishable from a working run.
-    print("❌ No translation backend available — subtitles left untranslated.")
-    print("   Install ollama and pull a model to enable translation.")
+    print("❌ 没有可用的翻译后端——字幕将保持原语言。")
+    print("   请安装 Ollama 并拉取模型以启用翻译。")
     return segments
 
 # --------------------------
@@ -514,7 +514,7 @@ def create_srt_file(segments, output_path, source_lang="en", target_lang=None,
                     show_speakers=False, progress_fn=None):
     """Create SRT subtitle file from transcript segments with optional translation"""
     if target_lang and target_lang != source_lang:
-        print(f"Translating subtitles from {source_lang} to {target_lang}...")
+        print(f"正在将字幕从 {source_lang} 翻译为 {target_lang}…")
         segments = translate_segments(segments, source_lang, target_lang,
                                       progress_fn=progress_fn)
 
@@ -523,7 +523,7 @@ def create_srt_file(segments, output_path, source_lang="en", target_lang=None,
     with open(output_path, "w", encoding="utf-8-sig") as f:
         f.write(srt_content)
 
-    print(f"SRT file saved: {output_path}")    
+    print(f"SRT 文件已保存：{output_path}")    
 
 def create_highlight_subtitles(original_segments: List[Dict], highlight_segments: List[tuple],
                                output_path: str, source_lang="en", target_lang=None,
@@ -552,6 +552,6 @@ def create_highlight_subtitles(original_segments: List[Dict], highlight_segments
         srt_content = create_srt_content(highlight_subtitle_segments)
         with open(output_path, "w", encoding="utf-8-sig") as f:
             f.write(srt_content)
-        print(f"✅ Highlight subtitles saved: {output_path}")
+        print(f"✅ 高光字幕已保存：{output_path}")
     else:
-        print("⚠️ No subtitle segments overlap with highlights")
+        print("⚠️ 没有字幕片段与高光区间重叠")

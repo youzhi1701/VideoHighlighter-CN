@@ -1183,18 +1183,18 @@ class LLMModule:
 
     def load(self):
         """Load/verify the model. Raises RuntimeError on failure."""
-        self.log_fn(f"🤖 Loading LLM backend: {self.backend_name}")
+        self.log_fn(f"🤖 正在加载大模型后端：{self.backend_name}")
         start = time.time()
         self._backend.load()
         elapsed = time.time() - start
-        self.log_fn(f"✅ LLM ready ({elapsed:.1f}s)")
+        self.log_fn(f"✅ 大模型已就绪（{elapsed:.1f} 秒)")
 
     def is_loaded(self) -> bool:
         return self._backend.is_loaded()
 
     def unload(self):
         self._backend.unload()
-        self.log_fn("🤖 LLM unloaded")
+        self.log_fn("🤖 大模型已卸载")
 
     def query(
         self,
@@ -1362,7 +1362,7 @@ class LLMModule:
                 if error_callback:
                     error_callback(str(e))
                 else:
-                    self.log_fn(f"❌ LLM query error: {e}")
+                    self.log_fn(f"❌ 大模型查询出错：{e}")
 
         thread = threading.Thread(target=_run, daemon=True)
         thread.start()

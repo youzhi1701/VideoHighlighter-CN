@@ -5006,7 +5006,7 @@ class SignalTimelineWindow(QMainWindow):
         default_path = os.path.join(os.path.dirname(self.video_path), default_name)
 
         output_path, _ = QFileDialog.getSaveFileName(
-            self, "Save Highlight Video", default_path, "MP4 files (*.mp4);;All files (*.*)"
+            self, "保存高光视频", default_path, "MP4 视频 (*.mp4);;所有文件 (*.*)"
         )
         if not output_path:
             return

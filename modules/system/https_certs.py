@@ -47,7 +47,7 @@ def context():
     try:
         return ssl.create_default_context(cafile=certifi.where())
     except Exception as e:  # noqa: BLE001 - a broken bundle must not stop a launch
-        print(f"⚠️ certifi CA bundle unusable ({type(e).__name__}: {e})")
+        print(f"⚠️ certifi CA 证书包不可用（{type(e).__name__}：{e}）")
         return None
 
 

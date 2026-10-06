@@ -158,7 +158,7 @@ class AnalysisOverlayWidget(QWidget):
                     objects.append(obj_name)
         
         if objects:
-            text = "Objects: " + ", ".join(objects[:6])
+            text = "物体：" + ", ".join(objects[:6])
             painter.fillRect(8, h - 38, len(text) * 9 + 16, 30, QColor(0, 0, 0, 150))
             painter.setFont(QFont("Arial", 10, QFont.Bold))
             painter.setPen(QColor(0, 255, 0, 220))
@@ -168,7 +168,7 @@ class AnalysisOverlayWidget(QWidget):
         if not actions and not objects:
             painter.setFont(QFont("Arial", 9))
             painter.setPen(QColor(255, 255, 100, 150))
-            painter.drawText(10, h - 10, f"No detections at {self.current_time:.1f}s")
+            painter.drawText(10, h - 10, f"{self.current_time:.1f} 秒处无检测结果")
         
         # ── Timestamp (top-right) ──
         mins, secs = divmod(int(self.current_time), 60)
@@ -303,8 +303,8 @@ class VideoPreviewWindow(QMainWindow):
         self.volume_slider.valueChanged.connect(self.set_volume)
         
         self.speed_combo = QComboBox()
-        self.speed_combo.addItems(["0.5x", "0.75x", "Normal", "1.25x", "1.5x", "2.0x"])
-        self.speed_combo.setCurrentText("Normal")
+        self.speed_combo.addItems(["0.5x", "0.75x", "正常", "1.25x", "1.5x", "2.0x"])
+        self.speed_combo.setCurrentText("正常")
         self.speed_combo.currentTextChanged.connect(self.set_playback_speed)
         
         volume_layout.addWidget(self.volume_slider)
@@ -348,7 +348,7 @@ class VideoPreviewWindow(QMainWindow):
     def show_frame_analysis_status(self, timestamp: float, contains_target: bool):
         """Show a temporary overlay indicating frame analysis result"""
         # Update status bar
-        status = f"Frame at {int(timestamp)//60}:{int(timestamp)%60:02d} - {'✅ TARGET FOUND' if contains_target else '❌ No target'}"
+        status = f"{int(timestamp)//60}:{int(timestamp)%60:02d} 画面 - {'✅ 已找到目标' if contains_target else '❌ 未找到目标'}"
         self.status_bar.showMessage(status, 1000)  # Show for 1 second
         
         # Optional: Change border color briefly to indicate analysis
@@ -395,7 +395,7 @@ class VideoPreviewWindow(QMainWindow):
         speed_map = {
             "0.5x": 0.5,
             "0.75x": 0.75,
-            "Normal": 1.0,
+            "正常": 1.0,
             "1.25x": 1.25,
             "1.5x": 1.5,
             "2.0x": 2.0

@@ -130,7 +130,7 @@ def vocal_curves(video_path: str,
         result = vocal_signals.analyse(video_path, progress=progress,
                                        cancel=cancel)
     except Exception as exc:
-        log_fn(f"⚠️ Vocal signals unavailable: {exc}")
+        log_fn(f"⚠️ 人声信号不可用：{exc}")
         return {}
 
     curves = result.get("curves") or {}
@@ -139,7 +139,7 @@ def vocal_curves(video_path: str,
         # few of them and they describe a handful of samples rather than a
         # voice. Saying so beats letting a rule fire on a normalisation nobody
         # would trust.
-        log_fn(f"ℹ️ Vocal signals: only {result.get('vocal_seconds', 0)} vocal "
+        log_fn(f"ℹ️ 人声信号：仅检测到 {result.get('vocal_seconds', 0)} vocal "
                "second(s) — brightness and onset are not normalised, so "
                "rules using them will not fire.")
     try:

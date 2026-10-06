@@ -294,7 +294,7 @@ def apply(rules_path: str, proposal: Proposal,
 
     existing = existing_rules(rules_path)
     if any(str(e.get("name") or "").lower() == proposal.name for e in existing):
-        raise ValueError(f"'{proposal.name}' is already in {rules_path}")
+        raise ValueError(f"“{proposal.name}”已存在于 {rules_path}")
 
     if os.path.exists(rules_path):
         shutil.copy2(rules_path, rules_path + ".bak")
@@ -349,7 +349,7 @@ def load_checks(video_path: str) -> list:
         with open(path, encoding="utf-8") as fh:
             loaded = json.load(fh)
     except Exception as exc:                       # pragma: no cover - defensive
-        print(f"⚠️ Could not read pending checks: {exc}")
+        print(f"⚠️ 无法读取待检查项目：{exc}")
         return []
     return list(loaded) if isinstance(loaded, list) else []
 

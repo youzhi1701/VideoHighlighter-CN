@@ -102,50 +102,48 @@ def check_name(name: str, existing: Sequence[str] = (),
     """
     problems = []
     if not name:
-        return [Problem("empty", "A class needs a name.", True)]
+        return [Problem("empty", "类别需要一个名称。", True)]
     if name != normalize_name(name):
-        problems.append(Problem("format", f"Use {normalize_name(name)!r}: lowercase, "
-                                          "words separated by single spaces.", True))
+        problems.append(Problem("format", f"请使用 {normalize_name(name)!r}：使用小写字母，"
+                                          "单词之间只保留一个空格。", True))
     if len(name) > MAX_LENGTH:
-        problems.append(Problem("long", f"Keep it under {MAX_LENGTH} characters; "
-                                        "put the detail in the description.", True))
+        problems.append(Problem("long", f"名称请控制在 {MAX_LENGTH} 个字符以内；"
+                                        "更多细节请写在描述中。", True))
     if name.startswith("_") or name in {".", ".."}:
-        problems.append(Problem("reserved", "Names starting with _ are the sorter's "
-                                            "own folders.", True))
+        problems.append(Problem("reserved", "以下划线 _ 开头的名称保留给排序器内部文件夹使用。", True))
     if re.search(r'[/\\:*?"<>|]', name):
         problems.append(Problem("path", "A name becomes a folder; leave out / \\ : * ? \" < > |.",
                                 True))
     if re.fullmatch(r"[\d\s.]+", name):
-        problems.append(Problem("numeric", "A number is not a name: say what it is.", True))
+        problems.append(Problem("numeric", "纯数字不能作为类别名称，请说明它是什么。", True))
 
     for other in existing:
         if other == name:
-            problems.append(Problem("duplicate", f"There is already a class {name!r}.", True))
+            problems.append(Problem("duplicate", f"已经存在类别 {name!r}。", True))
         elif (_plain(other) == _plain(name)
               or " ".join(map(_singular, other.split())) == " ".join(map(_singular, name.split()))):
             problems.append(Problem("near_duplicate",
-                                    f"{name!r} reads as the same as {other!r}. One class, "
-                                    "or say how they differ in the descriptions."))
+                                    f"{name!r} 与 {other!r} 看起来是同一个类别。请合并为一个类别，"
+                                    "或在描述中明确两者区别。"))
 
     words = name.split()
     if len(words) == 1 and name in _VAGUE:
-        problems.append(Problem("vague", f"{name!r} does not say what it is. CLIP sorts "
-                                         "by the name, so use words that describe it."))
+        problems.append(Problem("vague", f"{name!r} 无法明确说明目标是什么。CLIP 会根据名称排序，"
+                                         "请使用更具描述性的词语。"))
     if re.search(r"\d", name) and not re.search(r"[a-z]{3,}", name):
-        problems.append(Problem("code", "This looks like a code. CLIP cannot sort by it; "
-                                        "add a description, or use words."))
+        problems.append(Problem("code", "这个名称看起来像代码。CLIP 无法仅靠代码进行排序；"
+                                        "请添加描述或改用自然语言。"))
 
     if task == "objects" and words and _singular(words[-1]) != words[-1]:
-        problems.append(Problem("plural", f"Objects are named in the singular, "
-                                          f"like {' '.join(words[:-1] + [_singular(words[-1])])!r}: "
-                                          "each box is one of them."))
+        problems.append(Problem("plural", f"物体类别请使用单数形式，例如 "
+                                          f"{' '.join(words[:-1] + [_singular(words[-1])])!r}；"
+                                          "每个检测框对应一个物体。"))
 
     vocab = vocabulary if vocabulary is not None else (load_vocabulary(task) if task else [])
     if name in vocab:
-        problems.append(Problem("stock", f"{name!r} is a label the stock "
-                                         f"{'action' if task == 'actions' else 'object'} model "
-                                         "already knows. Fine to reuse: it means the same "
-                                         "thing everywhere."))
+        problems.append(Problem("stock", f"{name!r} 已是内置"
+                                         f"{'动作' if task == 'actions' else '物体'}模型认识的标签。"
+                                         "可以继续使用；这样它在各处含义一致。"))
     return problems
 
 

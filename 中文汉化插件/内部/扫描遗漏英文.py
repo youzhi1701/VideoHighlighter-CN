@@ -339,11 +339,19 @@ def scan_python(path: Path, rel: str, allow: set[str]) -> list[Hit]:
             if id(node) in docstring_nodes:
                 continue
             value = string_value(node)
-            if value and len(clean(value)) >= 4 and visible_candidate(value, allow):
-                # Broad safety net for GUI-local strings. It intentionally
-                # over-reports; classification/allowlisting happens later.
+            cleaned = clean(value or "")
+            if value and len(cleaned) >= 4 and visible_candidate(value, allow):
+                # Broad safety net for GUI-local strings. Bare identifier-like
+                # tokens are usually internal protocol/status/font/dict values
+                # (for example success, filepath, prev, Arial, encode). Real
+                # one-word UI labels are already covered by UI_CALLS, setters,
+                # UI assignments and runtime emit() handling above. Keeping the
+                # safety net phrase-like avoids pressuring maintainers to
+                # translate internal identifiers just to reduce scan counts.
+                if re.fullmatch(r"[A-Za-z][A-Za-z0-9_.-]*", cleaned):
+                    continue
                 hits.append(Hit(rel, getattr(node, "lineno", 0),
-                                "python-gui-string", "medium", clean(value)))
+                                "python-gui-string", "medium", cleaned))
 
     return hits
 

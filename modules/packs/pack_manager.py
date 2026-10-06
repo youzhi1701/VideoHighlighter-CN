@@ -214,7 +214,7 @@ def load_lock(path: Optional[str] = None) -> dict:
     except FileNotFoundError:
         return {}
     except (OSError, ValueError) as exc:
-        print(f"[packs] unreadable {path}: {exc}")
+        print(f"[资源包] 无法读取 {path}：{exc}")
         return {}
     base = str(data.get("base") or "").rstrip("/")
     out = {}
@@ -231,7 +231,7 @@ def load_lock(path: Optional[str] = None) -> dict:
                 bytes_installed=int(float(row.get("bytes_installed") or 0)),
                 url=url)
         except (KeyError, TypeError, ValueError) as exc:
-            print(f"[packs] skipping a malformed lock entry ({exc}): {row!r}")
+            print(f"[资源包] 已跳过格式错误的锁定条目（{exc}）：{row!r}")
             continue
         out[pack.name] = pack
     return out
@@ -510,7 +510,7 @@ def download_pack(
             if failures > RETRIES:
                 raise PackError(f"{pack.asset} 下载失败：{exc}。已下载的数据会保留，"
                                 f"下次重试时将继续下载。") from exc
-            print(f"[packs] {pack.asset}: {exc}; retrying ({failures}/{RETRIES})")
+            print(f"[资源包] {pack.asset}：{exc}；正在重试（{failures}/{RETRIES}）")
         if failures > RETRIES:
             raise PackError(f"{pack.asset}：服务器持续返回与预期不一致的文件。")
         sleep(min(2 ** failures, 30))
@@ -630,7 +630,7 @@ def _mark_superseded(pack: Pack, priority: int) -> None:
                 with open(os.path.join(folder, REMOVE_MARKER), "w", encoding="utf-8") as fh:
                     fh.write(pack.name)
             except OSError as exc:
-                print(f"[packs] could not mark {folder} for removal: {exc}")
+                print(f"[资源包] 无法将 {folder} 标记为待移除：{exc}")
 
 
 def _place_model(pack: Pack, unpacked: str, root: str) -> str:
@@ -722,7 +722,7 @@ def install_pack(
         os.rmdir(staging)
     except OSError:
         pass
-    print(f"[packs] installed {name} {pack.version} at {where}")
+    print(f"[资源包] 已安装 {name} {pack.version} → {where}")
     msg = (f"{name} 已安装。重启 VideoHighlighter 后即可使用。"
            if restart else f"{name} 已安装。")
     return PackResult(True, msg, name, restart_required=restart)

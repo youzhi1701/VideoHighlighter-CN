@@ -159,7 +159,7 @@ def frame_features(wav_path: str,
 
     with wave.open(wav_path, "rb") as wf:
         if wf.getnchannels() != 1 or wf.getsampwidth() != 2:
-            raise RuntimeError("expected 16-bit mono PCM from ffmpeg")
+            raise RuntimeError("预期从 ffmpeg 获得 16 位单声道 PCM 音频")
         total = max(1, wf.getnframes())
         done = 0
 
@@ -463,7 +463,7 @@ def analyse(video_path: str,
         rms, envelope = frame_features(
             wav_path, progress=progress, cancel=cancel, progress_span=(0.15, 0.80))
         if not len(rms):
-            raise RuntimeError("no audio track found in this video")
+            raise RuntimeError("该视频中未找到音轨")
 
         loudness = per_second_loudness(rms)
         baseline, spread = local_statistics(loudness)

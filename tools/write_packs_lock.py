@@ -22,9 +22,9 @@ REQUIRED = ("name", "asset", "bytes", "sha256")
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--base", required=True,
-                    help="release download URL of the packs tag, e.g. "
+                    help="资源包标签的 Release 下载 URL，例如 "
                          "https://github.com/<owner>/<repo>/releases/download/packs-torch-2.7.1")
-    ap.add_argument("--packs-json", help="local packs.json (default: <base>/packs.json)")
+    ap.add_argument("--packs-json", help="本地 packs.json（默认：<base>/packs.json）")
     ap.add_argument("--out", required=True)
     args = ap.parse_args(argv)
 
@@ -38,22 +38,22 @@ def main(argv=None) -> int:
 
     packs = data.get("packs") or []
     if not packs:
-        print("packs.json lists no packs", file=sys.stderr)
+        print("packs.json 中没有资源包", file=sys.stderr)
         return 1
     for row in packs:
         missing = [k for k in REQUIRED if not row.get(k)]
         if missing:
-            print(f"{row.get('name', '?')}: missing {', '.join(missing)}", file=sys.stderr)
+            print(f"{row.get('name', '?')}：缺少 {', '.join(missing)}", file=sys.stderr)
             return 1
         if len(str(row["sha256"])) != 64:
-            print(f"{row['name']}: sha256 is not a SHA-256", file=sys.stderr)
+            print(f"{row['name']}：sha256 不是有效的 SHA-256", file=sys.stderr)
             return 1
 
     lock = {"base": base, "tag": data.get("tag") or base.rsplit("/", 1)[-1], "packs": packs}
     with open(args.out, "w", encoding="utf-8") as fh:
         json.dump(lock, fh, indent=2)
         fh.write("\n")
-    print(f"{args.out}: {', '.join(p['name'] for p in packs)} from {lock['tag']}")
+    print(f"{args.out}：{', '.join(p['name'] for p in packs)}，来源标签 {lock['tag']}")
     return 0
 
 

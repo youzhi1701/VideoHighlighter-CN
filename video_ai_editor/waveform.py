@@ -21,7 +21,7 @@ class WaveformVisualizer:
         os.close(fd)  # IMPORTANT: don't keep the file handle open
 
         try:
-            print(f"🎵 Extracting audio from: {self.video_path}")
+            print(f"🎵 正在从以下文件提取音频：{self.video_path}")
 
             cmd = [
                 "ffmpeg",
@@ -39,12 +39,12 @@ class WaveformVisualizer:
 
             result = subprocess.run(cmd, capture_output=True, text=True)
             if result.returncode != 0:
-                print("❌ FFmpeg failed")
-                print("stderr:", result.stderr.strip())
+                print("❌ FFmpeg 执行失败")
+                print("标准错误：", result.stderr.strip())
                 return None
 
             if not os.path.exists(wav_file) or os.path.getsize(wav_file) < 44:
-                print("❌ WAV output missing/too small (likely no audio or ffmpeg write failed)")
+                print("❌ WAV 输出不存在或过小（可能没有音频，或 FFmpeg 写入失败）")
                 return None
 
             with wave.open(wav_file, "rb") as wf:
@@ -53,7 +53,7 @@ class WaveformVisualizer:
             audio = np.frombuffer(frames, dtype=np.int16)
 
             if audio.size == 0 or rate <= 0:
-                print("❌ No audio samples decoded")
+                print("❌ 未解码出音频样本")
                 return None
 
             self.duration = audio.size / rate
@@ -68,11 +68,11 @@ class WaveformVisualizer:
                                      float(chunk.max()) / 32768.0, rms))
 
             self.waveform_data = waveform
-            print(f"✅ Waveform extracted: {len(waveform)} points, duration={self.duration:.2f}s")
+            print(f"✅ 波形提取完成：{len(waveform)} 个点，时长={self.duration:.2f} 秒")
             return waveform
 
         except Exception as e:
-            print(f"❌ Waveform extraction error: {e}")
+            print(f"❌ 波形提取出错：{e}")
             import traceback; traceback.print_exc()
             return None
 

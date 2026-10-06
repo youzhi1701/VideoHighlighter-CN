@@ -208,7 +208,7 @@ def look(path: str, *, samples: int = SAMPLES, use_cache: bool = True,
         item.colour = [float(v) for v in colour / (np.linalg.norm(colour) or 1.0)]
         item.measured = True
     except Exception as exc:
-        log_fn(f"⚠️ Could not measure how {os.path.basename(path)} looks ({exc})")
+        log_fn(f"⚠️ 无法测量 {os.path.basename(path)} looks ({exc})")
         return Look(path=path)
     finally:
         try:
@@ -254,7 +254,7 @@ def look_all(paths, *, use_cache: bool = True, log_fn=print) -> dict:
     if len(measured) > 1:
         pairs = sum(1 for i, a in enumerate(measured)
                     for b in measured[i + 1:] if same_view(a, b))
-        log_fn(f"👁️ Compared {len(measured)} clip(s)"
+        log_fn(f"👁️ 已比较 {len(measured)} clip(s)"
                + (f"; {pairs} pair(s) look like the same view"
                   if pairs else "; none look alike"))
     return out

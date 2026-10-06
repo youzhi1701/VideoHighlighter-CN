@@ -3042,9 +3042,9 @@ class SignalTimelineView(QGraphicsView):
                             parent = parent.parent()
                         if parent and hasattr(parent, 'statusBar'):
                             parent.statusBar().showMessage(
-                                f"Selected {duration:.2f}s  "
-                                f"({t0:.2f}s → {t1:.2f}s)  "
-                                "— drag selection into edit timeline to add",
+                                f"已选择 {duration:.2f} 秒  "
+                                f"（{t0:.2f} 秒 → {t1:.2f} 秒）  "
+                                "— 可将所选区间拖入编辑时间线以添加片段",
                                 0
                             )
 

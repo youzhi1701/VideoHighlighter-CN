@@ -132,7 +132,7 @@ class ObjectTrainingWorker(QObject):
             def on_epoch(report):
                 snap = snapshot(report, preview_frames, history, draw=self.draw_rounds)
                 print(f"[训练] 第 {report.epoch} 轮：找到 {snap.found}/{snap.expected}，"
-                      f"{snap.false_alarms} 个误报，训练损失 
+                      f"{snap.false_alarms} 个误报，训练损失 "
                       f"{report.train_loss:.4f}，验证损失 {report.val_loss:.4f}")
                 self.round_done.emit(snap)
 

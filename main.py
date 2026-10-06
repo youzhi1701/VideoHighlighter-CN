@@ -2530,8 +2530,7 @@ class VideoHighlighterGUI(QWidget):
                 # print(), not append_log(): this runs from __init__, before the
                 # log pane exists, and calling it there took the whole
                 # application down before its first window.
-                print(f"Composition rules: {len(self._comp_passthrough)} "
-                      f"rule(s) with no conditions ({names}); preserved on save.")
+                print(f"构图规则：{len(self._comp_passthrough)} 条规则没有条件（{names}）；保存时会原样保留。")
 
 
         def _comp_kind_of(row):
@@ -2575,8 +2574,7 @@ class VideoHighlighterGUI(QWidget):
             # cannot be left saying a rule is both on and off.
             on_chk = QCheckBox()
             on_chk.setChecked(bool(enabled))
-            on_chk.setToolTip("运行此规则。取消勾选后仍会保留在文件中"
-                              "but stops it matching.")
+            on_chk.setToolTip("运行此规则。取消勾选后仍会保留在文件中，但不会再参与匹配。")
             def _sync(state, box=on_chk):
                 row = next((i for i in range(self.comp_table.rowCount())
                             if self.comp_table.cellWidget(i, 0) is box), None)
@@ -2602,8 +2600,10 @@ class VideoHighlighterGUI(QWidget):
             self.comp_table.setCellWidget(r, 0, on_chk)
 
             kind_combo = QComboBox()
-            kind_combo.addItems(["Spatial", "Signal"])
-            kind_combo.setCurrentText("Signal" if str(kind) == "Signal" else "Spatial")
+            kind_combo.addItem("空间", "Spatial")
+            kind_combo.addItem("信号", "Signal")
+            _kind_value = "Signal" if str(kind) == "Signal" else "Spatial"
+            kind_combo.setCurrentIndex(max(0, kind_combo.findData(_kind_value)))
             def _on_kind(_i, box=kind_combo):
                 row = next((i for i in range(self.comp_table.rowCount())
                             if self.comp_table.cellWidget(i, 1) is box), None)
@@ -2625,16 +2625,14 @@ class VideoHighlighterGUI(QWidget):
             min_spin.setDecimals(2)
             min_spin.setRange(self.COMP_MIN_UNSET, self.COMP_MAX_UNSET)
             min_spin.setValue(self.COMP_MIN_UNSET if min_c is None else float(min_c))
-            min_spin.setToolTip("位于最小值时表示“不设下限”"
-                                "and is not written to the file.")
+            min_spin.setToolTip("位于最小值时表示“不设下限”，保存时不会写入该限制。")
             self.comp_table.setCellWidget(r, 6, min_spin)
 
             max_spin = QDoubleSpinBox()
             max_spin.setDecimals(2)
             max_spin.setRange(self.COMP_MIN_UNSET, self.COMP_MAX_UNSET)
             max_spin.setValue(self.COMP_MAX_UNSET if max_c is None else float(max_c))
-            max_spin.setToolTip("位于最大值时表示“不设上限”"
-                                "and is not written to the file.")
+            max_spin.setToolTip("位于最大值时表示“不设上限”，保存时不会写入该限制。")
             self.comp_table.setCellWidget(r, 7, max_spin)
 
             sus_spin = QSpinBox()
@@ -2662,23 +2660,24 @@ class VideoHighlighterGUI(QWidget):
             self.comp_table.setCellWidget(r, 11, per_spin)
 
             rel_combo = QComboBox()
-            rel_combo.addItem("内部", "inside")\n            rel_combo.addItem("重叠", "overlaps")\n            rel_combo.addItem("接触", "touches")
+            rel_combo.addItem("内部", "inside")
+            rel_combo.addItem("重叠", "overlaps")
+            rel_combo.addItem("接触", "touches")
             # Normalised the way the engine reads it, so `Touches` in the file
             # shows as touches instead of falling back to inside and being
             # dropped on the next save.
             _rel = str(relation or 'inside').strip().lower()
-            if rel_combo.findText(_rel) < 0:
-                rel_combo.addItem(_rel)          # shown as-is; the engine says why it is wrong
-            rel_combo.setCurrentText(_rel)
+            if rel_combo.findData(_rel) < 0:
+                rel_combo.addItem(_rel, _rel)
+            rel_combo.setCurrentIndex(max(0, rel_combo.findData(_rel)))
             rel_combo.setToolTip("内部：中心位于区域内\n"
-                                 "overlaps: most of its area is in the region\n"
-                                 "touches: the two meet")
+                                 "重叠：大部分区域位于目标区域内\n"
+                                 "接触：两者边界或区域相接")
             self.comp_table.setCellWidget(r, COMP_REL_COL, rel_combo)
 
             outline_chk = QCheckBox()
             outline_chk.setChecked(bool(outline))
-            outline_chk.setToolTip("根据框内描绘出的真实轮廓判断形状"
-                                   "boxes, instead of the boxes")
+            outline_chk.setToolTip("根据检测框内描绘出的真实轮廓判断形状，而不是仅按矩形检测框判断。")
             self.comp_table.setCellWidget(r, COMP_OUTLINE_COL, outline_chk)
 
             del_btn = QPushButton()
@@ -2777,8 +2776,10 @@ class VideoHighlighterGUI(QWidget):
                         'max_count': int(round(max_v)) if max_v < self.COMP_MAX_UNSET else 999,
                     }
                     rel_w = self.comp_table.cellWidget(r, COMP_REL_COL)
-                    if rel_w is not None and rel_w.currentText() != 'inside':
-                        rule['relation'] = rel_w.currentText()
+                    if rel_w is not None:
+                        relation_value = str(rel_w.currentData() or rel_w.currentText()).strip()
+                        if relation_value != 'inside':
+                            rule['relation'] = relation_value
                     out_w = self.comp_table.cellWidget(r, COMP_OUTLINE_COL)
                     if out_w is not None and out_w.isChecked():
                         rule['outline'] = True

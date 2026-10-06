@@ -45,11 +45,11 @@ def _clean(value) -> Optional[float]:
     try:
         scale = float(str(value).strip().replace(",", "."))
     except (TypeError, ValueError):
-        print(f"⚠️ {ENV_VAR}/{CONFIG_KEY}: {value!r} is not a number — ignoring")
+        print(f"⚠️ {ENV_VAR}/{CONFIG_KEY}：{value!r} 不是有效数字，已忽略")
         return None
     if not (MIN_SCALE <= scale <= MAX_SCALE):
-        print(f"⚠️ interface scale {scale} is outside "
-              f"{MIN_SCALE}–{MAX_SCALE} — ignoring")
+        print(f"⚠️ 界面缩放 {scale} 超出允许范围 "
+              f"{MIN_SCALE}–{MAX_SCALE}，已忽略")
         return None
     return scale
 
@@ -72,8 +72,8 @@ def _from_config() -> Optional[float]:
         with open(path, encoding="utf-8") as handle:
             data = yaml.safe_load(handle) or {}
     except Exception as e:  # noqa: BLE001 - see docstring
-        print(f"⚠️ could not read {CONFIG_KEY} from config.yaml: "
-              f"{type(e).__name__}: {e}")
+        print(f"⚠️ 无法从 config.yaml 读取 {CONFIG_KEY}："
+              f"{type(e).__name__}：{e}")
         return None
     if isinstance(data, dict):
         return _clean(data.get(CONFIG_KEY))
@@ -102,5 +102,5 @@ def apply() -> Optional[float]:
     if scale is None:
         return None
     os.environ[QT_VAR] = repr(float(scale))
-    print(f"🔍 Interface scale: {scale}× (on top of the display's own)")
+    print(f"🔍 界面缩放：{scale}×（叠加在系统显示缩放之上）")
     return scale

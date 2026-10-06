@@ -87,17 +87,17 @@ class SignalLabelPanel(QWidget):
 
     # Tracks that support prev/next navigation and how to pull timestamps
     _NAVIGABLE = {
-        "AUDIO WAVEFORM": lambda scene: scene._nav_timestamps_waveform_peaks(),
-        "ACTIONS":        lambda scene: scene._nav_timestamps_actions(),
-        "OBJECTS":        lambda scene: scene._nav_timestamps_objects(),
-        "SCENES":         lambda scene: scene._nav_timestamps_scenes(),
-        "MOTION EVENTS":  lambda scene: scene._nav_timestamps_motion_events(),
-        "MOTION PEAKS":   lambda scene: scene._nav_timestamps_motion_peaks(),
-        "AUDIO PEAKS":    lambda scene: scene._nav_timestamps_audio_peaks(),
-        "HIGHLIGHTS":     lambda scene: scene._nav_timestamps_highlights(),
-        "TRANSCRIPT":     lambda scene: scene._nav_timestamps_transcript(),
-        "VISUAL SEARCH":  lambda scene: scene._nav_timestamps_visual_search(),
-        "EVENTS":         lambda scene: scene._nav_timestamps_events(),
+        "音频波形": lambda scene: scene._nav_timestamps_waveform_peaks(),
+        "动作":     lambda scene: scene._nav_timestamps_actions(),
+        "物体":     lambda scene: scene._nav_timestamps_objects(),
+        "场景":     lambda scene: scene._nav_timestamps_scenes(),
+        "运动事件": lambda scene: scene._nav_timestamps_motion_events(),
+        "运动峰值": lambda scene: scene._nav_timestamps_motion_peaks(),
+        "音频峰值": lambda scene: scene._nav_timestamps_audio_peaks(),
+        "高光":     lambda scene: scene._nav_timestamps_highlights(),
+        "转录文本": lambda scene: scene._nav_timestamps_transcript(),
+        "视觉搜索": lambda scene: scene._nav_timestamps_visual_search(),
+        "事件":     lambda scene: scene._nav_timestamps_events(),
     }
 
     _ARROW_W = 14   # px reserved for each arrow

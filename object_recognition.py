@@ -326,7 +326,7 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
 
     if progress_fn:
         progress_fn(0, total_seconds, "物体检测",
-                     f"Analyzing {seconds_to_mmss(total_seconds)} of video (conf≥{confidence_threshold})")
+                     f"正在分析 {seconds_to_mmss(total_seconds)} 的视频（置信度≥{confidence_threshold}）")
 
     sec_objects = {}
     sec_bboxes = {}
@@ -355,7 +355,7 @@ def run_object_detection_single(video_path, model, highlight_objects, log_fn=pri
 
                     if progress_fn:
                         progress_fn(sec, total_seconds, "物体检测",
-                                    f"Found {objects_found} objects so far ({seconds_to_mmss(sec)})")
+                                    f"目前已找到 {objects_found} 个物体（{seconds_to_mmss(sec)}）")
                     current_second = sec
 
                     try:
@@ -497,14 +497,14 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
     """
     device = resolve_device(device)
     if not os.path.exists(video_path):
-        error_msg = f"⚠️ Video not found: {video_path}"
+        error_msg = f"⚠️ 未找到视频：{video_path}"
         log_fn(error_msg)
         if progress_fn:
             progress_fn(1.0, error_msg)
         return {}, []
 
     if not highlight_objects:
-        error_msg = "⚠️ No objects specified in highlight_objects list!"
+        error_msg = "⚠️ 未指定需要检测的物体类别！"
         log_fn(error_msg)
         if progress_fn:
             progress_fn(1.0, error_msg)
@@ -519,7 +519,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
     if model_path:
         log_fn(f"🎯 正在使用自定义模型：{model_path}")
     else:
-        log_fn(f"🎯 正在使用 YOLOX 检测器（尺寸：{yolo_model_size})")
+        log_fn(f"🎯 正在使用 YOLOX 检测器（尺寸：{yolo_model_size}）")
     openvino_folder = None
     # Fetch the stock models once here, not in four workers at the same time
     if load_detector(model_path, yolo_model_size, log=log_fn) is None:
@@ -610,7 +610,7 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
 
     # Merge worker videos if bounding boxes were drawn
     if draw_boxes and worker_videos and annotated_output:
-        log_fn(f"🎬 正在合并 {len(worker_videos)} annotated video segments...")
+        log_fn(f"🎬 正在合并 {len(worker_videos)} 个标注视频片段…")
         merge_worker_videos(worker_videos, annotated_output, fps)
 
     # Write CSV
@@ -619,12 +619,12 @@ def run_object_detection(video_path, highlight_objects, frame_skip=5, csv_file="
             writer = csv.writer(f)
             writer.writerow(["timestamp_mmss", "frame_id", "label", "confidence", "timestamp_seconds"])
             writer.writerows(all_frame_objects)
-        log_fn(f"✅ 已创建 CSV：{csv_file}，包含 {len(all_frame_objects)} detections")
+        log_fn(f"✅ 已创建 CSV：{csv_file}，包含 {len(all_frame_objects)} 个检测结果")
     else:
         log_fn("❌ 未检测到物体，因此未创建 CSV 文件")
 
     total_detections = sum(len(v) for v in final_objects.values())
-    log_fn(f"✅ 检测到物体的总秒数：{len(final_objects))}, total detections: {total_detections}")
+    log_fn(f"✅ 检测到物体的总秒数：{len(final_objects)}，检测结果总数：{total_detections}")
 
     if progress_fn:
         progress_fn(1.0, f"已完成：共找到 {total_detections} 个检测结果")

@@ -670,11 +670,11 @@ def describe_devices() -> list:
             for i, name in enumerate(_dml.adapter_names()):
                 note(name, f"DirectML {i}" if i else "DirectML")
         except Exception as e:  # noqa: BLE001
-            _warn(f"DirectML device listing failed: {e}")
+            _warn(f"DirectML 设备列表读取失败：{e}")
 
     return [f"{name} - {', '.join(drivers)}" for name, drivers in found.values()]
 
 
 def _warn(msg: str):
     print(f"⚠️ [device_utils] {msg}")
-    print(f"   CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES', '(not set)')}")
+    print(f"   CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES', '（未设置）')}")
